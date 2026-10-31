@@ -1,0 +1,70 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "arena/semiring-lab/cmd/report"
+
+import {
+  "arena/semiring-lab/algebra",
+}
+
+// Values
+pub fn sec10_sparse() -> Unit
+
+pub fn sec11_float() -> Unit
+
+pub fn sec12_blocking() -> Unit
+
+pub fn sec13_parallel() -> Unit
+
+pub fn sec14_tropical_geometry() -> Unit
+
+pub fn sec15_normal_forms() -> Unit
+
+pub fn sec16_categorification() -> Unit
+
+pub fn sec17_app_portfolio() -> Unit
+
+pub fn sec18_belief() -> Unit
+
+pub fn sec19_limits() -> Unit
+
+// Errors
+
+// Types and methods
+pub(all) struct ReportBroken {
+  v : Int32
+} derive(Eq)
+pub fn ReportBroken::equal(Self, Self) -> Bool
+pub fn ReportBroken::is_one(Self) -> Bool
+pub fn ReportBroken::is_zero(Self) -> Bool
+pub fn ReportBroken::not_equal(Self, Self) -> Bool
+pub fn ReportBroken::of(Int32) -> Self
+pub fn ReportBroken::one() -> Self
+pub fn ReportBroken::output(Self, &Logger) -> Unit
+pub fn ReportBroken::plus(Self, Self) -> Self
+pub fn ReportBroken::times(Self, Self) -> Self
+pub fn ReportBroken::to_string(Self) -> String
+pub fn ReportBroken::zero() -> Self
+pub impl @algebra.Semiring for ReportBroken
+pub impl Show for ReportBroken
+
+pub(all) struct ReportLying {
+  v : Int32
+} derive(Eq)
+pub fn ReportLying::equal(Self, Self) -> Bool
+pub fn ReportLying::is_one(Self) -> Bool
+pub fn ReportLying::is_zero(Self) -> Bool
+pub fn ReportLying::le(Self, Self) -> Bool
+pub fn ReportLying::not_equal(Self, Self) -> Bool
+pub fn ReportLying::of(Int32) -> Self
+pub fn ReportLying::one() -> Self
+pub fn ReportLying::output(Self, &Logger) -> Unit
+pub fn ReportLying::plus(Self, Self) -> Self
+pub fn ReportLying::times(Self, Self) -> Self
+pub fn ReportLying::to_string(Self) -> String
+pub fn ReportLying::zero() -> Self
+pub impl @algebra.IdempotentSemiring for ReportLying
+pub impl @algebra.Semiring for ReportLying
+pub impl Show for ReportLying
+
+// Type aliases
+
+// Traits

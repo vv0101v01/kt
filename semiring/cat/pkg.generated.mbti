@@ -1,0 +1,58 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/cat"
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra",
+  "vv0101v01/cubical-hermitian/semiring/matrix",
+}
+
+// Values
+pub fn decategorify(SetMat) -> @matrix.Mat[@algebra.Counting]
+
+pub fn dequant_error(Array[Double], Double) -> Double
+
+pub fn dequantize(Array[Double], Double) -> Double
+
+pub fn dequantize_naive(Array[Double], Double) -> Double
+
+pub fn dequantized_mul(Array[Array[Double]], Array[Array[Double]], Double) -> Array[Array[Double]]
+
+pub fn max_abs_diff(Array[Array[Double]], Array[Array[Double]]) -> Double
+
+pub fn minplus_mul(Array[Array[Double]], Array[Array[Double]]) -> Array[Array[Double]]
+
+pub fn smat_mul(SetMat, SetMat) -> SetMat
+
+pub fn smat_plus(SetMat, SetMat) -> SetMat
+
+// Errors
+
+// Types and methods
+pub(all) struct DiGraph {
+  n : Int32
+  adj : Array[Array[Int32]]
+}
+pub fn DiGraph::adjacency(Self) -> @matrix.Mat[@algebra.Counting]
+pub fn DiGraph::edge(Self, Int32, Int32) -> Unit
+pub fn DiGraph::edge_count(Self) -> Int32
+pub fn DiGraph::hom_setmat(Self) -> SetMat
+pub fn DiGraph::hom_sets(Self) -> Array[Array[Array[Array[Int32]]]]
+pub fn DiGraph::is_dag(Self) -> Bool
+pub fn DiGraph::new(Int32) -> Self
+pub fn DiGraph::path_counts(Self) -> Array[Array[Int64]]
+pub fn DiGraph::path_counts_by_closure(Self) -> Array[Array[Int64]]
+pub fn DiGraph::path_counts_by_powers(Self) -> Array[Array[Int64]]
+pub fn DiGraph::topo_order(Self) -> Array[Int32]
+
+pub(all) struct SetMat {
+  rows : Int32
+  cols : Int32
+  cells : Array[Array[Array[Int32]]]
+}
+pub fn SetMat::add(Self, Int32, Int32, Array[Int32]) -> Unit
+pub fn SetMat::get(Self, Int32, Int32) -> Array[Array[Int32]]
+pub fn SetMat::new(Int32, Int32) -> Self
+
+// Type aliases
+
+// Traits

@@ -1,0 +1,23 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "arena/semiring-lab/par_host"
+
+import {
+  "arena/semiring-lab/par",
+}
+
+// Values
+pub fn backend_name() -> String
+
+pub fn is_host_backend() -> Bool
+
+pub fn par_for(Int32, (Int32) -> Unit) -> Unit
+
+pub fn shard_io_bench(String, Int32) -> @par.ShardIO
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

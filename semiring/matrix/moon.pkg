@@ -1,0 +1,10 @@
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra" @alg,
+  "vv0101v01/cubical-hermitian/semiring/par",
+}
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/matrix" @mat,
+  "vv0101v01/cubical-hermitian/semiring/sim",
+  "moonbitlang/core/double",
+} for "wbtest"

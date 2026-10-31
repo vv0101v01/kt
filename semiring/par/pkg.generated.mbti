@@ -1,0 +1,38 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/par"
+
+// Values
+pub fn backend() -> String
+
+pub fn backend_name() -> String
+
+pub fn chunk_size(Int32, Int32) -> Int32
+
+pub fn par_for(Int32, (Int32) -> Unit) -> Unit
+
+pub fn par_map_chunks(Int32, Int32, (Int32, Int32) -> Unit) -> Unit
+
+pub fn par_scan(Array[Int64]) -> Array[Int64]
+
+pub fn scan_depth(Int32) -> Int32
+
+pub fn scan_sequential(Array[Int64]) -> Array[Int64]
+
+pub fn shard_io_bench(String, Int32) -> ShardIO
+
+// Errors
+
+// Types and methods
+pub(all) struct ShardIO {
+  seq_us : Double
+  par_us : Double
+  bytes : Int32
+  files : Int32
+  same : Bool
+  seq_data : Array[Bytes]
+  par_data : Array[Bytes]
+}
+
+// Type aliases
+
+// Traits

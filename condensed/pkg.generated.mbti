@@ -1,0 +1,307 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/condensed"
+
+import {
+  "moonbitlang/core/bigint",
+  "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/algebra",
+  "vv0101v01/cubical-hermitian/gcd",
+}
+
+// Values
+pub fn adams_ext_f2_report(Int32, Int32, Int32) -> AdamsExtReport
+
+pub fn canon_cat_comp(CanonMorphism, CanonMorphism) -> CanonMorphism?
+
+pub fn canon_cat_id(CanonObject) -> CanonMorphism
+
+pub fn canon_morphism_valid(CanonMorphism) -> Bool
+
+pub fn canon_object_build(String, Int32, (Int32, Int32) -> Bool, (Int32) -> Int32) -> CanonObject
+
+pub fn cond_analytic_stack_build() -> CondAnalyticStack
+
+pub fn cond_anima_build(String, CondProfinite, Array[Int32], Array[@gcd.ZMat]) -> CondAnima
+
+pub fn cond_cat_comp(CondProMorphism, CondProMorphism) -> CondProMorphism?
+
+pub fn cond_cat_id(CondProfinite) -> CondProMorphism
+
+pub fn cond_cat_proj1(CondProfinite, CondProfinite) -> CondProMorphism
+
+pub fn cond_chain_free(CondProfinite) -> CondChain
+
+pub fn cond_chain_lim_dim(CondChain) -> Int32
+
+pub fn cond_chain_locally_constant(CondProfinite, Int32) -> CondChain
+
+pub fn cond_chain_tensor(CondChain, CondChain) -> CondChain
+
+pub fn cond_check_federation_all() -> Bool
+
+pub fn cond_check_structure_3_and_spectral_homotopy() -> Bool
+
+pub fn cond_check_structure_4_category_2_ledger_and_conjectures() -> Bool
+
+pub fn cond_check_structures_1_2_and_category_1() -> Bool
+
+pub fn cond_evaluate_new_conjectures() -> Array[CondConjectureEntry]
+
+pub fn cond_ledger_append(CondInvariantLedger, Int32, Array[Int32], Array[Int32]) -> CondInvariantLedger
+
+pub fn cond_ledger_audit_laws(CondInvariantLedger) -> (Int32, Int32)
+
+pub fn cond_ledger_derive_invariants(CondInvariantLedger) -> CondInvariantLedger
+
+pub fn cond_ledger_new() -> CondInvariantLedger
+
+pub fn cond_ledger_verify(CondInvariantLedger) -> Bool
+
+pub fn cond_liquid_subadditive_check(Int32, Int32) -> Bool
+
+pub fn cond_mittag_leffler_holds(CondChain) -> Bool
+
+pub fn cond_pro_morphism_valid(CondProMorphism) -> Bool
+
+pub fn cond_prof_cantor(Int32, Int32) -> CondProfinite
+
+pub fn cond_prof_coproduct(CondProfinite, CondProfinite) -> CondProfinite
+
+pub fn cond_prof_n_inf(Int32, Int32) -> CondProfinite
+
+pub fn cond_prof_product(CondProfinite, CondProfinite) -> CondProfinite
+
+pub fn cond_prof_pt(Int32) -> CondProfinite
+
+pub fn cond_prof_valid(CondProfinite) -> Bool
+
+pub fn cond_prof_zq(Int32, Int32, Int32) -> CondProfinite
+
+pub fn cond_solid_module_build(CondProfinite, Int32, Int32, Int32) -> CondSolidModule
+
+pub fn cond_spectral_sheaf_build(String, Array[Int32], Bool, @gcd.FpMat, @gcd.FpMat) -> CondSpectralSheaf
+
+pub fn cond_steenrod_adem_pair(Int32, Int32) -> Array[Array[Int32]]
+
+pub fn koszul_tor_report(Int32, Int32) -> KoszulTorReport
+
+pub fn serre_hopf_fibration_report(Int32) -> SerreReport
+
+pub fn ss_dq(SsPage) -> Int32
+
+pub fn ss_page_dd_zero(SsPage) -> Bool
+
+pub fn ss_page_make(Int32, Array[Array[Int32]], Int32, qflip? : Bool) -> SsPage
+
+pub fn ss_page_next(SsPage) -> SsPage
+
+pub fn ss_set_diff(SsPage, Int32, Int32, @gcd.FpMat) -> Unit
+
+pub fn ss_total_by_degree(SsPage, Int32) -> Array[Int32]
+
+// Errors
+
+// Types and methods
+pub(all) struct AdamsExtReport {
+  trunc_deg : Int32
+  s_max : Int32
+  t_max : Int32
+  admissible_basis_count : Int32
+  ext_dims : Array[Array[Int32]]
+  stem0_h0_tower : Array[Int32]
+  hopf_h1_ext12 : Int32
+  two_eta_ext23 : Int32
+  hopf_h2_ext14 : Int32
+  koszul_e_sq1_diagonal_ok : Bool
+} derive(Eq, @debug.Debug)
+pub fn AdamsExtReport::equal(Self, Self) -> Bool
+pub fn AdamsExtReport::not_equal(Self, Self) -> Bool
+pub fn AdamsExtReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CanonMorphism {
+  dom : CanonObject
+  cod : CanonObject
+  map : Array[Int32]
+} derive(Eq, @debug.Debug)
+pub fn CanonMorphism::equal(Self, Self) -> Bool
+pub fn CanonMorphism::not_equal(Self, Self) -> Bool
+pub fn CanonMorphism::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CanonObject {
+  name : String
+  size : Int32
+  equiv : Array[Bool]
+  canon : Array[Int32]
+  idempotent : Bool
+  sound : Bool
+  is_complete : Bool
+  class_count : Int32
+} derive(Eq, @debug.Debug)
+pub fn CanonObject::equal(Self, Self) -> Bool
+pub fn CanonObject::not_equal(Self, Self) -> Bool
+pub fn CanonObject::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondAnalyticStack {
+  ring_name : String
+  tropical_bend_roots_count : Int32
+  p1_proper_and_separated : Bool
+  topos_laurent_site_valid : Bool
+  laurent_cech_exact : Bool
+  archimedean_trace_rat : @algebra.Rat
+  solid_completion_gap : Int32
+  bipolar_coherent : Bool
+} derive(Eq, @debug.Debug)
+pub fn CondAnalyticStack::equal(Self, Self) -> Bool
+pub fn CondAnalyticStack::not_equal(Self, Self) -> Bool
+pub fn CondAnalyticStack::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondAnima {
+  name : String
+  pi0_tower : CondProfinite
+  pi1_ranks : Array[Int32]
+  pi1_bonding : Array[@gcd.ZMat]
+  lim0_pi1_rank : Int32
+  coker_torsion_orders : Array[@bigint.BigInt]
+  mittag_leffler_holds : Bool
+  milnor_lim1_nonvanishing : Bool
+} derive(Eq, @debug.Debug)
+pub fn CondAnima::equal(Self, Self) -> Bool
+pub fn CondAnima::not_equal(Self, Self) -> Bool
+pub fn CondAnima::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondChain {
+  dims : Array[Int32]
+  trans : Array[@gcd.FpMat]
+  p : Int32
+} derive(Eq, @debug.Debug)
+pub fn CondChain::equal(Self, Self) -> Bool
+pub fn CondChain::not_equal(Self, Self) -> Bool
+pub fn CondChain::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondConjectureEntry {
+  id : String
+  title : String
+  status : CondConjectureStatus
+  instances_checked : Int32
+  consistent_with_status : Bool
+} derive(Eq, @debug.Debug)
+pub fn CondConjectureEntry::equal(Self, Self) -> Bool
+pub fn CondConjectureEntry::not_equal(Self, Self) -> Bool
+pub fn CondConjectureEntry::to_repr(Self) -> @debug.Repr
+
+pub(all) enum CondConjectureStatus {
+  VerifiedUpToBound(Int32)
+  RefutedWithWitness(String)
+  ThresholdMeasured(Int32, Int32)
+} derive(Eq, @debug.Debug)
+pub fn CondConjectureStatus::equal(Self, Self) -> Bool
+pub fn CondConjectureStatus::not_equal(Self, Self) -> Bool
+pub fn CondConjectureStatus::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondInvariantLedger {
+  entries : Array[CondLedgerEntry]
+  tip : UInt64
+} derive(Eq, @debug.Debug)
+pub fn CondInvariantLedger::equal(Self, Self) -> Bool
+pub fn CondInvariantLedger::not_equal(Self, Self) -> Bool
+pub fn CondInvariantLedger::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondLedgerEntry {
+  seq : Int32
+  kind : Int32
+  values : Array[Int32]
+  parents : Array[Int32]
+  prev_hash : UInt64
+  hash : UInt64
+} derive(Eq, @debug.Debug)
+pub fn CondLedgerEntry::equal(Self, Self) -> Bool
+pub fn CondLedgerEntry::not_equal(Self, Self) -> Bool
+pub fn CondLedgerEntry::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondProMorphism {
+  dom : CondProfinite
+  cod : CondProfinite
+  level_maps : Array[@gcd.FpMat]
+} derive(Eq, @debug.Debug)
+pub fn CondProMorphism::equal(Self, Self) -> Bool
+pub fn CondProMorphism::not_equal(Self, Self) -> Bool
+pub fn CondProMorphism::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondProfinite {
+  sizes : Array[Int32]
+  maps : Array[@gcd.FpMat]
+  p : Int32
+} derive(Eq, @debug.Debug)
+pub fn CondProfinite::equal(Self, Self) -> Bool
+pub fn CondProfinite::not_equal(Self, Self) -> Bool
+pub fn CondProfinite::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondSolidModule {
+  base_tower : CondProfinite
+  free_chain : CondChain
+  discrete_hom_dim : Int32
+  solid_hom_dim : Int32
+  solid_gap : Int32
+  ext1_vanishes : Bool
+  liquid_p_num : Int32
+  liquid_p_den : Int32
+  liquid_subadditive_holds : Bool
+} derive(Eq, @debug.Debug)
+pub fn CondSolidModule::equal(Self, Self) -> Bool
+pub fn CondSolidModule::not_equal(Self, Self) -> Bool
+pub fn CondSolidModule::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondSpectralSheaf {
+  space_name : String
+  betti : Array[Int32]
+  h3_twist_active : Bool
+  cech_k1_minus_r0 : Int32
+  global_twist_glues : Bool
+  e2_total_rank : Int32
+  e4_total_rank : Int32
+  dd_zero : Bool
+} derive(Eq, @debug.Debug)
+pub fn CondSpectralSheaf::equal(Self, Self) -> Bool
+pub fn CondSpectralSheaf::not_equal(Self, Self) -> Bool
+pub fn CondSpectralSheaf::to_repr(Self) -> @debug.Repr
+
+pub(all) struct KoszulTorReport {
+  generators_g : Int32
+  dd_zero_all_degrees : Bool
+  exact_in_positive_degrees : Bool
+  tor_classical_ranks : Array[Int32]
+  tor_two_sided_ranks : Array[Int32]
+} derive(Eq, @debug.Debug)
+pub fn KoszulTorReport::equal(Self, Self) -> Bool
+pub fn KoszulTorReport::not_equal(Self, Self) -> Bool
+pub fn KoszulTorReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct SerreReport {
+  base_betti : Array[Int32]
+  fiber_betti : Array[Int32]
+  e2_totals : Array[Int32]
+  e_inf_totals : Array[Int32]
+  dd_zero : Bool
+  converges_to_s3 : Bool
+  hurewicz_h2_s2_rank : Int32
+} derive(Eq, @debug.Debug)
+pub fn SerreReport::equal(Self, Self) -> Bool
+pub fn SerreReport::not_equal(Self, Self) -> Bool
+pub fn SerreReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct SsPage {
+  r : Int32
+  np : Int32
+  nq : Int32
+  dims : Array[Array[Int32]]
+  diffs : Array[Array[@gcd.FpMat?]]
+  prime : Int32
+  qflip : Bool
+} derive(Eq, @debug.Debug)
+pub fn SsPage::equal(Self, Self) -> Bool
+pub fn SsPage::not_equal(Self, Self) -> Bool
+pub fn SsPage::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

@@ -1,0 +1,6 @@
+import {
+  "vv0101v01/cubical-hermitian/symlib",
+  "moonbitlang/core/bench" @mbench,
+}
+
+pkgtype(kind: "executable")

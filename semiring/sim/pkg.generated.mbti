@@ -1,0 +1,65 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/sim"
+
+import {
+  "moonbitlang/core/bench",
+}
+
+// Values
+pub fn[T] time_min(Int32, () -> T) -> (T, Double)
+
+// Errors
+
+// Types and methods
+pub struct Cache {
+  sets : Int32
+  ways : Int32
+  shift : Int32
+  tags : Array[Int32]
+  stamp : Array[Int32]
+  mut clock : Int32
+  mut hits : Int64
+  mut misses : Int64
+  line_bytes : Int32
+}
+pub fn Cache::access(Self, Int32, Bool) -> Bool
+pub fn Cache::accesses(Self) -> Int64
+pub fn Cache::new(Int32, Int32, Int32) -> Self
+pub fn Cache::reset(Self) -> Unit
+
+pub struct MemHierarchy {
+  l1 : Cache
+  l2 : Cache
+  mut dram_reads : Int64
+  mut dram_writes : Int64
+}
+pub fn MemHierarchy::access(Self, Int32, Bool) -> Unit
+pub fn MemHierarchy::dram_words(Self) -> Int64
+pub fn MemHierarchy::reset(Self) -> Unit
+pub fn MemHierarchy::typical() -> Self
+
+pub struct Timer {
+  t0 : @bench.Timestamp
+}
+pub fn Timer::elapsed_us(Self) -> Double
+pub fn Timer::start() -> Self
+
+pub struct Tracer {
+  sim : MemHierarchy
+  base : Array[Int32]
+  cols : Array[Int32]
+  elem_bytes : Int32
+  mut next_base : Int32
+}
+pub fn Tracer::dram_words(Self) -> Int64
+pub fn Tracer::l1_accesses(Self) -> Int64
+pub fn Tracer::l1_misses(Self) -> Int64
+pub fn Tracer::l2_misses(Self) -> Int64
+pub fn Tracer::new(Int32) -> Self
+pub fn Tracer::probe(Self) -> (Int32, Int32, Int32, Bool) -> Unit
+pub fn Tracer::register(Self, Int32, Int32) -> Int32
+pub fn Tracer::reset(Self) -> Unit
+
+// Type aliases
+
+// Traits

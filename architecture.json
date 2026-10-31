@@ -1,0 +1,1207 @@
+{
+  "version": 2,
+  "module": "vv0101v01/cubical-hermitian",
+  "federations": [
+    {
+      "id": "cubical",
+      "packages": [
+        "algebra",
+        "root",
+        "cmd-main",
+        "hostfs"
+      ],
+      "allowed_external_packages": [
+        "condensed:gcd",
+        "condensed:condensed"
+      ],
+      "summary_en": "Federation 1 — Cubical dependent type theory, computational univalence, ROBDD face lattices, Hermitian spectral projectors, exact algebraic towers, and BFT/MVCC durable execution.",
+      "summary_zh": "第一聯邦 — 立方依賴型別論、計算性單值性、ROBDD 面格、Hermitian 譜投影、精確代數塔與 BFT／MVCC 持久執行。"
+    },
+    {
+      "id": "symlib",
+      "packages": [
+        "symlib",
+        "cmd-symdemo",
+        "cmd-symbench"
+      ],
+      "allowed_external_packages": [],
+      "summary_en": "Federation 2 — Finite symmetry groups, colored canonical labeling, Burnside marks, G-sets, finite categories, and Kan extensions.",
+      "summary_zh": "第二聯邦 — 有限對稱群、著色規範標號、Burnside 標記、G-集、有限範疇與 Kan 擴張。"
+    },
+    {
+      "id": "semiring",
+      "packages": [
+        "semiring-algebra",
+        "semiring-matrix",
+        "semiring-monoid",
+        "semiring-graph",
+        "semiring-spline",
+        "semiring-trop",
+        "semiring-nf",
+        "semiring-cat",
+        "semiring-app",
+        "semiring-bp",
+        "semiring-ratelimit",
+        "semiring-io",
+        "semiring-sim",
+        "semiring-par",
+        "semiring-par-host",
+        "cmd-semiringreport"
+      ],
+      "allowed_external_packages": [],
+      "summary_en": "Federation 3 — Idempotent/star/tropical semiring algebra, blocked/Lehmann matrix closures, weighted CSR graphs, and Brzozowski DFA normal forms.",
+      "summary_zh": "第三聯邦 — 冪等／星閉／熱帶半環代數、分塊／Lehmann 矩陣閉包、加權 CSR 圖與 Brzozowski DFA 正規形。"
+    },
+    {
+      "id": "topos",
+      "packages": [
+        "topos"
+      ],
+      "allowed_external_packages": [
+        "condensed:gcd",
+        "cubical:algebra",
+        "symlib:symlib"
+      ],
+      "summary_en": "Federation 4 — Grothendieck and elementary toposes, subtopos Lawvere–Tierney nuclei, Kripke–Joyal forcing, groupoid stacks, and nerve cohomology.",
+      "summary_zh": "第四聯邦 — Grothendieck 與初等 Topos、子 Topos Lawvere–Tierney 核、Kripke–Joyal 力迫、群胚疊與神經上同調。"
+    },
+    {
+      "id": "scheme",
+      "packages": [
+        "scheme"
+      ],
+      "allowed_external_packages": [
+        "cubical:algebra"
+      ],
+      "summary_en": "Federation 5 — Multivariate Gröbner ideals, Zariski/glued schemes, Kähler differentials & Eisenbud Fitting smoothness, Serre duality, blow-ups, and Chow motives.",
+      "summary_zh": "第五聯邦 — 多變量 Gröbner 理想、Zariski 黏合概形、Kähler 微分與 Eisenbud Fitting 平滑性、Serre 對偶、吹脹與 Chow 動機。"
+    },
+    {
+      "id": "condensed",
+      "packages": [
+        "gcd",
+        "condensed"
+      ],
+      "allowed_external_packages": [
+        "cubical:algebra",
+        "symlib:symlib",
+        "semiring:semiring-trop",
+        "topos:topos",
+        "scheme:scheme"
+      ],
+      "summary_en": "Federation 6 (Lower-V GCD Base + X-Overlap Condensed Pivot) — Universal Elimination-GCD (`@gcd`), 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 4 Conjectures.",
+      "summary_zh": "第六聯邦（下V新最大公因數基底＋X形交疊凝聚樞紐） — 泛消元新最大公因數（`@gcd`）、凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與新猜想×4。"
+    }
+  ],
+  "unification": {
+    "id": "unification",
+    "packages": [
+      "bridge",
+      "cmd-showcase"
+    ],
+    "observer": true,
+    "summary_en": "Upper-V Grand Unification Apex — Double-V & X-Overlap synthesis, complete K_6 (15/15) pairwise cross-federation bridges, Five-Federation Pentagon theorem, and 18-entry Geometry–Logic Atlas.",
+    "summary_zh": "上V大一統匯流頂點 — 雙V形架構與X形交疊匯流、K_6（15/15）全配對跨聯邦橋、五聯邦五角大一統定理與 18 項幾何—邏輯精細圖譜。"
+  },
+  "packages": [
+    {
+      "id": "gcd",
+      "path": "gcd",
+      "moon": "vv0101v01/cubical-hermitian/gcd",
+      "layer": 0,
+      "depends_on": [],
+      "summary_en": "Lower-V Apex V_1: Universal Elimination-GCD over integers, F_p[x] polynomials, F_p subspaces, Z-lattices (Hermite/Smith Normal Form), and multi-generator Bezout ideals.",
+      "summary_zh": "下V頂點 V_1：整數、F_p[x] 多項式、F_p 子空間、ℤ-格（Hermite／Smith 範式）與多生成元 Bézout 主理想之泛消元新最大公因數。"
+    },
+    {
+      "id": "algebra",
+      "path": "algebra",
+      "moon": "vv0101v01/cubical-hermitian/algebra",
+      "layer": 1,
+      "depends_on": [
+        "gcd"
+      ],
+      "summary_en": "Exact rational/algebraic computation: symbolic polynomials, Q-linear algebra, algebraic numbers, Jordan theory, spectral identities, certified Jacobi intervals, Liouville transcendence certificates, and division-free Berkowitz-CRT charpoly.",
+      "summary_zh": "精確有理／代數計算：符號多項式、Q 線性代數、代數數、Jordan 理論、譜恆等、認證 Jacobi 區間、Liouville 超越否證證書與無除法 Berkowitz–CRT 特徵多項式。"
+    },
+    {
+      "id": "root",
+      "path": ".",
+      "moon": "vv0101v01/cubical-hermitian",
+      "layer": 4,
+      "depends_on": [
+        "gcd",
+        "algebra",
+        "hostfs",
+        "condensed"
+      ],
+      "summary_en": "The mutually recursive cubical dependent kernel, plus the logical foundation/finite/numeric/model/frontend components and Phase 21 7-boundary breakthroughs.",
+      "summary_zh": "互相遞迴的立方依賴核心，以及 foundation／finite／numeric／model／frontend 邏輯元件與第二十一期七大能力邊界突破模組。"
+    },
+    {
+      "id": "cmd-main",
+      "path": "cmd/main",
+      "moon": "vv0101v01/cubical-hermitian/cmd/main",
+      "layer": 5,
+      "depends_on": [
+        "root"
+      ],
+      "summary_en": "Executable theorem-registry report.",
+      "summary_zh": "印出定理登記表的執行入口。"
+    },
+    {
+      "id": "symlib",
+      "path": "symlib",
+      "moon": "vv0101v01/cubical-hermitian/symlib",
+      "layer": 1,
+      "depends_on": [],
+      "summary_en": "Finite symmetry: graph canonical forms, automorphism groups, finite categories, presheaves, G-sets and executable certificates.",
+      "summary_zh": "有限對稱：圖規範形、自同構群、有限範疇、預層、G-集與可執行證書。"
+    },
+    {
+      "id": "cmd-symdemo",
+      "path": "cmd/symdemo",
+      "moon": "vv0101v01/cubical-hermitian/cmd/symdemo",
+      "layer": 2,
+      "depends_on": [
+        "symlib"
+      ],
+      "summary_en": "Executable finite-symmetry demonstration.",
+      "summary_zh": "有限對稱展示執行入口。"
+    },
+    {
+      "id": "cmd-symbench",
+      "path": "cmd/symbench",
+      "moon": "vv0101v01/cubical-hermitian/cmd/symbench",
+      "layer": 2,
+      "depends_on": [
+        "symlib"
+      ],
+      "summary_en": "Finite-symmetry benchmark executable.",
+      "summary_zh": "有限對稱 Benchmark 執行入口。"
+    },
+    {
+      "id": "semiring-algebra",
+      "path": "semiring/algebra",
+      "moon": "vv0101v01/cubical-hermitian/semiring/algebra",
+      "layer": 1,
+      "depends_on": [],
+      "summary_en": "Semiring, idempotent/star/tropical semiring and monoid traits, concrete carrier types, law checkers and operation counters.",
+      "summary_zh": "半環、冪等／星閉／熱帶半環與么半群 traits、具體載體、定律檢察器與運算計數。"
+    },
+    {
+      "id": "semiring-matrix",
+      "path": "semiring/matrix",
+      "moon": "vv0101v01/cubical-hermitian/semiring/matrix",
+      "layer": 2,
+      "depends_on": [
+        "semiring-algebra",
+        "semiring-par"
+      ],
+      "summary_en": "Generic dense/CSR matrices over semiring carriers, blocked kernels and Kleene-star closures.",
+      "summary_zh": "半環係數泛型稠密／CSR 矩陣、分塊核與 Kleene 星閉包。"
+    },
+    {
+      "id": "semiring-monoid",
+      "path": "semiring/monoid",
+      "moon": "vv0101v01/cubical-hermitian/semiring/monoid",
+      "layer": 2,
+      "depends_on": [
+        "semiring-algebra"
+      ],
+      "summary_en": "Monoid scans and aggregated data structures.",
+      "summary_zh": "么半群掃描與聚合資料結構。"
+    },
+    {
+      "id": "semiring-graph",
+      "path": "semiring/graph",
+      "moon": "vv0101v01/cubical-hermitian/semiring/graph",
+      "layer": 3,
+      "depends_on": [
+        "semiring-algebra",
+        "semiring-matrix"
+      ],
+      "summary_en": "Directed weighted CSR graphs and algebraic path algorithms.",
+      "summary_zh": "有向加權 CSR 圖與代數路徑演算法。"
+    },
+    {
+      "id": "semiring-spline",
+      "path": "semiring/spline",
+      "moon": "vv0101v01/cubical-hermitian/semiring/spline",
+      "layer": 3,
+      "depends_on": [
+        "semiring-monoid"
+      ],
+      "summary_en": "Spline interpolation and banded linear solvers.",
+      "summary_zh": "樣條插值與帶狀線性求解。"
+    },
+    {
+      "id": "semiring-trop",
+      "path": "semiring/trop",
+      "moon": "vv0101v01/cubical-hermitian/semiring/trop",
+      "layer": 2,
+      "depends_on": [
+        "semiring-algebra"
+      ],
+      "summary_en": "Tropical polynomials, Newton polygons, dual subdivisions and assignments.",
+      "summary_zh": "熱帶多項式、Newton 多邊形、對偶細分與指派。"
+    },
+    {
+      "id": "semiring-nf",
+      "path": "semiring/nf",
+      "moon": "vv0101v01/cubical-hermitian/semiring/nf",
+      "layer": 1,
+      "depends_on": [],
+      "summary_en": "Regular-expression/DFA and free idempotent-semiring normal forms.",
+      "summary_zh": "正則表達式／DFA 與自由冪等半環正規形。"
+    },
+    {
+      "id": "semiring-cat",
+      "path": "semiring/cat",
+      "moon": "vv0101v01/cubical-hermitian/semiring/cat",
+      "layer": 3,
+      "depends_on": [
+        "semiring-algebra",
+        "semiring-matrix"
+      ],
+      "summary_en": "Set-valued matrices, free categories on DAGs and Maslov dequantization.",
+      "summary_zh": "集合值矩陣、DAG 自由範疇與 Maslov 去量子化。"
+    },
+    {
+      "id": "semiring-app",
+      "path": "semiring/app",
+      "moon": "vv0101v01/cubical-hermitian/semiring/app",
+      "layer": 3,
+      "depends_on": [
+        "semiring-algebra",
+        "semiring-matrix",
+        "semiring-sim"
+      ],
+      "summary_en": "Algebraic path problems with independent implementation arbitration.",
+      "summary_zh": "代數路徑問題與多實作仲裁。"
+    },
+    {
+      "id": "semiring-bp",
+      "path": "semiring/bp",
+      "moon": "vv0101v01/cubical-hermitian/semiring/bp",
+      "layer": 2,
+      "depends_on": [
+        "semiring-algebra"
+      ],
+      "summary_en": "Semiring belief propagation on factor graphs.",
+      "summary_zh": "因子圖上的半環信念傳播。"
+    },
+    {
+      "id": "semiring-ratelimit",
+      "path": "semiring/ratelimit",
+      "moon": "vv0101v01/cubical-hermitian/semiring/ratelimit",
+      "layer": 1,
+      "depends_on": [],
+      "summary_en": "GCRA rate-limiting application package.",
+      "summary_zh": "GCRA 限流應用套件。"
+    },
+    {
+      "id": "semiring-io",
+      "path": "semiring/io",
+      "moon": "vv0101v01/cubical-hermitian/semiring/io",
+      "layer": 2,
+      "depends_on": [
+        "semiring-algebra"
+      ],
+      "summary_en": "Edge-list parsing and synthetic graph input generation.",
+      "summary_zh": "邊表剖析與合成圖輸入生成。"
+    },
+    {
+      "id": "semiring-sim",
+      "path": "semiring/sim",
+      "moon": "vv0101v01/cubical-hermitian/semiring/sim",
+      "layer": 1,
+      "depends_on": [],
+      "summary_en": "Timing, cache and memory-hierarchy measurement models.",
+      "summary_zh": "時間、快取與記憶階層量測模型。"
+    },
+    {
+      "id": "semiring-par",
+      "path": "semiring/par",
+      "moon": "vv0101v01/cubical-hermitian/semiring/par",
+      "layer": 1,
+      "depends_on": [],
+      "summary_en": "Portable backend seam for chunked aggregation and shard I/O.",
+      "summary_zh": "分塊聚合與分片 I/O 的可移植後端接縫。"
+    },
+    {
+      "id": "topos",
+      "path": "topos",
+      "moon": "vv0101v01/cubical-hermitian/topos",
+      "layer": 2,
+      "depends_on": [
+        "gcd",
+        "algebra",
+        "symlib"
+      ],
+      "summary_en": "Grothendieck and elementary toposes: sites, sieves, sheafification, Cartesian closedness, subobject classifiers, Lawvere–Tierney & open/closed subtopos nuclei, essential geometric morphisms (Lan ⊣ u* ⊣ Ran), dense Comparison Lemma, Diaconescu points & internal G-torsors, local/connected/atomic/coherent invariants, geometric logic & classifying toposes, groupoid stacks, sheaf cohomology, Alexander–Whitney cup-product rings and simplicial nerve homotopy types.",
+      "summary_zh": "Grothendieck 與一般拓撲斯：景、篩、層化、笛卡兒閉性、子物件分類子、Lawvere–Tierney 與開閉子拓撲斯核、本徵幾何態射（Lan⊣u*⊣Ran）、稠密比較引理、Diaconescu 點與內蘊 G-主叢、局部／連通／原子／緊緻相干性質、幾何邏輯與分類 Topos、廣群棧、層上同調、Alexander–Whitney 杯積環與單純神經同倫類型。"
+    },
+    {
+      "id": "scheme",
+      "path": "scheme",
+      "moon": "vv0101v01/cubical-hermitian/scheme",
+      "layer": 2,
+      "depends_on": [
+        "algebra"
+      ],
+      "summary_en": "Algebraic schemes and motives: Buchberger reduced Gröbner bases, elimination/saturation/radical ideals, Zariski partition-of-unity sheafification, reduced schemes, Kähler differentials Ω^1_{B/A}, Fitting/Jacobian ideals, Tjurina numbers & étale criteria, glued schemes and morphisms, affine morphisms, diagonal separatedness, DVR Laurent properness, Macaulay–Taylor Hilbert polynomials, Rees blow-up desingularization, rational equivalence & Bézout, Serre dualizing complexes, functor of points, F_{p^2} Frobenius descent and Chow correspondences.",
+      "summary_zh": "代數概形與動機：Buchberger 約化 Gröbner 基、消元／飽和／根理想、Zariski 單位分解層化、既約概形、Kähler 微分模 Ω^1_{B/A}、Fitting／Jacobi 理想、Tjurina 數與平展判準、黏合概形與態射、仿射態射、對角分離性、DVR Laurent 真概形判定、Macaulay–Taylor Hilbert 多項式、Rees 爆炸奇點解消、有理等價與 Bézout、Serre 對偶複形、點函子法、F_{p^2} Frobenius 下降與 Chow 對應。"
+    },
+    {
+      "id": "condensed",
+      "path": "condensed",
+      "moon": "vv0101v01/cubical-hermitian/condensed",
+      "layer": 3,
+      "depends_on": [
+        "gcd",
+        "algebra",
+        "symlib",
+        "semiring-trop",
+        "topos",
+        "scheme"
+      ],
+      "summary_en": "X-Overlap Condensed Mathematics Pivot: profinite towers, Milnor lim^1 CondAnima, Solid/p-Liquid modules, Steenrod–Adams Ext_A, Serre, Twisted AHSS CondSpectralSheaf, Huber–Tropical CondAnalyticStack, CondCategory, CanonElimCategory, Persistent Invariant Ledger, and 4 Conjectures.",
+      "summary_zh": "X形交疊凝聚數學樞紐：有限逆系塔、Milnor lim¹ 凝聚高階同倫棧 CondAnima、固態與 p-液態模 CondSolidModule、Steenrod–Adams Ext_A、Serre、扭曲 AHSS 凝聚譜層 CondSpectralSheaf、Huber–熱帶雙極解析棧 CondAnalyticStack、CondCategory、CanonElimCategory、持久不變量賬本與四項新猜想。"
+    },
+    {
+      "id": "bridge",
+      "path": "bridge",
+      "moon": "vv0101v01/cubical-hermitian/bridge",
+      "layer": 5,
+      "depends_on": [
+        "gcd",
+        "root",
+        "algebra",
+        "symlib",
+        "semiring-algebra",
+        "semiring-graph",
+        "semiring-matrix",
+        "semiring-trop",
+        "semiring-cat",
+        "semiring-nf",
+        "topos",
+        "scheme",
+        "condensed"
+      ],
+      "summary_en": "Upper-V Apex V_2: Double-V & X-Overlap synthesis, complete K_6 (15/15) cross-federation bridges across 6 federations, logical theory translations, and 18-entry geometry-logic correspondence atlas.",
+      "summary_zh": "上V頂點 V_2：雙V形與X形交疊大一統匯流、六聯邦 K_6（15/15）全配對跨聯邦橋、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜。"
+    },
+    {
+      "id": "cmd-showcase",
+      "path": "cmd/showcase",
+      "moon": "vv0101v01/cubical-hermitian/cmd/showcase",
+      "layer": 6,
+      "depends_on": [
+        "bridge",
+        "semiring-graph",
+        "symlib",
+        "root"
+      ],
+      "summary_en": "Executable six-federation Double-V & X-Overlap showcase.",
+      "summary_zh": "六聯邦雙V形與X形交疊大一統展示執行入口。"
+    },
+    {
+      "id": "semiring-par-host",
+      "path": "semiring/par_host",
+      "moon": "vv0101v01/cubical-hermitian/semiring/par_host",
+      "layer": 4,
+      "depends_on": [
+        "semiring-par"
+      ],
+      "summary_en": "Native-only moonbitlang/async host backend for the portable semiring parallel seam.",
+      "summary_zh": "可移植半環平行接縫的 native-only moonbitlang/async 主機後端。"
+    },
+    {
+      "id": "cmd-semiringreport",
+      "path": "cmd/semiringreport",
+      "moon": "vv0101v01/cubical-hermitian/cmd/semiringreport",
+      "layer": 5,
+      "depends_on": [
+        "semiring-algebra",
+        "semiring-matrix",
+        "semiring-monoid",
+        "semiring-graph",
+        "semiring-spline",
+        "semiring-ratelimit",
+        "semiring-io",
+        "semiring-sim",
+        "semiring-par",
+        "semiring-par-host",
+        "semiring-trop",
+        "semiring-nf",
+        "semiring-cat",
+        "semiring-app",
+        "semiring-bp"
+      ],
+      "summary_en": "Native-only measured semiring report generator. The ~66-second report is a slow gate, never a fast/default gate.",
+      "summary_zh": "native-only 半環量測報告產生器；約 66 秒的報告只作慢閘門，永不進快速／預設閘門。"
+    },
+    {
+      "id": "hostfs",
+      "path": "hostfs",
+      "moon": "vv0101v01/cubical-hermitian/hostfs",
+      "layer": 1,
+      "depends_on": [],
+      "summary_en": "Host storage backend seam: an executable model of crash-consistent durable writes (content fsync before dirent fsync), the lock/write/fsync/rename/fsync-dir protocol, and crash-point conformance checking that runs on every target.",
+      "summary_zh": "宿主儲存後端接縫：崩潰一致寫入的可執行模型（內容 fsync 先於目錄項 fsync）、lock／write／fsync／rename／fsync 目錄協定，以及可在所有目標上執行的崩潰點一致性檢核。"
+    }
+  ],
+  "components": [
+    {
+      "id": "foundation",
+      "package": "root",
+      "layer": 0,
+      "files": [
+        "interval.mbt",
+        "bdd.mbt",
+        "bdd_dag.mbt",
+        "face_sat_watched.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "De Morgan dimensions, face formulas, ROBDDs and DAG BDD decisions.",
+      "summary_zh": "De Morgan 維度、面公式、ROBDD 與 DAG BDD 判定。"
+    },
+    {
+      "id": "numeric-hermitian",
+      "package": "root",
+      "layer": 1,
+      "files": [
+        "complex.mbt",
+        "projector.mbt",
+        "system.mbt",
+        "system_symbolic.mbt",
+        "cube.mbt"
+      ],
+      "depends_on": [
+        "foundation"
+      ],
+      "summary_en": "Floating complex linear algebra, Hermitian projectors, vector partial systems and affine cubes with pruning.",
+      "summary_zh": "浮點複線性代數、Hermitian 投影、向量偏系統與剪枝仿射立方體。"
+    },
+    {
+      "id": "exact-algebra",
+      "package": "algebra",
+      "layer": 1,
+      "files": [
+        "algebra/symalg.mbt",
+        "algebra/qpoly.mbt",
+        "algebra/qmat.mbt",
+        "algebra/algnum.mbt",
+        "algebra/Jordan.mbt",
+        "algebra/spectral_symbolic.mbt",
+        "algebra/Jacobi_interval.mbt",
+        "algebra/qpoly_factor.mbt",
+        "algebra/root_isolation.mbt",
+        "algebra/splitting_field.mbt",
+        "algebra/radical_denest.mbt",
+        "algebra/biquad_denest.mbt",
+        "algebra/poly_cube.mbt",
+        "algebra/qpoly_certificate.mbt",
+        "algebra/tower_fields.mbt",
+        "algebra/multiquad_tower.mbt",
+        "algebra/phase14_algebra.mbt",
+        "algebra/phase16_algebra.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "A physically separate exact-algebra MoonBit package: BigInt rationals, complete Q-factorization, real/complex root isolation, splitting fields, radical denesting, multiquadratic tower fields and arbitrary-precision Jacobi intervals.",
+      "summary_zh": "已實體拆出的精確代數 MoonBit 套件：BigInt 有理數、Q 上完整因式分解、實／複根隔離、分裂域、根式去巢、多二次塔體與任意精度 Jacobi 區間。"
+    },
+    {
+      "id": "finite-cubical",
+      "package": "root",
+      "layer": 2,
+      "files": [
+        "nbe.mbt",
+        "nbe_eta.mbt",
+        "wiring.mbt",
+        "pathp_glue.mbt"
+      ],
+      "depends_on": [
+        "foundation"
+      ],
+      "summary_en": "Simply typed NbE/HOAS and the finite Bool/Unit/product universe with wiring equivalences, ua, PathP, Glue and J.",
+      "summary_zh": "簡單型別 NbE／HOAS，以及 Bool／Unit／積有限宇宙的 wiring 等價、ua、PathP、Glue 與 J。"
+    },
+    {
+      "id": "dependent-kernel",
+      "package": "root",
+      "layer": 3,
+      "files": [
+        "nbe_dep.mbt",
+        "kan_ast.mbt",
+        "equiv_ast.mbt",
+        "checked_line.mbt",
+        "dsystem_compat.mbt",
+        "dcube_filler.mbt",
+        "dterm_transform.mbt",
+        "dterm_intern.mbt",
+        "schema.mbt",
+        "schema_extensions.mbt",
+        "schema_functor.mbt",
+        "schema_positivity.mbt",
+        "schema_registry.mbt",
+        "schema_phase9.mbt",
+        "conv_case_split.mbt"
+      ],
+      "depends_on": [
+        "foundation",
+        "finite-cubical"
+      ],
+      "summary_en": "One compilation SCC by design: dependent NbE, AST Kan operations, first-class equivalences/Glue, checked lines, DTerm transforms, inductive/HIT schema generation, universe-polymorphic and simultaneous declarations call each other.",
+      "summary_zh": "設計上同一個編譯 SCC：依賴 NbE、AST Kan、一等 Equiv／Glue、受檢查線、DTerm 轉換、歸納／HIT schema 生成、宇宙多態與同時宣告互相呼叫。"
+    },
+    {
+      "id": "dependent-kan-lines",
+      "package": "root",
+      "layer": 4,
+      "files": [
+        "kan_dep.mbt"
+      ],
+      "depends_on": [
+        "foundation",
+        "dependent-kernel",
+        "finite-cubical"
+      ],
+      "summary_en": "Host-level dependent type lines (DLine) and embeddings of simple/finite types.",
+      "summary_zh": "宿主層依賴型別線 DLine，以及簡單／有限型別的嵌入。"
+    },
+    {
+      "id": "models",
+      "package": "root",
+      "layer": 4,
+      "files": [
+        "categories.mbt",
+        "glue_comp.mbt",
+        "certified_numeric.mbt",
+        "certified_algebraic.mbt"
+      ],
+      "depends_on": [
+        "foundation",
+        "numeric-hermitian",
+        "finite-cubical",
+        "exact-algebra"
+      ],
+      "summary_en": "Cross-domain categorical/Hermitian models: syntactic categories, general finite/subspace Glue composition, exact numeric shadows and certified algebra over general algebraic extensions.",
+      "summary_zh": "跨域範疇／Hermitian 模型：句法範疇、有限／子空間 Glue comp、精確數值影子與一般代數擴張上的認證代數。"
+    },
+    {
+      "id": "frontend",
+      "package": "root",
+      "layer": 5,
+      "files": [
+        "hou_elaborator.mbt",
+        "module_system.mbt",
+        "module_compilation.mbt",
+        "module_binary.mbt",
+        "schema_registry_persist.mbt",
+        "artifact_repository.mbt",
+        "artifact_crypto_wal.mbt",
+        "dterm_dag_binary.mbt"
+      ],
+      "depends_on": [
+        "dependent-kernel",
+        "foundation"
+      ],
+      "summary_en": "Surface elaboration and separate compilation: extended pattern HOU, parameterized modules, compiled interfaces, linking and incremental cache, interned-DAG binary snapshots, and artifact repositories with an append-only integrity chain. Nothing in the kernel may depend back on this layer.",
+      "summary_zh": "表面闡釋與分離編譯：擴展 pattern HOU、參數化模組、已編譯介面、連結與增量快取、intern DAG 二進位快照，以及帶 append-only 完整性鏈的工件儲存庫。核心不得反向依賴此層。"
+    },
+    {
+      "id": "cubical",
+      "package": "root",
+      "layer": 5,
+      "files": [
+        "sphere3.mbt",
+        "cubical_algorithms.mbt",
+        "univalence.mbt",
+        "sphere_homotopy.mbt",
+        "equivalence_phase9.mbt",
+        "truncation.mbt",
+        "equivalence_phase10.mbt",
+        "sphere_classification.mbt",
+        "circle_classify.mbt"
+      ],
+      "depends_on": [
+        "foundation",
+        "finite-cubical",
+        "dependent-kernel",
+        "exact-algebra"
+      ],
+      "summary_en": "High-level cubical constructions and algorithms: spheres and homotopy representatives, propositional truncation, adjoint-equivalence data, transport/path algebra, path-to-equivalence and computational univalence certificates.",
+      "summary_zh": "高層立方構造與演算法：球面與同倫代表元、命題截斷、adjoint equivalence 資料、transport／路徑代數、path-to-equivalence 與計算性 univalence 證書。"
+    },
+    {
+      "id": "laws",
+      "package": "mixed",
+      "layer": 6,
+      "files": [
+        "*_laws.mbt",
+        "algebra/*_laws.mbt"
+      ],
+      "depends_on": [
+        "*"
+      ],
+      "summary_en": "Executable law bundles. They may observe lower layers but no production component may depend on them except the registry.",
+      "summary_zh": "可執行律束。可以觀察低層，但除 registry 外，生產元件不得依賴它們。"
+    },
+    {
+      "id": "registry",
+      "package": "root",
+      "layer": 7,
+      "files": [
+        "spec.mbt",
+        "verify.mbt",
+        "algebra_imports.mbt"
+      ],
+      "depends_on": [
+        "*"
+      ],
+      "summary_en": "Specification/theorem registries and explicit cross-package import boundary.",
+      "summary_zh": "規格／定理登記表與明確的跨套件 import 邊界。"
+    },
+    {
+      "id": "tests",
+      "package": "mixed",
+      "layer": 8,
+      "files": [
+        "*_wbtest.mbt",
+        "*_test.mbt",
+        "gcd/*_wbtest.mbt",
+        "gcd/*_test.mbt",
+        "algebra/*_wbtest.mbt",
+        "algebra/*_test.mbt",
+        "hostfs/*_wbtest.mbt",
+        "hostfs/*_test.mbt",
+        "symlib/*_wbtest.mbt",
+        "symlib/*_test.mbt",
+        "semiring/**/*_wbtest.mbt",
+        "semiring/**/*_test.mbt",
+        "topos/*_wbtest.mbt",
+        "topos/*_test.mbt",
+        "scheme/*_wbtest.mbt",
+        "scheme/*_test.mbt",
+        "condensed/*_wbtest.mbt",
+        "condensed/*_test.mbt",
+        "bridge/*_wbtest.mbt",
+        "bridge/*_test.mbt"
+      ],
+      "depends_on": [
+        "*"
+      ],
+      "summary_en": "White-box and black-box tests, including differential oracles that are forbidden on library decision paths.",
+      "summary_zh": "白箱與黑箱測試，包括禁止進入函式庫判定路徑的差分 oracle。"
+    },
+    {
+      "id": "app",
+      "package": "cmd-main",
+      "layer": 9,
+      "files": [
+        "cmd/main/main.mbt"
+      ],
+      "depends_on": [
+        "registry"
+      ],
+      "summary_en": "Executable entry point.",
+      "summary_zh": "執行入口。"
+    },
+    {
+      "id": "symlib-core",
+      "package": "symlib",
+      "layer": 2,
+      "files": [
+        "symlib/*.mbt",
+        "!symlib/*_test.mbt",
+        "!symlib/*_wbtest.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Imported algorithm03 core. It remains independent of the cubical and semiring pillars; all cross-pillar use is in bridge/showcase layers.",
+      "summary_zh": "搬入的 algorithm03 核心，保持不依賴 cubical 與 semiring 支柱；跨支柱使用只放在 bridge／showcase 層。"
+    },
+    {
+      "id": "symlib-apps",
+      "package": "mixed",
+      "layer": 10,
+      "files": [
+        "cmd/symdemo/main.mbt",
+        "cmd/symbench/*.mbt"
+      ],
+      "depends_on": [
+        "*"
+      ],
+      "observer": true,
+      "summary_en": "Finite-symmetry demonstration and benchmark executables.",
+      "summary_zh": "有限對稱展示與 Benchmark 執行入口。"
+    },
+    {
+      "id": "semiring-algebra",
+      "package": "semiring-algebra",
+      "layer": 1,
+      "files": [
+        "semiring/algebra/*.mbt",
+        "!semiring/algebra/*_test.mbt",
+        "!semiring/algebra/*_wbtest.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Semiring, idempotent/star/tropical semiring and monoid traits, concrete carrier types, law checkers and operation counters.",
+      "summary_zh": "半環、冪等／星閉／熱帶半環與么半群 traits、具體載體、定律檢察器與運算計數。"
+    },
+    {
+      "id": "semiring-matrix",
+      "package": "semiring-matrix",
+      "layer": 2,
+      "files": [
+        "semiring/matrix/*.mbt",
+        "!semiring/matrix/*_test.mbt",
+        "!semiring/matrix/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "semiring-algebra",
+        "semiring-par"
+      ],
+      "summary_en": "Generic dense/CSR matrices over semiring carriers, blocked kernels and Kleene-star closures.",
+      "summary_zh": "半環係數泛型稠密／CSR 矩陣、分塊核與 Kleene 星閉包。"
+    },
+    {
+      "id": "semiring-monoid",
+      "package": "semiring-monoid",
+      "layer": 2,
+      "files": [
+        "semiring/monoid/*.mbt",
+        "!semiring/monoid/*_test.mbt",
+        "!semiring/monoid/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "semiring-algebra"
+      ],
+      "summary_en": "Monoid scans and aggregated data structures.",
+      "summary_zh": "么半群掃描與聚合資料結構。"
+    },
+    {
+      "id": "semiring-graph",
+      "package": "semiring-graph",
+      "layer": 3,
+      "files": [
+        "semiring/graph/*.mbt",
+        "!semiring/graph/*_test.mbt",
+        "!semiring/graph/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "semiring-algebra",
+        "semiring-matrix"
+      ],
+      "summary_en": "Directed weighted CSR graphs and algebraic path algorithms.",
+      "summary_zh": "有向加權 CSR 圖與代數路徑演算法。"
+    },
+    {
+      "id": "semiring-spline",
+      "package": "semiring-spline",
+      "layer": 3,
+      "files": [
+        "semiring/spline/*.mbt",
+        "!semiring/spline/*_test.mbt",
+        "!semiring/spline/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "semiring-monoid"
+      ],
+      "summary_en": "Spline interpolation and banded linear solvers.",
+      "summary_zh": "樣條插值與帶狀線性求解。"
+    },
+    {
+      "id": "semiring-trop",
+      "package": "semiring-trop",
+      "layer": 2,
+      "files": [
+        "semiring/trop/*.mbt",
+        "!semiring/trop/*_test.mbt",
+        "!semiring/trop/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "semiring-algebra"
+      ],
+      "summary_en": "Tropical polynomials, Newton polygons, dual subdivisions and assignments.",
+      "summary_zh": "熱帶多項式、Newton 多邊形、對偶細分與指派。"
+    },
+    {
+      "id": "semiring-nf",
+      "package": "semiring-nf",
+      "layer": 1,
+      "files": [
+        "semiring/nf/*.mbt",
+        "!semiring/nf/*_test.mbt",
+        "!semiring/nf/*_wbtest.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Regular-expression/DFA and free idempotent-semiring normal forms.",
+      "summary_zh": "正則表達式／DFA 與自由冪等半環正規形。"
+    },
+    {
+      "id": "semiring-cat",
+      "package": "semiring-cat",
+      "layer": 3,
+      "files": [
+        "semiring/cat/*.mbt",
+        "!semiring/cat/*_test.mbt",
+        "!semiring/cat/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "semiring-algebra",
+        "semiring-matrix"
+      ],
+      "summary_en": "Set-valued matrices, free categories on DAGs and Maslov dequantization.",
+      "summary_zh": "集合值矩陣、DAG 自由範疇與 Maslov 去量子化。"
+    },
+    {
+      "id": "semiring-app",
+      "package": "semiring-app",
+      "layer": 3,
+      "files": [
+        "semiring/app/*.mbt",
+        "!semiring/app/*_test.mbt",
+        "!semiring/app/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "semiring-algebra",
+        "semiring-matrix",
+        "semiring-sim"
+      ],
+      "summary_en": "Algebraic path problems with independent implementation arbitration.",
+      "summary_zh": "代數路徑問題與多實作仲裁。"
+    },
+    {
+      "id": "semiring-bp",
+      "package": "semiring-bp",
+      "layer": 2,
+      "files": [
+        "semiring/bp/*.mbt",
+        "!semiring/bp/*_test.mbt",
+        "!semiring/bp/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "semiring-algebra"
+      ],
+      "summary_en": "Semiring belief propagation on factor graphs.",
+      "summary_zh": "因子圖上的半環信念傳播。"
+    },
+    {
+      "id": "semiring-ratelimit",
+      "package": "semiring-ratelimit",
+      "layer": 1,
+      "files": [
+        "semiring/ratelimit/*.mbt",
+        "!semiring/ratelimit/*_test.mbt",
+        "!semiring/ratelimit/*_wbtest.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "GCRA rate-limiting application package.",
+      "summary_zh": "GCRA 限流應用套件。"
+    },
+    {
+      "id": "semiring-io",
+      "package": "semiring-io",
+      "layer": 2,
+      "files": [
+        "semiring/io/*.mbt",
+        "!semiring/io/*_test.mbt",
+        "!semiring/io/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "semiring-algebra"
+      ],
+      "summary_en": "Edge-list parsing and synthetic graph input generation.",
+      "summary_zh": "邊表剖析與合成圖輸入生成。"
+    },
+    {
+      "id": "semiring-sim",
+      "package": "semiring-sim",
+      "layer": 1,
+      "files": [
+        "semiring/sim/*.mbt",
+        "!semiring/sim/*_test.mbt",
+        "!semiring/sim/*_wbtest.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Timing, cache and memory-hierarchy measurement models.",
+      "summary_zh": "時間、快取與記憶階層量測模型。"
+    },
+    {
+      "id": "semiring-par",
+      "package": "semiring-par",
+      "layer": 1,
+      "files": [
+        "semiring/par/*.mbt",
+        "!semiring/par/*_test.mbt",
+        "!semiring/par/*_wbtest.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Portable backend seam for chunked aggregation and shard I/O.",
+      "summary_zh": "分塊聚合與分片 I/O 的可移植後端接縫。"
+    },
+    {
+      "id": "topos-core",
+      "package": "topos",
+      "layer": 3,
+      "files": [
+        "topos/*.mbt",
+        "!topos/*_test.mbt",
+        "!topos/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "gcd-core",
+        "exact-algebra",
+        "symlib-core"
+      ],
+      "summary_en": "Grothendieck and elementary topos engine: sites, sheaves, CCC, subobject classifiers, open/closed subtopos nuclei, essential geometric morphisms (Lan ⊣ u* ⊣ Ran), dense Comparison Lemma, internal G-torsors, local/connected/atomic/coherent invariants, geometric logic & classifying toposes, stacks, sheaf cohomology, cup-product rings and homotopy types.",
+      "summary_zh": "Grothendieck 與一般拓撲斯核心引擎：景、層、笛卡兒閉性、子物件分類子、開閉子拓撲斯核、本徵幾何態射（Lan⊣u*⊣Ran）、稠密比較引理、內蘊 G-主叢、局部／連通／原子／相干性質、幾何邏輯與分類 Topos、棧、層上同調、杯積環與同倫類型。"
+    },
+    {
+      "id": "scheme-core",
+      "package": "scheme",
+      "layer": 3,
+      "files": [
+        "scheme/*.mbt",
+        "!scheme/*_test.mbt",
+        "!scheme/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "exact-algebra"
+      ],
+      "summary_en": "Algebraic scheme and motive engine: reduced Gröbner bases, Zariski sheafification, reduced schemes, Kähler differentials & étale criteria, Tjurina numbers, glued schemes & morphisms, affine morphisms, separatedness & DVR properness, Hilbert polynomials, blow-up desingularization, rational equivalence, dualizing complexes, functor of points, F_{p^2} Frobenius descent and Chow correspondences.",
+      "summary_zh": "代數概形與動機核心引擎：約化 Gröbner 基、Zariski 層化、既約概形、Kähler 微分與平展判準、Tjurina 數、黏合概形與態射、仿射態射、分離與 DVR 真概形、Hilbert 多項式、爆炸奇點解消、有理等價、對偶複形、點函子法、F_{p^2} Frobenius 下降與 Chow 對應。"
+    },
+    {
+      "id": "bridge",
+      "package": "bridge",
+      "layer": 10,
+      "files": [
+        "bridge/*.mbt",
+        "!bridge/*_test.mbt",
+        "!bridge/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "*"
+      ],
+      "observer": true,
+      "summary_en": "Five-federation grand unification, K_5 cross-federation bridges, logical theory translation, and 18-entry geometry-logic correspondence atlas. No federation may depend back on this component.",
+      "summary_zh": "五聯邦大一統、K_5 全配對跨聯邦橋、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜；下層聯邦不得反向依賴此元件。"
+    },
+    {
+      "id": "showcase-app",
+      "package": "cmd-showcase",
+      "layer": 11,
+      "files": [
+        "cmd/showcase/*.mbt"
+      ],
+      "depends_on": [
+        "*"
+      ],
+      "observer": true,
+      "summary_en": "Five-federation grand unification executable showcase.",
+      "summary_zh": "五聯邦大一統展示執行入口。"
+    },
+    {
+      "id": "semiring-par-host",
+      "package": "semiring-par-host",
+      "layer": 4,
+      "files": [
+        "semiring/par_host/*.mbt",
+        "!semiring/par_host/*_test.mbt",
+        "!semiring/par_host/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "semiring-par"
+      ],
+      "summary_en": "Native-only async backend for the semiring portable parallel seam.",
+      "summary_zh": "半環可移植平行接縫的 native-only async 後端。"
+    },
+    {
+      "id": "semiring-report-app",
+      "package": "cmd-semiringreport",
+      "layer": 10,
+      "files": [
+        "cmd/semiringreport/*.mbt"
+      ],
+      "depends_on": [
+        "*"
+      ],
+      "observer": true,
+      "summary_en": "Native measured report executable (slow gate).",
+      "summary_zh": "native 量測報告執行入口（慢閘門）。"
+    },
+    {
+      "id": "transcendental",
+      "package": "algebra",
+      "layer": 9,
+      "files": [
+        "algebra/transcendental.mbt",
+        "algebra/phase21_transcendence_crt.mbt"
+      ],
+      "depends_on": [
+        "gcd-core",
+        "exact-algebra"
+      ],
+      "summary_en": "Certified transcendental & division-free determinant layer: rigorous rational enclosures for e and pi, arbitrary-degree Liouville transcendence refutation certificates, Schanuel Q-rank witnesses, and Berkowitz-CRT division-free charpoly.",
+      "summary_zh": "超越數與無除法特徵多項式認證層：e 與 π 嚴格有理包絡、任意次數 Liouville 代數無理數可複核否證證書、Schanuel ℚ-線性無關秩見證與 Berkowitz–CRT 無除法特徵多項式。"
+    },
+    {
+      "id": "module-hotload",
+      "package": "root",
+      "layer": 9,
+      "files": [
+        "module_hotload.mbt"
+      ],
+      "depends_on": [
+        "dependent-kernel",
+        "frontend"
+      ],
+      "summary_en": "Runtime hot loading for the compiled module environment: interface-hash gating, transactional swaps with consistency verification and rollback, and an audit log of every attempt.",
+      "summary_zh": "已編譯模組環境的執行期熱載入：介面雜湊閘控、帶一致性驗證與回滾的交易式替換，以及每次嘗試的稽核日誌。"
+    },
+    {
+      "id": "hostfs-durability",
+      "package": "hostfs",
+      "layer": 9,
+      "files": [
+        "hostfs/durability.mbt",
+        "hostfs/bft_consensus.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Executable model of crash-consistent durable writes and 3f+1 Byzantine Fault-Tolerant replicated quorum consensus over DiskState nodes.",
+      "summary_zh": "崩潰一致寫入與 3f+1 拜占庭容錯法定人數複製狀態機的可執行模型。"
+    },
+    {
+      "id": "hostfs-imports",
+      "package": "root",
+      "layer": 9,
+      "files": [
+        "hostfs_imports.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Architecture boundary: the explicit import list through which the root package consumes hostfs.",
+      "summary_zh": "架構邊界：root 套件取用 hostfs 的顯式匯入清單。"
+    },
+    {
+      "id": "hou-match",
+      "package": "root",
+      "layer": 5,
+      "files": [
+        "hou_match.mbt"
+      ],
+      "depends_on": [
+        "frontend"
+      ],
+      "summary_en": "Decidable higher-order matching: the one-sided fragment of HOU where the right-hand side is ground. Unique solution for distinct-variable spines; bounded enumeration with beta/eta verification otherwise; the bound is part of the answer.",
+      "summary_zh": "可判定高階匹配：右側無元變數的單側片斷。相異變數脊柱給出唯一解；其餘情形以有界列舉配合 βη 轉換驗證，且 bound 是答案的一部份，永不單獨宣稱無解。"
+    },
+    {
+      "id": "associahedron",
+      "package": "root",
+      "layer": 5,
+      "files": [
+        "associahedron.mbt"
+      ],
+      "depends_on": [
+        "dependent-kernel",
+        "foundation",
+        "cubical"
+      ],
+      "summary_en": "Stasheff associahedra K_n for arbitrary n: Schroder-tree face lattice, f-vector, Euler characteristic, and the pentagon/square 2-face property, cross-checked against the Tamari rotation graph.",
+      "summary_zh": "任意 n 的 Stasheff 結合多面體 K_n：Schröder 樹面格、f-向量、Euler 示性數與二維面必為五邊形或正方形，並與 Tamari 旋轉圖互相對帳。"
+    },
+    {
+      "id": "blakers-massey",
+      "package": "root",
+      "layer": 5,
+      "files": [
+        "blakers_massey.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Blakers-Massey and Freudenthal: decidable connectivity arithmetic, the stable range derived from the gap formula, and long-exact-sequence algebra over finitely generated abelian groups, yielding pi3(S2) = pi3(S3) and pi3(S3) = pi2(S2) with explicit provenance.",
+      "summary_zh": "Blakers–Massey 與 Freudenthal：可判定的連接度算術、由間隙公式推導的穩定範圍、以及有限生成交換群上的恰當序列代數，給出 π₃(S²) ≃ π₃(S³) 與 π₃(S³) ≃ π₂(S²)，並附顯式來源鏈。"
+    },
+    {
+      "id": "brunerie-pi4-s3",
+      "package": "root",
+      "layer": 5,
+      "files": [
+        "brunerie_pi4_s3.mbt"
+      ],
+      "depends_on": [
+        "blakers-massey"
+      ],
+      "summary_en": "Brunerie's proof that pi_4(S^3) = Z/2Z: join and Whitehead degree arithmetic, James construction cells, the Hopf LES reduction to pi_4(S^2), cyclic group arithmetic Z/beta Z, and Theorem 6.17's decision rule, with imported ingredients counted explicitly.",
+      "summary_zh": "Brunerie 證明 π₄(S³) ≃ ℤ/2ℤ：join 與 Whitehead 次數算術、James 構造胞、Hopf LES 化約至 π₄(S²)、ℤ/βℤ 循環群算術，以及定理 6.17 判準；import 成分由測試明數。"
+    },
+    {
+      "id": "homotopy-universal",
+      "package": "root",
+      "layer": 5,
+      "files": [
+        "homotopy_universal.mbt"
+      ],
+      "depends_on": [
+        "foundation",
+        "finite-cubical",
+        "dependent-kernel",
+        "exact-algebra",
+        "cubical"
+      ],
+      "summary_en": "General homotopy type formers (join, wedge, n-truncation, James construction) declared as genuine DHitSpec HITs with recursion principles and computation rules.",
+      "summary_zh": "通用同倫型別構造子（join、wedge、n-截斷、James 構造）以 DHitSpec 宣告為真正的 HIT，並給出遞迴原則與計算規則。"
+    },
+    {
+      "id": "gcd-core",
+      "package": "gcd",
+      "layer": 0,
+      "files": [
+        "gcd/*.mbt",
+        "!gcd/*_test.mbt",
+        "!gcd/*_wbtest.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Lower-V Universal Elimination-GCD engine: exact F_p RREF/nullspace/rank/det, Z-matrix Hermite & Smith Normal Forms, and 5-domain universal GCD (Int, F_p[x], F_p-subspace, Z-lattice, Bezout Z-ideal).",
+      "summary_zh": "下V泛消元新最大公因數核心引擎：精確 F_p RREF／核空間／秩／行列式、ℤ-矩陣 Hermite 與 Smith 範式，以及五域統一泛 GCD（整數、F_p[x]、F_p 子空間、ℤ-格、Bézout 整數主理想）。"
+    },
+    {
+      "id": "condensed-core",
+      "package": "condensed",
+      "layer": 4,
+      "files": [
+        "condensed/*.mbt",
+        "!condensed/*_test.mbt",
+        "!condensed/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "gcd-core",
+        "exact-algebra",
+        "symlib-core",
+        "semiring-trop",
+        "topos-core",
+        "scheme-core"
+      ],
+      "summary_en": "X-Overlap Condensed Mathematics core: 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 4 Conjectures.",
+      "summary_zh": "X形交疊凝聚數學核心：凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與新猜想×4。"
+    },
+    {
+      "id": "phase21-breakthroughs",
+      "package": "root",
+      "layer": 9,
+      "files": [
+        "phase21_schema_dsystem_bdd.mbt",
+        "phase21_homotopy_hou_bft.mbt"
+      ],
+      "depends_on": [
+        "*"
+      ],
+      "observer": true,
+      "summary_en": "Phase 21 breakthroughs across all 7 SPEC §4 capability boundaries: Cantor CNF (<epsilon_0) & Mahlo reflection, indexed container compilation, sheaf-glued conversion, kernelized max-clique, non-abelian F_2 wedge square obstruction, frontier cutwidth ROBDD (n=26), O(1) generic-point 24-cube reification, arbitrary-n singleton contraction & Stasheff K_6 coherence, variable-endpoint HITs, higher-order inner-lambda matching, Goldfarb Diophantine compiler, Ed25519 BFT WAL quorum, and Tarjan SCC MVCC hot-swapping.",
+      "summary_zh": "第二十一期七大能力邊界全面突破模組：Cantor 範式（<ε₀）與 Mahlo 宇宙反射、索引容器編譯、層黏合轉換、核化最大團、非交換 F₂ 楔和方塊阻礙、前沿割寬 ROBDD（n=26）、O(1) 泛點 24 維方塊具體化、任意 n 階路徑單例收縮與 Stasheff K₆ 相干胞、變端點 HIT、高階內層 λ 匹配、Goldfarb 二階合一丟番圖編譯、Ed25519 拜占庭法定人數 WAL 與 Tarjan 強連通分量 MVCC 原子熱替換。"
+    }
+  ],
+  "exceptions": []
+}

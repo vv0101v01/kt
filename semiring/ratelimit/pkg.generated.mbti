@@ -1,0 +1,87 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/ratelimit"
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) enum Decision {
+  Allowed
+  Throttled(Int64)
+  Shedded
+} derive(Eq)
+pub fn Decision::equal(Self, Self) -> Bool
+pub fn Decision::not_equal(Self, Self) -> Bool
+pub fn Decision::output(Self, &Logger) -> Unit
+pub fn Decision::to_string(Self) -> String
+pub impl Show for Decision
+
+pub(all) struct Gcra {
+  interval_us : Int64
+  burst : Int32
+}
+pub fn Gcra::backoff(Self, Int32) -> Int64
+pub fn Gcra::commit(Self, Int64, Int64) -> Int64
+pub fn Gcra::new(Double, Int32) -> Self
+pub fn Gcra::preview(Self, Int64, Int64, Int32) -> Decision
+pub fn Gcra::tolerance(Self) -> Int64
+
+pub(all) struct HierLimiter {
+  gate : Gcra?
+  tenant_gcra : Gcra
+  key_gcra : Gcra
+  tenants : KeyTable
+  keys : KeyTable
+  mut gate_tat : Int64
+  mut last_now : Int64
+  mut admitted : Int64
+  mut throttled : Int64
+  mut shedded : Int64
+}
+pub fn HierLimiter::admit(Self, UInt64, UInt64, Int64) -> Decision
+pub fn HierLimiter::new(Double, Int32, Double, Int32, Int32, global_rate? : Double, global_burst? : Int32) -> Self
+pub fn HierLimiter::stats(Self) -> (Int64, Int64, Int64)
+pub fn HierLimiter::table_evictions(Self) -> (Int64, Int64)
+pub fn HierLimiter::table_used(Self) -> (Int32, Int32)
+
+pub(all) struct KeyState {
+  mut key : UInt64
+  mut tat : Int64
+  mut strikes : Int32
+  mut referenced : Bool
+  mut occupied : Bool
+}
+
+pub(all) struct KeyTable {
+  slots : FixedArray[KeyState]
+  mask : Int32
+  mut used : Int32
+  mut hand : Int32
+  mut evictions : Int64
+  mut probes : Int64
+}
+pub fn KeyTable::capacity(Self) -> Int32
+pub fn KeyTable::get_or_insert(Self, UInt64, Int64) -> Int32
+pub fn KeyTable::new(Int32) -> Self
+
+pub(all) struct Limiter {
+  key_gcra : Gcra
+  gate : Gcra?
+  table : KeyTable
+  mut gate_tat : Int64
+  mut last_now : Int64
+  mut admitted : Int64
+  mut throttled : Int64
+  mut shedded : Int64
+}
+pub fn Limiter::admit(Self, UInt64, Int64) -> Decision
+pub fn Limiter::new(Double, Int32, Int32) -> Self
+pub fn Limiter::stats(Self) -> (Int64, Int64, Int64)
+pub fn Limiter::table_evictions(Self) -> Int64
+pub fn Limiter::table_used(Self) -> Int32
+pub fn Limiter::with_gate(Double, Int32, Double, Int32, Int32) -> Self
+
+// Type aliases
+
+// Traits

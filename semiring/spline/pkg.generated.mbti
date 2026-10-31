@@ -1,0 +1,40 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/spline"
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/monoid",
+}
+
+// Values
+pub fn affine_steps(Double, Array[Double]) -> Array[@monoid.AffineM]
+
+pub fn bspline_basis(Array[Double], Int32, Int32, Double) -> Double
+
+pub fn cubic_pole() -> Double
+
+pub fn interp_cubic_banded(Array[Double]) -> Array[Double]
+
+pub fn interp_cubic_dense(Array[Double]) -> Array[Double]
+
+pub fn interp_cubic_dense_open(Array[Double]) -> Array[Double]
+
+pub fn interp_cubic_periodic(Array[Double]) -> Array[Double]
+
+pub fn solve_banded(Banded, Array[Double]) -> Array[Double]?
+
+pub fn solve_dense(Array[Array[Double]], Array[Double]) -> Array[Double]?
+
+// Errors
+
+// Types and methods
+pub(all) struct Banded {
+  n : Int32
+  band : Int32
+  a : Array[Array[Double]]
+}
+pub fn Banded::get(Self, Int32, Int32) -> Double
+pub fn Banded::tridiag(Int32, Double, Double) -> Self
+
+// Type aliases
+
+// Traits

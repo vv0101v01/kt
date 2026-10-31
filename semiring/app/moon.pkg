@@ -1,0 +1,12 @@
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra" @alg,
+  "vv0101v01/cubical-hermitian/semiring/matrix" @mat,
+  "vv0101v01/cubical-hermitian/semiring/sim",
+}
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra" @alg,
+  "vv0101v01/cubical-hermitian/semiring/matrix" @mat,
+  "vv0101v01/cubical-hermitian/semiring/cat",
+  "vv0101v01/cubical-hermitian/semiring/sim",
+} for "wbtest"

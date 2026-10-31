@@ -1,0 +1,29 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/io"
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra",
+}
+
+// Values
+pub fn parse_edges_fast(Bytes) -> ParsedEdges
+
+pub fn parse_edges_naive(String) -> ParsedEdges
+
+pub fn synth_edge_bytes(@algebra.Rng, Int32, Int32) -> Bytes
+
+pub fn synth_edge_list(@algebra.Rng, Int32, Int32) -> String
+
+// Errors
+
+// Types and methods
+pub(all) struct ParsedEdges {
+  n : Int32
+  from : Array[Int32]
+  to : Array[Int32]
+  w : Array[Int32]
+}
+
+// Type aliases
+
+// Traits

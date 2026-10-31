@@ -1,0 +1,75 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/nf"
+
+// Values
+pub fn char_of(Int32) -> String
+
+pub fn deriv(Regex, Int32) -> Regex
+
+pub fn dfa_canonical(Dfa) -> String
+
+pub fn dfa_equiv(Dfa, Dfa) -> Bool
+
+pub fn dfa_minimize(Dfa) -> Dfa
+
+pub fn dfa_of_regex(Regex, Array[Int32]) -> Dfa
+
+pub fn idempotent_identity_holds(SExpr, SExpr) -> Bool
+
+pub fn idempotent_identity_holds_via_dfa(SExpr, SExpr) -> Bool
+
+pub fn mono_cmp(Array[Int32], Array[Int32]) -> Int32
+
+pub fn normalize(SExpr) -> Array[Array[Int32]]
+
+pub fn nullable(Regex) -> Bool
+
+pub fn r_prod(Regex, Regex) -> Regex
+
+pub fn r_star(Regex) -> Regex
+
+pub fn r_sum(Regex, Regex) -> Regex
+
+pub fn regex_cmp(Regex, Regex) -> Int32
+
+pub fn regex_equiv(Regex, Regex, Array[Int32]) -> Bool
+
+pub fn rx_accepts(Regex, Array[Int32]) -> Bool
+
+pub fn sexpr_to_regex(SExpr) -> Regex
+
+// Errors
+
+// Types and methods
+pub(all) struct Dfa {
+  nsym : Int32
+  alphabet : Array[Int32]
+  start : Int32
+  accept : Array[Bool]
+  trans : Array[Int32]
+}
+pub fn Dfa::accepts(Self, Array[Int32]) -> Bool
+pub fn Dfa::nstates(Self) -> Int32
+
+pub(all) enum Regex {
+  RZero
+  ROne
+  RChar(Int32)
+  RSum(Regex, Regex)
+  RProd(Regex, Regex)
+  RStar(Regex)
+}
+pub fn Regex::rank(Self) -> Int32
+pub fn Regex::to_text(Self) -> String
+
+pub(all) enum SExpr {
+  SZero
+  SOne
+  SVar(Int32)
+  SSum(SExpr, SExpr)
+  SProd(SExpr, SExpr)
+}
+
+// Type aliases
+
+// Traits

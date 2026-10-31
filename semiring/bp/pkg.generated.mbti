@@ -1,0 +1,48 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/bp"
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra",
+}
+
+// Values
+pub fn[E : @algebra.Semiring] bp_marginals(FactorGraph[E], rounds? : Int32) -> BpResult[E]
+
+pub fn brute_force_sum_product(FactorGraph[@algebra.Prob]) -> (Array[Array[Double]], Int64)
+
+pub fn decode_assign(Int32, Array[Int32], Array[Int32]) -> Array[Int32]
+
+pub fn[E] factor_size(Factor[E], Array[Int32]) -> Int32
+
+pub fn[E] is_tree(FactorGraph[E]) -> Bool
+
+pub fn marginals_sum_product(FactorGraph[@algebra.Prob], rounds? : Int32) -> (Array[Array[Double]], Int64)
+
+pub fn[E] table_index(Factor[E], Array[Int32], Array[Int32]) -> Int32
+
+pub fn total_assignments(Array[Int32]) -> Int32
+
+// Errors
+
+// Types and methods
+pub(all) struct BpResult[E] {
+  marginal : Array[Array[E]]
+  rounds : Int32
+  times_ops : Int64
+}
+
+pub(all) struct Factor[E] {
+  vars : Array[Int32]
+  table : Array[E]
+}
+pub fn[E] Factor::new(Array[Int32], Array[E]) -> Self[E]
+
+pub(all) struct FactorGraph[E] {
+  nvar : Int32
+  card : Array[Int32]
+  factors : Array[Factor[E]]
+}
+
+// Type aliases
+
+// Traits

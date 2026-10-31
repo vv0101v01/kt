@@ -1,0 +1,70 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/graph"
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra",
+  "vv0101v01/cubical-hermitian/semiring/matrix",
+}
+
+// Values
+pub fn apsp_dijkstra(Graph) -> @matrix.Mat[@algebra.Trop]
+
+pub fn apsp_kleene(Graph) -> (Array[Array[Int32]], Bool)
+
+pub fn closure_bitset(Graph, row_ops? : @algebra.Ops) -> BitClosure
+
+pub fn dijkstra(Graph, Int32) -> (Array[@algebra.Trop], Bool)
+
+pub fn functional_decompose(Graph) -> FunctionalDecomp
+
+pub fn has_negative_cycle(@matrix.Mat[@algebra.Trop]) -> Bool
+
+pub fn pareto_sssp(Graph, Int32, max_rounds? : Int32, ops? : @algebra.Ops) -> (Array[@algebra.ParetoSet], Bool)
+
+pub fn total_labels(Array[@algebra.ParetoSet]) -> Int32
+
+// Errors
+
+// Types and methods
+pub(all) struct BitClosure {
+  n : Int32
+  words : Int32
+  bits : FixedArray[UInt64]
+}
+pub fn BitClosure::get(Self, Int32, Int32) -> Bool
+pub fn BitClosure::row_count(Self, Int32) -> Int32
+
+pub(all) struct FunctionalDecomp {
+  cycle_id : Array[Int32]
+  dist_to_cycle : Array[Int32]
+  cycle_len : Array[Int32]
+  depth : Array[Int32]
+}
+pub fn FunctionalDecomp::reach_count(Self, Int32) -> Int32
+
+pub(all) struct Graph {
+  n : Int32
+  offsets : Array[Int32]
+  to : Array[Int32]
+  w : Array[Int32]
+  w2 : Array[Int32]
+}
+pub fn Graph::build(Int32, Array[Int32], Array[Int32], Array[Int32]) -> Self
+pub fn Graph::edges(Self) -> Int32
+pub fn Graph::random(@algebra.Rng, Int32, Int32, Int32) -> Self
+pub fn Graph::random_two(@algebra.Rng, Int32, Int32, Int32) -> Self
+pub fn Graph::to_trop_mat(Self) -> @matrix.Mat[@algebra.Trop]
+pub fn Graph::with_second(Self, Array[Int32]) -> Self
+
+pub struct MinHeap {
+  d : Array[Int32]
+  v : Array[Int32]
+}
+pub fn MinHeap::len(Self) -> Int32
+pub fn MinHeap::new(Int32) -> Self
+pub fn MinHeap::pop(Self) -> (Int32, Int32)?
+pub fn MinHeap::push(Self, Int32, Int32) -> Unit
+
+// Type aliases
+
+// Traits

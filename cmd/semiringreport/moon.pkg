@@ -1,0 +1,25 @@
+// 量測工具本身只用 native：它依賴單調時鐘、檔案系統與 async 主機後端。
+options(
+  supported_targets: "native",
+)
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra" @alg,
+  "vv0101v01/cubical-hermitian/semiring/matrix" @mat,
+  "vv0101v01/cubical-hermitian/semiring/monoid" @mon,
+  "vv0101v01/cubical-hermitian/semiring/graph",
+  "vv0101v01/cubical-hermitian/semiring/spline",
+  "vv0101v01/cubical-hermitian/semiring/ratelimit" @rl,
+  "vv0101v01/cubical-hermitian/semiring/io",
+  "vv0101v01/cubical-hermitian/semiring/sim",
+  "vv0101v01/cubical-hermitian/semiring/par",
+  "vv0101v01/cubical-hermitian/semiring/par_host" @parh,
+  "vv0101v01/cubical-hermitian/semiring/trop",
+  "vv0101v01/cubical-hermitian/semiring/nf",
+  "vv0101v01/cubical-hermitian/semiring/cat",
+  "vv0101v01/cubical-hermitian/semiring/app",
+  "vv0101v01/cubical-hermitian/semiring/bp",
+  "moonbitlang/core/math",
+}
+
+pkgtype(kind: "executable")

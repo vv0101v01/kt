@@ -1,0 +1,122 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/trop"
+
+// Values
+pub fn balancing_residuals(Array[DualEdge], Int32) -> Array[(Int32, Int64, Int64)]
+
+pub fn rat_gt(Rat, Rat) -> Bool
+
+pub fn roots_equal(Array[Rat], Array[Rat]) -> Bool
+
+pub fn sat_add_i32(Int32, Int32) -> Int32
+
+pub fn sat_mul_i32(Int32, Int32) -> Int32
+
+pub fn sort_rats(Array[Rat]) -> Array[Rat]
+
+pub fn trop_assignment(Array[Array[Int64]]) -> (Int64, Array[Int32])
+
+pub fn trop_det(Array[Array[Int64]]) -> Int64
+
+pub fn trop_det_bruteforce(Array[Array[Int64]]) -> Int64
+
+pub fn trop_det_dp(Array[Array[Int64]]) -> Int64
+
+pub fn trop_det_tie_count(Array[Array[Int64]]) -> Int32
+
+pub fn trop_poly_mul(UniPoly, UniPoly) -> UniPoly
+
+// Errors
+
+// Types and methods
+pub(all) struct BPoly {
+  terms : Array[BTerm]
+}
+pub fn BPoly::check_duality(Self, Array[Face]) -> (Int32, Int32)
+pub fn BPoly::check_ties_on_faces(Self, Array[Face], Int32, UInt64) -> (Int32, Int32, Int32)
+pub fn BPoly::dual_curve(Self, Array[Face]) -> Array[DualEdge]
+pub fn BPoly::eval(Self, Int32, Int32) -> Int32
+pub fn BPoly::face_area2(Self, Face) -> Int64
+pub fn BPoly::hull_of(Self, Array[Int32]) -> Array[Int32]
+pub fn BPoly::minima_scaled(Self, Int64, Int64, Int64) -> Array[Int32]
+pub fn BPoly::new(Array[BTerm]) -> Self
+pub fn BPoly::newton_area2(Self) -> Int64
+pub fn BPoly::newton_hull(Self) -> Array[Pt2]
+pub fn BPoly::subdivision(Self) -> Array[Face]
+pub fn BPoly::subdivision_area2(Self, Array[Face]) -> Int64
+
+pub(all) struct BTerm {
+  c : Int32
+  i : Int32
+  j : Int32
+}
+pub fn BTerm::new(Int32, Int32, Int32) -> Self
+
+pub(all) struct DualEdge {
+  face_a : Int32
+  face_b : Int32
+  from_term : Int32
+  to_term : Int32
+  dir : Pt2
+  weight : Int32
+}
+
+pub(all) struct Face {
+  plane : Plane
+  members : Array[Int32]
+  polygon : Array[Int32]
+  boundary : Array[(Int32, Int32)]
+}
+
+pub(all) struct Plane {
+  nx : Int64
+  ny : Int64
+  nz : Int64
+  d : Int64
+} derive(Eq)
+pub fn Plane::equal(Self, Self) -> Bool
+pub fn Plane::not_equal(Self, Self) -> Bool
+
+pub(all) struct Pt2 {
+  x : Int32
+  y : Int32
+} derive(Eq)
+pub fn Pt2::cross(Self, Self) -> Int64
+pub fn Pt2::equal(Self, Self) -> Bool
+pub fn Pt2::lattice_len(Self) -> Int32
+pub fn Pt2::new(Int32, Int32) -> Self
+pub fn Pt2::not_equal(Self, Self) -> Bool
+pub fn Pt2::output(Self, &Logger) -> Unit
+pub fn Pt2::prim(Self) -> Self
+pub fn Pt2::rot90(Self) -> Self
+pub fn Pt2::to_string(Self) -> String
+pub impl Show for Pt2
+
+pub(all) struct Rat {
+  n : Int64
+  d : Int64
+} derive(Eq)
+pub fn Rat::equal(Self, Self) -> Bool
+pub fn Rat::new(Int64, Int64) -> Self
+pub fn Rat::not_equal(Self, Self) -> Bool
+pub fn Rat::of_int(Int32) -> Self
+pub fn Rat::output(Self, &Logger) -> Unit
+pub fn Rat::to_double(Self) -> Double
+pub fn Rat::to_string(Self) -> String
+pub impl Show for Rat
+
+pub(all) struct UniPoly {
+  coeffs : Array[Int32]
+}
+pub fn UniPoly::argmin_at(Self, Rat) -> Array[Int32]
+pub fn UniPoly::degree(Self) -> Int32
+pub fn UniPoly::eval(Self, Int32) -> Int32
+pub fn UniPoly::lower_hull(Self) -> Array[(Int32, Int32)]
+pub fn UniPoly::multiplicity_sum(Self) -> Int32
+pub fn UniPoly::new(Array[Int32]) -> Self
+pub fn UniPoly::roots(Self) -> Array[Rat]
+pub fn UniPoly::roots_with_mult(Self) -> Array[(Rat, Int32)]
+
+// Type aliases
+
+// Traits

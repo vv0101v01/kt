@@ -1,0 +1,148 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/gcd"
+
+import {
+  "moonbitlang/core/bigint",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn check_universal_gcd_laws() -> Bool
+
+pub fn fp_add(Int32, Int32, Int32) -> Int32
+
+pub fn fp_det(FpMat) -> Int32
+
+pub fn fp_inv(Int32, Int32) -> Int32
+
+pub fn fp_mat_from_rows(Array[Array[Int32]], Int32) -> FpMat
+
+pub fn fp_mat_get(FpMat, Int32, Int32) -> Int32
+
+pub fn fp_mat_make(Int32, Int32, Int32, Int32) -> FpMat
+
+pub fn fp_mat_mul(FpMat, FpMat) -> FpMat
+
+pub fn fp_mat_set(FpMat, Int32, Int32, Int32) -> Unit
+
+pub fn fp_mul(Int32, Int32, Int32) -> Int32
+
+pub fn fp_norm(Int32, Int32) -> Int32
+
+pub fn fp_nullspace_basis(FpMat) -> Array[Array[Int32]]
+
+pub fn fp_rank(FpMat) -> Int32
+
+pub fn fp_rref(FpMat) -> FpRrefResult
+
+pub fn fp_sub(Int32, Int32, Int32) -> Int32
+
+pub fn ugcd_bigint_abs(@bigint.BigInt) -> @bigint.BigInt
+
+pub fn ugcd_bigint_ext_gcd(@bigint.BigInt, @bigint.BigInt) -> (@bigint.BigInt, @bigint.BigInt, @bigint.BigInt)
+
+pub fn ugcd_bigint_gcd(@bigint.BigInt, @bigint.BigInt) -> @bigint.BigInt
+
+pub fn ugcd_bigint_lcm(@bigint.BigInt, @bigint.BigInt) -> @bigint.BigInt
+
+pub fn ugcd_canon_meet_join_counts(Int32, (Int32) -> Int32, (Int32) -> Int32) -> (Int32, Int32, Bool)
+
+pub fn ugcd_certify_pair(Int32, Int32) -> UgcdSixFoldCertificate
+
+pub fn ugcd_crt_reconstruct_signed(Array[@bigint.BigInt], Array[@bigint.BigInt]) -> (@bigint.BigInt, @bigint.BigInt)
+
+pub fn ugcd_derived_tor_z_orders(Int32, Int32) -> (@bigint.BigInt, @bigint.BigInt)
+
+pub fn ugcd_free_group_reduce(Array[Int32]) -> Array[Int32]
+
+pub fn ugcd_grassmann_subspace_duality(Array[Array[Int32]], Array[Array[Int32]], Int32, Int32) -> (Int32, Int32, Int32, Int32, Bool)
+
+pub fn ugcd_is_prime_int(Int32) -> Bool
+
+pub fn ugcd_padic_valuation(@bigint.BigInt, Int32) -> Int32
+
+pub fn ugcd_z_nullspace_basis(ZMat) -> Array[Array[@bigint.BigInt]]
+
+pub fn zmat_eye(Int32) -> ZMat
+
+pub fn zmat_from_int_rows(Array[Array[Int32]]) -> ZMat
+
+pub fn zmat_from_rows(Array[Array[@bigint.BigInt]]) -> ZMat
+
+pub fn zmat_get(ZMat, Int32, Int32) -> @bigint.BigInt
+
+pub fn zmat_hnf(ZMat) -> ZMat
+
+pub fn zmat_make(Int32, Int32, @bigint.BigInt) -> ZMat
+
+pub fn zmat_mul(ZMat, ZMat) -> ZMat
+
+pub fn zmat_set(ZMat, Int32, Int32, @bigint.BigInt) -> Unit
+
+pub fn zmat_snf(ZMat) -> ZSnfResult
+
+pub fn zmat_snf_verify(ZMat, ZSnfResult) -> Bool
+
+// Errors
+
+// Types and methods
+pub(all) struct FpMat {
+  rows : Int32
+  cols : Int32
+  p : Int32
+  data : Array[Int32]
+} derive(Eq, @debug.Debug)
+pub fn FpMat::equal(Self, Self) -> Bool
+pub fn FpMat::not_equal(Self, Self) -> Bool
+pub fn FpMat::to_repr(Self) -> @debug.Repr
+
+pub(all) struct FpRrefResult {
+  rref : FpMat
+  rank : Int32
+  pivots : Array[Int32]
+} derive(Eq, @debug.Debug)
+pub fn FpRrefResult::equal(Self, Self) -> Bool
+pub fn FpRrefResult::not_equal(Self, Self) -> Bool
+pub fn FpRrefResult::to_repr(Self) -> @debug.Repr
+
+pub(all) struct UgcdSixFoldCertificate {
+  m : Int32
+  n : Int32
+  arith_gcd : @bigint.BigInt
+  arith_lcm : @bigint.BigInt
+  snf_d1 : @bigint.BigInt
+  snf_d2 : @bigint.BigInt
+  tor0_order : @bigint.BigInt
+  tor1_order : @bigint.BigInt
+  tropical_valuation_homomorphic : Bool
+  canon_meet_classes : Int32
+  canon_join_classes : Int32
+  bezout_product_holds : Bool
+  all_six_agree : Bool
+} derive(Eq, @debug.Debug)
+pub fn UgcdSixFoldCertificate::equal(Self, Self) -> Bool
+pub fn UgcdSixFoldCertificate::not_equal(Self, Self) -> Bool
+pub fn UgcdSixFoldCertificate::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ZMat {
+  rows : Int32
+  cols : Int32
+  data : Array[@bigint.BigInt]
+} derive(Eq, @debug.Debug)
+pub fn ZMat::equal(Self, Self) -> Bool
+pub fn ZMat::not_equal(Self, Self) -> Bool
+pub fn ZMat::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ZSnfResult {
+  u : ZMat
+  diag : Array[@bigint.BigInt]
+  v : ZMat
+  rank : Int32
+} derive(Eq, @debug.Debug)
+pub fn ZSnfResult::equal(Self, Self) -> Bool
+pub fn ZSnfResult::not_equal(Self, Self) -> Bool
+pub fn ZSnfResult::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

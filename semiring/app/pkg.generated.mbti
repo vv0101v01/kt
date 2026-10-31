@@ -1,0 +1,50 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/app"
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra",
+  "vv0101v01/cubical-hermitian/semiring/matrix",
+}
+
+// Values
+pub fn app_bool(Int32, Array[(Int32, Int32)]) -> @matrix.Mat[@algebra.BoolSr]
+
+pub fn[E : @algebra.StarSemiring] app_closure(Int32, Array[(Int32, Int32, E)]) -> @matrix.Mat[E]
+
+pub fn app_minplus(Int32, Array[(Int32, Int32, Int32)]) -> @matrix.Mat[@algebra.Trop]
+
+pub fn app_widest(Int32, Array[(Int32, Int32, Int32)]) -> @matrix.Mat[@algebra.Bottleneck]
+
+pub fn[E : @algebra.Semiring] build(Int32, Array[(Int32, Int32, E)]) -> @matrix.Mat[E]
+
+pub fn consensus_trop(@matrix.Mat[@algebra.Trop], Int32, inject_wrong? : Bool) -> Verdict
+
+pub fn reach_bfs(Int32, Array[(Int32, Int32)]) -> Array[Array[Bool]]
+
+pub fn shortest_fw(Int32, Array[(Int32, Int32, Int32)]) -> Array[Array[Int32]]
+
+pub fn widest_fw(Int32, Array[(Int32, Int32, Int32)]) -> Array[Array[Int32]]
+
+pub fn wrong_candidate(@matrix.Mat[@algebra.Trop]) -> @matrix.Mat[@algebra.Trop]
+
+// Errors
+
+// Types and methods
+pub(all) struct Run {
+  name : String
+  us : Double
+  agrees : Bool
+}
+
+pub(all) struct Verdict {
+  runs : Array[Run]
+  agree : Bool
+  winner : String
+  winner_us : Double
+  total_us : Double
+  cost_of_trust : Double
+}
+
+// Type aliases
+
+// Traits

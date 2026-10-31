@@ -1,0 +1,117 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/monoid"
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra",
+}
+
+// Values
+pub fn[M : @algebra.Monoid] prefix_scan(Array[M], out~ : Array[M]) -> Unit
+
+pub fn[M : @algebra.Monoid] prefix_scan_sequential(Array[M], out~ : Array[M]) -> Unit
+
+// Errors
+
+// Types and methods
+pub(all) struct AffineM {
+  a : Double
+  b : Double
+}
+pub fn AffineM::apply(Self, Double) -> Double
+pub fn AffineM::combine(Self, Self) -> Self
+pub fn AffineM::empty() -> Self
+pub fn AffineM::equal(Self, Self) -> Bool
+pub fn AffineM::new(Double, Double) -> Self
+pub fn AffineM::not_equal(Self, Self) -> Bool
+pub fn AffineM::output(Self, &Logger) -> Unit
+pub fn AffineM::to_string(Self) -> String
+pub impl Eq for AffineM
+pub impl Show for AffineM
+pub impl @algebra.Monoid for AffineM
+
+pub(all) struct Fenwick[M] {
+  n : Int32
+  d : Array[M]
+}
+pub fn[M : @algebra.GroupMonoid] Fenwick::add(Self[M], Int32, M) -> Unit
+pub fn[M : @algebra.GroupMonoid] Fenwick::build(Array[M]) -> Self[M]
+pub fn[M : @algebra.GroupMonoid] Fenwick::prefix(Self[M], Int32) -> M
+pub fn[M : @algebra.GroupMonoid] Fenwick::range(Self[M], Int32, Int32) -> M
+
+pub(all) struct MaxI64 {
+  v : Int64
+} derive(Eq)
+pub fn MaxI64::combine(Self, Self) -> Self
+pub fn MaxI64::empty() -> Self
+pub fn MaxI64::equal(Self, Self) -> Bool
+pub fn MaxI64::not_equal(Self, Self) -> Bool
+pub fn MaxI64::output(Self, &Logger) -> Unit
+pub fn MaxI64::to_string(Self) -> String
+pub impl Show for MaxI64
+pub impl @algebra.CommutativeMonoid for MaxI64
+pub impl @algebra.IdempotentMonoid for MaxI64
+pub impl @algebra.Monoid for MaxI64
+
+pub(all) struct MinI64 {
+  v : Int64
+} derive(Eq)
+pub fn MinI64::combine(Self, Self) -> Self
+pub fn MinI64::empty() -> Self
+pub fn MinI64::equal(Self, Self) -> Bool
+pub fn MinI64::not_equal(Self, Self) -> Bool
+pub fn MinI64::output(Self, &Logger) -> Unit
+pub fn MinI64::to_string(Self) -> String
+pub impl Show for MinI64
+pub impl @algebra.CommutativeMonoid for MinI64
+pub impl @algebra.IdempotentMonoid for MinI64
+pub impl @algebra.Monoid for MinI64
+
+pub(all) struct OppositeM[M] {
+  inner : M
+}
+pub fn[M : @algebra.Monoid] OppositeM::combine(Self[M], Self[M]) -> Self[M]
+pub fn[M : @algebra.Monoid] OppositeM::empty() -> Self[M]
+pub fn[M : @algebra.Monoid] OppositeM::equal(Self[M], Self[M]) -> Bool
+pub fn[M : @algebra.Monoid] OppositeM::not_equal(Self[M], Self[M]) -> Bool
+pub fn[M] OppositeM::of(M) -> Self[M]
+pub fn[M : Show] OppositeM::output(Self[M], &Logger) -> Unit
+pub fn[M : Show] OppositeM::to_string(Self[M]) -> String
+pub impl[M : @algebra.Monoid] Eq for OppositeM[M]
+pub impl[M : Show] Show for OppositeM[M]
+pub impl[M : @algebra.Monoid] @algebra.Monoid for OppositeM[M]
+
+pub(all) struct SegTree[M] {
+  size : Int32
+  d : Array[M]
+}
+pub fn[M : @algebra.Monoid] SegTree::build(Array[M]) -> Self[M]
+pub fn[M] SegTree::len(Self[M]) -> Int32
+pub fn[M : @algebra.Monoid] SegTree::query(Self[M], Int32, Int32) -> M
+pub fn[M : @algebra.Monoid] SegTree::set(Self[M], Int32, M) -> Unit
+
+pub(all) struct SparseTable[M] {
+  levels : Array[Array[M]]
+  logs : Array[Int32]
+}
+pub fn[M : @algebra.IdempotentMonoid] SparseTable::build(Array[M]) -> Self[M]
+pub fn[M : @algebra.IdempotentMonoid] SparseTable::query(Self[M], Int32, Int32) -> M
+
+pub(all) struct SumI64 {
+  v : Int64
+} derive(Eq)
+pub fn SumI64::combine(Self, Self) -> Self
+pub fn SumI64::empty() -> Self
+pub fn SumI64::equal(Self, Self) -> Bool
+pub fn SumI64::invert(Self) -> Self
+pub fn SumI64::not_equal(Self, Self) -> Bool
+pub fn SumI64::of(Int64) -> Self
+pub fn SumI64::output(Self, &Logger) -> Unit
+pub fn SumI64::to_string(Self) -> String
+pub impl Show for SumI64
+pub impl @algebra.CommutativeMonoid for SumI64
+pub impl @algebra.GroupMonoid for SumI64
+pub impl @algebra.Monoid for SumI64
+
+// Type aliases
+
+// Traits

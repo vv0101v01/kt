@@ -1,0 +1,1729 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/algebra"
+
+import {
+  "moonbitlang/core/bigint",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn alg_add(AlgNum, AlgNum) -> AlgNum
+
+pub fn alg_coeffs(AlgNum) -> Array[Rat]
+
+pub fn alg_compatible(AlgNum, AlgNum) -> Bool
+
+pub fn alg_div(AlgNum, AlgNum) -> AlgNum?
+
+pub fn alg_eq(AlgNum, AlgNum) -> Bool
+
+pub fn alg_eval_qpoly(QPoly, AlgNum) -> AlgNum
+
+pub fn alg_ext_degree(AlgNum) -> Int32
+
+pub fn alg_generator(QPoly) -> AlgNum
+
+pub fn alg_int(QPoly, Int32) -> AlgNum
+
+pub fn alg_inv(AlgNum) -> AlgNum?
+
+pub fn alg_is_zero(AlgNum) -> Bool
+
+pub fn alg_make(QPoly, QPoly) -> AlgNum
+
+pub fn alg_minimal_polynomial(AlgNum) -> QPoly
+
+pub fn alg_mul(AlgNum, AlgNum) -> AlgNum
+
+pub fn alg_multiplication_matrix(AlgNum) -> QMat
+
+pub fn alg_neg(AlgNum) -> AlgNum
+
+pub fn alg_norm(AlgNum) -> Rat
+
+pub fn alg_nth_root_in_field(AlgNum, Int32) -> AlgNum?
+
+pub fn alg_of_quad(QuadNum) -> AlgNum
+
+pub fn alg_one(QPoly) -> AlgNum
+
+pub fn alg_pow(AlgNum, Int32) -> AlgNum
+
+pub fn alg_rat(QPoly, Rat) -> AlgNum
+
+pub fn alg_rebase_to_minimal(AlgNum) -> AlgNum
+
+pub fn alg_scale_rat(Rat, AlgNum) -> AlgNum
+
+pub fn alg_sqrt_in_field(AlgNum) -> AlgNum?
+
+pub fn alg_sqrt_rat(Rat) -> AlgNum
+
+pub fn alg_sub(AlgNum, AlgNum) -> AlgNum
+
+pub fn alg_trace(AlgNum) -> Rat
+
+pub fn alg_zero(QPoly) -> AlgNum
+
+pub fn algmat_Jordan_chains(AlgMat, AlgNum) -> Array[Array[Array[AlgNum]]]
+
+pub fn algmat_Jordan_decomposition(AlgMat, Array[AlgNum]) -> AlgJordanDecomposition?
+
+pub fn algmat_charpoly(AlgMat) -> Array[AlgNum]
+
+pub fn algmat_eigenvalue_multiplicity(AlgMat, AlgNum) -> Int32
+
+pub fn algmat_eq(AlgMat, AlgMat) -> Bool
+
+pub fn algmat_from_columns(QPoly, Array[Array[AlgNum]]) -> AlgMat
+
+pub fn algmat_from_qmat(QMat, QPoly) -> AlgMat
+
+pub fn algmat_generalized_eigenspace(AlgMat, AlgNum) -> AlgGeneralizedEigenspace
+
+pub fn algmat_identity(QPoly, Int32) -> AlgMat
+
+pub fn algmat_mul(AlgMat, AlgMat) -> AlgMat
+
+pub fn algmat_nullity(AlgMat) -> Int32
+
+pub fn algmat_nullspace(AlgMat) -> Array[Array[AlgNum]]
+
+pub fn algmat_pow(AlgMat, Int32) -> AlgMat
+
+pub fn algmat_rank(AlgMat) -> Int32
+
+pub fn algmat_scalar(AlgNum, Int32) -> AlgMat
+
+pub fn algmat_sub(AlgMat, AlgMat) -> AlgMat
+
+pub fn algmat_trace(AlgMat) -> AlgNum
+
+pub fn algmat_vec(AlgMat, Array[AlgNum]) -> Array[AlgNum]
+
+pub fn algmat_zero(QPoly, Int32) -> AlgMat
+
+pub fn algpoly_add(AlgPoly, AlgPoly) -> AlgPoly
+
+pub fn algpoly_degree(AlgPoly) -> Int32
+
+pub fn algpoly_derivative(AlgPoly) -> AlgPoly
+
+pub fn algpoly_div_exact(AlgPoly, AlgPoly) -> AlgPoly
+
+pub fn algpoly_divmod(AlgPoly, AlgPoly) -> AlgPolyDiv
+
+pub fn algpoly_eq(AlgPoly, AlgPoly) -> Bool
+
+pub fn algpoly_eval(AlgPoly, AlgNum) -> AlgNum
+
+pub fn algpoly_factor_complete(AlgPoly) -> Array[AlgPolyFactor]
+
+pub fn algpoly_from_qpoly(QPoly, QPoly) -> AlgPoly
+
+pub fn algpoly_gcd(AlgPoly, AlgPoly) -> AlgPoly
+
+pub fn algpoly_is_zero(AlgPoly) -> Bool
+
+pub fn algpoly_mod(AlgPoly, AlgPoly) -> AlgPoly
+
+pub fn algpoly_monic(AlgPoly) -> AlgPoly
+
+pub fn algpoly_mul(AlgPoly, AlgPoly) -> AlgPoly
+
+pub fn algpoly_norm_shifted(AlgPoly, Int32) -> QPoly
+
+pub fn algpoly_one(QPoly) -> AlgPoly
+
+pub fn algpoly_pow(AlgPoly, Int32) -> AlgPoly
+
+pub fn algpoly_scale(AlgNum, AlgPoly) -> AlgPoly
+
+pub fn algpoly_squarefree_factorization(AlgPoly) -> Array[AlgPolyFactor]
+
+pub fn algpoly_sub(AlgPoly, AlgPoly) -> AlgPoly
+
+pub fn algpoly_zero(QPoly) -> AlgPoly
+
+pub fn algrows_nullspace(QPoly, Array[Array[AlgNum]], Int32) -> Array[Array[AlgNum]]
+
+pub fn algrows_rref(Array[Array[AlgNum]], Int32) -> AlgRref
+
+pub fn algvec_in_span(Array[Array[AlgNum]], Array[AlgNum]) -> Bool
+
+pub fn algvec_is_zero(Array[AlgNum]) -> Bool
+
+pub fn algvec_rank(Array[Array[AlgNum]]) -> Int32
+
+pub fn algvec_zero(QPoly, Int32) -> Array[AlgNum]
+
+pub fn bigint_abs(@bigint.BigInt) -> @bigint.BigInt
+
+pub fn bigint_divisors(@bigint.BigInt) -> Array[@bigint.BigInt]
+
+pub fn bigint_gcd(@bigint.BigInt, @bigint.BigInt) -> @bigint.BigInt
+
+pub fn bigint_lcm(@bigint.BigInt, @bigint.BigInt) -> @bigint.BigInt
+
+pub fn bigint_nth_root_exact(@bigint.BigInt, Int32) -> @bigint.BigInt?
+
+pub fn bigint_nth_root_floor(@bigint.BigInt, Int32) -> @bigint.BigInt?
+
+pub fn bigint_prime_factorization(@bigint.BigInt) -> Array[(@bigint.BigInt, Int32)]
+
+pub fn bigint_sqrt_exact(@bigint.BigInt) -> @bigint.BigInt?
+
+pub fn bigint_sqrt_floor(@bigint.BigInt) -> @bigint.BigInt?
+
+pub fn bigint_squarefree_decomp(@bigint.BigInt) -> (@bigint.BigInt, @bigint.BigInt)
+
+pub fn bigint_to_double(@bigint.BigInt) -> Double
+
+pub fn biquad_add(BiquadNum, BiquadNum) -> BiquadNum?
+
+pub fn biquad_div(BiquadNum, BiquadNum) -> BiquadNum?
+
+pub fn biquad_eq(BiquadNum, BiquadNum) -> Bool
+
+pub fn biquad_inv(BiquadNum) -> BiquadNum?
+
+pub fn biquad_mul(BiquadNum, BiquadNum) -> BiquadNum?
+
+pub fn biquad_neg(BiquadNum) -> BiquadNum
+
+pub fn biquad_of_quad(QuadNum) -> BiquadNum
+
+pub fn biquad_rat(Rat) -> BiquadNum
+
+pub fn biquad_sign(BiquadNum) -> Int32
+
+pub fn biquad_sqrt(BiquadNum) -> BiquadNum?
+
+pub fn biquad_sqrt_rat(Rat) -> BiquadNum?
+
+pub fn biquad_sub(BiquadNum, BiquadNum) -> BiquadNum?
+
+pub fn biquad_to_radical(BiquadNum) -> RadicalExpr
+
+pub fn biquad_zero() -> BiquadNum
+
+pub fn certified_e(Int32) -> CertEnclosure
+
+pub fn certified_pi(Int32) -> CertEnclosure
+
+pub fn charpoly_sym(SymMat) -> UPoly
+
+pub fn check_Jacobi_arbitrary_precision() -> Bool
+
+pub fn check_Jacobi_interval() -> Bool
+
+pub fn check_algebraic_extensions_and_Jordan() -> Bool
+
+pub fn check_algebraic_radicals_and_rank6_multiquad() -> Bool
+
+pub fn check_biquadratic_denesting() -> Bool
+
+pub fn check_complex_algebraic_closure_rouche() -> Bool
+
+pub fn check_jacobi_adaptive_exact_fallback() -> Bool
+
+pub fn check_jacobi_block_deflation_and_multiplicity() -> Bool
+
+pub fn check_jacobi_cluster_aware_iteration() -> Bool
+
+pub fn check_jacobi_cluster_separation() -> Bool
+
+pub fn check_lll_lattice_and_van_hoeij_factor() -> Bool
+
+pub fn check_multiquadratic_tower() -> Bool
+
+pub fn check_phase21_transcendence_and_crt_charpoly() -> Bool
+
+pub fn check_poly_cubes() -> Bool
+
+pub fn check_qpoly_degree_pattern_certificates() -> Bool
+
+pub fn check_qpoly_factor_complete() -> Bool
+
+pub fn check_qpoly_fast_arithmetic() -> Bool
+
+pub fn check_qpoly_hensel_factor_and_certificates() -> Bool
+
+pub fn check_qpoly_irreducibility_certificates() -> Bool
+
+pub fn check_qpoly_mod_pattern_pruning() -> Bool
+
+pub fn check_radical_denesting() -> Bool
+
+pub fn check_root_isolation() -> Bool
+
+pub fn check_spectral_identities() -> Bool
+
+pub fn check_spectral_matrices() -> Bool
+
+pub fn check_splitting_field() -> Bool
+
+pub fn check_symbolic_affine_filler() -> Bool
+
+pub fn check_symbolic_algebra_all() -> Bool
+
+pub fn check_symbolic_nonlinear_boundary() -> Bool
+
+pub fn check_symbolic_pruning() -> Bool
+
+pub fn check_tower_fields() -> Bool
+
+pub fn check_transcendental_boundary_layer() -> Bool
+
+pub fn cinterval_add(CInterval, CInterval) -> CInterval
+
+pub fn cinterval_conj(CInterval) -> CInterval
+
+pub fn cinterval_contains(CInterval, QCpx) -> Bool
+
+pub fn cinterval_hull(CInterval, CInterval) -> CInterval
+
+pub fn cinterval_midpoint(CInterval) -> QCpx
+
+pub fn cinterval_mul(CInterval, CInterval) -> CInterval
+
+pub fn cinterval_neg(CInterval) -> CInterval
+
+pub fn cinterval_normalize(CInterval, Int32) -> CInterval
+
+pub fn cinterval_one() -> CInterval
+
+pub fn cinterval_point(QCpx) -> CInterval
+
+pub fn cinterval_sub(CInterval, CInterval) -> CInterval
+
+pub fn cinterval_subset(CInterval, CInterval) -> Bool
+
+pub fn cinterval_zero() -> CInterval
+
+pub fn complex_alg_add(ComplexAlgNum, ComplexAlgNum, max_degree? : Int32) -> ComplexAlgNum?
+
+pub fn complex_alg_all_nth_roots(ComplexAlgNum, Int32, max_degree? : Int32) -> Array[ComplexAlgNum]
+
+pub fn complex_alg_conj(ComplexAlgNum) -> ComplexAlgNum
+
+pub fn complex_alg_div(ComplexAlgNum, ComplexAlgNum, max_degree? : Int32) -> ComplexAlgNum?
+
+pub fn complex_alg_eq(ComplexAlgNum, ComplexAlgNum) -> Bool
+
+pub fn complex_alg_eval_poly(QPoly, ComplexAlgNum, max_degree? : Int32) -> ComplexAlgNum?
+
+pub fn complex_alg_i() -> ComplexAlgNum
+
+pub fn complex_alg_inv(ComplexAlgNum) -> ComplexAlgNum?
+
+pub fn complex_alg_mul(ComplexAlgNum, ComplexAlgNum, max_degree? : Int32) -> ComplexAlgNum?
+
+pub fn complex_alg_neg(ComplexAlgNum) -> ComplexAlgNum
+
+pub fn complex_alg_of_rat(Rat) -> ComplexAlgNum
+
+pub fn complex_alg_pow(ComplexAlgNum, Int32, max_degree? : Int32) -> ComplexAlgNum?
+
+pub fn complex_alg_refine_disk(ComplexAlgNum, Int32) -> ComplexDisk
+
+pub fn complex_alg_roots_of(QPoly) -> Array[(ComplexAlgNum, Int32)]
+
+pub fn complex_alg_sub(ComplexAlgNum, ComplexAlgNum, max_degree? : Int32) -> ComplexAlgNum?
+
+pub fn complex_root_isolations_are_certified(QPoly, Array[ComplexRootIsolation]) -> Bool
+
+pub fn cubic_add(CubicNum, CubicNum) -> CubicNum?
+
+pub fn cubic_cuberoot_rat(Rat) -> CubicNum?
+
+pub fn cubic_div(CubicNum, CubicNum) -> CubicNum?
+
+pub fn cubic_eq(CubicNum, CubicNum) -> Bool
+
+pub fn cubic_generator(@bigint.BigInt) -> CubicNum?
+
+pub fn cubic_inv(CubicNum) -> CubicNum?
+
+pub fn cubic_is_rat(CubicNum) -> Bool
+
+pub fn cubic_is_zero(CubicNum) -> Bool
+
+pub fn cubic_make(@bigint.BigInt, Rat, Rat, Rat) -> CubicNum?
+
+pub fn cubic_mul(CubicNum, CubicNum) -> CubicNum?
+
+pub fn cubic_neg(CubicNum) -> CubicNum
+
+pub fn cubic_norm(CubicNum) -> Rat
+
+pub fn cubic_rat(@bigint.BigInt, Rat) -> CubicNum?
+
+pub fn cubic_sign(CubicNum) -> Int32
+
+pub fn cubic_sub(CubicNum, CubicNum) -> CubicNum?
+
+pub fn e_irr_certificate_verify(EIrrCertificate) -> Bool
+
+pub fn e_irrationality_certificate(@bigint.BigInt, Int32) -> EIrrCertificate
+
+pub fn e_refute_rational(@bigint.BigInt, Int32) -> Bool
+
+pub fn eigen_interval_contains(EigenInterval, Rat) -> Bool
+
+pub fn frac_add(SymFrac, SymFrac) -> SymFrac
+
+pub fn frac_div(SymFrac, SymFrac) -> SymFrac
+
+pub fn frac_eq(SymFrac, SymFrac) -> Bool
+
+pub fn frac_int(Int32) -> SymFrac
+
+pub fn frac_is_zero(SymFrac) -> Bool
+
+pub fn frac_make(Poly, Poly) -> SymFrac
+
+pub fn frac_mul(SymFrac, SymFrac) -> SymFrac
+
+pub fn frac_neg(SymFrac) -> SymFrac
+
+pub fn frac_one() -> SymFrac
+
+pub fn frac_poly(Poly) -> SymFrac
+
+pub fn frac_rat(Rat) -> SymFrac
+
+pub fn frac_sub(SymFrac, SymFrac) -> SymFrac
+
+pub fn frac_var(Int32) -> SymFrac
+
+pub fn frac_zero() -> SymFrac
+
+pub fn int_abs(Int32) -> Int32
+
+pub fn jacobi_block_components(QCpxMat) -> Array[Array[Int32]]
+
+pub fn jacobi_block_deflated_certified(QCpxMat, JacobiBlockDeflatedReport) -> Bool
+
+pub fn jacobi_block_deflated_eigen(QCpxMat, target_width? : Rat, max_steps? : Int32, tolerance_sq? : Rat, initial_bits? : Int32, max_bits? : Int32, max_exact_width_bits? : Int32) -> JacobiBlockDeflatedReport?
+
+pub fn jacobi_certificate_sound(QCpxMat, JacobiCertificate) -> Bool
+
+pub fn jacobi_cluster_separation_certified(QCpxMat, JacobiCertificate, JacobiClusterSeparation) -> Bool
+
+pub fn jacobi_coefficients(QCpxMat, Int32, Int32, Int32) -> JacobiCoefficients?
+
+pub fn jacobi_interval_eigen(QCpxMat, max_steps? : Int32, tolerance_sq? : Rat, precision_bits? : Int32) -> JacobiCertificate?
+
+pub fn jacobi_interval_eigen_adaptive(QCpxMat, target_width? : Rat, max_steps? : Int32, tolerance_sq? : Rat, initial_bits? : Int32, max_bits? : Int32, max_exact_width_bits? : Int32) -> JacobiAdaptiveReport?
+
+pub fn jacobi_interval_eigen_cluster_aware(QCpxMat, target_width? : Rat, max_steps? : Int32, tolerance_sq? : Rat, initial_bits? : Int32, max_bits? : Int32) -> JacobiClusterAwareReport?
+
+pub fn jacobi_separate_clusters(QCpxMat, JacobiCertificate, Int32) -> JacobiClusterSeparation?
+
+pub fn jacobi_similarity_interval(QCIntervalMat, QCIntervalMat, Int32) -> QCIntervalMat
+
+pub fn jacobi_unitary_interval(Int32, JacobiCoefficients, bits? : Int32) -> QCIntervalMat
+
+pub fn jacobi_unitary_residual_contains_zero(QCIntervalMat, Int32) -> Bool
+
+pub fn liouville_cert_verify(LiouvilleTranscendenceCert) -> Bool
+
+pub fn liouville_transcendence_certificate(Array[@bigint.BigInt]) -> LiouvilleTranscendenceCert?
+
+pub fn multiquad_add(MultiQuadNum, MultiQuadNum) -> MultiQuadNum?
+
+pub fn multiquad_add_upto(MultiQuadNum, MultiQuadNum, max_gens? : Int32) -> MultiQuadNum?
+
+pub fn multiquad_align(MultiQuadNum, MultiQuadNum) -> (MultiQuadNum, MultiQuadNum)?
+
+pub fn multiquad_align_upto(MultiQuadNum, MultiQuadNum, max_gens? : Int32) -> (MultiQuadNum, MultiQuadNum)?
+
+pub fn multiquad_div(MultiQuadNum, MultiQuadNum) -> MultiQuadNum?
+
+pub fn multiquad_eq(MultiQuadNum, MultiQuadNum) -> Bool
+
+pub fn multiquad_eq_upto(MultiQuadNum, MultiQuadNum, max_gens? : Int32) -> Bool
+
+pub fn multiquad_inv(MultiQuadNum) -> MultiQuadNum?
+
+pub fn multiquad_is_zero(MultiQuadNum) -> Bool
+
+pub fn multiquad_make(Array[@bigint.BigInt], Array[Rat]) -> MultiQuadNum?
+
+pub fn multiquad_make_upto(Array[@bigint.BigInt], Array[Rat], max_gens? : Int32) -> MultiQuadNum?
+
+pub fn multiquad_mul(MultiQuadNum, MultiQuadNum) -> MultiQuadNum?
+
+pub fn multiquad_mul_upto(MultiQuadNum, MultiQuadNum, max_gens? : Int32) -> MultiQuadNum?
+
+pub fn multiquad_neg(MultiQuadNum) -> MultiQuadNum
+
+pub fn multiquad_rat(Rat) -> MultiQuadNum
+
+pub fn multiquad_rational_square_adjustment(MultiQuadNum) -> (@bigint.BigInt, MultiQuadNum)?
+
+pub fn multiquad_sign(MultiQuadNum) -> Int32
+
+pub fn multiquad_sqrt_extended(MultiQuadNum) -> MultiQuadNum?
+
+pub fn multiquad_sqrt_extended_upto(MultiQuadNum, max_gens? : Int32) -> MultiQuadNum?
+
+pub fn multiquad_sqrt_in_field(MultiQuadNum) -> MultiQuadNum?
+
+pub fn multiquad_sqrt_rat(Rat) -> MultiQuadNum?
+
+pub fn multiquad_sub(MultiQuadNum, MultiQuadNum) -> MultiQuadNum?
+
+pub fn multiquad_zero() -> MultiQuadNum
+
+pub fn pi_refute_rational_refined(@bigint.BigInt, Int32, Int32) -> RefutationResult
+
+pub fn poly_add(Poly, Poly) -> Poly
+
+pub fn poly_box_face(Int32, Bool, PolyCube) -> PolyBoxFace
+
+pub fn poly_box_face_of(PolyOpenBox, Int32, Bool) -> PolyCube?
+
+pub fn poly_box_fill(PolyOpenBox) -> PolyCube?
+
+pub fn poly_box_fill_verified(PolyOpenBox) -> PolyCube?
+
+pub fn poly_box_filler_faces_ok(PolyOpenBox, PolyCube) -> Bool
+
+pub fn poly_box_validate(PolyOpenBox) -> Bool
+
+pub fn poly_const(Rat) -> Poly
+
+pub fn poly_cube_add(PolyCube, PolyCube) -> PolyCube
+
+pub fn poly_cube_compose(PolyCube, PolyCube) -> PolyCube
+
+pub fn poly_cube_const(Int32, Array[Rat]) -> PolyCube
+
+pub fn poly_cube_degeneracy(PolyCube, Int32) -> PolyCube
+
+pub fn poly_cube_eq(PolyCube, PolyCube) -> Bool
+
+pub fn poly_cube_eval(PolyCube, Array[Rat]) -> Array[Rat]
+
+pub fn poly_cube_face(PolyCube, Int32, Bool) -> PolyCube
+
+pub fn poly_cube_scale(Poly, PolyCube) -> PolyCube
+
+pub fn poly_cube_sub(PolyCube, PolyCube) -> PolyCube
+
+pub fn poly_drop_atom(Poly, Int32) -> Poly
+
+pub fn poly_eq(Poly, Poly) -> Bool
+
+pub fn poly_eval_point(Poly, Array[Rat]) -> Rat
+
+pub fn poly_eval_var(Poly, Int32, Rat) -> Poly
+
+pub fn poly_insert_atom(Poly, Int32) -> Poly
+
+pub fn poly_int(Int32) -> Poly
+
+pub fn poly_is_zero(Poly) -> Bool
+
+pub fn poly_mul(Poly, Poly) -> Poly
+
+pub fn poly_neg(Poly) -> Poly
+
+pub fn poly_nonzero_at_e(Array[@bigint.BigInt], Int32) -> RefutationResult
+
+pub fn poly_normalize(Array[PolyTerm]) -> Poly
+
+pub fn poly_one() -> Poly
+
+pub fn poly_open_box(Int32, Array[PolyBoxFace]) -> PolyOpenBox
+
+pub fn poly_sub(Poly, Poly) -> Poly
+
+pub fn poly_subst_all(Poly, Array[Poly]) -> Poly
+
+pub fn poly_var(Int32) -> Poly
+
+pub fn poly_zero() -> Poly
+
+pub fn qci_mat_adjoint(QCIntervalMat) -> QCIntervalMat
+
+pub fn qci_mat_contains(QCIntervalMat, QCIntervalMat) -> Bool
+
+pub fn qci_mat_from_point(QCpxMat) -> QCIntervalMat
+
+pub fn qci_mat_from_rows(Array[Array[CInterval]]) -> QCIntervalMat
+
+pub fn qci_mat_hermitian_hull(QCIntervalMat) -> QCIntervalMat
+
+pub fn qci_mat_identity(Int32) -> QCIntervalMat
+
+pub fn qci_mat_is_hermitian(QCIntervalMat) -> Bool
+
+pub fn qci_mat_midpoint(QCIntervalMat) -> QCpxMat
+
+pub fn qci_mat_mul(QCIntervalMat, QCIntervalMat) -> QCIntervalMat
+
+pub fn qci_mat_normalize(QCIntervalMat, Int32) -> QCIntervalMat
+
+pub fn qci_mat_sub(QCIntervalMat, QCIntervalMat) -> QCIntervalMat
+
+pub fn qci_mat_zero(Int32) -> QCIntervalMat
+
+pub fn qci_off_frobenius_sq_upper(QCIntervalMat) -> Rat
+
+pub fn qcpx(Rat, Rat) -> QCpx
+
+pub fn qcpx_hermitian_charpoly(QCpxMat) -> QPoly?
+
+pub fn qcpx_hermitian_eigenvalue_isolations(QCpxMat, Int32) -> Array[RealRootIsolation]?
+
+pub fn qcpx_is_zero(QCpx) -> Bool
+
+pub fn qcpx_mat_from_qmat(QMat) -> QCpxMat
+
+pub fn qcpx_mat_from_rows(Array[Array[QCpx]]) -> QCpxMat
+
+pub fn qcpx_mat_is_hermitian(QCpxMat) -> Bool
+
+pub fn qcpx_real(Rat) -> QCpx
+
+pub fn qmat_Jordan_chains(QMat, Rat) -> Array[Array[Array[Rat]]]
+
+pub fn qmat_Jordan_decomposition(QMat, Array[Rat]) -> QJordanDecomposition?
+
+pub fn qmat_Jordan_decomposition_auto(QMat) -> QJordanDecomposition?
+
+pub fn qmat_add(QMat, QMat) -> QMat
+
+pub fn qmat_charpoly(QMat) -> QPoly
+
+pub fn qmat_charpoly_berkowitz_crt(Array[Array[@bigint.BigInt]]) -> BerkowitzCrtReport
+
+pub fn qmat_column_basis(QMat) -> Array[Array[Rat]]
+
+pub fn qmat_det(QMat) -> Rat
+
+pub fn qmat_diagonalizable_at(QMat, Rat) -> Bool
+
+pub fn qmat_eigen_nullities(QMat, Rat) -> Array[Int32]
+
+pub fn qmat_eigenvalue_multiplicity(QMat, Rat) -> Int32
+
+pub fn qmat_eq(QMat, QMat) -> Bool
+
+pub fn qmat_from_columns(Array[Array[Rat]]) -> QMat
+
+pub fn qmat_from_int_rows(Array[Array[Int32]]) -> QMat
+
+pub fn qmat_from_rows(Array[Array[Rat]]) -> QMat
+
+pub fn qmat_generalized_eigenspace(QMat, Rat) -> QGeneralizedEigenspace
+
+pub fn qmat_generalized_projector(QMat, Rat) -> QPrimaryProjector?
+
+pub fn qmat_identity(Int32) -> QMat
+
+pub fn qmat_inverse(QMat) -> QMat?
+
+pub fn qmat_is_diagonalizable_rational(QMat) -> Bool
+
+pub fn qmat_is_lll_reduced(Array[Array[Rat]], delta_num? : Int32, delta_den? : Int32) -> Bool
+
+pub fn qmat_is_zero(QMat) -> Bool
+
+pub fn qmat_lll_reduce(Array[Array[Rat]], delta_num? : Int32, delta_den? : Int32) -> LllReductionReport
+
+pub fn qmat_minimal_polynomial(QMat) -> QPoly
+
+pub fn qmat_mul(QMat, QMat) -> QMat
+
+pub fn qmat_nullity(QMat) -> Int32
+
+pub fn qmat_nullspace(QMat) -> Array[Array[Rat]]
+
+pub fn qmat_poly_eval(QPoly, QMat) -> QMat
+
+pub fn qmat_pow(QMat, Int32) -> QMat
+
+pub fn qmat_primary_projector(QMat, QPoly) -> QPrimaryProjector?
+
+pub fn qmat_primary_subspace_basis(QMat, QPoly) -> Array[Array[Rat]]
+
+pub fn qmat_rank(QMat) -> Int32
+
+pub fn qmat_scalar(Rat, Int32) -> QMat
+
+pub fn qmat_scale(Rat, QMat) -> QMat
+
+pub fn qmat_sub(QMat, QMat) -> QMat
+
+pub fn qmat_symmetric_eigenvalue_isolations(QMat, Int32) -> Array[RealRootIsolation]?
+
+pub fn qmat_trace(QMat) -> Rat
+
+pub fn qmat_vec(QMat, Array[Rat]) -> Array[Rat]
+
+pub fn qmat_vector_annihilator(QMat, Array[Rat]) -> QPoly
+
+pub fn qmat_zero(Int32) -> QMat
+
+pub fn qpoly_add(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_coeff(QPoly, Int32) -> Rat
+
+pub fn qpoly_complete_factorization_expand(QPolyCompleteFactorization) -> QPoly
+
+pub fn qpoly_const(Rat) -> QPoly
+
+pub fn qpoly_degree(QPoly) -> Int32
+
+pub fn qpoly_derivative(QPoly) -> QPoly
+
+pub fn qpoly_div_exact(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_divmod(QPoly, QPoly) -> QPolyDiv
+
+pub fn qpoly_eq(QPoly, QPoly) -> Bool
+
+pub fn qpoly_eval(QPoly, Rat) -> Rat
+
+pub fn qpoly_extgcd(QPoly, QPoly) -> QPolyExtGcd
+
+pub fn qpoly_factor(QPoly, Int32) -> QPolyFactor
+
+pub fn qpoly_factor_certificate_check(QPoly, QPolyFactorCertificate, require_witnesses? : Bool) -> Bool
+
+pub fn qpoly_factor_certified(QPoly) -> QPolyFactorCertificate
+
+pub fn qpoly_factor_complete(QPoly) -> QPolyCompleteFactorization
+
+pub fn qpoly_factor_complete_with_budget(QPoly, Int32) -> QPolyCompleteFactorization?
+
+pub fn qpoly_factor_degree_candidates(QPoly, Int32) -> Array[Int32]
+
+pub fn qpoly_factor_hensel(QPoly) -> QPolyCompleteFactorization
+
+pub fn qpoly_factor_lll(QPoly) -> QPolyLllFactorReport
+
+pub fn qpoly_factor_rational_roots(QPoly) -> QPolyRationalFactorization
+
+pub fn qpoly_gcd(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_int(Int32) -> QPoly
+
+pub fn qpoly_integer_coeffs_big(QPoly) -> Array[@bigint.BigInt]
+
+pub fn qpoly_irreducibility_certificate(QPoly, prime_bound? : Int32, shift_bound? : Int32) -> QPolyIrreducibilityCertificate?
+
+pub fn qpoly_irreducibility_certificate_check(QPoly, QPolyIrreducibilityCertificate) -> Bool
+
+pub fn qpoly_irreducible_by_mod_patterns(QPoly, Int32) -> Bool
+
+pub fn qpoly_irreducible_certified(QPoly) -> Bool
+
+pub fn qpoly_irreducible_upto3(QPoly) -> Bool
+
+pub fn qpoly_is_irreducible(QPoly) -> Bool
+
+pub fn qpoly_is_one(QPoly) -> Bool
+
+pub fn qpoly_is_squarefree(QPoly) -> Bool
+
+pub fn qpoly_is_zero(QPoly) -> Bool
+
+pub fn qpoly_isolate_complex_roots(QPoly) -> Array[ComplexRootIsolation]
+
+pub fn qpoly_isolate_real_roots(QPoly, Int32) -> Array[RealRootIsolation]
+
+pub fn qpoly_leading(QPoly) -> Rat
+
+pub fn qpoly_mod(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_mod_degree_patterns(QPoly, Int32) -> Array[QPolyDegreePattern]
+
+pub fn qpoly_monic(QPoly) -> QPoly
+
+pub fn qpoly_mul(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_neg(QPoly) -> QPoly
+
+pub fn qpoly_normalize(Array[Rat]) -> QPoly
+
+pub fn qpoly_one() -> QPoly
+
+pub fn qpoly_pow(QPoly, Int32) -> QPoly
+
+pub fn qpoly_primitive_part(QPoly) -> QPoly
+
+pub fn qpoly_pseudo_remainder(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_rational_roots(QPoly) -> Array[Rat]
+
+pub fn qpoly_real_root_count(QPoly, Rat, Rat) -> Int32
+
+pub fn qpoly_root_factor(Rat) -> QPoly
+
+pub fn qpoly_root_multiplicity(QPoly, Rat) -> Int32
+
+pub fn qpoly_scale(Rat, QPoly) -> QPoly
+
+pub fn qpoly_splitting_field(QPoly) -> SplittingField?
+
+pub fn qpoly_squarefree_factorization(QPoly) -> Array[QPolyFactor]
+
+pub fn qpoly_squarefree_part(QPoly) -> QPoly
+
+pub fn qpoly_sturm_sequence(QPoly) -> Array[QPoly]
+
+pub fn qpoly_sturm_variations(Array[QPoly], Rat) -> Int32
+
+pub fn qpoly_sub(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_x() -> QPoly
+
+pub fn qpoly_zero() -> QPoly
+
+pub fn qrows_nullspace(Array[Array[Rat]], Int32) -> Array[Array[Rat]]
+
+pub fn qrows_rank(Array[Array[Rat]], Int32) -> Int32
+
+pub fn qrows_rref(Array[Array[Rat]], Int32) -> QRref
+
+pub fn quad_add(QuadNum, QuadNum) -> QuadNum
+
+pub fn quad_compatible(QuadNum, QuadNum) -> Bool
+
+pub fn quad_denested_cuberoot(QuadNum) -> QuadNum?
+
+pub fn quad_denested_sqrt(QuadNum) -> (QuadNum, QuadNum)?
+
+pub fn quad_div(QuadNum, QuadNum) -> QuadNum?
+
+pub fn quad_eq(QuadNum, QuadNum) -> Bool
+
+pub fn quad_int(Int32) -> QuadNum
+
+pub fn quad_inv(QuadNum) -> QuadNum?
+
+pub fn quad_is_zero(QuadNum) -> Bool
+
+pub fn quad_make(Rat, Rat, Int32) -> QuadNum
+
+pub fn quad_make_big(Rat, Rat, @bigint.BigInt) -> QuadNum
+
+pub fn quad_mul(QuadNum, QuadNum) -> QuadNum
+
+pub fn quad_neg(QuadNum) -> QuadNum
+
+pub fn quad_norm(QuadNum) -> Rat
+
+pub fn quad_nth_root_in_field(QuadNum, Int32) -> QuadNum?
+
+pub fn quad_one() -> QuadNum
+
+pub fn quad_pow(QuadNum, Int32) -> QuadNum
+
+pub fn quad_rat(Rat) -> QuadNum
+
+pub fn quad_sqrt_int(Int32) -> QuadNum
+
+pub fn quad_sqrt_rat(Rat) -> QuadNum
+
+pub fn quad_sub(QuadNum, QuadNum) -> QuadNum
+
+pub fn quad_trace(QuadNum) -> Rat
+
+pub fn quad_zero() -> QuadNum
+
+pub fn qvec_add(Array[Rat], Array[Rat]) -> Array[Rat]
+
+pub fn qvec_eq(Array[Rat], Array[Rat]) -> Bool
+
+pub fn qvec_in_span(Array[Array[Rat]], Array[Rat]) -> Bool
+
+pub fn qvec_independent_subset(Array[Array[Rat]]) -> Array[Array[Rat]]
+
+pub fn qvec_is_zero(Array[Rat]) -> Bool
+
+pub fn qvec_rank(Array[Array[Rat]]) -> Int32
+
+pub fn qvec_scale(Rat, Array[Rat]) -> Array[Rat]
+
+pub fn qvec_sub(Array[Rat], Array[Rat]) -> Array[Rat]
+
+pub fn qvec_zero(Int32) -> Array[Rat]
+
+pub fn radical_equal_algebraic(RadicalExpr, RadicalExpr, max_gens? : Int32, max_degree? : Int32) -> Bool?
+
+pub fn radical_equal_exact(RadicalExpr, RadicalExpr) -> Bool?
+
+pub fn radical_int(Int32) -> RadicalExpr
+
+pub fn radical_simplify(RadicalExpr) -> RadicalExpr
+
+pub fn radical_sqrt(RadicalExpr) -> RadicalExpr
+
+pub fn radical_to_biquad(RadicalExpr) -> BiquadNum?
+
+pub fn radical_to_cubic(RadicalExpr) -> CubicNum?
+
+pub fn radical_to_multiquad(RadicalExpr) -> MultiQuadNum?
+
+pub fn radical_to_multiquad_upto(RadicalExpr, max_gens? : Int32) -> MultiQuadNum?
+
+pub fn radical_to_real_alg(RadicalExpr, max_degree? : Int32) -> RealAlgRadical?
+
+pub fn radical_to_triquad(RadicalExpr) -> TriquadNum?
+
+pub fn rat_abs_exact(Rat) -> Rat
+
+pub fn rat_add(Rat, Rat) -> Rat
+
+pub fn rat_big_int(@bigint.BigInt) -> Rat
+
+pub fn rat_cmp_exact(Rat, Rat) -> Int32
+
+pub fn rat_div(Rat, Rat) -> Rat
+
+pub fn rat_eq(Rat, Rat) -> Bool
+
+pub fn rat_int(Int32) -> Rat
+
+pub fn rat_interval(Rat, Rat) -> RatInterval
+
+pub fn rat_interval_abs(RatInterval) -> RatInterval
+
+pub fn rat_interval_add(RatInterval, RatInterval) -> RatInterval
+
+pub fn rat_interval_contains(RatInterval, Rat) -> Bool
+
+pub fn rat_interval_div(RatInterval, RatInterval) -> RatInterval?
+
+pub fn rat_interval_hull(RatInterval, RatInterval) -> RatInterval
+
+pub fn rat_interval_midpoint(RatInterval) -> Rat
+
+pub fn rat_interval_mul(RatInterval, RatInterval) -> RatInterval
+
+pub fn rat_interval_neg(RatInterval) -> RatInterval
+
+pub fn rat_interval_normalize(RatInterval, Int32) -> RatInterval
+
+pub fn rat_interval_point(Rat) -> RatInterval
+
+pub fn rat_interval_recip(RatInterval) -> RatInterval?
+
+pub fn rat_interval_sqrt(RatInterval, Int32) -> RatInterval?
+
+pub fn rat_interval_sub(RatInterval, RatInterval) -> RatInterval
+
+pub fn rat_interval_subset(RatInterval, RatInterval) -> Bool
+
+pub fn rat_interval_width(RatInterval) -> Rat
+
+pub fn rat_inv(Rat) -> Rat
+
+pub fn rat_is_one(Rat) -> Bool
+
+pub fn rat_is_zero(Rat) -> Bool
+
+pub fn rat_le_exact(Rat, Rat) -> Bool
+
+pub fn rat_make(Int32, Int32) -> Rat
+
+pub fn rat_make_big(@bigint.BigInt, @bigint.BigInt) -> Rat
+
+pub fn rat_mul(Rat, Rat) -> Rat
+
+pub fn rat_neg(Rat) -> Rat
+
+pub fn rat_nth_root_exact(Rat, Int32) -> Rat?
+
+pub fn rat_one() -> Rat
+
+pub fn rat_round_down_pow2(Rat, Int32) -> Rat
+
+pub fn rat_round_nearest_bigint(Rat) -> @bigint.BigInt
+
+pub fn rat_round_up_pow2(Rat, Int32) -> Rat
+
+pub fn rat_sign(Rat) -> Int32
+
+pub fn rat_sqrt_if_square(Rat) -> Rat?
+
+pub fn rat_sqrt_interval(Rat, Int32) -> RatInterval?
+
+pub fn rat_sub(Rat, Rat) -> Rat
+
+pub fn rat_to_double(Rat) -> Double
+
+pub fn rat_zero() -> Rat
+
+pub fn real_alg_add(RealAlgRadical, RealAlgRadical, max_degree? : Int32) -> RealAlgRadical?
+
+pub fn real_alg_div(RealAlgRadical, RealAlgRadical, max_degree? : Int32) -> RealAlgRadical?
+
+pub fn real_alg_eq(RealAlgRadical, RealAlgRadical) -> Bool
+
+pub fn real_alg_inv(RealAlgRadical) -> RealAlgRadical?
+
+pub fn real_alg_mul(RealAlgRadical, RealAlgRadical, max_degree? : Int32) -> RealAlgRadical?
+
+pub fn real_alg_neg(RealAlgRadical) -> RealAlgRadical
+
+pub fn real_alg_nth_root(RealAlgRadical, Int32, max_degree? : Int32) -> RealAlgRadical?
+
+pub fn real_alg_of_rat(Rat) -> RealAlgRadical
+
+pub fn real_alg_sign(RealAlgRadical) -> Int32
+
+pub fn real_alg_sub(RealAlgRadical, RealAlgRadical, max_degree? : Int32) -> RealAlgRadical?
+
+pub fn real_root_isolation_refine(RealRootIsolation, Int32) -> RealRootIsolation
+
+pub fn real_root_isolations_are_certified(QPoly, Array[RealRootIsolation]) -> Bool
+
+pub fn rpoly_add(RPoly, RPoly) -> RPoly
+
+pub fn rpoly_degree(RPoly) -> Int32
+
+pub fn rpoly_divisible_by(RPoly, RPoly) -> Bool
+
+pub fn rpoly_divmod_monic(RPoly, RPoly) -> RPolyDiv
+
+pub fn rpoly_eq(RPoly, RPoly) -> Bool
+
+pub fn rpoly_eval(RPoly, SymFrac) -> SymFrac
+
+pub fn rpoly_eval_mat(RPoly, SymMat) -> SymMat
+
+pub fn rpoly_factor(Int32) -> RPoly
+
+pub fn rpoly_is_zero(RPoly) -> Bool
+
+pub fn rpoly_mul(RPoly, RPoly) -> RPoly
+
+pub fn rpoly_neg(RPoly) -> RPoly
+
+pub fn rpoly_normalize(Array[SymFrac]) -> RPoly
+
+pub fn rpoly_one() -> RPoly
+
+pub fn rpoly_scale(SymFrac, RPoly) -> RPoly
+
+pub fn rpoly_sub(RPoly, RPoly) -> RPoly
+
+pub fn rpoly_x() -> RPoly
+
+pub fn rpoly_zero() -> RPoly
+
+pub fn sc_add(SymC, SymC) -> SymC
+
+pub fn sc_conj(SymC) -> SymC
+
+pub fn sc_eq(SymC, SymC) -> Bool
+
+pub fn sc_int(Int32) -> SymC
+
+pub fn sc_is_zero(SymC) -> Bool
+
+pub fn sc_make(SymFrac, SymFrac) -> SymC
+
+pub fn sc_mul(SymC, SymC) -> SymC
+
+pub fn sc_neg(SymC) -> SymC
+
+pub fn sc_one() -> SymC
+
+pub fn sc_rat(Rat) -> SymC
+
+pub fn sc_real_frac(SymFrac) -> SymC
+
+pub fn sc_scale_frac(SymFrac, SymC) -> SymC
+
+pub fn sc_sub(SymC, SymC) -> SymC
+
+pub fn sc_var(Int32) -> SymC
+
+pub fn sc_zero() -> SymC
+
+pub fn schanuel_linear_independence_cert(Array[@bigint.BigInt], Array[Array[Rat]]) -> SchanuelRankWitness?
+
+pub fn spectral_denominator(Array[Int32], Int32) -> SymFrac
+
+pub fn spectral_minpoly(Array[Int32]) -> RPoly
+
+pub fn spectral_projector_sym(SymMat, Array[Int32], Int32) -> SymMat
+
+pub fn spectral_q(Array[Int32], Int32) -> RPoly
+
+pub fn splitting_field_is_certified(QPoly, SplittingField) -> Bool
+
+pub fn sym_affine_path(Array[SymC], Array[SymC]) -> (SymFrac) -> Array[SymC]
+
+pub fn sym_bilinear_ansatz(Array[SymC], Array[SymC], Array[SymC], Array[SymC]) -> (SymFrac, SymFrac) -> Array[SymC]
+
+pub fn sym_bilinear_from_corners(Array[SymC], Array[SymC], Array[SymC], Array[SymC]) -> (SymFrac, SymFrac) -> Array[SymC]
+
+pub fn sym_det(SymMat) -> SymC
+
+pub fn sym_frac_one_minus(SymFrac) -> SymFrac
+
+pub fn sym_hermitian2(Int32, Int32, Int32, Int32) -> SymMat
+
+pub fn sym_inner(Array[SymC], Array[SymC]) -> SymC
+
+pub fn sym_is_hermitian(SymMat) -> Bool
+
+pub fn sym_is_idempotent(SymMat) -> Bool
+
+pub fn sym_mat_add(SymMat, SymMat) -> SymMat
+
+pub fn sym_mat_adjoint(SymMat) -> SymMat
+
+pub fn sym_mat_eq(SymMat, SymMat) -> Bool
+
+pub fn sym_mat_from_rows(Array[Array[SymC]]) -> SymMat
+
+pub fn sym_mat_identity(Int32) -> SymMat
+
+pub fn sym_mat_mul(SymMat, SymMat) -> SymMat
+
+pub fn sym_mat_scale(SymFrac, SymMat) -> SymMat
+
+pub fn sym_mat_sub(SymMat, SymMat) -> SymMat
+
+pub fn sym_mat_vec(SymMat, Array[SymC]) -> Array[SymC]
+
+pub fn sym_mat_zero(Int32) -> SymMat
+
+pub fn sym_outer(Array[SymC]) -> SymMat
+
+pub fn sym_projector_rank_one(Array[SymC]) -> SymMat
+
+pub fn sym_square_fill((SymFrac) -> Array[SymC], (SymFrac) -> Array[SymC], (SymFrac) -> Array[SymC]) -> (SymFrac, SymFrac) -> Array[SymC]
+
+pub fn sym_vec_add(Array[SymC], Array[SymC]) -> Array[SymC]
+
+pub fn sym_vec_eq(Array[SymC], Array[SymC]) -> Bool
+
+pub fn sym_vec_scale(SymFrac, Array[SymC]) -> Array[SymC]
+
+pub fn sym_vec_sub(Array[SymC], Array[SymC]) -> Array[SymC]
+
+pub fn triquad_add(TriquadNum, TriquadNum) -> TriquadNum?
+
+pub fn triquad_align(TriquadNum, TriquadNum) -> (TriquadNum, TriquadNum)?
+
+pub fn triquad_div(TriquadNum, TriquadNum) -> TriquadNum?
+
+pub fn triquad_embed_biquad(Array[@bigint.BigInt], BiquadNum) -> TriquadNum?
+
+pub fn triquad_eq(TriquadNum, TriquadNum) -> Bool
+
+pub fn triquad_inv(TriquadNum) -> TriquadNum?
+
+pub fn triquad_is_zero(TriquadNum) -> Bool
+
+pub fn triquad_make(Array[@bigint.BigInt], Array[Rat]) -> TriquadNum?
+
+pub fn triquad_mul(TriquadNum, TriquadNum) -> TriquadNum?
+
+pub fn triquad_neg(TriquadNum) -> TriquadNum
+
+pub fn triquad_reembed(TriquadNum, Array[@bigint.BigInt]) -> TriquadNum?
+
+pub fn triquad_sign(TriquadNum) -> Int32
+
+pub fn triquad_sqrt_of_biquad(BiquadNum) -> TriquadNum?
+
+pub fn triquad_sub(TriquadNum, TriquadNum) -> TriquadNum?
+
+pub fn upoly_add(UPoly, UPoly) -> UPoly
+
+pub fn upoly_const(SymC) -> UPoly
+
+pub fn upoly_eq(UPoly, UPoly) -> Bool
+
+pub fn upoly_mul(UPoly, UPoly) -> UPoly
+
+pub fn upoly_neg(UPoly) -> UPoly
+
+pub fn upoly_normalize(Array[SymC]) -> UPoly
+
+pub fn upoly_of_rpoly(RPoly) -> UPoly
+
+pub fn upoly_sub(UPoly, UPoly) -> UPoly
+
+pub fn upoly_x() -> UPoly
+
+pub fn upoly_zero() -> UPoly
+
+pub fn van_hoeij_lll_recombine(QPoly, Array[@bigint.BigInt], @bigint.BigInt, Int32, Array[Array[Int32]]) -> (Array[QPoly], Int32)?
+
+// Errors
+
+// Types and methods
+pub struct AlgGeneralizedEigenspace {
+  eigenvalue : AlgNum
+  algebraic_multiplicity : Int32
+  geometric_multiplicity : Int32
+  index : Int32
+  nullities : Array[Int32]
+  block_sizes : Array[Int32]
+  basis : Array[Array[AlgNum]]
+}
+
+pub struct AlgJordanDecomposition {
+  p : AlgMat
+  j : AlgMat
+  eigenvalues : Array[AlgNum]
+  block_sizes : Array[Array[Int32]]
+}
+
+pub struct AlgMat {
+  n : Int32
+  rows : Array[Array[AlgNum]]
+  modulus : QPoly
+}
+
+pub struct AlgNum {
+  modulus : QPoly
+  poly : QPoly
+} derive(Eq, @debug.Debug)
+pub fn AlgNum::equal(Self, Self) -> Bool
+pub fn AlgNum::not_equal(Self, Self) -> Bool
+pub fn AlgNum::to_repr(Self) -> @debug.Repr
+
+pub struct AlgPoly {
+  modulus : QPoly
+  coeffs : Array[AlgNum]
+}
+
+pub struct AlgPolyDiv {
+  quotient : AlgPoly
+  remainder : AlgPoly
+}
+
+pub struct AlgPolyFactor {
+  factor : AlgPoly
+  multiplicity : Int32
+}
+
+pub struct AlgRref {
+  rows : Array[Array[AlgNum]]
+  pivots : Array[Int32]
+  rank : Int32
+}
+
+pub(all) struct BerkowitzCrtReport {
+  dim : Int32
+  primes_used : Int32
+  modulus_product : @bigint.BigInt
+  hadamard_coeff_bound : @bigint.BigInt
+  charpoly : QPoly
+} derive(Eq, @debug.Debug)
+pub fn BerkowitzCrtReport::equal(Self, Self) -> Bool
+pub fn BerkowitzCrtReport::not_equal(Self, Self) -> Bool
+pub fn BerkowitzCrtReport::to_repr(Self) -> @debug.Repr
+
+pub struct BiquadNum {
+  basis : Array[@bigint.BigInt]
+  coeffs : Array[Rat]
+} derive(Eq, @debug.Debug)
+pub fn BiquadNum::equal(Self, Self) -> Bool
+pub fn BiquadNum::not_equal(Self, Self) -> Bool
+pub fn BiquadNum::to_repr(Self) -> @debug.Repr
+
+pub struct CInterval {
+  re : RatInterval
+  im : RatInterval
+} derive(Eq, @debug.Debug)
+pub fn CInterval::equal(Self, Self) -> Bool
+pub fn CInterval::not_equal(Self, Self) -> Bool
+pub fn CInterval::to_repr(Self) -> @debug.Repr
+
+pub struct CertEnclosure {
+  lo : Rat
+  hi : Rat
+  terms : Int32
+  tail : Rat
+} derive(Eq, @debug.Debug)
+pub fn CertEnclosure::equal(Self, Self) -> Bool
+pub fn CertEnclosure::not_equal(Self, Self) -> Bool
+pub fn CertEnclosure::to_repr(Self) -> @debug.Repr
+
+pub struct ComplexAlgNum {
+  minpoly : QPoly
+  root_index : Int32
+  disk : ComplexDisk
+}
+
+pub struct ComplexDisk {
+  re : Rat
+  im : Rat
+  radius : Rat
+}
+
+pub struct ComplexRootIsolation {
+  polynomial : QPoly
+  disk : ComplexDisk
+  multiplicity : Int32
+}
+
+pub struct CubicNum {
+  m : @bigint.BigInt
+  a : Rat
+  b : Rat
+  c : Rat
+} derive(Eq, @debug.Debug)
+pub fn CubicNum::equal(Self, Self) -> Bool
+pub fn CubicNum::not_equal(Self, Self) -> Bool
+pub fn CubicNum::to_repr(Self) -> @debug.Repr
+
+pub struct EIrrCertificate {
+  p : @bigint.BigInt
+  q : @bigint.BigInt
+  n : Int32
+  m : @bigint.BigInt
+  a : @bigint.BigInt
+  scaled_lo : Rat
+  scaled_hi : Rat
+  e_lo : Rat
+  e_hi : Rat
+  tail_bound : Rat
+  q_divides_m : Bool
+  verified : Bool
+} derive(Eq, @debug.Debug)
+pub fn EIrrCertificate::equal(Self, Self) -> Bool
+pub fn EIrrCertificate::not_equal(Self, Self) -> Bool
+pub fn EIrrCertificate::to_repr(Self) -> @debug.Repr
+
+pub struct EigenInterval {
+  lo : Rat
+  hi : Rat
+  count : Int32
+} derive(Eq, @debug.Debug)
+pub fn EigenInterval::equal(Self, Self) -> Bool
+pub fn EigenInterval::not_equal(Self, Self) -> Bool
+pub fn EigenInterval::to_repr(Self) -> @debug.Repr
+
+pub struct JacobiAdaptiveReport {
+  cluster_aware : JacobiClusterAwareReport
+  separation : JacobiClusterSeparation?
+  exact_fallback_used : Bool
+  exact_width_bits : Int32
+  target_met : Bool
+  max_interval_width : Rat
+} derive(Eq, @debug.Debug)
+pub fn JacobiAdaptiveReport::equal(Self, Self) -> Bool
+pub fn JacobiAdaptiveReport::not_equal(Self, Self) -> Bool
+pub fn JacobiAdaptiveReport::to_repr(Self) -> @debug.Repr
+
+pub struct JacobiBlockDeflatedReport {
+  blocks : Array[Array[Int32]]
+  max_block_dimension : Int32
+  block_reports : Array[JacobiAdaptiveReport]
+  intervals : Array[SeparatedEigenInterval]
+  target_met : Bool
+  max_interval_width : Rat
+}
+
+pub struct JacobiCertificate {
+  precision_bits : Int32
+  initial : QCIntervalMat
+  final_matrix : QCIntervalMat
+  transform : QCIntervalMat
+  rotations : Array[JacobiRotationCertificate]
+  eigenvalues : Array[EigenInterval]
+} derive(Eq, @debug.Debug)
+pub fn JacobiCertificate::equal(Self, Self) -> Bool
+pub fn JacobiCertificate::not_equal(Self, Self) -> Bool
+pub fn JacobiCertificate::to_repr(Self) -> @debug.Repr
+
+pub struct JacobiClusterAwareReport {
+  certificate : JacobiCertificate
+  precision_bits_used : Int32
+  restarts : Int32
+  separated : Bool
+  max_cluster_width : Rat
+} derive(Eq, @debug.Debug)
+pub fn JacobiClusterAwareReport::equal(Self, Self) -> Bool
+pub fn JacobiClusterAwareReport::not_equal(Self, Self) -> Bool
+pub fn JacobiClusterAwareReport::to_repr(Self) -> @debug.Repr
+
+pub struct JacobiClusterSeparation {
+  intervals : Array[SeparatedEigenInterval]
+  complete : Bool
+} derive(Eq, @debug.Debug)
+pub fn JacobiClusterSeparation::equal(Self, Self) -> Bool
+pub fn JacobiClusterSeparation::not_equal(Self, Self) -> Bool
+pub fn JacobiClusterSeparation::to_repr(Self) -> @debug.Repr
+
+pub struct JacobiCoefficients {
+  p : Int32
+  q : Int32
+  cosine : RatInterval
+  sine : RatInterval
+  phase : CInterval
+  modulus : RatInterval
+} derive(Eq, @debug.Debug)
+pub fn JacobiCoefficients::equal(Self, Self) -> Bool
+pub fn JacobiCoefficients::not_equal(Self, Self) -> Bool
+pub fn JacobiCoefficients::to_repr(Self) -> @debug.Repr
+
+pub struct JacobiRotationCertificate {
+  before : QCIntervalMat
+  after : QCIntervalMat
+  transform_before : QCIntervalMat
+  transform_after : QCIntervalMat
+  coeffs : JacobiCoefficients
+  unitary_residual_contains_zero : Bool
+  before_off_sq_upper : Rat
+  after_off_sq_upper : Rat
+} derive(Eq, @debug.Debug)
+pub fn JacobiRotationCertificate::equal(Self, Self) -> Bool
+pub fn JacobiRotationCertificate::not_equal(Self, Self) -> Bool
+pub fn JacobiRotationCertificate::to_repr(Self) -> @debug.Repr
+
+pub(all) struct LiouvilleTranscendenceCert {
+  coeffs : Array[@bigint.BigInt]
+  degree : Int32
+  stage_n : Int32
+  num_p : @bigint.BigInt
+  den_q : @bigint.BigInt
+  scaled_poly_at_conv : @bigint.BigInt
+  lipschitz_bound_m : @bigint.BigInt
+  gap_lhs : @bigint.BigInt
+  gap_rhs : @bigint.BigInt
+  verified : Bool
+} derive(Eq, @debug.Debug)
+pub fn LiouvilleTranscendenceCert::equal(Self, Self) -> Bool
+pub fn LiouvilleTranscendenceCert::not_equal(Self, Self) -> Bool
+pub fn LiouvilleTranscendenceCert::to_repr(Self) -> @debug.Repr
+
+pub struct LllReductionReport {
+  reduced_basis : Array[Array[Rat]]
+  unimodular_u : Array[Array[@bigint.BigInt]]
+  swaps : Int32
+  size_reductions : Int32
+}
+
+pub struct MultiQuadNum {
+  basis : Array[@bigint.BigInt]
+  coeffs : Array[Rat]
+} derive(Eq, @debug.Debug)
+pub fn MultiQuadNum::equal(Self, Self) -> Bool
+pub fn MultiQuadNum::not_equal(Self, Self) -> Bool
+pub fn MultiQuadNum::to_repr(Self) -> @debug.Repr
+
+pub struct Poly {
+  terms : Array[PolyTerm]
+}
+
+pub struct PolyBoxFace {
+  axis : Int32
+  hi : Bool
+  cube : PolyCube
+}
+
+pub struct PolyCube {
+  dim : Int32
+  coords : Array[Poly]
+}
+
+pub struct PolyOpenBox {
+  dim : Int32
+  faces : Array[PolyBoxFace]
+}
+
+pub struct PolyTerm {
+  mut coeff : Rat
+  exps : Array[Int32]
+}
+
+pub struct QCIntervalMat {
+  n : Int32
+  rows : Array[Array[CInterval]]
+} derive(Eq, @debug.Debug)
+pub fn QCIntervalMat::equal(Self, Self) -> Bool
+pub fn QCIntervalMat::not_equal(Self, Self) -> Bool
+pub fn QCIntervalMat::to_repr(Self) -> @debug.Repr
+
+pub struct QCpx {
+  re : Rat
+  im : Rat
+} derive(Eq, @debug.Debug)
+pub fn QCpx::equal(Self, Self) -> Bool
+pub fn QCpx::not_equal(Self, Self) -> Bool
+pub fn QCpx::to_repr(Self) -> @debug.Repr
+
+pub struct QCpxMat {
+  n : Int32
+  rows : Array[Array[QCpx]]
+} derive(Eq, @debug.Debug)
+pub fn QCpxMat::equal(Self, Self) -> Bool
+pub fn QCpxMat::not_equal(Self, Self) -> Bool
+pub fn QCpxMat::to_repr(Self) -> @debug.Repr
+
+pub struct QGeneralizedEigenspace {
+  eigenvalue : Rat
+  algebraic_multiplicity : Int32
+  geometric_multiplicity : Int32
+  index : Int32
+  nullities : Array[Int32]
+  block_sizes : Array[Int32]
+  basis : Array[Array[Rat]]
+}
+
+pub struct QJordanDecomposition {
+  p : QMat
+  j : QMat
+  eigenvalues : Array[Rat]
+  block_sizes : Array[Array[Int32]]
+}
+
+pub struct QMat {
+  n : Int32
+  rows : Array[Array[Rat]]
+} derive(Eq, @debug.Debug)
+pub fn QMat::equal(Self, Self) -> Bool
+pub fn QMat::not_equal(Self, Self) -> Bool
+pub fn QMat::to_repr(Self) -> @debug.Repr
+
+pub struct QPoly {
+  coeffs : Array[Rat]
+} derive(Eq, @debug.Debug)
+pub fn QPoly::equal(Self, Self) -> Bool
+pub fn QPoly::not_equal(Self, Self) -> Bool
+pub fn QPoly::to_repr(Self) -> @debug.Repr
+
+pub struct QPolyCertifiedFactor {
+  factor : QPoly
+  multiplicity : Int32
+  certificate : QPolyIrreducibilityCertificate?
+} derive(Eq, @debug.Debug)
+pub fn QPolyCertifiedFactor::equal(Self, Self) -> Bool
+pub fn QPolyCertifiedFactor::not_equal(Self, Self) -> Bool
+pub fn QPolyCertifiedFactor::to_repr(Self) -> @debug.Repr
+
+pub struct QPolyCompleteFactorization {
+  leading : Rat
+  factors : Array[QPolyFactor]
+}
+
+pub struct QPolyDegreePattern {
+  prime : Int32
+  degrees : Array[Int32]
+}
+
+pub struct QPolyDiv {
+  quotient : QPoly
+  remainder : QPoly
+}
+
+pub struct QPolyExtGcd {
+  g : QPoly
+  s : QPoly
+  t : QPoly
+}
+
+pub struct QPolyFactor {
+  factor : QPoly
+  multiplicity : Int32
+}
+
+pub struct QPolyFactorCertificate {
+  leading : Rat
+  factors : Array[QPolyCertifiedFactor]
+  hensel_prime : Int32
+  hensel_exponent : Int32
+} derive(Eq, @debug.Debug)
+pub fn QPolyFactorCertificate::equal(Self, Self) -> Bool
+pub fn QPolyFactorCertificate::not_equal(Self, Self) -> Bool
+pub fn QPolyFactorCertificate::to_repr(Self) -> @debug.Repr
+
+pub enum QPolyIrreducibilityCertificate {
+  CertLinear
+  CertLowDegreeNoRationalRoot
+  CertModPrime(Int32)
+  CertEisenstein(Int32, Int32)
+  CertModDegreePatterns(Array[Int32])
+} derive(Eq, @debug.Debug)
+pub fn QPolyIrreducibilityCertificate::equal(Self, Self) -> Bool
+pub fn QPolyIrreducibilityCertificate::not_equal(Self, Self) -> Bool
+pub fn QPolyIrreducibilityCertificate::to_repr(Self) -> @debug.Repr
+
+pub struct QPolyLllFactorReport {
+  leading : Rat
+  factors : Array[QPolyFactor]
+  hensel_prime : Int32
+  modular_factor_count : Int32
+  lll_short_dimension : Int32
+  used_lll_lattice : Bool
+}
+
+pub struct QPolyRationalFactorization {
+  roots : Array[Rat]
+  multiplicities : Array[Int32]
+  residual : QPoly
+}
+
+pub struct QPrimaryProjector {
+  factor : QPoly
+  cofactor : QPoly
+  polynomial : QPoly
+  projector : QMat
+  complement : QMat
+}
+
+pub struct QRref {
+  rows : Array[Array[Rat]]
+  pivots : Array[Int32]
+  rank : Int32
+}
+
+pub struct QuadNum {
+  a : Rat
+  b : Rat
+  d : @bigint.BigInt
+} derive(Eq, @debug.Debug)
+pub fn QuadNum::equal(Self, Self) -> Bool
+pub fn QuadNum::not_equal(Self, Self) -> Bool
+pub fn QuadNum::to_repr(Self) -> @debug.Repr
+
+pub struct RPoly {
+  coeffs : Array[SymFrac]
+}
+
+pub struct RPolyDiv {
+  quotient : RPoly
+  remainder : RPoly
+}
+
+pub enum RadicalExpr {
+  RRat(Rat)
+  RNeg(RadicalExpr)
+  RAdd(RadicalExpr, RadicalExpr)
+  RSub(RadicalExpr, RadicalExpr)
+  RMul(RadicalExpr, RadicalExpr)
+  RDiv(RadicalExpr, RadicalExpr)
+  RRoot(Int32, RadicalExpr)
+}
+
+pub struct Rat {
+  num : @bigint.BigInt
+  den : @bigint.BigInt
+} derive(Eq, @debug.Debug)
+pub fn Rat::equal(Self, Self) -> Bool
+pub fn Rat::not_equal(Self, Self) -> Bool
+pub fn Rat::to_repr(Self) -> @debug.Repr
+
+pub struct RatInterval {
+  lo : Rat
+  hi : Rat
+} derive(Eq, @debug.Debug)
+pub fn RatInterval::equal(Self, Self) -> Bool
+pub fn RatInterval::not_equal(Self, Self) -> Bool
+pub fn RatInterval::to_repr(Self) -> @debug.Repr
+
+pub struct RealAlgRadical {
+  minpoly : QPoly
+  root_index : Int32
+  lower : Rat
+  upper : Rat
+} derive(Eq, @debug.Debug)
+pub fn RealAlgRadical::equal(Self, Self) -> Bool
+pub fn RealAlgRadical::not_equal(Self, Self) -> Bool
+pub fn RealAlgRadical::to_repr(Self) -> @debug.Repr
+
+pub struct RealRootIsolation {
+  polynomial : QPoly
+  lower : Rat
+  upper : Rat
+  multiplicity : Int32
+}
+
+pub struct RefutationResult {
+  refuted : Bool
+  terms : Int32
+  lo : Rat
+  hi : Rat
+} derive(Eq, @debug.Debug)
+pub fn RefutationResult::equal(Self, Self) -> Bool
+pub fn RefutationResult::not_equal(Self, Self) -> Bool
+pub fn RefutationResult::to_repr(Self) -> @debug.Repr
+
+pub(all) struct SchanuelRankWitness {
+  input_count : Int32
+  q_linear_rank : Int32
+  q_linearly_independent : Bool
+  lindemann_weierstrass_alg_indep : Bool
+  schanuel_trdeg_lower_bound : Int32
+  null_relation : Array[Rat]
+} derive(Eq, @debug.Debug)
+pub fn SchanuelRankWitness::equal(Self, Self) -> Bool
+pub fn SchanuelRankWitness::not_equal(Self, Self) -> Bool
+pub fn SchanuelRankWitness::to_repr(Self) -> @debug.Repr
+
+pub struct SeparatedEigenInterval {
+  lo : Rat
+  hi : Rat
+  multiplicity : Int32
+  cluster : Int32
+} derive(Eq, @debug.Debug)
+pub fn SeparatedEigenInterval::equal(Self, Self) -> Bool
+pub fn SeparatedEigenInterval::not_equal(Self, Self) -> Bool
+pub fn SeparatedEigenInterval::to_repr(Self) -> @debug.Repr
+
+pub struct SplittingField {
+  modulus : QPoly
+  roots : Array[SplittingRoot]
+}
+
+pub struct SplittingRoot {
+  value : AlgNum
+  multiplicity : Int32
+}
+
+pub struct SymC {
+  re : SymFrac
+  im : SymFrac
+}
+
+pub struct SymFrac {
+  num : Poly
+  den : Poly
+}
+
+pub struct SymMat {
+  n : Int32
+  rows : Array[Array[SymC]]
+}
+
+pub struct TriquadNum {
+  gens : Array[@bigint.BigInt]
+  coeffs : Array[Rat]
+} derive(Eq, @debug.Debug)
+pub fn TriquadNum::equal(Self, Self) -> Bool
+pub fn TriquadNum::not_equal(Self, Self) -> Bool
+pub fn TriquadNum::to_repr(Self) -> @debug.Repr
+
+pub struct UPoly {
+  coeffs : Array[SymC]
+}
+
+// Type aliases
+pub type AlgVec = Array[AlgNum]
+
+pub type QVec = Array[Rat]
+
+pub type SymPath = (SymFrac) -> Array[SymC]
+
+pub type SymSquare = (SymFrac, SymFrac) -> Array[SymC]
+
+pub type SymVec = Array[SymC]
+
+// Traits

@@ -1,0 +1,110 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/matrix"
+
+import {
+  "vv0101v01/cubical-hermitian/semiring/algebra",
+}
+
+// Values
+pub fn choose_block_l1(Int32, Int32, Int32) -> Int32
+
+pub fn choose_panel_l2(Int32, Int32, Int32) -> Int32
+
+pub fn choose_tile(Int32, Int32, Int32, Int32) -> Int32
+
+pub fn[E : @algebra.IdempotentSemiring] closure_blocked(Mat[E], threshold? : Int32, ops? : @algebra.Ops) -> Mat[E]
+
+pub fn[E : @algebra.IdempotentSemiring] closure_blocked_auto(Mat[E], l1_bytes? : Int32, l2_bytes? : Int32, elem_bytes? : Int32, ops? : @algebra.Ops) -> Mat[E]
+
+pub fn[E : @algebra.IdempotentSemiring] closure_fw_inplace(Mat[E], ops? : @algebra.Ops) -> Mat[E]
+
+pub fn[E : @algebra.IdempotentSemiring] closure_fw_par(Mat[E], Int32, ops? : @algebra.Ops) -> Mat[E]
+
+pub fn[E : @algebra.StarSemiring] closure_lehmann(Mat[E], ops? : @algebra.Ops) -> Mat[E]
+
+pub fn[E : @algebra.Semiring] closure_series(Mat[E], k? : Int32, is_small? : (E) -> Bool) -> (Mat[E], Bool)
+
+pub fn[E] copy_region_in(Mat[E], Int32, Int32, FixedArray[E], Int32, Int32) -> Unit
+
+pub fn[E] copy_region_out(Mat[E], Int32, Int32, FixedArray[E], Int32, Int32) -> Unit
+
+pub fn[E : @algebra.TropicalSemiring] csr_apsp(Csr[E], ops? : @algebra.Ops) -> Array[Array[E]]
+
+pub fn[E : @algebra.TropicalSemiring] csr_closure(Csr[E], ops? : @algebra.Ops) -> (Csr[E], Bool)
+
+pub fn[E : @algebra.Semiring] csr_mul(Csr[E], Csr[E], ops? : @algebra.Ops) -> Csr[E]
+
+pub fn[E : @algebra.TropicalSemiring] csr_mul_minplus(Csr[E], Csr[E], ops? : @algebra.Ops) -> Csr[E]
+
+pub fn[E : @algebra.TropicalSemiring] csr_sssp(Csr[E], Int32, ops? : @algebra.Ops) -> (Array[E], Bool)
+
+pub let default_l1_bytes : Int32
+
+pub let default_l2_bytes : Int32
+
+pub fn[E : @algebra.IdempotentSemiring] fw_region(Mat[E], Int32, Int32, Int32, ops? : @algebra.Ops) -> Unit
+
+pub fn[E] mat_all(Mat[E], (E) -> Bool) -> Bool
+
+pub fn[E : @algebra.Semiring] mat_equal(Mat[E], Mat[E]) -> Bool
+
+pub fn[E : @algebra.Semiring] mat_is_zero(Mat[E]) -> Bool
+
+pub fn[E : @algebra.Semiring] mat_plus(Mat[E], Mat[E]) -> Mat[E]
+
+pub fn[E : @algebra.Semiring] mul_blocked(Mat[E], Mat[E], block~ : Int32, ops? : @algebra.Ops, probe? : (Int32, Int32, Int32, Bool) -> Unit) -> Mat[E]
+
+pub fn[E : @algebra.Semiring] mul_blocked_auto(Mat[E], Mat[E], l1_bytes? : Int32, elem_bytes? : Int32, ops? : @algebra.Ops, probe? : (Int32, Int32, Int32, Bool) -> Unit) -> Mat[E]
+
+pub fn[E : @algebra.Semiring] mul_ikj(Mat[E], Mat[E], ops? : @algebra.Ops, probe? : (Int32, Int32, Int32, Bool) -> Unit) -> Mat[E]
+
+pub fn[E : @algebra.Semiring] mul_naive(Mat[E], Mat[E], ops? : @algebra.Ops, probe? : (Int32, Int32, Int32, Bool) -> Unit) -> Mat[E]
+
+pub fn[E : @algebra.Semiring] mul_region(Mat[E], Int32, Int32, Int32, Int32, FixedArray[E], Int32, Int32, Int32, ops? : @algebra.Ops) -> Unit
+
+pub fn[E : @algebra.Semiring] mul_rows_par(Mat[E], Mat[E], Int32, ops? : @algebra.Ops) -> Mat[E]
+
+pub fn mul_trop(Mat[@algebra.Trop], Mat[@algebra.Trop], ops? : @algebra.Ops) -> Mat[@algebra.Trop]
+
+pub fn[E : @algebra.TropicalSemiring] mul_trop_generic(Mat[E], Mat[E], ops? : @algebra.Ops) -> Mat[E]
+
+pub fn mul_trop_plain(Mat[@algebra.Trop], Mat[@algebra.Trop], ops? : @algebra.Ops) -> Mat[@algebra.Trop]
+
+// Errors
+
+// Types and methods
+pub(all) struct Csr[E] {
+  rows : Int32
+  cols : Int32
+  row_ptr : Array[Int32]
+  col : Array[Int32]
+  val : Array[E]
+}
+pub fn[E : @algebra.Semiring] Csr::from_dense(Mat[E]) -> Self[E]
+pub fn[E : @algebra.Semiring] Csr::from_triplets(Int32, Int32, Array[Int32], Array[Int32], Array[E]) -> Self[E]
+pub fn[E] Csr::get(Self[E], Int32, Int32) -> E?
+pub fn[E] Csr::nnz(Self[E]) -> Int32
+pub fn[E] Csr::row_nnz(Self[E], Int32) -> Int32
+pub fn[E] Csr::row_range(Self[E], Int32) -> (Int32, Int32)
+pub fn[E : @algebra.Semiring] Csr::to_dense(Self[E]) -> Mat[E]
+
+pub(all) struct Mat[E] {
+  rows : Int32
+  cols : Int32
+  d : FixedArray[E]
+}
+pub fn[E] Mat::byte_size(Self[E]) -> Int32
+pub fn[E] Mat::copy(Self[E]) -> Self[E]
+pub fn[E] Mat::from_flat(Int32, Int32, FixedArray[E]) -> Self[E]
+pub fn[E] Mat::get(Self[E], Int32, Int32) -> E
+pub fn[E : @algebra.Semiring] Mat::identity(Int32) -> Self[E]
+pub fn[E] Mat::is_square(Self[E]) -> Bool
+pub fn[E] Mat::new(Int32, Int32, E) -> Self[E]
+pub fn[E] Mat::set(Self[E], Int32, Int32, E) -> Unit
+pub fn[E] Mat::transpose(Self[E]) -> Self[E]
+pub fn[E : @algebra.Semiring] Mat::zero(Int32, Int32) -> Self[E]
+
+// Type aliases
+pub type Probe = (Int32, Int32, Int32, Bool) -> Unit
+
+// Traits

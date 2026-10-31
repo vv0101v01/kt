@@ -1,0 +1,355 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/semiring/algebra"
+
+// Values
+pub let cap_max : Int32
+
+pub fn[G : GroupElement + Show] check_group_element(String, () -> G, samples? : Int32) -> LawReport
+
+pub fn[S : IdempotentSemiring + Show] check_idempotent(String, () -> S, samples? : Int32) -> LawReport
+
+pub fn[M : Monoid + Show] check_monoid(String, () -> M, samples? : Int32) -> LawReport
+
+pub fn[S : Semiring + Show] check_semiring(String, () -> S, samples? : Int32) -> LawReport
+
+pub fn[S : Semiring] check_semiring_approx(String, () -> S, (S, S) -> Double, eps? : Double, samples? : Int32) -> LawReport
+
+pub fn[S : StarSemiring + Show] check_star(String, () -> S, samples? : Int32) -> LawReport
+
+pub fn[S : StarSemiring + IdempotentSemiring + Show] check_star_idem(String, () -> S, samples? : Int32) -> LawReport
+
+pub fn[E : Semiring] geom_sum(E, Int32) -> E
+
+pub fn[E : GroupElement] geom_sum_group(E, Int32) -> E
+
+pub fn[E : Semiring] pow_squaring(E, Int32) -> E
+
+pub fn[E : GroupElement] star_by_doubling(E) -> E
+
+pub fn[E : GroupElement] star_by_iteration(E) -> E
+
+pub let trop_inf : Int32
+
+pub let trop_neg_inf : Int32
+
+// Errors
+
+// Types and methods
+pub(all) struct BoolSr {
+  b : Bool
+} derive(Eq)
+pub fn BoolSr::equal(Self, Self) -> Bool
+pub fn BoolSr::group_id(Self) -> Self
+pub fn BoolSr::group_inv(Self) -> Self
+pub fn BoolSr::is_one(Self) -> Bool
+pub fn BoolSr::is_zero(Self) -> Bool
+pub fn BoolSr::le(Self, Self) -> Bool
+pub fn BoolSr::not_equal(Self, Self) -> Bool
+pub fn BoolSr::of(Bool) -> Self
+pub fn BoolSr::one() -> Self
+pub fn BoolSr::order_bound(Self) -> Int32
+pub fn BoolSr::output(Self, &Logger) -> Unit
+pub fn BoolSr::plus(Self, Self) -> Self
+pub fn BoolSr::star(Self) -> Self
+pub fn BoolSr::times(Self, Self) -> Self
+pub fn BoolSr::to_string(Self) -> String
+pub fn BoolSr::zero() -> Self
+pub impl Show for BoolSr
+pub impl GroupElement for BoolSr
+pub impl IdempotentSemiring for BoolSr
+pub impl Semiring for BoolSr
+pub impl StarSemiring for BoolSr
+
+pub(all) struct Bottleneck {
+  w : Int32
+} derive(Eq)
+pub fn Bottleneck::bottom() -> Self
+pub fn Bottleneck::equal(Self, Self) -> Bool
+pub fn Bottleneck::is_one(Self) -> Bool
+pub fn Bottleneck::is_zero(Self) -> Bool
+pub fn Bottleneck::join(Self, Self) -> Self
+pub fn Bottleneck::le(Self, Self) -> Bool
+pub fn Bottleneck::meet(Self, Self) -> Self
+pub fn Bottleneck::new(Int32) -> Self
+pub fn Bottleneck::not_equal(Self, Self) -> Bool
+pub fn Bottleneck::one() -> Self
+pub fn Bottleneck::output(Self, &Logger) -> Unit
+pub fn Bottleneck::plus(Self, Self) -> Self
+pub fn Bottleneck::star(Self) -> Self
+pub fn Bottleneck::times(Self, Self) -> Self
+pub fn Bottleneck::to_string(Self) -> String
+pub fn Bottleneck::top() -> Self
+pub fn Bottleneck::value(Self) -> Int32
+pub fn Bottleneck::zero() -> Self
+pub impl Show for Bottleneck
+pub impl IdempotentSemiring for Bottleneck
+pub impl OrderedSemiring for Bottleneck
+pub impl Semiring for Bottleneck
+pub impl StarSemiring for Bottleneck
+
+pub(all) struct Counting {
+  n : Int64
+} derive(Eq)
+pub fn Counting::equal(Self, Self) -> Bool
+pub fn Counting::is_one(Self) -> Bool
+pub fn Counting::is_zero(Self) -> Bool
+pub fn Counting::new(Int64) -> Self
+pub fn Counting::not_equal(Self, Self) -> Bool
+pub fn Counting::one() -> Self
+pub fn Counting::output(Self, &Logger) -> Unit
+pub fn Counting::plus(Self, Self) -> Self
+pub fn Counting::star(Self) -> Self
+pub fn Counting::times(Self, Self) -> Self
+pub fn Counting::to_string(Self) -> String
+pub fn Counting::value(Self) -> Int64
+pub fn Counting::zero() -> Self
+pub impl Show for Counting
+pub impl Semiring for Counting
+pub impl StarSemiring for Counting
+
+pub(all) struct CyclicSet {
+  m : Int32
+  bits : UInt64
+}
+pub fn CyclicSet::cardinality(Self) -> Int32
+pub fn CyclicSet::contains(Self, Int32) -> Bool
+pub fn CyclicSet::empty(Int32) -> Self
+pub fn CyclicSet::equal(Self, Self) -> Bool
+pub fn CyclicSet::group_id(Self) -> Self
+pub fn CyclicSet::group_inv(Self) -> Self
+pub fn CyclicSet::is_one(Self) -> Bool
+pub fn CyclicSet::is_zero(Self) -> Bool
+pub fn CyclicSet::le(Self, Self) -> Bool
+pub fn CyclicSet::not_equal(Self, Self) -> Bool
+pub fn CyclicSet::of_range(Int32, Array[Int32]) -> Self
+pub fn CyclicSet::one() -> Self
+pub fn CyclicSet::one_of(Int32) -> Self
+pub fn CyclicSet::order_bound(Self) -> Int32
+pub fn CyclicSet::output(Self, &Logger) -> Unit
+pub fn CyclicSet::plus(Self, Self) -> Self
+pub fn CyclicSet::singleton(Int32, Int32) -> Self
+pub fn CyclicSet::star(Self) -> Self
+pub fn CyclicSet::times(Self, Self) -> Self
+pub fn CyclicSet::to_string(Self) -> String
+pub fn CyclicSet::zero() -> Self
+pub impl Eq for CyclicSet
+pub impl Show for CyclicSet
+pub impl GroupElement for CyclicSet
+pub impl IdempotentSemiring for CyclicSet
+pub impl Semiring for CyclicSet
+pub impl StarSemiring for CyclicSet
+
+pub(all) struct LawReport {
+  mut checks : Int32
+  violations : Array[String]
+}
+pub fn LawReport::ok(Self) -> Bool
+pub fn LawReport::summary(Self) -> String
+
+pub struct Ops {
+  mut plus : Int64
+  mut times : Int64
+}
+pub fn Ops::new() -> Self
+pub fn Ops::output(Self, &Logger) -> Unit
+pub fn Ops::record_plus(Self) -> Unit
+pub fn Ops::record_times(Self) -> Unit
+pub fn Ops::to_string(Self) -> String
+pub fn Ops::total(Self) -> Int64
+pub impl Show for Ops
+
+pub(all) struct ParetoSet {
+  dim : Int32
+  pts : Array[Int32]
+}
+pub fn ParetoSet::bottom() -> Self
+pub fn ParetoSet::empty(Int32) -> Self
+pub fn ParetoSet::equal(Self, Self) -> Bool
+pub fn ParetoSet::is_identity(Self) -> Bool
+pub fn ParetoSet::is_one(Self) -> Bool
+pub fn ParetoSet::is_zero(Self) -> Bool
+pub fn ParetoSet::join(Self, Self) -> Self
+pub fn ParetoSet::label(Self, Int32) -> Array[Int32]
+pub fn ParetoSet::le(Self, Self) -> Bool
+pub fn ParetoSet::meet(Self, Self) -> Self
+pub fn ParetoSet::not_equal(Self, Self) -> Bool
+pub fn ParetoSet::one() -> Self
+pub fn ParetoSet::one_of(Int32) -> Self
+pub fn ParetoSet::output(Self, &Logger) -> Unit
+pub fn ParetoSet::plus(Self, Self) -> Self
+pub fn ParetoSet::point(Array[Int32]) -> Self
+pub fn ParetoSet::size(Self) -> Int32
+pub fn ParetoSet::times(Self, Self) -> Self
+pub fn ParetoSet::to_string(Self) -> String
+pub fn ParetoSet::top() -> Self
+pub fn ParetoSet::zero() -> Self
+pub impl Eq for ParetoSet
+pub impl Show for ParetoSet
+pub impl IdempotentSemiring for ParetoSet
+pub impl OrderedSemiring for ParetoSet
+pub impl Semiring for ParetoSet
+
+pub(all) struct Prob {
+  p : Double
+} derive(Eq)
+pub fn Prob::equal(Self, Self) -> Bool
+pub fn Prob::is_one(Self) -> Bool
+pub fn Prob::is_zero(Self) -> Bool
+pub fn Prob::new(Double) -> Self
+pub fn Prob::not_equal(Self, Self) -> Bool
+pub fn Prob::one() -> Self
+pub fn Prob::output(Self, &Logger) -> Unit
+pub fn Prob::plus(Self, Self) -> Self
+pub fn Prob::star_checked(Self) -> Result[Self, String]
+pub fn Prob::times(Self, Self) -> Self
+pub fn Prob::to_string(Self) -> String
+pub fn Prob::value(Self) -> Double
+pub fn Prob::zero() -> Self
+pub impl Show for Prob
+pub impl Semiring for Prob
+
+pub struct Rng {
+  mut state : UInt64
+}
+pub fn Rng::chance(Self, Double) -> Bool
+pub fn Rng::new(UInt64) -> Self
+pub fn Rng::next_double(Self) -> Double
+pub fn Rng::next_int(Self, Int32) -> Int32
+pub fn Rng::next_u64(Self) -> UInt64
+pub fn Rng::range(Self, Int32, Int32) -> Int32
+
+pub(all) struct Trop {
+  v : Int32
+} derive(Eq)
+pub fn Trop::closer(Self, Self) -> Bool
+pub fn Trop::equal(Self, Self) -> Bool
+pub fn Trop::group_id(Self) -> Self
+pub fn Trop::group_inv(Self) -> Self
+pub fn Trop::inf() -> Self
+pub fn Trop::is_inf(Self) -> Bool
+pub fn Trop::is_one(Self) -> Bool
+pub fn Trop::is_zero(Self) -> Bool
+pub fn Trop::le(Self, Self) -> Bool
+pub fn Trop::new(Int32) -> Self
+pub fn Trop::not_equal(Self, Self) -> Bool
+pub fn Trop::one() -> Self
+pub fn Trop::order_bound(Self) -> Int32
+pub fn Trop::output(Self, &Logger) -> Unit
+pub fn Trop::plus(Self, Self) -> Self
+pub fn Trop::star(Self) -> Self
+pub fn Trop::star_checked(Self) -> Result[Self, String]
+pub fn Trop::times(Self, Self) -> Self
+pub fn Trop::to_string(Self) -> String
+pub fn Trop::value(Self) -> Int32
+pub fn Trop::zero() -> Self
+pub impl Show for Trop
+pub impl GroupElement for Trop
+pub impl IdempotentSemiring for Trop
+pub impl Semiring for Trop
+pub impl StarSemiring for Trop
+pub impl TropicalSemiring for Trop
+
+pub(all) struct TropF {
+  v : Double
+}
+pub fn TropF::closer(Self, Self) -> Bool
+pub fn TropF::equal(Self, Self) -> Bool
+pub fn TropF::inf() -> Self
+pub fn TropF::is_inf(Self) -> Bool
+pub fn TropF::is_one(Self) -> Bool
+pub fn TropF::is_zero(Self) -> Bool
+pub fn TropF::le(Self, Self) -> Bool
+pub fn TropF::not_equal(Self, Self) -> Bool
+pub fn TropF::of(Double) -> Self
+pub fn TropF::one() -> Self
+pub fn TropF::output(Self, &Logger) -> Unit
+pub fn TropF::plus(Self, Self) -> Self
+pub fn TropF::star(Self) -> Self
+pub fn TropF::star_checked(Self) -> Result[Self, String]
+pub fn TropF::times(Self, Self) -> Self
+pub fn TropF::to_string(Self) -> String
+pub fn TropF::value(Self) -> Double
+pub fn TropF::zero() -> Self
+pub impl Eq for TropF
+pub impl Show for TropF
+pub impl IdempotentSemiring for TropF
+pub impl Semiring for TropF
+pub impl StarSemiring for TropF
+pub impl TropicalSemiring for TropF
+
+pub(all) struct TropMax {
+  v : Int32
+} derive(Eq)
+pub fn TropMax::equal(Self, Self) -> Bool
+pub fn TropMax::is_neg_inf(Self) -> Bool
+pub fn TropMax::is_one(Self) -> Bool
+pub fn TropMax::is_zero(Self) -> Bool
+pub fn TropMax::le(Self, Self) -> Bool
+pub fn TropMax::new(Int32) -> Self
+pub fn TropMax::not_equal(Self, Self) -> Bool
+pub fn TropMax::one() -> Self
+pub fn TropMax::output(Self, &Logger) -> Unit
+pub fn TropMax::plus(Self, Self) -> Self
+pub fn TropMax::star(Self) -> Self
+pub fn TropMax::times(Self, Self) -> Self
+pub fn TropMax::to_string(Self) -> String
+pub fn TropMax::value(Self) -> Int32
+pub fn TropMax::zero() -> Self
+pub impl Show for TropMax
+pub impl IdempotentSemiring for TropMax
+pub impl Semiring for TropMax
+pub impl StarSemiring for TropMax
+
+// Type aliases
+
+// Traits
+pub(open) trait CommutativeMonoid : Monoid {
+}
+
+pub(open) trait GroupElement : Semiring {
+  fn group_inv(Self) -> Self
+  fn order_bound(Self) -> Int32
+  fn group_id(Self) -> Self = _
+}
+
+pub(open) trait GroupMonoid : Monoid {
+  fn invert(Self) -> Self
+}
+
+pub(open) trait IdempotentMonoid : Monoid {
+}
+
+pub(open) trait IdempotentSemiring : Semiring {
+  fn le(Self, Self) -> Bool = _
+}
+
+pub(open) trait Monoid : Eq {
+  fn empty() -> Self
+  fn combine(Self, Self) -> Self
+}
+
+pub(open) trait OrderedSemiring : IdempotentSemiring {
+  fn join(Self, Self) -> Self = _
+  fn meet(Self, Self) -> Self = _
+  fn top() -> Self
+  fn bottom() -> Self = _
+}
+
+pub(open) trait Semiring : Eq {
+  fn zero() -> Self
+  fn one() -> Self
+  fn plus(Self, Self) -> Self
+  fn times(Self, Self) -> Self
+  fn is_zero(Self) -> Bool = _
+  fn is_one(Self) -> Bool = _
+}
+
+pub(open) trait StarSemiring : Semiring {
+  fn star(Self) -> Self
+}
+
+pub(open) trait TropicalSemiring : IdempotentSemiring {
+  fn inf() -> Self
+  fn is_inf(Self) -> Bool
+  fn closer(Self, Self) -> Bool
+}

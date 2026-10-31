@@ -1,0 +1,758 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/symlib"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn all_hold(Array[Cert]) -> Bool
+
+pub fn all_perms(Int32, Int32) -> Array[Perm]
+
+pub fn analyze(Graph) -> SymmetryReport
+
+pub fn analyze_m(Graph) -> StateM[SearchStats, SymmetryReport]
+
+pub fn arrow_diagram(FinMap) -> FinDiagram
+
+pub fn aut_functorial(Perm, Perm, PermGroup) -> (PermGroup, PermGroup)
+
+pub fn aut_generators(Graph) -> Array[Perm]
+
+pub fn aut_map(Perm, PermGroup) -> PermGroup
+
+pub fn aut_on_line(Graph) -> PermGroup
+
+pub fn aut_order(Graph) -> Int64
+
+pub fn automorphism_group(Graph) -> PermGroup
+
+pub fn automorphism_group_colored(Graph, Array[Int32]) -> PermGroup
+
+pub fn automorphism_group_dual(Graph) -> PermGroup
+
+pub fn canon_digest(Graph) -> String
+
+pub fn canon_encoding(Graph) -> Array[Int32]
+
+pub fn canonical_dual(Graph) -> DualCanon
+
+pub fn canonical_form(Graph) -> Graph
+
+pub fn canonical_labeling(Graph) -> Array[Int32]
+
+pub fn cat_arrow() -> FinCat
+
+pub fn cat_cospan() -> FinCat
+
+pub fn cat_discrete(Int32) -> FinCat
+
+pub fn cat_group(PermGroup, Int32) -> FinCat
+
+pub fn cat_parallel() -> FinCat
+
+pub fn cat_poset(Int32, Array[(Int32, Int32)]) -> FinCat
+
+pub fn cat_span() -> FinCat
+
+pub fn cat_terminal() -> FinCat
+
+pub fn cat_thin(Int32, Array[(Int32, Int32)]) -> FinCat
+
+pub fn cayley_cert(PermGroup, Int32) -> (Bool, Bool, Bool, Int64, Int64)
+
+pub fn cayley_graph(PermGroup, Int32) -> Graph
+
+pub fn cert(String, Bool, String) -> Cert
+
+pub fn cert_report(Array[Cert]) -> String
+
+pub fn cmp_arr(Array[Int32], Array[Int32]) -> Int32
+
+pub fn coequalizer_card(FinMap, FinMap) -> Int32
+
+pub fn coinduced_card(PermGroup, Int32, Int32) -> Int32
+
+pub fn coinduced_gset(PermGroup, Int32, Int32) -> FinAction
+
+pub fn coinduced_lift(PermGroup, Int32, Int32, Perm) -> Array[Int32]
+
+pub fn colimit(FinDiagram) -> (Array[Int32], Int32)
+
+pub fn colimit_card(FinDiagram) -> Int32
+
+pub fn colored_canonical_key(Graph, Array[Int32]) -> (Array[Int32], Array[Int32])
+
+pub fn comma_down(FinFunctor, Int32) -> FinCat
+
+pub fn comma_up(FinFunctor, Int32) -> FinCat
+
+pub fn coproduct_card(Int32, Int32) -> Int32
+
+pub fn coset_gset(PermGroup, Sub, Int32) -> GSetOf
+
+pub fn csp_limit(Array[Int32], Array[(Int32, Int32, Array[(Int32, Int32)])], Int32) -> Array[Array[Int32]]
+
+pub fn decomp_cert(Graph, Perm) -> (Bool, Bool, Bool, Bool)
+
+pub fn decomp_key_equal(Decomp, Decomp) -> Bool
+
+pub fn decompose(Graph) -> Decomp
+
+pub fn diagram_new(FinCat, Array[Int32], Array[Array[Int32]]) -> FinDiagram
+
+pub fn digest_from(Int32, Array[Int32]) -> String
+
+pub fn dual_cert(Graph, Perm) -> (Bool, Bool, Bool)
+
+pub fn dual_cross_check(Graph) -> Bool
+
+pub fn dual_pair(Graph) -> (DualCanon, DualCanon)
+
+pub fn edge_orbits(Graph) -> (Array[(Int32, Int32)], Array[Int32])
+
+pub fn elem_lut_fast(Array[Perm]) -> KeyLut
+
+pub fn elements_cert(PermGroup, Int32) -> Bool
+
+pub fn enc_index(Int32, Int32) -> Int32
+
+pub fn equalizer_set(FinMap, FinMap) -> Array[Int32]
+
+pub fn failed_certs(Array[Cert]) -> Array[String]
+
+pub fn fold_candidates(PermGroup, Array[Int32]) -> (Array[Int32], Double)
+
+pub fn fold_canonical(Graph) -> FoldedGraph
+
+pub fn fold_canonical_cert(Graph, Perm) -> Bool
+
+pub fn fold_edges(Graph, PermGroup) -> (Array[(Int32, Int32)], Array[Int32])
+
+pub fn fold_equal(FoldedGraph, FoldedGraph) -> Bool
+
+pub fn fold_graph(Graph, PermGroup) -> FoldedGraph
+
+pub fn fold_graph_by_orbits(Graph, Array[Array[Int32]], Array[Int32]) -> FoldedGraph
+
+pub fn frobenius_reciprocity(PermGroup, Int32, GSetOf, Int32) -> (Int32, Int32)
+
+pub fn fundamental_domain(PermGroup, Array[Int32]) -> Array[Int32]
+
+pub fn graph_invariant(Graph) -> Array[Int32]
+
+pub fn gset_burnside(GSetOf) -> (Int32, Int32)
+
+pub fn gset_canon_key(GSetOf, Array[Sub]) -> Array[Int32]
+
+pub fn gset_coinduced(PermGroup, Int32, Int32) -> GSetOf
+
+pub fn gset_edges(PermGroup, Graph, Int32) -> GSetOf
+
+pub fn gset_fixed_points(GSetOf, Int32) -> Int32
+
+pub fn gset_from_action(FinAction, PermGroup, Int32) -> GSetOf
+
+pub fn gset_global_fixed(GSetOf) -> Int32
+
+pub fn gset_induced(PermGroup, Int32, Int32) -> GSetOf
+
+pub fn gset_isomorphic(GSetOf, GSetOf, Array[Sub]) -> Bool
+
+pub fn gset_mark(GSetOf, Sub) -> Int32
+
+pub fn gset_monad_eta(PermGroup, Int32, Int32) -> Array[Int32]
+
+pub fn gset_monad_laws(PermGroup, Int32, Int32) -> Bool
+
+pub fn gset_monad_map(PermGroup, FinMap, Int32) -> Array[Int32]
+
+pub fn gset_monad_mu(PermGroup, Int32, Int32) -> Array[Int32]
+
+pub fn gset_monad_naturality(PermGroup, FinMap, Int32) -> Bool
+
+pub fn gset_orbit_sizes(GSetOf) -> Array[Int32]
+
+pub fn gset_orbits(GSetOf) -> Array[Array[Int32]]
+
+pub fn gset_pairs(PermGroup, Int32) -> GSetOf
+
+pub fn gset_points(PermGroup, Int32) -> GSetOf
+
+pub fn id_functor(FinCat) -> FinFunctor
+
+pub fn id_map(Int32) -> Array[Int32]
+
+pub fn induced_gset(PermGroup, Int32, Int32) -> FinAction
+
+pub fn induced_lift(PermGroup, Int32, Int32, Perm) -> Array[Int32]
+
+pub fn ints_to_string(Array[Int32]) -> String
+
+pub fn is_automorphism(Graph, Perm) -> Bool
+
+pub fn is_category(FinCat) -> Bool
+
+pub fn is_dual_side(Graph) -> Bool
+
+pub fn is_fin_functor(FinFunctor) -> Bool
+
+pub fn is_functor(FinDiagram) -> Bool
+
+pub fn is_presheaf(Presheaf) -> Bool
+
+pub fn isolated_count(Graph) -> Int32
+
+pub fn isomorphic(Graph, Graph) -> Bool
+
+pub fn isomorphic_decomposed(Graph, Graph) -> Bool
+
+pub fn isomorphic_dual(Graph, Graph) -> Bool
+
+pub fn isomorphic_line(Graph, Graph) -> Bool
+
+pub fn isomorphism(Graph, Graph) -> Perm?
+
+pub fn isomorphism_dual(Graph, Graph) -> Perm?
+
+pub fn isomorphism_via_line(Graph, Graph) -> Perm?
+
+pub fn isomorphisms_m(Graph, Graph, Int32) -> ListM[Perm]
+
+pub fn k2_component_count(Graph) -> Int32
+
+pub fn key_lut(Array[Int64]) -> KeyLut
+
+pub fn key_lut_pairs(Array[Int64], Array[Int32]) -> KeyLut
+
+pub fn[A] kleisli_id() -> (A) -> ListM[A]
+
+pub fn[A, B, C] kleisli_list((A) -> ListM[B], (B) -> ListM[C]) -> (A) -> ListM[C]
+
+pub fn[S, A, B, C] kleisli_state((A) -> StateM[S, B], (B) -> StateM[S, C]) -> (A) -> StateM[S, C]
+
+pub fn labeling_perm(Array[Int32]) -> Perm
+
+pub fn lan(FinFunctor, FinDiagram, Int32) -> LanResult
+
+pub fn lan_map(LanResult, Int32, Int32, Int32) -> Array[Int32]?
+
+pub fn lcg_step(Int32) -> Int32
+
+pub fn limit(FinDiagram, Int32) -> Array[Array[Int32]]
+
+pub fn limit_card(FinDiagram, Int32) -> Int32
+
+pub fn line_embed_cert(Graph) -> (Bool, Bool, Bool)
+
+pub fn line_graph(Graph) -> Graph
+
+pub fn line_kernel_order(Graph) -> Int64
+
+pub fn mark_vector(GSetOf, Array[Sub]) -> Array[Int32]
+
+pub fn marks_cert(PermGroup, Int32) -> (Bool, Bool, Bool, Int32, Int64)
+
+pub fn nd_guard(Bool) -> ListM[Unit]
+
+pub fn[A, B] opt_bind(A?, (A) -> B?) -> B?
+
+pub fn[A] opt_pure(A) -> A?
+
+pub fn pack_bits(Array[Int32]) -> Array[Int64]
+
+pub fn permset(Int32, Array[Perm]) -> PermSet
+
+pub fn permset_canon(PermSet, Int32) -> Array[Int32]
+
+pub fn permset_encoding(PermSet, Perm) -> Array[Int32]
+
+pub fn pow_fmap(FinMap) -> FinMap
+
+pub fn pow_monad_laws(Int32) -> Bool
+
+pub fn pow_mult(Int32) -> FinMap
+
+pub fn pow_naturality(FinMap) -> Bool
+
+pub fn pow_obj(Int32) -> Int32
+
+pub fn pow_unit(Int32) -> FinMap
+
+pub fn presheaf_new(FinCat, Array[Int32], Array[Array[Int32]]) -> Presheaf
+
+pub fn product_set(Int32, Int32) -> Array[(Int32, Int32)]
+
+pub fn prove_all(Int32) -> Array[Cert]
+
+pub fn prove_graph(Graph, Perm, Int32) -> Array[Cert]
+
+pub fn prove_pair(Graph, Graph) -> Array[Cert]
+
+pub fn pullback_set(FinMap, FinMap) -> Array[(Int32, Int32)]
+
+pub fn pushout_card(FinMap, FinMap) -> Int32
+
+pub fn queen_constraints(Int32) -> Array[(Int32, Int32, Array[(Int32, Int32)])]
+
+pub fn ran(FinFunctor, FinDiagram, Int32) -> RanResult
+
+pub fn ran_map(RanResult, Int32, Int32, Int32) -> Array[Int32]?
+
+pub fn random_ints(Int32, Int32, Int32) -> (Array[Int32], Int32)
+
+pub fn refine_colors(Graph) -> Array[Int32]
+
+pub fn regular_perm(PermGroup, Int32, Perm) -> Perm
+
+pub fn search_graph(Graph, Bool) -> SearchResult
+
+pub fn search_graph_colored(Graph, Array[Int32], Bool) -> SearchResult
+
+pub fn search_graph_flags(Graph, Int32, Bool) -> SearchResult
+
+pub fn search_graph_mode(Graph, Int32) -> SearchResult
+
+pub fn[A] search_nd(Array[Array[A]], (Array[A]) -> Bool) -> ListM[Array[A]]
+
+pub fn subgroup_classes(PermGroup, Int32) -> Array[Sub]
+
+pub fn symmetric_gen_set(PermGroup) -> Array[Perm]
+
+pub fn table_of_marks(PermGroup, Array[Sub], Int32) -> Array[Array[Int32]]
+
+pub fn table_of_marks_formula(PermGroup, Array[Sub], Int32) -> Array[Array[Int32]]
+
+pub fn vertex_orbits(Graph) -> Array[Array[Int32]]
+
+pub fn whitney_applies(Graph, Graph) -> Bool
+
+pub fn whitney_cert(Graph, Graph) -> (Bool, Bool, Bool)
+
+pub fn whitney_exception(Graph, Graph) -> Bool
+
+pub fn yoneda_count(Presheaf, Int32, Int32) -> Int32
+
+pub fn yoneda_extend(Presheaf, Int32, Int32) -> Array[Int32]
+
+pub fn yoneda_nats(Presheaf, Int32, Int32) -> Array[Array[Int32]]
+
+pub fn yoneda_roundtrip(Presheaf, Int32, Int32) -> (Bool, Bool, Bool)
+
+// Errors
+
+// Types and methods
+pub enum ActionDerive {
+  Points
+  Pairs(Int32)
+  Edges(Array[(Int32, Int32)], Map[Int32, Int32])
+}
+
+pub(all) struct BitVec {
+  n : Int32
+  mut words : Array[Int64]
+}
+pub fn BitVec::and_in_place(Self, Self) -> Unit
+pub fn BitVec::and_not_in_place(Self, Self) -> Unit
+pub fn BitVec::contains(Self, Self) -> Bool
+pub fn BitVec::copy(Self) -> Self
+pub fn BitVec::count_ones(Self) -> Int32
+pub fn BitVec::each(Self, (Int32) -> Unit) -> Unit
+pub fn BitVec::equal(Self, Self) -> Bool
+pub fn BitVec::get(Self, Int32) -> Bool
+pub fn BitVec::hash(Self) -> Int32
+pub fn BitVec::is_empty(Self) -> Bool
+pub fn BitVec::length(Self) -> Int32
+pub fn BitVec::make(Int32) -> Self
+pub fn BitVec::make_full(Int32) -> Self
+pub fn BitVec::or_in_place(Self, Self) -> Unit
+pub fn BitVec::output(Self, &Logger) -> Unit
+pub fn BitVec::set(Self, Int32) -> Unit
+pub fn BitVec::to_array(Self) -> Array[Int32]
+pub fn BitVec::to_repr(Self) -> @debug.Repr
+pub fn BitVec::to_string(Self) -> String
+pub fn BitVec::unset(Self, Int32) -> Unit
+pub impl Show for BitVec
+pub impl @debug.Debug for BitVec
+
+pub(all) struct Cert {
+  name : String
+  holds : Bool
+  detail : String
+}
+pub fn Cert::to_repr(Self) -> @debug.Repr
+pub impl @debug.Debug for Cert
+
+pub(all) struct Decomp {
+  n : Int32
+  comps : Array[Array[Int32]]
+  graphs : Array[Graph]
+  labs : Array[Array[Int32]]
+  encs : Array[Array[Int32]]
+  auts : Array[Int64]
+  gens : Array[Array[Perm]]
+  offsets : Array[Int32]
+  cls_of : Array[Int32]
+  cls_count : Array[Int32]
+}
+pub fn Decomp::aut_generators(Self) -> Array[Perm]
+pub fn Decomp::aut_order(Self) -> Int64
+pub fn Decomp::aut_order_double(Self) -> Double
+pub fn Decomp::automorphism_group(Self) -> PermGroup
+pub fn Decomp::block_count(Self) -> Int32
+pub fn Decomp::block_encoding(Self) -> Array[Int32]
+pub fn Decomp::canonical_form(Self) -> Graph
+pub fn Decomp::class_count(Self) -> Int32
+pub fn Decomp::labeling(Self) -> Array[Int32]
+pub fn Decomp::output(Self, &Logger) -> Unit
+pub fn Decomp::summary(Self) -> String
+pub fn Decomp::to_repr(Self) -> @debug.Repr
+pub fn Decomp::to_string(Self) -> String
+pub impl Show for Decomp
+pub impl @debug.Debug for Decomp
+
+pub(all) struct DualCanon {
+  n : Int32
+  m : Int32
+  dual : Bool
+  enc : Array[Int32]
+  lab : Array[Int32]
+  aut_gens : Array[Perm]
+  nodes : Int32
+}
+pub fn DualCanon::output(Self, &Logger) -> Unit
+pub fn DualCanon::summary(Self) -> String
+pub fn DualCanon::to_repr(Self) -> @debug.Repr
+pub fn DualCanon::to_string(Self) -> String
+pub impl Show for DualCanon
+pub impl @debug.Debug for DualCanon
+
+pub(all) struct FinAction {
+  size : Int32
+  base : Int32
+  via : ActionDerive
+  gens : Array[Array[Int32]]
+}
+pub fn FinAction::burnside_orbit_count(Self, PermGroup, Int32) -> Int32
+pub fn FinAction::card(Self) -> Int32
+pub fn FinAction::fixed_points(Self, Array[Int32]) -> Int32
+pub fn FinAction::fold_ratio(Self) -> Double
+pub fn FinAction::fundamental_domain(Self) -> Array[Int32]
+pub fn FinAction::is_transitive(Self) -> Bool
+pub fn FinAction::lift(Self, Perm) -> Array[Int32]
+pub fn FinAction::new(Int32, Array[Array[Int32]]) -> Self
+pub fn FinAction::of_group(PermGroup) -> Self
+pub fn FinAction::on_edges(PermGroup, Graph) -> Self
+pub fn FinAction::on_pairs(PermGroup) -> Self
+pub fn FinAction::orbit(Self, Int32) -> Array[Int32]
+pub fn FinAction::orbit_count(Self) -> Int32
+pub fn FinAction::orbit_of(Self) -> Array[Int32]
+pub fn FinAction::orbit_sizes(Self) -> Array[Int32]
+pub fn FinAction::orbits(Self) -> Array[Array[Int32]]
+pub fn FinAction::output(Self, &Logger) -> Unit
+pub fn FinAction::to_repr(Self) -> @debug.Repr
+pub fn FinAction::to_string(Self) -> String
+pub fn FinAction::with_derive(Int32, Int32, ActionDerive, Array[Array[Int32]]) -> Self
+pub impl Show for FinAction
+pub impl @debug.Debug for FinAction
+
+pub(all) struct FinCat {
+  nobj : Int32
+  nmor : Int32
+  dom : Array[Int32]
+  cod : Array[Int32]
+  id : Array[Int32]
+  comp : Array[Int32]
+}
+
+pub(all) struct FinDiagram {
+  cat : FinCat
+  size : Array[Int32]
+  img : Array[Array[Int32]]
+}
+
+pub(all) struct FinFunctor {
+  src : FinCat
+  dst : FinCat
+  obj : Array[Int32]
+  mor : Array[Int32]
+}
+
+pub(all) struct FinMap {
+  dom : Int32
+  cod : Int32
+  img : Array[Int32]
+}
+pub fn FinMap::compose(Self, Self) -> Self
+pub fn FinMap::equal(Self, Self) -> Bool
+pub fn FinMap::id(Int32) -> Self
+pub fn FinMap::inverse(Self) -> Self
+pub fn FinMap::is_epi(Self) -> Bool
+pub fn FinMap::is_iso(Self) -> Bool
+pub fn FinMap::is_mono(Self) -> Bool
+pub fn FinMap::new(Int32, Int32, Array[Int32]) -> Self
+
+pub(all) struct FinSet {
+  size : Int32
+}
+
+pub(all) struct FoldedGraph {
+  n : Int32
+  m : Int32
+  k : Int32
+  rep : Array[Int32]
+  orbit_of : Array[Int32]
+  orbit_size : Array[Int32]
+  mul : Array[Array[Int32]]
+  edge_total : Int32
+}
+pub fn FoldedGraph::is_single_orbit(Self) -> Bool
+pub fn FoldedGraph::multiplicity(Self, Int32, Int32) -> Int32
+pub fn FoldedGraph::orbit_count(Self) -> Int32
+pub fn FoldedGraph::output(Self, &Logger) -> Unit
+pub fn FoldedGraph::ratio(Self) -> Double
+pub fn FoldedGraph::summary(Self) -> String
+pub fn FoldedGraph::to_repr(Self) -> @debug.Repr
+pub fn FoldedGraph::to_string(Self) -> String
+pub impl Show for FoldedGraph
+pub impl @debug.Debug for FoldedGraph
+
+pub(all) struct GSet {
+  group : PermGroup
+}
+pub fn GSet::components(Self) -> Array[Array[Int32]]
+pub fn GSet::groupoid_cardinality(Self) -> Double
+pub fn GSet::hom(Self, Int32, Int32, Int32) -> Array[Perm]
+pub fn GSet::isotropy(Self, Int32) -> PermGroup
+pub fn GSet::of(PermGroup) -> Self
+pub fn GSet::orbit_sum_cardinality(Self) -> Double
+
+pub(all) struct GSetOf {
+  x : Int32
+  imgs : Array[Array[Int32]]
+}
+
+pub(all) struct Graph {
+  n : Int32
+  m : Int32
+  adj : Array[Array[Int32]]
+  rows : Array[BitVec]
+}
+pub fn Graph::build(Int32, Int32, Array[Array[Int32]]) -> Self
+pub fn Graph::complement(Self) -> Self
+pub fn Graph::complete(Int32) -> Self
+pub fn Graph::complete_bipartite(Int32, Int32) -> Self
+pub fn Graph::components(Self) -> Array[Array[Int32]]
+pub fn Graph::cycle(Int32) -> Self
+pub fn Graph::degree(Self, Int32) -> Int32
+pub fn Graph::degree_seq(Self) -> Array[Int32]
+pub fn Graph::disjoint_union(Array[Self]) -> Self
+pub fn Graph::edge_list(Self) -> Array[(Int32, Int32)]
+pub fn Graph::empty(Int32) -> Self
+pub fn Graph::equal(Self, Self) -> Bool
+pub fn Graph::from_edges(Int32, Array[(Int32, Int32)]) -> Self
+pub fn Graph::has_edge(Self, Int32, Int32) -> Bool
+pub fn Graph::hypercube(Int32) -> Self
+pub fn Graph::induced_subgraph(Self, Array[Int32]) -> Self
+pub fn Graph::is_regular(Self) -> Bool
+pub fn Graph::neighbors(Self, Int32) -> Array[Int32]
+pub fn Graph::not_equal(Self, Self) -> Bool
+pub fn Graph::order(Self) -> Int32
+pub fn Graph::output(Self, &Logger) -> Unit
+pub fn Graph::path(Int32) -> Self
+pub fn Graph::petersen() -> Self
+pub fn Graph::random(Int32, Int32, Int32) -> (Self, Int32)
+pub fn Graph::relabel(Self, Perm) -> Self
+pub fn Graph::size(Self) -> Int32
+pub fn Graph::star(Int32) -> Self
+pub fn Graph::to_repr(Self) -> @debug.Repr
+pub fn Graph::to_string(Self) -> String
+pub impl Eq for Graph
+pub impl Show for Graph
+pub impl @debug.Debug for Graph
+
+pub(all) struct KeyLut {
+  keys : Array[Int64]
+  vals : Array[Int32]
+  mask : Int64
+}
+pub fn KeyLut::at(Self, Int64) -> Int32
+pub fn KeyLut::find(Self, Int64) -> Int32
+
+pub(all) struct LanResult {
+  k : FinFunctor
+  f : FinDiagram
+  size : Array[Int32]
+  proj : Array[Array[Int32]]
+  class_of : Array[Array[Int32]]
+}
+
+pub(all) struct ListM[A] {
+  arr : Array[A]
+}
+pub fn[A, B] ListM::bind(Self[A], (A) -> Self[B]) -> Self[B]
+pub fn[A] ListM::filter(Self[A], (A) -> Bool) -> Self[A]
+pub fn[A, B] ListM::fold(Self[A], B, (B, A) -> B) -> B
+pub fn[A] ListM::from_array(Array[A]) -> Self[A]
+pub fn[A, B] ListM::map(Self[A], (A) -> B) -> Self[B]
+pub fn[A] ListM::mplus(Self[A], Self[A]) -> Self[A]
+pub fn[A] ListM::pure(A) -> Self[A]
+pub fn[A] ListM::to_array(Self[A]) -> Array[A]
+
+pub(all) struct Part {
+  n : Int32
+  mut lab : Array[Int32]
+  mut ptn : Array[Int32]
+  mut cell_of : Array[Int32]
+}
+pub fn Part::cell_count(Self) -> Int32
+pub fn Part::cell_sizes(Self) -> Array[Int32]
+pub fn Part::cells(Self) -> Array[Array[Int32]]
+pub fn Part::copy(Self) -> Self
+pub fn Part::discrete(Array[Int32]) -> Self
+pub fn Part::is_discrete(Self) -> Bool
+pub fn Part::trivial(Int32) -> Self
+
+pub(all) struct Perm {
+  n : Int32
+  img : Array[Int32]
+}
+pub fn Perm::apply(Self, Int32) -> Int32
+pub fn Perm::compose(Self, Self) -> Self
+pub fn Perm::conjugate_by(Self, Self) -> Self
+pub fn Perm::cycles(Self) -> Array[Array[Int32]]
+pub fn Perm::equal(Self, Self) -> Bool
+pub fn Perm::fixed_point_count(Self) -> Int32
+pub fn Perm::from_cycles(Int32, Array[Array[Int32]]) -> Self
+pub fn Perm::from_img(Array[Int32]) -> Self
+pub fn Perm::identity(Int32) -> Self
+pub fn Perm::inverse(Self) -> Self
+pub fn Perm::is_identity(Self) -> Bool
+pub fn Perm::moved_points(Self) -> Array[Int32]
+pub fn Perm::nontrivial_cycles(Self) -> Array[Array[Int32]]
+pub fn Perm::not_equal(Self, Self) -> Bool
+pub fn Perm::orbit_of(Self, Int32) -> Array[Int32]
+pub fn Perm::order(Self) -> Int32
+pub fn Perm::output(Self, &Logger) -> Unit
+pub fn Perm::pow(Self, Int32) -> Self
+pub fn Perm::random(Int32, Int32) -> (Self, Int32)
+pub fn Perm::sign(Self) -> Int32
+pub fn Perm::size(Self) -> Int32
+pub fn Perm::to_repr(Self) -> @debug.Repr
+pub fn Perm::to_string(Self) -> String
+pub impl Eq for Perm
+pub impl Show for Perm
+pub impl @debug.Debug for Perm
+
+pub(all) struct PermGroup {
+  n : Int32
+  gens : Array[Perm]
+  base : Array[Int32]
+  orbits : Array[Array[Int32]]
+  trans : Array[Array[Perm?]]
+  orbit_size : Array[Int32]
+}
+pub fn PermGroup::conjugate_by(Self, Perm) -> Self
+pub fn PermGroup::contains(Self, Perm) -> Bool
+pub fn PermGroup::cyclic(Int32) -> Self
+pub fn PermGroup::dihedral(Int32) -> Self
+pub fn PermGroup::elements(Self, Int32) -> Array[Perm]
+pub fn PermGroup::fixed_point_count(Self, Int32, Int32) -> Int32
+pub fn PermGroup::generators(Self) -> Array[Perm]
+pub fn PermGroup::is_transitive(Self) -> Bool
+pub fn PermGroup::new(Int32, Array[Perm]) -> Self
+pub fn PermGroup::orbit(Self, Int32) -> Array[Int32]
+pub fn PermGroup::orbit_partition(Self) -> Array[Array[Int32]]
+pub fn PermGroup::orbit_rep(Self, Int32) -> Int32
+pub fn PermGroup::order(Self) -> Int64
+pub fn PermGroup::output(Self, &Logger) -> Unit
+pub fn PermGroup::pointwise_stabilizer(Self, Array[Int32]) -> Self
+pub fn PermGroup::size(Self) -> Int32
+pub fn PermGroup::stabilizer(Self, Int32) -> Self
+pub fn PermGroup::symmetric(Int32) -> Self
+pub fn PermGroup::to_repr(Self) -> @debug.Repr
+pub fn PermGroup::to_string(Self) -> String
+pub fn PermGroup::trivial(Int32) -> Self
+pub impl Show for PermGroup
+pub impl @debug.Debug for PermGroup
+
+pub(all) struct PermSet {
+  n : Int32
+  gens : Array[Perm]
+}
+
+pub(all) struct Presheaf {
+  cat : FinCat
+  size : Array[Int32]
+  res : Array[Array[Int32]]
+}
+
+pub(all) struct RanResult {
+  k : FinFunctor
+  f : FinDiagram
+  size : Array[Int32]
+  cones : Array[Array[Array[Int32]]]
+  proj : Array[Array[Int32]]
+}
+
+pub(all) struct SearchResult {
+  n : Int32
+  canon_lab : Array[Int32]
+  canon_enc : Array[Int32]
+  aut_gens : Array[Perm]
+  nodes : Int32
+  leaves : Int32
+  ties : Int32
+}
+
+pub(all) struct SearchStats {
+  nodes : Int32
+  leaves : Int32
+  autos : Int32
+}
+
+pub(all) struct StateM[S, A] {
+  run : (S) -> (A, S)
+}
+pub fn[S, A, B] StateM::bind(Self[S, A], (A) -> Self[S, B]) -> Self[S, B]
+pub fn[S, A] StateM::eval(Self[S, A], S) -> A
+pub fn[S, A] StateM::exec(Self[S, A], S) -> S
+pub fn[S] StateM::get() -> Self[S, S]
+pub fn[S, A, B] StateM::map(Self[S, A], (A) -> B) -> Self[S, B]
+pub fn[S] StateM::modify((S) -> S) -> Self[S, Unit]
+pub fn[S, A] StateM::pure(A) -> Self[S, A]
+pub fn[S] StateM::put(S) -> Self[S, Unit]
+
+pub(all) struct Sub {
+  order : Int64
+  members : BitVec
+  group : PermGroup
+}
+
+pub(all) struct SymmetryReport {
+  n : Int32
+  m : Int32
+  canon_lab : Array[Int32]
+  digest : String
+  aut_gens : Array[Perm]
+  group : PermGroup
+  order : Int64
+  vertex_orbits : Array[Array[Int32]]
+  edge_orbits : Array[(Int32, Int32)]
+  edge_orbit_sizes : Array[Int32]
+  folded : FoldedGraph
+  nodes : Int32
+  leaves : Int32
+}
+pub fn SymmetryReport::output(Self, &Logger) -> Unit
+pub fn SymmetryReport::summary(Self) -> String
+pub fn SymmetryReport::to_report_string(Self) -> String
+pub fn SymmetryReport::to_repr(Self) -> @debug.Repr
+pub fn SymmetryReport::to_string(Self) -> String
+pub impl Show for SymmetryReport
+pub impl @debug.Debug for SymmetryReport
+
+// Type aliases
+
+// Traits
