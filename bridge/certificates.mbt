@@ -71,6 +71,7 @@ pub fn bridge_certificates() -> Array[BridgeCertificate] {
   for c in grand_unification_certificates() {
     out.push(c)
   }
+  out.push(accel_hardware_certificate())
   out
 }
 

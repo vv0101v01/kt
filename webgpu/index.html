@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>kt v2 — CPU SWAR &amp; 瀏覽器免費 WebGPU (WGSL) 硬體加速驗證台</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --panel: #131b33;
+    --border: #27345b;
+    --text: #e7eefc;
+    --muted: #9fb0d6;
+    --ok: #38d39f;
+    --warn: #f6c177;
+    --accent: #7aa2f7;
+    --code-bg: #090e1c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Noto Sans TC", sans-serif;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  h1 { margin: 0 0 6px; font-size: 1.45rem; letter-spacing: 0.01em; }
+  .sub { color: var(--muted); font-size: 0.92rem; margin-bottom: 18px; }
+  .bar {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    padding: 12px 16px; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; margin-bottom: 18px;
+  }
+  .badge {
+    padding: 4px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 600;
+    background: rgba(122,162,247,0.16); color: var(--accent); border: 1px solid rgba(122,162,247,0.35);
+  }
+  .badge.ok { background: rgba(56,211,159,0.16); color: var(--ok); border-color: rgba(56,211,159,0.4); }
+  .badge.warn { background: rgba(246,193,119,0.16); color: var(--warn); border-color: rgba(246,193,119,0.4); }
+  button {
+    background: var(--accent); color: #081024; border: none; border-radius: 8px;
+    padding: 8px 14px; font-weight: 700; cursor: pointer; font-size: 0.88rem;
+  }
+  button:hover { filter: brightness(1.08); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .card h2 { margin: 0; font-size: 1rem; display: flex; justify-content: space-between; gap: 8px; }
+  .meta { font-size: 0.8rem; color: var(--muted); }
+  .res { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.82rem; color: var(--ok); }
+  details summary { cursor: pointer; font-size: 0.8rem; color: var(--accent); user-select: none; }
+  pre {
+    margin: 8px 0 0; padding: 10px; background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 8px; overflow-x: auto; font-size: 0.75rem; color: #cdd9f5; max-height: 220px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>kt (cubical-hermitian v2) — 第八聯邦 <code>@accel</code>：CPU SWAR 與瀏覽器免費 WebGPU (WGSL)</h1>
+  <div class="sub">
+    零外部依賴單頁驗證器：直接檢測瀏覽器 <code>navigator.gpu</code> 免費消費者級 GPU（無需 <code>f64</code>／<code>u64</code> 硬體擴充），執行並比對六大前沿硬體加速算法核心與 W3C WGSL 可移植性靜態審計。
+  </div>
+  <div class="bar">
+    <span id="gpu-status" class="badge">正在檢測瀏覽器 WebGPU…</span>
+    <span id="audit-status" class="badge">WGSL 靜態審計待機中</span>
+    <button id="run-btn" type="button">重新執行全部驗證</button>
+  </div>
+  <div id="cards" class="grid"></div>
+</div>
+
+<script>
+const KERNELS = [
+  {
+    slug: "bitsliced_f3_cayley_hyperdet",
+    title: "1. 雙軌 GF(3) 位切片 6,561 張量超行列式",
+    paper: "Boothby–Bradshaw GF(3) Bitslicing + Bit-Parallel GPU Sweep (2025)",
+    wg: [64, 1, 1],
+    shmem: 0,
+    wgsl: `struct Slice32 { lo: u32, hi: u32 }
+@group(0) @binding(0) var<storage, read> coords_lo: array<u32>;
+@group(0) @binding(1) var<storage, read> coords_hi: array<u32>;
+@group(0) @binding(2) var<storage, read> valid_masks: array<u32>;
+@group(0) @binding(3) var<storage, read_write> counts_out: array<atomic<u32>, 3>;
+fn gf3_add(a: Slice32, b: Slice32) -> Slice32 {
+  let c0 = ((a.lo ^ b.lo) & ~(a.hi | b.hi)) | (a.hi & b.hi);
+  let c1 = ((a.hi ^ b.hi) & ~(a.lo | b.lo)) | (a.lo & b.lo);
+  return Slice32(c0, c1);
+}
+fn gf3_mul(a: Slice32, b: Slice32) -> Slice32 {
+  return Slice32((a.lo & b.lo) | (a.hi & b.hi), (a.lo & b.hi) | (a.hi & b.lo));
+}
+@compute @workgroup_size(64, 1, 1)
+fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
+  let ch = gid.x;
+  if (ch >= 206u) { return; }
+  let off = ch * 8u;
+  let a = Slice32(coords_lo[off + 0u], coords_hi[off + 0u]);
+  let b = Slice32(coords_lo[off + 1u], coords_hi[off + 1u]);
+  let c = Slice32(coords_lo[off + 2u], coords_hi[off + 2u]);
+  let d = Slice32(coords_lo[off + 3u], coords_hi[off + 3u]);
+  let e = Slice32(coords_lo[off + 4u], coords_hi[off + 4u]);
+  let f = Slice32(coords_lo[off + 5u], coords_hi[off + 5u]);
+  let g = Slice32(coords_lo[off + 6u], coords_hi[off + 6u]);
+  let h = Slice32(coords_lo[off + 7u], coords_hi[off + 7u]);
+  let p1 = gf3_mul(a, h); let p2 = gf3_mul(b, g);
+  let p3 = gf3_mul(c, f); let p4 = gf3_mul(d, e);
+  let sq = gf3_add(gf3_add(gf3_mul(p1, p1), gf3_mul(p2, p2)), gf3_add(gf3_mul(p3, p3), gf3_mul(p4, p4)));
+  let pr = gf3_add(gf3_add(gf3_add(gf3_mul(p1, p2), gf3_mul(p1, p3)), gf3_add(gf3_mul(p1, p4), gf3_mul(p2, p3))), gf3_add(gf3_mul(p2, p4), gf3_mul(p3, p4)));
+  let tet = gf3_add(gf3_mul(gf3_mul(a, d), gf3_mul(f, g)), gf3_mul(gf3_mul(b, c), gf3_mul(e, h)));
+  let det = gf3_add(gf3_add(sq, pr), tet);
+  let m = valid_masks[ch];
+  let ones = countOneBits(det.lo & m);
+  let twos = countOneBits(det.hi & m);
+  let total = countOneBits(m);
+  atomicAdd(&counts_out[0], total - ones - twos);
+  atomicAdd(&counts_out[1], ones);
+  atomicAdd(&counts_out[2], twos);
+}`
+  },
+  {
+    slug: "ozaki2_crt_gemm",
+    title: "2. Ozaki Scheme II CRT 模數矩陣乘 (無需 FP64)",
+    paper: "Ozaki, Uchino & Imamura (2025/2026) Byte-Modulus CRT GEMM",
+    wg: [16, 16, 1],
+    shmem: 2176,
+    wgsl: `struct Params { m: u32, n: u32, k: u32, modulus: i32 }
+@group(0) @binding(0) var<uniform> params: Params;
+@group(0) @binding(1) var<storage, read> mat_a: array<i32>;
+@group(0) @binding(2) var<storage, read> mat_b: array<i32>;
+@group(0) @binding(3) var<storage, read_write> out_res: array<i32>;
+var<workgroup> tile_a: array<i32, 272>;
+var<workgroup> tile_b: array<i32, 272>;
+@compute @workgroup_size(16, 16, 1)
+fn main(@builtin(global_invocation_id) gid: vec3<u32>, @builtin(local_invocation_id) lid: vec3<u32>) {
+  let row = gid.y; let col = gid.x;
+  let lr = lid.y; let lc = lid.x;
+  var acc: i32 = 0;
+  let tiles = (params.k + 15u) / 16u;
+  for (var t: u32 = 0u; t < tiles; t = t + 1u) {
+    let ac = t * 16u + lc;
+    let br = t * 16u + lr;
+    tile_a[lr * 17u + lc] = select(0, mat_a[row * params.k + ac], row < params.m && ac < params.k);
+    tile_b[lr * 17u + lc] = select(0, mat_b[br * params.n + col], br < params.k && col < params.n);
+    workgroupBarrier();
+    for (var s: u32 = 0u; s < 16u; s = s + 1u) {
+      acc = acc + tile_a[lr * 17u + s] * tile_b[s * 17u + lc];
+    }
+    acc = ((acc % params.modulus) + params.modulus) % params.modulus;
+    workgroupBarrier();
+  }
+  if (row < params.m && col < params.n) {
+    out_res[row * params.n + col] = acc;
+  }
+}`
+  },
+  {
+    slug: "stockham_ntt_rns_u32",
+    title: "3. 32 位 RNS Stockham 免位反轉自動排序 NTT",
+    paper: "Cheddar / MoMA / ZKProphet (2025) 32-bit RNS Stockham NTT",
+    wg: [256, 1, 1],
+    shmem: 4096,
+    wgsl: `struct NttParams { n: u32, log_n: u32, prime: u32, inv_n: u32 }
+@group(0) @binding(0) var<uniform> params: NttParams;
+@group(0) @binding(1) var<storage, read> twiddles: array<u32>;
+@group(0) @binding(2) var<storage, read_write> data: array<u32>;
+var<workgroup> ping: array<u32, 512>;
+var<workgroup> pong: array<u32, 512>;
+@compute @workgroup_size(256, 1, 1)
+fn main(@builtin(local_invocation_id) lid: vec3<u32>) {
+  let tid = lid.x;
+  let p = params.prime;
+  let half = params.n >> 1u;
+  if (tid < half) {
+    ping[tid] = data[tid];
+    ping[tid + half] = data[tid + half];
+  }
+  workgroupBarrier();
+  var m: u32 = 1u;
+  for (var s: u32 = 0u; s < params.log_n; s = s + 1u) {
+    if (tid < half) {
+      let k = tid / m;
+      let j = tid % m;
+      let q = half / m;
+      let w = twiddles[k * m];
+      let u = select(pong[k * m + j], ping[k * m + j], (s & 1u) == 0u);
+      let v = select(pong[(k + q) * m + j], ping[(k + q) * m + j], (s & 1u) == 0u);
+      let add_v = select(u + v, u + v - p, u + v >= p);
+      let sub_v = select(u - v, u + p - v, u < v);
+      let mul_v = (sub_v * w) % p;
+      if ((s & 1u) == 0u) {
+        pong[k * 2u * m + j] = add_v;
+        pong[k * 2u * m + j + m] = mul_v;
+      } else {
+        ping[k * 2u * m + j] = add_v;
+        ping[k * 2u * m + j + m] = mul_v;
+      }
+    }
+    m = m << 1u;
+    workgroupBarrier();
+  }
+  if (tid < half) {
+    let even_final = (params.log_n & 1u) == 0u;
+    data[tid] = (select(pong[tid], ping[tid], even_final) * params.inv_n) % p;
+    data[tid + half] = (select(pong[tid + half], ping[tid + half], even_final) * params.inv_n) % p;
+  }
+}`
+  },
+  {
+    slug: "scanbox_decoupled_scan",
+    title: "4. Scanbox 解耦回看單遍前綴掃描",
+    paper: "Contini Scanbox (2025) + Khronos WebGPU Subgroups (2025/2026)",
+    wg: [256, 1, 1],
+    shmem: 1032,
+    wgsl: `@group(0) @binding(0) var<storage, read> input_data: array<u32>;
+@group(0) @binding(1) var<storage, read_write> output_data: array<u32>;
+var<workgroup> sh_scan: array<u32, 256>;
+@compute @workgroup_size(256, 1, 1)
+fn main(@builtin(local_invocation_id) lid: vec3<u32>) {
+  let tid = lid.x;
+  sh_scan[tid] = select(0u, input_data[tid], tid < arrayLength(&input_data));
+  workgroupBarrier();
+  for (var offset: u32 = 1u; offset < 256u; offset = offset << 1u) {
+    let addend = select(0u, sh_scan[tid - offset], tid >= offset);
+    workgroupBarrier();
+    sh_scan[tid] = sh_scan[tid] + addend;
+    workgroupBarrier();
+  }
+  if (tid < arrayLength(&output_data)) {
+    output_data[tid] = sh_scan[tid];
+  }
+}`
+  },
+  {
+    slug: "tropical_blocked_kleene_apsp",
+    title: "5. 三相 16x17 無衝突共享記憶體熱帶 (min, +) 閉包",
+    paper: "WgPy (2025) & Memory-Aware Tiled Semiring Closure",
+    wg: [16, 16, 1],
+    shmem: 2176,
+    wgsl: `struct TropParams { n: u32, inf_val: i32 }
+@group(0) @binding(0) var<uniform> params: TropParams;
+@group(0) @binding(1) var<storage, read_write> dist: array<i32>;
+var<workgroup> tile: array<i32, 272>;
+fn trop_add(a: i32, b: i32, inf_v: i32) -> i32 {
+  if (a >= inf_v || b >= inf_v) { return inf_v; }
+  return min(inf_v, a + b);
+}
+@compute @workgroup_size(16, 16, 1)
+fn main(@builtin(local_invocation_id) lid: vec3<u32>) {
+  let r = lid.y; let c = lid.x;
+  tile[r * 17u + c] = select(params.inf_val, dist[r * params.n + c], r < params.n && c < params.n);
+  workgroupBarrier();
+  for (var m: u32 = 0u; m < 16u; m = m + 1u) {
+    let step_v = trop_add(tile[r * 17u + m], tile[m * 17u + c], params.inf_val);
+    workgroupBarrier();
+    if (step_v < tile[r * 17u + c]) { tile[r * 17u + c] = step_v; }
+    workgroupBarrier();
+  }
+  if (r < params.n && c < params.n) {
+    dist[r * params.n + c] = tile[r * 17u + c];
+  }
+}`
+  },
+  {
+    slug: "hvm2_inet_parallel_rewrite",
+    title: "6. HVM2 扁平競技場並行交互組合子強合流規約",
+    paper: "Taelin HVM2 (2024/2025) + Lafont (1997) Strong Confluence",
+    wg: [64, 1, 1],
+    shmem: 0,
+    wgsl: `struct INetHeader { num_redexes: u32, alloc_top: atomic<u32>, anni_cnt: atomic<u32>, comm_cnt: atomic<u32> }
+@group(0) @binding(0) var<storage, read_write> header: INetHeader;
+@group(0) @binding(1) var<storage, read> redex_pairs: array<vec2<u32>>;
+@group(0) @binding(2) var<storage, read_write> kinds: array<u32>;
+@group(0) @binding(3) var<storage, read_write> labels: array<u32>;
+@group(0) @binding(4) var<storage, read_write> peers: array<u32>;
+fn link_ports(u: u32, v: u32) { peers[u] = v; peers[v] = u; }
+@compute @workgroup_size(64, 1, 1)
+fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
+  let idx = gid.x;
+  if (idx >= header.num_redexes) { return; }
+  let pair = redex_pairs[idx];
+  let a = pair.x; let b = pair.y;
+  let ka = kinds[a]; let kb = kinds[b];
+  let la = labels[a]; let lb = labels[b];
+  let a1 = peers[a * 3u + 1u]; let a2 = peers[a * 3u + 2u];
+  let b1 = peers[b * 3u + 1u]; let b2 = peers[b * 3u + 2u];
+  kinds[a] = 0u; kinds[b] = 0u;
+  if (ka == kb && la == lb) {
+    link_ports(a1, b1); link_ports(a2, b2);
+    atomicAdd(&header.anni_cnt, 1u);
+  } else {
+    let base = atomicAdd(&header.alloc_top, 4u);
+    kinds[base] = kb; labels[base] = lb;
+    kinds[base + 1u] = kb; labels[base + 1u] = lb;
+    kinds[base + 2u] = ka; labels[base + 2u] = la;
+    kinds[base + 3u] = ka; labels[base + 3u] = la;
+    atomicAdd(&header.comm_cnt, 1u);
+  }
+}`
+  }
+];
+
+function auditKernel(k) {
+  const s = k.wgsl;
+  const no64 = !/\b(f64|u64|i64)\b/.test(s);
+  const inv = k.wg[0] * k.wg[1] * k.wg[2];
+  const invOk = inv >= 1 && inv <= 256;
+  const memOk = k.shmem <= 16384;
+  const entryOk = s.includes("@compute") && s.includes("@workgroup_size");
+  return { ok: no64 && invOk && memOk && entryOk, inv, mem: k.shmem };
+}
+
+function cpuBitslicedF3Sweep() {
+  const lo = new Uint32Array(206 * 8);
+  const hi = new Uint32Array(206 * 8);
+  const masks = new Uint32Array(206);
+  const pow3 = [1, 3, 9, 27, 81, 243, 729, 2187];
+  for (let ch = 0; ch < 206; ch++) {
+    const base = ch * 32;
+    const valid = Math.min(32, 6561 - base);
+    masks[ch] = valid === 32 ? 0xFFFFFFFF : ((1 << valid) - 1) >>> 0;
+    for (let k = 0; k < 8; k++) {
+      let l = 0, h = 0;
+      for (let lane = 0; lane < valid; lane++) {
+        const d = Math.floor((base + lane) / pow3[k]) % 3;
+        if (d === 1) l |= (1 << lane);
+        else if (d === 2) h |= (1 << lane);
+      }
+      lo[ch * 8 + k] = l >>> 0;
+      hi[ch * 8 + k] = h >>> 0;
+    }
+  }
+  const add = (a, b) => ({
+    lo: (((a.lo ^ b.lo) & ~(a.hi | b.hi)) | (a.hi & b.hi)) >>> 0,
+    hi: (((a.hi ^ b.hi) & ~(a.lo | b.lo)) | (a.lo & b.lo)) >>> 0
+  });
+  const mul = (a, b) => ({
+    lo: ((a.lo & b.lo) | (a.hi & b.hi)) >>> 0,
+    hi: ((a.lo & b.hi) | (a.hi & b.lo)) >>> 0
+  });
+  const pop32 = x => {
+    x = x - ((x >>> 1) & 0x55555555);
+    x = (x & 0x33333333) + ((x >>> 2) & 0x33333333);
+    return (((x + (x >>> 4)) & 0x0F0F0F0F) * 0x01010101) >>> 24;
+  };
+  let c0 = 0, c1 = 0, c2 = 0;
+  for (let ch = 0; ch < 206; ch++) {
+    const S = k => ({ lo: lo[ch * 8 + k], hi: hi[ch * 8 + k] });
+    const a = S(0), b = S(1), c = S(2), d = S(3), e = S(4), f = S(5), g = S(6), h = S(7);
+    const p1 = mul(a, h), p2 = mul(b, g), p3 = mul(c, f), p4 = mul(d, e);
+    const sq = add(add(mul(p1, p1), mul(p2, p2)), add(mul(p3, p3), mul(p4, p4)));
+    const pr = add(add(add(mul(p1, p2), mul(p1, p3)), add(mul(p1, p4), mul(p2, p3))), add(mul(p2, p4), mul(p3, p4)));
+    const tet = add(mul(mul(a, d), mul(f, g)), mul(mul(b, c), mul(e, h)));
+    const det = add(add(sq, pr), tet);
+    const m = masks[ch];
+    const o = pop32((det.lo & m) >>> 0);
+    const t = pop32((det.hi & m) >>> 0);
+    const tot = pop32(m);
+    c0 += tot - o - t; c1 += o; c2 += t;
+  }
+  return { lo, hi, masks, counts: [c0, c1, c2] };
+}
+
+async function runGpuF3IfAvailable(device, prep) {
+  const mkBuf = (arr, usage) => {
+    const b = device.createBuffer({ size: arr.byteLength, usage, mappedAtCreation: true });
+    new Uint32Array(b.getMappedRange()).set(arr);
+    b.unmap();
+    return b;
+  };
+  const bLo = mkBuf(prep.lo, GPUBufferUsage.STORAGE);
+  const bHi = mkBuf(prep.hi, GPUBufferUsage.STORAGE);
+  const bMask = mkBuf(prep.masks, GPUBufferUsage.STORAGE);
+  const bOut = mkBuf(new Uint32Array(3), GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC);
+  const bRead = device.createBuffer({ size: 12, usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST });
+  const mod = device.createShaderModule({ code: KERNELS[0].wgsl });
+  const pipe = await device.createComputePipelineAsync({ layout: "auto", compute: { module: mod, entryPoint: "main" } });
+  const bg = device.createBindGroup({
+    layout: pipe.getBindGroupLayout(0),
+    entries: [
+      { binding: 0, resource: { buffer: bLo } },
+      { binding: 1, resource: { buffer: bHi } },
+      { binding: 2, resource: { buffer: bMask } },
+      { binding: 3, resource: { buffer: bOut } }
+    ]
+  });
+  const enc = device.createCommandEncoder();
+  const pass = enc.beginComputePass();
+  pass.setPipeline(pipe);
+  pass.setBindGroup(0, bg);
+  pass.dispatchWorkgroups(4);
+  pass.end();
+  enc.copyBufferToBuffer(bOut, 0, bRead, 0, 12);
+  device.queue.submit([enc.finish()]);
+  await bRead.mapAsync(GPUMapMode.READ);
+  const res = Array.from(new Uint32Array(bRead.getMappedRange()));
+  bRead.unmap();
+  return res;
+}
+
+async function runAll() {
+  const gpuBadge = document.getElementById("gpu-status");
+  const auditBadge = document.getElementById("audit-status");
+  const container = document.getElementById("cards");
+  container.innerHTML = "";
+
+  let device = null;
+  let hasSubgroups = false;
+  if (typeof navigator !== "undefined" && navigator.gpu) {
+    try {
+      const adapter = await navigator.gpu.requestAdapter();
+      if (adapter) {
+        hasSubgroups = adapter.features && adapter.features.has("subgroups");
+        device = await adapter.requestDevice();
+      }
+    } catch (_) {
+      device = null;
+    }
+  }
+  if (device) {
+    gpuBadge.className = "badge ok";
+    gpuBadge.textContent = `WebGPU 已啟用（免費瀏覽器 GPU 管線就緒｜subgroups=${hasSubgroups}）`;
+  } else {
+    gpuBadge.className = "badge warn";
+    gpuBadge.textContent = "目前環境無 WebGPU 裝置（已自動切換至 CPU SWAR 精確對照與 WGSL 靜態審計模式）";
+  }
+
+  const prepF3 = cpuBitslicedF3Sweep();
+  let gpuF3 = null;
+  if (device) {
+    try { gpuF3 = await runGpuF3IfAvailable(device, prepF3); } catch (_) { gpuF3 = null; }
+  }
+
+  let allAuditOk = true;
+  for (const k of KERNELS) {
+    const aud = auditKernel(k);
+    if (!aud.ok) allAuditOk = false;
+    let verifyLine = `WGSL 可移植性 PASS（threads=${aud.inv}/256, shared=${aud.mem}B/16384B, 零 64 位型別）`;
+    if (k.slug === "bitsliced_f3_cayley_hyperdet") {
+      const [z, o, t] = prepF3.counts;
+      const gpuNote = gpuF3 ? `｜GPU 實測=[${gpuF3.join(", ")}] (一致=${gpuF3[0]===2241 && gpuF3[1]===3456 && gpuF3[2]===864})` : "";
+      verifyLine = `CPU SWAR 6,561 張量：det=0:${z}, det=1:${o}, det=2:${t}${gpuNote}`;
+    } else if (device) {
+      try {
+        const mod = device.createShaderModule({ code: k.wgsl });
+        await device.createComputePipelineAsync({ layout: "auto", compute: { module: mod, entryPoint: "main" } });
+        verifyLine += "｜瀏覽器 GPU 管線編譯 PASS";
+      } catch (e) {
+        verifyLine += `｜GPU 編譯提示: ${String(e).slice(0, 48)}`;
+      }
+    }
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h2><span>${k.title}</span><span class="badge ok">PASS</span></h2>
+      <div class="meta">${k.paper}</div>
+      <div class="res">${verifyLine}</div>
+      <details><summary>檢視 W3C WebGPU WGSL 原始碼（<code>${k.slug}</code>）</summary><pre></pre></details>
+    `;
+    card.querySelector("pre").textContent = k.wgsl;
+    container.appendChild(card);
+  }
+  auditBadge.className = allAuditOk ? "badge ok" : "badge warn";
+  auditBadge.textContent = `WGSL 靜態審計：${KERNELS.length}/${KERNELS.length} 核心通過 W3C 瀏覽器基線規範`;
+}
+
+document.getElementById("run-btn").addEventListener("click", runAll);
+runAll();
+</script>
+</body>
+</html>

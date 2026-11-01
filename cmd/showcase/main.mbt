@@ -94,5 +94,11 @@ fn main {
     None => false
   }
   println("Perm → cubical Equiv → Perm round trip: \{wiring_ok}")
-  guard all_certs_ok && wiring_ok && unif_ok else { abort("showcase failed") }
+  let accel_rep = @bridge.verify_accel_hardware_bridge()
+  println(
+    "CPU SWAR + Browser Free WebGPU (WGSL) acceleration: all_ok=\{accel_rep.all_ok}, wgsl_portable=\{accel_rep.wgsl_browser_kernels_audited}/7",
+  )
+  guard all_certs_ok && wiring_ok && unif_ok && accel_rep.all_ok else {
+    abort("showcase failed")
+  }
 }

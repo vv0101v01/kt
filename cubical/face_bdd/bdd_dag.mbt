@@ -1082,20 +1082,18 @@ fn bdd_sat_count_from(
   if id == 1 {
     return bdd_pow2(m.n - rank)
   }
-  match memo[id] {
+  let node = m.nodes[id]
+  let skipped = bdd_pow2(node.rank - rank)
+  let at_node = match memo[id] {
     Some(c) => c
     None => {
-      let node = m.nodes[id]
-      let skipped = bdd_pow2(node.rank - rank)
-      let total = skipped *
-        (
-          bdd_sat_count_from(m, node.lo, node.rank + 1, memo) +
-          bdd_sat_count_from(m, node.hi, node.rank + 1, memo)
-        )
-      memo[id] = Some(total)
-      total
+      let c = bdd_sat_count_from(m, node.lo, node.rank + 1, memo) +
+        bdd_sat_count_from(m, node.hi, node.rank + 1, memo)
+      memo[id] = Some(c)
+      c
     }
   }
+  skipped * at_node
 }
 
 ///|

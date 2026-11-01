@@ -116,6 +116,21 @@
       ],
       "summary_en": "Federation 7 (Multilinear Tensor Geometry & Lakatosian Conjecture Discovery Loop) — F_3 6,561-tensor Cayley hyperdeterminant & rank atlas, discrete Radon inversion, Clifford Ramond spinors & T^2 gauge moduli, non-crossing sheaves, Vietoris–Rips homology, 6 evolutionary transfer laws, 5 epistemic lenses, and 12 updated conjectures.",
       "summary_zh": "第七聯邦（多線性張量場論與 Lakatos 猜想演化創造聯邦） — F_3 全體 6,561 張量超行列式與秩圖譜、有限平面離散 Radon 反演、Clifford 拉蒙旋量與 T² 規範模空間、非交叉森林層景、VR 持續同調、6 大演化轉移定律、5 大認識論透鏡與 12 項更新猜想。"
+    },
+    {
+      "id": "accel",
+      "packages": [
+        "accel"
+      ],
+      "allowed_external_packages": [
+        "condensed:gcd",
+        "cubical:cubical-face-bdd",
+        "cubical:algebra",
+        "semiring:semiring-trop",
+        "discovery:tensor"
+      ],
+      "summary_en": "Federation 8 (CPU SWAR & Browser Free WebGPU Frontier Acceleration) — M4RI GF(2) Gray-code GEMM, dual-rail 64-trit GF(3) bitslicing across all 6,561 2x2x2 Cayley hyperdeterminants, 64-way Face SWAR #SAT, Ozaki Scheme II INT8 DP4A CRT exact/FP64 GEMM, 32-bit RNS Stockham Auto-Sort NTT & 30-bit Montgomery REDC, Scanbox decoupled look-back prefix scan, 3-phase padded Tropical Kleene closure, HVM2 flat-arena parallel Interaction Combinators, and 7 audited W3C Browser WebGPU WGSL compute shaders.",
+      "summary_zh": "第八聯邦（CPU SWAR 與瀏覽器免費 WebGPU 前沿硬體加速聯邦） — M4RI GF(2) 格雷碼矩陣乘、雙軌 64-trit GF(3) 位切片全體 6,561 張量超行列式掃描、64 路 Face 超立方體 #SAT、Ozaki Scheme II INT8 DP4A 中國剩餘定理精確／FP64 矩陣乘、32 位 RNS Stockham 免位反轉 NTT 與 30 位 Montgomery 規約、Scanbox 解耦回看前綴掃描、三相無衝突共享記憶體熱帶 Kleene 閉包、HVM2 扁平競技場並行交互組合子，以及 7 個經靜態可移植性審計之 W3C 瀏覽器 WebGPU WGSL 計算著色器。"
     }
   ],
   "unification": {
@@ -534,7 +549,8 @@
         "scheme",
         "condensed",
         "tensor",
-        "conjecture"
+        "conjecture",
+        "accel"
       ],
       "summary_en": "Upper-V & Star-Prism Apex V_2: Double-V, X-Overlap & Lakatosian synthesis, complete K_7 (21/21) cross-federation bridges across 7 federations, logical theory translations, and 18-entry geometry-logic correspondence atlas.",
       "summary_zh": "上V與星稜柱頂點 V_2：雙V形、X形交疊與 Lakatos 猜想演化匯流、七聯邦 K_7（21/21）全配對跨聯邦橋、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜。"
@@ -597,6 +613,21 @@
       "depends_on": [],
       "summary_en": "Host storage backend seam: an executable model of crash-consistent durable writes (content fsync before dirent fsync), the lock/write/fsync/rename/fsync-dir protocol, and crash-point conformance checking that runs on every target.",
       "summary_zh": "宿主儲存後端接縫：崩潰一致寫入的可執行模型（內容 fsync 先於目錄項 fsync）、lock／write／fsync／rename／fsync 目錄協定，以及可在所有目標上執行的崩潰點一致性檢核。"
+    },
+    {
+      "id": "accel",
+      "path": "accel",
+      "moon": "vv0101v01/cubical-hermitian/accel",
+      "layer": 4,
+      "depends_on": [
+        "gcd",
+        "cubical-face-bdd",
+        "algebra",
+        "semiring-trop",
+        "tensor"
+      ],
+      "summary_en": "CPU 64-bit SWAR (M4RI GF(2), dual-rail GF(3) 6,561-tensor hyperdeterminant sweep, Face hypercube #SAT), Ozaki Scheme II INT8 DP4A CRT exact/FP64 GEMM, 32-bit RNS Stockham NTT & 30-bit Montgomery REDC, Scanbox decoupled look-back scan, 3-phase blocked Tropical closure, HVM2 flat-arena Interaction Combinators, and W3C Browser WebGPU WGSL shaders.",
+      "summary_zh": "CPU 64 位 SWAR（M4RI GF(2)、雙軌 GF(3) 6,561 張量超行列式、Face 超立方體 #SAT）、Ozaki Scheme II INT8 DP4A CRT 精確／FP64 矩陣乘、32 位 RNS Stockham NTT 與 30 位 Montgomery 規約、Scanbox 解耦回看掃描、三相熱帶閉包、HVM2 扁平競技場交互組合子與瀏覽器 WebGPU WGSL 計算著色器。"
     }
   ],
   "components": [
@@ -1283,6 +1314,23 @@
       ],
       "summary_en": "Lakatosian Conjecture & Theorem-Creation Engine: [E-Derive]+[P-Transfer] evolutionary discovery across 6 trajectories, 5 epistemic relational lenses, and 12 updated cross-federation conjectures.",
       "summary_zh": "Lakatos 猜想演化與定理創造引擎：6 大軌跡 [E-Derive]+[P-Transfer] 守恆律自動發現、5 大認識論關係透鏡與 12 項跨聯邦更新猜想。"
+    },
+    {
+      "id": "accel-core",
+      "package": "accel",
+      "layer": 5,
+      "files": [
+        "accel/*.mbt"
+      ],
+      "depends_on": [
+        "gcd-core",
+        "foundation",
+        "exact-algebra",
+        "semiring-trop",
+        "tensor-core"
+      ],
+      "summary_en": "Frontier CPU SWAR & Browser Free WebGPU (WGSL) hardware-acceleration algorithms cross-verified bit-for-bit against Federations 1, 3, 6, and 7.",
+      "summary_zh": "前沿 CPU SWAR 與瀏覽器免費 WebGPU（WGSL）硬體加速算法核心，與第 1、3、6、7 聯邦逐位對齊驗證。"
     }
   ],
   "exceptions": []

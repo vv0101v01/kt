@@ -15,4 +15,5 @@ import {
   "vv0101v01/cubical-hermitian/condensed",
   "vv0101v01/cubical-hermitian/tensor",
   "vv0101v01/cubical-hermitian/conjecture",
+  "vv0101v01/cubical-hermitian/accel",
 }

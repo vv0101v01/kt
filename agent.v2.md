@@ -46,19 +46,21 @@
      python3 tools/arch_check.py
      ```
    - 透過 `git diff *.mbti` 審視公開介面變化是否符合預期；若重構無意改變外部 API，`.mbti` 應保持零非預期變動。
-   - 跨聯邦重大變更完成後，可按需執行 `moon run --release cmd/showcase --target wasm-gc`（`46/46` 大一統證書）或 `moon run --release cmd/main --target wasm-gc`（`129/129` 定理總表）做端到端驗收。
+   - 跨聯邦重大變更完成後，可按需執行 `moon run --release cmd/showcase --target wasm-gc`（`47/47` 大一統證書）或 `moon run --release cmd/main --target wasm-gc`（`129/129` 定理總表）做端到端驗收。
 
 ---
 
-## 二、宏觀架構治理（七聯邦雙V形＋星稜柱 DAG）
+## 二、宏觀架構治理（八聯邦雙V形＋星稜柱＋硬體加速 DAG）
 
-全倉受 `architecture.json` 與 `tools/arch_check.py` 嚴格守門，遵循單向無環依賴（DAG）：
+全倉受 `architecture.json` 與 `tools/arch_check.py` 嚴格守門，遵循單向無環依賴（DAG，共 `39` 套件、`48` 元件）：
 
-- **Layer 0（下頂點 `V₁`）**：`gcd`（五域泛消元基底：`F_p` RREF、`ℤ` HNF/SNF、CRT、Grassmann 子空間交和對偶、自由群約化）。零外部業務依賴，禁止各聯邦重寫重複的矩陣消元或 GCD。
-- **Layers 1–2（發散雙翼）**：`algebra`、`hostfs`、`symlib`、`semiring/*`、`topos`、`scheme`、`tensor`。
-- **Layer 3（中央 `X` 形交疊樞紐）**：`condensed`（凝聚高階結構、Steenrod–Adams 上同調、雜湊鏈守恆律賬本）。
-- **Layer 4（上翼收斂與猜想發現迴圈）**：`cubical` 核心層與 `conjecture`（6 大演化轉移定律、5 大認識論透鏡、Lakatos 十二猜想圖譜 `CONJ-01..12`）。
-- **Layers 5–6（上頂點 `V₂`）**：`bridge`（$K_7 = 21/21$ 跨聯邦雙邊橋）與 `cmd/*` 執行入口。**任何下層聯邦絕對禁止反向匯入 `bridge`**。
+- **Layer 0（下頂點 `V₁`）**：`gcd`（五域泛消元基底：`F_p` RREF、`ℤ` HNF/SNF、CRT、Grassmann 子空間交和對偶、自由群約化）與 `cubical/face_bdd`。零外部業務依賴，禁止各聯邦重寫重複的矩陣消元或 GCD。
+- **Layers 1–3（發散雙翼）**：`algebra`、`hostfs`、`symlib`、`semiring/*`、`topos`、`scheme`、`tensor`。
+- **Layer 4（中央 `X` 形交疊樞紐與硬體加速引擎）**：
+  - `condensed`：凝聚高階結構、Steenrod–Adams 上同調、雜湊鏈守恆律賬本；
+  - `accel`：CPU 64 位 SWAR（M4RI `GF(2)`、雙軌 `GF(3)` 位切片、64 路 `Face` `#SAT`）、Ozaki Scheme II `INT8→INT32` CRT 矩陣乘、32 位 RNS Stockham 自動排序 NTT、Scanbox 解耦回看掃描、三相共享記憶體熱帶閉包、HVM2 扁平競技場交互組合子與 W3C 瀏覽器免費 WebGPU（`WGSL`）計算著色器。
+- **Layers 5–6（上翼收斂與猜想發現迴圈）**：`cubical` 上層子套件與 `conjecture`（6 大演化轉移定律、5 大認識論透鏡、Lakatos 十二猜想圖譜 `CONJ-01..12`）。
+- **Layers 7–8（上頂點 `V₂`）**：`bridge`（$K_7 = 21/21$ 跨聯邦雙邊橋＋`@accel` 硬體加速逐位等價證書）與 `cmd/*` 執行入口。**任何下層聯邦絕對禁止反向匯入 `bridge`**。
 
 ---
 
@@ -123,3 +125,14 @@
    ```
    以確保 `moon info` 與 `moon check --deny-warn` 零警告。
 4. **憑證安全**：GitHub PAT 等認證資訊僅能以單次指令記憶體參數（`git -c http.https://github.com/.extraheader=...`）傳遞，嚴禁寫入 `.git/config` 或任何工作區檔案。
+
+---
+
+## 五、CPU SWAR 與瀏覽器免費 WebGPU（`WGSL`）硬體加速規範（`accel/`）
+
+1. **瀏覽器免費消費者級 GPU 嚴格基線（Zero-Extension Baseline）**：
+   - 所有產出之 `WGSL` 計算著色器必須通過 `audit_wgsl_browser_portability` 靜態審計：**嚴禁依賴 `f64`、`u64`、`i64` 等非標準硬體擴充型別**；高精度或大整數運算一律透過 **Ozaki Scheme II 位元組模數 CRT（`dot4I8Packed` `INT8→INT32`）** 或 **WebGPU 安全質數（$p < 46340$）多模 RNS Stockham NTT** 精確重構。
+   - 每個工作群組調用數上限維持 `workgroup_size <= 256`，`var<workgroup>` 共享記憶體維持 `<= 16,384` bytes，且二維共享區塊統一採用 `16 × 17`（`+1` 欄填充）消除 32-bank 記憶體衝突；`subgroups` 特性必須同時提供 `enable subgroups;` 特化版與純共享記憶體可移植回退版。
+2. **以逐位數學等價證書取代環境敏感基準測試**：
+   - 因沙盒或雲端容器環境欠缺穩定實體 GPU 時脈，不設常駐效能基準測試腳本；所有 CPU SWAR（`UInt64` 位切片、M4RI、扁平競技場）與 WebGPU 32 位核心一律以 `verify_accel_federation()` 與跨聯邦主定義（`@gcd`、`@face_bdd`、`@algebra`、`@semiring/trop`、`@tensor`）作 **100% 逐位數學等價檢驗**（單包 `accel` 即時微測試耗時約 `0.24s`）。
+

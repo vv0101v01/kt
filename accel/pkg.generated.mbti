@@ -1,0 +1,256 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/accel"
+
+import {
+  "moonbitlang/core/bigint",
+  "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/cubical/face_bdd",
+}
+
+// Values
+pub fn audit_wgsl_browser_portability(WgslComputeKernel) -> WgslPortabilityAudit
+
+pub fn centered_smod_bigint(@bigint.BigInt, Int32) -> Int32
+
+pub fn dot4_i8_packed(UInt32, UInt32) -> Int32
+
+pub fn face_swar_model_count(@face_bdd.Face, Int32) -> Int32
+
+pub fn face_truth_word64(@face_bdd.Face, Int32) -> UInt64
+
+pub fn garner_symmetric_crt_bigint(Array[Int32], Array[Int32]) -> @bigint.BigInt
+
+pub fn gf2_bit_matrix_from_ints(Int32, Int32, Array[Int32]) -> Gf2BitMatrix
+
+pub fn gf2_bit_matrix_get(Gf2BitMatrix, Int32, Int32) -> Int32
+
+pub fn gf2_bit_matrix_zero(Int32, Int32) -> Gf2BitMatrix
+
+pub fn gf2_matmul_m4ri(Gf2BitMatrix, Gf2BitMatrix) -> Gf2BitMatrix
+
+pub fn gf2_rref_rank_u64(Gf2BitMatrix) -> Int32
+
+pub fn gf3_add64(Gf3Slice64, Gf3Slice64) -> Gf3Slice64
+
+pub fn gf3_bitsliced_all_6561_hyperdeterminants() -> BitslicedF3HyperdetReport
+
+pub fn gf3_mul64(Gf3Slice64, Gf3Slice64) -> Gf3Slice64
+
+pub fn gf3_neg64(Gf3Slice64) -> Gf3Slice64
+
+pub fn gf3_slice64_get(Gf3Slice64, Int32) -> Int32
+
+pub fn gf3_slice64_pack(Array[Int32], Int32) -> Gf3Slice64
+
+pub fn gf3_sub64(Gf3Slice64, Gf3Slice64) -> Gf3Slice64
+
+pub fn inet_alloc_node(INetArena, Int32, Int32) -> Int32
+
+pub fn inet_build_church_mul_net(Int32, Int32) -> (INetArena, Int32)
+
+pub fn inet_collect_active_wave(INetArena) -> Array[(Int32, Int32)]
+
+pub fn inet_encode_church_nat(INetArena, Int32, Int32) -> Int32
+
+pub fn inet_link(INetArena, Int32, Int32) -> Unit
+
+pub fn inet_new() -> INetArena
+
+pub fn inet_normalize_waves(INetArena, schedule? : INetWaveSchedule, max_waves? : Int32) -> Int32
+
+pub fn inet_port(Int32, Int32) -> Int32
+
+pub fn inet_readback_church_nat(INetArena, Int32) -> Int32
+
+pub fn inet_verify_church_mul_confluence(Int32, Int32) -> INetConfluenceCertificate
+
+pub fn mont30_from_mont(Mont30Prime, UInt64) -> Int32
+
+pub fn mont30_mul(Mont30Prime, UInt64, UInt64) -> UInt64
+
+pub fn mont30_ntt_998244353() -> Mont30Prime
+
+pub fn mont30_redc(Mont30Prime, UInt64) -> UInt64
+
+pub fn mont30_to_mont(Mont30Prime, Int32) -> UInt64
+
+pub fn morton_decode_2d(UInt32) -> (Int32, Int32)
+
+pub fn morton_encode_2d(Int32, Int32) -> UInt32
+
+pub fn ozaki2_byte_moduli() -> Array[Int32]
+
+pub fn ozaki2_emulate_fp64_gemm(Int32, Int32, Int32, Array[Double], Array[Double], mantissa_bits? : Int32) -> Array[Double]
+
+pub fn ozaki2_int_gemm_dp4a(Int32, Int32, Int32, Array[@bigint.BigInt], Array[@bigint.BigInt], moduli? : Array[Int32]) -> Array[@bigint.BigInt]
+
+pub fn pack4_i8_to_u32(Int32, Int32, Int32, Int32) -> UInt32
+
+pub fn rns_stockham_poly_mul_exact(Array[Int32], Array[Int32]) -> Array[@bigint.BigInt]
+
+pub fn scanbox_decoupled_scan(Array[Int32], Int32, (Int32, Int32) -> Int32, tile_size? : Int32, subgroup_size? : Int32) -> ScanboxScanResult
+
+pub fn stockham_ntt_u32(Array[Int32], Int32, Int32, Bool) -> Array[Int32]
+
+pub let trop_inf_i32 : Int32
+
+pub fn tropical_blocked_kleene_closure(Int32, Array[Int32], block_size? : Int32) -> Array[Int32]
+
+pub fn verify_accel_federation() -> AccelFederationReport
+
+pub fn webgpu_frontier_kernel_suite() -> Array[WgslComputeKernel]
+
+pub fn webgpu_rns_ntt_primes() -> Array[(Int32, Int32)]
+
+pub fn wgsl_kernel_bitsliced_f3_hyperdet() -> WgslComputeKernel
+
+pub fn wgsl_kernel_hvm2_inet_rewrite() -> WgslComputeKernel
+
+pub fn wgsl_kernel_ozaki2_dp4a_gemm() -> WgslComputeKernel
+
+pub fn wgsl_kernel_scanbox_decoupled_scan(Bool) -> WgslComputeKernel
+
+pub fn wgsl_kernel_stockham_ntt_u32() -> WgslComputeKernel
+
+pub fn wgsl_kernel_tropical_blocked_apsp() -> WgslComputeKernel
+
+// Errors
+
+// Types and methods
+pub(all) struct AccelFederationReport {
+  m4ri_gf2_and_rank_ok : Bool
+  bitsliced_f3_all_6561_ok : Bool
+  face_swar_bdd_sat_ok : Bool
+  ozaki2_crt_exact_and_fp64_ok : Bool
+  stockham_rns_ntt_and_mont30_ok : Bool
+  scanbox_morton_tropical_ok : Bool
+  hvm2_inet_strong_confluence_ok : Bool
+  wgsl_browser_kernels_audited : Int32
+  all_ok : Bool
+} derive(Eq, @debug.Debug)
+pub fn AccelFederationReport::equal(Self, Self) -> Bool
+pub fn AccelFederationReport::not_equal(Self, Self) -> Bool
+pub fn AccelFederationReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct BitslicedF3HyperdetReport {
+  total_tensors : Int32
+  u64_chunks_processed : Int32
+  singular_det_zero : Int32
+  det_eq_one : Int32
+  det_eq_two : Int32
+  matches_tensor_atlas : Bool
+} derive(Eq, @debug.Debug)
+pub fn BitslicedF3HyperdetReport::equal(Self, Self) -> Bool
+pub fn BitslicedF3HyperdetReport::not_equal(Self, Self) -> Bool
+pub fn BitslicedF3HyperdetReport::to_repr(Self) -> @debug.Repr
+
+pub struct Gf2BitMatrix {
+  rows : Int32
+  cols : Int32
+  words_per_row : Int32
+  data : Array[UInt64]
+} derive(Eq, @debug.Debug)
+pub fn Gf2BitMatrix::equal(Self, Self) -> Bool
+pub fn Gf2BitMatrix::not_equal(Self, Self) -> Bool
+pub fn Gf2BitMatrix::to_repr(Self) -> @debug.Repr
+
+pub struct Gf3Slice64 {
+  lo : UInt64
+  hi : UInt64
+} derive(Eq, @debug.Debug)
+pub fn Gf3Slice64::equal(Self, Self) -> Bool
+pub fn Gf3Slice64::not_equal(Self, Self) -> Bool
+pub fn Gf3Slice64::to_repr(Self) -> @debug.Repr
+
+pub struct INetArena {
+  kinds : Array[Int32]
+  labels : Array[Int32]
+  peers : Array[Int32]
+  mut anni_steps : Int32
+  mut comm_steps : Int32
+  mut eras_steps : Int32
+  mut waves_executed : Int32
+} derive(Eq, @debug.Debug)
+pub fn INetArena::equal(Self, Self) -> Bool
+pub fn INetArena::not_equal(Self, Self) -> Bool
+pub fn INetArena::to_repr(Self) -> @debug.Repr
+
+pub(all) struct INetConfluenceCertificate {
+  a : Int32
+  b : Int32
+  decoded_value : Int32
+  anni_steps : Int32
+  comm_steps : Int32
+  eras_steps : Int32
+  schedules_confluent : Bool
+} derive(Eq, @debug.Debug)
+pub fn INetConfluenceCertificate::equal(Self, Self) -> Bool
+pub fn INetConfluenceCertificate::not_equal(Self, Self) -> Bool
+pub fn INetConfluenceCertificate::to_repr(Self) -> @debug.Repr
+
+pub(all) enum INetWaveSchedule {
+  ScheduleForward
+  ScheduleReverse
+  ScheduleOddEven
+} derive(Eq, @debug.Debug)
+pub fn INetWaveSchedule::equal(Self, Self) -> Bool
+pub fn INetWaveSchedule::not_equal(Self, Self) -> Bool
+pub fn INetWaveSchedule::to_repr(Self) -> @debug.Repr
+
+pub struct Mont30Prime {
+  p : UInt64
+  neg_p_inv_u32 : UInt64
+  r2_mod_p : UInt64
+} derive(Eq, @debug.Debug)
+pub fn Mont30Prime::equal(Self, Self) -> Bool
+pub fn Mont30Prime::not_equal(Self, Self) -> Bool
+pub fn Mont30Prime::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ScanboxScanResult {
+  inclusive : Array[Int32]
+  exclusive : Array[Int32]
+  num_tiles : Int32
+  subgroup_size : Int32
+  lookback_steps : Int32
+} derive(Eq, @debug.Debug)
+pub fn ScanboxScanResult::equal(Self, Self) -> Bool
+pub fn ScanboxScanResult::not_equal(Self, Self) -> Bool
+pub fn ScanboxScanResult::to_repr(Self) -> @debug.Repr
+
+pub struct ScanboxTileDescriptor {
+  mut status : Int32
+  mut aggregate : Int32
+  mut inclusive_prefix : Int32
+} derive(Eq, @debug.Debug)
+pub fn ScanboxTileDescriptor::equal(Self, Self) -> Bool
+pub fn ScanboxTileDescriptor::not_equal(Self, Self) -> Bool
+pub fn ScanboxTileDescriptor::to_repr(Self) -> @debug.Repr
+
+pub(all) struct WgslComputeKernel {
+  slug : String
+  paper_family : String
+  workgroup_size : (Int32, Int32, Int32)
+  shared_mem_bytes : Int32
+  uses_subgroups : Bool
+  wgsl_source : String
+} derive(Eq, @debug.Debug)
+pub fn WgslComputeKernel::equal(Self, Self) -> Bool
+pub fn WgslComputeKernel::not_equal(Self, Self) -> Bool
+pub fn WgslComputeKernel::to_repr(Self) -> @debug.Repr
+
+pub(all) struct WgslPortabilityAudit {
+  slug : String
+  no_64bit_types : Bool
+  workgroup_invocations_ok : Bool
+  workgroup_bytes_ok : Bool
+  has_compute_entrypoint : Bool
+  balanced_delimiters : Bool
+  browser_portable : Bool
+} derive(Eq, @debug.Debug)
+pub fn WgslPortabilityAudit::equal(Self, Self) -> Bool
+pub fn WgslPortabilityAudit::not_equal(Self, Self) -> Bool
+pub fn WgslPortabilityAudit::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits
