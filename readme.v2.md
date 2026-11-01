@@ -51,4 +51,4 @@ moon run --release cmd/showcase --target wasm-gc   # 七聯邦 K_7 星稜柱 46/
 moon run --release cmd/main --target wasm-gc       # Cubical 129/129 定理總表
 ```
 
-局部開發時的 **1 秒級 `inspect` 隨寫隨測隨刪工作流** 與 **`cubical` 根目錄分波重構規範** 請參閱 [`agent.v2.md`](agent.v2.md)。
+局部開發時的 **1 秒級 `debug_inspect` 隨寫隨測隨刪工作流** 與 **`cubical` 根目錄四波段重構進度（Wave 1 ✅ 已完成，Waves 2–4 待推進）** 請參閱 [`agent.v2.md`](agent.v2.md)。

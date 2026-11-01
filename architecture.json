@@ -510,7 +510,8 @@
         "interval.mbt",
         "bdd.mbt",
         "bdd_dag.mbt",
-        "face_sat_watched.mbt"
+        "face_sat_watched.mbt",
+        "bdd_cutwidth.mbt"
       ],
       "depends_on": [],
       "summary_en": "De Morgan dimensions, face formulas, ROBDDs and DAG BDD decisions.",
@@ -554,8 +555,8 @@
         "algebra/qpoly_certificate.mbt",
         "algebra/tower_fields.mbt",
         "algebra/multiquad_tower.mbt",
-        "algebra/phase14_algebra.mbt",
-        "algebra/phase16_algebra.mbt"
+        "algebra/hensel_multiquad_deflation.mbt",
+        "algebra/lll_van_hoeij_rouche.mbt"
       ],
       "depends_on": [],
       "summary_en": "A physically separate exact-algebra MoonBit package: BigInt rationals, complete Q-factorization, real/complex root isolation, splitting fields, radical denesting, multiquadratic tower fields and arbitrary-precision Jacobi intervals.",
@@ -595,8 +596,12 @@
         "schema_functor.mbt",
         "schema_positivity.mbt",
         "schema_registry.mbt",
-        "schema_phase9.mbt",
-        "conv_case_split.mbt"
+        "schema_universe_poly.mbt",
+        "schema_inductive_recursive.mbt",
+        "schema_open_ir.mbt",
+        "conv_case_split.mbt",
+        "ordinal_mahlo.mbt",
+        "dsystem_sheaf_reify.mbt"
       ],
       "depends_on": [
         "foundation",
@@ -644,7 +649,8 @@
       "package": "root",
       "layer": 5,
       "files": [
-        "hou_elaborator.mbt",
+        "elaborator_bidir.mbt",
+        "hou_unify_stream.mbt",
         "module_system.mbt",
         "module_compilation.mbt",
         "module_binary.mbt",
@@ -669,9 +675,8 @@
         "cubical_algorithms.mbt",
         "univalence.mbt",
         "sphere_homotopy.mbt",
-        "equivalence_phase9.mbt",
+        "adjoint_equivalence.mbt",
         "truncation.mbt",
-        "equivalence_phase10.mbt",
         "sphere_classification.mbt",
         "circle_classify.mbt"
       ],
@@ -687,7 +692,7 @@
     {
       "id": "laws",
       "package": "mixed",
-      "layer": 6,
+      "layer": 8,
       "files": [
         "*_laws.mbt",
         "algebra/*_laws.mbt"
@@ -701,11 +706,10 @@
     {
       "id": "registry",
       "package": "root",
-      "layer": 7,
+      "layer": 9,
       "files": [
         "spec.mbt",
-        "verify.mbt",
-        "algebra_imports.mbt"
+        "verify.mbt"
       ],
       "depends_on": [
         "*"
@@ -716,7 +720,7 @@
     {
       "id": "app",
       "package": "cmd-main",
-      "layer": 9,
+      "layer": 10,
       "files": [
         "cmd/main/main.mbt"
       ],
@@ -960,7 +964,7 @@
     {
       "id": "bridge",
       "package": "bridge",
-      "layer": 10,
+      "layer": 11,
       "files": [
         "bridge/*.mbt"
       ],
@@ -974,7 +978,7 @@
     {
       "id": "showcase-app",
       "package": "cmd-showcase",
-      "layer": 11,
+      "layer": 12,
       "files": [
         "cmd/showcase/*.mbt"
       ],
@@ -1015,10 +1019,10 @@
     {
       "id": "transcendental",
       "package": "algebra",
-      "layer": 9,
+      "layer": 2,
       "files": [
         "algebra/transcendental.mbt",
-        "algebra/phase21_transcendence_crt.mbt"
+        "algebra/liouville_schanuel_berkowitz.mbt"
       ],
       "depends_on": [
         "gcd-core",
@@ -1030,13 +1034,17 @@
     {
       "id": "module-hotload",
       "package": "root",
-      "layer": 9,
+      "layer": 6,
       "files": [
-        "module_hotload.mbt"
+        "module_hotload.mbt",
+        "module_bft_mvcc.mbt"
       ],
       "depends_on": [
         "dependent-kernel",
-        "frontend"
+        "frontend",
+        "foundation",
+        "hostfs-durability",
+        "condensed-core"
       ],
       "summary_en": "Runtime hot loading for the compiled module environment: interface-hash gating, transactional swaps with consistency verification and rollback, and an audit log of every attempt.",
       "summary_zh": "已編譯模組環境的執行期熱載入：介面雜湊閘控、帶一致性驗證與回滾的交易式替換，以及每次嘗試的稽核日誌。"
@@ -1044,7 +1052,7 @@
     {
       "id": "hostfs-durability",
       "package": "hostfs",
-      "layer": 9,
+      "layer": 2,
       "files": [
         "hostfs/durability.mbt",
         "hostfs/bft_consensus.mbt"
@@ -1054,22 +1062,12 @@
       "summary_zh": "崩潰一致寫入與 3f+1 拜占庭容錯法定人數複製狀態機的可執行模型。"
     },
     {
-      "id": "hostfs-imports",
-      "package": "root",
-      "layer": 9,
-      "files": [
-        "hostfs_imports.mbt"
-      ],
-      "depends_on": [],
-      "summary_en": "Architecture boundary: the explicit import list through which the root package consumes hostfs.",
-      "summary_zh": "架構邊界：root 套件取用 hostfs 的顯式匯入清單。"
-    },
-    {
       "id": "hou-match",
       "package": "root",
-      "layer": 5,
+      "layer": 6,
       "files": [
-        "hou_match.mbt"
+        "hou_match.mbt",
+        "hou_goldfarb.mbt"
       ],
       "depends_on": [
         "frontend"
@@ -1080,7 +1078,7 @@
     {
       "id": "associahedron",
       "package": "root",
-      "layer": 5,
+      "layer": 6,
       "files": [
         "associahedron.mbt"
       ],
@@ -1106,7 +1104,7 @@
     {
       "id": "brunerie-pi4-s3",
       "package": "root",
-      "layer": 5,
+      "layer": 6,
       "files": [
         "brunerie_pi4_s3.mbt"
       ],
@@ -1119,16 +1117,19 @@
     {
       "id": "homotopy-universal",
       "package": "root",
-      "layer": 5,
+      "layer": 7,
       "files": [
-        "homotopy_universal.mbt"
+        "homotopy_universal.mbt",
+        "higher_coherence_k6.mbt"
       ],
       "depends_on": [
         "foundation",
         "finite-cubical",
         "dependent-kernel",
         "exact-algebra",
-        "cubical"
+        "cubical",
+        "gcd-core",
+        "associahedron"
       ],
       "summary_en": "General homotopy type formers (join, wedge, n-truncation, James construction) declared as genuine DHitSpec HITs with recursion principles and computation rules.",
       "summary_zh": "通用同倫型別構造子（join、wedge、n-截斷、James 構造）以 DHitSpec 宣告為真正的 HIT，並給出遞迴原則與計算規則。"
@@ -1194,21 +1195,6 @@
       ],
       "summary_en": "Lakatosian Conjecture & Theorem-Creation Engine: [E-Derive]+[P-Transfer] evolutionary discovery across 6 trajectories, 5 epistemic relational lenses, and 12 updated cross-federation conjectures.",
       "summary_zh": "Lakatos 猜想演化與定理創造引擎：6 大軌跡 [E-Derive]+[P-Transfer] 守恆律自動發現、5 大認識論關係透鏡與 12 項跨聯邦更新猜想。"
-    },
-    {
-      "id": "phase21-breakthroughs",
-      "package": "root",
-      "layer": 9,
-      "files": [
-        "phase21_schema_dsystem_bdd.mbt",
-        "phase21_homotopy_hou_bft.mbt"
-      ],
-      "depends_on": [
-        "*"
-      ],
-      "observer": true,
-      "summary_en": "Phase 21 breakthroughs across all 7 SPEC §4 capability boundaries: Cantor CNF (<epsilon_0) & Mahlo reflection, indexed container compilation, sheaf-glued conversion, kernelized max-clique, non-abelian F_2 wedge square obstruction, frontier cutwidth ROBDD (n=26), O(1) generic-point 24-cube reification, arbitrary-n singleton contraction & Stasheff K_6 coherence, variable-endpoint HITs, higher-order inner-lambda matching, Goldfarb Diophantine compiler, Ed25519 BFT WAL quorum, and Tarjan SCC MVCC hot-swapping.",
-      "summary_zh": "第二十一期七大能力邊界全面突破模組：Cantor 範式（<ε₀）與 Mahlo 宇宙反射、索引容器編譯、層黏合轉換、核化最大團、非交換 F₂ 楔和方塊阻礙、前沿割寬 ROBDD（n=26）、O(1) 泛點 24 維方塊具體化、任意 n 階路徑單例收縮與 Stasheff K₆ 相干胞、變端點 HIT、高階內層 λ 匹配、Goldfarb 二階合一丟番圖編譯、Ed25519 拜占庭法定人數 WAL 與 Tarjan 強連通分量 MVCC 原子熱替換。"
     }
   ],
   "exceptions": []

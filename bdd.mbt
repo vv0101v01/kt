@@ -351,3 +351,79 @@ pub fn check_bdd_canonical() -> Bool {
     None => false
   }
 }
+
+// ---------------------------------------------------------------------------
+// Semantic dimension / face predicates
+// ---------------------------------------------------------------------------
+
+///|
+pub fn dim_vars_of(r : Dim) -> Array[Int32] {
+  match r {
+    DVar(i) => [i]
+    DNeg(a) => dim_vars_of(a)
+    DAnd(a, b) => {
+      let out = dim_vars_of(a)
+      let bs = dim_vars_of(b)
+      for i in 0..<bs.length() {
+        out.push(bs[i])
+      }
+      out
+    }
+    DOr(a, b) => {
+      let out = dim_vars_of(a)
+      let bs = dim_vars_of(b)
+      for i in 0..<bs.length() {
+        out.push(bs[i])
+      }
+      out
+    }
+    _ => []
+  }
+}
+
+///|
+pub fn dim_nvars_sem(r : Dim) -> Int32 {
+  let vars = dim_vars_of(r)
+  let mut n = 0
+  for i in 0..<vars.length() {
+    if vars[i] + 1 > n {
+      n = vars[i] + 1
+    }
+  }
+  n
+}
+
+///|
+pub fn dim_eq_sem(r : Dim, s : Dim) -> Bool {
+  let n1 = dim_nvars_sem(r)
+  let n2 = dim_nvars_sem(s)
+  let n = if n1 > n2 { n1 } else { n2 }
+  face_eq_mod(FEq0(r), FEq0(s), n)
+}
+
+///|
+pub fn face_nvars_sem(f : Face) -> Int32 {
+  let vars = face_vars(f)
+  let mut n = 0
+  for i in 0..<vars.length() {
+    if vars[i] + 1 > n {
+      n = vars[i] + 1
+    }
+  }
+  n
+}
+
+///|
+pub fn face_is_top_sem(f : Face) -> Bool {
+  face_le(FTop, f, face_nvars_sem(f))
+}
+
+///|
+pub fn face_is_bot_sem(f : Face) -> Bool {
+  face_le(f, FBot, face_nvars_sem(f))
+}
+
+///|
+pub fn face_is_sat_sem(f : Face) -> Bool {
+  !face_is_bot_sem(f)
+}

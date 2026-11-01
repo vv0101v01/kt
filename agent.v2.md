@@ -102,11 +102,11 @@
 
 ### 3.3 分波穩健推進路線（可分 2～4 次獨立提交完成，每波必過全套靜態與建置門檻）
 
-- **Wave 1：根套件去編年史化、大雜燴拆解與層號正序（同套件內零風險整備）**
-  - 拆解跨領域大雜燴檔 `phase21_homotopy_hou_bft.mbt` 與 `phase21_schema_dsystem_bdd.mbt`，按職責歸入對應主題檔（`bdd_cutwidth.mbt`、`ordinal_mahlo.mbt`、`higher_coherence_k6.mbt`、`hou_goldfarb.mbt`、`module_bft_mvcc.mbt`）。
-  - 將 `equivalence_phase9.mbt`＋`equivalence_phase10.mbt` 整併正名為 `adjoint_equivalence.mbt`；將 `phase6/11..16_laws.mbt` 按真實受測領域重新命名歸類；將巨檔 `schema_phase9.mbt`（5.7k 行）與 `hou_elaborator.mbt`（4.7k 行）拆分為職責清晰的 `< 2,500` 行模組；移除空殼過渡檔 `hostfs_imports.mbt` 與 `algebra_imports.mbt`。
-  - 修正 `architecture.json` 中 `registry` 層號置頂，消除全部 `L7 -> L9` 倒置。
-- **Wave 2：底層基礎三子套件抽離（`cubical/face_bdd`、`cubical/hermitian`、`cubical/finite`）**
+- **Wave 1（✅ 已完成）：全倉去編年史化、大雜燴拆解與層號正序（同套件內零風險整備）**
+  - 已拆解跨領域大雜燴檔 `phase21_homotopy_hou_bft.mbt` 與 `phase21_schema_dsystem_bdd.mbt` 為純領域模組（`bdd_cutwidth.mbt`、`ordinal_mahlo.mbt`、`dsystem_sheaf_reify.mbt`、`higher_coherence_k6.mbt`、`hou_goldfarb.mbt`、`module_bft_mvcc.mbt` 與 `mahlo_k6_bft_laws.mbt`），並將 `kan_ast.mbt` 中純 `Dim`/`Face` 語義輔助下沉至 `bdd.mbt`。
+  - 已將 `equivalence_phase9/10.mbt` 合併為 `adjoint_equivalence.mbt`；將巨檔 `schema_phase9.mbt`（`5.7k` 行）拆分為 `schema_universe_poly.mbt`、`schema_inductive_recursive.mbt`、`schema_open_ir.mbt`（均 `< 2,050` 行）；將 `hou_elaborator.mbt`（`4.7k` 行）拆分為 `elaborator_bidir.mbt` 與 `hou_unify_stream.mbt`；摺疊移除空殼 `hostfs_imports.mbt` 與 `algebra_imports.mbt`；全倉根目錄與 `algebra/` 所有 `*phase*` 檔案已 100% 正名清零。
+  - 已移除臨時觀察者元件 `phase21-breakthroughs` 與 `hostfs-imports`，將 `laws`（`L8`）與 `registry`（`L9`）置於所有核心與前端元件之上，消除全部反向層依賴（`pkg.generated.mbti` 位元組零差異驗證通過）。
+- **Wave 2（下一步）：底層基礎三子套件抽離（`cubical/face_bdd`、`cubical/hermitian`、`cubical/finite`）**
   - 自底向上抽出無上層依賴的 `L0–L2` 三個基礎子套件，於 `root` 建立 `pub using` 轉發門面並通過 `arch_check.py`。
 - **Wave 3：外圍系統與前端子套件抽離（`cubical/elaborator`、`cubical/store`）**
   - 將雙向精緻化／高階合一引擎（`elaborator`）與模組二進位編碼／加密 WAL／Ed25519 BFT／MVCC 熱載入（`store`）抽離為獨立子套件，使系統工程層與純數學核心徹底解耦。
