@@ -1,0 +1,398 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/cubical/finite"
+
+import {
+  "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/cubical/face_bdd",
+}
+
+// Values
+pub fn check_eta_all() -> Bool
+
+pub fn check_eta_function() -> Bool
+
+pub fn check_eta_product() -> Bool
+
+pub fn check_eta_spine() -> Bool
+
+pub fn check_eta_swap_involution() -> Bool
+
+pub fn check_eta_unit() -> Bool
+
+pub fn check_wiring_category() -> Bool
+
+pub fn check_wiring_coherence() -> Bool
+
+pub fn coe_computes(UPath) -> Bool
+
+pub fn coe_rules_definitional() -> Bool
+
+pub fn coe_upath(UPath, Int32, Int32, PVal) -> PVal
+
+pub fn def_eq(Term, Term, Int32) -> Bool
+
+pub fn def_eq_eta(Term, Term, LTy, Array[LTy]) -> Bool
+
+pub fn disc_path_sym(DiscPath) -> DiscPath
+
+pub fn disc_path_wf(DiscPath) -> Bool
+
+pub fn disc_samples() -> Array[Double]
+
+pub fn elems_of(Ty) -> Array[PVal]
+
+pub fn equiv_bool_not() -> Equiv
+
+pub fn equiv_comp(Equiv, Equiv) -> Equiv
+
+pub fn equiv_ext_eq(Equiv, Equiv) -> Bool
+
+pub fn equiv_id(Ty) -> Equiv
+
+pub fn equiv_inv(Equiv) -> Equiv
+
+pub fn equiv_of_wiring(Wiring) -> Equiv
+
+pub fn equiv_prod(Equiv, Equiv) -> Equiv
+
+pub fn equiv_swap(Ty, Ty) -> Equiv
+
+pub fn equiv_wf(Equiv) -> Bool
+
+pub fn eta_single_valued_on(Term, LTy, Array[LTy]) -> Bool
+
+pub fn eval(Term, Array[Value]) -> Value
+
+pub fn eval_check_t(Term, LTy, Array[LTy], Array[TValue]) -> TValue?
+
+pub fn eval_infer_t(Term, Array[LTy], Array[TValue]) -> TypedValue?
+
+pub fn flatten_pval(PVal) -> Array[PVal]
+
+pub fn glue_from_base(GlueData, PVal) -> GlueElem
+
+pub fn glue_restrict(GlueData, GlueElem, Array[Bool]) -> PVal?
+
+pub fn glue_sound(GlueData, GlueElem, Int32) -> Bool
+
+pub fn glue_wf(GlueData, GlueElem, Int32) -> Bool
+
+pub fn happ(HTm, HTm) -> HTm
+
+pub fn hfst(HTm) -> HTm
+
+pub fn hoas_const_example() -> HTm
+
+pub fn hoas_roundtrip_hoas(HTm, Int32) -> Bool
+
+pub fn hoas_roundtrip_term(Term, Int32) -> Bool
+
+pub fn hoas_swap_example() -> HTm
+
+pub fn hoas_to_term(Int32, HTm) -> Term
+
+pub fn hsnd(HTm) -> HTm
+
+pub fn in_ty(PVal, Ty) -> Bool
+
+pub fn iso_bool_not() -> Iso
+
+pub fn iso_of_wiring(Wiring) -> Iso
+
+pub fn iso_swap(Ty, Ty) -> Iso
+
+pub fn iso_to_equiv(Iso) -> Equiv
+
+pub fn iso_to_path(Iso) -> UPath
+
+pub fn iso_wf(Iso) -> Bool
+
+pub fn j_elim_disc(Family, PVal, DiscPath) -> PVal?
+
+pub fn j_roundtrip(Family, PVal, DiscPath) -> Bool
+
+pub fn leaf_count(Ty) -> Int32
+
+pub fn leaves_of_ty(Ty) -> Array[LeafKind]
+
+pub fn make_glue(GlueData, PVal, PVal, Int32) -> GlueElem?
+
+pub fn nbe_single_valued(Array[Term], Int32) -> Bool
+
+pub fn nf(Term, Int32) -> Term
+
+pub fn nf_eta(Term, LTy, Array[LTy]) -> Term?
+
+pub fn pathp_canonical(UPath, PVal) -> PathPVal
+
+pub fn pathp_fst(PathPVal, Equiv) -> PathPVal
+
+pub fn pathp_prod(PathPVal, PathPVal) -> PathPVal
+
+pub fn pathp_prod_exchange_roundtrip(PathPVal, Equiv, Equiv) -> Bool
+
+pub fn pathp_snd(PathPVal, Equiv) -> PathPVal
+
+pub fn pathp_wf(PathPVal) -> Bool
+
+pub fn pval_fst(PVal) -> PVal
+
+pub fn pval_snd(PVal) -> PVal
+
+pub fn quote(Int32, Value) -> Term
+
+pub fn quote_eta(Int32, LTy, TValue) -> Term
+
+pub fn quote_neutral(Int32, Neutral) -> Term
+
+pub fn quote_tneutral(Int32, TNeutral, LTy) -> Term
+
+pub fn refl_path(Ty, PVal) -> DiscPath
+
+pub fn swap_involutive_on_element() -> Bool
+
+pub fn swap_naturality(Equiv, Equiv) -> Bool
+
+pub fn tapp(TValue, TValue, LTy) -> TValue
+
+pub fn term_to_hoas(Term, Array[HTm]) -> HTm
+
+pub fn tfst(TValue, LTy) -> TValue
+
+pub fn tm_coe_swap_at(LTy, LTy) -> Term
+
+pub fn tm_comp_at(Term, Term, LTy, LTy, LTy) -> Term
+
+pub fn tm_comp_closed(Term, Term) -> Term
+
+pub fn tm_const() -> Term
+
+pub fn tm_id() -> Term
+
+pub fn tm_id_at(LTy) -> Term
+
+pub fn tm_shift(Term, Int32, Int32) -> Term
+
+pub fn tm_swap() -> Term
+
+pub fn tm_swap_at(LTy, LTy) -> Term
+
+pub fn tsnd(TValue, LTy) -> TValue
+
+pub fn ty_bool() -> Ty
+
+pub fn ty_check(Term, LTy, Array[LTy]) -> Bool
+
+pub fn ty_infer(Term, Array[LTy]) -> LTy?
+
+pub fn ty_prod(Ty, Ty) -> Ty
+
+pub fn ua(Equiv) -> UPath
+
+pub fn unglue(GlueElem) -> PVal
+
+pub fn upath_eq(UPath, UPath) -> Bool
+
+pub fn upath_left(UPath) -> Ty
+
+pub fn upath_right(UPath) -> Ty
+
+pub fn vapp(Value, Value) -> Value
+
+pub fn vfst(Value) -> Value
+
+pub fn vsnd(Value) -> Value
+
+pub fn wiring_apply(Wiring, PVal) -> PVal
+
+pub fn wiring_assoc(Ty, Ty, Ty) -> Wiring
+
+pub fn wiring_comp(Wiring, Wiring) -> Wiring
+
+pub fn wiring_eq(Wiring, Wiring) -> Bool
+
+pub fn wiring_id(Ty) -> Wiring
+
+pub fn wiring_inv(Wiring) -> Wiring
+
+pub fn wiring_left_unitor(Ty) -> Wiring
+
+pub fn wiring_not() -> Wiring
+
+pub fn wiring_prod(Wiring, Wiring) -> Wiring
+
+pub fn wiring_right_unitor(Ty) -> Wiring
+
+pub fn wiring_swap(Ty, Ty) -> Wiring
+
+pub fn wiring_wf(Wiring) -> Bool
+
+// Errors
+
+// Types and methods
+pub(all) struct DiscPath {
+  ty : Ty
+  lo : PVal
+  hi : PVal
+  point : (Double) -> PVal
+}
+
+pub struct Equiv {
+  src : Ty
+  dst : Ty
+  fwd : (PVal) -> PVal
+  bwd : (PVal) -> PVal
+  wiring : Wiring
+}
+
+pub(all) struct Family {
+  fiber : (PVal) -> Ty
+}
+
+pub(all) struct GlueData {
+  base_ty : Ty
+  partial_ty : Ty
+  equiv : Equiv
+  face : @face_bdd.Face
+}
+
+pub(all) struct GlueElem {
+  partial : PVal
+  base : PVal
+}
+
+pub(all) enum HTm {
+  HVar(Int32)
+  HBool(Bool)
+  HUnit
+  HPair(HTm, HTm)
+  HLam((HTm) -> HTm)
+  HApp(HTm, HTm)
+  HFst(HTm)
+  HSnd(HTm)
+}
+
+pub struct Iso {
+  src : Ty
+  dst : Ty
+  to_fn : (PVal) -> PVal
+  from_fn : (PVal) -> PVal
+  wiring : Wiring
+}
+
+pub(all) enum LTy {
+  LBool
+  LUnit
+  LProd(LTy, LTy)
+  LFun(LTy, LTy)
+} derive(Eq, @debug.Debug)
+pub fn LTy::equal(Self, Self) -> Bool
+pub fn LTy::not_equal(Self, Self) -> Bool
+pub fn LTy::to_repr(Self) -> @debug.Repr
+
+pub enum LeafKind {
+  LKBool
+  LKUnit
+} derive(Eq, @debug.Debug)
+pub fn LeafKind::equal(Self, Self) -> Bool
+pub fn LeafKind::not_equal(Self, Self) -> Bool
+pub fn LeafKind::to_repr(Self) -> @debug.Repr
+
+pub struct LeafMap {
+  src_index : Int32
+  neg : Bool
+} derive(Eq, @debug.Debug)
+pub fn LeafMap::equal(Self, Self) -> Bool
+pub fn LeafMap::not_equal(Self, Self) -> Bool
+pub fn LeafMap::to_repr(Self) -> @debug.Repr
+
+pub enum Neutral {
+  NeVar(Int32)
+  NeApp(Neutral, Value)
+  NeFst(Neutral)
+  NeSnd(Neutral)
+}
+
+pub(all) enum PVal {
+  PVUnit
+  PVBool(Bool)
+  PVPair(PVal, PVal)
+} derive(Eq, @debug.Debug)
+pub fn PVal::equal(Self, Self) -> Bool
+pub fn PVal::not_equal(Self, Self) -> Bool
+pub fn PVal::to_repr(Self) -> @debug.Repr
+
+pub struct PathPVal {
+  line : UPath
+  at0 : PVal
+  at1 : PVal
+  point : (Double) -> PVal
+}
+
+pub enum TNeutral {
+  TNeVar(Int32)
+  TNeApp(TNeutral, TValue, LTy)
+  TNeFst(TNeutral, LTy)
+  TNeSnd(TNeutral, LTy)
+}
+
+pub enum TValue {
+  TVUnit
+  TVBool(Bool)
+  TVPair(TValue, TValue)
+  TVClosure((TValue) -> TValue)
+  TVNeutral(TNeutral)
+}
+
+pub(all) enum Term {
+  TmVar(Int32)
+  TmLam(Term)
+  TmApp(Term, Term)
+  TmPair(Term, Term)
+  TmFst(Term)
+  TmSnd(Term)
+  TmBool(Bool)
+  TmUnit
+  TmCoeRefl
+  TmCoeUaSwap
+  TmAnn(Term, LTy)
+} derive(Eq, @debug.Debug)
+pub fn Term::equal(Self, Self) -> Bool
+pub fn Term::not_equal(Self, Self) -> Bool
+pub fn Term::to_repr(Self) -> @debug.Repr
+
+pub(all) enum Ty {
+  TyBool
+  TyUnit
+  TyProd(Ty, Ty)
+} derive(Eq, @debug.Debug)
+pub fn Ty::equal(Self, Self) -> Bool
+pub fn Ty::not_equal(Self, Self) -> Bool
+pub fn Ty::to_repr(Self) -> @debug.Repr
+
+pub struct TypedValue {
+  value : TValue
+  ty : LTy
+}
+
+pub struct UPath {
+  equiv : Equiv
+}
+
+pub enum Value {
+  VUnit
+  VBool(Bool)
+  VPair(Value, Value)
+  VClosure((Value) -> Value)
+  VNeutral(Neutral)
+}
+
+pub struct Wiring {
+  src : Ty
+  dst : Ty
+  mapping : Array[LeafMap]
+}
+
+// Type aliases
+
+// Traits

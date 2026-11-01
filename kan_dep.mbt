@@ -541,11 +541,11 @@ pub fn check_kan_comp_tube() -> Bool {
 pub fn check_kan_embeddings() -> Bool {
   // Simply-typed and finite types land on the right dependent types,
   // with (constant) coe the identity; universes are constant lines.
-  let lty = LFun(LProd(LBool, LUnit), LBool)
+  let lty = LTy::LFun(LTy::LProd(LTy::LBool, LTy::LUnit), LTy::LBool)
   if quote_ty(0, 0, dline_at(dline_of_lty(lty), 0.0)) != lty_to_dterm(lty) {
     return false
   }
-  let fty = TyProd(TyBool, TyUnit)
+  let fty = Ty::TyProd(Ty::TyBool, Ty::TyUnit)
   let v = DVPair(DVBool(true), DVUnit)
   if !conv_at(0, 0, dvalue_of_ty(fty), dcoe(dline_of_ty(fty), 0.0, 1.0, v), v) {
     return false

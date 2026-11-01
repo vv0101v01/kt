@@ -1,0 +1,442 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/cubical/face_bdd"
+
+import {
+  "moonbitlang/core/bigint",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn assignment_of_mask(Int32, Int32) -> Array[Bool]
+
+pub fn bdd_and(Bdd, Bdd) -> Bdd
+
+pub fn bdd_dag_and(BddManager, Int32, Int32) -> Int32
+
+pub fn bdd_dag_build_face(BddManager, Face) -> Int32
+
+pub fn bdd_dag_dnf_face(BddManager, Int32, Int32) -> Face?
+
+pub fn bdd_dag_eval(BddManager, Int32, Array[Bool]) -> Bool
+
+pub fn bdd_dag_exists(BddManager, Int32, Int32) -> Int32
+
+pub fn bdd_dag_face_eq(Face, Face, Int32) -> Bool
+
+pub fn bdd_dag_face_le(Face, Face, Int32) -> Bool
+
+pub fn bdd_dag_false(BddManager) -> Int32
+
+pub fn bdd_dag_forall(BddManager, Int32, Int32) -> Int32
+
+pub fn bdd_dag_not(BddManager, Int32) -> Int32
+
+pub fn bdd_dag_of_face(Face, Int32, max_nodes? : Int32) -> BddDagFace
+
+pub fn bdd_dag_of_face_best(Face, Int32, max_nodes? : Int32) -> BddBestBuild
+
+pub fn bdd_dag_of_face_frontier_treewidth(Face, Int32) -> BddFrontierBuild
+
+pub fn bdd_dag_of_face_optimal(Face, Int32, exact_max_vars? : Int32, max_nodes? : Int32) -> BddOptimalBuild
+
+pub fn bdd_dag_of_face_optimal_decomposed(Face, Int32, component_max_vars? : Int32, max_nodes? : Int32) -> BddDecomposedOptimalBuild
+
+pub fn bdd_dag_of_face_optimal_dp(Face, Int32, exact_max_vars? : Int32, max_nodes? : Int32) -> BddOptimalBuild
+
+pub fn bdd_dag_of_face_optimal_pruned(Face, Int32, exact_max_vars? : Int32, max_nodes? : Int32) -> BddPrunedOptimalBuild
+
+pub fn bdd_dag_of_face_optimized(Face, Int32, max_nodes? : Int32, max_attempts? : Int32) -> BddOptimizedBuild
+
+pub fn bdd_dag_or(BddManager, Int32, Int32) -> Int32
+
+pub fn bdd_dag_reachable_count(BddManager, Int32) -> Int32
+
+pub fn bdd_dag_restrict(BddManager, Int32, Int32, Bool) -> Int32
+
+pub fn bdd_dag_sat_count(BddManager, Int32) -> @bigint.BigInt
+
+pub fn bdd_dag_sat_face(Face, Int32) -> Bool
+
+pub fn bdd_dag_true(BddManager) -> Int32
+
+pub fn bdd_dag_var(BddManager, Int32) -> Int32
+
+pub fn bdd_dag_witness(BddManager, Int32) -> Array[Bool]?
+
+pub fn bdd_dag_xor(BddManager, Int32, Int32) -> Int32
+
+pub fn bdd_face_eq(Face, Face, Int32) -> Bool
+
+pub fn bdd_face_le(Face, Face, Int32) -> Bool
+
+pub fn bdd_manager_cache_stats(BddManager) -> (Int32, Int32, Int32)
+
+pub fn bdd_manager_new(Int32, max_nodes? : Int32) -> BddManager
+
+pub fn bdd_manager_node_count(BddManager) -> Int32
+
+pub fn bdd_manager_with_order(Array[Int32], Int32, max_nodes? : Int32) -> BddManager
+
+pub fn bdd_not(Bdd) -> Bdd
+
+pub fn bdd_of_face(Face, Int32) -> Bdd
+
+pub fn bdd_or(Bdd, Bdd) -> Bdd
+
+pub fn bdd_sat_face(Face, Int32) -> Bool
+
+pub fn bdd_tree_cofactor(Bdd, Int32, Bool) -> Bdd
+
+pub fn bdd_tree_of_dag(BddManager, Int32) -> Bdd
+
+pub fn bdd_var_order_candidates(Face, Int32) -> Array[Array[Int32]]
+
+pub fn bdd_worst_case_nodes(Int32) -> Int32
+
+pub fn cdcl_Luby(Int32) -> Int32
+
+pub fn check_bdd_canonical() -> Bool
+
+pub fn check_bdd_cost_optimizations() -> Bool
+
+pub fn check_bdd_dag_native_operations() -> Bool
+
+pub fn contains_int(Array[Int32], Int32) -> Bool
+
+pub fn dim_eq_sem(Dim, Dim) -> Bool
+
+pub fn dim_nvars_sem(Dim) -> Int32
+
+pub fn dim_simplify(Dim) -> Dim
+
+pub fn dim_subst(Dim, Int32, Bool) -> Dim
+
+pub fn dim_var(Int32) -> Dim
+
+pub fn dim_vars_into(Dim, Array[Int32]) -> Unit
+
+pub fn dim_vars_of(Dim) -> Array[Int32]
+
+pub fn dmax(Double, Double) -> Double
+
+pub fn dmin(Double, Double) -> Double
+
+pub let eps : Double
+
+pub fn eval_dim(Dim, Array[Double]) -> Double
+
+pub fn eval_dim_bool(Dim, Array[Bool]) -> Bool
+
+pub fn face_and(Face, Face) -> Face
+
+pub fn face_bot() -> Face
+
+pub fn face_bound(Face, Int32) -> Face
+
+pub fn face_cdcl_drat_check(Array[Array[Int32]], Array[FaceCdclProofStep]) -> Bool
+
+pub fn face_cdcl_drup_check(Array[Array[Int32]], Array[FaceCdclProofStep]) -> Bool
+
+pub fn face_cdcl_drup_trim(Array[Array[Int32]], Array[FaceCdclProofStep]) -> FaceDrupTrimReport
+
+pub fn face_cdcl_elaborate_lrat(Array[Array[Int32]], Array[FaceCdclProofStep]) -> FaceLratElaborateReport
+
+pub fn face_cdcl_lrat_check(Array[Array[Int32]], Array[FaceLratStep]) -> Bool
+
+pub fn face_cdcl_lrat_check_binary(Array[Array[Int32]], Bytes) -> Bool
+
+pub fn face_cdcl_proof_check(Array[Array[Int32]], Array[Array[Int32]]) -> Bool
+
+pub fn face_cnf_stats(Face, Int32) -> FaceCnfStats
+
+pub fn face_eq0(Dim) -> Face
+
+pub fn face_eq1(Dim) -> Face
+
+pub fn face_eq_cdcl(Face, Face, Int32, max_steps? : Int32) -> FaceDecision
+
+pub fn face_eq_decide(Face, Face, Int32, max_nodes? : Int32, max_steps? : Int32) -> FaceDecision
+
+pub fn face_eq_dpll(Face, Face, Int32, max_steps? : Int32) -> FaceDecision
+
+pub fn face_eq_mod(Face, Face, Int32) -> Bool
+
+pub fn face_eq_watched_dpll(Face, Face, Int32, max_steps? : Int32) -> FaceDecision
+
+pub fn face_eq_within_budget(Face, Face, Int32, Int32) -> FaceDecision
+
+pub fn face_holds(Face, Array[Bool]) -> Bool
+
+pub fn face_is_bot_sem(Face) -> Bool
+
+pub fn face_is_sat_sem(Face) -> Bool
+
+pub fn face_is_top_sem(Face) -> Bool
+
+pub fn face_le(Face, Face, Int32) -> Bool
+
+pub fn face_lrat_from_binary(Bytes) -> Array[FaceLratStep]?
+
+pub fn face_lrat_to_binary(Array[FaceLratStep]) -> Bytes
+
+pub fn face_not(Face) -> Face
+
+pub fn face_nvars_sem(Face) -> Int32
+
+pub fn face_or(Face, Face) -> Face
+
+pub fn face_sat(Face, Int32) -> Bool
+
+pub fn face_sat_cdcl(Face, Int32, max_steps? : Int32) -> FaceSatDecision
+
+pub fn face_sat_cdcl_proof(Face, Int32, max_steps? : Int32) -> FaceCdclProofResult
+
+pub fn face_sat_cdcl_report(Face, Int32, max_steps? : Int32) -> FaceCdclResult
+
+pub fn face_sat_decide(Face, Int32, max_nodes? : Int32, max_steps? : Int32) -> FaceSatDecision
+
+pub fn face_sat_dpll(Face, Int32, max_steps? : Int32) -> FaceSatDecision
+
+pub fn face_sat_watched_dpll(Face, Int32, max_steps? : Int32) -> FaceSatDecision
+
+pub fn face_simplify(Face) -> Face
+
+pub fn face_subst(Face, Int32, Bool) -> Face
+
+pub fn face_top() -> Face
+
+pub fn face_unsat(Face, Int32) -> Bool
+
+pub fn face_var0(Int32) -> Face
+
+pub fn face_var1(Int32) -> Face
+
+pub fn face_vars(Face) -> Array[Int32]
+
+pub fn face_vars_into(Face, Array[Int32]) -> Unit
+
+pub fn face_witness(Face, Int32) -> Array[Bool]?
+
+pub fn interval_laws_hold(Array[Double]) -> Bool
+
+pub fn pow2(Int32) -> Int32
+
+pub fn sort_ints(Array[Int32]) -> Array[Int32]
+
+// Errors
+
+// Types and methods
+pub(all) enum Bdd {
+  BddZero
+  BddOne
+  BddNode(Int32, Bdd, Bdd)
+} derive(Eq, @debug.Debug)
+pub fn Bdd::equal(Self, Self) -> Bool
+pub fn Bdd::not_equal(Self, Self) -> Bool
+pub fn Bdd::to_repr(Self) -> @debug.Repr
+
+pub struct BddApplyEntry {
+  op : Int32
+  a : Int32
+  b : Int32
+  result : Int32
+}
+
+pub struct BddBestBuild {
+  built : BddDagFace
+  order : Array[Int32]
+}
+
+pub struct BddDagFace {
+  manager : BddManager
+  root : Int32
+  ok : Bool
+}
+
+pub struct BddDagNode {
+  rank : Int32
+  lo : Int32
+  hi : Int32
+}
+
+pub struct BddDecomposedOptimalBuild {
+  built : BddDagFace
+  order : Array[Int32]
+  size : Int32
+  active_vars : Int32
+  component_count : Int32
+  max_component_vars : Int32
+  tried : Int32
+  pruned_subsets : Int32
+  exact : Bool
+}
+
+pub(all) struct BddFrontierBuild {
+  n_vars : Int32
+  connected_components : Int32
+  frontier_cutwidth : Int32
+  order : Array[Int32]
+  essential_vars_lower_bound : Int32
+  reachable_nodes : Int32
+  sat_count : @bigint.BigInt
+  manager : BddManager
+  root : Int32
+}
+
+pub struct BddManager {
+  n : Int32
+  order : Array[Int32]
+  position : Array[Int32]
+  nodes : Array[BddDagNode]
+  buckets : Array[Array[Int32]]
+  apply_buckets : Array[Array[BddApplyEntry]]
+  max_nodes : Int32
+  mut exceeded : Bool
+  mut apply_hits : Int32
+  mut apply_misses : Int32
+  mut mk_calls : Int32
+}
+
+pub struct BddOptimalBuild {
+  built : BddDagFace
+  order : Array[Int32]
+  size : Int32
+  exact : Bool
+  tried : Int32
+}
+
+pub struct BddOptimizedBuild {
+  built : BddDagFace
+  order : Array[Int32]
+  initial_reachable : Int32
+  reachable : Int32
+  attempts : Int32
+  improved : Bool
+}
+
+pub struct BddPrunedOptimalBuild {
+  built : BddDagFace
+  order : Array[Int32]
+  size : Int32
+  active_vars : Int32
+  incumbent_size : Int32
+  tried : Int32
+  pruned_subsets : Int32
+  exact : Bool
+}
+
+pub(all) enum Dim {
+  DZero
+  DOne
+  DVar(Int32)
+  DNeg(Dim)
+  DAnd(Dim, Dim)
+  DOr(Dim, Dim)
+} derive(Eq, @debug.Debug)
+pub fn Dim::equal(Self, Self) -> Bool
+pub fn Dim::not_equal(Self, Self) -> Bool
+pub fn Dim::to_repr(Self) -> @debug.Repr
+
+pub(all) enum Face {
+  FTop
+  FBot
+  FEq0(Dim)
+  FEq1(Dim)
+  FAnd(Face, Face)
+  FOr(Face, Face)
+} derive(Eq, @debug.Debug)
+pub fn Face::equal(Self, Self) -> Bool
+pub fn Face::not_equal(Self, Self) -> Bool
+pub fn Face::to_repr(Self) -> @debug.Repr
+
+pub struct FaceCdclProofResult {
+  decision : FaceSatDecision
+  stats : FaceCdclStats
+  original_clauses : Array[Array[Int32]]
+  proof_clauses : Array[Array[Int32]]
+  proof_steps : Array[FaceCdclProofStep]
+}
+
+pub(all) enum FaceCdclProofStep {
+  CdclProofAdd(Array[Int32])
+  CdclProofDelete(Array[Int32])
+} derive(Eq, @debug.Debug)
+pub fn FaceCdclProofStep::equal(Self, Self) -> Bool
+pub fn FaceCdclProofStep::not_equal(Self, Self) -> Bool
+pub fn FaceCdclProofStep::to_repr(Self) -> @debug.Repr
+
+pub struct FaceCdclResult {
+  decision : FaceSatDecision
+  stats : FaceCdclStats
+}
+
+pub struct FaceCdclStats {
+  decisions : Int32
+  conflicts : Int32
+  propagations : Int32
+  learned : Int32
+  deleted : Int32
+  restarts : Int32
+} derive(Eq, @debug.Debug)
+pub fn FaceCdclStats::equal(Self, Self) -> Bool
+pub fn FaceCdclStats::not_equal(Self, Self) -> Bool
+pub fn FaceCdclStats::to_repr(Self) -> @debug.Repr
+
+pub struct FaceCnfStats {
+  variables : Int32
+  auxiliary_variables : Int32
+  clauses : Int32
+  literals : Int32
+} derive(Eq, @debug.Debug)
+pub fn FaceCnfStats::equal(Self, Self) -> Bool
+pub fn FaceCnfStats::not_equal(Self, Self) -> Bool
+pub fn FaceCnfStats::to_repr(Self) -> @debug.Repr
+
+pub(all) enum FaceDecision {
+  FaceDecided(Bool)
+  FaceBudgetExceeded
+} derive(Eq, @debug.Debug)
+pub fn FaceDecision::equal(Self, Self) -> Bool
+pub fn FaceDecision::not_equal(Self, Self) -> Bool
+pub fn FaceDecision::to_repr(Self) -> @debug.Repr
+
+pub struct FaceDrupTrimReport {
+  valid : Bool
+  original_steps : Int32
+  trimmed_steps : Int32
+  steps : Array[FaceCdclProofStep]
+}
+
+pub(all) struct FaceLratElaborateReport {
+  valid : Bool
+  original_clauses : Int32
+  input_steps : Int32
+  lrat_adds : Int32
+  lrat_deletes : Int32
+  total_hints : Int32
+  steps : Array[FaceLratStep]
+} derive(Eq, @debug.Debug)
+pub fn FaceLratElaborateReport::equal(Self, Self) -> Bool
+pub fn FaceLratElaborateReport::not_equal(Self, Self) -> Bool
+pub fn FaceLratElaborateReport::to_repr(Self) -> @debug.Repr
+
+pub(all) enum FaceLratStep {
+  LratAdd(Int32, Array[Int32], Array[Int32], Array[(Int32, Array[Int32])])
+  LratDelete(Int32, Array[Int32])
+} derive(Eq, @debug.Debug)
+pub fn FaceLratStep::equal(Self, Self) -> Bool
+pub fn FaceLratStep::not_equal(Self, Self) -> Bool
+pub fn FaceLratStep::to_repr(Self) -> @debug.Repr
+
+pub(all) enum FaceSatDecision {
+  FaceSat(Array[Bool])
+  FaceUnsat
+  FaceSearchBudgetExceeded
+} derive(Eq, @debug.Debug)
+pub fn FaceSatDecision::equal(Self, Self) -> Bool
+pub fn FaceSatDecision::not_equal(Self, Self) -> Bool
+pub fn FaceSatDecision::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

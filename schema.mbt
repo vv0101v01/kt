@@ -4331,7 +4331,7 @@ fn hit_schema_validate_uncached(spec : DHitSpec) -> Bool {
       let param_values = schema_fresh_values(spec.params.length(), 8400)
       let arg_values = schema_fresh_values(cell.args.length(), 8500)
       let result = hit_result_indices(cell, param_values, arg_values)
-      let ends = [DZero, DOne]
+      let ends = [Dim::DZero, Dim::DOne]
       for first in 0..<cell.dim_count {
         for second in (first + 1)..<cell.dim_count {
           for a in 0..<2 {

@@ -20,7 +20,7 @@
 // closed elements — product η closes the gap noted in the first version.
 
 ///|
-pub enum LTy {
+pub(all) enum LTy {
   LBool
   LUnit
   LProd(LTy, LTy)

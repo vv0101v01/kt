@@ -438,7 +438,11 @@ pub fn check_phase14_bdd_bnb_and_cdcl_drat() -> Bool {
     [-1, -2, 3],
     [-1, -2, -3],
   ]
-  let drat_steps = [CdclProofAdd([1]), CdclProofAdd([2]), CdclProofAdd([])]
+  let drat_steps = [
+    FaceCdclProofStep::CdclProofAdd([1]),
+    FaceCdclProofStep::CdclProofAdd([2]),
+    FaceCdclProofStep::CdclProofAdd([]),
+  ]
   // `[1]` is NOT RUP (since every clause has width 3), so `face_cdcl_drup_check`
   // MUST reject `drat_steps`, while `face_cdcl_drat_check` accepts it via RAT!
   if face_cdcl_drup_check(oct3, drat_steps) ||
@@ -454,10 +458,10 @@ pub fn check_phase14_bdd_bnb_and_cdcl_drat() -> Bool {
   }
   // Backward DRUP trimming removes unused redundant learned clauses:
   let noisy_rup = [
-    CdclProofAdd([1, 2]),
-    CdclProofAdd([1, -2]),
-    CdclProofAdd([1]),
-    CdclProofAdd([]),
+    FaceCdclProofStep::CdclProofAdd([1, 2]),
+    FaceCdclProofStep::CdclProofAdd([1, -2]),
+    FaceCdclProofStep::CdclProofAdd([1]),
+    FaceCdclProofStep::CdclProofAdd([]),
   ]
   let base_unsat = [[1, 2], [1, -2], [-1, 2], [-1, -2]]
   let trim_rep = face_cdcl_drup_trim(base_unsat, noisy_rup)

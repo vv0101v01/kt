@@ -59,7 +59,7 @@ pub fn system_compatible(s : VecSystem, nvars : Int32) -> Bool {
   let k = s.branches.length()
   for i in 0..<k {
     for j in 0..<k {
-      let overlap = FAnd(s.branches[i].face, s.branches[j].face)
+      let overlap : Face = FAnd(s.branches[i].face, s.branches[j].face)
       if face_sat(overlap, nvars) &&
         !vec_approx_eq(s.branches[i].value, s.branches[j].value) {
         return false

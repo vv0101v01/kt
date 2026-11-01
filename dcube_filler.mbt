@@ -482,9 +482,9 @@ pub fn dcube_cubes_conv_stratified_report(
     }
   }
   let dlevel = ambient_dlevel + n + 2
-  let shared_s = DVar(0)
-  let shared_t = DVar(ambient_dlevel + n)
-  let shared_u = DVar(ambient_dlevel + n + 1)
+  let shared_s = Dim::DVar(0)
+  let shared_t = Dim::DVar(ambient_dlevel + n)
+  let shared_u = Dim::DVar(ambient_dlevel + n + 1)
   let tiers : Array[Array[Array[Dim]]] = []
   let tier_a : Array[Array[Dim]] = []
   for i in 0..<n {
@@ -655,9 +655,9 @@ pub fn dcube_cubes_conv_covering_report(
     }
   }
   let dlevel = ambient_dlevel + n + 2
-  let shared_s = DVar(0)
-  let shared_t = DVar(ambient_dlevel + n)
-  let shared_u = DVar(ambient_dlevel + n + 1)
+  let shared_s = Dim::DVar(0)
+  let shared_t = Dim::DVar(ambient_dlevel + n)
+  let shared_u = Dim::DVar(ambient_dlevel + n + 1)
   let pools : Array[Array[Dim]] = []
   for i in 0..<n {
     pools.push(
@@ -957,8 +957,8 @@ pub fn dcube_cubes_conv_covering_phf_report(
   let eff_t = if strength > n { n } else { strength }
   let colorings = dcube_phf_5colors(n, eff_t)
   let dlevel = ambient_dlevel + n + 2
-  let shared_s = DVar(ambient_dlevel + n)
-  let shared_t = DVar(ambient_dlevel + n + 1)
+  let shared_s = Dim::DVar(ambient_dlevel + n)
+  let shared_t = Dim::DVar(ambient_dlevel + n + 1)
   let pools : Array[Array[Dim]] = []
   for i in 0..<n {
     pools.push(

@@ -5,9 +5,15 @@
 ///|
 fn phase12_pair_face(n : Int32) -> Face {
   let half = n / 2
-  let mut out = FAnd(FEq1(DVar(0)), FEq1(DVar(half)))
+  let mut out = Face::FAnd(
+    Face::FEq1(Dim::DVar(0)),
+    Face::FEq1(Dim::DVar(half)),
+  )
   for i in 1..<half {
-    out = FOr(out, FAnd(FEq1(DVar(i)), FEq1(DVar(i + half))))
+    out = FOr(
+      out,
+      Face::FAnd(Face::FEq1(Dim::DVar(i)), Face::FEq1(Dim::DVar(i + half))),
+    )
   }
   out
 }
@@ -46,9 +52,12 @@ pub fn check_bdd_optimal_order_dp() -> Bool {
       return false
     }
   }
-  let mixed = FOr(
-    FAnd(FEq1(DVar(0)), FEq0(DVar(1))),
-    FAnd(FEq1(DVar(1)), FOr(FEq0(DVar(2)), FEq1(DVar(3)))),
+  let mixed = Face::FOr(
+    Face::FAnd(Face::FEq1(Dim::DVar(0)), Face::FEq0(Dim::DVar(1))),
+    FAnd(
+      Face::FEq1(Dim::DVar(1)),
+      Face::FOr(Face::FEq0(Dim::DVar(2)), Face::FEq1(Dim::DVar(3))),
+    ),
   )
   let brute = bdd_dag_of_face_optimal(mixed, 4)
   let dp = bdd_dag_of_face_optimal_dp(mixed, 4)

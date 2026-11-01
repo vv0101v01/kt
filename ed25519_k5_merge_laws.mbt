@@ -318,10 +318,10 @@ pub fn check_phase16_schema_large_open_positivity() -> Bool {
 /// endpoint-glued `0 ~ 1` Circle & Torus open-box composition + 2-cocycle
 /// winding obstruction rejection.
 pub fn check_phase16_dsatur_and_glued_cubical_comp() -> Bool {
-  let di = DVar(0)
-  let dj = DVar(1)
-  let dk = DVar(2)
-  let dm = DVar(3)
+  let di = Dim::DVar(0)
+  let dj = Dim::DVar(1)
+  let dk = Dim::DVar(2)
+  let dm = Dim::DVar(3)
   let raw_sys = dsystem_of([
     tube_branch(FEq0(di), k => DVCirclePoint(k)),
     tube_branch(FEq0(dj), k => DVCirclePoint(k)),
@@ -631,7 +631,7 @@ pub fn check_phase16_sphere_homotopy_and_k5() -> Bool {
     !conv_at(1, 0, loop_s1_ty, dapp_dim(retr_2path, DOne), p_open) {
     return false
   }
-  let dr = DVar(0)
+  let dr = Dim::DVar(0)
   if !conv_at(1, 1, s1_ty, dapp_dim(dapp_dim(retr_2path, dr), DZero), base_s1) ||
     !conv_at(1, 1, s1_ty, dapp_dim(dapp_dim(retr_2path, dr), DOne), base_s1) {
     return false

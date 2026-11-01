@@ -22,7 +22,7 @@
 // the same code path as J(p) for any well-formed (hence constant) p.
 
 ///|
-pub enum Ty {
+pub(all) enum Ty {
   TyBool
   TyUnit
   TyProd(Ty, Ty)
@@ -58,7 +58,7 @@ pub extend Ty with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend Ty with Eq::{not_equal, equal}
 
 ///|
-pub enum PVal {
+pub(all) enum PVal {
   PVUnit
   PVBool(Bool)
   PVPair(PVal, PVal)
@@ -428,7 +428,7 @@ pub fn disc_samples() -> Array[Double] {
 ///|
 /// A path in a discrete finite type: in this model well-formed paths are
 /// constant, so endpoints coincide.
-pub struct DiscPath {
+pub(all) struct DiscPath {
   ty : Ty
   lo : PVal
   hi : PVal
@@ -466,7 +466,7 @@ pub fn disc_path_sym(p : DiscPath) -> DiscPath {
 
 ///|
 /// A type family (motive) over PVal.
-pub struct Family {
+pub(all) struct Family {
   fiber : (PVal) -> Ty
 }
 
@@ -516,7 +516,7 @@ pub fn j_roundtrip(fam : Family, d : PVal, p : DiscPath) -> Bool {
 
 ///|
 /// Glue [ φ ↦ (T, e : T ≃ A) ] A.
-pub struct GlueData {
+pub(all) struct GlueData {
   base_ty : Ty // A
   partial_ty : Ty // T
   equiv : Equiv // T ≃ A
@@ -524,7 +524,7 @@ pub struct GlueData {
 }
 
 ///|
-pub struct GlueElem {
+pub(all) struct GlueElem {
   partial : PVal
   base : PVal
 }

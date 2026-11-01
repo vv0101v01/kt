@@ -190,8 +190,8 @@ fn parity_faces(k : Int32) -> (Face, Face) {
     return (FTop, FBot)
   }
   let (even, odd) = parity_faces(k - 1)
-  let zero = FEq0(DVar(k - 1))
-  let one = FEq1(DVar(k - 1))
+  let zero = Face::FEq0(Dim::DVar(k - 1))
+  let one = Face::FEq1(Dim::DVar(k - 1))
   (FOr(FAnd(even, zero), FAnd(odd, one)), FOr(FAnd(even, one), FAnd(odd, zero)))
 }
 
@@ -205,7 +205,7 @@ fn parity_faces(k : Int32) -> (Face, Face) {
 /// conversion correctly fails.
 pub fn check_conv_under_face_relevant_descent() -> Bool {
   let (even, _odd) = parity_faces(8)
-  let face = FAnd(FEq0(DVar(9)), even)
+  let face = Face::FAnd(Face::FEq0(Dim::DVar(9)), even)
   let a : DValue = DVCirclePoint(DVar(9))
   let b : DValue = DVCirclePoint(DZero)
   let report = conv_at_under_face_report(0, 10, face, DVCircleTy, a, b)

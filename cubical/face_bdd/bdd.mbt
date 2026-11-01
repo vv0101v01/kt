@@ -20,7 +20,7 @@
 // checked against; library decision paths never call it.
 
 ///|
-pub enum Bdd {
+pub(all) enum Bdd {
   BddZero
   BddOne
   BddNode(Int32, Bdd, Bdd) // variable, low (x=0), high (x=1)
@@ -70,7 +70,7 @@ pub fn contains_int(xs : Array[Int32], x : Int32) -> Bool {
 }
 
 ///|
-fn dim_vars_into(r : Dim, acc : Array[Int32]) -> Unit {
+pub fn dim_vars_into(r : Dim, acc : Array[Int32]) -> Unit {
   match r {
     DZero | DOne => ()
     DVar(i) => if !contains_int(acc, i) { acc.push(i) }
@@ -87,7 +87,7 @@ fn dim_vars_into(r : Dim, acc : Array[Int32]) -> Unit {
 }
 
 ///|
-fn face_vars_into(f : Face, acc : Array[Int32]) -> Unit {
+pub fn face_vars_into(f : Face, acc : Array[Int32]) -> Unit {
   match f {
     FTop | FBot => ()
     FEq0(r) | FEq1(r) => dim_vars_into(r, acc)

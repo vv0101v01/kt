@@ -106,12 +106,13 @@
   - 已拆解跨領域大雜燴檔 `phase21_homotopy_hou_bft.mbt` 與 `phase21_schema_dsystem_bdd.mbt` 為純領域模組（`bdd_cutwidth.mbt`、`ordinal_mahlo.mbt`、`dsystem_sheaf_reify.mbt`、`higher_coherence_k6.mbt`、`hou_goldfarb.mbt`、`module_bft_mvcc.mbt` 與 `mahlo_k6_bft_laws.mbt`），並將 `kan_ast.mbt` 中純 `Dim`/`Face` 語義輔助下沉至 `bdd.mbt`。
   - 已將 `equivalence_phase9/10.mbt` 合併為 `adjoint_equivalence.mbt`；將巨檔 `schema_phase9.mbt`（`5.7k` 行）拆分為 `schema_universe_poly.mbt`、`schema_inductive_recursive.mbt`、`schema_open_ir.mbt`（均 `< 2,050` 行）；將 `hou_elaborator.mbt`（`4.7k` 行）拆分為 `elaborator_bidir.mbt` 與 `hou_unify_stream.mbt`；摺疊移除空殼 `hostfs_imports.mbt` 與 `algebra_imports.mbt`；全倉根目錄與 `algebra/` 所有 `*phase*` 檔案已 100% 正名清零。
   - 已移除臨時觀察者元件 `phase21-breakthroughs` 與 `hostfs-imports`，將 `laws`（`L8`）與 `registry`（`L9`）置於所有核心與前端元件之上，消除全部反向層依賴（`pkg.generated.mbti` 位元組零差異驗證通過）。
-- **Wave 2（下一步）：底層基礎三子套件抽離（`cubical/face_bdd`、`cubical/hermitian`、`cubical/finite`）**
-  - 自底向上抽出無上層依賴的 `L0–L2` 三個基礎子套件，於 `root` 建立 `pub using` 轉發門面並通過 `arch_check.py`。
-- **Wave 3：外圍系統與前端子套件抽離（`cubical/elaborator`、`cubical/store`）**
-  - 將雙向精緻化／高階合一引擎（`elaborator`）與模組二進位編碼／加密 WAL／Ed25519 BFT／MVCC 熱載入（`store`）抽離為獨立子套件，使系統工程層與純數學核心徹底解耦。
-- **Wave 4：可信核心與合成同倫分離（`cubical/kernel` ＋ `cubical/homotopy` ＋ 薄門面 `root` 收斂）**
-  - 收斂合成同倫對核心內部構造子的 `170` 處直連為受檢公開觀測／構造 API，完成 `cubical/kernel` 與 `cubical/homotopy` 獨立成包，使頂層 `root` 收斂為極簡門面。
+- **Wave 2（✅ 已完成）：底層基礎三子套件抽離（`cubical/face_bdd`、`cubical/finite`、`cubical/hermitian`）**
+  - 已按嚴格自底向上無環拓撲抽離三個獨立實體套件：`cubical/face_bdd`（`L0`，5 檔 `6,211` 行，零業務依賴，單包 `moon test` 實測 `0.38s`）、`cubical/finite`（`L1`，4 檔 `1,828` 行，僅依賴 `face_bdd`，零浮點／代數耦合，單包實測 `0.22s`）、`cubical/hermitian`（`L2`，9 檔 `3,199` 行，整合複矩陣投影、Karoubi／子空間 Glue 模型與精確代數證書影子，單包實測 `0.57s`）。
+  - 內部不變量結構體（如 `BddManager`、`Wiring`、`Equiv`、`Complex`、`CMat`、`ProjectorCertificate` 等）維持唯讀 `pub struct` 封裝；頂層 `facade.mbt` 以 `pub using` 無縫轉發，`@bridge` 與四個 Wasm-GC 執行檔零破壞通過。
+- **Wave 3（下一步）：可信依賴核心子套件獨立封裝（`cubical/kernel`）**
+  - 按自底向上無環物理套件順序（上層 `elaborator`／`store`／`homotopy` 皆依賴核心，故須先抽離核心以避免與 `root` 形成套件循環），將互遞迴核心 `dependent-kernel` ＋ `dependent-kan-lines`（20 檔 `30.8k` 行）實體抽離為 `cubical/kernel`（僅依賴 `gcd`、`cubical/face_bdd`、`cubical/finite`，完全不觸碰浮點層），收斂跨層私有呼叫並建立可信核心邊界。
+- **Wave 4：上層三大子套件抽離與薄門面收斂（`cubical/elaborator` ＋ `cubical/store` ＋ `cubical/homotopy`）**
+  - 在 `cubical/kernel` 之上平行抽離雙向精緻化與高階合一（`cubical/elaborator`）、模組持久化與 Ed25519 BFT／MVCC 熱載入（`cubical/store`）及合成同倫（`cubical/homotopy`），使頂層 `root` 最終收斂為極薄門面與定理總表。
 
 ---
 

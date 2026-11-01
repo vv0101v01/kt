@@ -132,7 +132,7 @@ pub fn transport_roundtrip_path_value(
 ) -> DValue {
   let filler = transport_filler_value(line, x, dlevel + 1)
   DVPathLam(i => {
-    let flipped = DNeg(i)
+    let flipped = Dim::DNeg(i)
     coe_value(line, flipped, DZero, filler(flipped), dlevel + 1)
   })
 }
@@ -725,7 +725,7 @@ pub fn equiv_bidirectional_certified_in(
         !conv_at(level + 1, dlevel, dst, dapp_dim(sy, DOne), y) {
         return false
       }
-      let fresh_d = DVar(dlevel)
+      let fresh_d = Dim::DVar(dlevel)
       let denv_d = ddim_cons(fresh_d, denv)
       let sy_i_term = quote_at(
         level + 1,

@@ -1,4 +1,7 @@
 ///|
+using @face_bdd {type Face, face_holds, face_sat, face_witness}
+
+///|
 // Syntax, semantics, NbE, HOAS, and definitional equality of coe.
 //
 // Fragment: λ-calculus with products, booleans and unit, plus two
@@ -30,7 +33,7 @@
 // genuine equality on normal forms.
 
 ///|
-pub enum Term {
+pub(all) enum Term {
   TmVar(Int32) // de Bruijn index
   TmLam(Term)
   TmApp(Term, Term)
@@ -231,7 +234,7 @@ pub fn swap_involutive_on_element() -> Bool {
 // ---------------------------------------------------------------------------
 
 ///|
-pub enum HTm {
+pub(all) enum HTm {
   HVar(Int32) // de Bruijn level
   HBool(Bool)
   HUnit

@@ -5,10 +5,13 @@
     {
       "id": "cubical",
       "packages": [
+        "cubical-face-bdd",
+        "cubical-finite",
         "algebra",
+        "cubical-hermitian",
+        "hostfs",
         "root",
-        "cmd-main",
-        "hostfs"
+        "cmd-main"
       ],
       "allowed_external_packages": [
         "condensed:gcd",
@@ -143,15 +146,51 @@
       "summary_zh": "精確有理／代數計算：符號多項式、Q 線性代數、代數數、Jordan 理論、譜恆等、認證 Jacobi 區間、Liouville 超越否證證書與無除法 Berkowitz–CRT 特徵多項式。"
     },
     {
+      "id": "cubical-face-bdd",
+      "path": "cubical/face_bdd",
+      "moon": "vv0101v01/cubical-hermitian/cubical/face_bdd",
+      "layer": 0,
+      "depends_on": [],
+      "summary_en": "De Morgan interval dimensions, face formulas, canonical/DAG ROBDDs, watched-literal CDCL with DRUP/DRAT/LRAT proofs, and frontier-cutwidth #SAT.",
+      "summary_zh": "De Morgan 區間維度、面公式、規範／DAG ROBDD、雙監視字元 CDCL（DRUP／DRAT／LRAT 證書）與前沿割寬 #SAT。"
+    },
+    {
+      "id": "cubical-finite",
+      "path": "cubical/finite",
+      "moon": "vv0101v01/cubical-hermitian/cubical/finite",
+      "layer": 1,
+      "depends_on": [
+        "cubical-face-bdd"
+      ],
+      "summary_en": "Simply typed eta-NbE/HOAS and finite Bool/Unit/product universe with wiring equivalences, ua, PathP, Glue, and J.",
+      "summary_zh": "簡單型別 η-NbE／HOAS，以及 Bool／Unit／積有限宇宙的 wiring 等價、ua、PathP、Glue 與 J。"
+    },
+    {
+      "id": "cubical-hermitian",
+      "path": "cubical/hermitian",
+      "moon": "vv0101v01/cubical-hermitian/cubical/hermitian",
+      "layer": 2,
+      "depends_on": [
+        "cubical-face-bdd",
+        "cubical-finite",
+        "algebra"
+      ],
+      "summary_en": "Complex linear algebra, Hermitian projectors, vector partial systems, affine cubes, Karoubi/syntactic categories, subspace Glue composition, and exact algebraic projector certificates.",
+      "summary_zh": "複線性代數、Hermitian 投影、向量偏系統、剪枝仿射立方體、Karoubi／句法範疇、子空間 Glue 合成與精確代數投影證書。"
+    },
+    {
       "id": "root",
       "path": ".",
       "moon": "vv0101v01/cubical-hermitian",
-      "layer": 4,
+      "layer": 5,
       "depends_on": [
         "gcd",
         "algebra",
         "hostfs",
-        "condensed"
+        "condensed",
+        "cubical-face-bdd",
+        "cubical-finite",
+        "cubical-hermitian"
       ],
       "summary_en": "The mutually recursive cubical dependent kernel, plus the logical foundation/finite/numeric/model/frontend components and Phase 21 7-boundary breakthroughs.",
       "summary_zh": "互相遞迴的立方依賴核心，以及 foundation／finite／numeric／model／frontend 邏輯元件與第二十一期七大能力邊界突破模組。"
@@ -160,7 +199,7 @@
       "id": "cmd-main",
       "path": "cmd/main",
       "moon": "vv0101v01/cubical-hermitian/cmd/main",
-      "layer": 5,
+      "layer": 6,
       "depends_on": [
         "root"
       ],
@@ -402,7 +441,7 @@
       "id": "conjecture",
       "path": "conjecture",
       "moon": "vv0101v01/cubical-hermitian/conjecture",
-      "layer": 4,
+      "layer": 5,
       "depends_on": [
         "gcd",
         "algebra",
@@ -420,7 +459,7 @@
       "id": "bridge",
       "path": "bridge",
       "moon": "vv0101v01/cubical-hermitian/bridge",
-      "layer": 5,
+      "layer": 6,
       "depends_on": [
         "gcd",
         "root",
@@ -445,7 +484,7 @@
       "id": "cmd-showcase",
       "path": "cmd/showcase",
       "moon": "vv0101v01/cubical-hermitian/cmd/showcase",
-      "layer": 6,
+      "layer": 7,
       "depends_on": [
         "bridge",
         "semiring-graph",
@@ -504,14 +543,10 @@
   "components": [
     {
       "id": "foundation",
-      "package": "root",
+      "package": "cubical-face-bdd",
       "layer": 0,
       "files": [
-        "interval.mbt",
-        "bdd.mbt",
-        "bdd_dag.mbt",
-        "face_sat_watched.mbt",
-        "bdd_cutwidth.mbt"
+        "cubical/face_bdd/*.mbt"
       ],
       "depends_on": [],
       "summary_en": "De Morgan dimensions, face formulas, ROBDDs and DAG BDD decisions.",
@@ -519,14 +554,14 @@
     },
     {
       "id": "numeric-hermitian",
-      "package": "root",
-      "layer": 1,
+      "package": "cubical-hermitian",
+      "layer": 2,
       "files": [
-        "complex.mbt",
-        "projector.mbt",
-        "system.mbt",
-        "system_symbolic.mbt",
-        "cube.mbt"
+        "cubical/hermitian/complex.mbt",
+        "cubical/hermitian/projector.mbt",
+        "cubical/hermitian/system.mbt",
+        "cubical/hermitian/system_symbolic.mbt",
+        "cubical/hermitian/cube.mbt"
       ],
       "depends_on": [
         "foundation"
@@ -564,13 +599,10 @@
     },
     {
       "id": "finite-cubical",
-      "package": "root",
-      "layer": 2,
+      "package": "cubical-finite",
+      "layer": 1,
       "files": [
-        "nbe.mbt",
-        "nbe_eta.mbt",
-        "wiring.mbt",
-        "pathp_glue.mbt"
+        "cubical/finite/*.mbt"
       ],
       "depends_on": [
         "foundation"
@@ -581,7 +613,7 @@
     {
       "id": "dependent-kernel",
       "package": "root",
-      "layer": 3,
+      "layer": 4,
       "files": [
         "nbe_dep.mbt",
         "kan_ast.mbt",
@@ -613,7 +645,7 @@
     {
       "id": "dependent-kan-lines",
       "package": "root",
-      "layer": 4,
+      "layer": 5,
       "files": [
         "kan_dep.mbt"
       ],
@@ -627,13 +659,13 @@
     },
     {
       "id": "models",
-      "package": "root",
-      "layer": 4,
+      "package": "cubical-hermitian",
+      "layer": 3,
       "files": [
-        "categories.mbt",
-        "glue_comp.mbt",
-        "certified_numeric.mbt",
-        "certified_algebraic.mbt"
+        "cubical/hermitian/categories.mbt",
+        "cubical/hermitian/glue_comp.mbt",
+        "cubical/hermitian/certified_numeric.mbt",
+        "cubical/hermitian/certified_algebraic.mbt"
       ],
       "depends_on": [
         "foundation",
@@ -647,7 +679,7 @@
     {
       "id": "frontend",
       "package": "root",
-      "layer": 5,
+      "layer": 6,
       "files": [
         "elaborator_bidir.mbt",
         "hou_unify_stream.mbt",
@@ -669,7 +701,7 @@
     {
       "id": "cubical",
       "package": "root",
-      "layer": 5,
+      "layer": 6,
       "files": [
         "sphere3.mbt",
         "cubical_algorithms.mbt",
@@ -692,7 +724,7 @@
     {
       "id": "laws",
       "package": "mixed",
-      "layer": 8,
+      "layer": 9,
       "files": [
         "*_laws.mbt",
         "algebra/*_laws.mbt"
@@ -706,8 +738,9 @@
     {
       "id": "registry",
       "package": "root",
-      "layer": 9,
+      "layer": 10,
       "files": [
+        "facade.mbt",
         "spec.mbt",
         "verify.mbt"
       ],
@@ -720,7 +753,7 @@
     {
       "id": "app",
       "package": "cmd-main",
-      "layer": 10,
+      "layer": 11,
       "files": [
         "cmd/main/main.mbt"
       ],
@@ -744,7 +777,7 @@
     {
       "id": "symlib-apps",
       "package": "mixed",
-      "layer": 10,
+      "layer": 11,
       "files": [
         "cmd/symdemo/main.mbt",
         "cmd/symbench/*.mbt"
@@ -964,7 +997,7 @@
     {
       "id": "bridge",
       "package": "bridge",
-      "layer": 11,
+      "layer": 12,
       "files": [
         "bridge/*.mbt"
       ],
@@ -978,7 +1011,7 @@
     {
       "id": "showcase-app",
       "package": "cmd-showcase",
-      "layer": 12,
+      "layer": 13,
       "files": [
         "cmd/showcase/*.mbt"
       ],
@@ -1005,7 +1038,7 @@
     {
       "id": "semiring-report-app",
       "package": "cmd-semiringreport",
-      "layer": 10,
+      "layer": 11,
       "files": [
         "cmd/semiringreport/*.mbt"
       ],
@@ -1034,7 +1067,7 @@
     {
       "id": "module-hotload",
       "package": "root",
-      "layer": 6,
+      "layer": 7,
       "files": [
         "module_hotload.mbt",
         "module_bft_mvcc.mbt"
@@ -1064,7 +1097,7 @@
     {
       "id": "hou-match",
       "package": "root",
-      "layer": 6,
+      "layer": 7,
       "files": [
         "hou_match.mbt",
         "hou_goldfarb.mbt"
@@ -1078,7 +1111,7 @@
     {
       "id": "associahedron",
       "package": "root",
-      "layer": 6,
+      "layer": 7,
       "files": [
         "associahedron.mbt"
       ],
@@ -1093,7 +1126,7 @@
     {
       "id": "blakers-massey",
       "package": "root",
-      "layer": 5,
+      "layer": 6,
       "files": [
         "blakers_massey.mbt"
       ],
@@ -1104,7 +1137,7 @@
     {
       "id": "brunerie-pi4-s3",
       "package": "root",
-      "layer": 6,
+      "layer": 7,
       "files": [
         "brunerie_pi4_s3.mbt"
       ],
@@ -1117,7 +1150,7 @@
     {
       "id": "homotopy-universal",
       "package": "root",
-      "layer": 7,
+      "layer": 8,
       "files": [
         "homotopy_universal.mbt",
         "higher_coherence_k6.mbt"

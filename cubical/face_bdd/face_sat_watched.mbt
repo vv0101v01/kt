@@ -552,7 +552,7 @@ pub struct FaceCdclResult {
 /// delete a currently active clause.  Clause identity for a
 /// deletion is literal-set identity, because the solver permutes
 /// the two watched literals of a stored clause during search.
-pub enum FaceCdclProofStep {
+pub(all) enum FaceCdclProofStep {
   CdclProofAdd(Array[Int32])
   CdclProofDelete(Array[Int32])
 } derive(Debug, Eq)
@@ -882,7 +882,7 @@ fn cdcl_analyze(
 }
 
 ///|
-fn cdcl_Luby(x0 : Int32) -> Int32 {
+pub fn cdcl_Luby(x0 : Int32) -> Int32 {
   // The Luby sequence 1,1,2,1,1,2,4,... (0-based restart index),
   // by the standard iterative characterization.
   let mut size = 1

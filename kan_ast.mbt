@@ -242,7 +242,7 @@ pub fn comp_value(
     Some(br) => return (br.path)(DOne)
     None => ()
   }
-  let generic = DVar(dlevel)
+  let generic = Dim::DVar(dlevel)
   match force_value(line(generic)) {
     DVPi(_, _) => comp_pi_value(line, branches, base, dlevel)
     DVSigma(_, _) => comp_sigma_value(line, branches, base, dlevel)
@@ -1431,7 +1431,7 @@ pub fn circle_path_winding_int(
   path_fn : (Dim) -> DValue,
   dlevel~ : Int32 = 16,
 ) -> Int32? {
-  let d = DVar(dlevel)
+  let d = Dim::DVar(dlevel)
   circle_val_winding_wrt(path_fn(d), dlevel)
 }
 
@@ -1565,14 +1565,14 @@ fn circle_hspace_biloop_at(
     }
   }
   let (u, f_u0, f_u1) = if w_i == 1 {
-    (di, FEq0(di), FEq1(di))
+    (di, Face::FEq0(di), Face::FEq1(di))
   } else if w_i == -1 {
     (DNeg(di), FEq1(di), FEq0(di))
   } else {
     return None
   }
   let (v, f_v0, f_v1) = if w_j == 1 {
-    (dj, FEq0(dj), FEq1(dj))
+    (dj, Face::FEq0(dj), Face::FEq1(dj))
   } else if w_j == -1 {
     (DNeg(dj), FEq1(dj), FEq0(dj))
   } else {
@@ -1636,8 +1636,8 @@ pub fn circle_square_glued_cap(
     }
   }
   let verify_sq = (sq : DValue) => {
-    let di = DVar(dlevel)
-    let dj = DVar(dlevel + 1)
+    let di = Dim::DVar(dlevel)
+    let dj = Dim::DVar(dlevel + 1)
     conv_at(
       level,
       dlevel + 2,
@@ -1668,8 +1668,8 @@ pub fn circle_square_glued_cap(
     )
   }
   // 1. Try direct single-coordinate De Morgan `comp_circle_value` first.
-  let di_probe = DVar(dlevel)
-  let dj_probe = DVar(dlevel + 1)
+  let di_probe = Dim::DVar(dlevel)
+  let dj_probe = Dim::DVar(dlevel + 1)
   let direct_sys = dsystem_of([
     tube_branch(FEq0(di_probe), _k => f_i0(dj_probe)),
     tube_branch(FEq1(di_probe), _k => f_i1(dj_probe)),

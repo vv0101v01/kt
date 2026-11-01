@@ -576,7 +576,7 @@ pub fn bdd_dag_witness(m : BddManager, root : Int32) -> Array[Bool]? {
 }
 
 ///|
-pub enum FaceDecision {
+pub(all) enum FaceDecision {
   FaceDecided(Bool)
   FaceBudgetExceeded
 } derive(Debug, Eq)
@@ -700,7 +700,7 @@ fn face_dpll(
 }
 
 ///|
-pub enum FaceSatDecision {
+pub(all) enum FaceSatDecision {
   FaceSat(Array[Bool])
   FaceUnsat
   FaceSearchBudgetExceeded

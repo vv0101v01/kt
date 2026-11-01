@@ -174,8 +174,14 @@ pub fn sample_terms() -> Array[Term] {
 
 ///|
 pub fn check_nbe() -> Bool {
-  let beta = TmApp(TmApp(tm_const(), TmBool(true)), TmBool(false))
-  let open_term = TmPair(TmSnd(TmVar(0)), TmFst(TmVar(0)))
+  let beta = Term::TmApp(
+    Term::TmApp(tm_const(), Term::TmBool(true)),
+    Term::TmBool(false),
+  )
+  let open_term = Term::TmPair(
+    Term::TmSnd(Term::TmVar(0)),
+    Term::TmFst(Term::TmVar(0)),
+  )
   nbe_single_valued(sample_terms(), 0) &&
   nbe_single_valued([open_term], 1) &&
   nf(beta, 0) == TmBool(true) &&
@@ -207,7 +213,7 @@ pub fn check_hoas() -> Bool {
 pub fn check_ua_coe() -> Bool {
   let iso = iso_swap(TyBool, TyUnit)
   let p = iso_to_path(iso)
-  let x = PVPair(PVBool(true), PVUnit)
+  let x = PVal::PVPair(PVal::PVBool(true), PVal::PVUnit)
   iso_wf(iso) &&
   upath_left(p) == TyProd(TyBool, TyUnit) &&
   upath_right(p) == TyProd(TyUnit, TyBool) &&

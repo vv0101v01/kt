@@ -107,7 +107,15 @@ pub fn face_join_universal(f : Face, g : Face, x : Face, n : Int32) -> Bool {
 pub fn check_face_poset_category() -> Bool {
   let i0 = face_var0(0)
   let j1 = face_var1(1)
-  let forms = [FTop, FBot, i0, j1, FAnd(i0, j1), FOr(i0, j1), face_var1(0)]
+  let forms : Array[Face] = [
+    FTop,
+    FBot,
+    i0,
+    j1,
+    FAnd(i0, j1),
+    FOr(i0, j1),
+    face_var1(0),
+  ]
   for a in 0..<forms.length() {
     let f = forms[a]
     if !face_le(f, f, 2) {
@@ -207,8 +215,8 @@ pub fn check_cubical_identities(p : Cube, samples : Array[Double]) -> Bool {
 
 ///|
 pub fn check_syntactic_category() -> Bool {
-  let a_ty = LProd(LBool, LUnit) // object A
-  let b_ty = LProd(LUnit, LBool) // object B
+  let a_ty : LTy = LProd(LBool, LUnit) // object A
+  let b_ty : LTy = LProd(LUnit, LBool) // object B
   let f = tm_swap_at(LBool, LUnit) // A → B
   let g = tm_swap_at(LUnit, LBool) // B → A
   let ctx : Array[LTy] = []

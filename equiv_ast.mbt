@@ -189,7 +189,7 @@ pub fn equiv_make_value(
 
 ///|
 pub fn glue_equiv_domain_face(branches : Array[DEquivBranchValue]) -> Face {
-  let mut face = FBot
+  let mut face = Face::FBot
   for i in 0..<branches.length() {
     face = face_simplify(FOr(face, branches[i].face))
   }

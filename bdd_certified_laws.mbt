@@ -5,7 +5,7 @@ fn dim_xor_expr(a : Dim, b : Dim) -> Dim {
 
 ///|
 fn parity_face(n : Int32) -> Face {
-  let mut acc = DVar(0)
+  let mut acc = Dim::DVar(0)
   for i in 1..<n {
     acc = dim_xor_expr(acc, DVar(i))
   }
@@ -46,9 +46,9 @@ fn check_bdd_dag_scalability() -> Bool {
     FaceUnsat => true
     _ => false
   }
-  let paired = FAnd(
+  let paired = Face::FAnd(
     equivalence_face(0, 3),
-    FAnd(equivalence_face(1, 4), equivalence_face(2, 5)),
+    Face::FAnd(equivalence_face(1, 4), equivalence_face(2, 5)),
   )
   let identity_build = bdd_dag_of_face(paired, 6)
   let best = bdd_dag_of_face_best(paired, 6)

@@ -4,6 +4,9 @@ package "vv0101v01/cubical-hermitian/bridge"
 import {
   "moonbitlang/core/debug",
   "vv0101v01/cubical-hermitian",
+  "vv0101v01/cubical-hermitian/cubical/face_bdd",
+  "vv0101v01/cubical-hermitian/cubical/finite",
+  "vv0101v01/cubical-hermitian/cubical/hermitian",
   "vv0101v01/cubical-hermitian/scheme",
   "vv0101v01/cubical-hermitian/semiring/cat",
   "vv0101v01/cubical-hermitian/semiring/graph",
@@ -17,9 +20,9 @@ import {
 // Values
 pub fn assignment_cost(Array[Array[Int64]], @symlib.Perm) -> Int64
 
-pub fn average_permutation_matrices(Array[@symlib.Perm]) -> @cubical-hermitian.CMat
+pub fn average_permutation_matrices(Array[@symlib.Perm]) -> @hermitian.CMat
 
-pub fn bool_tuple_type(Int32) -> @cubical-hermitian.Ty
+pub fn bool_tuple_type(Int32) -> @finite.Ty
 
 pub fn bridge_certificate(String, String, Bool, detail? : String) -> BridgeCertificate
 
@@ -67,21 +70,21 @@ pub fn glivenko_double_negation_formula(@topos.GeoFormula) -> @topos.GeoFormula
 
 pub fn grand_unification_certificates() -> Array[BridgeCertificate]
 
-pub fn matrix_permutation_symmetries(@cubical-hermitian.CMat, Int32) -> Array[@symlib.Perm]
+pub fn matrix_permutation_symmetries(@hermitian.CMat, Int32) -> Array[@symlib.Perm]
 
-pub fn matrix_support_graph(@cubical-hermitian.CMat) -> @symlib.Graph
+pub fn matrix_support_graph(@hermitian.CMat) -> @symlib.Graph
 
-pub fn perm_equiv(@symlib.Perm) -> @cubical-hermitian.Equiv
+pub fn perm_equiv(@symlib.Perm) -> @finite.Equiv
 
-pub fn perm_of_wiring(@cubical-hermitian.Wiring) -> @symlib.Perm?
+pub fn perm_of_wiring(@finite.Wiring) -> @symlib.Perm?
 
-pub fn perm_preserves_matrix(@cubical-hermitian.CMat, @symlib.Perm) -> Bool
+pub fn perm_preserves_matrix(@hermitian.CMat, @symlib.Perm) -> Bool
 
 pub fn perm_preserves_semiring_graph(@graph.Graph, @symlib.Perm) -> Bool
 
-pub fn perm_wiring(@symlib.Perm) -> @cubical-hermitian.Wiring
+pub fn perm_wiring(@symlib.Perm) -> @finite.Wiring
 
-pub fn permutation_matrix(@symlib.Perm) -> @cubical-hermitian.CMat
+pub fn permutation_matrix(@symlib.Perm) -> @hermitian.CMat
 
 pub fn qpoly_tropicalize_padic(@vv0101v01/cubical-hermitian/algebra.QPoly, Int32) -> @trop.UniPoly
 
@@ -95,13 +98,13 @@ pub fn semiring_graph_support(@graph.Graph) -> @symlib.Graph
 
 pub fn semiring_graph_symmetries(@graph.Graph, Int32) -> Array[@symlib.Perm]
 
-pub fn semiring_graph_symmetry_projector(@graph.Graph, Int32) -> @cubical-hermitian.CMat
+pub fn semiring_graph_symmetry_projector(@graph.Graph, Int32) -> @hermitian.CMat
 
 pub fn semiring_graph_vertex_colors(@graph.Graph) -> Array[Int32]
 
 pub fn seven_federation_descriptors() -> Array[FederationDescriptor]
 
-pub fn signed_perm_wiring(@symlib.Perm, Array[Bool]) -> @cubical-hermitian.Wiring
+pub fn signed_perm_wiring(@symlib.Perm, Array[Bool]) -> @finite.Wiring
 
 pub fn six_federation_descriptors() -> Array[FederationDescriptor]
 
@@ -109,13 +112,13 @@ pub fn square_cell_incidence() -> (@symlib.Graph, Array[Int32])
 
 pub fn translate_coord_ring_to_zariski_theory(@scheme.CoordRing, Array[@scheme.MPoly]) -> (Int32, Array[@topos.PropGeoAxiom])
 
-pub fn translate_cubical_dim_to_mpoly(@cubical-hermitian.Dim, Int32) -> @scheme.MPoly
+pub fn translate_cubical_dim_to_mpoly(@face_bdd.Dim, Int32) -> @scheme.MPoly
 
 pub fn translate_cubical_dterm_to_geo_formula(@cubical-hermitian.DTerm) -> @topos.GeoFormula
 
-pub fn translate_cubical_face_to_geo_formula(@cubical-hermitian.Face) -> @topos.GeoFormula
+pub fn translate_cubical_face_to_geo_formula(@face_bdd.Face) -> @topos.GeoFormula
 
-pub fn translate_cubical_face_to_zariski_ideal(@cubical-hermitian.Face, Int32, Bool) -> @scheme.Ideal
+pub fn translate_cubical_face_to_zariski_ideal(@face_bdd.Face, Int32, Bool) -> @scheme.Ideal
 
 pub fn translate_sexpr_to_geo_formula(@nf.SExpr) -> @topos.GeoFormula
 
@@ -185,7 +188,7 @@ pub fn verify_zariski_topos_invariance_vs_nilpotent_points() -> Bool
 
 pub fn weighted_graph_report(@graph.Graph, Int32) -> WeightedGraphReport
 
-pub fn wiring_output_signs(@cubical-hermitian.Wiring) -> Array[Bool]
+pub fn wiring_output_signs(@finite.Wiring) -> Array[Bool]
 
 // Errors
 
@@ -211,7 +214,7 @@ pub fn DoubleVArchitectureReport::not_equal(Self, Self) -> Bool
 pub fn DoubleVArchitectureReport::to_repr(Self) -> @debug.Repr
 
 pub(all) struct FaceClass {
-  bdd : @cubical-hermitian.Bdd
+  bdd : @face_bdd.Bdd
 } derive(Eq)
 pub fn FaceClass::bottom() -> Self
 pub fn FaceClass::complement(Self) -> Self
@@ -224,7 +227,7 @@ pub fn FaceClass::join(Self, Self) -> Self
 pub fn FaceClass::le(Self, Self) -> Bool
 pub fn FaceClass::meet(Self, Self) -> Self
 pub fn FaceClass::not_equal(Self, Self) -> Bool
-pub fn FaceClass::of_face(@cubical-hermitian.Face, Int32) -> Self
+pub fn FaceClass::of_face(@face_bdd.Face, Int32) -> Self
 pub fn FaceClass::one() -> Self
 pub fn FaceClass::output(Self, &Logger) -> Unit
 pub fn FaceClass::plus(Self, Self) -> Self
@@ -329,7 +332,7 @@ pub(all) struct WeightedGraphReport {
   canonical_encoding : Array[Int32]
   candidate_group_order : Int64
   weighted_symmetry_count : Int32
-  symmetry_projector : @cubical-hermitian.CMat
+  symmetry_projector : @hermitian.CMat
   distance_matrix : @matrix.Mat[@vv0101v01/cubical-hermitian/semiring/algebra.Trop]
   reachable_pairs : Int32
   finite_distance_sum : Int64

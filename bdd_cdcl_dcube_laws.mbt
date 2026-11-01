@@ -388,8 +388,10 @@ pub fn check_circle_torus_point_comp() -> Bool {
 /// variable cap) beats blocked orders and sifting, preserves
 /// semantics, and reports non-exactness honestly above the cap.
 pub fn check_bdd_optimal_order_exact() -> Bool {
-  let pair = (a : Int32, b : Int32) => FAnd(FEq1(DVar(a)), FEq1(DVar(b)))
-  let f = FOr(pair(0, 3), FOr(pair(1, 4), pair(2, 5)))
+  let pair = (a : Int32, b : Int32) => {
+    Face::FAnd(Face::FEq1(Dim::DVar(a)), Face::FEq1(Dim::DVar(b)))
+  }
+  let f = Face::FOr(pair(0, 3), Face::FOr(pair(1, 4), pair(2, 5)))
   let opt = bdd_dag_of_face_optimal(f, 6)
   if !opt.exact {
     return false
@@ -475,15 +477,19 @@ fn phase11_random_face(seed0 : Int32, n : Int32) -> Face {
   let literal = () => {
     let v = next() % n
     if next() % 2 == 0 {
-      FEq1(DVar(v))
+      Face::FEq1(Dim::DVar(v))
     } else {
-      FEq0(DVar(v))
+      Face::FEq0(Dim::DVar(v))
     }
   }
   let mut out = literal()
   for _i in 0..<18 {
-    let clause = FOr(literal(), FOr(literal(), literal()))
-    out = if next() % 5 == 0 { FOr(out, clause) } else { FAnd(out, clause) }
+    let clause = Face::FOr(literal(), Face::FOr(literal(), literal()))
+    out = if next() % 5 == 0 {
+      Face::FOr(out, clause)
+    } else {
+      Face::FAnd(out, clause)
+    }
   }
   out
 }
@@ -492,9 +498,9 @@ fn phase11_random_face(seed0 : Int32, n : Int32) -> Face {
 fn phase11_pigeonhole_face(pigeons : Int32, holes : Int32) -> (Face, Int32) {
   let lit = (index : Int32, positive : Bool) => {
     if positive {
-      FEq1(DVar(index))
+      Face::FEq1(Dim::DVar(index))
     } else {
-      FEq0(DVar(index))
+      Face::FEq0(Dim::DVar(index))
     }
   }
   let mut out : Face = FTop
@@ -506,7 +512,7 @@ fn phase11_pigeonhole_face(pigeons : Int32, holes : Int32) -> (Face, Int32) {
   for pigeon in 0..<pigeons {
     let mut clause = lit(pigeon * holes, true)
     for h in 1..<holes {
-      clause = FOr(clause, lit(pigeon * holes + h, true))
+      clause = Face::FOr(clause, lit(pigeon * holes + h, true))
     }
     conjoin(clause)
   }

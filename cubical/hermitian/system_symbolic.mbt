@@ -45,7 +45,7 @@ pub fn vec_lex_lt(a : CVec, b : CVec) -> Bool {
 /// The symbolic normal form: disjoint BDD regions per value.
 pub fn system_normal_form(s : VecSystem, nvars : Int32) -> SystemNF {
   let classes : Array[SymRegion] = []
-  let mut covered = BddZero
+  let mut covered : Bdd = BddZero
   for i in 0..<s.branches.length() {
     let bi = s.branches[i]
     let region_all = bdd_of_face(bi.face, nvars)

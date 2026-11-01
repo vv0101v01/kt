@@ -180,7 +180,7 @@ pub fn check_glue_comp_finite() -> Bool {
     return false
   }
   // Swap square over product types.
-  let prod_ty = TyProd(TyBool, TyUnit)
+  let prod_ty : Ty = TyProd(TyBool, TyUnit)
   let line3 = GlueLineFinite::{
     a_line: ua(equiv_swap(TyBool, TyUnit)),
     t_line: ua(equiv_id(prod_ty)),

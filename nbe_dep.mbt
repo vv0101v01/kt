@@ -1444,11 +1444,11 @@ pub fn torus_dims_of(v : DValue) -> (Dim, Dim) {
 ///|
 pub fn torus_point(a : Dim, b : Dim) -> DValue {
   let na = match dim_simplify(a) {
-    DOne => DZero
+    DOne => Dim::DZero
     x => x
   }
   let nb = match dim_simplify(b) {
-    DOne => DZero
+    DOne => Dim::DZero
     x => x
   }
   DVTorusPoint(na, nb)
@@ -1553,7 +1553,7 @@ pub fn dsystem_map(
 
 ///|
 pub fn dsystem_domain_face(system : DSystem) -> Face {
-  let mut face = FBot
+  let mut face = Face::FBot
   for i in 0..<system.branches.length() {
     face = face_simplify(FOr(face, system.branches[i].face))
   }
@@ -1580,7 +1580,7 @@ fn tube_paths_conv(
   p : (Dim) -> DValue,
   q : (Dim) -> DValue,
 ) -> Bool {
-  let fresh = DVar(dlevel)
+  let fresh = Dim::DVar(dlevel)
   conv_at(level, dlevel, line(DOne), p(DOne), q(DOne)) &&
   conv_at(level, dlevel, line(DZero), p(DZero), q(DZero)) &&
   conv_at(level, dlevel + 1, line(fresh), p(fresh), q(fresh))
@@ -1703,7 +1703,7 @@ fn dsystem_canonical_quoted(
   line : (Dim) -> DValue,
   system : DSystem,
 ) -> (DSystem, Array[DTerm]) {
-  let fresh = DVar(dlevel)
+  let fresh = Dim::DVar(dlevel)
   let line_fresh = line(fresh)
   let faces : Array[Face] = []
   let paths : Array[(Dim) -> DValue] = []
@@ -1834,7 +1834,7 @@ pub fn partial_normal_form(
   let nvars = partial_nvars(partial, dlevel)
   let regions : Array[Bdd] = []
   let values : Array[DValue] = []
-  let mut covered = BddZero
+  let mut covered = Bdd::BddZero
   for i in 0..<partial.branches.length() {
     let br = partial.branches[i]
     let region_all = bdd_of_face(br.face, nvars)
@@ -1907,7 +1907,7 @@ pub fn partial_eq_at(
 ///|
 pub fn partial_domain_bdd(partial : DPartialValue, dlevel : Int32) -> Bdd {
   let nvars = partial_nvars(partial, dlevel)
-  let mut covered = BddZero
+  let mut covered = Bdd::BddZero
   for i in 0..<partial.branches.length() {
     covered = bdd_or(covered, bdd_of_face(partial.branches[i].face, nvars))
   }
@@ -2493,7 +2493,7 @@ fn d_check_tube_under_face(
   denv : DDimEnv,
 ) -> Bool {
   let dl = ddim_len(denv)
-  let fresh = DVar(dl)
+  let fresh = Dim::DVar(dl)
   if !(d_check(body, line_fn(fresh), ctx, env, ddim_cons(fresh, denv)) is None) {
     return true
   }
@@ -2507,7 +2507,7 @@ fn d_check_tube_under_face(
     return false
   }
   let level = denv_len(ctx)
-  let fresh_sub = DVar(sub_dl)
+  let fresh_sub = Dim::DVar(sub_dl)
   let line_term = quote_ty(level, sub_dl + 1, line_fn(fresh_sub))
   let orig_dims = ddim_to_array(denv)
   for s in 0..<subcubes.length() {
@@ -3073,7 +3073,7 @@ pub fn d_infer(t : DTerm, ctx : DEnv, env : DEnv, denv : DDimEnv) -> DInfer? {
         Some(sv) => {
           let fam = x => dtype_of_fam(motive, ctx, env, denv, DVTorusTy, x)
           let fi = fresh_dim(denv)
-          let fj = DVar(ddim_len(denv) + 1)
+          let fj = Dim::DVar(ddim_len(denv) + 1)
           match
             d_check(
               square,
@@ -3516,8 +3516,8 @@ pub fn conv_neutral(
       conv_at(level, dlevel, m1(DVCirclePoint(DZero)), b1, b2) &&
       conv_at(level, dlevel, DVPathTy(d => m1(circle_point(d)), b1, b1), l1, l2)
     (DNTorusElim(m1, q1, n1), DNTorusElim(m2, q2, n2)) => {
-      let fi = DVar(dlevel)
-      let fj = DVar(dlevel + 1)
+      let fi = Dim::DVar(dlevel)
+      let fj = Dim::DVar(dlevel + 1)
       conv_neutral(level, dlevel, n1, n2) &&
       conv_ty(
         level + 1,
@@ -3661,7 +3661,7 @@ pub fn conv_at(
       )
     }
     DVPathTy(line, _, _) => {
-      let fresh = DVar(dlevel)
+      let fresh = Dim::DVar(dlevel)
       conv_at(
         level,
         dlevel + 1,
@@ -3868,7 +3868,7 @@ pub fn conv_ty(level : Int32, dlevel : Int32, a : DValue, b : DValue) -> Bool {
       conv_ty(level + 1, dlevel, f1(fresh), f2(fresh))
     }
     (DVPathTy(l1, x1, y1), DVPathTy(l2, x2, y2)) => {
-      let fresh = DVar(dlevel)
+      let fresh = Dim::DVar(dlevel)
       conv_ty(level, dlevel + 1, l1(fresh), l2(fresh)) &&
       conv_at(level, dlevel, l1(DZero), x1, x2) &&
       conv_at(level, dlevel, l1(DOne), y1, y2)
@@ -4016,8 +4016,8 @@ pub fn quote_dneutral(
         dlevel,
         motive(DVNeutral(DNVar(level))),
       )
-      let fi = DVar(dlevel)
-      let fj = DVar(dlevel + 1)
+      let fi = Dim::DVar(dlevel)
+      let fj = Dim::DVar(dlevel + 1)
       let sq_body = quote_at(
         level,
         dlevel + 2,
@@ -4181,7 +4181,7 @@ pub fn quote_at(
       )
     }
     DVPathTy(line, _, _) => {
-      let fresh = DVar(dlevel)
+      let fresh = Dim::DVar(dlevel)
       DLamDim(quote_at(level, dlevel + 1, line(fresh), dapp_dim(v, fresh)))
     }
     DVNatTy =>

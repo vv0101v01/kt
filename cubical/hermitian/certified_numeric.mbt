@@ -1,15 +1,9 @@
 ///|
-// Architecture boundary: the root package consumes the exact-algebra
-// package only through this explicit import list.  Keep this list
-// minimal; new root dependencies on `algebra` should be reviewed as
-// layer-crossing changes (see agent.v2.md / architecture.json).
-
-///|
 using @algebra {
-  type Rat,
-  type QuadNum,
   type AlgNum,
   type QPoly,
+  type QuadNum,
+  type Rat,
   alg_add,
   alg_div,
   alg_eq,
@@ -20,15 +14,6 @@ using @algebra {
   alg_sub,
   alg_zero,
   qpoly_normalize,
-  rat_add,
-  rat_eq,
-  rat_int,
-  rat_mul,
-  rat_one,
-  rat_is_zero,
-  rat_make,
-  rat_sub,
-  rat_zero,
   quad_add,
   quad_eq,
   quad_is_zero,
@@ -39,33 +24,51 @@ using @algebra {
   quad_sqrt_rat,
   quad_sub,
   quad_zero,
-  check_symbolic_algebra_all,
-  check_algebraic_extensions_and_Jordan,
-  check_Jacobi_interval,
-  check_qpoly_factor_complete,
-  check_qpoly_fast_arithmetic,
-  check_qpoly_mod_pattern_pruning,
-  check_root_isolation,
-  check_jacobi_cluster_separation,
-  check_biquadratic_denesting,
-  check_jacobi_cluster_aware_iteration,
-  check_poly_cubes,
-  check_qpoly_irreducibility_certificates,
-  check_tower_fields,
-  check_splitting_field,
-  check_radical_denesting,
-  check_Jacobi_arbitrary_precision,
-  check_qpoly_degree_pattern_certificates,
-  check_multiquadratic_tower,
-  check_jacobi_adaptive_exact_fallback,
-  check_qpoly_hensel_factor_and_certificates,
-  check_algebraic_radicals_and_rank6_multiquad,
-  check_jacobi_block_deflation_and_multiplicity,
-  check_lll_lattice_and_van_hoeij_factor,
-  check_complex_algebraic_closure_rouche,
-  // Transcendental boundary layer (SPEC section 4, exact algebra track).
-  check_transcendental_boundary_layer,
-  check_phase21_transcendence_and_crt_charpoly,
+  rat_int,
+  rat_is_zero,
+  rat_make,
+  rat_zero,
+}
+
+///|
+using @face_bdd {
+  type Bdd,
+  type Face,
+  bdd_and,
+  bdd_not,
+  bdd_of_face,
+  bdd_or,
+  eps,
+  face_holds,
+  face_le,
+  face_sat,
+  face_unsat,
+  face_var0,
+  face_var1,
+}
+
+///|
+using @finite {
+  type Equiv,
+  type GlueData,
+  type GlueElem,
+  type LTy,
+  type Ty,
+  type UPath,
+  coe_upath,
+  def_eq_eta,
+  equiv_bool_not,
+  equiv_comp,
+  equiv_ext_eq,
+  equiv_id,
+  equiv_swap,
+  equiv_wf,
+  glue_wf,
+  tm_coe_swap_at,
+  tm_comp_at,
+  tm_id_at,
+  tm_swap_at,
+  ua,
 }
 
 ///|

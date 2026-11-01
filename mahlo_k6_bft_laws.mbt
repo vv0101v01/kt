@@ -99,7 +99,10 @@ pub fn check_phase21_schema_dsystem_and_frontier_bdd() -> Bool {
   let build_chain = (m : Int32) => {
     let mut acc : Face = FBot
     for i in 0..<(m - 1) {
-      let lk = FAnd(FEq1(DVar(i)), FEq1(DVar(i + 1)))
+      let lk = Face::FAnd(
+        Face::FEq1(Dim::DVar(i)),
+        Face::FEq1(Dim::DVar(i + 1)),
+      )
       acc = if i == 0 { lk } else { FOr(acc, lk) }
     }
     acc
@@ -138,7 +141,10 @@ pub fn check_phase21_schema_dsystem_and_frontier_bdd() -> Bool {
     ddim_empty(),
     dims => {
       calls_a = calls_a + 1
-      let r = DAnd(dims[0], DOr(dims[12], DAnd(dims[0], dims[12])))
+      let r = Dim::DAnd(
+        dims[0],
+        Dim::DOr(dims[12], Dim::DAnd(dims[0], dims[12])),
+      )
       deval_dim(DAppDim(DCircleLoop, r), denv_empty(), ddim_empty())
     },
   )
@@ -149,7 +155,7 @@ pub fn check_phase21_schema_dsystem_and_frontier_bdd() -> Bool {
     denv_empty(),
     ddim_empty(),
     dims => {
-      let r = DAnd(dims[0], dims[12])
+      let r = Dim::DAnd(dims[0], dims[12])
       deval_dim(DAppDim(DCircleLoop, r), denv_empty(), ddim_empty())
     },
   )

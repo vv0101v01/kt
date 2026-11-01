@@ -13,7 +13,7 @@
 // pruning of unsatisfiable / subsumed branches — rests on these decisions.
 
 ///|
-pub enum Dim {
+pub(all) enum Dim {
   DZero
   DOne
   DVar(Int32)
@@ -125,7 +125,7 @@ pub fn interval_laws_hold(samples : Array[Double]) -> Bool {
 }
 
 ///|
-pub enum Face {
+pub(all) enum Face {
   FTop
   FBot
   FEq0(Dim)

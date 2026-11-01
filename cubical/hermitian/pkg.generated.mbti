@@ -1,0 +1,579 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/cubical/hermitian"
+
+import {
+  "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/algebra",
+  "vv0101v01/cubical-hermitian/cubical/face_bdd",
+  "vv0101v01/cubical-hermitian/cubical/finite",
+}
+
+// Values
+pub fn alg_cert_in_image(AlgCertMat, Array[AlgC]) -> Bool
+
+pub fn alg_cert_inner(@algebra.QPoly, Array[AlgC], Array[AlgC]) -> AlgC
+
+pub fn alg_cert_is_projector(AlgCertMat) -> Bool
+
+pub fn alg_cert_mat_adjoint(AlgCertMat) -> AlgCertMat
+
+pub fn alg_cert_mat_eq(AlgCertMat, AlgCertMat) -> Bool
+
+pub fn alg_cert_mat_mul(AlgCertMat, AlgCertMat) -> AlgCertMat
+
+pub fn alg_cert_mat_vec(AlgCertMat, Array[AlgC]) -> Array[AlgC]
+
+pub fn alg_cert_outer(Array[AlgC]) -> AlgCertMat
+
+pub fn alg_cert_path_eval(@algebra.QPoly, AlgCertPath, @algebra.AlgNum) -> Array[AlgC]
+
+pub fn alg_cert_path_in_image(AlgCertMat, AlgCertPath) -> Bool
+
+pub fn alg_cert_square_eval(@algebra.QPoly, AlgCertSquare, @algebra.AlgNum, @algebra.AlgNum) -> Array[AlgC]
+
+pub fn alg_cert_square_in_image(AlgCertMat, AlgCertSquare) -> Bool
+
+pub fn alg_cert_vec_eq(Array[AlgC], Array[AlgC]) -> Bool
+
+pub fn alg_cert_vec_scale(AlgC, Array[AlgC]) -> Array[AlgC]
+
+pub fn algc_add(AlgC, AlgC) -> AlgC
+
+pub fn algc_conj(AlgC) -> AlgC
+
+pub fn algc_eq(AlgC, AlgC) -> Bool
+
+pub fn algc_i(@algebra.QPoly) -> AlgC
+
+pub fn algc_mul(AlgC, AlgC) -> AlgC
+
+pub fn algc_one(@algebra.QPoly) -> AlgC
+
+pub fn algc_real(@algebra.AlgNum) -> AlgC
+
+pub fn algc_scale_alg(@algebra.AlgNum, AlgC) -> AlgC
+
+pub fn algc_zero(@algebra.QPoly) -> AlgC
+
+pub fn branch(@face_bdd.Face, Array[Complex]) -> VecBranch
+
+pub fn bumped_filler(Cube, Array[Complex]) -> Cube
+
+pub fn cert_complement(CertMat) -> CertMat
+
+pub fn cert_eigenspace_kan_sound(CertMat, CertPath, CertPath, CertPath) -> Bool
+
+pub fn cert_example_projector() -> CertMat
+
+pub fn cert_example_unit() -> Array[QuadC]
+
+pub fn cert_filler_respects_box(CertSquare, CertPath, CertPath, CertPath) -> Bool
+
+pub fn cert_in_image(CertMat, Array[QuadC]) -> Bool
+
+pub fn cert_in_kernel(CertMat, Array[QuadC]) -> Bool
+
+pub fn cert_inner(Array[QuadC], Array[QuadC]) -> QuadC
+
+pub fn cert_is_hermitian(CertMat) -> Bool
+
+pub fn cert_is_idempotent(CertMat) -> Bool
+
+pub fn cert_is_projector(CertMat) -> Bool
+
+pub fn cert_mat_add(CertMat, CertMat) -> CertMat
+
+pub fn cert_mat_adjoint(CertMat) -> CertMat
+
+pub fn cert_mat_eq(CertMat, CertMat) -> Bool
+
+pub fn cert_mat_from_rows(Array[Array[QuadC]]) -> CertMat
+
+pub fn cert_mat_identity(Int32) -> CertMat
+
+pub fn cert_mat_mul(CertMat, CertMat) -> CertMat
+
+pub fn cert_mat_sub(CertMat, CertMat) -> CertMat
+
+pub fn cert_mat_to_numeric(CertMat) -> CMat
+
+pub fn cert_mat_trace(CertMat) -> QuadC
+
+pub fn cert_mat_vec(CertMat, Array[QuadC]) -> Array[QuadC]
+
+pub fn cert_mat_zero(Int32) -> CertMat
+
+pub fn cert_open_box_wf(CertPath, CertPath, CertPath) -> Bool
+
+pub fn cert_outer(Array[QuadC]) -> CertMat
+
+pub fn cert_path_end(CertPath) -> Array[QuadC]
+
+pub fn cert_path_eq(CertPath, CertPath) -> Bool
+
+pub fn cert_path_in_image(CertMat, CertPath) -> Bool
+
+pub fn cert_path_is_affine(CertPath) -> Bool
+
+pub fn cert_path_line(Array[QuadC], Array[QuadC]) -> CertPath
+
+pub fn cert_path_start(CertPath) -> Array[QuadC]
+
+pub fn cert_path_sym(CertPath) -> CertPath
+
+pub fn cert_pruning_repairs_filler(CertMat, CertPath, CertPath, CertPath, Array[QuadC]) -> Bool
+
+pub fn cert_square_add(CertSquare, CertSquare) -> CertSquare
+
+pub fn cert_square_apply(CertMat, CertSquare) -> CertSquare
+
+pub fn cert_square_bilinear(Array[QuadC], Array[QuadC], Array[QuadC], Array[QuadC]) -> CertSquare
+
+pub fn cert_square_bump(CertSquare, Array[QuadC]) -> CertSquare
+
+pub fn cert_square_face(CertSquare, Int32) -> CertPath
+
+pub fn cert_square_fill(CertPath, CertPath, CertPath) -> CertSquare
+
+pub fn cert_square_in_image(CertMat, CertSquare) -> Bool
+
+pub fn cert_vec_add(Array[QuadC], Array[QuadC]) -> Array[QuadC]
+
+pub fn cert_vec_eq(Array[QuadC], Array[QuadC]) -> Bool
+
+pub fn cert_vec_scale(QuadC, Array[QuadC]) -> Array[QuadC]
+
+pub fn cert_vec_sub(Array[QuadC], Array[QuadC]) -> Array[QuadC]
+
+pub fn cert_vec_zero(Int32) -> Array[QuadC]
+
+pub fn certify_numeric_projector(CMat, CertMat, Double) -> NumericProjectorCertificate
+
+pub fn certify_projector(CertMat) -> ProjectorCertificate
+
+pub fn check_categories_all() -> Bool
+
+pub fn check_certified_algebraic_numeric() -> Bool
+
+pub fn check_cubical_identities(Cube, Array[Double]) -> Bool
+
+pub fn check_face_poset_category() -> Bool
+
+pub fn check_glue_comp_all() -> Bool
+
+pub fn check_glue_comp_finite() -> Bool
+
+pub fn check_glue_comp_vec() -> Bool
+
+pub fn check_karoubi_category() -> Bool
+
+pub fn check_syntactic_category() -> Bool
+
+pub fn commuting_product(CMat, CMat) -> CMat
+
+pub fn commuting_projectors_compatible(CMat, CMat) -> Bool
+
+pub fn compatibility_respects_quotient(VecSystem, VecSystem, Int32) -> Bool
+
+pub fn complement(CMat) -> CMat
+
+pub fn cube_const(Array[Complex], Int32) -> Cube
+
+pub fn cube_eval(Cube, Array[Double]) -> Array[Complex]
+
+pub fn cube_ext_eq(Cube, Cube, Array[Double]) -> Bool
+
+pub fn cube_in_eigenspace(CMat, Cube, Array[Double]) -> Bool
+
+pub fn cube_in_subline(SubLine, Cube, Int32, Array[Double]) -> Bool
+
+pub fn cube_root_two_modulus() -> @algebra.QPoly
+
+pub fn cube_root_unit_vector(@algebra.QPoly) -> Array[AlgC]?
+
+pub fn cx(Double, Double) -> Complex
+
+pub fn cx_add(Complex, Complex) -> Complex
+
+pub fn cx_approx_eq(Complex, Complex) -> Bool
+
+pub fn cx_conj(Complex) -> Complex
+
+pub fn cx_mul(Complex, Complex) -> Complex
+
+pub fn cx_real(Double) -> Complex
+
+pub fn cx_scale(Double, Complex) -> Complex
+
+pub fn cx_sub(Complex, Complex) -> Complex
+
+pub fn cx_zero() -> Complex
+
+pub fn decompose(CMat, Array[Complex]) -> (Array[Complex], Array[Complex])
+
+pub fn degenerate_cube(Cube, Int32) -> Cube
+
+pub fn double_dyadic_interval(Double, Int32) -> (@algebra.Rat, @algebra.Rat)?
+
+pub fn eigen_equations_hold(CMat, Array[Complex]) -> Bool
+
+pub fn eigenspace_kan_sound(CMat, Cube, Cube, Cube, Array[Double]) -> Bool
+
+pub fn eigenspace_well_formed(CMat, Array[Array[Complex]]) -> Bool
+
+pub fn example_projector() -> CMat
+
+pub fn example_unit() -> Array[Complex]
+
+pub fn face_join_universal(@face_bdd.Face, @face_bdd.Face, @face_bdd.Face, Int32) -> Bool
+
+pub fn face_maps_commute(Cube, Double, Double) -> Bool
+
+pub fn face_meet_universal(@face_bdd.Face, @face_bdd.Face, @face_bdd.Face, Int32) -> Bool
+
+pub fn fill_subline(SubLine, VecBox) -> Cube
+
+pub fn filler_respects_box(Cube, Cube, Cube, Cube, Array[Double]) -> Bool
+
+pub fn glue_box_compatible(GlueLineVec, VecBox, VecBox, Array[Double]) -> Bool
+
+pub fn glue_comp_finite(GlueLineFinite, @finite.GlueElem, Int32) -> @finite.GlueElem?
+
+pub fn glue_comp_finite_correct(GlueLineFinite, @finite.GlueElem, Int32) -> Bool
+
+pub fn glue_comp_vec(GlueLineVec, VecBox, VecBox) -> GlueCompVecResult
+
+pub fn glue_comp_vec_sound(GlueLineVec, VecBox, VecBox, Array[Double]) -> Bool
+
+pub fn glue_data_at0(GlueLineFinite) -> @finite.GlueData
+
+pub fn glue_data_at1(GlueLineFinite) -> @finite.GlueData
+
+pub fn glue_line_coherent(GlueLineFinite) -> Bool
+
+pub fn in_image(CMat, Array[Complex]) -> Bool
+
+pub fn in_kernel(CMat, Array[Complex]) -> Bool
+
+pub fn inner(Array[Complex], Array[Complex]) -> Complex
+
+pub fn int_pow(Int32, Int32) -> Int32
+
+pub fn inv_sqrt2() -> Double
+
+pub fn is_hermitian(CMat) -> Bool
+
+pub fn is_idempotent(CMat) -> Bool
+
+pub fn is_projector(CMat) -> Bool
+
+pub fn kan_comp_eigenspace(CMat, Cube, Cube, Cube) -> Cube
+
+pub fn kan_comp_path(Cube, Cube, Cube) -> Cube
+
+pub fn kan_fill_eigenspace(CMat, Cube, Cube, Cube) -> Cube
+
+pub fn karoubi_comp(CMat, CMat) -> CMat
+
+pub fn karoubi_id(CMat) -> CMat
+
+pub fn karoubi_morphism(CMat, CMat, CMat) -> Bool
+
+pub fn karoubi_wrap(CMat, CMat, CMat) -> CMat
+
+pub fn lin_equiv_from_unit_paths((Double) -> Array[Complex], (Double) -> Array[Complex]) -> LinEquivLine
+
+pub fn map_cube_equiv_line(LinEquivLine, Cube, Int32) -> Cube
+
+pub fn map_cube_matrix(CMat, Cube) -> Cube
+
+pub fn mat_add(CMat, CMat) -> CMat
+
+pub fn mat_adjoint(CMat) -> CMat
+
+pub fn mat_approx_eq(CMat, CMat) -> Bool
+
+pub fn mat_commutes(CMat, CMat) -> Bool
+
+pub fn mat_from_rows(Array[Array[Complex]]) -> CMat
+
+pub fn mat_get(CMat, Int32, Int32) -> Complex
+
+pub fn mat_identity(Int32) -> CMat
+
+pub fn mat_mul(CMat, CMat) -> CMat
+
+pub fn mat_sub(CMat, CMat) -> CMat
+
+pub fn mat_trace_re(CMat) -> Double
+
+pub fn mat_vec(CMat, Array[Complex]) -> Array[Complex]
+
+pub fn mat_zero(Int32) -> CMat
+
+pub fn numeric_mat_max_deviation(CMat, CMat) -> Double
+
+pub fn numeric_projector_residual(CMat) -> Double
+
+pub fn open_box_wf(Cube, Cube, Cube) -> Bool
+
+pub fn outer(Array[Complex]) -> CMat
+
+pub fn outer2(Array[Complex], Array[Complex]) -> CMat
+
+pub fn path_end(Cube) -> Array[Complex]
+
+pub fn path_eval(Cube, Double) -> Array[Complex]
+
+pub fn path_line(Array[Complex], Array[Complex]) -> Cube
+
+pub fn path_refl(Array[Complex]) -> Cube
+
+pub fn path_start(Cube) -> Array[Complex]
+
+pub fn path_sym(Cube) -> Cube
+
+pub fn path_trans(Cube, Cube) -> Cube
+
+pub fn path_trans_endpoints(Cube, Cube) -> Bool
+
+pub fn projector_certificate_ok(ProjectorCertificate) -> Bool
+
+pub fn projector_from_orthonormal(Array[Array[Complex]], Int32) -> CMat
+
+pub fn prune_cube(CMat, Cube) -> Cube
+
+pub fn prune_cube_subline(SubLine, Cube, Int32) -> Cube
+
+pub fn prune_system(VecSystem, Int32) -> VecSystem
+
+pub fn prune_to_eigenspace(CMat, Array[Complex]) -> Array[Complex]
+
+pub fn pruning_is_retraction(CMat, Array[Array[Complex]]) -> Bool
+
+pub fn pruning_repairs_filler(CMat, Cube, Cube, Cube, Array[Complex], Array[Double]) -> Bool
+
+pub fn pruning_respects_quotient(VecSystem, Int32) -> Bool
+
+pub fn qcc_add(QuadC, QuadC) -> QuadC
+
+pub fn qcc_conj(QuadC) -> QuadC
+
+pub fn qcc_eq(QuadC, QuadC) -> Bool
+
+pub fn qcc_i() -> QuadC
+
+pub fn qcc_is_zero(QuadC) -> Bool
+
+pub fn qcc_mul(QuadC, QuadC) -> QuadC
+
+pub fn qcc_neg(QuadC) -> QuadC
+
+pub fn qcc_one() -> QuadC
+
+pub fn qcc_rat(@algebra.Rat, @algebra.Rat) -> QuadC
+
+pub fn qcc_real(@algebra.QuadNum) -> QuadC
+
+pub fn qcc_sub(QuadC, QuadC) -> QuadC
+
+pub fn qcc_to_complex(QuadC) -> Complex
+
+pub fn qcc_zero() -> QuadC
+
+pub fn quad_to_double(@algebra.QuadNum) -> Double
+
+pub fn restrict_face(Cube, Int32, Double) -> Cube
+
+pub fn square_fill(Cube, Cube, Cube) -> Cube
+
+pub fn subline_from_unit_path((Double) -> Array[Complex]) -> SubLine
+
+pub fn system_compatible(VecSystem, Int32) -> Bool
+
+pub fn system_domain_bdd(VecSystem, Int32) -> @face_bdd.Bdd
+
+pub fn system_eq_mod(VecSystem, VecSystem, Int32) -> Bool
+
+pub fn system_eq_mod_sym(VecSystem, VecSystem, Int32) -> Bool
+
+pub fn system_extend_top(VecSystem, Array[Complex], Int32) -> VecSystem?
+
+pub fn system_lookup(VecSystem, Array[Bool]) -> Array[Complex]?
+
+pub fn system_normal_form(VecSystem, Int32) -> SystemNF
+
+pub fn system_of(Array[VecBranch]) -> VecSystem
+
+pub fn system_union(VecSystem, VecSystem) -> VecSystem
+
+pub fn union_commutes_mod(VecSystem, VecSystem, Int32) -> Bool
+
+pub fn vec_add(Array[Complex], Array[Complex]) -> Array[Complex]
+
+pub fn vec_approx_eq(Array[Complex], Array[Complex]) -> Bool
+
+pub fn vec_box(Cube, Cube, Cube) -> VecBox
+
+pub fn vec_e3() -> Array[Complex]
+
+pub fn vec_lex_lt(Array[Complex], Array[Complex]) -> Bool
+
+pub fn vec_norm2(Array[Complex]) -> Double
+
+pub fn vec_normalize(Array[Complex]) -> Array[Complex]
+
+pub fn vec_orthogonal(Array[Complex], Array[Complex]) -> Bool
+
+pub fn vec_scale(Double, Array[Complex]) -> Array[Complex]
+
+pub fn vec_scale_c(Complex, Array[Complex]) -> Array[Complex]
+
+pub fn vec_sub(Array[Complex], Array[Complex]) -> Array[Complex]
+
+pub fn vec_zero(Int32) -> Array[Complex]
+
+// Errors
+
+// Types and methods
+pub struct AlgC {
+  re : @algebra.AlgNum
+  im : @algebra.AlgNum
+}
+
+pub struct AlgCertMat {
+  n : Int32
+  rows : Array[Array[AlgC]]
+}
+
+pub struct AlgCertPath {
+  coeffs : Array[Array[AlgC]]
+}
+
+pub struct AlgCertSquare {
+  coeffs : Array[Array[Array[AlgC]]]
+}
+
+pub struct CMat {
+  n : Int32
+  rows : Array[Array[Complex]]
+}
+
+pub struct CertMat {
+  n : Int32
+  rows : Array[Array[QuadC]]
+}
+
+pub struct CertPath {
+  coeffs : Array[Array[QuadC]]
+}
+
+pub struct CertSquare {
+  coeffs : Array[Array[Array[QuadC]]]
+}
+
+pub struct Complex {
+  re : Double
+  im : Double
+} derive(Eq, @debug.Debug)
+pub fn Complex::equal(Self, Self) -> Bool
+pub fn Complex::not_equal(Self, Self) -> Bool
+pub fn Complex::to_repr(Self) -> @debug.Repr
+
+pub struct Cube {
+  dim : Int32
+  cell : (Array[Double]) -> Array[Complex]
+}
+
+pub struct GlueCompVecResult {
+  t_fill : Cube
+  a_fill_raw : Cube
+  t_cap : Cube
+  a_cap_raw : Cube
+  a_cap : Cube
+  correction : Cube
+}
+
+pub struct GlueLineFinite {
+  a_line : @finite.UPath
+  t_line : @finite.UPath
+  e0 : @finite.Equiv
+  e1 : @finite.Equiv
+  face0 : @face_bdd.Face
+  face1 : @face_bdd.Face
+}
+
+pub struct GlueLineVec {
+  base_line : SubLine
+  part_line : SubLine
+  equiv : LinEquivLine
+  face_active : Bool
+}
+
+pub struct LinEquivLine {
+  fwd : (Double) -> CMat
+  bwd : (Double) -> CMat
+}
+
+pub struct NumericProjectorCertificate {
+  exact : ProjectorCertificate
+  max_deviation : Double
+  numeric_residual : Double
+  tolerance : Double
+  ok : Bool
+}
+
+pub struct ProjectorCertificate {
+  matrix : CertMat
+  hermitian : Bool
+  idempotent : Bool
+  complement_projector : Bool
+  orthogonal_split : Bool
+  trace : QuadC
+}
+
+pub struct QuadC {
+  re : @algebra.QuadNum
+  im : @algebra.QuadNum
+} derive(Eq, @debug.Debug)
+pub fn QuadC::equal(Self, Self) -> Bool
+pub fn QuadC::not_equal(Self, Self) -> Bool
+pub fn QuadC::to_repr(Self) -> @debug.Repr
+
+pub struct SubLine {
+  proj : (Double) -> CMat
+}
+
+pub struct SymRegion {
+  value : Array[Complex]
+  mut region : @face_bdd.Bdd
+}
+
+pub struct SystemNF {
+  classes : Array[SymRegion]
+  undefined : @face_bdd.Bdd
+}
+
+pub struct VecBox {
+  bottom : Cube
+  left : Cube
+  right : Cube
+}
+
+pub struct VecBranch {
+  face : @face_bdd.Face
+  value : Array[Complex]
+}
+
+pub struct VecSystem {
+  branches : Array[VecBranch]
+}
+
+// Type aliases
+pub type AlgCertVec = Array[AlgC]
+
+pub type CVec = Array[Complex]
+
+pub type CertVec = Array[QuadC]
+
+// Traits

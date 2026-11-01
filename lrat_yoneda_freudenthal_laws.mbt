@@ -70,10 +70,13 @@ pub fn check_phase15_bdd_symmetry_orbit_and_decomposed_optimal() -> Bool {
     let base = blk * 7
     let mut pairs : Face = FBot
     for i in 0..<3 {
-      let pair_i = FAnd(FEq1(DVar(base + i)), FEq1(DVar(base + i + 3)))
+      let pair_i = Face::FAnd(
+        Face::FEq1(Dim::DVar(base + i)),
+        Face::FEq1(Dim::DVar(base + i + 3)),
+      )
       pairs = if i == 0 { pair_i } else { FOr(pairs, pair_i) }
     }
-    let bface = FAnd(FEq1(DVar(base + 6)), pairs)
+    let bface = Face::FAnd(Face::FEq1(Dim::DVar(base + 6)), pairs)
     f28 = if blk == 0 { bface } else { FOr(f28, bface) }
   }
   let mono_28 = bdd_dag_of_face_optimal_pruned(f28, 28)
@@ -104,7 +107,10 @@ pub fn check_phase15_bdd_symmetry_orbit_and_decomposed_optimal() -> Bool {
   // and must NOT claim `exact == true`.
   let mut chain22 : Face = FBot
   for i in 0..<21 {
-    let link = FAnd(FEq1(DVar(i)), FEq1(DVar(i + 1)))
+    let link = Face::FAnd(
+      Face::FEq1(Dim::DVar(i)),
+      Face::FEq1(Dim::DVar(i + 1)),
+    )
     chain22 = if i == 0 { link } else { FOr(chain22, link) }
   }
   let dec_chain22 = bdd_dag_of_face_optimal_decomposed(chain22, 22)
@@ -173,9 +179,9 @@ pub fn check_phase15_cdcl_lrat_elaboration_and_binary_codec() -> Bool {
   // then clause 2 conflicts!).Step 6 derives `[]` from `[5, 3, 4]`.
   let base4 = [[1, 2], [-1, 2], [1, -2], [-1, -2]]
   let good_lrat = [
-    LratAdd(5, [2], [1, 2], []),
-    LratDelete(5, [1, 2]),
-    LratAdd(6, [], [5, 3, 4], []),
+    FaceLratStep::LratAdd(5, [2], [1, 2], []),
+    FaceLratStep::LratDelete(5, [1, 2]),
+    FaceLratStep::LratAdd(6, [], [5, 3, 4], []),
   ]
   if !face_cdcl_lrat_check(base4, good_lrat) {
     return false
@@ -183,17 +189,17 @@ pub fn check_phase15_cdcl_lrat_elaboration_and_binary_codec() -> Bool {
   // Negative control 1 (wrong hint order / missing antecedent): `[5]` comes AFTER
   // `[3, 4]` when `[3, 4]` are NOT unit before `5` propagates `2`!
   let wrong_order_lrat = [
-    LratAdd(5, [2], [1, 2], []),
-    LratAdd(6, [], [3, 4, 5], []),
+    FaceLratStep::LratAdd(5, [2], [1, 2], []),
+    FaceLratStep::LratAdd(6, [], [3, 4, 5], []),
   ]
   if face_cdcl_lrat_check(base4, wrong_order_lrat) {
     return false
   }
   // Negative control 2 (deleted-ID reuse): deleting clause `5` before citing `5`.
   let deleted_reuse_lrat = [
-    LratAdd(5, [2], [1, 2], []),
-    LratDelete(5, [5]),
-    LratAdd(6, [], [5, 3, 4], []),
+    FaceLratStep::LratAdd(5, [2], [1, 2], []),
+    FaceLratStep::LratDelete(5, [5]),
+    FaceLratStep::LratAdd(6, [], [5, 3, 4], []),
   ]
   if face_cdcl_lrat_check(base4, deleted_reuse_lrat) {
     return false
@@ -272,7 +278,7 @@ pub fn check_phase15_dcube_strength4_phf_and_yoneda_audit() -> Bool {
   // 3B. `CheckedDCube` `O(1)` universal extensionality at `arity = 24` (where
   // `2^24 = 16,777,216` vertices would explode any grid enumerator!):
   // `(<k> loop(k)) @ (i_0 ∧ ¬i_23)` vs `loop(i_0 ∧ ¬i_23)` on `S^1`.
-  let conn_dim = DAnd(DVar(23), DNeg(DVar(0)))
+  let conn_dim = Dim::DAnd(Dim::DVar(23), Dim::DNeg(Dim::DVar(0)))
   let body_a = DAppDim(DLamDim(DAppDim(DCircleLoop, DVar(0))), conn_dim)
   let body_b = DAppDim(DCircleLoop, conn_dim)
   let body_wrong = DAppDim(DCircleLoop, DOr(DVar(23), DNeg(DVar(0))))

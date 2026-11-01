@@ -563,7 +563,7 @@ pub fn tube_paths_conv_under_face_in(
   p : (Dim) -> DValue,
   q : (Dim) -> DValue,
 ) -> Bool {
-  let fresh = DVar(dlevel)
+  let fresh = Dim::DVar(dlevel)
   conv_at_under_face_in(
     term_env,
     level,
@@ -843,12 +843,12 @@ pub fn dsystem_first_match_normal_form(
   let system = dsystem_of(system0.branches)
   let nvars = dsystem_nvars(system, dlevel)
   let regions : Array[Bdd] = []
-  let fresh = DVar(dlevel)
+  let fresh = Dim::DVar(dlevel)
   let line_fresh = line(fresh)
   let paths : Array[(Dim) -> DValue] = []
   let quoted : Array[DTerm] = []
   let body_keys : Array[String] = []
-  let mut covered = BddZero
+  let mut covered = Bdd::BddZero
   for i in 0..<system.branches.length() {
     let br = system.branches[i]
     let all = bdd_of_face(br.face, nvars)
@@ -1086,8 +1086,8 @@ fn agreement_bdd_walk(
         )
         // Reassemble with BDD apply so the result stays ordered
         // even though irrelevant variables were never split.
-        let var0 = BddNode(variable, BddOne, BddZero)
-        let var1 = BddNode(variable, BddZero, BddOne)
+        let var0 = Bdd::BddNode(variable, Bdd::BddOne, Bdd::BddZero)
+        let var1 = Bdd::BddNode(variable, Bdd::BddZero, Bdd::BddOne)
         if kept_lo == BddZero && kept_hi == BddZero {
           BddZero
         } else if kept_lo == kept_hi {
@@ -1175,7 +1175,7 @@ pub fn dsystem_repair_to_base(
 ) -> DSystemRepair {
   let nvars = dsystem_nvars(system, dlevel)
   let restricted : Array[DTubeBranch] = []
-  let mut removed = BddZero
+  let mut removed = Bdd::BddZero
   let mut repaired = 0
   for i in 0..<system.branches.length() {
     let br = system.branches[i]
@@ -1272,7 +1272,7 @@ fn agreement_face_walk(
           b_term,
           term_env,
         )
-        let var_dim = DVar(variable)
+        let var_dim = Dim::DVar(variable)
         if kept_lo == FBot && kept_hi == FBot {
           FBot
         } else if kept_lo == FBot {
@@ -1425,7 +1425,7 @@ pub fn dsystem_repair_to_base_exact(
 ) -> DSystemRepairExact {
   let nvars = dsystem_nvars(system, dlevel)
   let restricted : Array[DTubeBranch] = []
-  let mut removed = BddZero
+  let mut removed = Bdd::BddZero
   let mut repaired = 0
   for i in 0..<system.branches.length() {
     let br = system.branches[i]
@@ -1518,7 +1518,7 @@ pub fn dsystem_repair_with_candidates(
     }
   }
   let accepted : Array[DTubeBranch] = []
-  let mut removed = BddZero
+  let mut removed = Bdd::BddZero
   let mut repaired = 0
   let mut added = 0
   let mut rejected = 0
@@ -1791,7 +1791,7 @@ pub fn dsystem_repair_maximum(
   let origin : Array[Int32] = []
   let pool_region : Array[Bdd] = []
   let pool_counted : Array[Bool] = []
-  let mut removed = BddZero
+  let mut removed = Bdd::BddZero
   let mut repaired = 0
   let mut rejected = 0
   for i in 0..<system.branches.length() {
