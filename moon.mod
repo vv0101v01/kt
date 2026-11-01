@@ -11,9 +11,9 @@
 
 name = "vv0101v01/cubical-hermitian"
 
-version = "0.0.1"
+version = "2.0.0"
 
-readme = "README.mbt.md"
+readme = "readme.v2.md"
 
 repository = "https://github.com/vv0101v01/kt"
 

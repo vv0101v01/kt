@@ -714,42 +714,6 @@
       "summary_zh": "規格／定理登記表與明確的跨套件 import 邊界。"
     },
     {
-      "id": "tests",
-      "package": "mixed",
-      "layer": 8,
-      "files": [
-        "*_wbtest.mbt",
-        "*_test.mbt",
-        "gcd/*_wbtest.mbt",
-        "gcd/*_test.mbt",
-        "algebra/*_wbtest.mbt",
-        "algebra/*_test.mbt",
-        "hostfs/*_wbtest.mbt",
-        "hostfs/*_test.mbt",
-        "symlib/*_wbtest.mbt",
-        "symlib/*_test.mbt",
-        "semiring/**/*_wbtest.mbt",
-        "semiring/**/*_test.mbt",
-        "topos/*_wbtest.mbt",
-        "topos/*_test.mbt",
-        "scheme/*_wbtest.mbt",
-        "scheme/*_test.mbt",
-        "condensed/*_wbtest.mbt",
-        "condensed/*_test.mbt",
-        "tensor/*_wbtest.mbt",
-        "tensor/*_test.mbt",
-        "conjecture/*_wbtest.mbt",
-        "conjecture/*_test.mbt",
-        "bridge/*_wbtest.mbt",
-        "bridge/*_test.mbt"
-      ],
-      "depends_on": [
-        "*"
-      ],
-      "summary_en": "White-box and black-box tests, including differential oracles that are forbidden on library decision paths.",
-      "summary_zh": "白箱與黑箱測試，包括禁止進入函式庫判定路徑的差分 oracle。"
-    },
-    {
       "id": "app",
       "package": "cmd-main",
       "layer": 9,
@@ -767,9 +731,7 @@
       "package": "symlib",
       "layer": 2,
       "files": [
-        "symlib/*.mbt",
-        "!symlib/*_test.mbt",
-        "!symlib/*_wbtest.mbt"
+        "symlib/*.mbt"
       ],
       "depends_on": [],
       "summary_en": "Imported algorithm03 core. It remains independent of the cubical and semiring pillars; all cross-pillar use is in bridge/showcase layers.",
@@ -795,9 +757,7 @@
       "package": "semiring-algebra",
       "layer": 1,
       "files": [
-        "semiring/algebra/*.mbt",
-        "!semiring/algebra/*_test.mbt",
-        "!semiring/algebra/*_wbtest.mbt"
+        "semiring/algebra/*.mbt"
       ],
       "depends_on": [],
       "summary_en": "Semiring, idempotent/star/tropical semiring and monoid traits, concrete carrier types, law checkers and operation counters.",
@@ -808,9 +768,7 @@
       "package": "semiring-matrix",
       "layer": 2,
       "files": [
-        "semiring/matrix/*.mbt",
-        "!semiring/matrix/*_test.mbt",
-        "!semiring/matrix/*_wbtest.mbt"
+        "semiring/matrix/*.mbt"
       ],
       "depends_on": [
         "semiring-algebra",
@@ -824,9 +782,7 @@
       "package": "semiring-monoid",
       "layer": 2,
       "files": [
-        "semiring/monoid/*.mbt",
-        "!semiring/monoid/*_test.mbt",
-        "!semiring/monoid/*_wbtest.mbt"
+        "semiring/monoid/*.mbt"
       ],
       "depends_on": [
         "semiring-algebra"
@@ -839,9 +795,7 @@
       "package": "semiring-graph",
       "layer": 3,
       "files": [
-        "semiring/graph/*.mbt",
-        "!semiring/graph/*_test.mbt",
-        "!semiring/graph/*_wbtest.mbt"
+        "semiring/graph/*.mbt"
       ],
       "depends_on": [
         "semiring-algebra",
@@ -855,9 +809,7 @@
       "package": "semiring-spline",
       "layer": 3,
       "files": [
-        "semiring/spline/*.mbt",
-        "!semiring/spline/*_test.mbt",
-        "!semiring/spline/*_wbtest.mbt"
+        "semiring/spline/*.mbt"
       ],
       "depends_on": [
         "semiring-monoid"
@@ -870,9 +822,7 @@
       "package": "semiring-trop",
       "layer": 2,
       "files": [
-        "semiring/trop/*.mbt",
-        "!semiring/trop/*_test.mbt",
-        "!semiring/trop/*_wbtest.mbt"
+        "semiring/trop/*.mbt"
       ],
       "depends_on": [
         "semiring-algebra"
@@ -885,9 +835,7 @@
       "package": "semiring-nf",
       "layer": 1,
       "files": [
-        "semiring/nf/*.mbt",
-        "!semiring/nf/*_test.mbt",
-        "!semiring/nf/*_wbtest.mbt"
+        "semiring/nf/*.mbt"
       ],
       "depends_on": [],
       "summary_en": "Regular-expression/DFA and free idempotent-semiring normal forms.",
@@ -898,9 +846,7 @@
       "package": "semiring-cat",
       "layer": 3,
       "files": [
-        "semiring/cat/*.mbt",
-        "!semiring/cat/*_test.mbt",
-        "!semiring/cat/*_wbtest.mbt"
+        "semiring/cat/*.mbt"
       ],
       "depends_on": [
         "semiring-algebra",
@@ -914,9 +860,7 @@
       "package": "semiring-app",
       "layer": 3,
       "files": [
-        "semiring/app/*.mbt",
-        "!semiring/app/*_test.mbt",
-        "!semiring/app/*_wbtest.mbt"
+        "semiring/app/*.mbt"
       ],
       "depends_on": [
         "semiring-algebra",
@@ -931,9 +875,7 @@
       "package": "semiring-bp",
       "layer": 2,
       "files": [
-        "semiring/bp/*.mbt",
-        "!semiring/bp/*_test.mbt",
-        "!semiring/bp/*_wbtest.mbt"
+        "semiring/bp/*.mbt"
       ],
       "depends_on": [
         "semiring-algebra"
@@ -946,9 +888,7 @@
       "package": "semiring-ratelimit",
       "layer": 1,
       "files": [
-        "semiring/ratelimit/*.mbt",
-        "!semiring/ratelimit/*_test.mbt",
-        "!semiring/ratelimit/*_wbtest.mbt"
+        "semiring/ratelimit/*.mbt"
       ],
       "depends_on": [],
       "summary_en": "GCRA rate-limiting application package.",
@@ -959,9 +899,7 @@
       "package": "semiring-io",
       "layer": 2,
       "files": [
-        "semiring/io/*.mbt",
-        "!semiring/io/*_test.mbt",
-        "!semiring/io/*_wbtest.mbt"
+        "semiring/io/*.mbt"
       ],
       "depends_on": [
         "semiring-algebra"
@@ -974,9 +912,7 @@
       "package": "semiring-sim",
       "layer": 1,
       "files": [
-        "semiring/sim/*.mbt",
-        "!semiring/sim/*_test.mbt",
-        "!semiring/sim/*_wbtest.mbt"
+        "semiring/sim/*.mbt"
       ],
       "depends_on": [],
       "summary_en": "Timing, cache and memory-hierarchy measurement models.",
@@ -987,9 +923,7 @@
       "package": "semiring-par",
       "layer": 1,
       "files": [
-        "semiring/par/*.mbt",
-        "!semiring/par/*_test.mbt",
-        "!semiring/par/*_wbtest.mbt"
+        "semiring/par/*.mbt"
       ],
       "depends_on": [],
       "summary_en": "Portable backend seam for chunked aggregation and shard I/O.",
@@ -1000,9 +934,7 @@
       "package": "topos",
       "layer": 3,
       "files": [
-        "topos/*.mbt",
-        "!topos/*_test.mbt",
-        "!topos/*_wbtest.mbt"
+        "topos/*.mbt"
       ],
       "depends_on": [
         "gcd-core",
@@ -1017,9 +949,7 @@
       "package": "scheme",
       "layer": 3,
       "files": [
-        "scheme/*.mbt",
-        "!scheme/*_test.mbt",
-        "!scheme/*_wbtest.mbt"
+        "scheme/*.mbt"
       ],
       "depends_on": [
         "exact-algebra"
@@ -1032,9 +962,7 @@
       "package": "bridge",
       "layer": 10,
       "files": [
-        "bridge/*.mbt",
-        "!bridge/*_test.mbt",
-        "!bridge/*_wbtest.mbt"
+        "bridge/*.mbt"
       ],
       "depends_on": [
         "*"
@@ -1062,9 +990,7 @@
       "package": "semiring-par-host",
       "layer": 4,
       "files": [
-        "semiring/par_host/*.mbt",
-        "!semiring/par_host/*_test.mbt",
-        "!semiring/par_host/*_wbtest.mbt"
+        "semiring/par_host/*.mbt"
       ],
       "depends_on": [
         "semiring-par"
@@ -1212,9 +1138,7 @@
       "package": "gcd",
       "layer": 0,
       "files": [
-        "gcd/*.mbt",
-        "!gcd/*_test.mbt",
-        "!gcd/*_wbtest.mbt"
+        "gcd/*.mbt"
       ],
       "depends_on": [],
       "summary_en": "Lower-V Universal Elimination-GCD engine: exact F_p RREF/nullspace/rank/det, Z-matrix Hermite & Smith Normal Forms, and 5-domain universal GCD (Int, F_p[x], F_p-subspace, Z-lattice, Bezout Z-ideal).",
@@ -1225,9 +1149,7 @@
       "package": "condensed",
       "layer": 4,
       "files": [
-        "condensed/*.mbt",
-        "!condensed/*_test.mbt",
-        "!condensed/*_wbtest.mbt"
+        "condensed/*.mbt"
       ],
       "depends_on": [
         "gcd-core",
@@ -1245,9 +1167,7 @@
       "package": "tensor",
       "layer": 3,
       "files": [
-        "tensor/*.mbt",
-        "!tensor/*_test.mbt",
-        "!tensor/*_wbtest.mbt"
+        "tensor/*.mbt"
       ],
       "depends_on": [
         "gcd-core"
@@ -1260,9 +1180,7 @@
       "package": "conjecture",
       "layer": 6,
       "files": [
-        "conjecture/*.mbt",
-        "!conjecture/*_test.mbt",
-        "!conjecture/*_wbtest.mbt"
+        "conjecture/*.mbt"
       ],
       "depends_on": [
         "gcd-core",

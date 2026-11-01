@@ -211,8 +211,17 @@ def main() -> int:
         if not GENERATED_DIRS.intersection(p.parts)
     )
     for path in all_mbt:
+        rel = path.relative_to(ROOT)
+        if path.name.endswith("_test.mbt") or path.name.endswith("_wbtest.mbt"):
+            errors.append(
+                f"v2 test policy violation: persistent unit/smoke test file {rel} is forbidden (use ephemeral bottom-of-file test + inspect and delete after verifying)"
+            )
+        if re.search(r"^test(?:\s|\{)", path.read_text(), re.MULTILINE):
+            errors.append(
+                f"v2 test policy violation: undeleted ephemeral `test` block in {rel} (remove local test block after verifying)"
+            )
         if path not in assigned:
-            errors.append(f"unassigned .mbt file: {path.relative_to(ROOT)}")
+            errors.append(f"unassigned .mbt file: {rel}")
 
     # ---- physical package imports ---------------------------------------
     package_imports: dict[str, set[str]] = {}
