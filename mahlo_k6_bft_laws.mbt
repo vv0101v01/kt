@@ -190,17 +190,17 @@ pub fn check_phase21_homotopy_hou_and_bft_mvcc() -> Bool {
   let want_s4 = dpath_k6_hemi_south4_value(
     s1_ty, lp, inv_lp, lp, lp, inv_lp, lp, 2,
   )
-  let path1_ty = DVPathTy(_ => s1_ty, base_v, base_v)
+  let path1_ty = DValue::DVPathTy(_ => s1_ty, base_v, base_v)
   let lhs6 = dpath_k6_lhs1_value(s1_ty, lp, inv_lp, lp, lp, inv_lp, lp, 2)
   let rhs6 = dpath_k6_rhs1_value(s1_ty, lp, inv_lp, lp, lp, inv_lp, lp, 2)
-  let path2_ty = DVPathTy(_ => path1_ty, lhs6, rhs6)
+  let path2_ty = DValue::DVPathTy(_ => path1_ty, lhs6, rhs6)
   let rn2 = dpath_k6_route_north2_value(
     s1_ty, lp, inv_lp, lp, lp, inv_lp, lp, 2,
   )
   let rs2 = dpath_k6_route_south2_value(
     s1_ty, lp, inv_lp, lp, lp, inv_lp, lp, 2,
   )
-  let path3_ty = DVPathTy(_ => path2_ty, rn2, rs2)
+  let path3_ty = DValue::DVPathTy(_ => path2_ty, rn2, rs2)
   if !conv_at(0, 0, path3_ty, end0, want_n4) ||
     !conv_at(0, 0, path3_ty, end1, want_s4) {
     return false

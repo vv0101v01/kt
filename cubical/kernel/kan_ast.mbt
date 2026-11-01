@@ -31,12 +31,12 @@
 // hfill is its filler.
 
 ///|
-fn dim_is_zero(r : Dim) -> Bool {
+pub fn dim_is_zero(r : Dim) -> Bool {
   dim_eq_sem(r, DZero)
 }
 
 ///|
-fn dim_is_one(r : Dim) -> Bool {
+pub fn dim_is_one(r : Dim) -> Bool {
   dim_eq_sem(r, DOne)
 }
 
@@ -1036,7 +1036,7 @@ fn circle_coord_candidates(
 }
 
 ///|
-fn circle_sem_coord_norm(r : Dim) -> Dim {
+pub fn circle_sem_coord_norm(r : Dim) -> Dim {
   let s = dim_simplify(r)
   if dim_is_zero(s) || dim_is_one(s) {
     DZero

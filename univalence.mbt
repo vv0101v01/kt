@@ -376,8 +376,8 @@ pub fn univalence_equiv_value(
   level : Int32,
   dlevel : Int32,
 ) -> DValue {
-  let equiv_ty = DVEquivTy(src, dst, level)
-  let path_ty = DVPathTy(_ => DVUniv(level), src, dst)
+  let equiv_ty = DValue::DVEquivTy(src, dst, level)
+  let path_ty = DValue::DVPathTy(_ => DValue::DVUniv(level), src, dst)
   DVEquiv(
     equiv_ty,
     path_ty,
@@ -478,24 +478,37 @@ pub fn universe_path_transport_conv(
 /// fill/coe composites described at the value level.
 pub fn path_to_equiv_term(line_body : DTerm, src : DTerm, dst : DTerm) -> DTerm {
   let line = dterm_shift(line_body, 0, 1)
-  let fwd = DLam(src, DCoe(line, DZero, DOne, DTVar(0)))
-  let bwd = DLam(dst, DCoe(line, DOne, DZero, DTVar(0)))
+  let fwd = DTerm::DLam(
+    src,
+    DTerm::DCoe(line, Dim::DZero, Dim::DOne, DTerm::DTVar(0)),
+  )
+  let bwd = DTerm::DLam(
+    dst,
+    DTerm::DCoe(line, Dim::DOne, Dim::DZero, DTerm::DTVar(0)),
+  )
   // sect y : Path dst (fwd (bwd y)) y =
   //   <i> coe (i→1) (coe (1→i) y)
-  let sect = DLam(
+  let sect = DTerm::DLam(
     dst,
-    DLamDim(DCoe(line, DVar(0), DOne, DCoe(line, DOne, DVar(0), DTVar(0)))),
+    DTerm::DLamDim(
+      DTerm::DCoe(
+        line,
+        Dim::DVar(0),
+        Dim::DOne,
+        DTerm::DCoe(line, Dim::DOne, Dim::DVar(0), DTerm::DTVar(0)),
+      ),
+    ),
   )
   // retr x : Path src (bwd (fwd x)) x =
   //   <i> coe (¬i→0) (coe (0→¬i) x)
-  let retr = DLam(
+  let retr = DTerm::DLam(
     src,
-    DLamDim(
-      DCoe(
+    DTerm::DLamDim(
+      DTerm::DCoe(
         line,
-        DNeg(DVar(0)),
-        DZero,
-        DCoe(line, DZero, DNeg(DVar(0)), DTVar(0)),
+        Dim::DNeg(Dim::DVar(0)),
+        Dim::DZero,
+        DTerm::DCoe(line, Dim::DZero, Dim::DNeg(Dim::DVar(0)), DTerm::DTVar(0)),
       ),
     ),
   )
@@ -527,7 +540,7 @@ pub fn path_to_equiv_map_term(src : DTerm, dst : DTerm) -> DTerm {
 ///|
 fn check_univalence_semantic() -> Bool {
   let e = deval_dim(bool_not_equiv_term(), denv_empty(), ddim_empty())
-  let equiv_ty = DVEquivTy(DVBoolTy, DVBoolTy, 0)
+  let equiv_ty = DValue::DVEquivTy(DValue::DVBoolTy, DValue::DVBoolTy, 0)
   let line = ua_line_value(e, DVBoolTy, DVBoolTy, 0)
   let back = path_to_equiv_value(line, DVBoolTy, DVBoolTy, 0, 0)
   if !conv_at(0, 0, equiv_ty, back, e) {
@@ -589,7 +602,7 @@ fn check_univalence_semantic() -> Bool {
 
 ///|
 fn check_univalence_terms() -> Bool {
-  let ua_line = DAppDim(DUa(bool_not_equiv_term()), DVar(0))
+  let ua_line = DTerm::DAppDim(DTerm::DUa(bool_not_equiv_term()), Dim::DVar(0))
   let from_ua = path_to_equiv_term(ua_line, DBoolTy, DBoolTy)
   if !dep_check_closed(from_ua, DEquivTy(DBoolTy, DBoolTy)) {
     return false
@@ -606,13 +619,13 @@ fn check_univalence_terms() -> Bool {
     Some(DBoolLit(true)) {
     return false
   }
-  let ua_map_ty = DPi(
-    DEquivTy(DBoolTy, DBoolTy),
-    DPath(DUniv(0), DBoolTy, DBoolTy),
+  let ua_map_ty = DTerm::DPi(
+    DTerm::DEquivTy(DTerm::DBoolTy, DTerm::DBoolTy),
+    DTerm::DPath(DTerm::DUniv(0), DTerm::DBoolTy, DTerm::DBoolTy),
   )
-  let back_map_ty = DPi(
-    DPath(DUniv(0), DBoolTy, DBoolTy),
-    DEquivTy(DBoolTy, DBoolTy),
+  let back_map_ty = DTerm::DPi(
+    DTerm::DPath(DTerm::DUniv(0), DTerm::DBoolTy, DTerm::DBoolTy),
+    DTerm::DEquivTy(DTerm::DBoolTy, DTerm::DBoolTy),
   )
   dep_check_closed(ua_map_term(DBoolTy, DBoolTy), ua_map_ty) &&
   dep_check_closed(path_to_equiv_map_term(DBoolTy, DBoolTy), back_map_ty)
@@ -667,15 +680,15 @@ pub fn equiv_compose_value(
   let g2 = equiv_bwd_value(e2, b_ty, c_ty)
   let s2 = equiv_sect_value(e2, b_ty, c_ty)
   let r2 = equiv_retr_value(e2, b_ty, c_ty)
-  let fwd = DVLam(x => dapp_typed(f2, dapp_typed(f1, x, a_ty), b_ty))
-  let bwd = DVLam(z => dapp_typed(g1, dapp_typed(g2, z, c_ty), b_ty))
-  let sect = DVLam(z => {
+  let fwd = DValue::DVLam(x => dapp_typed(f2, dapp_typed(f1, x, a_ty), b_ty))
+  let bwd = DValue::DVLam(z => dapp_typed(g1, dapp_typed(g2, z, c_ty), b_ty))
+  let sect = DValue::DVLam(z => {
     let g2z = dapp_typed(g2, z, c_ty)
     let step1 = dpath_cong_value(f2, b_ty, dapp_typed(s1, g2z, b_ty))
     let step2 = dapp_typed(s2, z, c_ty)
     dpath_trans_value(c_ty, step1, step2, dlevel)
   })
-  let retr = DVLam(x => {
+  let retr = DValue::DVLam(x => {
     let f1x = dapp_typed(f1, x, a_ty)
     let step1 = dpath_cong_value(g1, b_ty, dapp_typed(r2, f1x, b_ty))
     let step2 = dapp_typed(r1, x, a_ty)

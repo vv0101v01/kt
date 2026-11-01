@@ -166,7 +166,7 @@ fn br_dterm_dag_payload(r : ModuleBinReader) -> DTermDagSnapshot? {
       return None
     }
   }
-  Some({ nodes, roots, })
+  Some(DTermDagSnapshot::{ nodes, roots, })
 }
 
 ///|

@@ -28,7 +28,7 @@ pub fn as_equiv_type(v : DValue) -> DEquivTypeParts? {
 }
 
 ///|
-pub struct DEquivParts {
+pub(all) struct DEquivParts {
   src : DValue
   dst : DValue
   fwd : DValue

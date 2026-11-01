@@ -217,7 +217,7 @@ pub fn dpath_k6_route_north2_value(
   p5 : DValue,
   dlevel : Int32,
 ) -> DValue {
-  let path1_ty = DVPathTy(
+  let path1_ty = DValue::DVPathTy(
     _ => space_ty,
     dapp_dim(p0, DZero),
     dapp_dim(p5, DOne),
@@ -242,7 +242,7 @@ pub fn dpath_k6_route_south2_value(
   p5 : DValue,
   dlevel : Int32,
 ) -> DValue {
-  let path1_ty = DVPathTy(
+  let path1_ty = DValue::DVPathTy(
     _ => space_ty,
     dapp_dim(p0, DZero),
     dapp_dim(p5, DOne),
@@ -267,7 +267,7 @@ pub fn dpath_k6_hemi_north4_value(
   p5 : DValue,
   dlevel : Int32,
 ) -> DValue {
-  let path1_ty = DVPathTy(
+  let path1_ty = DValue::DVPathTy(
     _ => space_ty,
     dapp_dim(p0, DZero),
     dapp_dim(p5, DOne),
@@ -290,7 +290,7 @@ pub fn dpath_k6_hemi_south4_value(
   p5 : DValue,
   dlevel : Int32,
 ) -> DValue {
-  let path1_ty = DVPathTy(
+  let path1_ty = DValue::DVPathTy(
     _ => space_ty,
     dapp_dim(p0, DZero),
     dapp_dim(p5, DOne),
@@ -332,21 +332,21 @@ pub fn dpath_associahedron_k6_coherence_value(
       let q3 = ps[3]
       let q4 = ps[4]
       let q5 = ps[5]
-      let path1_ty = DVPathTy(
+      let path1_ty = DValue::DVPathTy(
         _ => space_ty,
         dapp_dim(q0, DZero),
         dapp_dim(q5, DOne),
       )
       let lhs = dpath_k6_lhs1_value(space_ty, q0, q1, q2, q3, q4, q5, dlevel)
       let rhs = dpath_k6_rhs1_value(space_ty, q0, q1, q2, q3, q4, q5, dlevel)
-      let path2_ty = DVPathTy(_ => path1_ty, lhs, rhs)
+      let path2_ty = DValue::DVPathTy(_ => path1_ty, lhs, rhs)
       let rn2 = dpath_k6_route_north2_value(
         space_ty, q0, q1, q2, q3, q4, q5, dlevel,
       )
       let rs2 = dpath_k6_route_south2_value(
         space_ty, q0, q1, q2, q3, q4, q5, dlevel,
       )
-      let path3_ty = DVPathTy(_ => path2_ty, rn2, rs2)
+      let path3_ty = DValue::DVPathTy(_ => path2_ty, rn2, rs2)
       DVPathTy(
         _ => path3_ty,
         dpath_k6_hemi_north4_value(space_ty, q0, q1, q2, q3, q4, q5, dlevel),
@@ -373,13 +373,13 @@ pub fn check_variable_endpoint_hits() -> Bool {
       dhit_arg_face(DTVar(0)),
     ]),
   ])
-  let t_true = DHitIntro(trunc_spec, 0, [], [DBoolLit(true)], [])
-  let t_false = DHitIntro(trunc_spec, 0, [], [DBoolLit(false)], [])
-  let sq_path = DLamDim(
-    DHitIntro(trunc_spec, 1, [], [t_true, t_false], [DVar(0)]),
+  let t_true = DTerm::DHitIntro(trunc_spec, 0, [], [DTerm::DBoolLit(true)], [])
+  let t_false = DTerm::DHitIntro(trunc_spec, 0, [], [DTerm::DBoolLit(false)], [])
+  let sq_path = DTerm::DLamDim(
+    DTerm::DHitIntro(trunc_spec, 1, [], [t_true, t_false], [Dim::DVar(0)]),
   )
-  let trunc_ty = DHitType(trunc_spec, [])
-  let expected_sq_ty = DPath(trunc_ty, t_true, t_false)
+  let trunc_ty = DTerm::DHitType(trunc_spec, [])
+  let expected_sq_ty = DTerm::DPath(trunc_ty, t_true, t_false)
   let trunc_ok = match
     d_as_type(expected_sq_ty, denv_empty(), denv_empty(), ddim_empty()) {
     Some(tv) =>
@@ -414,20 +414,20 @@ pub fn check_variable_endpoint_hits() -> Bool {
       dhit_face(1, [], []),
     ]),
   ])
-  let north = DHitIntro(susp_spec, 0, [], [], [])
-  let south = DHitIntro(susp_spec, 1, [], [], [])
-  let merid_t = DLamDim(
-    DHitIntro(susp_spec, 2, [], [DBoolLit(true)], [DVar(0)]),
+  let north = DTerm::DHitIntro(susp_spec, 0, [], [], [])
+  let south = DTerm::DHitIntro(susp_spec, 1, [], [], [])
+  let merid_t = DTerm::DLamDim(
+    DTerm::DHitIntro(susp_spec, 2, [], [DTerm::DBoolLit(true)], [Dim::DVar(0)]),
   )
-  let merid_f = DLamDim(
-    DHitIntro(susp_spec, 2, [], [DBoolLit(false)], [DVar(0)]),
+  let merid_f = DTerm::DLamDim(
+    DTerm::DHitIntro(susp_spec, 2, [], [DTerm::DBoolLit(false)], [Dim::DVar(0)]),
   )
-  let susp_ty = DHitType(susp_spec, [])
+  let susp_ty = DTerm::DHitType(susp_spec, [])
   // Composite loop `trans(merid(true), sym(merid(false))) : Path SuspBool north north`
   // AND meridian `merid(true) : Path SuspBool north south`!
   let loop_susp = dpath_trans_term(susp_ty, merid_t, dpath_sym_term(merid_f))
-  let merid_ty = DPath(susp_ty, north, south)
-  let loop_ty = DPath(susp_ty, north, north)
+  let merid_ty = DTerm::DPath(susp_ty, north, south)
+  let loop_ty = DTerm::DPath(susp_ty, north, north)
   let merid_ok = match
     d_as_type(merid_ty, denv_empty(), denv_empty(), ddim_empty()) {
     Some(tv) =>

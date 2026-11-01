@@ -616,7 +616,7 @@ pub fn tube_paths_conv_under_face(
 }
 
 ///|
-pub enum DSystemIncompatibility {
+pub(all) enum DSystemIncompatibility {
   DSystemOk
   DSystemBaseIncompatible
   DSystemBranchesIncompatible

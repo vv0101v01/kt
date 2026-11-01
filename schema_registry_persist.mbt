@@ -252,7 +252,12 @@ fn br_registry_snapshot_payload(
       return None
     }
   }
-  Some({ inductive_specs, inductive_valid, hit_specs, hit_valid, })
+  Some(DSchemaRegistrySnapshot::{
+    inductive_specs,
+    inductive_valid,
+    hit_specs,
+    hit_valid,
+  })
 }
 
 ///|

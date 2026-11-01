@@ -8,4 +8,5 @@ import {
   "vv0101v01/cubical-hermitian/cubical/face_bdd",
   "vv0101v01/cubical-hermitian/cubical/finite",
   "vv0101v01/cubical-hermitian/cubical/hermitian",
+  "vv0101v01/cubical-hermitian/cubical/kernel",
 }

@@ -67,7 +67,7 @@ fn registry_empty_buckets() -> Array[Array[Int32]] {
 }
 
 ///|
-fn registry_string_hash(key : String) -> Int32 {
+pub fn registry_string_hash(key : String) -> Int32 {
   let mut h = 7U
   for i in 0..<key.length() {
     h = (h * 31U + key[i].to_int().reinterpret_as_uint()) % 1000003U
@@ -459,7 +459,7 @@ pub fn inductive_plan_type_term(
 /// validation outcomes, in plan order.  Restoring a snapshot does
 /// not revalidate (validation is the expensive step); generic
 /// telescope types are recomputed and hash buckets are rebuilt.
-pub struct DSchemaRegistrySnapshot {
+pub(all) struct DSchemaRegistrySnapshot {
   inductive_specs : Array[DInductiveSpec]
   inductive_valid : Array[Bool]
   hit_specs : Array[DHitSpec]

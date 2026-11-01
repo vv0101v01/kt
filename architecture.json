@@ -9,6 +9,7 @@
         "cubical-finite",
         "algebra",
         "cubical-hermitian",
+        "cubical-kernel",
         "hostfs",
         "root",
         "cmd-main"
@@ -179,6 +180,18 @@
       "summary_zh": "複線性代數、Hermitian 投影、向量偏系統、剪枝仿射立方體、Karoubi／句法範疇、子空間 Glue 合成與精確代數投影證書。"
     },
     {
+      "id": "cubical-kernel",
+      "path": "cubical/kernel",
+      "moon": "vv0101v01/cubical-hermitian/cubical/kernel",
+      "layer": 2,
+      "depends_on": [
+        "cubical-face-bdd",
+        "cubical-finite"
+      ],
+      "summary_en": "Trusted cubical dependent kernel: dependent NbE, AST Kan operations, Glue equivalences, sealed CheckedLine/CheckedDCube, DSystem compatibility, inductive/HIT/open-IR schemas, and Cantor/Mahlo ordinals.",
+      "summary_zh": "可信立方依賴核心：依賴 NbE、AST Kan 運算、Glue 等價、密封受檢線 CheckedLine／CheckedDCube、DSystem 相容性、歸納／HIT／開放歸納遞迴 Schema 與 Cantor／Mahlo 序數。"
+    },
+    {
       "id": "root",
       "path": ".",
       "moon": "vv0101v01/cubical-hermitian",
@@ -190,7 +203,8 @@
         "condensed",
         "cubical-face-bdd",
         "cubical-finite",
-        "cubical-hermitian"
+        "cubical-hermitian",
+        "cubical-kernel"
       ],
       "summary_en": "The mutually recursive cubical dependent kernel, plus the logical foundation/finite/numeric/model/frontend components and Phase 21 7-boundary breakthroughs.",
       "summary_zh": "互相遞迴的立方依賴核心，以及 foundation／finite／numeric／model／frontend 邏輯元件與第二十一期七大能力邊界突破模組。"
@@ -612,28 +626,11 @@
     },
     {
       "id": "dependent-kernel",
-      "package": "root",
+      "package": "cubical-kernel",
       "layer": 4,
       "files": [
-        "nbe_dep.mbt",
-        "kan_ast.mbt",
-        "equiv_ast.mbt",
-        "checked_line.mbt",
-        "dsystem_compat.mbt",
-        "dcube_filler.mbt",
-        "dterm_transform.mbt",
-        "dterm_intern.mbt",
-        "schema.mbt",
-        "schema_extensions.mbt",
-        "schema_functor.mbt",
-        "schema_positivity.mbt",
-        "schema_registry.mbt",
-        "schema_universe_poly.mbt",
-        "schema_inductive_recursive.mbt",
-        "schema_open_ir.mbt",
-        "conv_case_split.mbt",
-        "ordinal_mahlo.mbt",
-        "dsystem_sheaf_reify.mbt"
+        "cubical/kernel/*.mbt",
+        "!cubical/kernel/kan_dep.mbt"
       ],
       "depends_on": [
         "foundation",
@@ -644,10 +641,10 @@
     },
     {
       "id": "dependent-kan-lines",
-      "package": "root",
+      "package": "cubical-kernel",
       "layer": 5,
       "files": [
-        "kan_dep.mbt"
+        "cubical/kernel/kan_dep.mbt"
       ],
       "depends_on": [
         "foundation",

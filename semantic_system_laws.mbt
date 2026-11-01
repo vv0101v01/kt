@@ -133,25 +133,29 @@ pub fn check_multibranch_glue_partial() -> Bool {
   // The second branch body is an identity Glue line, so the two type
   // paths have the same Bool cap but are not convertible generically;
   // canonicalisation therefore rightly keeps both branches.
-  let glue_line = DHComp(DUniv(0), [d_tube(FEq1(DVar(0)), DBoolTy)], DBoolTy)
-  let glue_ty = DHComp(
-    DUniv(0),
-    [d_tube(FEq0(DVar(0)), DBoolTy), d_tube(FEq1(DVar(0)), glue_line)],
-    DBoolTy,
+  let glue_line = DTerm::DHComp(
+    DTerm::DUniv(0),
+    [d_tube(FEq1(DVar(0)), DBoolTy)],
+    DTerm::DBoolTy,
   )
-  let good = DPair(
-    DPartial([
+  let glue_ty = DTerm::DHComp(
+    DTerm::DUniv(0),
+    [d_tube(FEq0(DVar(0)), DBoolTy), d_tube(FEq1(DVar(0)), glue_line)],
+    DTerm::DBoolTy,
+  )
+  let good = DTerm::DPair(
+    DTerm::DPartial([
       d_face_term(FEq0(DVar(0)), DBoolLit(true)),
       d_face_term(FEq1(DVar(0)), DBoolLit(true)),
     ]),
-    DBoolLit(true),
+    DTerm::DBoolLit(true),
   )
-  let bad = DPair(
-    DPartial([
+  let bad = DTerm::DPair(
+    DTerm::DPartial([
       d_face_term(FEq0(DVar(0)), DBoolLit(true)),
       d_face_term(FEq1(DVar(0)), DBoolLit(false)),
     ]),
-    DBoolLit(true),
+    DTerm::DBoolLit(true),
   )
   if !dep_check_closed(good, glue_ty) || dep_check_closed(bad, glue_ty) {
     return false

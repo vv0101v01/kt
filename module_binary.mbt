@@ -3231,7 +3231,7 @@ pub fn shared_dag_bundle_load_binary_report(
     reused_total = reused_total + ru
   }
   for spec in registry.inductive_specs {
-    let dummy = DInductive(spec, [])
+    let dummy = DTerm::DInductive(spec, [])
     let before = intern_table.terms.length()
     ignore(dterm_intern_id(intern_table, dummy))
     if intern_table.terms.length() > before {
@@ -3241,7 +3241,7 @@ pub fn shared_dag_bundle_load_binary_report(
     }
   }
   for spec in registry.hit_specs {
-    let dummy = DHitType(spec, [])
+    let dummy = DTerm::DHitType(spec, [])
     let before = intern_table.terms.length()
     ignore(dterm_intern_id(intern_table, dummy))
     if intern_table.terms.length() > before {

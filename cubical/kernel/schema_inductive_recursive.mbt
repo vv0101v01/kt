@@ -725,7 +725,7 @@ pub fn simultaneous_ir_compile_decode(
 }
 
 ///|
-fn code_schema_for_simultaneous() -> DInductiveSpec {
+pub fn code_schema_for_simultaneous() -> DInductiveSpec {
   dinductive_spec("CodeS", 0, [], [], [
     dconstructor_spec("cnat", []),
     dconstructor_spec("cbool", []),

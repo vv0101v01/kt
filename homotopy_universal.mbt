@@ -485,14 +485,14 @@ pub fn check_homotopy_universal() -> Bool {
     james_cell_dim(2, 3) == 6
 
   // (3) Join recursion computes on the two point constructors.
-  let a_ty = DVBoolTy
-  let b_ty = DVBoolTy
-  let c_ty = DVBoolTy
-  let tt = DVBool(true)
-  let ff = DVBool(false)
-  let f = DVLam(_ => tt)
-  let g = DVLam(_ => ff)
-  let p = DVLam(_ => DVLam(_ => dpath_refl_value(tt)))
+  let a_ty = DValue::DVBoolTy
+  let b_ty = DValue::DVBoolTy
+  let c_ty = DValue::DVBoolTy
+  let tt = DValue::DVBool(true)
+  let ff = DValue::DVBool(false)
+  let f = DValue::DVLam(_ => tt)
+  let g = DValue::DVLam(_ => ff)
+  let p = DValue::DVLam(_ => DValue::DVLam(_ => dpath_refl_value(tt)))
   let rec = join_rec_value(a_ty, b_ty, c_ty, f, g, p, 16)
   let join_beta = conv_at(
       0,
@@ -532,8 +532,8 @@ pub fn check_homotopy_universal() -> Bool {
     )
 
   // (4) Wedge recursion computes on the two point constructors.
-  let wf = DVLam(_ => tt)
-  let wg = DVLam(_ => tt)
+  let wf = DValue::DVLam(_ => tt)
+  let wg = DValue::DVLam(_ => tt)
   let wq = dpath_refl_value(tt)
   let wrec = wedge_rec_value(a_ty, b_ty, tt, tt, c_ty, wf, wg, wq, 16)
   let wedge_beta = conv_at(

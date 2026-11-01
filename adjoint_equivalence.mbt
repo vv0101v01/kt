@@ -37,7 +37,7 @@ pub fn equiv_triangle_type(
     let fx = dapp_typed(fwd, x, src)
     let gfx = dapp_typed(bwd, fx, dst)
     let fgfx = dapp_typed(fwd, gfx, src)
-    let path_ty = DVPathTy(_ => dst, fgfx, fx)
+    let path_ty = DValue::DVPathTy(_ => dst, fgfx, fx)
     let ap_retr = dpath_cong_value(fwd, src, dapp_typed(retr, x, src))
     let sect_fx = dapp_typed(sect, fx, dst)
     DVPathTy(_ => path_ty, ap_retr, sect_fx)
@@ -129,10 +129,13 @@ pub fn equiv_with_improved_sect(
 /// additional `x : A` binder, `DTVar(1)` is the equivalence and
 /// `DTVar(0)` is `x`.
 pub fn adjoint_equiv_type_term(a : DTerm, b : DTerm) -> DTerm {
-  let e1 = DTVar(1)
-  let x = DTVar(0)
-  let fx = DApp(DEquivFwd(e1), x)
-  let fgfx = DApp(DEquivFwd(e1), DApp(DEquivBwd(e1), fx))
+  let e1 = DTerm::DTVar(1)
+  let x = DTerm::DTVar(0)
+  let fx = DTerm::DApp(DTerm::DEquivFwd(e1), x)
+  let fgfx = DTerm::DApp(
+    DTerm::DEquivFwd(e1),
+    DTerm::DApp(DTerm::DEquivBwd(e1), fx),
+  )
   // `b`/`a` are closed in the uses here; under the Σ and Π binders
   // they are unchanged because DTerm binders are explicit in the
   // builders used by the laws (closed A and B).
@@ -208,11 +211,11 @@ pub fn equiv_fiber_center_value(
 pub fn check_adjoint_equivalence_and_fibers() -> Bool {
   // Triangle coherence of the identity on Bool and on the circle,
   // checked at the semantic triangle type for fresh points.
-  for ty in [DVBoolTy, DVCircleTy] {
+  for ty in [DValue::DVBoolTy, DValue::DVCircleTy] {
     let adj = adjoint_id_value(ty)
     let p = adj.equiv
     let tri_ty = equiv_triangle_type(ty, ty, p.fwd, p.bwd, p.sect, p.retr)
-    let fresh = DVNeutral(DNVar(0))
+    let fresh = DValue::DVNeutral(DNeutral::DNVar(0))
     let at = dapp_typed(adj.triangle, fresh, ty)
     let expected = match as_pi(tri_ty) {
       Some(parts) => (parts.fam)(fresh)
@@ -262,8 +265,12 @@ pub fn check_adjoint_equivalence_and_fibers() -> Bool {
   // Singleton contraction endpoints on the circle loop.
   let loop_path : DValue = DVPathLam(d => circle_point(d))
   let contr = singleton_contraction_value(loop_path)
-  let singleton_ty = DVSigma(DVCircleTy, x => {
-    DVPathTy(_ => DVCircleTy, x, DVCirclePoint(DZero))
+  let singleton_ty = DValue::DVSigma(DValue::DVCircleTy, x => {
+    DValue::DVPathTy(
+      _ => DValue::DVCircleTy,
+      x,
+      DValue::DVCirclePoint(Dim::DZero),
+    )
   })
   let center : DValue = DVPair(
     DVCirclePoint(DZero),
@@ -666,7 +673,7 @@ pub fn adjointify_equiv_value(
     })
   })
   {
-    equiv: {
+    equiv: DEquivParts::{
       src: parts.src,
       dst: parts.dst,
       fwd: parts.fwd,

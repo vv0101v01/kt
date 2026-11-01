@@ -75,9 +75,11 @@ pub fn check_phase16_schema_large_open_positivity() -> Bool {
   }
   let code_schema = code_schema_for_simultaneous()
   let empty_terms : Array[DTerm] = []
-  let nat_code = DIntro(code_schema, 0, empty_terms, empty_terms)
-  let bool_code = DIntro(code_schema, 1, empty_terms, empty_terms)
-  let pair_code = DIntro(code_schema, 2, empty_terms, [bool_code, nat_code])
+  let nat_code = DTerm::DIntro(code_schema, 0, empty_terms, empty_terms)
+  let bool_code = DTerm::DIntro(code_schema, 1, empty_terms, empty_terms)
+  let pair_code = DTerm::DIntro(code_schema, 2, empty_terms, [
+    bool_code, nat_code,
+  ])
   if dep_nf_closed(DApp(el_term, pair_code), DUniv(0)) !=
     Some(DSigma(DBoolTy, DNatTy)) ||
     dep_nf_closed(DApp(size_term, pair_code), DNatTy) !=
@@ -194,10 +196,16 @@ pub fn check_phase16_schema_large_open_positivity() -> Bool {
   // 1C. Semantic functorial & container positivity certificates:
   //     Ambient context: `[F : Type_0 -> Type_0, eq_wit : Π X, Equiv (F X) (Σ (_ : Unit), Unit -> X)]`.
   let rec_spec = dinductive_spec("Rec", 0, [], [], [])
-  let rec_ref = DInductive(rec_spec, [])
-  let f_op_ty = DPi(DUniv(0), DUniv(0))
-  let cont_ext = DSigma(DUnitTy, DPi(DUnitTy, DTVar(2)))
-  let eq_wit_ty = DPi(DUniv(0), DEquivTy(DApp(DTVar(1), DTVar(0)), cont_ext))
+  let rec_ref = DTerm::DInductive(rec_spec, [])
+  let f_op_ty = DTerm::DPi(DTerm::DUniv(0), DTerm::DUniv(0))
+  let cont_ext = DTerm::DSigma(
+    DTerm::DUnitTy,
+    DTerm::DPi(DTerm::DUnitTy, DTerm::DTVar(2)),
+  )
+  let eq_wit_ty = DTerm::DPi(
+    DTerm::DUniv(0),
+    DTerm::DEquivTy(DTerm::DApp(DTerm::DTVar(1), DTerm::DTVar(0)), cont_ext),
+  )
   let ambient_cont = [f_op_ty, eq_wit_ty]
   let cont_cert = dfunctorial_positivity_container_cert(
     0,
@@ -209,7 +217,7 @@ pub fn check_phase16_schema_large_open_positivity() -> Bool {
   if dfunctorial_positivity_verify(ambient_cont, cont_cert) == None {
     return false
   }
-  let f_rec = DApp(DTVar(1), rec_ref)
+  let f_rec = DTerm::DApp(DTerm::DTVar(1), rec_ref)
   if !dterm_family_strictly_positive_functorial(ambient_cont, f_rec, "Rec", [
       cont_cert,
     ]) {
@@ -237,56 +245,82 @@ pub fn check_phase16_schema_large_open_positivity() -> Bool {
 
   // Covariant-laws certificate grants `positive_args = [0]` (non-strict), so
   // `F Rec` is NOT accepted as *strictly* positive under covariant laws alone!
-  let map_ty = DPi(
-    DUniv(0),
-    DPi(
-      DUniv(0),
-      DPi(
-        DPi(DTVar(1), DTVar(1)),
-        DPi(DApp(DTVar(3), DTVar(2)), DApp(DTVar(4), DTVar(2))),
+  let map_ty = DTerm::DPi(
+    DTerm::DUniv(0),
+    DTerm::DPi(
+      DTerm::DUniv(0),
+      DTerm::DPi(
+        DTerm::DPi(DTerm::DTVar(1), DTerm::DTVar(1)),
+        DTerm::DPi(
+          DTerm::DApp(DTerm::DTVar(3), DTerm::DTVar(2)),
+          DTerm::DApp(DTerm::DTVar(4), DTerm::DTVar(2)),
+        ),
       ),
     ),
   )
-  let map_s2 = DTVar(2)
-  let id_fn = DLam(DTVar(1), DTVar(0))
-  let map_id_lhs = DApp(
-    DApp(DApp(DApp(map_s2, DTVar(1)), DTVar(1)), id_fn),
-    DTVar(0),
+  let map_s2 = DTerm::DTVar(2)
+  let id_fn = DTerm::DLam(DTerm::DTVar(1), DTerm::DTVar(0))
+  let map_id_lhs = DTerm::DApp(
+    DTerm::DApp(
+      DTerm::DApp(DTerm::DApp(map_s2, DTerm::DTVar(1)), DTerm::DTVar(1)),
+      id_fn,
+    ),
+    DTerm::DTVar(0),
   )
-  let map_id_ty = DPi(
-    DUniv(0),
-    DPi(
-      DApp(DTVar(2), DTVar(0)),
-      DPath(DApp(DTVar(3), DTVar(1)), map_id_lhs, DTVar(0)),
+  let map_id_ty = DTerm::DPi(
+    DTerm::DUniv(0),
+    DTerm::DPi(
+      DTerm::DApp(DTerm::DTVar(2), DTerm::DTVar(0)),
+      DTerm::DPath(
+        DTerm::DApp(DTerm::DTVar(3), DTerm::DTVar(1)),
+        map_id_lhs,
+        DTerm::DTVar(0),
+      ),
     ),
   )
-  let map_s6 = DTVar(7)
-  let gf_fn = DLam(DTVar(5), DApp(DTVar(3), DApp(DTVar(2), DTVar(0))))
-  let comp_lhs = DApp(
-    DApp(DApp(DApp(map_s6, DTVar(5)), DTVar(3)), gf_fn),
-    DTVar(0),
+  let map_s6 = DTerm::DTVar(7)
+  let gf_fn = DTerm::DLam(
+    DTerm::DTVar(5),
+    DTerm::DApp(DTerm::DTVar(3), DTerm::DApp(DTerm::DTVar(2), DTerm::DTVar(0))),
   )
-  let inner_fx = DApp(
-    DApp(DApp(DApp(map_s6, DTVar(5)), DTVar(4)), DTVar(1)),
-    DTVar(0),
+  let comp_lhs = DTerm::DApp(
+    DTerm::DApp(
+      DTerm::DApp(DTerm::DApp(map_s6, DTerm::DTVar(5)), DTerm::DTVar(3)),
+      gf_fn,
+    ),
+    DTerm::DTVar(0),
   )
-  let comp_rhs = DApp(
-    DApp(DApp(DApp(map_s6, DTVar(4)), DTVar(3)), DTVar(2)),
+  let inner_fx = DTerm::DApp(
+    DTerm::DApp(
+      DTerm::DApp(DTerm::DApp(map_s6, DTerm::DTVar(5)), DTerm::DTVar(4)),
+      DTerm::DTVar(1),
+    ),
+    DTerm::DTVar(0),
+  )
+  let comp_rhs = DTerm::DApp(
+    DTerm::DApp(
+      DTerm::DApp(DTerm::DApp(map_s6, DTerm::DTVar(4)), DTerm::DTVar(3)),
+      DTerm::DTVar(2),
+    ),
     inner_fx,
   )
-  let map_comp_ty = DPi(
-    DUniv(0),
-    DPi(
-      DUniv(0),
-      DPi(
-        DUniv(0),
-        DPi(
-          DPi(DTVar(1), DTVar(1)),
-          DPi(
-            DPi(DTVar(3), DTVar(3)),
-            DPi(
-              DApp(DTVar(7), DTVar(4)),
-              DPath(DApp(DTVar(8), DTVar(3)), comp_lhs, comp_rhs),
+  let map_comp_ty = DTerm::DPi(
+    DTerm::DUniv(0),
+    DTerm::DPi(
+      DTerm::DUniv(0),
+      DTerm::DPi(
+        DTerm::DUniv(0),
+        DTerm::DPi(
+          DTerm::DPi(DTerm::DTVar(1), DTerm::DTVar(1)),
+          DTerm::DPi(
+            DTerm::DPi(DTerm::DTVar(3), DTerm::DTVar(3)),
+            DTerm::DPi(
+              DTerm::DApp(DTerm::DTVar(7), DTerm::DTVar(4)),
+              DTerm::DPath(
+                DTerm::DApp(DTerm::DTVar(8), DTerm::DTVar(3)),
+                comp_lhs,
+                comp_rhs,
+              ),
             ),
           ),
         ),
@@ -305,7 +339,7 @@ pub fn check_phase16_schema_large_open_positivity() -> Bool {
     Some(d) => d
     None => return false
   }
-  let f_rec_cov = DApp(DTVar(3), rec_ref)
+  let f_rec_cov = DTerm::DApp(DTerm::DTVar(3), rec_ref)
   cov_decl.strict_args.length() == 0 &&
   cov_decl.positive_args == [0] &&
   !dterm_family_strictly_positive_functorial(ambient_cov, f_rec_cov, "Rec", [
@@ -570,7 +604,7 @@ pub fn check_phase16_sphere_homotopy_and_k5() -> Bool {
   // 5A. Open-context `fibration_loop_equiv_fiber_path_value` certified by
   //     `equiv_bidirectional_certified_in` over neutral `(B, P, b0, e0)`.
   let b_ty = reflect_var(0, DVUniv(0))
-  let p_pi_ty = DVPi(b_ty, _ => DVUniv(0))
+  let p_pi_ty = DValue::DVPi(b_ty, _ => DValue::DVUniv(0))
   let p_var = reflect_var(1, p_pi_ty)
   let p_fam = (x : DValue) => dapp_typed(p_var, x, b_ty)
   let b0 = reflect_var(2, b_ty)
@@ -669,9 +703,9 @@ pub fn check_phase16_sphere_homotopy_and_k5() -> Bool {
   let rhs1 = dpath_k5_rhs1_value(s1_ty, lp, lp, lp_inv, lp, lp, 2)
   let out3 = dpath_k5_route_outer3_value(s1_ty, lp, lp, lp_inv, lp, lp, 2)
   let inn3 = dpath_k5_route_inner3_value(s1_ty, lp, lp, lp_inv, lp, lp, 2)
-  let path1_ty = DVPathTy(_ => s1_ty, c0, c0)
-  let path2_ty = DVPathTy(_ => path1_ty, lhs1, rhs1)
-  let path3_ty = DVPathTy(_ => path2_ty, out3, inn3)
+  let path1_ty = DValue::DVPathTy(_ => s1_ty, c0, c0)
+  let path2_ty = DValue::DVPathTy(_ => path1_ty, lhs1, rhs1)
+  let path3_ty = DValue::DVPathTy(_ => path2_ty, out3, inn3)
   conv_at(0, 0, path3_ty, dapp_dim(k5, DZero), north4) &&
   conv_at(0, 0, path3_ty, dapp_dim(k5, DOne), south4) &&
   !conv_at(0, 0, loop_s1_ty, lp, dpath_refl_value(c0))

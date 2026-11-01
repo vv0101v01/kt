@@ -17,12 +17,12 @@ pub fn dv_nat_lit(n : Int32) -> DValue {
 }
 
 ///|
-fn dv_is_nat(v : DValue, n : Int32) -> Bool {
+pub fn dv_is_nat(v : DValue, n : Int32) -> Bool {
   conv_at(0, 0, DVNatTy, v, dv_nat_lit(n))
 }
 
 ///|
-fn dv_is_bool_dep(v : DValue, b : Bool) -> Bool {
+pub fn dv_is_bool_dep(v : DValue, b : Bool) -> Bool {
   conv_at(0, 0, DVBoolTy, v, DVBool(b))
 }
 
@@ -51,7 +51,7 @@ fn dterm_map_vars_list(
 }
 
 ///|
-fn dterm_map_vars_at(
+pub fn dterm_map_vars_at(
   t : DTerm,
   depth : Int32,
   f : (Int32, Int32) -> DTerm,

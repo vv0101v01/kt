@@ -28,7 +28,7 @@
 /// `negSucc(n)`, the schema-natural `n` denotes one less than the
 /// absolute value, so every integer has a unique constructor form.
 pub fn integer_schema() -> DInductiveSpec {
-  let nat_ty = DInductive(nat_schema(), [])
+  let nat_ty = DTerm::DInductive(nat_schema(), [])
   dinductive_spec("IntegerS", 0, [], [], [
     dconstructor_spec("zero", []),
     dconstructor_spec("posSucc", [darg_external("pred_abs", nat_ty)]),
@@ -168,9 +168,9 @@ pub fn integer_pred_value(value : DValue) -> DValue {
 /// of `pi_n`; its points are loop representatives modulo a path.
 pub fn homotopy_group_type_term(a : DTerm, base : DTerm, n : Int32) -> DTerm {
   let loop_ty = loop_space_type_term(a, base, n)
-  let relation = DLam(
+  let relation = DTerm::DLam(
     loop_ty,
-    DLam(loop_ty, trunc_type_term(DPath(loop_ty, DTVar(1), DTVar(0)))),
+    DTerm::DLam(loop_ty, trunc_type_term(DPath(loop_ty, DTVar(1), DTVar(0)))),
   )
   DHitType(quotient_schema(), [loop_ty, relation])
 }
@@ -292,8 +292,8 @@ pub fn suspend_loop_value(
   dlevel : Int32,
 ) -> DValue {
   let target_ty : DValue = DVHitType(target_spec, [], [])
-  let north = DVHitCell(target_spec, 0, [], [], [])
-  let unit = DVLam(x => {
+  let north = DValue::DVHitCell(target_spec, 0, [], [], [])
+  let unit = DValue::DVLam(x => {
     suspension_unit_loop_value(target_spec, base_point, x, dlevel)
   })
   let raw = map_iterated_loop_value(unit, source_ty, point, order)

@@ -176,7 +176,7 @@ pub fn check_simultaneous_ir_nested_foreign() -> Bool {
   if dep_nf_closed(DApp(el2_term, f_t), DUniv(0)) != Some(DBoolTy) {
     return false
   }
-  let kids = DCons(leaf_t, DCons(leaf_t, DNil))
+  let kids = DTerm::DCons(leaf_t, DTerm::DCons(leaf_t, DTerm::DNil))
   let pl_t = schema_intro_term(base, 3, [], [DPair(leaf_t, kids)])
   dep_nf_closed(DApp(el2_term, pl_t), DUniv(0)) == Some(DBoolTy) &&
   dep_nf_closed(DApp(el_term, pl_t), DUniv(0)) == Some(DBoolTy)
@@ -248,7 +248,7 @@ fn from_zero_path(v : Int32) -> (Dim) -> DValue {
 /// `exact = false` yet never returns less than the greedy
 /// incumbent.
 pub fn check_dsystem_maximum_completion() -> Bool {
-  let line = (_ : Dim) => DVNatTy
+  let line = (_ : Dim) => DValue::DVNatTy
   let system = DSystem::{
     branches: [
       tube_branch(FOr(FEq0(DVar(0)), FEq1(DVar(0))), from_zero_path(1)),
@@ -360,17 +360,17 @@ pub fn check_circle_torus_square_comp() -> Bool {
 /// variable in declaration order.  A mismatched pair still
 /// refuses.
 pub fn check_difference_guided_case_split() -> Bool {
-  let nat_motive = DNatTy
-  let n1 = DSucc(DNatZero)
-  let n2 = DSucc(n1)
-  let n3 = DSucc(n2)
-  let ctx = [DBoolTy, DBoolTy, DBoolTy]
-  let sigma_ty = DSigma(DNatTy, DNatTy)
+  let nat_motive = DTerm::DNatTy
+  let n1 = DTerm::DSucc(DTerm::DNatZero)
+  let n2 = DTerm::DSucc(n1)
+  let n3 = DTerm::DSucc(n2)
+  let ctx = [DTerm::DBoolTy, DTerm::DBoolTy, DTerm::DBoolTy]
+  let sigma_ty = DTerm::DSigma(DTerm::DNatTy, DTerm::DNatTy)
   // Level 0 is DTVar(2), level 2 is DTVar(0) in this scope.
-  let shared = DBoolElim(nat_motive, n2, n3, DTVar(2))
-  let differing = DBoolElim(nat_motive, n1, n1, DTVar(0))
-  let lhs = DPair(shared, differing)
-  let rhs = DPair(shared, n1)
+  let shared = DTerm::DBoolElim(nat_motive, n2, n3, DTerm::DTVar(2))
+  let differing = DTerm::DBoolElim(nat_motive, n1, n1, DTerm::DTVar(0))
+  let lhs = DTerm::DPair(shared, differing)
+  let rhs = DTerm::DPair(shared, n1)
   if conv_terms_plain(ctx, sigma_ty, lhs, rhs) {
     return false
   }
@@ -384,7 +384,7 @@ pub fn check_difference_guided_case_split() -> Bool {
   if report.split_nodes != 1 {
     return false
   }
-  let bad_rhs = DPair(shared, DNatZero)
+  let bad_rhs = DTerm::DPair(shared, DTerm::DNatZero)
   !conv_terms_case_split_report(ctx, sigma_ty, lhs, bad_rhs).holds
 }
 
@@ -398,20 +398,23 @@ pub fn check_difference_guided_case_split() -> Bool {
 /// destination changes, and the artifact repository can put a
 /// live table's DAG and get it back into another live table.
 pub fn check_interned_dag_byte_sharing() -> Bool {
-  let arrow = DPi(DNatTy, DNatTy)
-  let pair_ty = DSigma(arrow, arrow)
-  let big = DSigma(pair_ty, DPi(pair_ty, pair_ty))
-  let elim = DInductiveElim(
+  let arrow = DTerm::DPi(DTerm::DNatTy, DTerm::DNatTy)
+  let pair_ty = DTerm::DSigma(arrow, arrow)
+  let big = DTerm::DSigma(pair_ty, DTerm::DPi(pair_ty, pair_ty))
+  let elim = DTerm::DInductiveElim(
     nat_schema(),
-    DLam(DNatTy, DNatTy),
-    [DNatZero, DLam(DNatTy, DLam(DNatTy, DTVar(0)))],
+    DTerm::DLam(DTerm::DNatTy, DTerm::DNatTy),
+    [
+      DTerm::DNatZero,
+      DTerm::DLam(DTerm::DNatTy, DTerm::DLam(DTerm::DNatTy, DTerm::DTVar(0))),
+    ],
     [],
     [],
-    DSucc(DNatZero),
+    DTerm::DSucc(DTerm::DNatZero),
   )
-  let partial = DPartial([
-    { face: FEq1(DVar(0)), body: DNatZero, },
-    { face: FTop, body: arrow, },
+  let partial = DTerm::DPartial([
+    { face: Face::FEq1(Dim::DVar(0)), body: DTerm::DNatZero, },
+    { face: Face::FTop, body: arrow, },
   ])
   let roots = [big, elim, partial]
   let source = dterm_intern_table_new()
@@ -482,7 +485,7 @@ pub fn check_interned_dag_byte_sharing() -> Bool {
     return false
   }
   // Forward edges are invalid and change nothing.
-  let bad_snapshot : DTermDagSnapshot = {
+  let bad_snapshot : DTermDagSnapshot = DTermDagSnapshot::{
     nodes: [
       DTermDagNode::{
         shell: DPi(DTVar(1000000), DTVar(1000001)),

@@ -25,7 +25,7 @@
 // ---------------------------------------------------------------------------
 
 ///|
-pub enum DArgKind {
+pub(all) enum DArgKind {
   DArgExternal
   DArgRecursive
   DArgFunction
@@ -44,7 +44,7 @@ pub extend DArgKind with Eq::{not_equal, equal}
 /// One argument instantiating a parameter of a family applied by
 /// `DFunctorFamily`: an ordinary term, or the family being
 /// declared itself at the given index terms.
-pub enum DFunctorParamArg {
+pub(all) enum DFunctorParamArg {
   DFunctorParamTerm(DTerm)
   DFunctorParamSelf(Array[DTerm])
 } derive(Debug, Eq)
@@ -63,7 +63,7 @@ pub extend DFunctorParamArg with Eq::{not_equal, equal}
 /// tag), lists, and functions from an external domain.  Every node is
 /// positive by construction, and the generator synthesizes both its
 /// semantic type and its induction-hypothesis functor.
-pub enum DPositiveFunctor {
+pub(all) enum DPositiveFunctor {
   DFunctorIdentity(Array[DTerm])
   DFunctorConst(DTerm)
   DFunctorProduct(DPositiveFunctor, DPositiveFunctor)
@@ -196,7 +196,7 @@ pub fn dfunctor_self_family(
 /// followed by the constructor arguments.  An introduction is
 /// accepted only when `lhs` and `rhs` are convertible at `ty`; the
 /// generated eliminator case receives the corresponding Path proof.
-pub struct DConstructorConstraint {
+pub(all) struct DConstructorConstraint {
   ty : DTerm
   lhs : DTerm
   rhs : DTerm
@@ -218,7 +218,7 @@ pub fn dconstructor_constraint(
 }
 
 ///|
-pub struct DTelescopeEntry {
+pub(all) struct DTelescopeEntry {
   name : String
   ty : DTerm
 } derive(Debug, Eq)
@@ -239,7 +239,7 @@ pub fn dtelescope_entry(name : String, ty : DTerm) -> DTelescopeEntry {
 /// For DArgRecursive, `index` gives the family indices and `ty` is
 /// unused.  For DArgFunction, `ty` is the domain and `index` terms are
 /// checked under one additional domain binder.
-pub struct DConstructorArg {
+pub(all) struct DConstructorArg {
   name : String
   kind : DArgKind
   ty : DTerm
@@ -371,7 +371,7 @@ pub fn darg_mutual(
 /// A function into another component of a mutual block.
 
 ///|
-pub struct DConstructorSpec {
+pub(all) struct DConstructorSpec {
   name : String
   args : Array[DConstructorArg]
   result_index : Array[DTerm]
@@ -405,7 +405,7 @@ pub fn dconstructor_spec_constrained(
 }
 
 ///|
-pub struct DInductiveSpec {
+pub(all) struct DInductiveSpec {
   name : String
   level : Int32
   params : Array[DTelescopeEntry]
@@ -469,7 +469,7 @@ pub fn dinductive_recursive_spec(
 
 ///|
 /// Instantiate another cell as one face of a HIT cell.
-pub struct DHitFaceExpr {
+pub(all) struct DHitFaceExpr {
   cell : Int32
   args : Array[DTerm]
   dims : Array[Dim]
@@ -504,7 +504,7 @@ pub fn dhit_arg_face(term : DTerm) -> DHitFaceExpr {
 ///|
 /// A HIT cell.  `faces` has length `2 * dim_count`, ordered
 /// (dim 0 at 0, dim 0 at 1, dim 1 at 0, dim 1 at 1).
-pub struct DHitCellSpec {
+pub(all) struct DHitCellSpec {
   name : String
   dim_count : Int32
   args : Array[DConstructorArg]
@@ -532,7 +532,7 @@ pub fn dhit_cell_spec(
 }
 
 ///|
-pub struct DHitSpec {
+pub(all) struct DHitSpec {
   name : String
   level : Int32
   params : Array[DTelescopeEntry]
@@ -577,7 +577,7 @@ pub fn schema_concat_values(
 }
 
 ///|
-fn schema_env(values : Array[DValue]) -> DEnv {
+pub fn schema_env(values : Array[DValue]) -> DEnv {
   // Schema arrays are in declaration order; denv_extend makes the last
   // (innermost) declaration de Bruijn index 0.
   denv_extend(values, denv_empty())
@@ -589,7 +589,7 @@ fn schema_dim_env(dims : Array[Dim]) -> DDimEnv {
 }
 
 ///|
-fn schema_eval_under(
+pub fn schema_eval_under(
   t : DTerm,
   values : Array[DValue],
   dims : Array[Dim],

@@ -29,13 +29,32 @@ fn check_equiv_ua_and_glue() -> Bool {
   let e = bool_not_equiv_term()
   match d_infer(DUa(e), denv_empty(), denv_empty(), ddim_empty()) {
     Some(inferred) => {
-      let line_term = DAppDim(DUa(e), DVar(0))
-      let fwd = DCoe(line_term, DZero, DOne, DBoolLit(true))
-      let bwd = DCoe(line_term, DOne, DZero, DBoolLit(true))
-      let path = DLamDim(
-        DCoe(DAppDim(DUa(e), DVar(0)), DZero, DVar(0), DBoolLit(true)),
+      let line_term = DTerm::DAppDim(DTerm::DUa(e), Dim::DVar(0))
+      let fwd = DTerm::DCoe(
+        line_term,
+        Dim::DZero,
+        Dim::DOne,
+        DTerm::DBoolLit(true),
       )
-      let pathp = DPathP(line_term, DBoolLit(true), DBoolLit(false))
+      let bwd = DTerm::DCoe(
+        line_term,
+        Dim::DOne,
+        Dim::DZero,
+        DTerm::DBoolLit(true),
+      )
+      let path = DTerm::DLamDim(
+        DTerm::DCoe(
+          DTerm::DAppDim(DTerm::DUa(e), Dim::DVar(0)),
+          Dim::DZero,
+          Dim::DVar(0),
+          DTerm::DBoolLit(true),
+        ),
+      )
+      let pathp = DTerm::DPathP(
+        line_term,
+        DTerm::DBoolLit(true),
+        DTerm::DBoolLit(false),
+      )
       let fwd_ok = match
         d_infer(fwd, denv_empty(), denv_empty(), ddim_empty()) {
         Some(r) =>
@@ -73,7 +92,9 @@ fn check_equiv_ua_and_glue() -> Bool {
 ///|
 fn check_equiv_glue_pair() -> Bool {
   let e = bool_not_equiv_term()
-  let glue_ty = DGlueEquiv(DBoolTy, [d_equiv_branch(FEq0(DVar(0)), DBoolTy, e)])
+  let glue_ty = DTerm::DGlueEquiv(DTerm::DBoolTy, [
+    d_equiv_branch(FEq0(DVar(0)), DBoolTy, e),
+  ])
   let denv = ddim_from_array([DVar(0)])
   match d_as_type(glue_ty, denv_empty(), denv_empty(), denv) {
     Some(tv) =>
@@ -116,7 +137,7 @@ fn check_equiv_glue_pair() -> Bool {
 
 ///|
 fn check_equiv_neutral_and_comp() -> Bool {
-  let ety = DVEquivTy(DVBoolTy, DVBoolTy, 0)
+  let ety = DValue::DVEquivTy(DValue::DVBoolTy, DValue::DVBoolTy, 0)
   let ctx = denv_from_array([ety])
   let env = denv_from_array([DVNeutral(DNVar(0))])
   let projection_ok = match

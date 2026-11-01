@@ -987,11 +987,13 @@ pub fn circle_rot_equiv_value(x : DValue, dlevel : Int32) -> DValue {
   // Along `x = loop(i)`: forward map rotates by `+i`, backward map by `-i`.
   // At `i = 0` and `i = 1`, both `fwd` and `bwd` compute to the identity `λy. y`.
   let loop_equiv_path : DValue = DVPathLam(i => {
-    let fwd = DVLam(y => dapp_dim(circle_self_loop_value(y, dlevel), i))
-    let bwd = DVLam(y => dapp_dim(circle_self_loop_value(y, dlevel), DNeg(i)))
+    let fwd = DValue::DVLam(y => dapp_dim(circle_self_loop_value(y, dlevel), i))
+    let bwd = DValue::DVLam(y => {
+      dapp_dim(circle_self_loop_value(y, dlevel), DNeg(i))
+    })
     // Section `fwd(bwd(y)) = y` and retraction `bwd(fwd(y)) = y`:
     // contract along `i` on endpoints via connection with `self_loop`.
-    let sect = DVLam(y => {
+    let sect = DValue::DVLam(y => {
       let ly = circle_self_loop_value(y, dlevel)
       let fby = dapp_dim(
         circle_self_loop_value(dapp_dim(ly, DNeg(i)), dlevel),
@@ -999,7 +1001,7 @@ pub fn circle_rot_equiv_value(x : DValue, dlevel : Int32) -> DValue {
       )
       // Connect `fby` to `y` on `S^1`: at `i=0` and `i=1`, `fby == y`,
       // and at `y = base` let's use singleton / loop cancellation!
-      DVPathLam(k => {
+      DValue::DVPathLam(k => {
         let step_back = dapp_dim(ly, dim_simplify(DAnd(DNeg(i), DNeg(k))))
         let raw = dapp_dim(
           circle_self_loop_value(step_back, dlevel),
@@ -1009,9 +1011,9 @@ pub fn circle_rot_equiv_value(x : DValue, dlevel : Int32) -> DValue {
         raw
       })
     })
-    let retr = DVLam(y => {
+    let retr = DValue::DVLam(y => {
       let ly = circle_self_loop_value(y, dlevel)
-      DVPathLam(k => {
+      DValue::DVPathLam(k => {
         let step_fwd = dapp_dim(ly, dim_simplify(DAnd(i, DNeg(k))))
         dapp_dim(
           circle_self_loop_value(step_fwd, dlevel),
@@ -1148,11 +1150,11 @@ pub fn based_map_type_value(
 /// `meridian(false)` to `refl_base`, and `meridian(true)` to `loop`.
 pub fn susp_bool_to_circle_value(z : DValue, dlevel : Int32) -> DValue {
   let b_spec = bool_schema()
-  let b_ty = DVInductive(b_spec, [], [])
+  let b_ty = DValue::DVInductive(b_spec, [], [])
   let c_ty = circle_hit_type_value()
   let base = circle_hit_base_value()
   let lp = circle_hit_loop_path_value()
-  let merid_fn = DVLam(b => {
+  let merid_fn = DValue::DVLam(b => {
     eval_inductive_elim(
       b_spec,
       (_, _) => DVPathTy(_ => c_ty, base, base),
@@ -1179,11 +1181,11 @@ pub fn susp_bool_to_circle_value(z : DValue, dlevel : Int32) -> DValue {
 /// to `meridian(true) ⬝ sym(meridian(false))`.
 pub fn circle_to_susp_bool_value(y : DValue, dlevel : Int32) -> DValue {
   let b_spec = bool_schema()
-  let b_ty = DVInductive(b_spec, [], [])
+  let b_ty = DValue::DVInductive(b_spec, [], [])
   let sb_ty = susp_type_value(b_ty)
   let north = susp_north_value(b_ty)
-  let bfalse = DVIntro(b_spec, 0, [], [])
-  let btrue = DVIntro(b_spec, 1, [], [])
+  let bfalse = DValue::DVIntro(b_spec, 0, [], [])
+  let btrue = DValue::DVIntro(b_spec, 1, [], [])
   let m_false = susp_merid_path_value(b_ty, bfalse)
   let m_true = susp_merid_path_value(b_ty, btrue)
   let bwd_loop = dpath_trans_value(
@@ -1208,9 +1210,9 @@ pub fn circle_to_susp_bool_value(y : DValue, dlevel : Int32) -> DValue {
 /// certified on open reflected variables of both `SuspS(BoolS)` and `S^1`.
 pub fn susp_bool_equiv_circle_value(dlevel : Int32) -> DValue {
   let b_spec = bool_schema()
-  let b_ty = DVInductive(b_spec, [], [])
-  let bfalse = DVIntro(b_spec, 0, [], [])
-  let btrue = DVIntro(b_spec, 1, [], [])
+  let b_ty = DValue::DVInductive(b_spec, [], [])
+  let bfalse = DValue::DVIntro(b_spec, 0, [], [])
+  let btrue = DValue::DVIntro(b_spec, 1, [], [])
   let sb_spec = susp_type_schema()
   let sb_ty = susp_type_value(b_ty)
   let north = susp_north_value(b_ty)
@@ -1225,7 +1227,7 @@ pub fn susp_bool_equiv_circle_value(dlevel : Int32) -> DValue {
   let loop_sect : DValue = DVPathLam(i => {
     DVPathLam(t => dapp_dim(dapp_dim(sq_c, i), DNeg(t)))
   })
-  let sect = DVLam(y => {
+  let sect = DValue::DVLam(y => {
     eval_hit_elim(
       c_spec,
       (_, pt) => {
@@ -1258,7 +1260,7 @@ pub fn susp_bool_equiv_circle_value(dlevel : Int32) -> DValue {
   let true_sq : DValue = DVPathLam(i => {
     DVPathLam(j => dapp_dim(dapp_dim(sq_sb, i), DNeg(j)))
   })
-  let merid_retr = DVLam(b => {
+  let merid_retr = DValue::DVLam(b => {
     eval_inductive_elim(
       b_spec,
       (_, bv) => {
@@ -1285,7 +1287,7 @@ pub fn susp_bool_equiv_circle_value(dlevel : Int32) -> DValue {
       dlevel,
     )
   })
-  let retr = DVLam(z => {
+  let retr = DValue::DVLam(z => {
     eval_hit_elim(
       sb_spec,
       (_, pt) => {
@@ -1340,36 +1342,40 @@ pub fn susp_universal_equiv_value(
   let susp_ty = susp_type_value(a_ty, level~)
   let north = susp_north_value(a_ty, level~)
   let south = susp_south_value(a_ty, level~)
-  let fn_ty = DVPi(susp_ty, _ => b_ty)
+  let fn_ty = DValue::DVPi(susp_ty, _ => b_ty)
   let cocone_ty = susp_cocone_type_value(a_ty, b_ty)
   let inner_fam = (n : DValue) => {
-    DVSigma(b_ty, s => DVPi(a_ty, _ => DVPathTy(_ => b_ty, n, s)))
+    DValue::DVSigma(b_ty, s => {
+      DValue::DVPi(a_ty, _ => DValue::DVPathTy(_ => b_ty, n, s))
+    })
   }
 
   let fwd_one = (f : DValue) => {
     let fn_n = dapp_typed(f, north, susp_ty)
     let fn_s = dapp_typed(f, south, susp_ty)
-    let fn_m = DVLam(a => {
-      DVPathLam(i => {
+    let fn_m = DValue::DVLam(a => {
+      DValue::DVPathLam(i => {
         dapp_typed(f, hit_cell_value(spec, 2, [a_ty], [a], [i]), susp_ty)
       })
     })
-    DVPair(fn_n, DVPair(fn_s, fn_m))
+    DValue::DVPair(fn_n, DValue::DVPair(fn_s, fn_m))
   }
   let bwd_one = (c : DValue) => {
     let n = dfst_typed(c, inner_fam)
     let rest = dsnd_typed(c, b_ty, inner_fam)
-    let rest_fam = (s : DValue) => DVPi(a_ty, _ => DVPathTy(_ => b_ty, n, s))
+    let rest_fam = (s : DValue) => {
+      DValue::DVPi(a_ty, _ => DValue::DVPathTy(_ => b_ty, n, s))
+    }
     let s = dfst_typed(rest, rest_fam)
     let m = dsnd_typed(rest, b_ty, rest_fam)
-    DVLam(z => {
+    DValue::DVLam(z => {
       eval_hit_elim(spec, (_, _) => b_ty, [n, s, m], [a_ty], [], z, dlevel)
     })
   }
-  let sect = DVLam(c => dpath_refl_value(c))
-  let retr = DVLam(f => {
+  let sect = DValue::DVLam(c => dpath_refl_value(c))
+  let retr = DValue::DVLam(f => {
     let bf = bwd_one(fwd_one(f))
-    let pw = DVLam(z => {
+    let pw = DValue::DVLam(z => {
       eval_hit_elim(
         spec,
         (_, pt) => {
@@ -1425,31 +1431,33 @@ pub fn susp_based_to_cocone_equiv_value(
   let susp_ty = susp_type_value(a_ty, level~)
   let north = susp_north_value(a_ty, level~)
   let south = susp_south_value(a_ty, level~)
-  let fn_ty = DVPi(susp_ty, _ => b_ty)
+  let fn_ty = DValue::DVPi(susp_ty, _ => b_ty)
   let map_star_ty = based_map_type_value(susp_ty, b_ty, north, b0)
   let map_fam = (f : DValue) => {
-    DVPathTy(_ => b_ty, dapp_typed(f, north, susp_ty), b0)
+    DValue::DVPathTy(_ => b_ty, dapp_typed(f, north, susp_ty), b0)
   }
-  let cocone_fam = (s : DValue) => DVPi(a_ty, _ => DVPathTy(_ => b_ty, s, b0))
-  let cocone_ty = DVSigma(b_ty, cocone_fam)
+  let cocone_fam = (s : DValue) => {
+    DValue::DVPi(a_ty, _ => DValue::DVPathTy(_ => b_ty, s, b0))
+  }
+  let cocone_ty = DValue::DVSigma(b_ty, cocone_fam)
 
   let fwd_one = (fp : DValue) => {
     let f = dfst_typed(fp, map_fam)
     let p = dsnd_typed(fp, fn_ty, map_fam)
     let s = dapp_typed(f, south, susp_ty)
-    let m = DVLam(a => {
+    let m = DValue::DVLam(a => {
       let sym_fa : DValue = DVPathLam(i => {
         dapp_typed(f, hit_cell_value(spec, 2, [a_ty], [a], [DNeg(i)]), susp_ty)
       })
       dpath_trans_value(b_ty, sym_fa, p, dlevel)
     })
-    DVPair(s, m)
+    DValue::DVPair(s, m)
   }
   let bwd_one = (sm : DValue) => {
     let s = dfst_typed(sm, cocone_fam)
     let m = dsnd_typed(sm, b_ty, cocone_fam)
-    let merid_case = DVLam(a => dpath_sym_value(dapp_typed(m, a, a_ty)))
-    let f = DVLam(z => {
+    let merid_case = DValue::DVLam(a => dpath_sym_value(dapp_typed(m, a, a_ty)))
+    let f = DValue::DVLam(z => {
       eval_hit_elim(
         spec,
         (_, _) => b_ty,
@@ -1460,13 +1468,13 @@ pub fn susp_based_to_cocone_equiv_value(
         dlevel,
       )
     })
-    DVPair(f, dpath_refl_value(b0))
+    DValue::DVPair(f, dpath_refl_value(b0))
   }
-  let sect = DVLam(sm => {
+  let sect = DValue::DVLam(sm => {
     let s = dfst_typed(sm, cocone_fam)
     let m = dsnd_typed(sm, b_ty, cocone_fam)
-    DVPathLam(t => {
-      let m_t = DVLam(a => {
+    DValue::DVPathLam(t => {
+      let m_t = DValue::DVLam(a => {
         let ma = dapp_typed(m, a, a_ty)
         let sq = dpath_trans_square_value(
           b_ty,
@@ -1474,26 +1482,28 @@ pub fn susp_based_to_cocone_equiv_value(
           dpath_refl_value(b0),
           dlevel,
         )
-        DVPathLam(i => dapp_dim(dapp_dim(sq, i), DNeg(t)))
+        DValue::DVPathLam(i => dapp_dim(dapp_dim(sq, i), DNeg(t)))
       })
-      DVPair(s, m_t)
+      DValue::DVPair(s, m_t)
     })
   })
-  let retr = DVLam(fp => {
+  let retr = DValue::DVLam(fp => {
     let f = dfst_typed(fp, map_fam)
     let p = dsnd_typed(fp, fn_ty, map_fam)
     let bf_pair = bwd_one(fwd_one(fp))
     let bf = dfst_typed(bf_pair, map_fam)
     let north_line : DValue = DVPathLam(t => dapp_dim(p, DNeg(t)))
     let south_line = dpath_refl_value(dapp_typed(f, south, susp_ty))
-    let merid_sq = DVLam(a => {
+    let merid_sq = DValue::DVLam(a => {
       let sym_fa : DValue = DVPathLam(k => {
         dapp_typed(f, hit_cell_value(spec, 2, [a_ty], [a], [DNeg(k)]), susp_ty)
       })
       let sq = dpath_trans_square_value(b_ty, sym_fa, p, dlevel)
-      DVPathLam(i => DVPathLam(t => dapp_dim(dapp_dim(sq, DNeg(i)), DNeg(t))))
+      DValue::DVPathLam(i => {
+        DValue::DVPathLam(t => dapp_dim(dapp_dim(sq, DNeg(i)), DNeg(t)))
+      })
     })
-    let pw = DVLam(z => {
+    let pw = DValue::DVLam(z => {
       eval_hit_elim(
         spec,
         (_, pt) => {
@@ -1511,11 +1521,11 @@ pub fn susp_based_to_cocone_equiv_value(
       )
     })
     let f_homotopy = dpath_funext_value(pw, susp_ty)
-    DVPathLam(t => {
+    DValue::DVPathLam(t => {
       let p_t : DValue = DVPathLam(j => {
         dapp_dim(p, dim_simplify(DOr(DNeg(t), j)))
       })
-      DVPair(dapp_dim(f_homotopy, t), p_t)
+      DValue::DVPair(dapp_dim(f_homotopy, t), p_t)
     })
   })
   equiv_make_value(
@@ -1538,13 +1548,15 @@ pub fn cocone_to_based_loop_equiv_value(
   b0 : DValue,
   dlevel : Int32,
 ) -> DValue {
-  let cocone_fam = (s : DValue) => DVPi(a_ty, _ => DVPathTy(_ => b_ty, s, b0))
-  let cocone_ty = DVSigma(b_ty, cocone_fam)
-  let loop_b_ty = DVPathTy(_ => b_ty, b0, b0)
+  let cocone_fam = (s : DValue) => {
+    DValue::DVPi(a_ty, _ => DValue::DVPathTy(_ => b_ty, s, b0))
+  }
+  let cocone_ty = DValue::DVSigma(b_ty, cocone_fam)
+  let loop_b_ty = DValue::DVPathTy(_ => b_ty, b0, b0)
   let refl_b0 = dpath_refl_value(b0)
-  let fn_loop_ty = DVPi(a_ty, _ => loop_b_ty)
+  let fn_loop_ty = DValue::DVPi(a_ty, _ => loop_b_ty)
   let rhs_fam = (g : DValue) => {
-    DVPathTy(_ => loop_b_ty, dapp_typed(g, a0, a_ty), refl_b0)
+    DValue::DVPathTy(_ => loop_b_ty, dapp_typed(g, a0, a_ty), refl_b0)
   }
   let rhs_ty = based_map_type_value(a_ty, loop_b_ty, a0, refl_b0)
 
@@ -1564,8 +1576,8 @@ pub fn cocone_to_based_loop_equiv_value(
     }
   }
   let cancel = (m0 : DValue) => {
-    DVPathLam(u => {
-      DVPathLam(i => {
+    DValue::DVPathLam(u => {
+      DValue::DVPathLam(i => {
         let sys = dsystem_of([
           tube_branch(face_simplify(FEq0(i)), j => {
             dapp_dim(m0, dim_simplify(DOr(j, u)))
@@ -1578,7 +1590,7 @@ pub fn cocone_to_based_loop_equiv_value(
     })
   }
   let h_loop_at = (ga : DValue, q : DValue, t : Dim) => {
-    DVPathLam(i => {
+    DValue::DVPathLam(i => {
       let sys = dsystem_of([
         tube_branch(face_simplify(FEq0(i)), j => dapp_dim(dapp_dim(q, t), j)),
         tube_branch(face_simplify(FEq1(i)), _ => b0),
@@ -1591,15 +1603,15 @@ pub fn cocone_to_based_loop_equiv_value(
   let fwd_one = (sm : DValue) => {
     let m = dsnd_typed(sm, b_ty, cocone_fam)
     let m0 = dapp_typed(m, a0, a_ty)
-    let g = DVLam(a => {
+    let g = DValue::DVLam(a => {
       let ma = dapp_typed(m, a, a_ty)
-      DVPathLam(i => l_fill(m0, ma, i, DOne))
+      DValue::DVPathLam(i => l_fill(m0, ma, i, DOne))
     })
-    DVPair(g, cancel(m0))
+    DValue::DVPair(g, cancel(m0))
   }
   let bwd_one = (gq : DValue) => {
     let g = dfst_typed(gq, rhs_fam)
-    DVPair(b0, g)
+    DValue::DVPair(b0, g)
   }
   let base_sq : DValue = DVPathLam(t => {
     DVPathLam(u => {
@@ -1613,7 +1625,7 @@ pub fn cocone_to_based_loop_equiv_value(
       })
     })
   })
-  let sect = DVLam(gq => {
+  let sect = DValue::DVLam(gq => {
     let g = dfst_typed(gq, rhs_fam)
     let q = dsnd_typed(gq, fn_loop_ty, rhs_fam)
     let sq_q = dj_singleton_elim_value(
@@ -1629,20 +1641,20 @@ pub fn cocone_to_based_loop_equiv_value(
       dpath_sym_value(q),
       dlevel + 4,
     )
-    DVPathLam(t => {
-      let g_t = DVLam(a => h_loop_at(dapp_typed(g, a, a_ty), q, t))
-      DVPair(g_t, dapp_dim(sq_q, t))
+    DValue::DVPathLam(t => {
+      let g_t = DValue::DVLam(a => h_loop_at(dapp_typed(g, a, a_ty), q, t))
+      DValue::DVPair(g_t, dapp_dim(sq_q, t))
     })
   })
-  let retr = DVLam(sm => {
+  let retr = DValue::DVLam(sm => {
     let m = dsnd_typed(sm, b_ty, cocone_fam)
     let m0 = dapp_typed(m, a0, a_ty)
-    DVPathLam(t => {
-      let m_t = DVLam(a => {
+    DValue::DVPathLam(t => {
+      let m_t = DValue::DVLam(a => {
         let ma = dapp_typed(m, a, a_ty)
-        DVPathLam(i => l_fill(m0, ma, i, DNeg(t)))
+        DValue::DVPathLam(i => l_fill(m0, ma, i, DNeg(t)))
       })
-      DVPair(dapp_dim(m0, DNeg(t)), m_t)
+      DValue::DVPair(dapp_dim(m0, DNeg(t)), m_t)
     })
   })
   equiv_make_value(
@@ -1670,8 +1682,10 @@ pub fn loop_suspension_adjunction_equiv_value(
   let susp_ty = susp_type_value(a_ty, level~)
   let north = susp_north_value(a_ty, level~)
   let lhs_ty = based_map_type_value(susp_ty, b_ty, north, b0)
-  let mid_ty = DVSigma(b_ty, s => DVPi(a_ty, _ => DVPathTy(_ => b_ty, s, b0)))
-  let loop_b_ty = DVPathTy(_ => b_ty, b0, b0)
+  let mid_ty = DValue::DVSigma(b_ty, s => {
+    DValue::DVPi(a_ty, _ => DValue::DVPathTy(_ => b_ty, s, b0))
+  })
+  let loop_b_ty = DValue::DVPathTy(_ => b_ty, b0, b0)
   let rhs_ty = based_map_type_value(a_ty, loop_b_ty, a0, dpath_refl_value(b0))
   let e1 = susp_based_to_cocone_equiv_value(a_ty, b_ty, b0, dlevel, level~)
   let e2 = cocone_to_based_loop_equiv_value(a_ty, a0, b_ty, b0, dlevel)
@@ -1741,7 +1755,7 @@ pub fn susp_0_connected_of_pointed_value(
     DVPathTy(_ => susp_ty, north, south),
     susp_merid_path_value(a_ty, a0, level~),
   )
-  let merid_case = DVLam(a => {
+  let merid_case = DValue::DVLam(a => {
     let m_line = memo_dim_line(i => {
       mot(hit_cell_value(spec, 2, [a_ty], [a], [i]))
     })
@@ -1785,9 +1799,9 @@ pub fn freudenthal_pi1_susp_connected_equiv_unit_value(
   let susp_ty = susp_type_value(a_ty, level~)
   let north = susp_north_value(a_ty, level~)
   let south = susp_south_value(a_ty, level~)
-  let ns_ty = DVPathTy(_ => susp_ty, north, south)
+  let ns_ty = DValue::DVPathTy(_ => susp_ty, north, south)
   let st_ns_ty = set_trunc_type_value(ns_ty)
-  let loop_ty = DVPathTy(_ => susp_ty, north, north)
+  let loop_ty = DValue::DVPathTy(_ => susp_ty, north, north)
   let st_loop_ty = set_trunc_type_value(loop_ty)
 
   let mot_center = (pt : DValue) => {
@@ -1798,7 +1812,7 @@ pub fn freudenthal_pi1_susp_connected_equiv_unit_value(
     ns_ty,
     susp_merid_path_value(a_ty, a0, level~),
   )
-  let merid_center = DVLam(a => {
+  let merid_center = DValue::DVLam(a => {
     let ma_pt = set_trunc_point_value(
       ns_ty,
       susp_merid_path_value(a_ty, a, level~),
@@ -1812,7 +1826,7 @@ pub fn freudenthal_pi1_susp_connected_equiv_unit_value(
         }),
       )
     })
-    let eq_goal = DVPathTy(_ => st_ns_ty, ma_pt, c_south)
+    let eq_goal = DValue::DVPathTy(_ => st_ns_ty, ma_pt, c_south)
     let ma_eq_m0 = prop_trunc_elim_prop_value(
       DVPathTy(_ => a_ty, a0, a),
       _ => eq_goal,
@@ -1855,7 +1869,7 @@ pub fn freudenthal_pi1_susp_connected_equiv_unit_value(
   }
 
   let retr_at_north = (w : DValue) => {
-    let mot_w = (u : DValue) => DVPathTy(_ => st_loop_ty, c_north, u)
+    let mot_w = (u : DValue) => DValue::DVPathTy(_ => st_loop_ty, c_north, u)
     set_trunc_elim_prop_value(
       loop_ty,
       mot_w,
@@ -1863,7 +1877,7 @@ pub fn freudenthal_pi1_susp_connected_equiv_unit_value(
       q => {
         dj_singleton_elim_value(
           (z1, q1) => {
-            let p_ty = DVPathTy(_ => susp_ty, north, z1)
+            let p_ty = DValue::DVPathTy(_ => susp_ty, north, z1)
             let st_z1 = set_trunc_type_value(p_ty)
             DVPathTy(_ => st_z1, center_at(z1), set_trunc_point_value(p_ty, q1))
           },
@@ -1948,8 +1962,8 @@ pub fn wedge_connectivity_circle_set_ext_value(
   let base = circle_hit_base_value()
   let p00 = p_fam(base, base)
 
-  let mot_x = (xv : DValue) => DVPi(c_ty, yv => p_fam(xv, yv))
-  let base_fn = DVLam(yv => f_right(yv))
+  let mot_x = (xv : DValue) => DValue::DVPi(c_ty, yv => p_fam(xv, yv))
+  let base_fn = DValue::DVLam(yv => f_right(yv))
   let loop_x_line = memo_dim_line(i => {
     mot_x(hit_cell_value(c_spec, 1, [], [], [i]))
   })
@@ -1988,7 +2002,7 @@ pub fn wedge_connectivity_circle_set_ext_value(
   )
 
   let mot_y = (yv : DValue) => {
-    DVPathTy(
+    DValue::DVPathTy(
       _ => p_fam(base, yv),
       dapp_typed(tr_base_fn, yv, c_ty),
       f_right(yv),
@@ -2013,7 +2027,7 @@ pub fn wedge_connectivity_circle_set_ext_value(
     set_eq_y,
     dlevel + 28,
   )
-  let pw_y = DVLam(yv => {
+  let pw_y = DValue::DVLam(yv => {
     eval_hit_elim(
       c_spec,
       (_, pt) => mot_y(pt),
@@ -2072,7 +2086,7 @@ pub fn wedge_connectivity_circle_left_coh_value(
     )
   }
   let mot = (xv : DValue) => {
-    DVPathTy(_ => p_fam(xv, base), ext_x(xv), f_left(xv))
+    DValue::DVPathTy(_ => p_fam(xv, base), ext_x(xv), f_left(xv))
   }
   let base_case = dpath_sym_value(glue_pt)
   let loop_line = memo_dim_line(i => mot(hit_cell_value(c_spec, 1, [], [], [i])))
@@ -2119,7 +2133,7 @@ pub fn freudenthal_susp_loop1_to_loop2_value(
 ) -> DValue {
   let susp_ty = susp_type_value(a_ty, level~)
   let north = susp_north_value(a_ty, level~)
-  let loop1_ty = DVPathTy(_ => susp_ty, north, north)
+  let loop1_ty = DValue::DVPathTy(_ => susp_ty, north, north)
   let m0 = susp_merid_path_value(a_ty, a0, level~)
   let canc = dpath_trans_sym_cancel_value(susp_ty, m0, north, dlevel)
   DVPathLam(t => {
@@ -2151,7 +2165,7 @@ pub fn freudenthal_susp_loop1_preserves_refl_value(
 ) -> DValue {
   let susp_ty = susp_type_value(a_ty, level~)
   let north = susp_north_value(a_ty, level~)
-  let loop1_ty = DVPathTy(_ => susp_ty, north, north)
+  let loop1_ty = DValue::DVPathTy(_ => susp_ty, north, north)
   let m0 = susp_merid_path_value(a_ty, a0, level~)
   let canc = dpath_trans_sym_cancel_value(susp_ty, m0, north, dlevel)
   DVPathLam(s => {
@@ -2246,7 +2260,7 @@ pub fn sphere2_susp_loop1_to_loop2_value(
   let s2 = sphere2_type_value()
   let north = sphere2_north_value()
   let base_s1 = circle_hit_base_value()
-  let loop1_ty = DVPathTy(_ => s2, north, north)
+  let loop1_ty = DValue::DVPathTy(_ => s2, north, north)
   let m0 = sphere2_meridian_path_value(base_s1)
   let canc = dpath_trans_sym_cancel_value(s2, m0, north, dlevel)
   DVPathLam(t => {
@@ -2323,7 +2337,7 @@ pub fn hopf_freudenthal_retraction_value(
   let base = circle_hit_base_value()
   let s2 = sphere2_type_value()
   let north = sphere2_north_value()
-  let loop1_s2_ty = DVPathTy(_ => s2, north, north)
+  let loop1_s2_ty = DValue::DVPathTy(_ => s2, north, north)
   let hopf_fam = (pt : DValue) => hopf_family_value(pt, dlevel~)
   let m0 = sphere2_meridian_path_value(base)
   let m0_sym = dpath_sym_value(m0)

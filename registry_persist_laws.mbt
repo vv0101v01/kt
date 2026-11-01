@@ -61,8 +61,8 @@ fn check_checked_lines() -> Bool {
   // is not a substitutable type line and is rejected by reification.
   let non_natural = (d : Dim) => {
     match d {
-      DVar(_) => DVBoolTy
-      _ => DVUnitTy
+      DVar(_) => DValue::DVBoolTy
+      _ => DValue::DVUnitTy
     }
   }
   let rejected = match checked_line_reify_closed(non_natural) {

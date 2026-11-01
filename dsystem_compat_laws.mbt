@@ -3,7 +3,7 @@
 
 ///|
 pub fn check_dsystem_compatibility() -> Bool {
-  let line = (_ : Dim) => DVNatTy
+  let line = (_ : Dim) => DValue::DVNatTy
   let compatible = DSystem::{
     branches: [
       tube_branch(FEq0(DVar(0)), _ => dv_nat_lit(0)),
@@ -85,7 +85,7 @@ fn dim_is_one_sem_for_law(d : Dim) -> Bool {
 
 ///|
 pub fn check_dsystem_first_match_nf() -> Bool {
-  let line = (_ : Dim) => DVNatTy
+  let line = (_ : Dim) => DValue::DVNatTy
   let raw = DSystem::{
     branches: [
       tube_branch(FEq0(DVar(0)), _ => dv_nat_lit(0)),
@@ -130,7 +130,7 @@ pub fn check_dsystem_first_match_nf() -> Bool {
   // the circle, loop and its inverse clash on (i=1), while after
   // first-match disjointification only the loop branch remains
   // effective there and both effective branches start at the base.
-  let circle_line = (_ : Dim) => DVCircleTy
+  let circle_line = (_ : Dim) => DValue::DVCircleTy
   let circle_raw = DSystem::{
     branches: [
       tube_branch(FEq0(DVar(0)), _ => DVCirclePoint(DZero)),
@@ -184,7 +184,7 @@ pub fn check_dsystem_repair_phase9() -> Bool {
   // Repair by restriction: a constantly-1 branch on the top face is
   // dropped against base 0, the agreeing branch is kept, and the
   // removed region is reported.
-  let line = (_ : Dim) => DVNatTy
+  let line = (_ : Dim) => DValue::DVNatTy
   let raw = DSystem::{
     branches: [
       tube_branch(FTop, _ => dv_nat_lit(1)),

@@ -92,13 +92,13 @@ pub fn check_propositional_truncation() -> Bool {
   }
   // Squash joins arbitrary points: the path type-checks and its
   // normal form has the advertised endpoints.
-  let path_ty = DPath(trunc_bool, t, f)
+  let path_ty = DTerm::DPath(trunc_bool, t, f)
   let squash_path = trunc_squash_path_term(DBoolTy, t, f)
   if !dep_check_closed(squash_path, path_ty) {
     return false
   }
   // Semantic endpoint computation through argument faces.
-  let ty_value = DVHitType(spec, [DVBoolTy], [])
+  let ty_value = DValue::DVHitType(spec, [DValue::DVBoolTy], [])
   let t_val = hit_cell_value(spec, 0, [DVBoolTy], [DVBool(true)], [])
   let f_val = hit_cell_value(spec, 0, [DVBoolTy], [DVBool(false)], [])
   let at0 = hit_cell_value(spec, 1, [DVBoolTy], [t_val, f_val], [DZero])
@@ -160,11 +160,11 @@ pub fn prop_trunc_elim_prop_value(
   dlevel : Int32,
 ) -> DValue {
   let spec = prop_trunc_schema()
-  let point_case = DVLam(a => point_branch(a))
-  let squash_case = DVLam(x => {
-    DVLam(ih_x => {
-      DVLam(y => {
-        DVLam(ih_y => {
+  let point_case = DValue::DVLam(a => point_branch(a))
+  let squash_case = DValue::DVLam(x => {
+    DValue::DVLam(ih_x => {
+      DValue::DVLam(y => {
+        DValue::DVLam(ih_y => {
           let line = memo_dim_line(i => {
             motive_fam(hit_cell_value(spec, 1, [a_ty], [x, y], [i]))
           })
@@ -199,7 +199,7 @@ pub fn prop_trunc_elim_prop_value(
 /// recursion over `S¹`, passing `hit_schema_validate` without higher-path
 /// schema axioms while forcing every self-loop in `‖A‖₀` to contract.
 pub fn set_trunc_schema_at(level : Int32) -> DHitSpec {
-  let c_ty = DHitType(circle_schema(), [])
+  let c_ty = DTerm::DHitType(circle_schema(), [])
   dhit_spec("SetTruncS", level, [dtelescope_entry("A", DUniv(level))], [], [
     dhit_cell_spec("point", 0, [darg_external("value", DTVar(0))], []),
     dhit_cell_spec("hub", 0, [darg_function("circle_map", c_ty)], []),
@@ -266,8 +266,8 @@ pub fn set_trunc_loop_trivial_value(
   let spec = set_trunc_schema()
   let st_ty = set_trunc_type_value(a_ty)
   let c_spec = circle_schema()
-  let base = DVHitCell(c_spec, 0, [], [], [])
-  let f = DVLam(t => {
+  let base = DValue::DVHitCell(c_spec, 0, [], [], [])
+  let f = DValue::DVLam(t => {
     eval_hit_elim(c_spec, (_, _) => st_ty, [x, loop_x], [], [], t, dlevel)
   })
   let sb = (u : Dim) => hit_cell_value(spec, 2, [a_ty], [f, base], [u])
@@ -304,10 +304,10 @@ pub fn set_trunc_is_set_value(
 ) -> DValue {
   let st_ty = set_trunc_type_value(a_ty)
   let fam = (y1 : DValue, q1 : DValue) => {
-    let p_ty = DVPathTy(_ => st_ty, x, y1)
-    DVPi(p_ty, p1 => DVPathTy(_ => p_ty, p1, q1))
+    let p_ty = DValue::DVPathTy(_ => st_ty, x, y1)
+    DValue::DVPi(p_ty, p1 => DValue::DVPathTy(_ => p_ty, p1, q1))
   }
-  let refl_case = DVLam(p0 => {
+  let refl_case = DValue::DVLam(p0 => {
     set_trunc_loop_trivial_value(a_ty, x, p0, dlevel + 2)
   })
   let fn_at_q = dj_singleton_elim_value(fam, refl_case, q, dlevel + 1)
@@ -331,16 +331,18 @@ pub fn set_trunc_rec_set_value(
     _ => ()
   }
   let c_spec = circle_schema()
-  let c_ty = DVHitType(c_spec, [], [])
-  let base = DVHitCell(c_spec, 0, [], [], [])
-  let point_case = DVLam(a => point_branch(a))
-  let hub_case = DVLam(_f => DVLam(ih => dapp_typed(ih, base, c_ty)))
-  let spoke_case = DVLam(_f => {
-    DVLam(ih => {
+  let c_ty = DValue::DVHitType(c_spec, [], [])
+  let base = DValue::DVHitCell(c_spec, 0, [], [], [])
+  let point_case = DValue::DVLam(a => point_branch(a))
+  let hub_case = DValue::DVLam(_f => {
+    DValue::DVLam(ih => dapp_typed(ih, base, c_ty))
+  })
+  let spoke_case = DValue::DVLam(_f => {
+    DValue::DVLam(ih => {
       let hub_val = dapp_typed(ih, base, c_ty)
-      DVLam(t => {
+      DValue::DVLam(t => {
         let mot_t = (pt : DValue) => {
-          DVPathTy(_ => b_ty, dapp_typed(ih, pt, c_ty), hub_val)
+          DValue::DVPathTy(_ => b_ty, dapp_typed(ih, pt, c_ty), hub_val)
         }
         let base_p = dpath_refl_value(hub_val)
         let loop_line = memo_dim_line(j => {
@@ -391,11 +393,11 @@ pub fn set_trunc_elim_set_value(
 ) -> DValue {
   let spec = set_trunc_schema()
   let c_spec = circle_schema()
-  let c_ty = DVHitType(c_spec, [], [])
-  let base = DVHitCell(c_spec, 0, [], [], [])
-  let point_case = DVLam(a => point_branch(a))
-  let hub_case = DVLam(f => {
-    DVLam(ih => {
+  let c_ty = DValue::DVHitType(c_spec, [], [])
+  let base = DValue::DVHitCell(c_spec, 0, [], [], [])
+  let point_case = DValue::DVLam(a => point_branch(a))
+  let hub_case = DValue::DVLam(f => {
+    DValue::DVLam(ih => {
       subst_value(
         z => motive_fam(z),
         set_trunc_spoke_path_value(a_ty, f, base),
@@ -404,8 +406,8 @@ pub fn set_trunc_elim_set_value(
       )
     })
   })
-  let spoke_case = DVLam(f => {
-    DVLam(ih => {
+  let spoke_case = DValue::DVLam(f => {
+    DValue::DVLam(ih => {
       let hub_pt = set_trunc_hub_value(a_ty, f)
       let ih_base = dapp_typed(ih, base, c_ty)
       let hub_val = subst_value(
@@ -414,14 +416,14 @@ pub fn set_trunc_elim_set_value(
         ih_base,
         dlevel + 2,
       )
-      DVLam(t => {
+      DValue::DVLam(t => {
         let spoke_line_at = (pt : DValue) => {
           memo_dim_line(i => {
             motive_fam(hit_cell_value(spec, 2, [a_ty], [f, pt], [i]))
           })
         }
         let mot_t = (pt : DValue) => {
-          DVPathTy(spoke_line_at(pt), dapp_typed(ih, pt, c_ty), hub_val)
+          DValue::DVPathTy(spoke_line_at(pt), dapp_typed(ih, pt, c_ty), hub_val)
         }
         let base_spoke = subst_pathp_value(
           z => motive_fam(z),
@@ -494,11 +496,11 @@ pub fn set_trunc_elim_prop_value(
     _ => ()
   }
   let c_spec = circle_schema()
-  let c_ty = DVHitType(c_spec, [], [])
-  let base = DVHitCell(c_spec, 0, [], [], [])
-  let point_case = DVLam(a => point_branch(a))
-  let hub_case = DVLam(f => {
-    DVLam(ih => {
+  let c_ty = DValue::DVHitType(c_spec, [], [])
+  let base = DValue::DVHitCell(c_spec, 0, [], [], [])
+  let point_case = DValue::DVLam(a => point_branch(a))
+  let hub_case = DValue::DVLam(f => {
+    DValue::DVLam(ih => {
       subst_value(
         z => motive_fam(z),
         set_trunc_spoke_path_value(a_ty, f, base),
@@ -507,8 +509,8 @@ pub fn set_trunc_elim_prop_value(
       )
     })
   })
-  let spoke_case = DVLam(f => {
-    DVLam(ih => {
+  let spoke_case = DValue::DVLam(f => {
+    DValue::DVLam(ih => {
       let hub_pt = set_trunc_hub_value(a_ty, f)
       let hub_val = subst_value(
         z => motive_fam(z),
@@ -516,7 +518,7 @@ pub fn set_trunc_elim_prop_value(
         dapp_typed(ih, base, c_ty),
         dlevel + 2,
       )
-      DVLam(t => {
+      DValue::DVLam(t => {
         let ih_t = dapp_typed(ih, t, c_ty)
         let s_line = memo_dim_line(i => {
           motive_fam(hit_cell_value(spec, 2, [a_ty], [f, t], [i]))
@@ -569,9 +571,11 @@ pub fn set_trunc_equiv_of_equiv_set_value(
   let bwd_one = (b : DValue) => {
     set_trunc_point_value(a_ty, dapp_typed(e_bwd, b, b_ty))
   }
-  let point_fn = DVLam(a => set_trunc_point_value(a_ty, a))
+  let point_fn = DValue::DVLam(a => set_trunc_point_value(a_ty, a))
   let retr_one = (w : DValue) => {
-    let mot = (z : DValue) => DVPathTy(_ => st_a_ty, bwd_one(fwd_one(z)), z)
+    let mot = (z : DValue) => {
+      DValue::DVPathTy(_ => st_a_ty, bwd_one(fwd_one(z)), z)
+    }
     set_trunc_elim_prop_value(
       a_ty,
       mot,

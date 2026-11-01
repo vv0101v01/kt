@@ -19,7 +19,10 @@ pub fn check_structural_positivity() -> Bool {
     return false
   }
   // Beta aliases are unfolded before classification.
-  let alias_term = DApp(DLam(DUniv(0), DListTy(DTVar(0))), target)
+  let alias_term = DTerm::DApp(
+    DTerm::DLam(DTerm::DUniv(0), DTerm::DListTy(DTerm::DTVar(0))),
+    target,
+  )
   if !dterm_family_positivity(alias_term, "ProbeS").strictly_positive {
     return false
   }
@@ -326,9 +329,12 @@ pub fn check_quotient_schema() -> Bool {
     return false
   }
   // The constant Nat-valued eliminator sends a quotient path to refl.
-  let param_terms = [DBoolTy, DLam(DBoolTy, DLam(DBoolTy, DUnitTy))]
-  let ty_term = DHitType(spec, param_terms)
-  let elim_eq = DLamDim(
+  let param_terms = [
+    DTerm::DBoolTy,
+    DTerm::DLam(DTerm::DBoolTy, DTerm::DLam(DTerm::DBoolTy, DTerm::DUnitTy)),
+  ]
+  let ty_term = DTerm::DHitType(spec, param_terms)
+  let elim_eq = DTerm::DLamDim(
     hit_elim_term(
       spec,
       DLam(ty_term, DNatTy),

@@ -628,7 +628,7 @@ pub fn check_assoc_faces() -> Bool {
   // vertex of K_5.  DValue has no decidable equality, so this checks
   // that the fold is total over the whole associahedron, not that two
   // parenthesizations are equal.
-  let space_ty = DVBoolTy
+  let space_ty = DValue::DVBoolTy
   let paths = [
     dpath_refl_value(DVBool(true)),
     dpath_refl_value(DVBool(true)),

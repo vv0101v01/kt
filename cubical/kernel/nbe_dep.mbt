@@ -1,4 +1,51 @@
 ///|
+using @face_bdd {
+  type Bdd,
+  type Dim,
+  type Face,
+  bdd_and,
+  bdd_dag_not,
+  bdd_dag_or,
+  bdd_dag_true,
+  bdd_dag_var,
+  bdd_manager_new,
+  bdd_not,
+  bdd_of_face,
+  bdd_or,
+  bdd_tree_cofactor,
+  contains_int,
+  dim_eq_sem,
+  dim_nvars_sem,
+  dim_simplify,
+  dim_subst,
+  dim_vars_into,
+  eval_dim,
+  face_eq_mod,
+  face_holds,
+  face_is_bot_sem,
+  face_is_sat_sem,
+  face_is_top_sem,
+  face_nvars_sem,
+  face_simplify,
+  face_subst,
+  face_vars,
+  face_vars_into,
+  pow2,
+  sort_ints,
+}
+
+///|
+using @finite {
+  type LTy,
+  type PVal,
+  type Ty,
+  type UPath,
+  coe_upath,
+  iso_swap,
+  iso_to_path,
+}
+
+///|
 // Dependent NbE with Pi, Sigma, universes, Path types, data types,
 // higher inductive types, and cubical Kan term constructors.
 //
@@ -34,7 +81,7 @@
 ///|
 /// One branch of a composition system in the AST: a tube body under
 /// the composition dimension, guarded by an ambient face.
-pub struct DTubeTerm {
+pub(all) struct DTubeTerm {
   face : Face
   body : DTerm
 } derive(Debug, Eq)
@@ -53,7 +100,7 @@ pub fn d_tube(face : Face, body : DTerm) -> DTubeTerm {
 ///|
 /// One branch of a partial *element* in the AST.  Unlike a tube body,
 /// this body is an ordinary term in the ambient dimension context.
-pub struct DFaceTerm {
+pub(all) struct DFaceTerm {
   face : Face
   body : DTerm
 } derive(Debug, Eq)
@@ -72,7 +119,7 @@ pub fn d_face_term(face : Face, body : DTerm) -> DFaceTerm {
 ///|
 /// One branch of a Glue type presented directly by an equivalence
 /// `partial ≃ base`, guarded by a face.
-pub struct DEquivBranch {
+pub(all) struct DEquivBranch {
   face : Face
   ty : DTerm
   equiv : DTerm
@@ -90,7 +137,7 @@ pub fn d_equiv_branch(face : Face, ty : DTerm, equiv : DTerm) -> DEquivBranch {
 }
 
 ///|
-pub enum DTerm {
+pub(all) enum DTerm {
   DTVar(Int32)
   DUniv(Int32) // Type_i
   DUnivLevel(DLevelExpr) // Type at a level expression; instantiate before core checking
@@ -172,7 +219,7 @@ pub extend DTerm with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend DTerm with Eq::{not_equal, equal}
 
 ///|
-pub enum DNeutral {
+pub(all) enum DNeutral {
   DNVar(Int32) // level
   DNApp(DNeutral, DValue, DValue) // argument value, argument type
   DNFst(DNeutral, (DValue) -> DValue) // sibling family B
@@ -237,7 +284,7 @@ pub fn tube_branch(face : Face, path : (Dim) -> DValue) -> DTubeBranch {
 /// Semantic composition system.  Smart constructors drop bottom
 /// branches and simplify faces; `dsystem_canonical` additionally
 /// merges convertible bodies and sorts by quoted body.
-pub struct DSystem {
+pub(all) struct DSystem {
   branches : Array[DTubeBranch]
 }
 
@@ -301,7 +348,7 @@ pub struct DGlueEquivParts {
 }
 
 ///|
-pub enum DValue {
+pub(all) enum DValue {
   DVUniv(Int32)
   DVBoolTy
   DVUnitTy

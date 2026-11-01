@@ -279,9 +279,15 @@ pub fn check_phase15_dcube_strength4_phf_and_yoneda_audit() -> Bool {
   // `2^24 = 16,777,216` vertices would explode any grid enumerator!):
   // `(<k> loop(k)) @ (i_0 ∧ ¬i_23)` vs `loop(i_0 ∧ ¬i_23)` on `S^1`.
   let conn_dim = Dim::DAnd(Dim::DVar(23), Dim::DNeg(Dim::DVar(0)))
-  let body_a = DAppDim(DLamDim(DAppDim(DCircleLoop, DVar(0))), conn_dim)
-  let body_b = DAppDim(DCircleLoop, conn_dim)
-  let body_wrong = DAppDim(DCircleLoop, DOr(DVar(23), DNeg(DVar(0))))
+  let body_a = DTerm::DAppDim(
+    DTerm::DLamDim(DTerm::DAppDim(DTerm::DCircleLoop, Dim::DVar(0))),
+    conn_dim,
+  )
+  let body_b = DTerm::DAppDim(DTerm::DCircleLoop, conn_dim)
+  let body_wrong = DTerm::DAppDim(
+    DTerm::DCircleLoop,
+    Dim::DOr(Dim::DVar(23), Dim::DNeg(Dim::DVar(0))),
+  )
   match
     (
       checked_dcube_closed(24, body_a, DCircleTy),
@@ -322,8 +328,8 @@ pub fn check_phase15_bidirectional_bijectivity_and_pi1_circle() -> Bool {
   let a0_ty = reflect_var(0, DVUniv(0))
   let b0_ty = reflect_var(1, DVUniv(0))
   let c0_ty = reflect_var(2, DVUniv(0))
-  let e1_ty = DVEquivTy(a0_ty, b0_ty, 0)
-  let e2_ty = DVEquivTy(b0_ty, c0_ty, 0)
+  let e1_ty = DValue::DVEquivTy(a0_ty, b0_ty, 0)
+  let e2_ty = DValue::DVEquivTy(b0_ty, c0_ty, 0)
   let e1_v = reflect_var(3, e1_ty)
   let e2_v = reflect_var(4, e2_ty)
   let ctx_comp = denv_cons(
@@ -358,7 +364,7 @@ pub fn check_phase15_bidirectional_bijectivity_and_pi1_circle() -> Bool {
   // `[zx : Z, zy : Z, zp : Path Z zx zy, zq : Path Z zx zy]`:
   let zx = reflect_var(0, z_ty)
   let zy = reflect_var(1, z_ty)
-  let eq_zxy = DVPathTy(_ => z_ty, zx, zy)
+  let eq_zxy = DValue::DVPathTy(_ => z_ty, zx, zy)
   let zp = reflect_var(2, eq_zxy)
   let zq = reflect_var(3, eq_zxy)
   let ctx_zset = denv_cons(
@@ -370,7 +376,7 @@ pub fn check_phase15_bidirectional_bijectivity_and_pi1_circle() -> Bool {
     denv_cons(zp, denv_cons(zy, denv_cons(zx, denv_empty()))),
   )
   let z_sq = integer_is_set_value(zx, zy, zp, zq, 16)
-  let z_sq_ty = DVPathTy(_ => eq_zxy, zp, zq)
+  let z_sq_ty = DValue::DVPathTy(_ => eq_zxy, zp, zq)
   if !conv_at(4, 0, eq_zxy, dapp_dim(z_sq, DZero), zp) ||
     !conv_at(4, 0, eq_zxy, dapp_dim(z_sq, DOne), zq) {
     return false
@@ -390,12 +396,14 @@ pub fn check_phase15_bidirectional_bijectivity_and_pi1_circle() -> Bool {
   // 4-variable context `[A : Type_0, B : Type_0, e : Equiv A B, is_set_b : isSet(B)]`:
   let a_open = reflect_var(0, DVUniv(0))
   let b_open = reflect_var(1, DVUniv(0))
-  let eq_ab_ty = DVEquivTy(a_open, b_open, 0)
+  let eq_ab_ty = DValue::DVEquivTy(a_open, b_open, 0)
   let e_open = reflect_var(2, eq_ab_ty)
-  let bset_ty = DVPi(b_open, x1 => {
-    DVPi(b_open, y1 => {
-      let eq1 = DVPathTy(_ => b_open, x1, y1)
-      DVPi(eq1, p1 => DVPi(eq1, q1 => DVPathTy(_ => eq1, p1, q1)))
+  let bset_ty = DValue::DVPi(b_open, x1 => {
+    DValue::DVPi(b_open, y1 => {
+      let eq1 = DValue::DVPathTy(_ => b_open, x1, y1)
+      DValue::DVPi(eq1, p1 => {
+        DValue::DVPi(eq1, q1 => DValue::DVPathTy(_ => eq1, p1, q1))
+      })
     })
   })
   let bset_open = reflect_var(3, bset_ty)
@@ -411,7 +419,7 @@ pub fn check_phase15_bidirectional_bijectivity_and_pi1_circle() -> Bool {
     denv_cons(e_open, denv_cons(b_open, denv_cons(a_open, denv_empty()))),
   )
   let bset_fn = (x1 : DValue, y1 : DValue, p1 : DValue, q1 : DValue) => {
-    let eq1 = DVPathTy(_ => b_open, x1, y1)
+    let eq1 = DValue::DVPathTy(_ => b_open, x1, y1)
     dapp_typed(
       dapp_typed(
         dapp_typed(dapp_typed(bset_open, x1, b_open), y1, b_open),
@@ -530,8 +538,8 @@ pub fn check_phase15_suspension_and_loop_suspension_adjunction() -> Bool {
     return false
   }
   let b_spec = bool_schema()
-  let b_ty = DVInductive(b_spec, [], [])
-  let btrue = DVIntro(b_spec, 1, [], [])
+  let b_ty = DValue::DVInductive(b_spec, [], [])
+  let btrue = DValue::DVIntro(b_spec, 1, [], [])
   let m_true_i = dapp_dim(susp_merid_path_value(b_ty, btrue), DVar(0))
   let lp_i = dapp_dim(circle_hit_loop_path_value(), DVar(0))
   if !conv_at(
@@ -557,7 +565,7 @@ pub fn check_phase15_suspension_and_loop_suspension_adjunction() -> Bool {
   // Negative control: `SuspS(A)` has NO definitional η on neutral points, so
   // replacing `retr` with `λf. refl_f` MUST be rejected!
   let susp_a = susp_type_value(open_a)
-  let fn_ty = DVPi(susp_a, _ => open_b)
+  let fn_ty = DValue::DVPi(susp_a, _ => open_b)
   let cocone_ty = susp_cocone_type_value(open_a, open_b)
   let fake_eta_univ = equiv_make_value(
     fn_ty,
@@ -607,7 +615,7 @@ pub fn check_phase15_freudenthal_suspension_and_wedge_connectivity() -> Bool {
   // ABSTRACT open 0-connected context `[A : Type_0, a0 : A, conn : (a : A) -> ||Path A a0 a||_{-1}]`!
   let a_ty = reflect_var(0, DVUniv(0))
   let a0 = reflect_var(1, a_ty)
-  let conn_ty = DVPi(a_ty, a => {
+  let conn_ty = DValue::DVPi(a_ty, a => {
     prop_trunc_type_value(DVPathTy(_ => a_ty, a0, a))
   })
   let conn_var = reflect_var(2, conn_ty)
@@ -653,16 +661,20 @@ pub fn check_phase15_freudenthal_suspension_and_wedge_connectivity() -> Bool {
   // PLUS univalent twisted instantiation on `Cover(x) -> Cover(x)`:
   let c_ty = circle_hit_type_value()
   let base_c = circle_hit_base_value()
-  let p_fam_ty = DVPi(c_ty, _ => DVPi(c_ty, _ => DVUniv(0)))
+  let p_fam_ty = DValue::DVPi(c_ty, _ => {
+    DValue::DVPi(c_ty, _ => DValue::DVUniv(0))
+  })
   let p_fam_var = reflect_var(0, p_fam_ty)
   let p_open_fam = (xv : DValue, yv : DValue) => {
     dapp_typed(dapp_typed(p_fam_var, xv, c_ty), yv, c_ty)
   }
   let p00 = p_open_fam(base_c, base_c)
-  let p00_set_ty = DVPi(p00, u1 => {
-    DVPi(p00, v1 => {
-      let eq1 = DVPathTy(_ => p00, u1, v1)
-      DVPi(eq1, q1 => DVPi(eq1, q2 => DVPathTy(_ => eq1, q1, q2)))
+  let p00_set_ty = DValue::DVPi(p00, u1 => {
+    DValue::DVPi(p00, v1 => {
+      let eq1 = DValue::DVPathTy(_ => p00, u1, v1)
+      DValue::DVPi(eq1, q1 => {
+        DValue::DVPi(eq1, q2 => DValue::DVPathTy(_ => eq1, q1, q2))
+      })
     })
   })
   let p00_set_var = reflect_var(1, p00_set_ty)
@@ -674,20 +686,20 @@ pub fn check_phase15_freudenthal_suspension_and_wedge_connectivity() -> Bool {
     q1 : DValue,
     q2 : DValue,
   ) => {
-    let eq1 = DVPathTy(_ => p00, u1, v1)
+    let eq1 = DValue::DVPathTy(_ => p00, u1, v1)
     dapp_typed(
       dapp_typed(dapp_typed(dapp_typed(p00_set_var, u1, p00), v1, p00), q1, eq1),
       q2,
       eq1,
     )
   }
-  let fl_ty = DVPi(c_ty, xv => p_open_fam(xv, base_c))
-  let fr_ty = DVPi(c_ty, yv => p_open_fam(base_c, yv))
+  let fl_ty = DValue::DVPi(c_ty, xv => p_open_fam(xv, base_c))
+  let fr_ty = DValue::DVPi(c_ty, yv => p_open_fam(base_c, yv))
   let fl_var = reflect_var(2, fl_ty)
   let fr_var = reflect_var(3, fr_ty)
   let f_left = (xv : DValue) => dapp_typed(fl_var, xv, c_ty)
   let f_right = (yv : DValue) => dapp_typed(fr_var, yv, c_ty)
-  let glue_ty = DVPathTy(_ => p00, f_left(base_c), f_right(base_c))
+  let glue_ty = DValue::DVPathTy(_ => p00, f_left(base_c), f_right(base_c))
   let glue_pt = reflect_var(4, glue_ty)
   let x_open = reflect_var(5, c_ty)
   let y_open = reflect_var(6, c_ty)
@@ -744,7 +756,7 @@ pub fn check_phase15_freudenthal_suspension_and_wedge_connectivity() -> Bool {
   let ext_x_base = wedge_connectivity_circle_set_ext_value(
     p_open_fam, is_set_p00_open, f_left, f_right, glue_pt, x_open, base_c, 16,
   )
-  let left_coh_ty = DVPathTy(
+  let left_coh_ty = DValue::DVPathTy(
     _ => p_open_fam(x_open, base_c),
     ext_x_base,
     f_left(x_open),
@@ -780,7 +792,7 @@ pub fn check_phase15_freudenthal_suspension_and_wedge_connectivity() -> Bool {
   let ext_base_y = wedge_connectivity_circle_set_ext_value(
     p_open_fam, is_set_p00_open, f_left, f_right, glue_pt, base_c, y_open, 16,
   )
-  let right_coh_ty = DVPathTy(
+  let right_coh_ty = DValue::DVPathTy(
     _ => p_open_fam(base_c, y_open),
     ext_base_y,
     f_right(y_open),
@@ -815,7 +827,7 @@ pub fn check_phase15_freudenthal_suspension_and_wedge_connectivity() -> Bool {
 
   // 6C. Open-loop Freudenthal 1-loop suspension homomorphism `Omega^1(A) -> Omega^2(SuspS A)`
   // + identity preservation `sigma_1(refl) = refl` + Hopf `S^1 -> S^2` round-trip path:
-  let loop_a_ty = DVPathTy(_ => a_ty, a0, a0)
+  let loop_a_ty = DValue::DVPathTy(_ => a_ty, a0, a0)
   let p_open = reflect_var(2, loop_a_ty)
   let ctx_ap = denv_cons(
     loop_a_ty,
@@ -824,9 +836,9 @@ pub fn check_phase15_freudenthal_suspension_and_wedge_connectivity() -> Bool {
   let env_ap = denv_cons(p_open, denv_cons(a0, denv_cons(a_ty, denv_empty())))
   let susp_a = susp_type_value(a_ty)
   let north_a = susp_north_value(a_ty)
-  let loop1_susp = DVPathTy(_ => susp_a, north_a, north_a)
+  let loop1_susp = DValue::DVPathTy(_ => susp_a, north_a, north_a)
   let refl_north = dpath_refl_value(north_a)
-  let loop2_susp = DVPathTy(_ => loop1_susp, refl_north, refl_north)
+  let loop2_susp = DValue::DVPathTy(_ => loop1_susp, refl_north, refl_north)
   let sig_p = freudenthal_susp_loop1_to_loop2_value(a_ty, a0, p_open, 16)
   let sig_p_term = quote_at(3, 0, loop2_susp, sig_p)
   match d_check(sig_p_term, loop2_susp, ctx_ap, env_ap, ddim_empty()) {
@@ -841,7 +853,7 @@ pub fn check_phase15_freudenthal_suspension_and_wedge_connectivity() -> Bool {
     16,
   )
   let refl2_north = dpath_refl_value(refl_north)
-  let pres_ty = DVPathTy(_ => loop2_susp, sig_refl, refl2_north)
+  let pres_ty = DValue::DVPathTy(_ => loop2_susp, sig_refl, refl2_north)
   let ctx_a2 = denv_cons(a_ty, denv_cons(DVUniv(0), denv_empty()))
   let env_a2 = denv_cons(a0, denv_cons(a_ty, denv_empty()))
   let pres_term = quote_at(2, 0, pres_ty, pres_refl)

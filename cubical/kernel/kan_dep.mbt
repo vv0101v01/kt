@@ -172,7 +172,7 @@ fn pi_fill_apply(
 }
 
 ///|
-fn pi_fill(
+pub fn pi_fill(
   a : DLine,
   bfam : ((Double) -> DValue) -> DLine,
   tube : ((Double) -> DValue)?,

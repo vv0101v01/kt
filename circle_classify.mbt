@@ -67,7 +67,7 @@ pub fn integer_succ_pred_sect_value(n : DValue) -> DValue {
         eval_inductive_elim(
           n_spec,
           (_, kv) => {
-            let pos_k = DVIntro(z_spec, 1, [], [kv])
+            let pos_k = DValue::DVIntro(z_spec, 1, [], [kv])
             DVPathTy(
               _ => z_ty,
               integer_succ_value(integer_pred_value(pos_k)),
@@ -118,7 +118,7 @@ pub fn integer_pred_succ_retr_value(n : DValue) -> DValue {
         eval_inductive_elim(
           n_spec,
           (_, kv) => {
-            let neg_k = DVIntro(z_spec, 2, [], [kv])
+            let neg_k = DValue::DVIntro(z_spec, 2, [], [kv])
             DVPathTy(
               _ => z_ty,
               integer_pred_value(integer_succ_value(neg_k)),
@@ -459,15 +459,15 @@ fn nat_loop_power_comm_value(
   let loop_ty = circle_loop_space_type_value()
   let motive = (_idx : Array[DValue], n : DValue) => {
     let pk = nat_loop_power_value(step, n, dlevel)
-    DVPathTy(
+    DValue::DVPathTy(
       _ => loop_ty,
       dpath_trans_value(c_ty, step, pk, dlevel),
       dpath_trans_value(c_ty, pk, step, dlevel),
     )
   }
   let zero_case = dpath_refl_value(dpath_trans_value(c_ty, step, step, dlevel))
-  let succ_case = DVLam(m => {
-    DVLam(ih_comm => {
+  let succ_case = DValue::DVLam(m => {
+    DValue::DVLam(ih_comm => {
       let pm = nat_loop_power_value(step, m, dlevel)
       let s1 : DValue = DVPathLam(t => {
         dpath_trans_value(c_ty, step, dapp_dim(ih_comm, t), dlevel)
@@ -501,16 +501,16 @@ pub fn circle_encode_decode_sect_value(n : DValue, dlevel : Int32) -> DValue {
   let zero_z = integer_value(0)
 
   let pos_motive = (_idx : Array[DValue], k : DValue) => {
-    let target = DVIntro(integer_schema(), 1, [], [k])
+    let target = DValue::DVIntro(integer_schema(), 1, [], [k])
     let encoded = circle_encode_value(
       nat_loop_power_value(lp, k, dlevel),
       dlevel,
     )
-    DVPathTy(_ => z, encoded, target)
+    DValue::DVPathTy(_ => z, encoded, target)
   }
   let pos_zero = dpath_refl_value(integer_value(1))
-  let pos_succ = DVLam(m => {
-    DVLam(ih_eq => {
+  let pos_succ = DValue::DVLam(m => {
+    DValue::DVLam(ih_eq => {
       let pm = nat_loop_power_value(lp, m, dlevel)
       let comm = nat_loop_power_comm_value(lp, m, dlevel)
       let p1 : DValue = DVPathLam(t => {
@@ -537,16 +537,16 @@ pub fn circle_encode_decode_sect_value(n : DValue, dlevel : Int32) -> DValue {
   })
 
   let neg_motive = (_idx : Array[DValue], k : DValue) => {
-    let target = DVIntro(integer_schema(), 2, [], [k])
+    let target = DValue::DVIntro(integer_schema(), 2, [], [k])
     let encoded = circle_encode_value(
       nat_loop_power_value(lpi, k, dlevel),
       dlevel,
     )
-    DVPathTy(_ => z, encoded, target)
+    DValue::DVPathTy(_ => z, encoded, target)
   }
   let neg_zero = dpath_refl_value(integer_value(-1))
-  let neg_succ = DVLam(m => {
-    DVLam(ih_eq => {
+  let neg_succ = DValue::DVLam(m => {
+    DValue::DVLam(ih_eq => {
       let pm = nat_loop_power_value(lpi, m, dlevel)
       let comm = nat_loop_power_comm_value(lpi, m, dlevel)
       let p1 : DValue = DVPathLam(t => {
@@ -634,21 +634,23 @@ pub fn circle_decode_step_value(n : DValue, dlevel : Int32) -> DValue {
   let zero_branch = dpath_left_inverse3_value(c_ty, base, lp, dlevel)
 
   let pos_motive = (_idx : Array[DValue], k : DValue) => {
-    let pos_k = DVIntro(z_spec, 1, [], [k])
+    let pos_k = DValue::DVIntro(z_spec, 1, [], [k])
     let lhs = dpath_trans_value(
       c_ty,
       circle_decode_value(integer_pred_value(pos_k), dlevel),
       lp,
       dlevel,
     )
-    DVPathTy(_ => loop_ty, lhs, circle_decode_value(pos_k, dlevel))
+    DValue::DVPathTy(_ => loop_ty, lhs, circle_decode_value(pos_k, dlevel))
   }
   let pos_zero = dpath_left_unit3_value(c_ty, base, lp, dlevel)
-  let pos_succ = DVLam(m => {
-    DVLam(_ih => dpath_sym_value(nat_loop_power_comm_value(lp, m, dlevel)))
+  let pos_succ = DValue::DVLam(m => {
+    DValue::DVLam(_ih => {
+      dpath_sym_value(nat_loop_power_comm_value(lp, m, dlevel))
+    })
   })
 
-  let neg_branch = DVLam(k => {
+  let neg_branch = DValue::DVLam(k => {
     let pk = nat_loop_power_value(lpi, k, dlevel)
     let comm_k = nat_loop_power_comm_value(lpi, k, dlevel)
     let s1 : DValue = DVPathLam(t => {
@@ -726,9 +728,11 @@ pub fn circle_decode_x_value(x : DValue, c : DValue, dlevel : Int32) -> DValue {
   let lp = circle_hit_loop_path_value()
 
   let motive_x = (pt : DValue) => {
-    DVPi(circle_cover_value(pt), _ => DVPathTy(_ => c_ty, base, pt))
+    DValue::DVPi(circle_cover_value(pt), _ => {
+      DValue::DVPathTy(_ => c_ty, base, pt)
+    })
   }
-  let base_fn = DVLam(n => circle_decode_value(n, dlevel))
+  let base_fn = DValue::DVLam(n => circle_decode_value(n, dlevel))
   // Direct CCHM dependent path over `i ↦ Cover(loop i) -> Path S¹ base (loop i)`:
   // for `g : Glue [i=0 ↦ (Z, succ)] Z`, `m = unglue(g) : Z` is total across `i`,
   // and `un_ua_g = hcomp_Z [i=0 ↦ k. retr_succ(g)(k)] (pred(m))` reduces
@@ -792,7 +796,7 @@ pub fn circle_decode_encode_x_retr_value(
   let base = circle_hit_base_value()
   dj_singleton_elim_value(
     (y, q) => {
-      let p_ty = DVPathTy(_ => c_ty, base, y)
+      let p_ty = DValue::DVPathTy(_ => c_ty, base, y)
       DVPathTy(
         _ => p_ty,
         circle_decode_x_value(y, circle_encode_x_value(y, q, dlevel), dlevel),
@@ -818,20 +822,20 @@ pub fn circle_encode_decode_x_sect_with_zset_value(
   let z_ty = integer_type_value()
   let motive_x = (pt : DValue) => {
     let cov = circle_cover_value(pt)
-    DVPi(cov, v => {
-      DVPathTy(
+    DValue::DVPi(cov, v => {
+      DValue::DVPathTy(
         _ => cov,
         circle_encode_x_value(pt, circle_decode_x_value(pt, v, dlevel), dlevel),
         v,
       )
     })
   }
-  let base_fn = DVLam(n => circle_encode_decode_sect_value(n, dlevel))
+  let base_fn = DValue::DVLam(n => circle_encode_decode_sect_value(n, dlevel))
   let loop_line = memo_dim_line(i => {
     motive_x(hit_cell_value(c_spec, 1, [], [], [i]))
   })
   let tr_base = transport_value(loop_line, base_fn, dlevel + 6)
-  let pw_eq = DVLam(n => {
+  let pw_eq = DValue::DVLam(n => {
     let lhs_path = dapp_typed(tr_base, n, z_ty)
     let rhs_path = circle_encode_decode_sect_value(n, dlevel)
     let enc_dec_n = circle_encode_value(circle_decode_value(n, dlevel), dlevel)
@@ -914,7 +918,7 @@ pub fn circle_path_equiv_cover_with_zset_value(
 ) -> DValue {
   let c_ty = circle_hit_type_value()
   let base = circle_hit_base_value()
-  let path_ty = DVPathTy(_ => c_ty, base, x)
+  let path_ty = DValue::DVPathTy(_ => c_ty, base, x)
   let cov_ty = circle_cover_value(x)
   equiv_make_value(
     path_ty,
@@ -972,10 +976,10 @@ pub fn empty_inductive_elim_value(
 ///|
 fn nat_s_code_value(a : DValue, b : DValue, dlevel : Int32) -> DValue {
   let n_spec = nat_schema()
-  let n_ty = DVInductive(n_spec, [], [])
+  let n_ty = DValue::DVInductive(n_spec, [], [])
   let emp = empty_inductive_type_value()
-  let fn_ty = DVPi(n_ty, _ => DVUniv(0))
-  let zero_fn = DVLam(b0 => {
+  let fn_ty = DValue::DVPi(n_ty, _ => DValue::DVUniv(0))
+  let zero_fn = DValue::DVLam(b0 => {
     eval_inductive_elim(
       n_spec,
       (_, _) => DVUniv(0),
@@ -986,9 +990,9 @@ fn nat_s_code_value(a : DValue, b : DValue, dlevel : Int32) -> DValue {
       dlevel,
     )
   })
-  let succ_fn = DVLam(_m => {
-    DVLam(ih_m => {
-      DVLam(b0 => {
+  let succ_fn = DValue::DVLam(_m => {
+    DValue::DVLam(ih_m => {
+      DValue::DVLam(b0 => {
         eval_inductive_elim(
           n_spec,
           (_, _) => DVUniv(0),
@@ -1034,7 +1038,9 @@ fn nat_s_diag_code_is_prop_value(
   dlevel : Int32,
 ) -> DValue {
   let c_aa = nat_s_code_value(a, a, dlevel)
-  let unit_prop = DVLam(_ => DVLam(_ => dpath_refl_value(DVUnit)))
+  let unit_prop = DValue::DVLam(_ => {
+    DValue::DVLam(_ => dpath_refl_value(DVUnit))
+  })
   let fn_a = eval_inductive_elim(
     nat_schema(),
     (_, av) => {
@@ -1058,13 +1064,15 @@ fn nat_s_decode_value(
   dlevel : Int32,
 ) -> DValue {
   let n_spec = nat_schema()
-  let n_ty = DVInductive(n_spec, [], [])
-  let n0 = DVIntro(n_spec, 0, [], [])
-  let succ_ctor = DVLam(v => DVIntro(n_spec, 1, [], [v]))
+  let n_ty = DValue::DVInductive(n_spec, [], [])
+  let n0 = DValue::DVIntro(n_spec, 0, [], [])
+  let succ_ctor = DValue::DVLam(v => DValue::DVIntro(n_spec, 1, [], [v]))
   let dec_ty = (av : DValue, bv : DValue) => {
-    DVPi(nat_s_code_value(av, bv, dlevel), _ => DVPathTy(_ => n_ty, av, bv))
+    DValue::DVPi(nat_s_code_value(av, bv, dlevel), _ => {
+      DValue::DVPathTy(_ => n_ty, av, bv)
+    })
   }
-  let zero_fn = DVLam(b0 => {
+  let zero_fn = DValue::DVLam(b0 => {
     eval_inductive_elim(
       n_spec,
       (_, bv) => dec_ty(n0, bv),
@@ -1088,10 +1096,10 @@ fn nat_s_decode_value(
       dlevel,
     )
   })
-  let succ_fn = DVLam(m => {
-    let sm = DVIntro(n_spec, 1, [], [m])
-    DVLam(ih_m => {
-      DVLam(b0 => {
+  let succ_fn = DValue::DVLam(m => {
+    let sm = DValue::DVIntro(n_spec, 1, [], [m])
+    DValue::DVLam(ih_m => {
+      DValue::DVLam(b0 => {
         eval_inductive_elim(
           n_spec,
           (_, bv) => dec_ty(sm, bv),
@@ -1141,13 +1149,13 @@ fn nat_s_decode_value(
 ///|
 fn nat_s_decode_refl_value(a : DValue, dlevel : Int32) -> DValue {
   let n_spec = nat_schema()
-  let n_ty = DVInductive(n_spec, [], [])
-  let n0 = DVIntro(n_spec, 0, [], [])
-  let succ_ctor = DVLam(v => DVIntro(n_spec, 1, [], [v]))
+  let n_ty = DValue::DVInductive(n_spec, [], [])
+  let n0 = DValue::DVIntro(n_spec, 0, [], [])
+  let succ_ctor = DValue::DVLam(v => DValue::DVIntro(n_spec, 1, [], [v]))
   eval_inductive_elim(
     n_spec,
     (_, av) => {
-      let loop_av = DVPathTy(_ => n_ty, av, av)
+      let loop_av = DValue::DVPathTy(_ => n_ty, av, av)
       DVPathTy(
         _ => loop_av,
         nat_s_decode_value(av, av, nat_s_code_refl_value(av, dlevel), dlevel),
@@ -1241,7 +1249,9 @@ fn integer_diag_code_is_prop_value(
   dlevel : Int32,
 ) -> DValue {
   let c_xx = integer_eq_code_value(x, x, dlevel)
-  let unit_prop = DVLam(_ => DVLam(_ => dpath_refl_value(DVUnit)))
+  let unit_prop = DValue::DVLam(_ => {
+    DValue::DVLam(_ => dpath_refl_value(DVUnit))
+  })
   let fn_x = eval_inductive_elim(
     integer_schema(),
     (_, xv) => {
@@ -1278,12 +1288,14 @@ fn integer_eq_decode_value(
 ) -> DValue {
   let z_spec = integer_schema()
   let z_ty = integer_type_value()
-  let n_ty = DVInductive(nat_schema(), [], [])
+  let n_ty = DValue::DVInductive(nat_schema(), [], [])
   let z0 = integer_value(0)
-  let pos_ctor = DVLam(v => DVIntro(z_spec, 1, [], [v]))
-  let neg_ctor = DVLam(v => DVIntro(z_spec, 2, [], [v]))
+  let pos_ctor = DValue::DVLam(v => DValue::DVIntro(z_spec, 1, [], [v]))
+  let neg_ctor = DValue::DVLam(v => DValue::DVIntro(z_spec, 2, [], [v]))
   let dec_ty = (xv : DValue, yv : DValue) => {
-    DVPi(integer_eq_code_value(xv, yv, dlevel), _ => DVPathTy(_ => z_ty, xv, yv))
+    DValue::DVPi(integer_eq_code_value(xv, yv, dlevel), _ => {
+      DValue::DVPathTy(_ => z_ty, xv, yv)
+    })
   }
   let f_xy = eval_inductive_elim(
     z_spec,
@@ -1319,7 +1331,7 @@ fn integer_eq_decode_value(
         dlevel,
       ),
       DVLam(a => {
-        let pa = DVIntro(z_spec, 1, [], [a])
+        let pa = DValue::DVIntro(z_spec, 1, [], [a])
         eval_inductive_elim(
           z_spec,
           (_, yv) => dec_ty(pa, yv),
@@ -1357,7 +1369,7 @@ fn integer_eq_decode_value(
         )
       }),
       DVLam(a => {
-        let na = DVIntro(z_spec, 2, [], [a])
+        let na = DValue::DVIntro(z_spec, 2, [], [a])
         eval_inductive_elim(
           z_spec,
           (_, yv) => dec_ty(na, yv),
@@ -1407,14 +1419,14 @@ fn integer_eq_decode_value(
 fn integer_eq_decode_refl_value(x : DValue, dlevel : Int32) -> DValue {
   let z_spec = integer_schema()
   let z_ty = integer_type_value()
-  let n_ty = DVInductive(nat_schema(), [], [])
-  let pos_ctor = DVLam(v => DVIntro(z_spec, 1, [], [v]))
-  let neg_ctor = DVLam(v => DVIntro(z_spec, 2, [], [v]))
+  let n_ty = DValue::DVInductive(nat_schema(), [], [])
+  let pos_ctor = DValue::DVLam(v => DValue::DVIntro(z_spec, 1, [], [v]))
+  let neg_ctor = DValue::DVLam(v => DValue::DVIntro(z_spec, 2, [], [v]))
   let z0 = integer_value(0)
   eval_inductive_elim(
     z_spec,
     (_, xv) => {
-      let loop_xv = DVPathTy(_ => z_ty, xv, xv)
+      let loop_xv = DValue::DVPathTy(_ => z_ty, xv, xv)
       DVPathTy(
         _ => loop_xv,
         integer_eq_decode_value(
@@ -1476,7 +1488,7 @@ fn integer_loop_trivial_value(
   )
   let rp0 = dj_singleton_elim_value(
     (y1, r1) => {
-      let eq_ty = DVPathTy(_ => z_ty, x, y1)
+      let eq_ty = DValue::DVPathTy(_ => z_ty, x, y1)
       DVPathTy(
         _ => eq_ty,
         integer_eq_decode_value(x, y1, encode_at(r1), dlevel),
@@ -1519,10 +1531,12 @@ pub fn integer_is_set_value(
 ) -> DValue {
   let z_ty = integer_type_value()
   let fam = (y1 : DValue, q1 : DValue) => {
-    let p_ty = DVPathTy(_ => z_ty, x, y1)
-    DVPi(p_ty, p1 => DVPathTy(_ => p_ty, p1, q1))
+    let p_ty = DValue::DVPathTy(_ => z_ty, x, y1)
+    DValue::DVPi(p_ty, p1 => DValue::DVPathTy(_ => p_ty, p1, q1))
   }
-  let refl_case = DVLam(p0 => integer_loop_trivial_value(x, p0, dlevel + 2))
+  let refl_case = DValue::DVLam(p0 => {
+    integer_loop_trivial_value(x, p0, dlevel + 2)
+  })
   let fn_at_q = dj_singleton_elim_value(fam, refl_case, q, dlevel + 1)
   dapp_typed(fn_at_q, p, DVPathTy(_ => z_ty, x, y))
 }

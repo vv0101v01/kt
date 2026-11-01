@@ -14,12 +14,19 @@ pub fn check_ast_paths() -> Bool {
     return false
   }
   // A varying PathP line: Bool presented through an identity Glue.
-  let glue_line = DHComp(DUniv(0), [d_tube(FEq1(DVar(0)), DBoolTy)], DBoolTy)
+  let glue_line = DTerm::DHComp(
+    DTerm::DUniv(0),
+    [d_tube(FEq1(DVar(0)), DBoolTy)],
+    DTerm::DBoolTy,
+  )
   if dep_type_of_closed(DPathP(glue_line, DBoolLit(true), DBoolLit(true))) !=
     Some(DUniv(0)) {
     return false
   }
-  let refl0 = DAnn(DLamDim(DNatZero), DPath(DNatTy, DNatZero, DNatZero))
+  let refl0 = DTerm::DAnn(
+    DTerm::DLamDim(DTerm::DNatZero),
+    DTerm::DPath(DTerm::DNatTy, DTerm::DNatZero, DTerm::DNatZero),
+  )
   if dep_nf_closed(DAppDim(refl0, DOne), DNatTy) != Some(DNatZero) {
     return false
   }
@@ -32,23 +39,28 @@ pub fn check_ast_paths() -> Bool {
     Some(DTorusBase) {
     return false
   }
-  let square_ty = DPathP(
-    DPath(
-      DTorusTy,
-      DAppDim(DTorusLoopA, DVar(0)),
-      DAppDim(DTorusLoopA, DVar(0)),
+  let square_ty = DTerm::DPathP(
+    DTerm::DPath(
+      DTerm::DTorusTy,
+      DTerm::DAppDim(DTerm::DTorusLoopA, Dim::DVar(0)),
+      DTerm::DAppDim(DTerm::DTorusLoopA, Dim::DVar(0)),
     ),
-    DTorusLoopB,
-    DTorusLoopB,
+    DTerm::DTorusLoopB,
+    DTerm::DTorusLoopB,
   )
   dep_check_closed(DTorusSquare, square_ty)
 }
 
 ///|
 pub fn check_ast_nat_pred() -> Bool {
-  let pred = DLam(
-    DNatTy,
-    DNatElim(DNatTy, DNatZero, DLam(DNatTy, DLam(DNatTy, DTVar(1))), DTVar(0)),
+  let pred = DTerm::DLam(
+    DTerm::DNatTy,
+    DTerm::DNatElim(
+      DTerm::DNatTy,
+      DTerm::DNatZero,
+      DTerm::DLam(DTerm::DNatTy, DTerm::DLam(DTerm::DNatTy, DTerm::DTVar(1))),
+      DTerm::DTVar(0),
+    ),
   )
   if dep_nf_closed(DApp(pred, d_nat_lit(2)), DNatTy) != Some(d_nat_lit(1)) {
     return false
@@ -59,16 +71,18 @@ pub fn check_ast_nat_pred() -> Bool {
 ///|
 pub fn check_ast_nat_dep() -> Bool {
   // Dependent Nat elimination into refl paths.
-  let refl_step = DLam(
-    DNatTy,
-    DLam(
-      DPath(DNatTy, DTVar(0), DTVar(0)),
-      DLamDim(DSucc(DAppDim(DTVar(0), DVar(0)))),
+  let refl_step = DTerm::DLam(
+    DTerm::DNatTy,
+    DTerm::DLam(
+      DTerm::DPath(DTerm::DNatTy, DTerm::DTVar(0), DTerm::DTVar(0)),
+      DTerm::DLamDim(
+        DTerm::DSucc(DTerm::DAppDim(DTerm::DTVar(0), Dim::DVar(0))),
+      ),
     ),
   )
-  let dep_refl = DNatElim(
-    DPath(DNatTy, DTVar(0), DTVar(0)),
-    DLamDim(DNatZero),
+  let dep_refl = DTerm::DNatElim(
+    DTerm::DPath(DTerm::DNatTy, DTerm::DTVar(0), DTerm::DTVar(0)),
+    DTerm::DLamDim(DTerm::DNatZero),
     refl_step,
     d_nat_lit(1),
   )
@@ -79,23 +93,29 @@ pub fn check_ast_nat_dep() -> Bool {
 ///|
 pub fn check_ast_list_len() -> Bool {
   // List length by dependent elimination.
-  let step = DLam(
-    DBoolTy,
-    DLam(DListTy(DBoolTy), DLam(DNatTy, DSucc(DTVar(0)))),
+  let step = DTerm::DLam(
+    DTerm::DBoolTy,
+    DTerm::DLam(
+      DTerm::DListTy(DTerm::DBoolTy),
+      DTerm::DLam(DTerm::DNatTy, DTerm::DSucc(DTerm::DTVar(0))),
+    ),
   )
-  let xs = DAnn(
-    DCons(DBoolLit(true), DCons(DBoolLit(false), DNil)),
-    DListTy(DBoolTy),
+  let xs = DTerm::DAnn(
+    DTerm::DCons(
+      DTerm::DBoolLit(true),
+      DTerm::DCons(DTerm::DBoolLit(false), DTerm::DNil),
+    ),
+    DTerm::DListTy(DTerm::DBoolTy),
   )
-  let len = DListElim(DNatTy, DNatZero, step, xs)
+  let len = DTerm::DListElim(DTerm::DNatTy, DTerm::DNatZero, step, xs)
   dep_nf_closed(len, DNatTy) == Some(d_nat_lit(2))
 }
 
 ///|
 pub fn check_ast_bool_elim() -> Bool {
-  let not_to_nat = DLam(
-    DBoolTy,
-    DBoolElim(DNatTy, d_nat_lit(0), d_nat_lit(1), DTVar(0)),
+  let not_to_nat = DTerm::DLam(
+    DTerm::DBoolTy,
+    DTerm::DBoolElim(DTerm::DNatTy, d_nat_lit(0), d_nat_lit(1), DTerm::DTVar(0)),
   )
   dep_nf_closed(DApp(not_to_nat, DBoolLit(true)), DNatTy) == Some(DNatZero) &&
   dep_nf_closed(DApp(not_to_nat, DBoolLit(false)), DNatTy) == Some(d_nat_lit(1))
@@ -111,22 +131,22 @@ pub fn check_ast_data() -> Bool {
 
 ///|
 pub fn check_ast_hits() -> Bool {
-  let circle_el = DCircleElim(
-    DBoolTy,
-    DBoolLit(true),
-    DLamDim(DBoolLit(true)),
-    DCircleBase,
+  let circle_el = DTerm::DCircleElim(
+    DTerm::DBoolTy,
+    DTerm::DBoolLit(true),
+    DTerm::DLamDim(DTerm::DBoolLit(true)),
+    DTerm::DCircleBase,
   )
   if dep_nf_closed(circle_el, DBoolTy) != Some(DBoolLit(true)) {
     return false
   }
   // The eliminator computes along loop.
-  let along_loop = DLamDim(
-    DCircleElim(
-      DBoolTy,
-      DBoolLit(true),
-      DLamDim(DBoolLit(true)),
-      DAppDim(DCircleLoop, DVar(0)),
+  let along_loop = DTerm::DLamDim(
+    DTerm::DCircleElim(
+      DTerm::DBoolTy,
+      DTerm::DBoolLit(true),
+      DTerm::DLamDim(DTerm::DBoolLit(true)),
+      DTerm::DAppDim(DTerm::DCircleLoop, Dim::DVar(0)),
     ),
   )
   if !dep_def_eq_closed(
@@ -137,34 +157,43 @@ pub fn check_ast_hits() -> Bool {
     return false
   }
   // Dependent circle motive: refl at every point, checked at base.
-  let dep_circle = DCircleElim(
-    DPath(DCircleTy, DTVar(0), DTVar(0)),
-    DLamDim(DCircleBase),
-    DLamDim(DLamDim(DAppDim(DCircleLoop, DVar(1)))),
-    DCircleBase,
+  let dep_circle = DTerm::DCircleElim(
+    DTerm::DPath(DTerm::DCircleTy, DTerm::DTVar(0), DTerm::DTVar(0)),
+    DTerm::DLamDim(DTerm::DCircleBase),
+    DTerm::DLamDim(
+      DTerm::DLamDim(DTerm::DAppDim(DTerm::DCircleLoop, Dim::DVar(1))),
+    ),
+    DTerm::DCircleBase,
   )
   if dep_nf_closed(dep_circle, DPath(DCircleTy, DCircleBase, DCircleBase)) !=
     Some(DLamDim(DCircleBase)) {
     return false
   }
   // Torus eliminator at base and along the whole square.
-  let torus_el = DTorusElim(DBoolTy, DBoolLit(true), DTorusBase)
+  let torus_el = DTerm::DTorusElim(
+    DTerm::DBoolTy,
+    DTerm::DBoolLit(true),
+    DTerm::DTorusBase,
+  )
   if dep_nf_closed(torus_el, DBoolTy) != Some(DBoolLit(true)) {
     return false
   }
-  let along_square = DLamDim(
-    DLamDim(
-      DTorusElim(
-        DBoolTy,
-        DBoolLit(true),
-        DAppDim(DAppDim(DTorusSquare, DVar(1)), DVar(0)),
+  let along_square = DTerm::DLamDim(
+    DTerm::DLamDim(
+      DTerm::DTorusElim(
+        DTerm::DBoolTy,
+        DTerm::DBoolLit(true),
+        DTerm::DAppDim(
+          DTerm::DAppDim(DTerm::DTorusSquare, Dim::DVar(1)),
+          Dim::DVar(0),
+        ),
       ),
     ),
   )
-  let square_bool_ty = DPathP(
-    DPath(DBoolTy, DBoolLit(true), DBoolLit(true)),
-    DLamDim(DBoolLit(true)),
-    DLamDim(DBoolLit(true)),
+  let square_bool_ty = DTerm::DPathP(
+    DTerm::DPath(DTerm::DBoolTy, DTerm::DBoolLit(true), DTerm::DBoolLit(true)),
+    DTerm::DLamDim(DTerm::DBoolLit(true)),
+    DTerm::DLamDim(DTerm::DBoolLit(true)),
   )
   dep_def_eq_closed(
     along_square,
@@ -180,16 +209,25 @@ pub fn check_ast_coe_terms() -> Bool {
     Some(DBoolLit(true)) {
     return false
   }
-  let coe_pi = DApp(
-    DCoe(DPi(DBoolTy, DBoolTy), DZero, DOne, DLam(DBoolTy, DTVar(0))),
-    DBoolLit(true),
+  let coe_pi = DTerm::DApp(
+    DTerm::DCoe(
+      DTerm::DPi(DTerm::DBoolTy, DTerm::DBoolTy),
+      Dim::DZero,
+      Dim::DOne,
+      DTerm::DLam(DTerm::DBoolTy, DTerm::DTVar(0)),
+    ),
+    DTerm::DBoolLit(true),
   )
   if dep_nf_closed(coe_pi, DBoolTy) != Some(DBoolLit(true)) {
     return false
   }
   // coe along the identity Glue line over Bool (packs, composes in
   // Glue, and unpacks at the decided face).
-  let glue_line = DHComp(DUniv(0), [d_tube(FEq1(DVar(0)), DBoolTy)], DBoolTy)
+  let glue_line = DTerm::DHComp(
+    DTerm::DUniv(0),
+    [d_tube(FEq1(DVar(0)), DBoolTy)],
+    DTerm::DBoolTy,
+  )
   dep_nf_closed(DCoe(glue_line, DZero, DOne, DBoolLit(true)), DBoolTy) ==
   Some(DBoolLit(true))
 }
@@ -197,27 +235,44 @@ pub fn check_ast_coe_terms() -> Bool {
 ///|
 pub fn check_ast_hcomp_data_terms() -> Bool {
   // hcomp / hfill at data types.
-  let hc_nat = DHComp(DNatTy, [d_tube(FEq0(DVar(0)), DNatZero)], DNatZero)
+  let hc_nat = DTerm::DHComp(
+    DTerm::DNatTy,
+    [d_tube(FEq0(DVar(0)), DNatZero)],
+    DTerm::DNatZero,
+  )
   if dep_nf_closed(hc_nat, DNatTy) != Some(DNatZero) {
     return false
   }
-  let fill0 = DHFill(DNatTy, [d_tube(FBot, DNatZero)], DNatZero, DZero)
-  let fill1 = DHFill(DNatTy, [d_tube(FBot, DNatZero)], DNatZero, DOne)
+  let fill0 = DTerm::DHFill(
+    DTerm::DNatTy,
+    [d_tube(FBot, DNatZero)],
+    DTerm::DNatZero,
+    Dim::DZero,
+  )
+  let fill1 = DTerm::DHFill(
+    DTerm::DNatTy,
+    [d_tube(FBot, DNatZero)],
+    DTerm::DNatZero,
+    Dim::DOne,
+  )
   if dep_nf_closed(fill0, DNatTy) != Some(DNatZero) ||
     dep_nf_closed(fill1, DNatTy) != Some(DNatZero) {
     return false
   }
-  let two_branch = DHComp(
-    DNatTy,
+  let two_branch = DTerm::DHComp(
+    DTerm::DNatTy,
     [d_tube(FEq0(DVar(0)), DNatZero), d_tube(FEq1(DVar(0)), DNatZero)],
-    DNatZero,
+    DTerm::DNatZero,
   )
   if dep_nf_closed(two_branch, DNatTy) != Some(DNatZero) {
     return false
   }
-  let list_ty = DListTy(DBoolTy)
-  let one_xs = DAnn(DCons(DBoolLit(true), DNil), list_ty)
-  let hc_list = DHComp(
+  let list_ty = DTerm::DListTy(DTerm::DBoolTy)
+  let one_xs = DTerm::DAnn(
+    DTerm::DCons(DTerm::DBoolLit(true), DTerm::DNil),
+    list_ty,
+  )
+  let hc_list = DTerm::DHComp(
     list_ty,
     [d_tube(FEq0(DVar(0)), DCons(DBoolLit(true), DNil))],
     one_xs,
@@ -228,8 +283,8 @@ pub fn check_ast_hcomp_data_terms() -> Bool {
 ///|
 pub fn check_ast_hcomp_sigma_path_terms() -> Bool {
   // hcomp at Sigma and at a Path type.
-  let sig_ty = DSigma(DBoolTy, DBoolTy)
-  let pair = DPair(DBoolLit(true), DBoolLit(false))
+  let sig_ty = DTerm::DSigma(DTerm::DBoolTy, DTerm::DBoolTy)
+  let pair = DTerm::DPair(DTerm::DBoolLit(true), DTerm::DBoolLit(false))
   if !dep_def_eq_closed(
       DHComp(sig_ty, [d_tube(FBot, pair)], pair),
       pair,
@@ -237,8 +292,8 @@ pub fn check_ast_hcomp_sigma_path_terms() -> Bool {
     ) {
     return false
   }
-  let path_ty = DPath(DNatTy, DNatZero, DNatZero)
-  let refl0 = DLamDim(DNatZero)
+  let path_ty = DTerm::DPath(DTerm::DNatTy, DTerm::DNatZero, DTerm::DNatZero)
+  let refl0 = DTerm::DLamDim(DTerm::DNatZero)
   dep_def_eq_closed(
     DHComp(path_ty, [d_tube(FBot, refl0)], refl0),
     refl0,
@@ -270,7 +325,11 @@ pub fn check_ast_hcomp_hit_terms() -> Bool {
 pub fn check_ast_hcomp_univ_term() -> Bool {
   // hcomp in the universe is a Glue type; its pairs must agree on the
   // face, and quoting reproduces the hcomp syntax.
-  let glue_ty = DHComp(DUniv(0), [d_tube(FEq1(DVar(0)), DBoolTy)], DBoolTy)
+  let glue_ty = DTerm::DHComp(
+    DTerm::DUniv(0),
+    [d_tube(FEq1(DVar(0)), DBoolTy)],
+    DTerm::DBoolTy,
+  )
   match as_glue(deval_dim(glue_ty, denv_empty(), ddim_empty())) {
     Some(_) => ()
     None => return false
@@ -296,7 +355,7 @@ pub fn check_ast_kan_terms() -> Bool {
 ///|
 pub fn check_ast_kan_types() -> Bool {
   // Pi: comp with a top tube returns the tube cap function.
-  let pi_ty = DVPi(DVBoolTy, _ => DVBoolTy)
+  let pi_ty = DValue::DVPi(DValue::DVBoolTy, _ => DValue::DVBoolTy)
   let idv : DValue = DVLam(x => x)
   let notv : DValue = DVLam(x => dbool_not(x))
   let capped = hcomp_value(
@@ -325,8 +384,14 @@ pub fn check_ast_kan_types() -> Bool {
   // composed path starts at the *target* left endpoint.
   let path_line = (j : Dim) => {
     match dim_simplify(j) {
-      DOne => DVPathTy(_ => DVNatTy, dv_nat_lit(1), DVZeroNat)
-      _ => DVPathTy(_ => DVNatTy, DVZeroNat, DVZeroNat)
+      DOne =>
+        DValue::DVPathTy(_ => DValue::DVNatTy, dv_nat_lit(1), DValue::DVZeroNat)
+      _ =>
+        DValue::DVPathTy(
+          _ => DValue::DVNatTy,
+          DValue::DVZeroNat,
+          DValue::DVZeroNat,
+        )
     }
   }
   let moved = comp_value(
@@ -489,7 +554,7 @@ pub fn check_ast_kan_types() -> Bool {
   // Pi contravariance over the moving Path domain above: the target
   // argument (a path starting at 1) is filled *backwards* to a path
   // starting at 0 before the source function reads its start point.
-  let pi_line = (j : Dim) => DVPi(path_line(j), _ => DVNatTy)
+  let pi_line = (j : Dim) => DValue::DVPi(path_line(j), _ => DValue::DVNatTy)
   let reader : DValue = DVLam(p => dapp_dim(p, DZero))
   let moved_reader = comp_value(pi_line, dsystem_empty(), reader, 0)
   let target_arg : DValue = DVPathLam(k => {
@@ -506,8 +571,12 @@ pub fn check_ast_kan_types() -> Bool {
   // component moves to a path starting at 1, the second component
   // must start at 1 as well.
   let sigma_line = (j : Dim) => {
-    DVSigma(path_line(j), p => {
-      DVPathTy(_ => DVNatTy, dapp_dim(p, DZero), DVZeroNat)
+    DValue::DVSigma(path_line(j), p => {
+      DValue::DVPathTy(
+        _ => DValue::DVNatTy,
+        dapp_dim(p, DZero),
+        DValue::DVZeroNat,
+      )
     })
   }
   let sigma_base : DValue = DVPair(
@@ -516,7 +585,11 @@ pub fn check_ast_kan_types() -> Bool {
   )
   let sigma_out = comp_value(sigma_line, dsystem_empty(), sigma_base, 0)
   let fam0 = (x : DValue) => {
-    DVPathTy(_ => DVNatTy, dapp_dim(x, DZero), DVZeroNat)
+    DValue::DVPathTy(
+      _ => DValue::DVNatTy,
+      dapp_dim(x, DZero),
+      DValue::DVZeroNat,
+    )
   }
   let first_out = dfst_typed(sigma_out, fam0)
   let second_out = dsnd_typed(sigma_out, path_line(DOne), fam0)

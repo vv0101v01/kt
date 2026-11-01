@@ -1028,7 +1028,7 @@ pub fn check_module_interleaved_items() -> Bool {
     params=[dtelescope_entry("A", DUniv(0)), dtelescope_entry("a", DTVar(0))],
     decls=[module_decl("held", DTVar(1), DTVar(0))],
   )
-  let two = DSucc(DSucc(DNatZero))
+  let two = DTerm::DSucc(DTerm::DSucc(DTerm::DNatZero))
   let top_decls = [
     module_decl("seed", DNatTy, two),
     module_decl("answer", DNatTy, DTVar(0)),

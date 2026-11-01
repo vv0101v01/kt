@@ -350,7 +350,11 @@ fn check_path_algebra_algorithms() -> Bool {
 
 ///|
 fn check_cubical_term_builders() -> Bool {
-  let path_ty = DPath(DCircleTy, DCircleBase, DCircleBase)
+  let path_ty = DTerm::DPath(
+    DTerm::DCircleTy,
+    DTerm::DCircleBase,
+    DTerm::DCircleBase,
+  )
   let trans = dpath_trans_term(DCircleTy, DCircleLoop, DCircleLoop)
   if !dep_check_closed(trans, path_ty) {
     return false
@@ -363,13 +367,17 @@ fn check_cubical_term_builders() -> Bool {
   if !dep_check_closed(cong, path_ty) {
     return false
   }
-  let id_fun = DLam(DCircleTy, DTVar(0))
-  let pointwise = DLam(DCircleTy, DLamDim(DTVar(0)))
-  let fun_path_ty = DPath(DPi(DCircleTy, DCircleTy), id_fun, id_fun)
+  let id_fun = DTerm::DLam(DTerm::DCircleTy, DTerm::DTVar(0))
+  let pointwise = DTerm::DLam(DTerm::DCircleTy, DTerm::DLamDim(DTerm::DTVar(0)))
+  let fun_path_ty = DTerm::DPath(
+    DTerm::DPi(DTerm::DCircleTy, DTerm::DCircleTy),
+    id_fun,
+    id_fun,
+  )
   if !dep_check_closed(dfunext_term(DCircleTy, pointwise), fun_path_ty) {
     return false
   }
-  let ua_line = DAppDim(DUa(bool_not_equiv_term()), DVar(0))
+  let ua_line = DTerm::DAppDim(DTerm::DUa(bool_not_equiv_term()), Dim::DVar(0))
   dep_nf_closed(dtransport_term(ua_line, DBoolLit(true)), DBoolTy) ==
   Some(DBoolLit(false)) &&
   dep_nf_closed(dtransport_back_term(ua_line, DBoolLit(true)), DBoolTy) ==
@@ -735,9 +743,9 @@ pub fn dpath_lr_unit_coherence4_value(
   dlevel : Int32,
 ) -> DValue {
   let e = dpath_refl_value(b)
-  let loop1_ty = DVPathTy(_ => ty, b, b)
+  let loop1_ty = DValue::DVPathTy(_ => ty, b, b)
   let ee = dpath_trans_value(ty, e, e, dlevel)
-  let unit_path_ty = DVPathTy(_ => loop1_ty, ee, e)
+  let unit_path_ty = DValue::DVPathTy(_ => loop1_ty, ee, e)
   let sq = dpath_trans_square_value(ty, e, e, dlevel)
   let sq_at = (u : Dim, v : Dim) => dapp_dim(dapp_dim(sq, u), v)
   let diag : DValue = DVPathLam(i => sq_at(i, i))
@@ -808,7 +816,7 @@ pub fn dpath_eckmann_hilton3_value(
   dlevel : Int32,
 ) -> DValue {
   let e = dpath_refl_value(b)
-  let y_ty = DVPathTy(_ => ty, b, b)
+  let y_ty = DValue::DVPathTy(_ => ty, b, b)
   let c0 = dpath_right_unit3_value(ty, b, e, dlevel) // ee = e in y_ty
   let lr_coh = dpath_lr_unit_coherence4_value(ty, b, dlevel) // l0 = c0
 
@@ -830,7 +838,7 @@ pub fn dpath_eckmann_hilton3_value(
   let conj_by_c0 = (loop_ee : DValue) => {
     subst_value(pt => DVPathTy(_ => y_ty, pt, pt), c0, loop_ee, dlevel + 4)
   }
-  let comm_conj = DVPathLam(t => conj_by_c0(dapp_dim(raw_comm, t)))
+  let comm_conj = DValue::DVPathLam(t => conj_by_c0(dapp_dim(raw_comm, t)))
 
   // Connect `conj_by_c0(a_loop)` to `alpha`: naturality of `right_unit` gives
   // a dependent path over `u ↦ Path(y_ty, c0(u), c0(u))` from `a_loop` to `alpha`,
@@ -866,10 +874,10 @@ pub fn dpath_eckmann_hilton3_value(
   let dep_to_subst_eq = (x_ee : DValue, dep_p : DValue) => {
     let fam = (s : Dim) => {
       let pt = dapp_dim(c0, s)
-      DVPathTy(_ => y_ty, pt, pt)
+      DValue::DVPathTy(_ => y_ty, pt, pt)
     }
     let tf = transport_filler_value(fam, x_ee, dlevel + 4)
-    DVPathLam(w => {
+    DValue::DVPathLam(w => {
       let branches = dsystem_of([
         tube_branch(face_simplify(FEq0(w)), s => tf(s)),
         tube_branch(face_simplify(FEq1(w)), s => dapp_dim(dep_p, s)),
@@ -885,7 +893,7 @@ pub fn dpath_eckmann_hilton3_value(
   let subst_comp_eq = (p_ee : DValue, q_ee : DValue) => {
     let fam = (s : Dim) => {
       let pt = dapp_dim(c0, s)
-      DVPathTy(_ => y_ty, pt, pt)
+      DValue::DVPathTy(_ => y_ty, pt, pt)
     }
     let pf = transport_filler_value(fam, p_ee, dlevel + 4)
     let qf = transport_filler_value(fam, q_ee, dlevel + 4)
@@ -894,7 +902,7 @@ pub fn dpath_eckmann_hilton3_value(
       dpath_trans_value(y_ty, p_ee, q_ee, dlevel),
       dlevel + 4,
     )
-    DVPathLam(w => {
+    DValue::DVPathLam(w => {
       let branches = dsystem_of([
         tube_branch(face_simplify(FEq0(w)), s => pq_f(s)),
         tube_branch(face_simplify(FEq1(w)), s => {
@@ -1000,7 +1008,7 @@ pub fn dpath_pentagon_path_bot3_value(
 ) -> DValue {
   let x0 = dapp_dim(p, DZero)
   let x4 = dapp_dim(v, DOne)
-  let path_ty = DVPathTy(_ => space_ty, x0, x4)
+  let path_ty = DValue::DVPathTy(_ => space_ty, x0, x4)
   let qu = dpath_trans_value(space_ty, q, u, dlevel)
   let assoc_pqu = dpath_assoc_path3_value(space_ty, p, q, u, dlevel)
   let step1 : DValue = DVPathLam(t => {
@@ -1065,7 +1073,7 @@ pub fn dpath_pentagon4_value(
   let pent_type = (p : DValue, q : DValue, u : DValue, v : DValue) => {
     let x0 = dapp_dim(p, DZero)
     let x4 = dapp_dim(v, DOne)
-    let path1_ty = DVPathTy(_ => space_ty, x0, x4)
+    let path1_ty = DValue::DVPathTy(_ => space_ty, x0, x4)
     let pqu = dpath_trans_value(
       space_ty,
       dpath_trans_value(space_ty, p, q, dlevel),
@@ -1080,10 +1088,10 @@ pub fn dpath_pentagon4_value(
       dlevel,
     )
     let rhs = dpath_trans_value(space_ty, p, quv, dlevel)
-    let path2_ty = DVPathTy(_ => path1_ty, lhs, rhs)
+    let path2_ty = DValue::DVPathTy(_ => path1_ty, lhs, rhs)
     let top3 = dpath_pentagon_path_top3_value(space_ty, p, q, u, v, dlevel)
     let bot3 = dpath_pentagon_path_bot3_value(space_ty, p, q, u, v, dlevel)
-    DVPathTy(_ => path2_ty, top3, bot3)
+    DValue::DVPathTy(_ => path2_ty, top3, bot3)
   }
   let refl_r = dpath_refl_value(r)
   let base_cell = dpath_refl_value(
@@ -1200,7 +1208,7 @@ pub fn dpathp_eq_in_set_family_value(
     ])
     fill_value(mline, sys, u0, dlevel + 2)(i)
   }
-  let top_cap = DVPathLam(r => open_fill(r, DOne))
+  let top_cap = DValue::DVPathLam(r => open_fill(r, DOne))
   let lid = is_set_line1(u1, u1, top_cap, dpath_refl_value(u1))
   DVPathLam(r => {
     DVPathLam(i => {
@@ -1262,7 +1270,7 @@ pub fn dprop_is_set_value(
   let canon_to_path = (r : DValue) => {
     dj_singleton_elim_value(
       (y1, r1) => {
-        let eq_ty = DVPathTy(_ => p_ty, x, y1)
+        let eq_ty = DValue::DVPathTy(_ => p_ty, x, y1)
         DVPathTy(_ => eq_ty, canon(y1), r1)
       },
       base_cancel,
@@ -1270,7 +1278,7 @@ pub fn dprop_is_set_value(
       dlevel + 3,
     )
   }
-  let path_ty = DVPathTy(_ => p_ty, x, y)
+  let path_ty = DValue::DVPathTy(_ => p_ty, x, y)
   dpath_trans_value(
     path_ty,
     dpath_sym_value(canon_to_path(p)),
@@ -1322,7 +1330,7 @@ pub fn subst_trans_eq_value(
       subst_value(fam, p, u0, dlevel + 1),
       dlevel + 2,
     )
-    DVPathTy(_ => fam(z1), lhs, rhs)
+    DValue::DVPathTy(_ => fam(z1), lhs, rhs)
   }
   let ru_p = dpath_right_unit3_value(a_ty, y0, p, dlevel)
   let sp = subst_value(fam, p, u0, dlevel + 1)
@@ -1351,9 +1359,9 @@ pub fn pathp_equiv_transport_eq_value(
 ) -> DValue {
   let mline = memo_dim_line(line)
   let filler = transport_filler_value(mline, v0, dlevel)
-  let src = DVPathTy(mline, v0, v1)
+  let src = DValue::DVPathTy(mline, v0, v1)
   let tr_v0 = transport_value(mline, v0, dlevel)
-  let dst = DVPathTy(_ => mline(DOne), tr_v0, v1)
+  let dst = DValue::DVPathTy(_ => mline(DOne), tr_v0, v1)
   let type_line = memo_dim_line(s => {
     DVPathTy(i => mline(dim_simplify(DOr(i, s))), filler(s), v1)
   })
@@ -1373,25 +1381,27 @@ pub fn sigma_path_equiv_value(
   v : DValue,
   _dlevel : Int32,
 ) -> DValue {
-  let sig_ty = DVSigma(a_ty, p_fam)
-  let src = DVPathTy(_ => sig_ty, u, v)
+  let sig_ty = DValue::DVSigma(a_ty, p_fam)
+  let src = DValue::DVPathTy(_ => sig_ty, u, v)
   let u1 = dfst_typed(u, p_fam)
   let v1 = dfst_typed(v, p_fam)
   let u2 = dsnd_typed(u, a_ty, p_fam)
   let v2 = dsnd_typed(v, a_ty, p_fam)
-  let base_path_ty = DVPathTy(_ => a_ty, u1, v1)
-  let dep_fam = (p : DValue) => DVPathTy(i => p_fam(dapp_dim(p, i)), u2, v2)
-  let dst = DVSigma(base_path_ty, dep_fam)
-  let fwd = DVLam(q => {
-    DVPair(
-      DVPathLam(i => dfst_typed(dapp_dim(q, i), p_fam)),
-      DVPathLam(i => dsnd_typed(dapp_dim(q, i), a_ty, p_fam)),
+  let base_path_ty = DValue::DVPathTy(_ => a_ty, u1, v1)
+  let dep_fam = (p : DValue) => {
+    DValue::DVPathTy(i => p_fam(dapp_dim(p, i)), u2, v2)
+  }
+  let dst = DValue::DVSigma(base_path_ty, dep_fam)
+  let fwd = DValue::DVLam(q => {
+    DValue::DVPair(
+      DValue::DVPathLam(i => dfst_typed(dapp_dim(q, i), p_fam)),
+      DValue::DVPathLam(i => dsnd_typed(dapp_dim(q, i), a_ty, p_fam)),
     )
   })
-  let bwd = DVLam(pr => {
+  let bwd = DValue::DVLam(pr => {
     let p = dfst_typed(pr, dep_fam)
     let r = dsnd_typed(pr, base_path_ty, dep_fam)
-    DVPathLam(i => DVPair(dapp_dim(p, i), dapp_dim(r, i)))
+    DValue::DVPathLam(i => DValue::DVPair(dapp_dim(p, i), dapp_dim(r, i)))
   })
   equiv_make_value(
     src,
@@ -1413,19 +1423,19 @@ pub fn sigma_cong_snd_equiv_value(
   q_fam : (DValue) -> DValue,
   fiber_eq : (DValue) -> DValue,
 ) -> DValue {
-  let src = DVSigma(a_ty, p_fam)
-  let dst = DVSigma(a_ty, q_fam)
-  let fwd = DVLam(w => {
+  let src = DValue::DVSigma(a_ty, p_fam)
+  let dst = DValue::DVSigma(a_ty, q_fam)
+  let fwd = DValue::DVLam(w => {
     let x = dfst_typed(w, p_fam)
     let y = dsnd_typed(w, a_ty, p_fam)
-    DVPair(x, equiv_fun_value(fiber_eq(x), p_fam(x), q_fam(x), y))
+    DValue::DVPair(x, equiv_fun_value(fiber_eq(x), p_fam(x), q_fam(x), y))
   })
-  let bwd = DVLam(w => {
+  let bwd = DValue::DVLam(w => {
     let x = dfst_typed(w, q_fam)
     let z = dsnd_typed(w, a_ty, q_fam)
-    DVPair(x, equiv_inv_fun_value(fiber_eq(x), p_fam(x), q_fam(x), z))
+    DValue::DVPair(x, equiv_inv_fun_value(fiber_eq(x), p_fam(x), q_fam(x), z))
   })
-  let sect = DVLam(w => {
+  let sect = DValue::DVLam(w => {
     let x = dfst_typed(w, q_fam)
     let z = dsnd_typed(w, a_ty, q_fam)
     let s = dapp_typed(
@@ -1433,9 +1443,9 @@ pub fn sigma_cong_snd_equiv_value(
       z,
       q_fam(x),
     )
-    DVPathLam(i => DVPair(x, dapp_dim(s, i)))
+    DValue::DVPathLam(i => DValue::DVPair(x, dapp_dim(s, i)))
   })
-  let retr = DVLam(w => {
+  let retr = DValue::DVLam(w => {
     let x = dfst_typed(w, p_fam)
     let y = dsnd_typed(w, a_ty, p_fam)
     let r = dapp_typed(
@@ -1443,7 +1453,7 @@ pub fn sigma_cong_snd_equiv_value(
       y,
       p_fam(x),
     )
-    DVPathLam(i => DVPair(x, dapp_dim(r, i)))
+    DValue::DVPathLam(i => DValue::DVPair(x, dapp_dim(r, i)))
   })
   equiv_make_value(src, dst, fwd, bwd, sect, retr)
 }
@@ -1459,15 +1469,17 @@ pub fn sigma_path_equiv_subst_value(
   dlevel : Int32,
   level~ : Int32 = 0,
 ) -> DValue {
-  let sig_ty = DVSigma(a_ty, p_fam)
+  let sig_ty = DValue::DVSigma(a_ty, p_fam)
   let u1 = dfst_typed(u, p_fam)
   let v1 = dfst_typed(v, p_fam)
   let u2 = dsnd_typed(u, a_ty, p_fam)
   let v2 = dsnd_typed(v, a_ty, p_fam)
-  let base_path_ty = DVPathTy(_ => a_ty, u1, v1)
-  let dep_fam = (p : DValue) => DVPathTy(i => p_fam(dapp_dim(p, i)), u2, v2)
+  let base_path_ty = DValue::DVPathTy(_ => a_ty, u1, v1)
+  let dep_fam = (p : DValue) => {
+    DValue::DVPathTy(i => p_fam(dapp_dim(p, i)), u2, v2)
+  }
   let subst_fam = (p : DValue) => {
-    DVPathTy(_ => p_fam(v1), subst_value(p_fam, p, u2, dlevel), v2)
+    DValue::DVPathTy(_ => p_fam(v1), subst_value(p_fam, p, u2, dlevel), v2)
   }
   let fiber_eq_at = (p : DValue) => {
     pathp_equiv_transport_eq_value(
@@ -1478,22 +1490,22 @@ pub fn sigma_path_equiv_subst_value(
       level~,
     )
   }
-  let src_ty = DVPathTy(_ => sig_ty, u, v)
-  let dst_ty = DVSigma(base_path_ty, subst_fam)
-  let fwd = DVLam(q => {
-    let p = DVPathLam(i => dfst_typed(dapp_dim(q, i), p_fam))
-    let r_dep = DVPathLam(i => dsnd_typed(dapp_dim(q, i), a_ty, p_fam))
+  let src_ty = DValue::DVPathTy(_ => sig_ty, u, v)
+  let dst_ty = DValue::DVSigma(base_path_ty, subst_fam)
+  let fwd = DValue::DVLam(q => {
+    let p = DValue::DVPathLam(i => dfst_typed(dapp_dim(q, i), p_fam))
+    let r_dep = DValue::DVPathLam(i => dsnd_typed(dapp_dim(q, i), a_ty, p_fam))
     let feq = fiber_eq_at(p)
-    DVPair(p, equiv_fun_value(feq, dep_fam(p), subst_fam(p), r_dep))
+    DValue::DVPair(p, equiv_fun_value(feq, dep_fam(p), subst_fam(p), r_dep))
   })
-  let bwd = DVLam(pr => {
+  let bwd = DValue::DVLam(pr => {
     let p = dfst_typed(pr, subst_fam)
     let r_hom = dsnd_typed(pr, base_path_ty, subst_fam)
     let feq = fiber_eq_at(p)
     let r_dep = equiv_inv_fun_value(feq, dep_fam(p), subst_fam(p), r_hom)
-    DVPathLam(i => DVPair(dapp_dim(p, i), dapp_dim(r_dep, i)))
+    DValue::DVPathLam(i => DValue::DVPair(dapp_dim(p, i), dapp_dim(r_dep, i)))
   })
-  let sect = DVLam(pr => {
+  let sect = DValue::DVLam(pr => {
     let p = dfst_typed(pr, subst_fam)
     let r_hom = dsnd_typed(pr, base_path_ty, subst_fam)
     let feq = fiber_eq_at(p)
@@ -1502,19 +1514,21 @@ pub fn sigma_path_equiv_subst_value(
       r_hom,
       subst_fam(p),
     )
-    DVPathLam(k => DVPair(p, dapp_dim(s, k)))
+    DValue::DVPathLam(k => DValue::DVPair(p, dapp_dim(s, k)))
   })
-  let retr = DVLam(q => {
-    let p = DVPathLam(i => dfst_typed(dapp_dim(q, i), p_fam))
-    let r_dep = DVPathLam(i => dsnd_typed(dapp_dim(q, i), a_ty, p_fam))
+  let retr = DValue::DVLam(q => {
+    let p = DValue::DVPathLam(i => dfst_typed(dapp_dim(q, i), p_fam))
+    let r_dep = DValue::DVPathLam(i => dsnd_typed(dapp_dim(q, i), a_ty, p_fam))
     let feq = fiber_eq_at(p)
     let r = dapp_typed(
       equiv_retr_value(feq, dep_fam(p), subst_fam(p)),
       r_dep,
       dep_fam(p),
     )
-    DVPathLam(k => {
-      DVPathLam(i => DVPair(dapp_dim(p, i), dapp_dim(dapp_dim(r, k), i)))
+    DValue::DVPathLam(k => {
+      DValue::DVPathLam(i => {
+        DValue::DVPair(dapp_dim(p, i), dapp_dim(dapp_dim(r, k), i))
+      })
     })
   })
   equiv_make_value(src_ty, dst_ty, fwd, bwd, sect, retr)
@@ -1533,7 +1547,7 @@ pub fn fibration_loop_equiv_fiber_path_value(
   dlevel : Int32,
   level~ : Int32 = 0,
 ) -> DValue {
-  let total_pt = DVPair(b0, e0)
+  let total_pt = DValue::DVPair(b0, e0)
   sigma_path_equiv_subst_value(b_ty, p_fam, total_pt, total_pt, dlevel, level~)
 }
 
@@ -1610,7 +1624,7 @@ pub fn dpath_k5_route_outer3_value(
 ) -> DValue {
   let x0 = dapp_dim(p, DZero)
   let x5 = dapp_dim(w, DOne)
-  let path1_ty = DVPathTy(_ => space_ty, x0, x5)
+  let path1_ty = DValue::DVPathTy(_ => space_ty, x0, x5)
   let sq = dpath_k5_interchange_square_value(space_ty, p, q, u, v, w, dlevel)
   let b0 : DValue = DVPathLam(a => dapp_dim(dapp_dim(sq, a), DZero))
   let r1 : DValue = DVPathLam(b => dapp_dim(dapp_dim(sq, DOne), b))
@@ -1631,7 +1645,7 @@ pub fn dpath_k5_route_inner3_value(
 ) -> DValue {
   let x0 = dapp_dim(p, DZero)
   let x5 = dapp_dim(w, DOne)
-  let path1_ty = DVPathTy(_ => space_ty, x0, x5)
+  let path1_ty = DValue::DVPathTy(_ => space_ty, x0, x5)
   let sq = dpath_k5_interchange_square_value(space_ty, p, q, u, v, w, dlevel)
   let l0 : DValue = DVPathLam(b => dapp_dim(dapp_dim(sq, DZero), b))
   let t1 : DValue = DVPathLam(a => dapp_dim(dapp_dim(sq, a), DOne))
@@ -1705,7 +1719,11 @@ pub fn dpath_k5_hemi_north4_value(
   w : DValue,
   dlevel : Int32,
 ) -> DValue {
-  let path1_ty = DVPathTy(_ => space_ty, dapp_dim(p, DZero), dapp_dim(w, DOne))
+  let path1_ty = DValue::DVPathTy(
+    _ => space_ty,
+    dapp_dim(p, DZero),
+    dapp_dim(w, DOne),
+  )
   let sq = dpath_k5_interchange_square_value(space_ty, p, q, u, v, w, dlevel)
   dpath_square_boundary3_value(path1_ty, sq, dlevel + 2)
 }
@@ -1723,7 +1741,11 @@ pub fn dpath_k5_hemi_south4_value(
   w : DValue,
   dlevel : Int32,
 ) -> DValue {
-  let path1_ty = DVPathTy(_ => space_ty, dapp_dim(p, DZero), dapp_dim(w, DOne))
+  let path1_ty = DValue::DVPathTy(
+    _ => space_ty,
+    dapp_dim(p, DZero),
+    dapp_dim(w, DOne),
+  )
   let sq = dpath_k5_interchange_square_value(space_ty, p, q, u, v, w, dlevel)
   let sq_tr : DValue = DVPathLam(
     memo_dim_line(b => {
@@ -1755,21 +1777,21 @@ pub fn dpath_associahedron_k5_cell5_value(
   )
   dpath_singleton5_transport_value(
     (p1, q1, u1, v1, w1) => {
-      let path1_ty = DVPathTy(
+      let path1_ty = DValue::DVPathTy(
         _ => space_ty,
         dapp_dim(p1, DZero),
         dapp_dim(w1, DOne),
       )
       let lhs = dpath_k5_lhs1_value(space_ty, p1, q1, u1, v1, w1, dlevel)
       let rhs = dpath_k5_rhs1_value(space_ty, p1, q1, u1, v1, w1, dlevel)
-      let path2_ty = DVPathTy(_ => path1_ty, lhs, rhs)
+      let path2_ty = DValue::DVPathTy(_ => path1_ty, lhs, rhs)
       let out3 = dpath_k5_route_outer3_value(
         space_ty, p1, q1, u1, v1, w1, dlevel,
       )
       let inn3 = dpath_k5_route_inner3_value(
         space_ty, p1, q1, u1, v1, w1, dlevel,
       )
-      let path3_ty = DVPathTy(_ => path2_ty, out3, inn3)
+      let path3_ty = DValue::DVPathTy(_ => path2_ty, out3, inn3)
       DVPathTy(
         _ => path3_ty,
         dpath_k5_hemi_north4_value(space_ty, r, p1, q1, u1, v1, w1, dlevel),

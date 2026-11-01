@@ -109,9 +109,10 @@
 - **Wave 2（✅ 已完成）：底層基礎三子套件抽離（`cubical/face_bdd`、`cubical/finite`、`cubical/hermitian`）**
   - 已按嚴格自底向上無環拓撲抽離三個獨立實體套件：`cubical/face_bdd`（`L0`，5 檔 `6,211` 行，零業務依賴，單包 `moon test` 實測 `0.38s`）、`cubical/finite`（`L1`，4 檔 `1,828` 行，僅依賴 `face_bdd`，零浮點／代數耦合，單包實測 `0.22s`）、`cubical/hermitian`（`L2`，9 檔 `3,199` 行，整合複矩陣投影、Karoubi／子空間 Glue 模型與精確代數證書影子，單包實測 `0.57s`）。
   - 內部不變量結構體（如 `BddManager`、`Wiring`、`Equiv`、`Complex`、`CMat`、`ProjectorCertificate` 等）維持唯讀 `pub struct` 封裝；頂層 `facade.mbt` 以 `pub using` 無縫轉發，`@bridge` 與四個 Wasm-GC 執行檔零破壞通過。
-- **Wave 3（下一步）：可信依賴核心子套件獨立封裝（`cubical/kernel`）**
-  - 按自底向上無環物理套件順序（上層 `elaborator`／`store`／`homotopy` 皆依賴核心，故須先抽離核心以避免與 `root` 形成套件循環），將互遞迴核心 `dependent-kernel` ＋ `dependent-kan-lines`（20 檔 `30.8k` 行）實體抽離為 `cubical/kernel`（僅依賴 `gcd`、`cubical/face_bdd`、`cubical/finite`，完全不觸碰浮點層），收斂跨層私有呼叫並建立可信核心邊界。
-- **Wave 4：上層三大子套件抽離與薄門面收斂（`cubical/elaborator` ＋ `cubical/store` ＋ `cubical/homotopy`）**
+- **Wave 3（✅ 已完成）：可信依賴核心子套件獨立封裝（`cubical/kernel`）**
+  - 已按自底向上無環拓撲將互遞迴核心 `dependent-kernel` ＋ `dependent-kan-lines`（20 檔 `30,899` 行）實體抽離為 `cubical/kernel`，全包僅依賴 `cubical/face_bdd` 與 `cubical/finite`（**零浮點、零有理數代數、零儲存／前端耦合**），單包 `moon test cubical/kernel` 實測僅 **`0.95s`**（`< 1 秒`！）。
+  - 核心內部不變量載體（`CheckedLine`、`CheckedDCube`、`CheckedSystem`、`SchemaRegistry`、`DClosure`、`DTermInterner`、`PositivityReport` 等）由編譯器強制保護為唯讀 `pub struct`，任何外圍套件均無法繞過核心檢驗器直接偽造。
+- **Wave 4（最終波・下一步）：上層三大子套件抽離與薄門面收斂（`cubical/elaborator` ＋ `cubical/store` ＋ `cubical/homotopy`）**
   - 在 `cubical/kernel` 之上平行抽離雙向精緻化與高階合一（`cubical/elaborator`）、模組持久化與 Ed25519 BFT／MVCC 熱載入（`cubical/store`）及合成同倫（`cubical/homotopy`），使頂層 `root` 最終收斂為極薄門面與定理總表。
 
 ---

@@ -35,26 +35,29 @@ pub fn check_schema_validation() -> Bool {
 pub fn check_schema_nat_add() -> Bool {
   let spec = nat_schema()
   let nat_s = schema_type_term(spec, [])
-  let motive = DLam(nat_s, DPi(nat_s, nat_s))
-  let zero_case = DLam(nat_s, DTVar(0))
-  let succ_case = DLam(
+  let motive = DTerm::DLam(nat_s, DTerm::DPi(nat_s, nat_s))
+  let zero_case = DTerm::DLam(nat_s, DTerm::DTVar(0))
+  let succ_case = DTerm::DLam(
     nat_s,
-    DLam(
-      DPi(nat_s, nat_s),
-      DLam(nat_s, schema_intro_term(spec, 1, [], [DApp(DTVar(1), DTVar(0))])),
-    ),
-  )
-  let add = DLam(
-    nat_s,
-    DLam(
-      nat_s,
-      DApp(
-        schema_elim_term(spec, motive, [zero_case, succ_case], [], [], DTVar(1)),
-        DTVar(0),
+    DTerm::DLam(
+      DTerm::DPi(nat_s, nat_s),
+      DTerm::DLam(
+        nat_s,
+        schema_intro_term(spec, 1, [], [DApp(DTVar(1), DTVar(0))]),
       ),
     ),
   )
-  let sum = DApp(DApp(add, nat_schema_lit(2)), nat_schema_lit(1))
+  let add = DTerm::DLam(
+    nat_s,
+    DTerm::DLam(
+      nat_s,
+      DTerm::DApp(
+        schema_elim_term(spec, motive, [zero_case, succ_case], [], [], DTVar(1)),
+        DTerm::DTVar(0),
+      ),
+    ),
+  )
+  let sum = DTerm::DApp(DTerm::DApp(add, nat_schema_lit(2)), nat_schema_lit(1))
   if dep_nf_closed(sum, nat_s) != Some(nat_schema_lit(3)) {
     return false
   }
@@ -200,10 +203,19 @@ pub fn check_schema_indexed() -> Bool {
     dep_check_closed(two, vec_bool(d_nat_lit(1))) {
     return false
   }
-  let motive = DLam(DNatTy, DLam(vec_bool(DTVar(0)), DNatTy))
-  let cons_case = DLam(
-    DBoolTy,
-    DLam(DNatTy, DLam(vec_bool(DTVar(0)), DLam(DNatTy, DSucc(DTVar(2))))),
+  let motive = DTerm::DLam(
+    DTerm::DNatTy,
+    DTerm::DLam(vec_bool(DTVar(0)), DTerm::DNatTy),
+  )
+  let cons_case = DTerm::DLam(
+    DTerm::DBoolTy,
+    DTerm::DLam(
+      DTerm::DNatTy,
+      DTerm::DLam(
+        vec_bool(DTVar(0)),
+        DTerm::DLam(DTerm::DNatTy, DTerm::DSucc(DTerm::DTVar(2))),
+      ),
+    ),
   )
   let length = schema_elim_term(
     vec_spec,
@@ -293,16 +305,16 @@ pub fn check_hit_schema_validation() -> Bool {
 ///|
 pub fn check_hit_schema_circle_segment() -> Bool {
   let circle = circle_schema()
-  let circle_ty = DHitType(circle, [])
+  let circle_ty = DTerm::DHitType(circle, [])
   let base = hit_intro_term(circle, 0, [], [], [])
   let loop0 = hit_intro_term(circle, 1, [], [], [DZero])
   if dep_nf_closed(loop0, circle_ty) != Some(base) {
     return false
   }
   // Eliminating the generated loop into Bool under a dimension binder.
-  let loop_path = DLamDim(hit_intro_term(circle, 1, [], [], [DVar(0)]))
+  let loop_path = DTerm::DLamDim(hit_intro_term(circle, 1, [], [], [DVar(0)]))
   let _ = loop_path
-  let elim_loop = DLamDim(
+  let elim_loop = DTerm::DLamDim(
     hit_elim_term(
       circle,
       DLam(circle_ty, DBoolTy),
@@ -312,7 +324,11 @@ pub fn check_hit_schema_circle_segment() -> Bool {
       hit_intro_term(circle, 1, [], [], [DVar(0)]),
     ),
   )
-  let path_bool = DPath(DBoolTy, DBoolLit(true), DBoolLit(true))
+  let path_bool = DTerm::DPath(
+    DTerm::DBoolTy,
+    DTerm::DBoolLit(true),
+    DTerm::DBoolLit(true),
+  )
   if dep_nf_closed(elim_loop, path_bool) != Some(DLamDim(DBoolLit(true))) {
     return false
   }
@@ -320,7 +336,7 @@ pub fn check_hit_schema_circle_segment() -> Bool {
   // eliminating into Bool with distinct endpoint values would be a
   // nonconstant Bool path, which correctly does not typecheck.
   let segment = segment_schema()
-  let segment_ty = DHitType(segment, [])
+  let segment_ty = DTerm::DHitType(segment, [])
   let left = hit_intro_term(segment, 0, [], [], [])
   let right = hit_intro_term(segment, 1, [], [], [])
   if dep_nf_closed(hit_intro_term(segment, 2, [], [], [DZero]), segment_ty) !=
@@ -329,7 +345,7 @@ pub fn check_hit_schema_circle_segment() -> Bool {
     Some(right) {
     return false
   }
-  let elim_segment = DLamDim(
+  let elim_segment = DTerm::DLamDim(
     hit_elim_term(
       segment,
       DLam(segment_ty, segment_ty),
@@ -453,13 +469,13 @@ pub fn check_hit_schema_arguments() -> Bool {
   if !hit_schema_validate(spec) {
     return false
   }
-  let ty = DHitType(spec, [])
+  let ty = DTerm::DHitType(spec, [])
   let point = hit_intro_term(spec, 0, [], [DBoolLit(true)], [])
   if dep_nf_closed(hit_intro_term(spec, 1, [], [DBoolLit(true)], [DOne]), ty) !=
     Some(point) {
     return false
   }
-  let elim_loop = DLamDim(
+  let elim_loop = DTerm::DLamDim(
     hit_elim_term(
       spec,
       DLam(ty, DBoolTy),
@@ -495,7 +511,7 @@ pub fn check_hit_schema_arguments() -> Bool {
   if !hit_schema_validate(indexed) {
     return false
   }
-  let indexed_ty = DHitType(indexed, [d_nat_lit(1)])
+  let indexed_ty = DTerm::DHitType(indexed, [d_nat_lit(1)])
   let indexed_point = hit_intro_term(indexed, 0, [], [d_nat_lit(1)], [])
   dep_nf_closed(
     hit_intro_term(indexed, 1, [], [d_nat_lit(1)], [DZero]),

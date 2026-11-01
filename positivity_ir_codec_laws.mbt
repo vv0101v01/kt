@@ -506,7 +506,7 @@ pub fn check_dsystem_structural_agreement_and_supplementation() -> Bool {
   // occur nowhere in the values: the walk splits only on the
   // one relevant dimension.
   let a = circle_point(DVar(0))
-  let b = DVCirclePoint(DZero)
+  let b = DValue::DVCirclePoint(Dim::DZero)
   let agreement = face_agreement_face(0, 12, FTop, DVCircleTy, a, b)
   if agreement == FTop || agreement == FBot {
     return false
@@ -522,8 +522,8 @@ pub fn check_dsystem_structural_agreement_and_supplementation() -> Bool {
   // kept, one candidate fills the other endpoint face, and two
   // candidates are rejected (base disagreement and pairwise
   // incompatibility respectively).
-  let line = (_ : Dim) => DVNatTy
-  let zero_path = (_ : Dim) => DVZeroNat
+  let line = (_ : Dim) => DValue::DVNatTy
+  let zero_path = (_ : Dim) => DValue::DVZeroNat
   let system = dsystem_of([
     tube_branch(FTop, _ => dv_nat_lit(1)),
     tube_branch(FEq0(DVar(0)), zero_path),
@@ -587,7 +587,10 @@ pub fn check_artifact_repository_and_dag_codec() -> Bool {
     return false
   }
   // DAG codec: one large type repeated across constructors.
-  let big = DPi(DNatTy, DPi(DNatTy, DPi(DNatTy, DNatTy)))
+  let big = DTerm::DPi(
+    DTerm::DNatTy,
+    DTerm::DPi(DTerm::DNatTy, DTerm::DPi(DTerm::DNatTy, DTerm::DNatTy)),
+  )
   let ctors : Array[DConstructorSpec] = []
   for i in 0..<8 {
     ctors.push(
@@ -747,13 +750,13 @@ pub fn check_positivity_declarations() -> Bool {
   let target_spec = dinductive_spec("DeclTargetS", 0, [], [], [
     dconstructor_spec("mk", []),
   ])
-  let target = DInductive(target_spec, [])
+  let target = DTerm::DInductive(target_spec, [])
   let decl = match
     dpositivity_declaration(DTVar(0), 1, strict_args=[0], scope=1) {
     Some(v) => v
     None => return false
   }
-  let applied = DApp(DTVar(0), target)
+  let applied = DTerm::DApp(DTerm::DTVar(0), target)
   let plain = dterm_family_positivity(applied, "DeclTargetS")
   if plain.strictly_positive || !plain.unknown {
     return false
@@ -767,7 +770,10 @@ pub fn check_positivity_declarations() -> Bool {
     return false
   }
   // Under one binder the operator variable is DTVar(1).
-  let under_binder = DPi(DNatTy, DApp(DTVar(1), target))
+  let under_binder = DTerm::DPi(
+    DTerm::DNatTy,
+    DTerm::DApp(DTerm::DTVar(1), target),
+  )
   if !dterm_family_strictly_positive_declared(
       under_binder,
       "DeclTargetS",
@@ -777,7 +783,7 @@ pub fn check_positivity_declarations() -> Bool {
     return false
   }
   // The same application in a domain is negative.
-  let negative = DPi(applied, DNatTy)
+  let negative = DTerm::DPi(applied, DTerm::DNatTy)
   let neg_report = dterm_family_positivity_declared(
     negative,
     "DeclTargetS",
@@ -835,26 +841,32 @@ pub fn check_positivity_declarations() -> Bool {
     return false
   }
   // Verified declarations for literal lambda operators.
-  let list_op = DLam(DUniv(0), DListTy(DTVar(0)))
+  let list_op = DTerm::DLam(DTerm::DUniv(0), DTerm::DListTy(DTerm::DTVar(0)))
   match dpositivity_declaration_from_lambda(list_op, 1) {
     Some(d) => if d.strict_args != [0] || d.positive_args != [] { return false }
     None => return false
   }
-  let const_op = DLam(DUniv(0), DNatTy)
+  let const_op = DTerm::DLam(DTerm::DUniv(0), DTerm::DNatTy)
   match dpositivity_declaration_from_lambda(const_op, 1) {
     Some(d) => if d.strict_args != [0] { return false }
     None => return false
   }
-  let negative_op = DLam(DUniv(0), DPi(DTVar(0), DNatTy))
+  let negative_op = DTerm::DLam(
+    DTerm::DUniv(0),
+    DTerm::DPi(DTerm::DTVar(0), DTerm::DNatTy),
+  )
   if dpositivity_declaration_from_lambda(negative_op, 1) != None {
     return false
   }
   // A binary operator strict in its second argument only:
   // λX. λY. (X → Nat) × List Y  is refused (first is negative),
   // while λX. λY. List X × Y certifies both positions.
-  let mixed_op = DLam(
-    DUniv(0),
-    DLam(DUniv(0), DSigma(DListTy(DTVar(1)), DTVar(0))),
+  let mixed_op = DTerm::DLam(
+    DTerm::DUniv(0),
+    DTerm::DLam(
+      DTerm::DUniv(0),
+      DTerm::DSigma(DTerm::DListTy(DTerm::DTVar(1)), DTerm::DTVar(0)),
+    ),
   )
   match dpositivity_declaration_from_lambda(mixed_op, 2) {
     Some(d) => if d.strict_args != [0, 1] { return false }
@@ -995,21 +1007,41 @@ pub fn check_simultaneous_ir_eliminator_compilation() -> Bool {
 /// as cap (the branch coordinate is read generically so a
 /// traversed coordinate 1 is not normalised to the base 0).
 pub fn check_case_split_conversion_and_path_comp() -> Bool {
-  let nat_motive = DLam(DBoolTy, DNatTy)
-  let ctx = [DBoolTy]
-  let ite0 = DBoolElim(nat_motive, DNatZero, DNatZero, DTVar(0))
+  let nat_motive = DTerm::DLam(DTerm::DBoolTy, DTerm::DNatTy)
+  let ctx = [DTerm::DBoolTy]
+  let ite0 = DTerm::DBoolElim(
+    nat_motive,
+    DTerm::DNatZero,
+    DTerm::DNatZero,
+    DTerm::DTVar(0),
+  )
   if conv_terms_plain(ctx, DNatTy, ite0, DNatZero) ||
     !conv_terms_case_split(ctx, DNatTy, ite0, DNatZero) {
     return false
   }
-  let ite01 = DBoolElim(nat_motive, DNatZero, DSucc(DNatZero), DTVar(0))
+  let ite01 = DTerm::DBoolElim(
+    nat_motive,
+    DTerm::DNatZero,
+    DTerm::DSucc(DTerm::DNatZero),
+    DTerm::DTVar(0),
+  )
   if conv_terms_case_split(ctx, DNatTy, ite01, DNatZero) {
     return false
   }
   // Two Bool variables, split recursively.
-  let ctx2 = [DBoolTy, DBoolTy]
-  let inner = DBoolElim(nat_motive, DNatZero, DNatZero, DTVar(0))
-  let nested = DBoolElim(nat_motive, inner, DNatZero, DTVar(1))
+  let ctx2 = [DTerm::DBoolTy, DTerm::DBoolTy]
+  let inner = DTerm::DBoolElim(
+    nat_motive,
+    DTerm::DNatZero,
+    DTerm::DNatZero,
+    DTerm::DTVar(0),
+  )
+  let nested = DTerm::DBoolElim(
+    nat_motive,
+    inner,
+    DTerm::DNatZero,
+    DTerm::DTVar(1),
+  )
   if conv_terms_plain(ctx2, DNatTy, nested, DNatZero) ||
     !conv_terms_case_split(ctx2, DNatTy, nested, DNatZero) {
     return false
@@ -1017,32 +1049,58 @@ pub fn check_case_split_conversion_and_path_comp() -> Bool {
   // Dependent type: T(x) = if x then Nat else Bool, with two
   // different fillers for the false branch that agree only
   // after splitting.
-  let type_motive = DLam(DBoolTy, DUniv(0))
-  let dep_ty = DBoolElim(type_motive, DNatTy, DBoolTy, DTVar(0))
-  let filler_a = DBoolElim(
-    DLam(DBoolTy, DBoolElim(type_motive, DNatTy, DBoolTy, DTVar(0))),
-    DNatZero,
-    DBoolLit(true),
-    DTVar(0),
+  let type_motive = DTerm::DLam(DTerm::DBoolTy, DTerm::DUniv(0))
+  let dep_ty = DTerm::DBoolElim(
+    type_motive,
+    DTerm::DNatTy,
+    DTerm::DBoolTy,
+    DTerm::DTVar(0),
   )
-  let bool_motive = DLam(DBoolTy, DBoolTy)
-  let filler_b = DBoolElim(
-    DLam(DBoolTy, DBoolElim(type_motive, DNatTy, DBoolTy, DTVar(0))),
-    DNatZero,
-    DBoolElim(bool_motive, DBoolLit(true), DBoolLit(true), DTVar(0)),
-    DTVar(0),
+  let filler_a = DTerm::DBoolElim(
+    DTerm::DLam(
+      DTerm::DBoolTy,
+      DTerm::DBoolElim(
+        type_motive,
+        DTerm::DNatTy,
+        DTerm::DBoolTy,
+        DTerm::DTVar(0),
+      ),
+    ),
+    DTerm::DNatZero,
+    DTerm::DBoolLit(true),
+    DTerm::DTVar(0),
+  )
+  let bool_motive = DTerm::DLam(DTerm::DBoolTy, DTerm::DBoolTy)
+  let filler_b = DTerm::DBoolElim(
+    DTerm::DLam(
+      DTerm::DBoolTy,
+      DTerm::DBoolElim(
+        type_motive,
+        DTerm::DNatTy,
+        DTerm::DBoolTy,
+        DTerm::DTVar(0),
+      ),
+    ),
+    DTerm::DNatZero,
+    DTerm::DBoolElim(
+      bool_motive,
+      DTerm::DBoolLit(true),
+      DTerm::DBoolLit(true),
+      DTerm::DTVar(0),
+    ),
+    DTerm::DTVar(0),
   )
   if conv_terms_plain(ctx, dep_ty, filler_a, filler_b) ||
     !conv_terms_case_split(ctx, dep_ty, filler_a, filler_b) {
     return false
   }
   // A Nat variable is never split.
-  let nat_ctx = [DNatTy]
-  let stuck_nat = DNatElim(
-    DLam(DNatTy, DNatTy),
-    DNatZero,
-    DLam(DNatTy, DLam(DNatTy, DNatZero)),
-    DTVar(0),
+  let nat_ctx = [DTerm::DNatTy]
+  let stuck_nat = DTerm::DNatElim(
+    DTerm::DLam(DTerm::DNatTy, DTerm::DNatTy),
+    DTerm::DNatZero,
+    DTerm::DLam(DTerm::DNatTy, DTerm::DLam(DTerm::DNatTy, DTerm::DNatZero)),
+    DTerm::DTVar(0),
   )
   if conv_terms_case_split(nat_ctx, DNatTy, stuck_nat, DNatZero) {
     return false
@@ -1050,9 +1108,9 @@ pub fn check_case_split_conversion_and_path_comp() -> Bool {
   // Path-valued composition over the torus: the right
   // endpoint of the path type traverses loopA, the tube
   // supplies the truncated loop, and the cap is loopA.
-  let torus_base = DVTorusPoint(DZero, DZero)
+  let torus_base = DValue::DVTorusPoint(Dim::DZero, Dim::DZero)
   let torus_line = (j : Dim) => {
-    DVPathTy(_ => DVTorusTy, torus_base, torus_point(j, DZero))
+    DValue::DVPathTy(_ => DValue::DVTorusTy, torus_base, torus_point(j, DZero))
   }
   let torus_system = dsystem_of([
     tube_branch(FEq1(DVar(0)), (j : Dim) => {
@@ -1081,9 +1139,9 @@ pub fn check_case_split_conversion_and_path_comp() -> Bool {
   }
   // The same for the circle, and in the torus' second
   // coordinate.
-  let circle_base = DVCirclePoint(DZero)
+  let circle_base = DValue::DVCirclePoint(Dim::DZero)
   let circle_line = (j : Dim) => {
-    DVPathTy(_ => DVCircleTy, circle_base, circle_point(j))
+    DValue::DVPathTy(_ => DValue::DVCircleTy, circle_base, circle_point(j))
   }
   let circle_system = dsystem_of([
     tube_branch(FEq1(DVar(0)), (j : Dim) => {
@@ -1105,7 +1163,7 @@ pub fn check_case_split_conversion_and_path_comp() -> Bool {
     return false
   }
   let torus_b_line = (j : Dim) => {
-    DVPathTy(_ => DVTorusTy, torus_base, torus_point(DZero, j))
+    DValue::DVPathTy(_ => DValue::DVTorusTy, torus_base, torus_point(DZero, j))
   }
   let torus_b_system = dsystem_of([
     tube_branch(FEq1(DVar(0)), (j : Dim) => {

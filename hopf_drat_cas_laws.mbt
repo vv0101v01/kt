@@ -7,7 +7,10 @@
 /// independent verification (`dpositivity_witness_verify`).
 pub fn check_phase14_positivity_witness_certificates() -> Bool {
   // Unary covariant operator `F(X) = Bool -> (X * Unit)` at variable `DTVar(0)` in scope 1:
-  let cov_def = DLam(DUniv(0), DPi(DBoolTy, DSigma(DTVar(0), DUnitTy)))
+  let cov_def = DTerm::DLam(
+    DTerm::DUniv(0),
+    DTerm::DPi(DTerm::DBoolTy, DTerm::DSigma(DTerm::DTVar(0), DTerm::DUnitTy)),
+  )
   let cov_decl = match
     dpositivity_declaration(DTVar(0), 1, strict_args=[0], scope=1) {
     Some(d) => d
@@ -18,7 +21,7 @@ pub fn check_phase14_positivity_witness_certificates() -> Bool {
     return false
   }
   // Certified strict positivity check of `F(SelfX)` using `cov_wit`:
-  let self_probe = DInductive(dinductive_spec("SelfX", 0, [], [], []), [])
+  let self_probe = DTerm::DInductive(dinductive_spec("SelfX", 0, [], [], []), [])
   if !dterm_family_strictly_positive_certified(
       DApp(DTVar(0), self_probe),
       "SelfX",
@@ -29,7 +32,10 @@ pub fn check_phase14_positivity_witness_certificates() -> Bool {
   }
   // Tampered witness (claiming `strict_args=[0]` for negative `X -> Bool`) MUST fail
   // both `dpositivity_witness_verify` and `dterm_family_strictly_positive_certified`!
-  let neg_def = DLam(DUniv(0), DPi(DTVar(0), DBoolTy))
+  let neg_def = DTerm::DLam(
+    DTerm::DUniv(0),
+    DTerm::DPi(DTerm::DTVar(0), DTerm::DBoolTy),
+  )
   let bad_cov_wit = dpositivity_witness(cov_decl, neg_def)
   if dpositivity_witness_verify(bad_cov_wit) ||
     dterm_family_strictly_positive_certified(
@@ -42,9 +48,12 @@ pub fn check_phase14_positivity_witness_certificates() -> Bool {
   }
   // Binary operator `G(X, Y) = (X -> Bool) -> Y`: arg 1 is strictly positive,
   // arg 0 is at double-negative (merely positive, non-strict) polarity!
-  let bin_def = DLam(
-    DUniv(0),
-    DLam(DUniv(0), DPi(DPi(DTVar(1), DBoolTy), DTVar(0))),
+  let bin_def = DTerm::DLam(
+    DTerm::DUniv(0),
+    DTerm::DLam(
+      DTerm::DUniv(0),
+      DTerm::DPi(DTerm::DPi(DTerm::DTVar(1), DTerm::DBoolTy), DTerm::DTVar(0)),
+    ),
   )
   let bin_decl_good = match
     dpositivity_declaration(
@@ -94,32 +103,54 @@ pub fn check_phase14_joint_simultaneous_ir_mutual() -> Bool {
   //   isOdd(step(false, x)) = isOdd(x)
   // In `step` case context: `branch` = DTVar(2), `ih_even` = DTVar(1), `ih_odd` = DTVar(0),
   // where `ih_even, ih_odd : DBoolElim(DUniv(1), DBoolTy, DBoolTy, DFst(branch))`.
-  let ih_fib0 = DBoolElim(DUniv(1), DBoolTy, DBoolTy, DTVar(0))
-  let ih_fib1 = DBoolElim(DUniv(1), DBoolTy, DBoolTy, DTVar(1))
-  let step_motive = DPi(ih_fib0, DPi(ih_fib1, DBoolTy))
-  let even_step = DApp(
-    DApp(
-      DBoolElim(
-        step_motive,
-        DLam(DBoolTy, DLam(DBoolTy, DTVar(0))), // tag == true -> ih_odd
-        DLam(DBoolTy, DLam(DBoolTy, DTVar(1))), // tag == false -> ih_even
-        DFst(DTVar(2)),
-      ),
-      DTVar(1),
-    ),
-    DTVar(0),
+  let ih_fib0 = DTerm::DBoolElim(
+    DTerm::DUniv(1),
+    DTerm::DBoolTy,
+    DTerm::DBoolTy,
+    DTerm::DTVar(0),
   )
-  let odd_step = DApp(
-    DApp(
-      DBoolElim(
+  let ih_fib1 = DTerm::DBoolElim(
+    DTerm::DUniv(1),
+    DTerm::DBoolTy,
+    DTerm::DBoolTy,
+    DTerm::DTVar(1),
+  )
+  let step_motive = DTerm::DPi(ih_fib0, DTerm::DPi(ih_fib1, DTerm::DBoolTy))
+  let even_step = DTerm::DApp(
+    DTerm::DApp(
+      DTerm::DBoolElim(
         step_motive,
-        DLam(DBoolTy, DLam(DBoolTy, DTVar(1))), // tag == true -> ih_even
-        DLam(DBoolTy, DLam(DBoolTy, DTVar(0))), // tag == false -> ih_odd
-        DFst(DTVar(2)),
+        DTerm::DLam(
+          DTerm::DBoolTy,
+          DTerm::DLam(DTerm::DBoolTy, DTerm::DTVar(0)),
+        ), // tag == true -> ih_odd
+        DTerm::DLam(
+          DTerm::DBoolTy,
+          DTerm::DLam(DTerm::DBoolTy, DTerm::DTVar(1)),
+        ), // tag == false -> ih_even
+        DTerm::DFst(DTerm::DTVar(2)),
       ),
-      DTVar(1),
+      DTerm::DTVar(1),
     ),
-    DTVar(0),
+    DTerm::DTVar(0),
+  )
+  let odd_step = DTerm::DApp(
+    DTerm::DApp(
+      DTerm::DBoolElim(
+        step_motive,
+        DTerm::DLam(
+          DTerm::DBoolTy,
+          DTerm::DLam(DTerm::DBoolTy, DTerm::DTVar(1)),
+        ), // tag == true -> ih_even
+        DTerm::DLam(
+          DTerm::DBoolTy,
+          DTerm::DLam(DTerm::DBoolTy, DTerm::DTVar(0)),
+        ), // tag == false -> ih_odd
+        DTerm::DFst(DTerm::DTVar(2)),
+      ),
+      DTerm::DTVar(1),
+    ),
+    DTerm::DTVar(0),
   )
   let fn_even = dsimultaneous_function("isEven", DBoolTy, [
     DBoolLit(true),
@@ -172,7 +203,7 @@ pub fn check_phase14_joint_simultaneous_ir_mutual() -> Bool {
 /// sub-systems (`dsystem_repair_all_maxima`) and general finite closed-inhabitant
 /// case-split conversion (`conv_terms_finite_case_split_report`).
 pub fn check_phase14_dsystem_all_maxima_and_finite_case_split() -> Bool {
-  let line = (_ : Dim) => DVNatTy
+  let line = (_ : Dim) => DValue::DVNatTy
   let p1 = (d : Dim) => {
     if dim_eq_sem(d, DZero) {
       dv_nat_lit(0)
@@ -233,7 +264,7 @@ pub fn check_phase14_dsystem_all_maxima_and_finite_case_split() -> Bool {
     dconstructor_spec("c1", []),
     dconstructor_spec("c2", []),
   ])
-  let fin3_ty = DInductive(fin3, [])
+  let fin3_ty = DTerm::DInductive(fin3, [])
   let fin3_val : DValue = DVInductive(fin3, [], [])
   match cs_finite_closed_inhabitants(fin3_val) {
     Some(xs) => if xs.length() != 3 { return false }
@@ -242,15 +273,15 @@ pub fn check_phase14_dsystem_all_maxima_and_finite_case_split() -> Bool {
   if cs_finite_closed_inhabitants(DVNatTy) != None {
     return false
   }
-  let n1 = DSucc(DNatZero)
-  let n2 = DSucc(n1)
-  let lhs = DInductiveElim(
+  let n1 = DTerm::DSucc(DTerm::DNatZero)
+  let n2 = DTerm::DSucc(n1)
+  let lhs = DTerm::DInductiveElim(
     fin3,
-    DLam(fin3_ty, DNatTy),
+    DTerm::DLam(fin3_ty, DTerm::DNatTy),
     [n1, n1, n1],
     [],
     [],
-    DTVar(0),
+    DTerm::DTVar(0),
   )
   if conv_terms_plain([fin3_ty], DNatTy, lhs, n1) {
     return false
@@ -259,13 +290,13 @@ pub fn check_phase14_dsystem_all_maxima_and_finite_case_split() -> Bool {
   if !split_ok.holds || split_ok.split_nodes != 1 || split_ok.probes != 4 {
     return false
   }
-  let lhs_bad = DInductiveElim(
+  let lhs_bad = DTerm::DInductiveElim(
     fin3,
-    DLam(fin3_ty, DNatTy),
+    DTerm::DLam(fin3_ty, DTerm::DNatTy),
     [n1, n2, n1],
     [],
     [],
-    DTVar(0),
+    DTerm::DTVar(0),
   )
   !conv_terms_finite_case_split_report([fin3_ty], DNatTy, lhs_bad, n1).holds
 }
@@ -286,7 +317,7 @@ pub fn check_phase14_decoupled_torus_and_semantic_circle_norm() -> Bool {
   // At overlap `(i0=0, i1=0)` both equal `(0, 0)`, and the two torus coordinates
   // require distinct face-selection orders!
   let tbase : DValue = DVTorusPoint(DZero, DZero)
-  let tline = (_ : Dim) => DVTorusTy
+  let tline = (_ : Dim) => DValue::DVTorusTy
   let br_a = tube_branch(FEq0(DVar(0)), t => {
     torus_point(dim_simplify(DAnd(t, DVar(1))), DZero)
   })
@@ -318,7 +349,10 @@ pub fn check_phase14_decoupled_torus_and_semantic_circle_norm() -> Bool {
 /// shared-DAG module+schema bundle (`CHSHRBUN` v1).
 pub fn check_phase14_incremental_dag_delta_and_shared_bundle() -> Bool {
   let table = dterm_intern_table_new()
-  let base_term = DPi(DNatTy, DPi(DBoolTy, DSigma(DTVar(1), DTVar(0))))
+  let base_term = DTerm::DPi(
+    DTerm::DNatTy,
+    DTerm::DPi(DTerm::DBoolTy, DTerm::DSigma(DTerm::DTVar(1), DTerm::DTVar(0))),
+  )
   ignore(dterm_intern_id(table, base_term))
   let base_count = dterm_intern_table_size(table)
   if base_count < 4 {
@@ -330,7 +364,7 @@ pub fn check_phase14_incremental_dag_delta_and_shared_bundle() -> Bool {
     dterm_intern_table_size(dest_table) != base_count {
     return false
   }
-  let derived = DPair(DLam(base_term, DTVar(0)), base_term)
+  let derived = DTerm::DPair(DTerm::DLam(base_term, DTerm::DTVar(0)), base_term)
   let delta = match dterm_dag_delta_compute(table, base_count, [derived]) {
     Some(d) => d
     None => return false

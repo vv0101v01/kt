@@ -75,9 +75,9 @@ pub fn check_schema_registry_byte_persistence() -> Bool {
 /// on compound shapes, and interned terms check and normalise
 /// identically.
 pub fn check_dterm_hash_consing() -> Bool {
-  let arrow = DPi(DNatTy, DNatTy)
-  let pair_ty = DSigma(arrow, arrow)
-  let big = DSigma(pair_ty, DPi(pair_ty, pair_ty))
+  let arrow = DTerm::DPi(DTerm::DNatTy, DTerm::DNatTy)
+  let pair_ty = DTerm::DSigma(arrow, arrow)
+  let big = DTerm::DSigma(pair_ty, DTerm::DPi(pair_ty, pair_ty))
   let table = dterm_intern_table_new()
   let interned = dterm_intern(table, big)
   if interned != big {
@@ -94,9 +94,9 @@ pub fn check_dterm_hash_consing() -> Bool {
   if distinct != dterm_distinct_subterm_count(big) {
     return false
   }
-  let arrow2 = DPi(DNatTy, DNatTy)
-  let pair2 = DSigma(arrow2, arrow2)
-  let big2 = DSigma(pair2, DPi(pair2, pair2))
+  let arrow2 = DTerm::DPi(DTerm::DNatTy, DTerm::DNatTy)
+  let pair2 = DTerm::DSigma(arrow2, arrow2)
+  let big2 = DTerm::DSigma(pair2, DTerm::DPi(pair2, pair2))
   let (_, id1) = dterm_intern_id(table, big)
   let (_, id2) = dterm_intern_id(table, big2)
   if id1 != id2 {
@@ -105,20 +105,23 @@ pub fn check_dterm_hash_consing() -> Bool {
   if dterm_intern_table_size(table) != distinct {
     return false
   }
-  let partial = DPartial([
-    { face: FEq1(DVar(0)), body: DNatZero, },
-    { face: FTop, body: DNatZero, },
+  let partial = DTerm::DPartial([
+    { face: Face::FEq1(Dim::DVar(0)), body: DTerm::DNatZero, },
+    { face: Face::FTop, body: DTerm::DNatZero, },
   ])
   if dterm_rebuild(partial, dterm_children(partial)) != partial {
     return false
   }
-  let elim = DInductiveElim(
+  let elim = DTerm::DInductiveElim(
     nat_schema(),
-    DLam(DNatTy, DNatTy),
-    [DNatZero, DLam(DNatTy, DLam(DNatTy, DTVar(0)))],
+    DTerm::DLam(DTerm::DNatTy, DTerm::DNatTy),
+    [
+      DTerm::DNatZero,
+      DTerm::DLam(DTerm::DNatTy, DTerm::DLam(DTerm::DNatTy, DTerm::DTVar(0))),
+    ],
     [],
     [],
-    DSucc(DNatZero),
+    DTerm::DSucc(DTerm::DNatZero),
   )
   if dterm_rebuild(elim, dterm_children(elim)) != elim {
     return false
@@ -126,7 +129,10 @@ pub fn check_dterm_hash_consing() -> Bool {
   if dterm_intern(table, elim) != elim {
     return false
   }
-  let term = DApp(DLam(DNatTy, DSucc(DTVar(0))), DSucc(DNatZero))
+  let term = DTerm::DApp(
+    DTerm::DLam(DTerm::DNatTy, DTerm::DSucc(DTerm::DTVar(0))),
+    DTerm::DSucc(DTerm::DNatZero),
+  )
   let interned_term = dterm_intern(table, term)
   if !dep_check_closed(term, DNatTy) {
     return false
@@ -147,7 +153,7 @@ pub fn check_dterm_hash_consing() -> Bool {
 /// nothing at the vertex level.
 pub fn check_face_agreement_and_exact_repair() -> Bool {
   let a = circle_point(DVar(0))
-  let b = DVCirclePoint(DZero)
+  let b = DValue::DVCirclePoint(Dim::DZero)
   let agreement = face_agreement_face(0, 1, FTop, DVCircleTy, a, b)
   if agreement == FTop {
     return false
@@ -181,8 +187,8 @@ pub fn check_face_agreement_and_exact_repair() -> Bool {
     return false
   }
   let system = dsystem_of([tube_branch(FTop, _ => circle_point(DVar(0)))])
-  let base = DVCirclePoint(DZero)
-  let line = (_ : Dim) => DVCircleTy
+  let base = DValue::DVCirclePoint(Dim::DZero)
+  let line = (_ : Dim) => DValue::DVCircleTy
   let exact = dsystem_repair_to_base_exact(0, 1, line, system, base)
   if exact.system.branches.length() != 1 {
     return false
@@ -306,8 +312,8 @@ pub fn check_dcube_open_box_filler() -> Bool {
 /// point-valued tubes (De Morgan selection), while non-point tubes
 /// stay formal.
 pub fn check_circle_torus_point_comp() -> Bool {
-  let circle_line = (_ : Dim) => DVCircleTy
-  let base_pt = DVCirclePoint(DZero)
+  let circle_line = (_ : Dim) => DValue::DVCircleTy
+  let base_pt = DValue::DVCirclePoint(Dim::DZero)
   let system = dsystem_of([
     tube_branch(FEq1(DVar(0)), (j : Dim) => {
       circle_point(dim_simplify(DAnd(j, DVar(0))))
@@ -333,7 +339,7 @@ pub fn check_circle_torus_point_comp() -> Bool {
     }) {
     return false
   }
-  let torus_line = (_ : Dim) => DVTorusTy
+  let torus_line = (_ : Dim) => DValue::DVTorusTy
   let torus_system = dsystem_of([
     tube_branch(FEq1(DVar(0)), (j : Dim) => {
       torus_point(dim_simplify(DAnd(j, DVar(0))), DZero)

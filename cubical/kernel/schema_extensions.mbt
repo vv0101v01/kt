@@ -430,7 +430,7 @@ pub fn tree_forest_family() -> DMutualFamily? {
 
 ///|
 /// Universe-level expressions for declaration-level schemes.
-pub enum DLevelExpr {
+pub(all) enum DLevelExpr {
   DLevelConst(Int32)
   DLevelVar(Int32)
   DLevelSucc(DLevelExpr)
