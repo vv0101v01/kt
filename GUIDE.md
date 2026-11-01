@@ -35,21 +35,21 @@
 - 有界 Huet 搜尋、版本化已編譯模組 byte codec，以及 BDD
   sifting/cache、watched-literal DPLL 與 sparse/Karatsuba `QPoly` 乘法；
 - `SPEC.md`/`SPEC.en.md` 與雙語附錄對全部型別、算子、規格、結構逐符號
-  給出規範形式與範疇化；雙V形六聯邦大一統後附錄共 **7,100 個符號**，cubical 支柱的
-  規格登記為 **140 條**；
-- 雙V形（`V₁=@gcd → X=@condensed → V₂=@bridge`）六大聯邦（`cubical`、`symlib`、`semiring`、`topos`、`scheme`、`condensed`）及 `bridge`/apps 合共
-  **29 套件／47 元件**，由同一 `architecture.json`/`tools/arch_check.py` 管制。
+  給出規範形式與範疇化；雙V形＋星稜柱七聯邦大一統後附錄共 **7,303 個符號**，cubical 與發現支柱的
+  規格登記為 **142 條**；
+- 雙V形（`V₁=@gcd → X=@condensed → V₂=@bridge`）＋Lakatos 發現迴圈七大聯邦（`cubical`、`symlib`、`semiring`、`topos`、`scheme`、`condensed`、`discovery`）及 `bridge`/apps 合共
+  **31 套件／49 元件**，由同一 `architecture.json`/`tools/arch_check.py` 管制。
 
 ## 運行與驗收
 
 ```text
 moon check --deny-warn --target wasm-gc     # 全專案通過且零警告
-moon test --release --target wasm-gc        # 全倉精煉測試 19/19（覆蓋六聯邦＋大一統＋第二十一期突破與健檢回歸）
+moon test --release --target wasm-gc        # 全倉精煉測試 21/21（覆蓋七聯邦＋大一統＋十二猜想圖譜與健檢回歸）
 moon run --release cmd/main --target wasm-gc      # 129 項定理登記表，期望 129/129
-moon run --release cmd/showcase --target wasm-gc  # 六聯邦 K_6 大一統證書，期望 43/43
-python3 tools/arch_check.py                 # 六聯邦依賴層級、唯一檔案歸位與計數
+moon run --release cmd/showcase --target wasm-gc  # 七聯邦 K_7 星稜柱大一統證書，期望 46/46
+python3 tools/arch_check.py                 # 七聯邦依賴層級、唯一檔案歸位與計數
 moon info --target wasm-gc && python3 tools/audit_spec.py --check
-                                            # 雙語符號附錄與各套件介面＋spec.mbt 集合核驗（7,100 符號）
+                                            # 雙語符號附錄與各套件介面＋spec.mbt 集合核驗（7,303 符號）
 ```
 
 ## 本次升級重點

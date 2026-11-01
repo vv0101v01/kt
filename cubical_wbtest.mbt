@@ -1,7 +1,7 @@
 ///|
 test "cubical theorem registry, spec soundness, and phase 16 regressions" {
   assert_true(spec_registry_sound())
-  assert_eq(spec_registry().length(), 140)
+  assert_eq(spec_registry().length(), 142)
   assert_true(all_checks_pass())
 }
 

@@ -1,13 +1,13 @@
 ///|
 fn main {
   println(
-    "Golden Grand Unification — Six-Federation Double-V & X-Overlap Synthesis",
+    "Golden Grand Unification — Seven-Federation Double-V, X-Overlap & Lakatosian Discovery Synthesis",
   )
   println(
-    "========================================================================",
+    "================================================================================================",
   )
-  println("-- Six Autonomous Mathematical Federations (6/6) --")
-  let feds = @bridge.six_federation_descriptors()
+  println("-- Seven Autonomous Mathematical Federations (7/7) --")
+  let feds = @bridge.seven_federation_descriptors()
   let mut fed_passed = 0
   for fed in feds {
     if fed.live_health_ok {
@@ -16,27 +16,33 @@ fn main {
     let st = if fed.live_health_ok { "PASS" } else { "FAIL" }
     println("[\{st}] federation \{fed.slug}: \{fed.summary}")
   }
-  println("-- Complete K_6 Cross-Federation Pairwise Bridges (15/15) --")
-  let k6_edges = @bridge.verify_k6_federation_bridges()
-  let mut k6_passed = 0
-  for edge in k6_edges {
+  println("-- Complete K_7 Cross-Federation Pairwise Bridges (21/21) --")
+  let k7_edges = @bridge.verify_k7_federation_bridges()
+  let mut k7_passed = 0
+  for edge in k7_edges {
     if edge.holds {
-      k6_passed = k6_passed + 1
+      k7_passed = k7_passed + 1
     }
     let st = if edge.holds { "PASS" } else { "FAIL" }
     println("[\{st}] \{edge.id}: \{edge.bridge_theorem}")
     println("        \{edge.quantitative_witness}")
   }
-  println("-- X-Overlap Chiasmus & Double-V Architecture --")
-  let dv_rep = @bridge.verify_double_v_architecture(
-    k6_precomputed=Some(k6_edges),
+  println(
+    "-- X-Overlap Chiasmus, Double-V & Seven-Federation Star-Prism Discovery --",
   )
   let x_rep = @bridge.verify_x_overlap_chiasmus()
+  let dv_rep = @bridge.verify_double_v_architecture()
+  let sp_rep = @bridge.verify_seven_federation_star_prism(
+    k7_precomputed=Some(k7_edges),
+  )
   println(
     "[PASS=\{x_rep.chiasm_commutes}] X-Overlap Chiasmus: D1=\{x_rep.diagonal_d1_syntax_nonarch_ok}, D2=\{x_rep.diagonal_d2_analytic_homotopy_ok}, invariants=\{x_rep.shared_chiasm_invariants.0},\{x_rep.shared_chiasm_invariants.1},\{x_rep.shared_chiasm_invariants.2}",
   )
   println(
-    "[PASS=\{dv_rep.upper_v_synthesis_apex_ok}] Double-V: V1_gcd=\{dv_rep.lower_v_gcd_apex_ok}, federations=\{dv_rep.six_federations_verified}/6, K6=\{dv_rep.k6_bridges_verified}/15, boundaries_7=\{dv_rep.seven_boundaries_breakthrough_ok}, conjectures=\{dv_rep.four_conjectures_evaluated}/4",
+    "[PASS=\{dv_rep.upper_v_synthesis_apex_ok}] Double-V: V1_gcd=\{dv_rep.lower_v_gcd_apex_ok}, federations=\{dv_rep.six_federations_verified}/6, K6=\{dv_rep.k6_bridges_verified}/15, boundaries_7=\{dv_rep.seven_boundaries_breakthrough_ok}",
+  )
+  println(
+    "[PASS=\{sp_rep.star_prism_commutes}] Star-Prism Discovery: federations=\{sp_rep.seven_federations_verified}/7, K7=\{sp_rep.k7_bridges_verified}/21, conjectures=\{sp_rep.conjectures_evaluated}/12, evolve=\{sp_rep.evolution_families_verified}/6, lakatos_refined=\{sp_rep.lakatos_refinements_verified}",
   )
   println("-- Unified Certificate Ledger --")
   let certificates = @bridge.bridge_certificates()
@@ -61,16 +67,17 @@ fn main {
   }
   println(@bridge.certificate_summary(certificates))
   let all_certs_ok = @bridge.certificates_all_ok(certificates)
-  let unif_ok = fed_passed == 6 &&
-    k6_passed == 15 &&
+  let unif_ok = fed_passed == 7 &&
+    k7_passed == 21 &&
     pentagon_ok &&
     six_ok &&
     atlas_passed == 18 &&
     x_rep.chiasm_commutes &&
     dv_rep.upper_v_synthesis_apex_ok &&
+    sp_rep.star_prism_commutes &&
     all_certs_ok
   println(
-    "six-federation double-v unification: federations=\{fed_passed}/6, K6_bridges=\{k6_passed}/15, x_overlap=\{x_rep.chiasm_commutes}, double_v=\{dv_rep.upper_v_synthesis_apex_ok}, atlas=\{atlas_passed}/18, all_ok=\{unif_ok}",
+    "seven-federation star-prism unification: federations=\{fed_passed}/7, K7_bridges=\{k7_passed}/21, conjectures=\{sp_rep.conjectures_evaluated}/12, x_overlap=\{x_rep.chiasm_commutes}, star_prism=\{sp_rep.star_prism_commutes}, atlas=\{atlas_passed}/18, all_ok=\{unif_ok}",
   )
   let cycle = @sgraph.Graph::build(4, [0, 1, 2, 3], [1, 2, 3, 0], [1, 1, 1, 1])
   let report = @bridge.weighted_graph_report(cycle, 32)

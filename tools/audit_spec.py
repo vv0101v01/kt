@@ -90,6 +90,8 @@ FAMILIES = {
     "輔助工具": ("整數／網格等具體值", "基礎集合層工具", "直接計算"),
     "下V泛消元新最大公因數（@gcd）": ("F_p 約化列梯形 RREF、ℤ-矩陣 Hermite 與 Smith 範式對角不變因子、首一餘式與多生成元 Bézout 線性組合證書", "交換整環／體上消元帶動的最大下界格結構（整數可除格、F_p[x] 首一多項式格、F_p 子空間模格、ℤ-格對偶零化與主理想和）", "擴張歐氏演算法、F_p 消元核空間對偶正交補、HNF/SNF 單模矩陣分解 U·A·V=D 與維數模律 dim(U∩W)+dim(U+W)=dim U+dim W 核驗"),
     "X形交疊凝聚數學、凝聚高階結構×4、範疇×2與新猜想（@condensed）": ("有限逆系塔滿射轉移矩陣、自由固態模 Z[S]^■、最小 Steenrod A(2) 自由分解、大雙分次譜序列頁、冪等規範化射與雜湊鏈不變量賬本", "凝聚範疇 CondCategory（極端不連通下降與固態化左伴隨反射）、規範消元範疇 CanonElimCategory、凝聚高階同倫棧 CondAnima（Milnor lim¹）、固態與 p-液態模 CondSolidModule、凝聚譜層 CondSpectralSheaf 與 Huber–熱帶雙極解析棧 CondAnalyticStack", "Mittag-Leffler 秩穩定與餘核撓率增長判定、p∈(0,1] 液態次可加性、Adem 關係與 Ext_A^{2,3}(F_2,F_2)=0（證 2η=0）、Čech 扭曲阻礙 k¹−r⁰、SNF 整數守恆律自動推導與四項新猜想實驗核驗"),
+    "第七聯邦：多線性超行列式、離散 Radon 變換、Clifford 旋量規範場與 VR 持續同調（@tensor）": ("F_3 全體 6561 個 2×2×2 張量秩與超行列式索引表、有限平面關聯矩陣與 Sherman–Morrison 顯式逆、Jordan–Wigner γ 矩陣與 T² 全純類、非交叉弦遮罩與全維度 VR 單純邊界複形", "SL₂³×S₃ 多線性不變量、有限幾何積分對偶、扭曲群代數辛根中心與離散主叢模空間、非交叉森林 Grothendieck 層景、Kalton–Ostrovskii 對應失真與 Viro–Krasner 熱帶超體", "O(|R₁|²) 精確秩分解 [1,128,5568,864]、仿射修正 Plancherel 能量恆等式、偶奇維旋量中心分裂、[T-NC-Free] 單調自由與 K₄ 反例、同調—上同調轉置秩對偶核驗"),
+    "第七聯邦：Lakatos 十二猜想演化圖譜、守恆律自動發現與五大認識論透鏡（@conjecture）": ("觀測軌跡 F_p 零空間成對加減飽和整數基、五謂詞蘊含閉包與最小反例矩陣、五態 Lakatos 猜想生命週期與持久雜湊鏈入賬紀錄", "跨尺度演化守恆律函子 [E-Derive]+[P-Transfer]、相對／對偶／對比／蘊含／比率五大認識論透鏡與七大聯邦 K₇ 完全圖星稜柱大一統", "6 組演化定律自動發現並剔除小規模巧合（含三次至四次平面曲線 Hironaka–Serre 虧格轉移）、5 項天真猜想反例推翻與精煉定理配對、共 12 項跨聯邦猜想（CONJ-01..12）機器核驗"),
 }
 
 TYPE_FAMILY = {
@@ -1296,11 +1298,15 @@ FAMILIES_EN.update({
     "六支柱大一統：邏輯理論轉譯與幾何邏輯精細圖譜": ("Six-pillar grand unification: logical theory translations and geometry-logic correspondence atlas", "cross-pillar normal forms, translated geometric formulas/ideals, Double-V & X-Overlap chiasm reports, complete K_6 (15/15) federation bridges and the 18-entry fine-grained geometry-logic correspondence atlas", "Glivenko ¬¬ dense Boolean subtoposes, Stone–Zariski classifying dualities, Kapranov tropical valuations, quadratic étale torsor Galois bridges, subtopos/blow-up excision bridges, Condensed Steenrod–Adams ↔ Brunerie & Double-V synthesis", "cross-pillar semantic preservation, non-tautological witness/contrast pairs and live verification of all 43 unified certificates"),
     "下V泛消元新最大公因數（@gcd）": ("Lower-V Universal Elimination-GCD (@gcd)", "F_p reduced row echelon form (RREF), integer Hermite & Smith Normal Form invariant factors, monic polynomial remainders and multi-generator Bézout linear-combination certificates", "greatest-lower-bound lattice induced by elimination across integers, F_p[x] polynomials, F_p linear subspaces, Z-lattices and multi-generator principal ideals", "extended Euclidean algorithm, double-annihilator subspace intersection verifying dim(U∩W)+dim(U+W)=dim U+dim W, unimodular U·A·V=D decomposition and Bézout certificate verification"),
     "X形交疊凝聚數學、凝聚高階結構×4、範疇×2與新猜想（@condensed）": ("X-Overlap Condensed Mathematics, 4 Condensed Higher Structures, 2 Categories & 4 Conjectures (@condensed)", "profinite inverse-tower surjection matrices, free solid modules Z[S]^■, minimal Steenrod A(2) resolutions, bigraded spectral-sequence pages, idempotent canonical normalizers and hash-chained invariant ledgers", "CondCategory (extremally disconnected sheaf descent & solidification left-adjoint reflector), CanonElimCategory, CondAnima (Milnor lim^1), CondSolidModule (solid gap & p-liquid norm), CondSpectralSheaf (Twisted AHSS + Čech obstruction) and CondAnalyticStack (Huber–Tropical–P^1–Topos bipolar stack)", "Mittag-Leffler rank stabilization vs cokernel torsion growth, 0<p≤1 liquid subadditivity, Adem reduction & Ext_A^{2,3}(F_2,F_2)=0 (certifying 2η=0), Čech obstruction k^1-r^0, automatic SNF conservation-law derivation and finite/counterexample evaluation of 4 conjectures"),
+    "第七聯邦：多線性超行列式、離散 Radon 變換、Clifford 旋量規範場與 VR 持續同調（@tensor）": ("Federation 7: Multilinear hyperdeterminants, discrete Radon transform, Clifford spinor gauge fields & VR persistent homology (@tensor)", "exhaustive F_3 6,561-tensor rank & Cayley hyperdeterminant tables, finite-plane incidence matrices & Sherman–Morrison inverses, Jordan–Wigner gamma matrices & T^2 holonomy classes, non-crossing chord bitmasks and full-dimension VR simplicial boundary complexes", "SL_2^3 × S_3 multilinear invariants, finite-geometric integral duality, twisted group algebra symplectic-radical centers & discrete torsor moduli, non-crossing forest Grothendieck sites, Kalton–Ostrovskii correspondence distortion and Viro–Krasner tropical hyperfields", "O(|R_1|^2) exact rank partition [1,128,5568,864], affine-corrected Plancherel energy law, even/odd spinor center splitting, [T-NC-Free] cyclic-monotone freedom vs K_4 counterexample, and independent homology-cohomology rank duality"),
+    "第七聯邦：Lakatos 十二猜想演化圖譜、守恆律自動發現與五大認識論透鏡（@conjecture）": ("Federation 7: Lakatosian 12-conjecture evolution atlas, automatic conservation-law discovery & 5 epistemic lenses (@conjecture)", "F_p nullspace pairwise-saturated integer relation bases on observation trajectories, 5-predicate implication closures & minimal counterexample matrices, 5-state Lakatosian conjecture lifecycles and hash-chained ledger records", "out-of-sample evolutionary invariant functor [E-Derive]+[P-Transfer], Relative/Dual/Contrast/Implication/ScaleRatio epistemic lenses and Seven-Federation K_7 Star-Prism unification", "automatic discovery of 6 evolutionary conservation laws with small-scale mirage rejection (including cubic-to-quartic Hironaka–Serre curve genus transfer), 5 counterexample refutations paired with refined theorems, and machine verification of all 12 conjectures (CONJ-01..12)"),
 })
 
 PACKAGE_FAMILY = {
     "gcd": "下V泛消元新最大公因數（@gcd）",
     "condensed": "X形交疊凝聚數學、凝聚高階結構×4、範疇×2與新猜想（@condensed）",
+    "tensor": "第七聯邦：多線性超行列式、離散 Radon 變換、Clifford 旋量規範場與 VR 持續同調（@tensor）",
+    "conjecture": "第七聯邦：Lakatos 十二猜想演化圖譜、守恆律自動發現與五大認識論透鏡（@conjecture）",
     "semiring-algebra": "半環實驗室：半環與么半群 traits",
     "semiring-matrix": "半環實驗室：泛型矩陣與星閉包",
     "semiring-monoid": "半環實驗室：么半群聚合",
@@ -1494,8 +1500,9 @@ def classify_bridge(sym, kind):
 
     if has(
         "translate_", "glivenko_", "build_cchm_interval", "build_fine_grained",
-        "five_federation_", "six_federation_", "verify_", "grand_unification",
-        "run_grand_unification", "XOverlapChiasmReport", "DoubleVArchitectureReport",
+        "five_federation_", "six_federation_", "seven_federation_", "verify_",
+        "grand_unification", "run_grand_unification", "XOverlapChiasmReport",
+        "DoubleVArchitectureReport", "SevenFederationStarPrismReport",
     ):
         return BRIDGE_GRAND
     return BRIDGE_CLASSIC

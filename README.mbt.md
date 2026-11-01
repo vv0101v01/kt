@@ -1,9 +1,10 @@
 # cubical-hermitian
 
-A governed **Double-V (`V₁ = @gcd` → `X = @condensed` → `V₂ = @bridge`) &
-X-Overlap Six-Federation Architecture + Grand Unification** MoonBit platform
-for structural algorithms, geometry, condensed mathematics, and logic
-(`6 federations + unification apex`, `29 packages`, `47 components`):
+A governed **Double-V (`V₁ = @gcd` → `X = @condensed` → `V₂ = @bridge`),
+X-Overlap & Star-Prism Seven-Federation Architecture + Grand Unification** MoonBit platform
+for structural algorithms, geometry, condensed mathematics, multilinear/discrete
+discovery, and logic (`7 federations + unification apex`, `31 packages`, `49 components`,
+`7,303 public symbols`, `46/46 unification certificates`):
 
 1. **Federation 1 — `cubical`: Cubical paths, univalence, exact spectra & BFT persistence**
    (the root package, `algebra/`, `hostfs/`, and `cmd/main`):
@@ -53,11 +54,25 @@ for structural algorithms, geometry, condensed mathematics, and logic
    and canonical elimination category `CanonElimCategory`, 4 condensed higher structures
    (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`),
    Steenrod–Adams cohomology (`Ext_A^{2,3}(F_2, F_2) = 0`, `2η = 0`), SNF conservation-law
-   ledgers, and the 4-conjecture laboratory (`[Conj-1]` .. `[Conj-4]`).
-7. **Unification Apex — `unification`: Complete `K_6` cross-federation bridges,
-   Double-V & X-Overlap synthesis** (`bridge/`, `cmd/showcase`):
-   all $\binom{6}{2} = 15$ pairwise cross-federation bridges (`K5-01` .. `K5-10`, `K6-11` .. `K6-15`),
-   the X-Overlap Chiasmus theorem (`[T-X-Chiasmus]`), the Double-V architecture report,
+   ledgers, and the 4-conjecture base laboratory (`[Conj-1]` .. `[Conj-4]`).
+7. **Federation 7 — `discovery`: Multilinear/Discrete Geometry & Lakatosian Conjecture Engine**
+   (`tensor/`, `conjecture/`): exhaustive $O(|R_1|^2)$ classification of all `6,561`
+   $\mathbb{F}_3^{2\times 2\times 2}$ tensors (`[1, 128, 4032, 2400]` including `1,536`
+   $\mathbb{F}_9/\mathbb{F}_3$ Galois-twisted rank-3 tensors) & Cayley hyperdeterminant
+   $\mathrm{SL}_2^3 \rtimes S_3$ invariance, finite-plane discrete Radon transform &
+   Sherman–Morrison exact inversion, twisted group algebras $k^\omega[G]$, Jordan–Wigner
+   Clifford spinors & $T^2$ lattice gauge moduli, non-crossing polygon flip graphs,
+   cyclic-monotone MST `[T-NC-Free]` vs $K_4$ counterexample, `48`-open non-crossing
+   Grothendieck site `[T-X-Site]`, Gromov–Hausdorff & Vietoris–Rips persistent homology
+   duality, Marty/Viro–Krasner tropical hyperfields, 6 cross-scale evolutionary
+   discovery/transfer trajectories (`[P-Basis-RatRecon]` + `[P-Transfer]`), 5 epistemic
+   relational lenses committed to `CondInvariantLedger`, and the 12-entry Lakatosian
+   Conjecture Atlas (`CONJ-01` .. `CONJ-12`).
+8. **Unification Apex — `unification`: Complete `K_7` cross-federation bridges,
+   Double-V, X-Overlap & Star-Prism synthesis** (`bridge/`, `cmd/showcase`):
+   all $\binom{7}{2} = 21$ pairwise cross-federation bridges (`K5-01` .. `K5-10`,
+   `K6-11` .. `K6-15`, `K7-16` .. `K7-21`), the X-Overlap Chiasmus theorem (`[T-X-Chiasmus]`),
+   the Double-V & Seven-Federation Star-Prism synthesis reports (`46/46` certificates),
    the Five-Federation Pentagon Quadratic Galois–Étale Double-Cover Unification
    Theorem, cross-pillar logical theory translations, the 18-entry Fine-Grained
    Geometry–Logic Correspondence Atlas (`ATLAS-01` .. `ATLAS-18`), and the

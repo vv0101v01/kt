@@ -8,7 +8,7 @@
 > is the MoonBit package registered in `architecture.json`.
 
 <!-- APPENDIX:BEGIN -->
-**7100** public symbols (declarations + constructors + fields) in 99 specification families; by package: `algebra` 992, `bridge` 202, `cmd-semiringreport` 42, `condensed` 211, `gcd` 85, `hostfs` 78, `root` 3510, `scheme` 299, `semiring-algebra` 287, `semiring-app` 21, `semiring-bp` 20, `semiring-cat` 30, `semiring-graph` 39, `semiring-io` 9, `semiring-matrix` 60, `semiring-monoid` 85, `semiring-nf` 41, `semiring-par` 17, `semiring-par-host` 4, `semiring-ratelimit` 64, `semiring-sim` 42, `semiring-spline` 15, `semiring-trop` 84, `symlib` 519, `topos` 344.
+**7303** public symbols (declarations + constructors + fields) in 101 specification families; by package: `algebra` 992, `bridge` 223, `cmd-semiringreport` 42, `condensed` 211, `conjecture` 78, `gcd` 86, `hostfs` 78, `root` 3510, `scheme` 299, `semiring-algebra` 287, `semiring-app` 21, `semiring-bp` 20, `semiring-cat` 30, `semiring-graph` 39, `semiring-io` 9, `semiring-matrix` 60, `semiring-monoid` 85, `semiring-nf` 41, `semiring-par` 17, `semiring-par-host` 4, `semiring-ratelimit` 64, `semiring-sim` 42, `semiring-spline` 15, `semiring-trop` 84, `symlib` 519, `tensor` 103, `topos` 344.
 
 ### Complex scalars
 
@@ -5203,6 +5203,7 @@
 | `fp_mat_make` | gcd | function |
 | `fp_mat_mul` | gcd | function |
 | `fp_mat_set` | gcd | function |
+| `fp_mat_transpose` | gcd | function |
 | `fp_mul` | gcd | function |
 | `fp_norm` | gcd | function |
 | `fp_nullspace_basis` | gcd | function |
@@ -5452,6 +5453,205 @@
 | `ss_page_next` | condensed | function |
 | `ss_set_diff` | condensed | function |
 | `ss_total_by_degree` | condensed | function |
+
+### Federation 7: Multilinear hyperdeterminants, discrete Radon transform, Clifford spinor gauge fields & VR persistent homology (@tensor)
+
+- Canonical form: exhaustive F_3 6,561-tensor rank & Cayley hyperdeterminant tables, finite-plane incidence matrices & Sherman–Morrison inverses, Jordan–Wigner gamma matrices & T^2 holonomy classes, non-crossing chord bitmasks and full-dimension VR simplicial boundary complexes
+- Categorification: SL_2^3 × S_3 multilinear invariants, finite-geometric integral duality, twisted group algebra symplectic-radical centers & discrete torsor moduli, non-crossing forest Grothendieck sites, Kalton–Ostrovskii correspondence distortion and Viro–Krasner tropical hyperfields
+- Decision: O(|R_1|^2) exact rank partition [1,128,5568,864], affine-corrected Plancherel energy law, even/odd spinor center splitting, [T-NC-Free] cyclic-monotone freedom vs K_4 counterexample, and independent homology-cohomology rank duality
+
+| Symbol | Package | Kind |
+|---|---|---|
+| `DiscreteRadon` | tensor | struct |
+| `DiscreteRadon.dirs` | tensor | field |
+| `DiscreteRadon.n` | tensor | field |
+| `DiscreteRadon.p` | tensor | field |
+| `DiscreteRadon::equal` | tensor | function |
+| `DiscreteRadon::not_equal` | tensor | function |
+| `DiscreteRadon::to_repr` | tensor | function |
+| `F3Tensor222Atlas` | tensor | struct |
+| `F3Tensor222Atlas.det_nonzero_count` | tensor | field |
+| `F3Tensor222Atlas.det_zero_count` | tensor | field |
+| `F3Tensor222Atlas.hyperdets` | tensor | field |
+| `F3Tensor222Atlas.rank2_decomp_counts` | tensor | field |
+| `F3Tensor222Atlas.rank2_det_nonzero_count` | tensor | field |
+| `F3Tensor222Atlas.rank2_det_zero_count` | tensor | field |
+| `F3Tensor222Atlas.rank3_det_nonzero_count` | tensor | field |
+| `F3Tensor222Atlas.rank3_det_zero_count` | tensor | field |
+| `F3Tensor222Atlas.rank_counts` | tensor | field |
+| `F3Tensor222Atlas.ranks` | tensor | field |
+| `F3Tensor222Atlas.total_tensors` | tensor | field |
+| `F3Tensor222Atlas::equal` | tensor | function |
+| `F3Tensor222Atlas::not_equal` | tensor | function |
+| `F3Tensor222Atlas::to_repr` | tensor | function |
+| `FiniteMetricSpace` | tensor | struct |
+| `FiniteMetricSpace.dist` | tensor | field |
+| `FiniteMetricSpace.n` | tensor | field |
+| `FiniteMetricSpace::equal` | tensor | function |
+| `FiniteMetricSpace::not_equal` | tensor | function |
+| `FiniteMetricSpace::to_repr` | tensor | function |
+| `Tensor3` | tensor | struct |
+| `Tensor3.data` | tensor | field |
+| `Tensor3.dim0` | tensor | field |
+| `Tensor3.dim1` | tensor | field |
+| `Tensor3.dim2` | tensor | field |
+| `Tensor3.field` | tensor | field |
+| `Tensor3::equal` | tensor | function |
+| `Tensor3::not_equal` | tensor | function |
+| `Tensor3::to_repr` | tensor | function |
+| `TriangulationFlipReport` | tensor | struct |
+| `TriangulationFlipReport.catalan_count` | tensor | field |
+| `TriangulationFlipReport.dual_tree_rows` | tensor | field |
+| `TriangulationFlipReport.flip_edges` | tensor | field |
+| `TriangulationFlipReport.is_connected` | tensor | field |
+| `TriangulationFlipReport.is_regular_degree` | tensor | field |
+| `TriangulationFlipReport.n_gon` | tensor | field |
+| `TriangulationFlipReport::equal` | tensor | function |
+| `TriangulationFlipReport::not_equal` | tensor | function |
+| `TriangulationFlipReport::to_repr` | tensor | function |
+| `TwistedGroupReport` | tensor | struct |
+| `TwistedGroupReport.center_dim` | tensor | field |
+| `TwistedGroupReport.coboundary_gauge_invariant` | tensor | field |
+| `TwistedGroupReport.cocycle_sum_mod_ell` | tensor | field |
+| `TwistedGroupReport.dim_d` | tensor | field |
+| `TwistedGroupReport.ell` | tensor | field |
+| `TwistedGroupReport.group_order` | tensor | field |
+| `TwistedGroupReport.radical_size` | tensor | field |
+| `TwistedGroupReport::equal` | tensor | function |
+| `TwistedGroupReport::not_equal` | tensor | function |
+| `TwistedGroupReport::to_repr` | tensor | function |
+| `VrHomologyReport` | tensor | struct |
+| `VrHomologyReport.betti_cohomology` | tensor | field |
+| `VrHomologyReport.betti_homology` | tensor | field |
+| `VrHomologyReport.chain_complex_dd_zero` | tensor | field |
+| `VrHomologyReport.euler_betti` | tensor | field |
+| `VrHomologyReport.euler_simplicial` | tensor | field |
+| `VrHomologyReport.homology_cohomology_dual` | tensor | field |
+| `VrHomologyReport.scale_r` | tensor | field |
+| `VrHomologyReport.simplex_counts` | tensor | field |
+| `VrHomologyReport::equal` | tensor | function |
+| `VrHomologyReport::not_equal` | tensor | function |
+| `VrHomologyReport::to_repr` | tensor | function |
+| `clifford_ramond_anticommutator_ok` | tensor | function |
+| `f3_tensor222_atlas_build` | tensor | function |
+| `f3_tensor_code` | tensor | function |
+| `f3_tensor_of_code` | tensor | function |
+| `hyper_check_marty_hypergroup` | tensor | function |
+| `hyper_tropical_viro_op` | tensor | function |
+| `lattice_torus_gauge_moduli_verify` | tensor | function |
+| `metric_check_axioms` | tensor | function |
+| `metric_diameter` | tensor | function |
+| `metric_gh_twice_exact` | tensor | function |
+| `metric_vr_homology_report` | tensor | function |
+| `nc_chords_cross` | tensor | function |
+| `nc_forest_grothendieck_site_ok` | tensor | function |
+| `nc_mst_vs_unconstrained_mst` | tensor | function |
+| `nc_polygon_triangulations_flip_report` | tensor | function |
+| `radon_apply_exact` | tensor | function |
+| `radon_check_gram_identity` | tensor | function |
+| `radon_energy_triple` | tensor | function |
+| `radon_incidence_matrix` | tensor | function |
+| `radon_invert_fp` | tensor | function |
+| `radon_line_points` | tensor | function |
+| `radon_make` | tensor | function |
+| `t3_add` | tensor | function |
+| `t3_check_sl2_shear_and_s3_invariance` | tensor | function |
+| `t3_flatten` | tensor | function |
+| `t3_flatten_rank_lower_bound` | tensor | function |
+| `t3_get` | tensor | function |
+| `t3_hyperdet222` | tensor | function |
+| `t3_make` | tensor | function |
+| `t3_of` | tensor | function |
+| `t3_rank1_scaled` | tensor | function |
+| `tensor_check_federation_laws` | tensor | function |
+| `twisted_group_clifford_cocycle_report` | tensor | function |
+
+### Federation 7: Lakatosian 12-conjecture evolution atlas, automatic conservation-law discovery & 5 epistemic lenses (@conjecture)
+
+- Canonical form: F_p nullspace pairwise-saturated integer relation bases on observation trajectories, 5-predicate implication closures & minimal counterexample matrices, 5-state Lakatosian conjecture lifecycles and hash-chained ledger records
+- Categorification: out-of-sample evolutionary invariant functor [E-Derive]+[P-Transfer], Relative/Dual/Contrast/Implication/ScaleRatio epistemic lenses and Seven-Federation K_7 Star-Prism unification
+- Decision: automatic discovery of 6 evolutionary conservation laws with small-scale mirage rejection (including cubic-to-quartic Hironaka–Serre curve genus transfer), 5 counterexample refutations paired with refined theorems, and machine verification of all 12 conjectures (CONJ-01..12)
+
+| Symbol | Package | Kind |
+|---|---|---|
+| `ConjectureLifecycle` | conjecture | enum |
+| `ConjectureLifecycle::LcDerivedAndTransferred` | conjecture | constructor |
+| `ConjectureLifecycle::LcOpenFrontier` | conjecture | constructor |
+| `ConjectureLifecycle::LcPhaseTransition` | conjecture | constructor |
+| `ConjectureLifecycle::LcRefutedAndRefined` | conjecture | constructor |
+| `ConjectureLifecycle::LcVerifiedUpToBound` | conjecture | constructor |
+| `ConjectureLifecycle::equal` | conjecture | function |
+| `ConjectureLifecycle::not_equal` | conjecture | function |
+| `ConjectureLifecycle::to_repr` | conjecture | function |
+| `ConjectureSynthesisSummary` | conjecture | struct |
+| `ConjectureSynthesisSummary.all_consistent` | conjecture | field |
+| `ConjectureSynthesisSummary.derived_and_transferred` | conjecture | field |
+| `ConjectureSynthesisSummary.epistemic_lenses_ledger_ok` | conjecture | field |
+| `ConjectureSynthesisSummary.evolution_families_passed` | conjecture | field |
+| `ConjectureSynthesisSummary.new_creative_theorems_ok` | conjecture | field |
+| `ConjectureSynthesisSummary.open_frontiers` | conjecture | field |
+| `ConjectureSynthesisSummary.phase_transitions` | conjecture | field |
+| `ConjectureSynthesisSummary.refuted_and_refined` | conjecture | field |
+| `ConjectureSynthesisSummary.total_conjectures` | conjecture | field |
+| `ConjectureSynthesisSummary.verified_bounded` | conjecture | field |
+| `ConjectureSynthesisSummary::equal` | conjecture | function |
+| `ConjectureSynthesisSummary::not_equal` | conjecture | function |
+| `ConjectureSynthesisSummary::to_repr` | conjecture | function |
+| `EpistemicLensKind` | conjecture | enum |
+| `EpistemicLensKind::LensContrast` | conjecture | constructor |
+| `EpistemicLensKind::LensDual` | conjecture | constructor |
+| `EpistemicLensKind::LensImplication` | conjecture | constructor |
+| `EpistemicLensKind::LensRelative` | conjecture | constructor |
+| `EpistemicLensKind::LensScaleRatio` | conjecture | constructor |
+| `EpistemicLensKind::equal` | conjecture | function |
+| `EpistemicLensKind::not_equal` | conjecture | function |
+| `EpistemicLensKind::to_repr` | conjecture | function |
+| `EvolutionTransferReport` | conjecture | struct |
+| `EvolutionTransferReport.derived_count` | conjecture | field |
+| `EvolutionTransferReport.family_id` | conjecture | field |
+| `EvolutionTransferReport.mirage_rejected_on_transfer` | conjecture | field |
+| `EvolutionTransferReport.target_derived_on_train` | conjecture | field |
+| `EvolutionTransferReport.target_holds_on_transfer` | conjecture | field |
+| `EvolutionTransferReport::equal` | conjecture | function |
+| `EvolutionTransferReport::not_equal` | conjecture | function |
+| `EvolutionTransferReport::to_repr` | conjecture | function |
+| `ImplicationLatticeReport` | conjecture | struct |
+| `ImplicationLatticeReport.counterexamples` | conjecture | field |
+| `ImplicationLatticeReport.implies` | conjecture | field |
+| `ImplicationLatticeReport.nontrivial_equiv_pairs` | conjecture | field |
+| `ImplicationLatticeReport.num_predicates` | conjecture | field |
+| `ImplicationLatticeReport.num_samples` | conjecture | field |
+| `ImplicationLatticeReport.strict_unidirectional_edges` | conjecture | field |
+| `ImplicationLatticeReport::equal` | conjecture | function |
+| `ImplicationLatticeReport::not_equal` | conjecture | function |
+| `ImplicationLatticeReport::to_repr` | conjecture | function |
+| `ObservationRowSet` | conjecture | struct |
+| `ObservationRowSet.columns` | conjecture | field |
+| `ObservationRowSet.name` | conjecture | field |
+| `ObservationRowSet.rows` | conjecture | field |
+| `ObservationRowSet::equal` | conjecture | function |
+| `ObservationRowSet::not_equal` | conjecture | function |
+| `ObservationRowSet::to_repr` | conjecture | function |
+| `UpdatedConjectureRecord` | conjecture | struct |
+| `UpdatedConjectureRecord.epistemic_lens` | conjecture | field |
+| `UpdatedConjectureRecord.federations_bridged` | conjecture | field |
+| `UpdatedConjectureRecord.id` | conjecture | field |
+| `UpdatedConjectureRecord.lifecycle` | conjecture | field |
+| `UpdatedConjectureRecord.title` | conjecture | field |
+| `UpdatedConjectureRecord.verified_consistent` | conjecture | field |
+| `UpdatedConjectureRecord::equal` | conjecture | function |
+| `UpdatedConjectureRecord::not_equal` | conjecture | function |
+| `UpdatedConjectureRecord::to_repr` | conjecture | function |
+| `check_conjecture_discovery_federation` | conjecture | function |
+| `derive_invariant_relations` | conjecture | function |
+| `discover_six_evolution_laws` | conjecture | function |
+| `evaluate_five_epistemic_lenses_into_ledger` | conjecture | function |
+| `evaluate_updated_conjecture_atlas` | conjecture | function |
+| `implication_lattice_build` | conjecture | function |
+| `relation_in_derived_span` | conjecture | function |
+| `rowset_holds_exact` | conjecture | function |
+| `rowset_holds_mod` | conjecture | function |
+| `synthesize_and_verify_conjecture_engine` | conjecture | function |
 
 ### Finite symmetry: graph canonical forms and automorphisms
 
@@ -7909,6 +8109,7 @@
 | `FederationId` | bridge | enum |
 | `FederationId::Condensed` | bridge | constructor |
 | `FederationId::Cubical` | bridge | constructor |
+| `FederationId::Discovery` | bridge | constructor |
 | `FederationId::Scheme` | bridge | constructor |
 | `FederationId::Semiring` | bridge | constructor |
 | `FederationId::Symlib` | bridge | constructor |
@@ -7954,6 +8155,17 @@
 | `GrandUnificationReport::equal` | bridge | function |
 | `GrandUnificationReport::not_equal` | bridge | function |
 | `GrandUnificationReport::to_repr` | bridge | function |
+| `SevenFederationStarPrismReport` | bridge | struct |
+| `SevenFederationStarPrismReport.conjectures_evaluated` | bridge | field |
+| `SevenFederationStarPrismReport.epistemic_lenses_sealed` | bridge | field |
+| `SevenFederationStarPrismReport.evolution_families_verified` | bridge | field |
+| `SevenFederationStarPrismReport.k7_bridges_verified` | bridge | field |
+| `SevenFederationStarPrismReport.lakatos_refinements_verified` | bridge | field |
+| `SevenFederationStarPrismReport.seven_federations_verified` | bridge | field |
+| `SevenFederationStarPrismReport.star_prism_commutes` | bridge | field |
+| `SevenFederationStarPrismReport::equal` | bridge | function |
+| `SevenFederationStarPrismReport::not_equal` | bridge | function |
+| `SevenFederationStarPrismReport::to_repr` | bridge | function |
 | `XOverlapChiasmReport` | bridge | struct |
 | `XOverlapChiasmReport.chiasm_commutes` | bridge | field |
 | `XOverlapChiasmReport.diagonal_d1_syntax_nonarch_ok` | bridge | field |
@@ -7971,6 +8183,7 @@
 | `glivenko_double_negation_formula` | bridge | function |
 | `grand_unification_certificates` | bridge | function |
 | `run_grand_unification_system` | bridge | function |
+| `seven_federation_descriptors` | bridge | function |
 | `six_federation_descriptors` | bridge | function |
 | `translate_coord_ring_to_zariski_theory` | bridge | function |
 | `translate_cubical_dim_to_mpoly` | bridge | function |
@@ -7991,10 +8204,18 @@
 | `verify_k6_14_condensed_topos_bridge` | bridge | function |
 | `verify_k6_15_condensed_scheme_bridge` | bridge | function |
 | `verify_k6_federation_bridges` | bridge | function |
+| `verify_k7_16_discovery_cubical_bridge` | bridge | function |
+| `verify_k7_17_discovery_symlib_bridge` | bridge | function |
+| `verify_k7_18_discovery_semiring_bridge` | bridge | function |
+| `verify_k7_19_discovery_topos_bridge` | bridge | function |
+| `verify_k7_20_discovery_scheme_bridge` | bridge | function |
+| `verify_k7_21_discovery_condensed_bridge` | bridge | function |
+| `verify_k7_federation_bridges` | bridge | function |
 | `verify_kapranov_tropical_laurent_bridge` | bridge | function |
 | `verify_quadratic_etale_torsor_galois_bridge` | bridge | function |
 | `verify_quaternary_normal_forms` | bridge | function |
 | `verify_semiring_kleene_alexandroff_topos_bridge` | bridge | function |
+| `verify_seven_federation_star_prism` | bridge | function |
 | `verify_six_pillar_circle_sphere_unification` | bridge | function |
 | `verify_symlib_galois_topos_bridge` | bridge | function |
 | `verify_symlib_symmetric_scheme_bridge` | bridge | function |

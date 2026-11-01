@@ -1,5 +1,5 @@
 ///|
-test "six-federation double-v grand unification system and 43-certificate ledger" {
+test "seven-federation star-prism grand unification system and 46-certificate ledger" {
   let rep = run_grand_unification_system()
   assert_true(rep.five_federations_ok)
   assert_eq(rep.federations_verified_count, 5)
@@ -10,10 +10,15 @@ test "six-federation double-v grand unification system and 43-certificate ledger
   assert_true(rep.logic_translation_ok)
   assert_true(rep.geometry_logic_atlas_ok)
   assert_eq(rep.atlas_verified_count, 18)
-  assert_eq(rep.total_certificates_count, 43)
-  assert_eq(rep.total_certificates_passed, 43)
+  assert_eq(rep.total_certificates_count, 46)
+  assert_eq(rep.total_certificates_passed, 46)
   assert_true(rep.all_ok)
-  let feds6 = six_federation_descriptors()
-  assert_eq(feds6.length(), 6)
-  assert_true(feds6[5].live_health_ok)
+  let feds7 = seven_federation_descriptors()
+  assert_eq(feds7.length(), 7)
+  assert_true(feds7[5].live_health_ok)
+  assert_true(feds7[6].live_health_ok)
+  let sp = verify_seven_federation_star_prism()
+  assert_true(sp.star_prism_commutes)
+  assert_eq(sp.k7_bridges_verified, 21)
+  assert_eq(sp.conjectures_evaluated, 12)
 }

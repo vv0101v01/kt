@@ -7,7 +7,7 @@
 > `architecture.json` 登記的 MoonBit 套件。
 
 <!-- APPENDIX:BEGIN -->
-共 **7100** 個公共符號（宣告＋構造子＋欄位），分屬 99 個規格族；按套件：`algebra` 992、`bridge` 202、`cmd-semiringreport` 42、`condensed` 211、`gcd` 85、`hostfs` 78、`root` 3510、`scheme` 299、`semiring-algebra` 287、`semiring-app` 21、`semiring-bp` 20、`semiring-cat` 30、`semiring-graph` 39、`semiring-io` 9、`semiring-matrix` 60、`semiring-monoid` 85、`semiring-nf` 41、`semiring-par` 17、`semiring-par-host` 4、`semiring-ratelimit` 64、`semiring-sim` 42、`semiring-spline` 15、`semiring-trop` 84、`symlib` 519、`topos` 344。
+共 **7303** 個公共符號（宣告＋構造子＋欄位），分屬 101 個規格族；按套件：`algebra` 992、`bridge` 223、`cmd-semiringreport` 42、`condensed` 211、`conjecture` 78、`gcd` 86、`hostfs` 78、`root` 3510、`scheme` 299、`semiring-algebra` 287、`semiring-app` 21、`semiring-bp` 20、`semiring-cat` 30、`semiring-graph` 39、`semiring-io` 9、`semiring-matrix` 60、`semiring-monoid` 85、`semiring-nf` 41、`semiring-par` 17、`semiring-par-host` 4、`semiring-ratelimit` 64、`semiring-sim` 42、`semiring-spline` 15、`semiring-trop` 84、`symlib` 519、`tensor` 103、`topos` 344。
 
 ### 複數標量
 
@@ -5202,6 +5202,7 @@
 | `fp_mat_make` | gcd | 函數 |
 | `fp_mat_mul` | gcd | 函數 |
 | `fp_mat_set` | gcd | 函數 |
+| `fp_mat_transpose` | gcd | 函數 |
 | `fp_mul` | gcd | 函數 |
 | `fp_norm` | gcd | 函數 |
 | `fp_nullspace_basis` | gcd | 函數 |
@@ -5451,6 +5452,205 @@
 | `ss_page_next` | condensed | 函數 |
 | `ss_set_diff` | condensed | 函數 |
 | `ss_total_by_degree` | condensed | 函數 |
+
+### 第七聯邦：多線性超行列式、離散 Radon 變換、Clifford 旋量規範場與 VR 持續同調（@tensor）
+
+- 規範形式：F_3 全體 6561 個 2×2×2 張量秩與超行列式索引表、有限平面關聯矩陣與 Sherman–Morrison 顯式逆、Jordan–Wigner γ 矩陣與 T² 全純類、非交叉弦遮罩與全維度 VR 單純邊界複形
+- 範疇化：SL₂³×S₃ 多線性不變量、有限幾何積分對偶、扭曲群代數辛根中心與離散主叢模空間、非交叉森林 Grothendieck 層景、Kalton–Ostrovskii 對應失真與 Viro–Krasner 熱帶超體
+- 判定：O(|R₁|²) 精確秩分解 [1,128,5568,864]、仿射修正 Plancherel 能量恆等式、偶奇維旋量中心分裂、[T-NC-Free] 單調自由與 K₄ 反例、同調—上同調轉置秩對偶核驗
+
+| 符號 | 套件 | 類別 |
+|---|---|---|
+| `DiscreteRadon` | tensor | 結構 |
+| `DiscreteRadon.dirs` | tensor | 欄位 |
+| `DiscreteRadon.n` | tensor | 欄位 |
+| `DiscreteRadon.p` | tensor | 欄位 |
+| `DiscreteRadon::equal` | tensor | 函數 |
+| `DiscreteRadon::not_equal` | tensor | 函數 |
+| `DiscreteRadon::to_repr` | tensor | 函數 |
+| `F3Tensor222Atlas` | tensor | 結構 |
+| `F3Tensor222Atlas.det_nonzero_count` | tensor | 欄位 |
+| `F3Tensor222Atlas.det_zero_count` | tensor | 欄位 |
+| `F3Tensor222Atlas.hyperdets` | tensor | 欄位 |
+| `F3Tensor222Atlas.rank2_decomp_counts` | tensor | 欄位 |
+| `F3Tensor222Atlas.rank2_det_nonzero_count` | tensor | 欄位 |
+| `F3Tensor222Atlas.rank2_det_zero_count` | tensor | 欄位 |
+| `F3Tensor222Atlas.rank3_det_nonzero_count` | tensor | 欄位 |
+| `F3Tensor222Atlas.rank3_det_zero_count` | tensor | 欄位 |
+| `F3Tensor222Atlas.rank_counts` | tensor | 欄位 |
+| `F3Tensor222Atlas.ranks` | tensor | 欄位 |
+| `F3Tensor222Atlas.total_tensors` | tensor | 欄位 |
+| `F3Tensor222Atlas::equal` | tensor | 函數 |
+| `F3Tensor222Atlas::not_equal` | tensor | 函數 |
+| `F3Tensor222Atlas::to_repr` | tensor | 函數 |
+| `FiniteMetricSpace` | tensor | 結構 |
+| `FiniteMetricSpace.dist` | tensor | 欄位 |
+| `FiniteMetricSpace.n` | tensor | 欄位 |
+| `FiniteMetricSpace::equal` | tensor | 函數 |
+| `FiniteMetricSpace::not_equal` | tensor | 函數 |
+| `FiniteMetricSpace::to_repr` | tensor | 函數 |
+| `Tensor3` | tensor | 結構 |
+| `Tensor3.data` | tensor | 欄位 |
+| `Tensor3.dim0` | tensor | 欄位 |
+| `Tensor3.dim1` | tensor | 欄位 |
+| `Tensor3.dim2` | tensor | 欄位 |
+| `Tensor3.field` | tensor | 欄位 |
+| `Tensor3::equal` | tensor | 函數 |
+| `Tensor3::not_equal` | tensor | 函數 |
+| `Tensor3::to_repr` | tensor | 函數 |
+| `TriangulationFlipReport` | tensor | 結構 |
+| `TriangulationFlipReport.catalan_count` | tensor | 欄位 |
+| `TriangulationFlipReport.dual_tree_rows` | tensor | 欄位 |
+| `TriangulationFlipReport.flip_edges` | tensor | 欄位 |
+| `TriangulationFlipReport.is_connected` | tensor | 欄位 |
+| `TriangulationFlipReport.is_regular_degree` | tensor | 欄位 |
+| `TriangulationFlipReport.n_gon` | tensor | 欄位 |
+| `TriangulationFlipReport::equal` | tensor | 函數 |
+| `TriangulationFlipReport::not_equal` | tensor | 函數 |
+| `TriangulationFlipReport::to_repr` | tensor | 函數 |
+| `TwistedGroupReport` | tensor | 結構 |
+| `TwistedGroupReport.center_dim` | tensor | 欄位 |
+| `TwistedGroupReport.coboundary_gauge_invariant` | tensor | 欄位 |
+| `TwistedGroupReport.cocycle_sum_mod_ell` | tensor | 欄位 |
+| `TwistedGroupReport.dim_d` | tensor | 欄位 |
+| `TwistedGroupReport.ell` | tensor | 欄位 |
+| `TwistedGroupReport.group_order` | tensor | 欄位 |
+| `TwistedGroupReport.radical_size` | tensor | 欄位 |
+| `TwistedGroupReport::equal` | tensor | 函數 |
+| `TwistedGroupReport::not_equal` | tensor | 函數 |
+| `TwistedGroupReport::to_repr` | tensor | 函數 |
+| `VrHomologyReport` | tensor | 結構 |
+| `VrHomologyReport.betti_cohomology` | tensor | 欄位 |
+| `VrHomologyReport.betti_homology` | tensor | 欄位 |
+| `VrHomologyReport.chain_complex_dd_zero` | tensor | 欄位 |
+| `VrHomologyReport.euler_betti` | tensor | 欄位 |
+| `VrHomologyReport.euler_simplicial` | tensor | 欄位 |
+| `VrHomologyReport.homology_cohomology_dual` | tensor | 欄位 |
+| `VrHomologyReport.scale_r` | tensor | 欄位 |
+| `VrHomologyReport.simplex_counts` | tensor | 欄位 |
+| `VrHomologyReport::equal` | tensor | 函數 |
+| `VrHomologyReport::not_equal` | tensor | 函數 |
+| `VrHomologyReport::to_repr` | tensor | 函數 |
+| `clifford_ramond_anticommutator_ok` | tensor | 函數 |
+| `f3_tensor222_atlas_build` | tensor | 函數 |
+| `f3_tensor_code` | tensor | 函數 |
+| `f3_tensor_of_code` | tensor | 函數 |
+| `hyper_check_marty_hypergroup` | tensor | 函數 |
+| `hyper_tropical_viro_op` | tensor | 函數 |
+| `lattice_torus_gauge_moduli_verify` | tensor | 函數 |
+| `metric_check_axioms` | tensor | 函數 |
+| `metric_diameter` | tensor | 函數 |
+| `metric_gh_twice_exact` | tensor | 函數 |
+| `metric_vr_homology_report` | tensor | 函數 |
+| `nc_chords_cross` | tensor | 函數 |
+| `nc_forest_grothendieck_site_ok` | tensor | 函數 |
+| `nc_mst_vs_unconstrained_mst` | tensor | 函數 |
+| `nc_polygon_triangulations_flip_report` | tensor | 函數 |
+| `radon_apply_exact` | tensor | 函數 |
+| `radon_check_gram_identity` | tensor | 函數 |
+| `radon_energy_triple` | tensor | 函數 |
+| `radon_incidence_matrix` | tensor | 函數 |
+| `radon_invert_fp` | tensor | 函數 |
+| `radon_line_points` | tensor | 函數 |
+| `radon_make` | tensor | 函數 |
+| `t3_add` | tensor | 函數 |
+| `t3_check_sl2_shear_and_s3_invariance` | tensor | 函數 |
+| `t3_flatten` | tensor | 函數 |
+| `t3_flatten_rank_lower_bound` | tensor | 函數 |
+| `t3_get` | tensor | 函數 |
+| `t3_hyperdet222` | tensor | 函數 |
+| `t3_make` | tensor | 函數 |
+| `t3_of` | tensor | 函數 |
+| `t3_rank1_scaled` | tensor | 函數 |
+| `tensor_check_federation_laws` | tensor | 函數 |
+| `twisted_group_clifford_cocycle_report` | tensor | 函數 |
+
+### 第七聯邦：Lakatos 十二猜想演化圖譜、守恆律自動發現與五大認識論透鏡（@conjecture）
+
+- 規範形式：觀測軌跡 F_p 零空間成對加減飽和整數基、五謂詞蘊含閉包與最小反例矩陣、五態 Lakatos 猜想生命週期與持久雜湊鏈入賬紀錄
+- 範疇化：跨尺度演化守恆律函子 [E-Derive]+[P-Transfer]、相對／對偶／對比／蘊含／比率五大認識論透鏡與七大聯邦 K₇ 完全圖星稜柱大一統
+- 判定：6 組演化定律自動發現並剔除小規模巧合（含三次至四次平面曲線 Hironaka–Serre 虧格轉移）、5 項天真猜想反例推翻與精煉定理配對、共 12 項跨聯邦猜想（CONJ-01..12）機器核驗
+
+| 符號 | 套件 | 類別 |
+|---|---|---|
+| `ConjectureLifecycle` | conjecture | 列舉 |
+| `ConjectureLifecycle::LcDerivedAndTransferred` | conjecture | 構造子 |
+| `ConjectureLifecycle::LcOpenFrontier` | conjecture | 構造子 |
+| `ConjectureLifecycle::LcPhaseTransition` | conjecture | 構造子 |
+| `ConjectureLifecycle::LcRefutedAndRefined` | conjecture | 構造子 |
+| `ConjectureLifecycle::LcVerifiedUpToBound` | conjecture | 構造子 |
+| `ConjectureLifecycle::equal` | conjecture | 函數 |
+| `ConjectureLifecycle::not_equal` | conjecture | 函數 |
+| `ConjectureLifecycle::to_repr` | conjecture | 函數 |
+| `ConjectureSynthesisSummary` | conjecture | 結構 |
+| `ConjectureSynthesisSummary.all_consistent` | conjecture | 欄位 |
+| `ConjectureSynthesisSummary.derived_and_transferred` | conjecture | 欄位 |
+| `ConjectureSynthesisSummary.epistemic_lenses_ledger_ok` | conjecture | 欄位 |
+| `ConjectureSynthesisSummary.evolution_families_passed` | conjecture | 欄位 |
+| `ConjectureSynthesisSummary.new_creative_theorems_ok` | conjecture | 欄位 |
+| `ConjectureSynthesisSummary.open_frontiers` | conjecture | 欄位 |
+| `ConjectureSynthesisSummary.phase_transitions` | conjecture | 欄位 |
+| `ConjectureSynthesisSummary.refuted_and_refined` | conjecture | 欄位 |
+| `ConjectureSynthesisSummary.total_conjectures` | conjecture | 欄位 |
+| `ConjectureSynthesisSummary.verified_bounded` | conjecture | 欄位 |
+| `ConjectureSynthesisSummary::equal` | conjecture | 函數 |
+| `ConjectureSynthesisSummary::not_equal` | conjecture | 函數 |
+| `ConjectureSynthesisSummary::to_repr` | conjecture | 函數 |
+| `EpistemicLensKind` | conjecture | 列舉 |
+| `EpistemicLensKind::LensContrast` | conjecture | 構造子 |
+| `EpistemicLensKind::LensDual` | conjecture | 構造子 |
+| `EpistemicLensKind::LensImplication` | conjecture | 構造子 |
+| `EpistemicLensKind::LensRelative` | conjecture | 構造子 |
+| `EpistemicLensKind::LensScaleRatio` | conjecture | 構造子 |
+| `EpistemicLensKind::equal` | conjecture | 函數 |
+| `EpistemicLensKind::not_equal` | conjecture | 函數 |
+| `EpistemicLensKind::to_repr` | conjecture | 函數 |
+| `EvolutionTransferReport` | conjecture | 結構 |
+| `EvolutionTransferReport.derived_count` | conjecture | 欄位 |
+| `EvolutionTransferReport.family_id` | conjecture | 欄位 |
+| `EvolutionTransferReport.mirage_rejected_on_transfer` | conjecture | 欄位 |
+| `EvolutionTransferReport.target_derived_on_train` | conjecture | 欄位 |
+| `EvolutionTransferReport.target_holds_on_transfer` | conjecture | 欄位 |
+| `EvolutionTransferReport::equal` | conjecture | 函數 |
+| `EvolutionTransferReport::not_equal` | conjecture | 函數 |
+| `EvolutionTransferReport::to_repr` | conjecture | 函數 |
+| `ImplicationLatticeReport` | conjecture | 結構 |
+| `ImplicationLatticeReport.counterexamples` | conjecture | 欄位 |
+| `ImplicationLatticeReport.implies` | conjecture | 欄位 |
+| `ImplicationLatticeReport.nontrivial_equiv_pairs` | conjecture | 欄位 |
+| `ImplicationLatticeReport.num_predicates` | conjecture | 欄位 |
+| `ImplicationLatticeReport.num_samples` | conjecture | 欄位 |
+| `ImplicationLatticeReport.strict_unidirectional_edges` | conjecture | 欄位 |
+| `ImplicationLatticeReport::equal` | conjecture | 函數 |
+| `ImplicationLatticeReport::not_equal` | conjecture | 函數 |
+| `ImplicationLatticeReport::to_repr` | conjecture | 函數 |
+| `ObservationRowSet` | conjecture | 結構 |
+| `ObservationRowSet.columns` | conjecture | 欄位 |
+| `ObservationRowSet.name` | conjecture | 欄位 |
+| `ObservationRowSet.rows` | conjecture | 欄位 |
+| `ObservationRowSet::equal` | conjecture | 函數 |
+| `ObservationRowSet::not_equal` | conjecture | 函數 |
+| `ObservationRowSet::to_repr` | conjecture | 函數 |
+| `UpdatedConjectureRecord` | conjecture | 結構 |
+| `UpdatedConjectureRecord.epistemic_lens` | conjecture | 欄位 |
+| `UpdatedConjectureRecord.federations_bridged` | conjecture | 欄位 |
+| `UpdatedConjectureRecord.id` | conjecture | 欄位 |
+| `UpdatedConjectureRecord.lifecycle` | conjecture | 欄位 |
+| `UpdatedConjectureRecord.title` | conjecture | 欄位 |
+| `UpdatedConjectureRecord.verified_consistent` | conjecture | 欄位 |
+| `UpdatedConjectureRecord::equal` | conjecture | 函數 |
+| `UpdatedConjectureRecord::not_equal` | conjecture | 函數 |
+| `UpdatedConjectureRecord::to_repr` | conjecture | 函數 |
+| `check_conjecture_discovery_federation` | conjecture | 函數 |
+| `derive_invariant_relations` | conjecture | 函數 |
+| `discover_six_evolution_laws` | conjecture | 函數 |
+| `evaluate_five_epistemic_lenses_into_ledger` | conjecture | 函數 |
+| `evaluate_updated_conjecture_atlas` | conjecture | 函數 |
+| `implication_lattice_build` | conjecture | 函數 |
+| `relation_in_derived_span` | conjecture | 函數 |
+| `rowset_holds_exact` | conjecture | 函數 |
+| `rowset_holds_mod` | conjecture | 函數 |
+| `synthesize_and_verify_conjecture_engine` | conjecture | 函數 |
 
 ### 有限對稱：圖規範形與自同構
 
@@ -7908,6 +8108,7 @@
 | `FederationId` | bridge | 列舉 |
 | `FederationId::Condensed` | bridge | 構造子 |
 | `FederationId::Cubical` | bridge | 構造子 |
+| `FederationId::Discovery` | bridge | 構造子 |
 | `FederationId::Scheme` | bridge | 構造子 |
 | `FederationId::Semiring` | bridge | 構造子 |
 | `FederationId::Symlib` | bridge | 構造子 |
@@ -7953,6 +8154,17 @@
 | `GrandUnificationReport::equal` | bridge | 函數 |
 | `GrandUnificationReport::not_equal` | bridge | 函數 |
 | `GrandUnificationReport::to_repr` | bridge | 函數 |
+| `SevenFederationStarPrismReport` | bridge | 結構 |
+| `SevenFederationStarPrismReport.conjectures_evaluated` | bridge | 欄位 |
+| `SevenFederationStarPrismReport.epistemic_lenses_sealed` | bridge | 欄位 |
+| `SevenFederationStarPrismReport.evolution_families_verified` | bridge | 欄位 |
+| `SevenFederationStarPrismReport.k7_bridges_verified` | bridge | 欄位 |
+| `SevenFederationStarPrismReport.lakatos_refinements_verified` | bridge | 欄位 |
+| `SevenFederationStarPrismReport.seven_federations_verified` | bridge | 欄位 |
+| `SevenFederationStarPrismReport.star_prism_commutes` | bridge | 欄位 |
+| `SevenFederationStarPrismReport::equal` | bridge | 函數 |
+| `SevenFederationStarPrismReport::not_equal` | bridge | 函數 |
+| `SevenFederationStarPrismReport::to_repr` | bridge | 函數 |
 | `XOverlapChiasmReport` | bridge | 結構 |
 | `XOverlapChiasmReport.chiasm_commutes` | bridge | 欄位 |
 | `XOverlapChiasmReport.diagonal_d1_syntax_nonarch_ok` | bridge | 欄位 |
@@ -7970,6 +8182,7 @@
 | `glivenko_double_negation_formula` | bridge | 函數 |
 | `grand_unification_certificates` | bridge | 函數 |
 | `run_grand_unification_system` | bridge | 函數 |
+| `seven_federation_descriptors` | bridge | 函數 |
 | `six_federation_descriptors` | bridge | 函數 |
 | `translate_coord_ring_to_zariski_theory` | bridge | 函數 |
 | `translate_cubical_dim_to_mpoly` | bridge | 函數 |
@@ -7990,10 +8203,18 @@
 | `verify_k6_14_condensed_topos_bridge` | bridge | 函數 |
 | `verify_k6_15_condensed_scheme_bridge` | bridge | 函數 |
 | `verify_k6_federation_bridges` | bridge | 函數 |
+| `verify_k7_16_discovery_cubical_bridge` | bridge | 函數 |
+| `verify_k7_17_discovery_symlib_bridge` | bridge | 函數 |
+| `verify_k7_18_discovery_semiring_bridge` | bridge | 函數 |
+| `verify_k7_19_discovery_topos_bridge` | bridge | 函數 |
+| `verify_k7_20_discovery_scheme_bridge` | bridge | 函數 |
+| `verify_k7_21_discovery_condensed_bridge` | bridge | 函數 |
+| `verify_k7_federation_bridges` | bridge | 函數 |
 | `verify_kapranov_tropical_laurent_bridge` | bridge | 函數 |
 | `verify_quadratic_etale_torsor_galois_bridge` | bridge | 函數 |
 | `verify_quaternary_normal_forms` | bridge | 函數 |
 | `verify_semiring_kleene_alexandroff_topos_bridge` | bridge | 函數 |
+| `verify_seven_federation_star_prism` | bridge | 函數 |
 | `verify_six_pillar_circle_sphere_unification` | bridge | 函數 |
 | `verify_symlib_galois_topos_bridge` | bridge | 函數 |
 | `verify_symlib_symmetric_scheme_bridge` | bridge | 函數 |

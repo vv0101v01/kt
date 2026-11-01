@@ -6,17 +6,17 @@
 
 > English summary: MoonBit compiles each package as one mutually
 > recursive unit, so files inside a package have no compilation
-> order.  This project implements a governed **Double-V (`V₁ → X → V₂`)
-> & X-Overlap 6-Federation Architecture + Unification Apex**
-> (`cubical`, `symlib`, `semiring`, `topos`, `scheme`, `condensed` +
-> `unification`) spanning **29 packages / 47 components across 7 package
+> order.  This project implements a governed **Double-V (`V₁ → X → V₂`),
+> X-Overlap & Star-Prism 7-Federation Architecture + Unification Apex**
+> (`cubical`, `symlib`, `semiring`, `topos`, `scheme`, `condensed`, `discovery` +
+> `unification`) spanning **31 packages / 49 components across 7 package
 > layers (`0..6`)**:
 > - **Lower-V Apex `V₁` (Layer 0)**: `@gcd` (Universal Elimination-GCD: RREF, HNF, SNF, Bézout).
-> - **Divergent Lower-V Arms (Layers 1–2)**: `@algebra`, `@sym`, `@hostfs`, `@semiring/*`, `@topos`, `@scheme`.
-> - **Central X-Overlap Pivot `X` (Layer 3)**: `@condensed` (Condensed Mathematics, 4 condensed higher structures, 2 categories `CondCategory` & `CanonElimCategory`, Steenrod–Adams cohomology, SNF conservation-law ledger, and 4 conjectures).
-> - **Convergent Upper-V Arms (Layer 4)**: `root` (`cubical` kernel + Phase 21 breakthroughs) and federation apps.
-> - **Upper-V Apex `V₂` (Layers 5–6)**: `@bridge` (`K_6` = 15/15 bridges, `[T-X-Chiasmus]`, 43/43 unification certificates) and `@cmd/showcase`.
-> `architecture.json` partitions all 29 packages, assigns every `.mbt` file to
+> - **Divergent Lower-V Arms (Layers 1–2)**: `@algebra`, `@sym`, `@hostfs`, `@semiring/*`, `@topos`, `@scheme`, `@tensor`.
+> - **Central X-Overlap Pivot `X` (Layer 3)**: `@condensed` (Condensed Mathematics, 4 condensed higher structures, 2 categories `CondCategory` & `CanonElimCategory`, Steenrod–Adams cohomology, SNF conservation-law ledger, and 4 base conjectures).
+> - **Convergent Upper-V Arms & Discovery Loop (Layer 4)**: `root` (`cubical` kernel + Phase 21 breakthroughs) and `@conjecture` (6 evolutionary transfer laws, 5 epistemic lenses, and Lakatosian 12-conjecture atlas `CONJ-01..CONJ-12`).
+> - **Upper-V Apex `V₂` (Layers 5–6)**: `@bridge` (`K_7` = 21/21 bridges, `[T-X-Chiasmus]`, Star-Prism synthesis, 46/46 unification certificates) and `@cmd/showcase`.
+> `architecture.json` partitions all 31 packages, assigns every `.mbt` file to
 > exactly one component, and `tools/arch_check.py` enforces the DAG.
 
 ## 1. 先回答：「60+ 個檔案之間有沒有先後依賴？」
@@ -49,9 +49,9 @@ MoonBit 以 package 為編譯單位：同一目錄的 `.mbt` 宣告共同求解�
 `architecture.json` 是唯一清單來源；本文件只解釋規則，不複製
 每次都會變的總行數。
 
-## 2. 雙V形（Double-V）＋X形交疊（X-Overlap）六聯邦架構與 Component 層級
+## 2. 雙V形（Double-V）＋X形交疊（X-Overlap）＋星稜柱七聯邦架構與 Component 層級
 
-全倉於第二十一期升級為 **雙V形（`V₁ = @gcd` → `X = @condensed` → `V₂ = @bridge`）＋X形交疊六聯邦架構（6 Federations + Unification Apex）**，跨 **7 個套件層級（`0..6`）** 治理 **29 個套件、47 個 component**：
+全倉於第二十一至二十二期升級為 **雙V形（`V₁ = @gcd` → `X = @condensed` → `V₂ = @bridge`）＋X形交疊＋Lakatos 發現迴圈七聯邦架構（7 Federations + Unification Apex）**，跨 **7 個套件層級（`0..6`）** 治理 **31 個套件、49 個 component**：
 
 | 聯邦／頂層 | 幾何位置 | 套件數 | 實體套件 | 跨聯邦允許匯入 | 核心職責 |
 |---|---|---:|---|---|---|
@@ -60,8 +60,9 @@ MoonBit 以 package 為編譯單位：同一目錄的 `.mbt` 宣告共同求解�
 | **F3 `semiring`** | 右翼熱帶冪等臂 | 17 | `semiring/*`（16 包，L1–L3）＋`cmd-semiringreport` | `[]` | 冪等／星閉／熱帶半環、分塊／Lehmann 矩陣閉包、加權 CSR 圖與 Brzozowski DFA 正規形 |
 | **F4 `topos`** | 左翼層化邏輯臂 | 1 | `topos`（L2） | `condensed:gcd`、`cubical:algebra`、`symlib:symlib` | Grothendieck 與初等 Topos、子 Topos 核、Kripke–Joyal 語義、群胚疊與神經上同調（SNF 撓率委派 `@gcd`） |
 | **F5 `scheme`** | 左翼代數幾何臂 | 1 | `scheme`（L2） | `cubical:algebra` | 多變量 Gröbner 理想、黏合概形、Kähler 微分與 Eisenbud Fitting 平滑性、Serre 對偶、吹脹與動機 |
-| **F6 `condensed`** | **下 `V₁` 基底＋中央 `X` 形交疊樞紐** | 2 | `gcd`（L0）、`condensed`（L3） | `cubical:algebra`、`symlib:symlib`、`semiring:semiring-trop`、`topos:topos`、`scheme:scheme` | 下 `V₁` 泛消元新最大公因數（RREF/HNF/SNF/六路對帳證書）、凝聚範疇 `CondCategory`、規範消元範疇 `CanonElimCategory`、凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、Steenrod–Adams `2η=0`、SNF 守恆律賬本與四項新猜想實驗室 |
-| **Apex `unification`** | **上 `V₂` 收斂頂點** | 2 | `bridge`（L5）、`cmd-showcase`（L6） | 單向觀察全部六聯邦（禁止反向匯入） | 六聯邦 `K_6` 完全圖全 15 條跨聯邦橋、`[T-X-Chiasmus]` X 形四葉對偶定理、雙V閉環證書與 43 項大一統證書 |
+| **F6 `condensed`** | **下 `V₁` 基底＋中央 `X` 形交疊樞紐** | 2 | `gcd`（L0）、`condensed`（L3） | `cubical:algebra`、`symlib:symlib`、`semiring:semiring-trop`、`topos:topos`、`scheme:scheme` | 下 `V₁` 泛消元新最大公因數（RREF/HNF/SNF/六路對帳證書）、凝聚範疇 `CondCategory`、規範消元範疇 `CanonElimCategory`、凝聚高階結構×4、Steenrod–Adams `2η=0`、SNF 守恆律賬本與基礎猜想實驗室 |
+| **F7 `discovery`** | **多線性幾何翼（L2）＋Lakatos 發現迴圈（L4）** | 2 | `tensor`（L2）、`conjecture`（L4） | `condensed:gcd`、`condensed:condensed`、`cubical:algebra`、`symlib:symlib`、`semiring:semiring-trop`、`topos:topos`、`scheme:scheme` | $\mathbb{F}_3$ 全體 6,561 張量伽羅瓦分類 `[1,128,4032,2400]`、離散 Radon 精確反演、Clifford 旋量／$T^2$ 規範場、非交叉層景與 VR 持續同調、6 組跨尺度演化轉移定律、5 大認識論關係透鏡與更新後 Lakatos 十二猜想圖譜（`CONJ-01..12`） |
+| **Apex `unification`** | **上 `V₂` 星稜柱收斂頂點** | 2 | `bridge`（L5）、`cmd-showcase`（L6） | 單向觀察全部七聯邦（禁止反向匯入） | 七聯邦 `K_7` 完全圖全 21 條跨聯邦橋、`[T-X-Chiasmus]` X 形四葉對偶定理、星稜柱猜想合成與 46 項大一統證書 |
 
 下表詳列 `cubical` 聯邦的 13 個 component；其餘聯邦與 `unification` 頂層 component 的即時明細以
 `architecture.json` 與 `tools/arch_check.py` 輸出為唯一來源。

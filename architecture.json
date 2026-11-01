@@ -91,6 +91,24 @@
       ],
       "summary_en": "Federation 6 (Lower-V GCD Base + X-Overlap Condensed Pivot) — Universal Elimination-GCD (`@gcd`), 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 4 Conjectures.",
       "summary_zh": "第六聯邦（下V新最大公因數基底＋X形交疊凝聚樞紐） — 泛消元新最大公因數（`@gcd`）、凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與新猜想×4。"
+    },
+    {
+      "id": "discovery",
+      "packages": [
+        "tensor",
+        "conjecture"
+      ],
+      "allowed_external_packages": [
+        "condensed:gcd",
+        "cubical:algebra",
+        "symlib:symlib",
+        "semiring:semiring-trop",
+        "topos:topos",
+        "scheme:scheme",
+        "condensed:condensed"
+      ],
+      "summary_en": "Federation 7 (Multilinear Tensor Geometry & Lakatosian Conjecture Discovery Loop) — F_3 6,561-tensor Cayley hyperdeterminant & rank atlas, discrete Radon inversion, Clifford Ramond spinors & T^2 gauge moduli, non-crossing sheaves, Vietoris–Rips homology, 6 evolutionary transfer laws, 5 epistemic lenses, and 12 updated conjectures.",
+      "summary_zh": "第七聯邦（多線性張量場論與 Lakatos 猜想演化創造聯邦） — F_3 全體 6,561 張量超行列式與秩圖譜、有限平面離散 Radon 反演、Clifford 拉蒙旋量與 T² 規範模空間、非交叉森林層景、VR 持續同調、6 大演化轉移定律、5 大認識論透鏡與 12 項更新猜想。"
     }
   ],
   "unification": {
@@ -100,8 +118,8 @@
       "cmd-showcase"
     ],
     "observer": true,
-    "summary_en": "Upper-V Grand Unification Apex — Double-V & X-Overlap synthesis, complete K_6 (15/15) pairwise cross-federation bridges, Five-Federation Pentagon theorem, and 18-entry Geometry–Logic Atlas.",
-    "summary_zh": "上V大一統匯流頂點 — 雙V形架構與X形交疊匯流、K_6（15/15）全配對跨聯邦橋、五聯邦五角大一統定理與 18 項幾何—邏輯精細圖譜。"
+    "summary_en": "Upper-V & Star-Prism Grand Unification Apex — Seven-federation Double-V, X-Overlap & Lakatosian synthesis, complete K_7 (21/21) pairwise cross-federation bridges, Five-Federation Pentagon theorem, and 18-entry Geometry–Logic Atlas.",
+    "summary_zh": "上V與星稜柱大一統匯流頂點 — 七聯邦雙V形、X形交疊與 Lakatos 猜想演化匯流、K_7（21/21）全配對跨聯邦橋、五聯邦五角大一統定理與 18 項幾何—邏輯精細圖譜。"
   },
   "packages": [
     {
@@ -370,6 +388,35 @@
       "summary_zh": "X形交疊凝聚數學樞紐：有限逆系塔、Milnor lim¹ 凝聚高階同倫棧 CondAnima、固態與 p-液態模 CondSolidModule、Steenrod–Adams Ext_A、Serre、扭曲 AHSS 凝聚譜層 CondSpectralSheaf、Huber–熱帶雙極解析棧 CondAnalyticStack、CondCategory、CanonElimCategory、持久不變量賬本與四項新猜想。"
     },
     {
+      "id": "tensor",
+      "path": "tensor",
+      "moon": "vv0101v01/cubical-hermitian/tensor",
+      "layer": 2,
+      "depends_on": [
+        "gcd"
+      ],
+      "summary_en": "Federation 7 Multilinear Tensor, Discrete Radon, Clifford Spinor/Gauge, Non-Crossing Forest, Vietoris–Rips Homology & Krasner Hyper-Structure engine.",
+      "summary_zh": "第七聯邦多線性張量超行列式、離散 Radon 變換、Clifford 拉蒙旋量與規範場、非交叉森林、Vietoris–Rips 持續同調與 Krasner 超結構引擎。"
+    },
+    {
+      "id": "conjecture",
+      "path": "conjecture",
+      "moon": "vv0101v01/cubical-hermitian/conjecture",
+      "layer": 4,
+      "depends_on": [
+        "gcd",
+        "algebra",
+        "symlib",
+        "semiring-trop",
+        "topos",
+        "scheme",
+        "condensed",
+        "tensor"
+      ],
+      "summary_en": "Federation 7 Lakatosian Conjecture & Theorem-Creation Engine: [E-Derive]+[P-Transfer] evolutionary discovery across 6 trajectories, 5 epistemic relational lenses with CondInvariantLedger sealing, and 12 updated cross-federation conjectures.",
+      "summary_zh": "第七聯邦 Lakatos 猜想演化與定理創造引擎：6 大軌跡 [E-Derive]+[P-Transfer] 守恆律自動發現、寫入持久賬本之 5 大認識論關係透鏡與 12 項跨聯邦更新猜想。"
+    },
+    {
       "id": "bridge",
       "path": "bridge",
       "moon": "vv0101v01/cubical-hermitian/bridge",
@@ -387,10 +434,12 @@
         "semiring-nf",
         "topos",
         "scheme",
-        "condensed"
+        "condensed",
+        "tensor",
+        "conjecture"
       ],
-      "summary_en": "Upper-V Apex V_2: Double-V & X-Overlap synthesis, complete K_6 (15/15) cross-federation bridges across 6 federations, logical theory translations, and 18-entry geometry-logic correspondence atlas.",
-      "summary_zh": "上V頂點 V_2：雙V形與X形交疊大一統匯流、六聯邦 K_6（15/15）全配對跨聯邦橋、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜。"
+      "summary_en": "Upper-V & Star-Prism Apex V_2: Double-V, X-Overlap & Lakatosian synthesis, complete K_7 (21/21) cross-federation bridges across 7 federations, logical theory translations, and 18-entry geometry-logic correspondence atlas.",
+      "summary_zh": "上V與星稜柱頂點 V_2：雙V形、X形交疊與 Lakatos 猜想演化匯流、七聯邦 K_7（21/21）全配對跨聯邦橋、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜。"
     },
     {
       "id": "cmd-showcase",
@@ -687,6 +736,10 @@
         "scheme/*_test.mbt",
         "condensed/*_wbtest.mbt",
         "condensed/*_test.mbt",
+        "tensor/*_wbtest.mbt",
+        "tensor/*_test.mbt",
+        "conjecture/*_wbtest.mbt",
+        "conjecture/*_test.mbt",
         "bridge/*_wbtest.mbt",
         "bridge/*_test.mbt"
       ],
@@ -1186,6 +1239,43 @@
       ],
       "summary_en": "X-Overlap Condensed Mathematics core: 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 4 Conjectures.",
       "summary_zh": "X形交疊凝聚數學核心：凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與新猜想×4。"
+    },
+    {
+      "id": "tensor-core",
+      "package": "tensor",
+      "layer": 3,
+      "files": [
+        "tensor/*.mbt",
+        "!tensor/*_test.mbt",
+        "!tensor/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "gcd-core"
+      ],
+      "summary_en": "Multilinear 2x2x2 hyperdeterminants & F_3 6561-tensor rank atlas, discrete Radon transform & inversion, Clifford Ramond spinors & torus gauge moduli, non-crossing chord sheaves, Vietoris–Rips persistent homology, and Krasner hyper-structures.",
+      "summary_zh": "多線性 2×2×2 超行列式與 F_3 6561 張量秩圖譜、離散 Radon 變換與反演、Clifford 拉蒙旋量與環面規範場模空間、非交叉弦層景、Vietoris–Rips 持續同調與 Krasner 超結構。"
+    },
+    {
+      "id": "conjecture-core",
+      "package": "conjecture",
+      "layer": 6,
+      "files": [
+        "conjecture/*.mbt",
+        "!conjecture/*_test.mbt",
+        "!conjecture/*_wbtest.mbt"
+      ],
+      "depends_on": [
+        "gcd-core",
+        "exact-algebra",
+        "symlib-core",
+        "semiring-trop",
+        "topos-core",
+        "scheme-core",
+        "condensed-core",
+        "tensor-core"
+      ],
+      "summary_en": "Lakatosian Conjecture & Theorem-Creation Engine: [E-Derive]+[P-Transfer] evolutionary discovery across 6 trajectories, 5 epistemic relational lenses, and 12 updated cross-federation conjectures.",
+      "summary_zh": "Lakatos 猜想演化與定理創造引擎：6 大軌跡 [E-Derive]+[P-Transfer] 守恆律自動發現、5 大認識論關係透鏡與 12 項跨聯邦更新猜想。"
     },
     {
       "id": "phase21-breakthroughs",

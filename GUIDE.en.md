@@ -22,19 +22,19 @@ A set of intertwined concepts made into an **executable, testable computational 
 - Computational univalence: complete decidable wiring univalence in the finite universe, plus AST `ua`/`pathToEquiv`, `uaβ`, round-trip homotopies and a two-dimensional Glue-square certificate;
 - A general semantic `lemIso` construction giving fiber paths/contractions and automatic adjointification for quasi-inverses, plus internal `IntegerS`, π₃ quotient types and canonical spherical loop representatives (not a classification theorem for arbitrary π₃ elements);
 - Bounded Huet search, a versioned compiled-module byte codec, and BDD sifting/cache growth, watched-literal DPLL and sparse/Karatsuba `QPoly` multiplication;
-- `SPEC.md`/`SPEC.en.md` and bilingual appendices give canonical forms and categorifications for every type, operation, specification and structure; across the Double-V six-federation repository the appendices contain **7,100 symbols**, while the specification registry has **140 entries**;
-- A Double-V (`V₁=@gcd → X=@condensed → V₂=@bridge`) six-federation package DAG (`cubical`, `symlib`, `semiring`, `topos`, `scheme`, `condensed` plus `bridge`/apps) governed as **29 packages / 47 components** by `architecture.json` and `tools/arch_check.py`.
+- `SPEC.md`/`SPEC.en.md` and bilingual appendices give canonical forms and categorifications for every type, operation, specification and structure; across the Double-V & Star-Prism seven-federation repository the appendices contain **7,303 symbols**, while the specification registry has **142 entries**;
+- A Double-V (`V₁=@gcd → X=@condensed → V₂=@bridge`) & Lakatosian Discovery seven-federation package DAG (`cubical`, `symlib`, `semiring`, `topos`, `scheme`, `condensed`, `discovery` plus `bridge`/apps) governed as **31 packages / 49 components** by `architecture.json` and `tools/arch_check.py`.
 
 ## Running and acceptance
 
 ```text
 moon check --deny-warn --target wasm-gc            # whole project, zero warnings
-moon test --release --target wasm-gc               # consolidated suite 19/19 across all 6 federations
+moon test --release --target wasm-gc               # consolidated suite 21/21 across all 7 federations
 moon run --release cmd/main --target wasm-gc       # theorem registry, expected 129/129
-moon run --release cmd/showcase --target wasm-gc   # 6-federation K_6 grand unification, expected 43/43
+moon run --release cmd/showcase --target wasm-gc   # 7-federation K_7 star-prism unification, expected 46/46
 python3 tools/arch_check.py                        # layers, unique file ownership, counts
 moon info --target wasm-gc && python3 tools/audit_spec.py --check
-                                                   # bilingual appendices + spec.mbt audit (7,100 symbols)
+                                                   # bilingual appendices + spec.mbt audit (7,303 symbols)
 ```
 
 ## Upgrade highlights

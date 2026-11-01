@@ -190,6 +190,17 @@ pub fn fp_mat_set(m : FpMat, i : Int32, j : Int32, v : Int32) -> Unit {
 }
 
 ///|
+pub fn fp_mat_transpose(m : FpMat) -> FpMat {
+  let out = fp_mat_make(m.cols, m.rows, m.p, 0)
+  for i in 0..<m.rows {
+    for j in 0..<m.cols {
+      fp_mat_set(out, j, i, fp_mat_get(m, i, j))
+    }
+  }
+  out
+}
+
+///|
 pub fn fp_mat_mul(a : FpMat, b : FpMat) -> FpMat {
   let out = fp_mat_make(a.rows, b.cols, a.p, 0)
   for i in 0..<a.rows {

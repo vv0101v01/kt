@@ -19,6 +19,7 @@ pub(all) enum FederationId {
   Topos
   Scheme
   Condensed
+  Discovery
 } derive(Debug, Eq)
 
 ///|

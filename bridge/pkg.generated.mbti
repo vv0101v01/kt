@@ -99,6 +99,8 @@ pub fn semiring_graph_symmetry_projector(@graph.Graph, Int32) -> @cubical-hermit
 
 pub fn semiring_graph_vertex_colors(@graph.Graph) -> Array[Int32]
 
+pub fn seven_federation_descriptors() -> Array[FederationDescriptor]
+
 pub fn signed_perm_wiring(@symlib.Perm, Array[Bool]) -> @cubical-hermitian.Wiring
 
 pub fn six_federation_descriptors() -> Array[FederationDescriptor]
@@ -147,6 +149,20 @@ pub fn verify_k6_15_condensed_scheme_bridge() -> (Bool, String)
 
 pub fn verify_k6_federation_bridges() -> Array[FederationPairBridge]
 
+pub fn verify_k7_16_discovery_cubical_bridge() -> (Bool, String)
+
+pub fn verify_k7_17_discovery_symlib_bridge() -> (Bool, String)
+
+pub fn verify_k7_18_discovery_semiring_bridge() -> (Bool, String)
+
+pub fn verify_k7_19_discovery_topos_bridge() -> (Bool, String)
+
+pub fn verify_k7_20_discovery_scheme_bridge() -> (Bool, String)
+
+pub fn verify_k7_21_discovery_condensed_bridge() -> (Bool, String)
+
+pub fn verify_k7_federation_bridges() -> Array[FederationPairBridge]
+
 pub fn verify_kapranov_tropical_laurent_bridge() -> Bool
 
 pub fn verify_quadratic_etale_torsor_galois_bridge() -> Bool
@@ -154,6 +170,8 @@ pub fn verify_quadratic_etale_torsor_galois_bridge() -> Bool
 pub fn verify_quaternary_normal_forms() -> Bool
 
 pub fn verify_semiring_kleene_alexandroff_topos_bridge() -> Bool
+
+pub fn verify_seven_federation_star_prism(k7_precomputed? : Array[FederationPairBridge]?) -> SevenFederationStarPrismReport
 
 pub fn verify_six_pillar_circle_sphere_unification() -> Bool
 
@@ -241,6 +259,7 @@ pub(all) enum FederationId {
   Topos
   Scheme
   Condensed
+  Discovery
 } derive(Eq, @debug.Debug)
 pub fn FederationId::equal(Self, Self) -> Bool
 pub fn FederationId::not_equal(Self, Self) -> Bool
@@ -289,6 +308,19 @@ pub(all) struct GrandUnificationReport {
 pub fn GrandUnificationReport::equal(Self, Self) -> Bool
 pub fn GrandUnificationReport::not_equal(Self, Self) -> Bool
 pub fn GrandUnificationReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct SevenFederationStarPrismReport {
+  seven_federations_verified : Int32
+  k7_bridges_verified : Int32
+  conjectures_evaluated : Int32
+  evolution_families_verified : Int32
+  lakatos_refinements_verified : Int32
+  epistemic_lenses_sealed : Bool
+  star_prism_commutes : Bool
+} derive(Eq, @debug.Debug)
+pub fn SevenFederationStarPrismReport::equal(Self, Self) -> Bool
+pub fn SevenFederationStarPrismReport::not_equal(Self, Self) -> Bool
+pub fn SevenFederationStarPrismReport::to_repr(Self) -> @debug.Repr
 
 pub(all) struct WeightedGraphReport {
   n : Int32

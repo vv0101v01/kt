@@ -279,6 +279,33 @@ fn grand_unification_certificates_from_atlas(
       detail="K6_new_edges_5=\{k6_new_ok}, x_overlap=\{x_rep.chiasm_commutes}, invariants=(1,2,1)",
     ),
   )
+  let tensor_ok = @tensor.tensor_check_federation_laws()
+  certs.push(
+    bridge_certificate(
+      "discovery/tensor",
+      "F_3 6561-Tensor Cayley Hyperdeterminant Atlas, Discrete Radon Inversion, Clifford Spinors & VR Homology",
+      tensor_ok,
+      detail="F_3 ranks=[1,128,4032,2400], Radon Plancherel+inv=true, Cl_d/T^2 gauge=true, [T-NC-Free]&[T-X-Site]=true",
+    ),
+  )
+  let syn = @conjecture.synthesize_and_verify_conjecture_engine()
+  certs.push(
+    bridge_certificate(
+      "discovery/conjectures",
+      "Lakatosian 12-Conjecture Atlas (CONJ-01..12), 6 Evolutionary Transfer Laws & 5 Epistemic Lenses",
+      syn.all_consistent,
+      detail="conjectures=\{syn.total_conjectures} (derived=\{syn.derived_and_transferred}, refined=\{syn.refuted_and_refined}, bounded=\{syn.verified_bounded}, phase=\{syn.phase_transitions}, frontier=\{syn.open_frontiers}), evolve=\{syn.evolution_families_passed}/6",
+    ),
+  )
+  let sp = verify_seven_federation_star_prism()
+  certs.push(
+    bridge_certificate(
+      "discovery/k7_star_prism",
+      "Seven-Federation Star-Prism Unification & Complete K₇ (21/21) Cross-Federation Bridge Graph",
+      sp.star_prism_commutes,
+      detail="federations=\{sp.seven_federations_verified}/7, K7_bridges=\{sp.k7_bridges_verified}/21, lakatos_refinements=\{sp.lakatos_refinements_verified}",
+    ),
+  )
   certs
 }
 

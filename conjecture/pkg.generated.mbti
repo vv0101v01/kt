@@ -1,0 +1,118 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/conjecture"
+
+import {
+  "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/condensed",
+  "vv0101v01/cubical-hermitian/tensor",
+}
+
+// Values
+pub fn check_conjecture_discovery_federation() -> Bool
+
+pub fn derive_invariant_relations(ObservationRowSet, Int32, Bool) -> Array[Array[Int32]]
+
+pub fn discover_six_evolution_laws() -> Array[EvolutionTransferReport]
+
+pub fn evaluate_five_epistemic_lenses_into_ledger(atlas_opt? : @tensor.F3Tensor222Atlas?) -> (ImplicationLatticeReport, @condensed.CondInvariantLedger, Bool)
+
+pub fn evaluate_updated_conjecture_atlas() -> Array[UpdatedConjectureRecord]
+
+pub fn implication_lattice_build(Int32, Int32, (Int32, Int32) -> Bool) -> ImplicationLatticeReport
+
+pub fn relation_in_derived_span(Array[Array[Int32]], Array[Int32], Int32) -> Bool
+
+pub fn rowset_holds_exact(ObservationRowSet, Array[Int32]) -> Bool
+
+pub fn rowset_holds_mod(ObservationRowSet, Array[Int32], Int32) -> Bool
+
+pub fn synthesize_and_verify_conjecture_engine() -> ConjectureSynthesisSummary
+
+// Errors
+
+// Types and methods
+pub(all) enum ConjectureLifecycle {
+  LcDerivedAndTransferred(Int32, String)
+  LcRefutedAndRefined(String, String)
+  LcVerifiedUpToBound(Int32, Int32)
+  LcPhaseTransition(String, Int32, Int32)
+  LcOpenFrontier(Int32, String)
+} derive(Eq, @debug.Debug)
+pub fn ConjectureLifecycle::equal(Self, Self) -> Bool
+pub fn ConjectureLifecycle::not_equal(Self, Self) -> Bool
+pub fn ConjectureLifecycle::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ConjectureSynthesisSummary {
+  total_conjectures : Int32
+  derived_and_transferred : Int32
+  refuted_and_refined : Int32
+  verified_bounded : Int32
+  phase_transitions : Int32
+  open_frontiers : Int32
+  evolution_families_passed : Int32
+  epistemic_lenses_ledger_ok : Bool
+  new_creative_theorems_ok : Bool
+  all_consistent : Bool
+} derive(Eq, @debug.Debug)
+pub fn ConjectureSynthesisSummary::equal(Self, Self) -> Bool
+pub fn ConjectureSynthesisSummary::not_equal(Self, Self) -> Bool
+pub fn ConjectureSynthesisSummary::to_repr(Self) -> @debug.Repr
+
+pub(all) enum EpistemicLensKind {
+  LensRelative
+  LensDual
+  LensContrast
+  LensImplication
+  LensScaleRatio
+} derive(Eq, @debug.Debug)
+pub fn EpistemicLensKind::equal(Self, Self) -> Bool
+pub fn EpistemicLensKind::not_equal(Self, Self) -> Bool
+pub fn EpistemicLensKind::to_repr(Self) -> @debug.Repr
+
+pub(all) struct EvolutionTransferReport {
+  family_id : String
+  derived_count : Int32
+  target_derived_on_train : Bool
+  target_holds_on_transfer : Bool
+  mirage_rejected_on_transfer : Bool
+} derive(Eq, @debug.Debug)
+pub fn EvolutionTransferReport::equal(Self, Self) -> Bool
+pub fn EvolutionTransferReport::not_equal(Self, Self) -> Bool
+pub fn EvolutionTransferReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ImplicationLatticeReport {
+  num_samples : Int32
+  num_predicates : Int32
+  implies : Array[Array[Bool]]
+  counterexamples : Array[Array[Int32]]
+  strict_unidirectional_edges : Int32
+  nontrivial_equiv_pairs : Int32
+} derive(Eq, @debug.Debug)
+pub fn ImplicationLatticeReport::equal(Self, Self) -> Bool
+pub fn ImplicationLatticeReport::not_equal(Self, Self) -> Bool
+pub fn ImplicationLatticeReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ObservationRowSet {
+  name : String
+  columns : Array[String]
+  rows : Array[Array[Int32]]
+} derive(Eq, @debug.Debug)
+pub fn ObservationRowSet::equal(Self, Self) -> Bool
+pub fn ObservationRowSet::not_equal(Self, Self) -> Bool
+pub fn ObservationRowSet::to_repr(Self) -> @debug.Repr
+
+pub(all) struct UpdatedConjectureRecord {
+  id : String
+  federations_bridged : Array[String]
+  title : String
+  lifecycle : ConjectureLifecycle
+  epistemic_lens : EpistemicLensKind
+  verified_consistent : Bool
+} derive(Eq, @debug.Debug)
+pub fn UpdatedConjectureRecord::equal(Self, Self) -> Bool
+pub fn UpdatedConjectureRecord::not_equal(Self, Self) -> Bool
+pub fn UpdatedConjectureRecord::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

@@ -25,6 +25,8 @@ pub fn fp_mat_mul(FpMat, FpMat) -> FpMat
 
 pub fn fp_mat_set(FpMat, Int32, Int32, Int32) -> Unit
 
+pub fn fp_mat_transpose(FpMat) -> FpMat
+
 pub fn fp_mul(Int32, Int32, Int32) -> Int32
 
 pub fn fp_norm(Int32, Int32) -> Int32

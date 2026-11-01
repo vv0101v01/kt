@@ -1,14 +1,14 @@
-# Bridge：雙V形六聯邦 `K_6` 完全圖（15/15 跨聯邦橋）、X形交疊四葉對偶定理與 43 項大一統圖譜
+# Bridge：七聯邦星稜柱 `K_7` 完全圖（21/21 跨聯邦橋）、X形交疊四葉對偶定理、十二猜想合成與 46 項大一統圖譜
 
-`bridge/` 是 **雙V形（`V₁ = @gcd` → `X = @condensed` → `V₂ = @bridge`）六聯邦架構**
-（`cubical`、`symlib`、`semiring`、`topos`、`scheme`、`condensed`）之上的單向
+`bridge/` 是 **雙V形（`V₁ = @gcd` → `X = @condensed` → `V₂ = @bridge`）＋Lakatos 發現迴圈七聯邦架構**
+（`cubical`、`symlib`、`semiring`、`topos`、`scheme`、`condensed`、`discovery`）之上的單向
 **上 `V₂` 大一統頂層（Unification Apex，Layer 5）**，受 `architecture.json` 與 `tools/arch_check.py`
 強制守門，下層任何聯邦均不得反向 import `bridge/`。橋接層不抹平各聯邦的原生型別與規範形式：
 每條跨聯邦定理先在來源聯邦構造與正規化，再送入目標聯邦的獨立判定器核驗。
 
-## 零、六聯邦 `K_6` 完備雙邊橋接矩陣（`five_federation_plan.mbt` ＋ `double_v_chiasm.mbt`，`15/15`）
+## 零、七聯邦 `K_7` 完備雙邊橋接矩陣（`five_federation_plan.mbt` ＋ `double_v_chiasm.mbt` ＋ `discovery_k7_bridges.mbt`，`21/21`）
 
-六個自主數學聯邦構成完全圖 $K_6$ 的全部 $\binom{6}{2} = 15$ 條雙邊橋（含原有 $K_5$ 的 10 條與第六聯邦 `Condensed` 向其餘五聯邦輻射的 5 條新星形橋 `K6-11 .. K6-15`），並於中心交匯成 **X 形交疊四葉對偶定理 `[T-X-Chiasmus]`** 與 **雙V形閉環證書**：
+七個自主數學聯邦構成完全圖 $K_7$ 的全部 $\binom{7}{2} = 21$ 條雙邊橋（含 $K_5$ 的 10 條、`Condensed` 的 5 條 `K6-11 .. K6-15`，以及第七聯邦 `Discovery` 向其餘六聯邦輻射的 6 條新星稜柱橋 `K7-16 .. K7-21`），並於中心交匯成 **X 形交疊四葉對偶定理 `[T-X-Chiasmus]`**、**雙V形閉環證書** 與 **七聯邦星稜柱十二猜想合成報告 `SevenFederationStarPrismReport`**：
 
 | 編號 | 聯邦配對 | 跨聯邦核心定理 | 實算見證 |
 |---|---|---|---|
@@ -27,8 +27,14 @@
 | `K6-13` | `Condensed ↔ Semiring` | 阿基米德 `0<p≤1` 非凸液態範數次可加性 ↔ 非阿基米德熱帶冪等半環彎折骨架 | 液態三角不等式成立且熱帶彎折軌跡對齊賦值骨架 |
 | `K6-14` | `Condensed ↔ Topos` | 極端不連通凝聚層下降與 Milnor `lim¹` ↔ Grothendieck 層上同調 Čech 扭曲阻礙 `k¹−r⁰` | Mittag-Leffler `lim¹=0` vs 二進螺線管 `lim¹≠0`；區分平凡叢與 Möbius 扭曲叢 |
 | `K6-15` | `Condensed ↔ Scheme` | Huber–熱帶雙極解析棧與 Koszul `Tor` 重數 ↔ `P^1` DVR 真概形完備性與 SNF 守恆律賬本 | `P^1` 賦值存在唯一成立、橫截重數精確且雜湊鏈守恆律零篡改 |
+| `K7-16` | `Discovery ↔ Cubical` | 多邊形三角剖分翻轉圖 ↔ 立方 Stasheff $K_{n-1}$ 一維骨架與 $S^1\vee S^1$ $F_2$ 圓楔精煉 | `n=5,6` 翻轉頂點邊數 `(5,5)`、`(14,21)` 對齊 $K_4, K_5$；`[a,b]` 圓楔阻礙 vs 環面可填 |
+| `K7-17` | `Discovery ↔ Symlib` | `Aut(K_4) = D_5 ≠ S_4` 剛性反例推翻與 $S_3$ 三階張量軸置換超行列式不變性 | `|Aut(K_4)| = 10 = |D_5| ≠ 24`；`|S_3| = 6` 全軸置換保存 Cayley `Det` |
+| `K7-18` | `Discovery ↔ Semiring` | Viro–Krasner 熱帶超體平手遮罩 ↔ $\mathbb{F}_3^{2\times 2\times 2}$ 全體 `6,561` 張量蘊含格 | 熱帶行列式平手 `2`、`1⊕1 = mask(14)`；單向 `rank<=1 => Det=0` 與唯一等價 `#rank2=0 <=> rank=3` |
+| `K7-19` | `Discovery ↔ Topos` | 非交叉弦森林 Grothendieck 層景 `[T-X-Site]` ↔ `VR(C_4,1)` 與單純神經同調對偶 | 四邊形 `48` 開集等化子層黏合成立；`VR(C_4,1)` Betti `[1,1]` 對齊 `∂Δ^2` |
+| `K7-20` | `Discovery ↔ Scheme` | 離散 Radon $\mathbb{A}^2(\mathbb{F}_3) \hookrightarrow \mathbb{P}^2(\mathbb{F}_3)$ 射影完備化與 Hironaka–Serre 曲線虧格轉移 | `9 + 4 = 13 = |P^2(F_3)|`；三次曲線自動導出 $p_a = \delta + g_{\mathrm{geom}}$ 並轉移至四次曲線 |
+| `K7-21` | `Discovery ↔ Condensed` | 五大認識論透鏡入賬 `CondInvariantLedger` 雜湊鏈與 Clifford 旋量中心分裂 | `7` 筆條目（`5` 觀測＋`2` 正交定律 `(2,0)`）零篡改、`dim Z(Cl_3) = 2` |
 | **`[T-X-Chiasmus]`** | **X 形交疊四葉對偶** | 離散プロ有限塔 ↔ 固態連續模 $\times$ 熱帶去量子化 ↔ 算術有理概形 | 四葉正合轉換在中央樞紐 `X`（`@condensed`）完全可交換 |
-| **雙V閉環** | **`V₁ → X → V₂` 全體** | 下 `V₁`（`@gcd` 五域泛消元 GCD）發散雙翼經 `X`（`@condensed`）收斂至上 `V₂`（`@bridge`） | `15/15` 橋、`4` 凝聚高階結構、`2` 新範疇、`4` 新猜想與原 §四 `7` 大邊界全綠 |
+| **星稜柱閉環** | **`V₁ → X → V₂` 七聯邦全體** | 下 `V₁`（`@gcd`）支撐七大聯邦與 Lakatos 十二猜想迴圈收斂至上 `V₂`（`@bridge`） | `21/21` `K_7` 橋、`12/12` 猜想、`6/6` 演化轉移與 `46/46` 大一統證書全綠 |
 
 ## 一、原生跨支柱橋接
 
