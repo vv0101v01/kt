@@ -10,6 +10,9 @@
         "algebra",
         "cubical-hermitian",
         "cubical-kernel",
+        "cubical-elaborator",
+        "cubical-homotopy",
+        "cubical-store",
         "hostfs",
         "root",
         "cmd-main"
@@ -192,10 +195,49 @@
       "summary_zh": "可信立方依賴核心：依賴 NbE、AST Kan 運算、Glue 等價、密封受檢線 CheckedLine／CheckedDCube、DSystem 相容性、歸納／HIT／開放歸納遞迴 Schema 與 Cantor／Mahlo 序數。"
     },
     {
+      "id": "cubical-elaborator",
+      "path": "cubical/elaborator",
+      "moon": "vv0101v01/cubical-hermitian/cubical/elaborator",
+      "layer": 3,
+      "depends_on": [
+        "cubical-kernel"
+      ],
+      "summary_en": "Bidirectional surface elaboration, extended pattern HOU, Huet delayed flex-flex search streams, higher-order matching, and Goldfarb Diophantine compilation.",
+      "summary_zh": "雙向表面精緻化、擴展 pattern 高階合一、Huet 延遲 flex-flex 搜索串流、可判定高階匹配與 Goldfarb 丟番圖編譯。"
+    },
+    {
+      "id": "cubical-homotopy",
+      "path": "cubical/homotopy",
+      "moon": "vv0101v01/cubical-hermitian/cubical/homotopy",
+      "layer": 3,
+      "depends_on": [
+        "gcd",
+        "algebra",
+        "cubical-face-bdd",
+        "cubical-finite",
+        "cubical-kernel"
+      ],
+      "summary_en": "Synthetic homotopy & computational univalence: spheres S^1/S^2/S^3, adjoint equivalences, truncation, Stasheff associahedra K_n/K_6, Blakers-Massey, Brunerie pi_4(S^3)=Z/2Z, and general HITs.",
+      "summary_zh": "合成同倫與計算性單值性：球面 S¹／S²／S³、伴隨等價、截斷、Stasheff 結合多面體 Kₙ／K₆、Blakers–Massey、Brunerie π₄(S³)≃ℤ/2ℤ 與通用 HIT。"
+    },
+    {
+      "id": "cubical-store",
+      "path": "cubical/store",
+      "moon": "vv0101v01/cubical-hermitian/cubical/store",
+      "layer": 5,
+      "depends_on": [
+        "condensed",
+        "cubical-face-bdd",
+        "cubical-kernel"
+      ],
+      "summary_en": "Separate module compilation, interned-DAG & schema binary codecs, authenticated WAL artifact repositories, Ed25519 BFT quorum durability, and Tarjan SCC MVCC hot-loading.",
+      "summary_zh": "分離模組編譯、intern-DAG 與 Schema 二進位編解碼、認證 WAL 工件儲存庫、Ed25519 拜占庭法定人數持久層與 Tarjan 強連通分量 MVCC 原子熱替換。"
+    },
+    {
       "id": "root",
       "path": ".",
       "moon": "vv0101v01/cubical-hermitian",
-      "layer": 5,
+      "layer": 6,
       "depends_on": [
         "gcd",
         "algebra",
@@ -204,16 +246,19 @@
         "cubical-face-bdd",
         "cubical-finite",
         "cubical-hermitian",
-        "cubical-kernel"
+        "cubical-kernel",
+        "cubical-elaborator",
+        "cubical-homotopy",
+        "cubical-store"
       ],
-      "summary_en": "The mutually recursive cubical dependent kernel, plus the logical foundation/finite/numeric/model/frontend components and Phase 21 7-boundary breakthroughs.",
-      "summary_zh": "互相遞迴的立方依賴核心，以及 foundation／finite／numeric／model／frontend 邏輯元件與第二十一期七大能力邊界突破模組。"
+      "summary_en": "Thin compatibility facade re-exporting curated @cub entry points plus executable theorem/law verification registry.",
+      "summary_zh": "極薄相容門面（重導出精選跨聯邦 @cub 入口）與可執行定理／定律登記總表。"
     },
     {
       "id": "cmd-main",
       "path": "cmd/main",
       "moon": "vv0101v01/cubical-hermitian/cmd/main",
-      "layer": 6,
+      "layer": 7,
       "depends_on": [
         "root"
       ],
@@ -473,7 +518,7 @@
       "id": "bridge",
       "path": "bridge",
       "moon": "vv0101v01/cubical-hermitian/bridge",
-      "layer": 6,
+      "layer": 7,
       "depends_on": [
         "gcd",
         "root",
@@ -498,7 +543,7 @@
       "id": "cmd-showcase",
       "path": "cmd/showcase",
       "moon": "vv0101v01/cubical-hermitian/cmd/showcase",
-      "layer": 7,
+      "layer": 8,
       "depends_on": [
         "bridge",
         "semiring-graph",
@@ -674,46 +719,59 @@
       "summary_zh": "跨域範疇／Hermitian 模型：句法範疇、有限／子空間 Glue comp、精確數值影子與一般代數擴張上的認證代數。"
     },
     {
-      "id": "frontend",
-      "package": "root",
+      "id": "elaborator-core",
+      "package": "cubical-elaborator",
       "layer": 6,
       "files": [
-        "elaborator_bidir.mbt",
-        "hou_unify_stream.mbt",
-        "module_system.mbt",
-        "module_compilation.mbt",
-        "module_binary.mbt",
-        "schema_registry_persist.mbt",
-        "artifact_repository.mbt",
-        "artifact_crypto_wal.mbt",
-        "dterm_dag_binary.mbt"
+        "cubical/elaborator/elaborator_bidir.mbt",
+        "cubical/elaborator/hou_unify_stream.mbt"
       ],
       "depends_on": [
-        "dependent-kernel",
-        "foundation"
+        "dependent-kernel"
       ],
       "summary_en": "Surface elaboration and separate compilation: extended pattern HOU, parameterized modules, compiled interfaces, linking and incremental cache, interned-DAG binary snapshots, and artifact repositories with an append-only integrity chain. Nothing in the kernel may depend back on this layer.",
       "summary_zh": "表面闡釋與分離編譯：擴展 pattern HOU、參數化模組、已編譯介面、連結與增量快取、intern DAG 二進位快照，以及帶 append-only 完整性鏈的工件儲存庫。核心不得反向依賴此層。"
     },
     {
-      "id": "cubical",
-      "package": "root",
+      "id": "module-store",
+      "package": "cubical-store",
       "layer": 6,
       "files": [
-        "sphere3.mbt",
-        "cubical_algorithms.mbt",
-        "univalence.mbt",
-        "sphere_homotopy.mbt",
-        "adjoint_equivalence.mbt",
-        "truncation.mbt",
-        "sphere_classification.mbt",
-        "circle_classify.mbt"
+        "cubical/store/module_system.mbt",
+        "cubical/store/module_compilation.mbt",
+        "cubical/store/module_binary.mbt",
+        "cubical/store/dterm_dag_binary.mbt",
+        "cubical/store/schema_registry_persist.mbt",
+        "cubical/store/artifact_repository.mbt",
+        "cubical/store/artifact_crypto_wal.mbt"
+      ],
+      "depends_on": [
+        "foundation",
+        "dependent-kernel"
+      ],
+      "summary_en": "Parameterized modules, separate compilation, interned-DAG & schema binary snapshots, and authenticated WAL artifact repositories.",
+      "summary_zh": "參數化模組、分離編譯、intern-DAG 與 Schema 二進位快照，以及帶認證 WAL 的工件儲存庫。"
+    },
+    {
+      "id": "cubical",
+      "package": "cubical-homotopy",
+      "layer": 6,
+      "files": [
+        "cubical/homotopy/sphere3.mbt",
+        "cubical/homotopy/cubical_algorithms.mbt",
+        "cubical/homotopy/univalence.mbt",
+        "cubical/homotopy/sphere_homotopy.mbt",
+        "cubical/homotopy/adjoint_equivalence.mbt",
+        "cubical/homotopy/truncation.mbt",
+        "cubical/homotopy/sphere_classification.mbt",
+        "cubical/homotopy/circle_classify.mbt"
       ],
       "depends_on": [
         "foundation",
         "finite-cubical",
         "dependent-kernel",
-        "exact-algebra"
+        "exact-algebra",
+        "dependent-kan-lines"
       ],
       "summary_en": "High-level cubical constructions and algorithms: spheres and homotopy representatives, propositional truncation, adjoint-equivalence data, transport/path algebra, path-to-equivalence and computational univalence certificates.",
       "summary_zh": "高層立方構造與演算法：球面與同倫代表元、命題截斷、adjoint equivalence 資料、transport／路徑代數、path-to-equivalence 與計算性 univalence 證書。"
@@ -1063,17 +1121,16 @@
     },
     {
       "id": "module-hotload",
-      "package": "root",
+      "package": "cubical-store",
       "layer": 7,
       "files": [
-        "module_hotload.mbt",
-        "module_bft_mvcc.mbt"
+        "cubical/store/module_hotload.mbt",
+        "cubical/store/module_bft_mvcc.mbt"
       ],
       "depends_on": [
         "dependent-kernel",
-        "frontend",
+        "module-store",
         "foundation",
-        "hostfs-durability",
         "condensed-core"
       ],
       "summary_en": "Runtime hot loading for the compiled module environment: interface-hash gating, transactional swaps with consistency verification and rollback, and an audit log of every attempt.",
@@ -1093,24 +1150,25 @@
     },
     {
       "id": "hou-match",
-      "package": "root",
+      "package": "cubical-elaborator",
       "layer": 7,
       "files": [
-        "hou_match.mbt",
-        "hou_goldfarb.mbt"
+        "cubical/elaborator/hou_match.mbt",
+        "cubical/elaborator/hou_goldfarb.mbt"
       ],
       "depends_on": [
-        "frontend"
+        "elaborator-core",
+        "dependent-kernel"
       ],
       "summary_en": "Decidable higher-order matching: the one-sided fragment of HOU where the right-hand side is ground. Unique solution for distinct-variable spines; bounded enumeration with beta/eta verification otherwise; the bound is part of the answer.",
       "summary_zh": "可判定高階匹配：右側無元變數的單側片斷。相異變數脊柱給出唯一解；其餘情形以有界列舉配合 βη 轉換驗證，且 bound 是答案的一部份，永不單獨宣稱無解。"
     },
     {
       "id": "associahedron",
-      "package": "root",
+      "package": "cubical-homotopy",
       "layer": 7,
       "files": [
-        "associahedron.mbt"
+        "cubical/homotopy/associahedron.mbt"
       ],
       "depends_on": [
         "dependent-kernel",
@@ -1122,10 +1180,10 @@
     },
     {
       "id": "blakers-massey",
-      "package": "root",
+      "package": "cubical-homotopy",
       "layer": 6,
       "files": [
-        "blakers_massey.mbt"
+        "cubical/homotopy/blakers_massey.mbt"
       ],
       "depends_on": [],
       "summary_en": "Blakers-Massey and Freudenthal: decidable connectivity arithmetic, the stable range derived from the gap formula, and long-exact-sequence algebra over finitely generated abelian groups, yielding pi3(S2) = pi3(S3) and pi3(S3) = pi2(S2) with explicit provenance.",
@@ -1133,10 +1191,10 @@
     },
     {
       "id": "brunerie-pi4-s3",
-      "package": "root",
+      "package": "cubical-homotopy",
       "layer": 7,
       "files": [
-        "brunerie_pi4_s3.mbt"
+        "cubical/homotopy/brunerie_pi4_s3.mbt"
       ],
       "depends_on": [
         "blakers-massey"
@@ -1146,11 +1204,11 @@
     },
     {
       "id": "homotopy-universal",
-      "package": "root",
+      "package": "cubical-homotopy",
       "layer": 8,
       "files": [
-        "homotopy_universal.mbt",
-        "higher_coherence_k6.mbt"
+        "cubical/homotopy/homotopy_universal.mbt",
+        "cubical/homotopy/higher_coherence_k6.mbt"
       ],
       "depends_on": [
         "foundation",

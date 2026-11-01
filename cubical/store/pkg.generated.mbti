@@ -1,0 +1,907 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/cubical/store"
+
+import {
+  "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/cubical/kernel",
+}
+
+// Values
+pub fn abstract_point_module() -> ModuleDef
+
+pub fn artifact_byte_store_new(read~ : (String) -> Array[Int32]?, write~ : (String, Array[Int32]) -> Bool, remove~ : (String) -> Bool, list~ : () -> Array[String]) -> ArtifactByteStore
+
+pub fn artifact_chain_save(ArtifactRepository, Array[ArtifactChainEntry]) -> Bool
+
+pub fn artifact_kind_compiled_module() -> String
+
+pub fn artifact_kind_dterm_dag() -> String
+
+pub fn artifact_kind_schema_registry() -> String
+
+pub fn artifact_memory_byte_store_new() -> ArtifactByteStore
+
+pub fn artifact_merge_policy_abort() -> ArtifactMergePolicy
+
+pub fn artifact_merge_policy_prefer_left() -> ArtifactMergePolicy
+
+pub fn artifact_merge_policy_prefer_right() -> ArtifactMergePolicy
+
+pub fn artifact_repository_chain_entries(ArtifactRepository) -> Array[ArtifactChainEntry]?
+
+pub fn artifact_repository_chain_head(ArtifactRepository) -> (Int32, Int32)?
+
+pub fn artifact_repository_chain_report(ArtifactRepository, expected_head? : (Int32, Int32)?) -> ArtifactChainReport
+
+pub fn artifact_repository_common_ancestor_records(ArtifactRepository, ArtifactRepository) -> (Int32, Array[ArtifactRecord])?
+
+pub fn artifact_repository_get(ArtifactRepository, String, String) -> Array[Int32]?
+
+pub fn artifact_repository_get_chained(ArtifactRepository, String, String, expected_head? : (Int32, Int32)?) -> Array[Int32]?
+
+pub fn artifact_repository_get_compiled_module(ArtifactRepository, String) -> CompiledModule?
+
+pub fn artifact_repository_get_dterm_dag_into(ArtifactRepository, String, @kernel.DTermInternTable) -> @kernel.DTermDagImportReport?
+
+pub fn artifact_repository_get_dterm_dag_snapshot(ArtifactRepository, String) -> @kernel.DTermDagSnapshot?
+
+pub fn artifact_repository_get_registry_snapshot(ArtifactRepository, String) -> @kernel.DSchemaRegistrySnapshot?
+
+pub fn artifact_repository_list(ArtifactRepository) -> Array[ArtifactRecord]
+
+pub fn artifact_repository_merge_three_way(ArtifactRepository, ArtifactRepository, ArtifactRepository, policy? : ArtifactMergePolicy, auth_key? : ArtifactAuthKey?) -> ArtifactThreeWayMergeReport
+
+pub fn artifact_repository_new(ArtifactByteStore, prefix? : String) -> ArtifactRepository
+
+pub fn artifact_repository_put(ArtifactRepository, String, String, Array[Int32], format_version? : Int32) -> ArtifactRecord?
+
+pub fn artifact_repository_put_cas_authenticated(ArtifactRepository, String, String, Array[Int32], Int32, (Int32, Int32), ArtifactAuthKey) -> ArtifactCasStatus
+
+pub fn artifact_repository_put_compiled_module(ArtifactRepository, CompiledModule, peer_versions? : Array[Int32]) -> ArtifactRecord?
+
+pub fn artifact_repository_put_dterm_dag_snapshot(ArtifactRepository, String, @kernel.DTermDagSnapshot) -> ArtifactRecord?
+
+pub fn artifact_repository_put_dterm_dag_terms(ArtifactRepository, String, @kernel.DTermInternTable, Array[@kernel.DTerm]) -> ArtifactRecord?
+
+pub fn artifact_repository_put_registry_snapshot(ArtifactRepository, String, @kernel.DSchemaRegistrySnapshot, peer_versions? : Array[Int32]) -> ArtifactRecord?
+
+pub fn artifact_repository_record(ArtifactRepository, String, String) -> ArtifactRecord?
+
+pub fn artifact_repository_recover(ArtifactRepository) -> Int32
+
+pub fn artifact_repository_recover_chained(ArtifactRepository, expected_head? : (Int32, Int32)?) -> Int32
+
+pub fn artifact_repository_remove(ArtifactRepository, String, String) -> Bool
+
+pub fn artifact_repository_seal_authenticated(ArtifactRepository, ArtifactAuthKey) -> Bool
+
+pub fn artifact_repository_seal_ed25519(ArtifactRepository, Ed25519Keypair) -> Bool
+
+pub fn artifact_repository_stats(ArtifactRepository) -> ArtifactRepositoryStats
+
+pub fn artifact_repository_sync_incremental(ArtifactRepository, ArtifactRepository, ArtifactAuthKey, trusted_producers? : Array[String]) -> ArtifactSyncReport
+
+pub fn artifact_repository_verify_all(ArtifactRepository) -> Bool
+
+pub fn artifact_repository_verify_authenticated(ArtifactRepository, ArtifactAuthKey, expected_head? : (Int32, Int32)?) -> Bool
+
+pub fn artifact_repository_verify_ed25519(ArtifactRepository, Ed25519PublicKey) -> Bool
+
+pub fn artifact_wal_abort_tx(ArtifactWalStore) -> Bool
+
+pub fn artifact_wal_begin_tx(ArtifactWalStore) -> Int32?
+
+pub fn artifact_wal_byte_store(ArtifactWalStore) -> ArtifactByteStore
+
+pub fn artifact_wal_checkpoint(ArtifactWalStore) -> Bool
+
+pub fn artifact_wal_commit_tx(ArtifactWalStore) -> Bool
+
+pub fn artifact_wal_delete(ArtifactWalStore, String) -> Bool
+
+pub fn artifact_wal_put(ArtifactWalStore, String, Array[Int32]) -> Bool
+
+pub fn artifact_wal_recover(ArtifactWalStore) -> ArtifactWalRecoveryReport?
+
+pub fn artifact_wal_store_open(ArtifactByteStore, wal_key? : String) -> (ArtifactWalStore, ArtifactWalRecoveryReport)?
+
+pub fn bft_ed25519_quorum_commit_to_wal() -> BftEd25519WalReport
+
+pub fn binary_negotiate_version(Array[Int32], Array[Int32]) -> Int32
+
+pub fn bool_ops_module() -> ModuleDef
+
+pub fn check_module_binary_format() -> Bool
+
+pub fn check_module_binary_versions_and_store() -> Bool
+
+pub fn check_module_compilation() -> Bool
+
+pub fn check_module_interleaved_items() -> Bool
+
+pub fn check_module_runtime_hot_loading() -> Bool
+
+pub fn check_module_system() -> Bool
+
+pub fn compiled_module_binary_format_version() -> Int32
+
+pub fn compiled_module_binary_from_hex(String) -> Array[Int32]?
+
+pub fn compiled_module_binary_negotiate_version(Array[Int32]) -> Int32
+
+pub fn compiled_module_binary_supported_versions() -> Array[Int32]
+
+pub fn compiled_module_binary_to_hex(Array[Int32]) -> String
+
+pub fn compiled_module_binary_version_of(Array[Int32]) -> Int32
+
+pub fn compiled_module_binary_version_policy() -> BinaryVersionPolicy
+
+pub fn compiled_module_env_add(CompiledModuleEnv, CompiledModule) -> Bool
+
+pub fn compiled_module_env_find(CompiledModuleEnv, String) -> CompiledModule?
+
+pub fn compiled_module_env_new() -> CompiledModuleEnv
+
+pub fn compiled_module_env_to_module_env(CompiledModuleEnv) -> ModuleEnv
+
+pub fn compiled_module_envelope_load_binary(Array[Int32], Array[Int32], validate? : Bool) -> CompiledModuleEnvelopeLoad
+
+pub fn compiled_module_envelope_to_binary(CompiledModule, Array[ModuleTlvSection]) -> Array[Int32]?
+
+pub fn compiled_module_format_version() -> Int32
+
+pub fn compiled_module_from_binary(Array[Int32]) -> CompiledModule?
+
+pub fn compiled_module_instantiate(CompiledModule, Array[@kernel.DTerm]) -> ModuleInstance?
+
+pub fn compiled_module_is_implementation(CompiledModule, CompiledModule) -> Bool
+
+pub fn compiled_module_load_binary(Array[Int32]) -> CompiledModule?
+
+pub fn compiled_module_load_binary_report(Array[Int32], validate? : Bool) -> ModuleBinaryLoad
+
+pub fn compiled_module_migrate_binary(Array[Int32]) -> Array[Int32]?
+
+pub fn compiled_module_producer_default() -> String
+
+pub fn compiled_module_specialize_prefix(CompiledModule, Array[@kernel.DTerm]) -> CompiledModule?
+
+pub fn compiled_module_store_contains(CompiledModuleStore, String) -> Bool
+
+pub fn compiled_module_store_get(CompiledModuleStore, String) -> CompiledModule?
+
+pub fn compiled_module_store_new() -> CompiledModuleStore
+
+pub fn compiled_module_store_put(CompiledModuleStore, CompiledModule) -> Unit
+
+pub fn compiled_module_store_stats(CompiledModuleStore) -> CompiledModuleStoreStats
+
+pub fn compiled_module_to_binary(CompiledModule) -> Array[Int32]
+
+pub fn compiled_module_to_binary_for_peer(CompiledModule, Array[Int32]) -> Array[Int32]?
+
+pub fn compiled_module_to_binary_v1(CompiledModule) -> Array[Int32]?
+
+pub fn compiled_module_to_binary_version(CompiledModule, Int32) -> Array[Int32]?
+
+pub fn compiled_module_to_module_def(CompiledModule) -> ModuleDef
+
+pub fn compiled_module_validate(CompiledModule) -> Bool
+
+pub fn crypto_sha256(Array[Int32]) -> Array[Int32]
+
+pub fn crypto_sha256_hex(Array[Int32]) -> String
+
+pub fn crypto_sha512(Array[Int32]) -> Array[Int32]
+
+pub fn crypto_sha512_hex(Array[Int32]) -> String
+
+pub fn dterm_dag_binary_format_version() -> Int32
+
+pub fn dterm_dag_binary_supported_versions() -> Array[Int32]
+
+pub fn dterm_dag_binary_version_of(Array[Int32]) -> Int32
+
+pub fn dterm_dag_binary_version_policy() -> BinaryVersionPolicy
+
+pub fn dterm_dag_delta_apply(@kernel.DTermInternTable, DTermDagDelta) -> @kernel.DTermDagImportReport?
+
+pub fn dterm_dag_delta_compute(@kernel.DTermInternTable, Int32, Array[@kernel.DTerm]) -> DTermDagDelta?
+
+pub fn dterm_dag_delta_import_binary(@kernel.DTermInternTable, Array[Int32]) -> @kernel.DTermDagImportReport?
+
+pub fn dterm_dag_delta_load_binary_report(Array[Int32]) -> DTermDagDeltaBinaryLoad
+
+pub fn dterm_dag_delta_to_binary(DTermDagDelta) -> Array[Int32]?
+
+pub fn dterm_dag_delta_validate(DTermDagDelta) -> Bool
+
+pub fn dterm_dag_import_binary(@kernel.DTermInternTable, Array[Int32]) -> @kernel.DTermDagImportReport?
+
+pub fn dterm_dag_snapshot_from_binary(Array[Int32]) -> @kernel.DTermDagSnapshot?
+
+pub fn dterm_dag_snapshot_load_binary_report(Array[Int32]) -> DTermDagBinaryLoad
+
+pub fn dterm_dag_snapshot_to_binary(@kernel.DTermDagSnapshot) -> Array[Int32]?
+
+pub fn dterm_intern_table_prefix_digest(@kernel.DTermInternTable, Int32) -> (Int32, Int32)?
+
+pub fn ed25519_keypair_from_seed(Array[Int32]) -> Ed25519Keypair?
+
+pub fn ed25519_sign(Ed25519Keypair, Array[Int32]) -> Ed25519Signature?
+
+pub fn ed25519_verify(Ed25519PublicKey, Array[Int32], Ed25519Signature) -> Bool
+
+pub fn generic_iterate_module() -> ModuleDef
+
+pub fn hot_load_apply(HotLoadEnv, CompiledModule, replacements? : Array[CompiledModule]) -> HotLoadReport
+
+pub fn hot_load_consistent(HotLoadEnv) -> Bool
+
+pub fn hot_load_dependents(HotLoadEnv, String) -> Array[String]
+
+pub fn hot_load_env_epoch(HotLoadEnv) -> Int32
+
+pub fn hot_load_env_history(HotLoadEnv) -> Array[HotLoadRecord]
+
+pub fn hot_load_env_modules(HotLoadEnv) -> Array[CompiledModule]
+
+pub fn hot_load_env_new(CompiledModuleEnv) -> HotLoadEnv
+
+pub fn hot_load_env_to_compiled(HotLoadEnv) -> CompiledModuleEnv
+
+pub fn hot_load_instantiate(HotLoadEnv, ModuleDef, Array[@kernel.DTerm]) -> ModuleInstance?
+
+pub fn hot_load_mvcc_commit_atomic(HotLoadMvccStore, Array[String], Array[Array[Int32]], Array[(String, Int32)], Bool) -> (HotLoadMvccStore, Bool)
+
+pub fn hot_load_mvcc_read(HotLoadMvccStore, Int32, String) -> Int32?
+
+pub fn hot_load_plan(HotLoadEnv, CompiledModule) -> HotLoadDecision
+
+pub fn hot_load_signature(HotLoadEnv, ModuleDef) -> ModuleSignature?
+
+pub fn hot_load_stale_modules(HotLoadEnv) -> Array[String]
+
+pub fn hot_load_tarjan_scc(Array[String], Array[Array[Int32]]) -> Array[Array[String]]
+
+pub fn module_build_dag_incremental(ModuleCompileCache, Array[ModuleDef], entry_path? : String, entry_args? : Array[@kernel.DTerm]) -> ModuleIncrementalBuildReport
+
+pub fn module_compile(ModuleEnv, ModuleDef, Array[ModuleDependencyFingerprint]) -> CompiledModule?
+
+pub fn module_compile_cache_lookup(ModuleCompileCache, ModuleDef, Array[ModuleDependencyFingerprint]) -> CompiledModule?
+
+pub fn module_compile_cache_new() -> ModuleCompileCache
+
+pub fn module_compile_cache_size(ModuleCompileCache) -> Int32
+
+pub fn module_compile_cached(ModuleCompileCache, ModuleEnv, ModuleDef, Array[ModuleDependencyFingerprint]) -> (CompiledModule, Bool)?
+
+pub fn module_compile_with_compiled(CompiledModuleEnv, ModuleDef) -> CompiledModule?
+
+pub fn module_decl(String, @kernel.DTerm, @kernel.DTerm, exported? : Bool, transparent? : Bool) -> ModuleDecl
+
+pub fn module_decl_abstract(String, @kernel.DTerm, exported? : Bool, transparent? : Bool) -> ModuleDecl
+
+pub fn module_def(String, params? : Array[@kernel.DTelescopeEntry], imports? : Array[ModuleImport], opens? : Array[String], decls? : Array[ModuleDecl], items? : Array[ModuleItem]) -> ModuleDef
+
+pub fn module_dependency_fingerprint(String, Int32) -> ModuleDependencyFingerprint
+
+pub fn module_dependency_of_compiled(CompiledModule) -> ModuleDependencyFingerprint
+
+pub fn module_env_add(ModuleEnv, ModuleDef) -> Bool
+
+pub fn module_env_find(ModuleEnv, String) -> ModuleDef?
+
+pub fn module_env_new() -> ModuleEnv
+
+pub fn module_example_env() -> ModuleEnv
+
+pub fn module_import(String, args? : Array[@kernel.DTerm], alias_name? : String, only? : Array[String], hiding? : Array[String], opened? : Bool, renames? : Array[ModuleRename]) -> ModuleImport
+
+pub fn module_instance_find(ModuleInstance, String) -> ModuleInstanceDecl?
+
+pub fn module_instantiate(ModuleEnv, ModuleDef, Array[@kernel.DTerm]) -> ModuleInstance?
+
+pub fn module_link_instantiate(CompiledModuleEnv, ModuleDef, Array[@kernel.DTerm], extra_sources? : Array[ModuleDef]) -> ModuleInstance?
+
+pub fn module_link_signature(CompiledModuleEnv, ModuleDef, extra_sources? : Array[ModuleDef]) -> ModuleSignature?
+
+pub fn module_ref(ModuleSignature, String) -> @kernel.DTerm?
+
+pub fn module_rename(String, String) -> ModuleRename
+
+pub fn module_resolve(ModuleSignature, String) -> Int32?
+
+pub fn module_signature(ModuleEnv, ModuleDef) -> ModuleSignature?
+
+pub fn module_source_fingerprint(ModuleDef, Array[ModuleDependencyFingerprint]) -> String
+
+pub fn module_topological_plan(Array[ModuleDef]) -> ModuleBuildPlanReport
+
+pub fn module_validate(ModuleEnv, ModuleDef) -> Bool
+
+pub fn point_client_module() -> ModuleDef
+
+pub fn point_implementation_module() -> ModuleDef
+
+pub fn schema_registry_binary_format_version() -> Int32
+
+pub fn schema_registry_binary_from_hex(String) -> Array[Int32]?
+
+pub fn schema_registry_binary_roundtrip_ok(@kernel.DSchemaRegistry) -> Bool
+
+pub fn schema_registry_binary_supported_versions() -> Array[Int32]
+
+pub fn schema_registry_binary_to_hex(Array[Int32]) -> String
+
+pub fn schema_registry_binary_version_of(Array[Int32]) -> Int32
+
+pub fn schema_registry_binary_version_policy() -> BinaryVersionPolicy
+
+pub fn schema_registry_from_binary(Array[Int32]) -> @kernel.DSchemaRegistry?
+
+pub fn schema_registry_snapshot_from_binary(Array[Int32]) -> @kernel.DSchemaRegistrySnapshot?
+
+pub fn schema_registry_snapshot_load_binary_report(Array[Int32]) -> DSchemaRegistryBinaryLoad
+
+pub fn schema_registry_snapshot_to_binary(@kernel.DSchemaRegistrySnapshot) -> Array[Int32]
+
+pub fn schema_registry_snapshot_to_binary_for_peer(@kernel.DSchemaRegistrySnapshot, Array[Int32]) -> Array[Int32]?
+
+pub fn schema_registry_snapshot_to_binary_version(@kernel.DSchemaRegistrySnapshot, Int32) -> Array[Int32]?
+
+pub fn schema_registry_to_binary(@kernel.DSchemaRegistry) -> Array[Int32]
+
+pub fn shared_dag_bundle_load_binary_report(Array[Int32], intern_table? : @kernel.DTermInternTable, validate? : Bool) -> SharedDagBundleLoad
+
+pub fn shared_dag_bundle_to_binary(SharedDagBundle) -> Array[Int32]
+
+// Errors
+
+// Types and methods
+pub(all) struct ArtifactAuthKey {
+  key_id : String
+  secret_a : Int32
+  secret_b : Int32
+} derive(Eq, @debug.Debug)
+pub fn ArtifactAuthKey::equal(Self, Self) -> Bool
+pub fn ArtifactAuthKey::not_equal(Self, Self) -> Bool
+pub fn ArtifactAuthKey::to_repr(Self) -> @debug.Repr
+
+pub struct ArtifactByteStore {
+  read : (String) -> Array[Int32]?
+  write : (String, Array[Int32]) -> Bool
+  remove : (String) -> Bool
+  list : () -> Array[String]
+}
+
+pub(all) enum ArtifactCasStatus {
+  ArtifactCasCommitted
+  ArtifactCasConflict
+  ArtifactCasAuthFailed
+  ArtifactCasIoError
+} derive(Eq, @debug.Debug)
+pub fn ArtifactCasStatus::equal(Self, Self) -> Bool
+pub fn ArtifactCasStatus::not_equal(Self, Self) -> Bool
+pub fn ArtifactCasStatus::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ArtifactChainEntry {
+  sequence : Int32
+  removed : Bool
+  record : ArtifactRecord
+  previous_a : Int32
+  previous_b : Int32
+  entry_a : Int32
+  entry_b : Int32
+} derive(Eq, @debug.Debug)
+pub fn ArtifactChainEntry::equal(Self, Self) -> Bool
+pub fn ArtifactChainEntry::not_equal(Self, Self) -> Bool
+pub fn ArtifactChainEntry::to_repr(Self) -> @debug.Repr
+
+pub struct ArtifactChainReport {
+  valid : Bool
+  entries : Int32
+  live_records : Int32
+  head_a : Int32
+  head_b : Int32
+  covers_index : Bool
+} derive(Eq, @debug.Debug)
+pub fn ArtifactChainReport::equal(Self, Self) -> Bool
+pub fn ArtifactChainReport::not_equal(Self, Self) -> Bool
+pub fn ArtifactChainReport::to_repr(Self) -> @debug.Repr
+
+pub struct ArtifactMergeConflict {
+  kind : String
+  name : String
+  base_blob_key : String?
+  left_blob_key : String?
+  right_blob_key : String?
+} derive(Eq, @debug.Debug)
+pub fn ArtifactMergeConflict::equal(Self, Self) -> Bool
+pub fn ArtifactMergeConflict::not_equal(Self, Self) -> Bool
+pub fn ArtifactMergeConflict::to_repr(Self) -> @debug.Repr
+
+pub enum ArtifactMergePolicy {
+  ArtifactMergeAbortOnConflict
+  ArtifactMergePreferLeft
+  ArtifactMergePreferRight
+} derive(Eq, @debug.Debug)
+pub fn ArtifactMergePolicy::equal(Self, Self) -> Bool
+pub fn ArtifactMergePolicy::not_equal(Self, Self) -> Bool
+pub fn ArtifactMergePolicy::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ArtifactRecord {
+  kind : String
+  name : String
+  blob_key : String
+  byte_length : Int32
+  hash_a : Int32
+  hash_b : Int32
+  format_version : Int32
+} derive(Eq, @debug.Debug)
+pub fn ArtifactRecord::equal(Self, Self) -> Bool
+pub fn ArtifactRecord::not_equal(Self, Self) -> Bool
+pub fn ArtifactRecord::to_repr(Self) -> @debug.Repr
+
+pub struct ArtifactRepository {
+  store : ArtifactByteStore
+  prefix : String
+  mut puts : Int32
+  mut recoveries : Int32
+}
+
+pub struct ArtifactRepositoryStats {
+  records : Int32
+  total_bytes : Int32
+  puts : Int32
+  recoveries : Int32
+} derive(Eq, @debug.Debug)
+pub fn ArtifactRepositoryStats::equal(Self, Self) -> Bool
+pub fn ArtifactRepositoryStats::not_equal(Self, Self) -> Bool
+pub fn ArtifactRepositoryStats::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ArtifactSyncReport {
+  ok : Bool
+  transferred_blobs : Int32
+  skipped_existing_blobs : Int32
+  tombstones_applied : Int32
+  final_head_a : Int32
+  final_head_b : Int32
+} derive(Eq, @debug.Debug)
+pub fn ArtifactSyncReport::equal(Self, Self) -> Bool
+pub fn ArtifactSyncReport::not_equal(Self, Self) -> Bool
+pub fn ArtifactSyncReport::to_repr(Self) -> @debug.Repr
+
+pub struct ArtifactThreeWayMergeReport {
+  ok : Bool
+  lca_entries : Int32
+  merged_records : Int32
+  left_applied : Int32
+  right_applied : Int32
+  convergent_merges : Int32
+  tombstones_applied : Int32
+  conflicts : Array[ArtifactMergeConflict]
+  final_head_a : Int32
+  final_head_b : Int32
+} derive(Eq, @debug.Debug)
+pub fn ArtifactThreeWayMergeReport::equal(Self, Self) -> Bool
+pub fn ArtifactThreeWayMergeReport::not_equal(Self, Self) -> Bool
+pub fn ArtifactThreeWayMergeReport::to_repr(Self) -> @debug.Repr
+
+pub struct ArtifactWalRecoveryReport {
+  replayed_transactions : Int32
+  discarded_torn_bytes : Int32
+  active_tx_rolled_back : Bool
+} derive(Eq, @debug.Debug)
+pub fn ArtifactWalRecoveryReport::equal(Self, Self) -> Bool
+pub fn ArtifactWalRecoveryReport::not_equal(Self, Self) -> Bool
+pub fn ArtifactWalRecoveryReport::to_repr(Self) -> @debug.Repr
+
+pub struct ArtifactWalStore {
+  backing : ArtifactByteStore
+  wal_key : String
+  mut next_tx_id : Int32
+  mut active_tx_id : Int32
+  staged : Array[WalOp]
+}
+
+pub(all) struct BftEd25519WalReport {
+  n_validators : Int32
+  quorum_required : Int32
+  valid_signatures : Int32
+  forged_signature_rejected : Bool
+  wal_committed_and_recovered : Bool
+  condensed_ledger_verified : Bool
+} derive(Eq, @debug.Debug)
+pub fn BftEd25519WalReport::equal(Self, Self) -> Bool
+pub fn BftEd25519WalReport::not_equal(Self, Self) -> Bool
+pub fn BftEd25519WalReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct BinaryVersionPolicy {
+  current : Int32
+  supported : Array[Int32]
+  oldest_writable : Int32
+} derive(Eq, @debug.Debug)
+pub fn BinaryVersionPolicy::equal(Self, Self) -> Bool
+pub fn BinaryVersionPolicy::not_equal(Self, Self) -> Bool
+pub fn BinaryVersionPolicy::to_repr(Self) -> @debug.Repr
+
+pub struct CompiledModule {
+  format_version : Int32
+  module_path : String
+  params : Array[@kernel.DTelescopeEntry]
+  entries : Array[ModuleEntry]
+  exports : Array[ModuleExport]
+  dependencies : Array[ModuleDependencyFingerprint]
+  interface_hash : Int32
+  implementation_hash : Int32
+  interface_encoding : String
+  producer : String
+} derive(Eq, @debug.Debug)
+pub fn CompiledModule::equal(Self, Self) -> Bool
+pub fn CompiledModule::not_equal(Self, Self) -> Bool
+pub fn CompiledModule::to_repr(Self) -> @debug.Repr
+
+pub struct CompiledModuleEnv {
+  modules : Array[CompiledModule]
+} derive(Eq, @debug.Debug)
+pub fn CompiledModuleEnv::equal(Self, Self) -> Bool
+pub fn CompiledModuleEnv::not_equal(Self, Self) -> Bool
+pub fn CompiledModuleEnv::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CompiledModuleEnvelopeLoad {
+  status : ModuleBinaryStatus
+  module_ : CompiledModule?
+  recognized_sections : Array[ModuleTlvSection]
+  skipped_noncritical_tags : Array[Int32]
+} derive(Eq, @debug.Debug)
+pub fn CompiledModuleEnvelopeLoad::equal(Self, Self) -> Bool
+pub fn CompiledModuleEnvelopeLoad::not_equal(Self, Self) -> Bool
+pub fn CompiledModuleEnvelopeLoad::to_repr(Self) -> @debug.Repr
+
+pub struct CompiledModuleStore {
+  blobs : Array[(String, Array[Int32])]
+  mut hits : Int32
+  mut misses : Int32
+}
+
+pub struct CompiledModuleStoreStats {
+  entries : Int32
+  total_bytes : Int32
+  hits : Int32
+  misses : Int32
+} derive(Eq, @debug.Debug)
+pub fn CompiledModuleStoreStats::equal(Self, Self) -> Bool
+pub fn CompiledModuleStoreStats::not_equal(Self, Self) -> Bool
+pub fn CompiledModuleStoreStats::to_repr(Self) -> @debug.Repr
+
+pub struct DSchemaRegistryBinaryLoad {
+  status : ModuleBinaryStatus
+  snapshot : @kernel.DSchemaRegistrySnapshot?
+}
+
+pub struct DTermDagBinaryLoad {
+  status : ModuleBinaryStatus
+  snapshot : @kernel.DTermDagSnapshot?
+} derive(Eq, @debug.Debug)
+pub fn DTermDagBinaryLoad::equal(Self, Self) -> Bool
+pub fn DTermDagBinaryLoad::not_equal(Self, Self) -> Bool
+pub fn DTermDagBinaryLoad::to_repr(Self) -> @debug.Repr
+
+pub(all) struct DTermDagDelta {
+  base_node_count : Int32
+  base_digest_a : Int32
+  base_digest_b : Int32
+  delta_nodes : Array[@kernel.DTermDagNode]
+  roots : Array[Int32]
+} derive(Eq, @debug.Debug)
+pub fn DTermDagDelta::equal(Self, Self) -> Bool
+pub fn DTermDagDelta::not_equal(Self, Self) -> Bool
+pub fn DTermDagDelta::to_repr(Self) -> @debug.Repr
+
+pub(all) struct DTermDagDeltaBinaryLoad {
+  status : ModuleBinaryStatus
+  delta : DTermDagDelta?
+} derive(Eq, @debug.Debug)
+pub fn DTermDagDeltaBinaryLoad::equal(Self, Self) -> Bool
+pub fn DTermDagDeltaBinaryLoad::not_equal(Self, Self) -> Bool
+pub fn DTermDagDeltaBinaryLoad::to_repr(Self) -> @debug.Repr
+
+pub struct Ed25519Keypair {
+  seed : Array[Int32]
+  public_key : Ed25519PublicKey
+} derive(Eq, @debug.Debug)
+pub fn Ed25519Keypair::equal(Self, Self) -> Bool
+pub fn Ed25519Keypair::not_equal(Self, Self) -> Bool
+pub fn Ed25519Keypair::to_repr(Self) -> @debug.Repr
+
+pub struct Ed25519PublicKey {
+  bytes : Array[Int32]
+} derive(Eq, @debug.Debug)
+pub fn Ed25519PublicKey::equal(Self, Self) -> Bool
+pub fn Ed25519PublicKey::not_equal(Self, Self) -> Bool
+pub fn Ed25519PublicKey::to_repr(Self) -> @debug.Repr
+
+pub struct Ed25519Signature {
+  bytes : Array[Int32]
+} derive(Eq, @debug.Debug)
+pub fn Ed25519Signature::equal(Self, Self) -> Bool
+pub fn Ed25519Signature::not_equal(Self, Self) -> Bool
+pub fn Ed25519Signature::to_repr(Self) -> @debug.Repr
+
+pub(all) enum HotLoadDecision {
+  HotAdd
+  HotOpaqueSwap
+  HotRelink(Array[String])
+  HotReject(String)
+} derive(Eq, @debug.Debug)
+pub fn HotLoadDecision::equal(Self, Self) -> Bool
+pub fn HotLoadDecision::not_equal(Self, Self) -> Bool
+pub fn HotLoadDecision::to_repr(Self) -> @debug.Repr
+
+pub struct HotLoadEnv {
+  mut modules : Array[CompiledModule]
+  mut epoch : Int32
+  mut history : Array[HotLoadRecord]
+} derive(Eq, @debug.Debug)
+pub fn HotLoadEnv::equal(Self, Self) -> Bool
+pub fn HotLoadEnv::not_equal(Self, Self) -> Bool
+pub fn HotLoadEnv::to_repr(Self) -> @debug.Repr
+
+pub(all) struct HotLoadMvccSnapshot {
+  epoch : Int32
+  modules : Array[(String, Int32)]
+  scc_groups : Array[Array[String]]
+} derive(Eq, @debug.Debug)
+pub fn HotLoadMvccSnapshot::equal(Self, Self) -> Bool
+pub fn HotLoadMvccSnapshot::not_equal(Self, Self) -> Bool
+pub fn HotLoadMvccSnapshot::to_repr(Self) -> @debug.Repr
+
+pub(all) struct HotLoadMvccStore {
+  snapshots : Array[HotLoadMvccSnapshot]
+} derive(Eq, @debug.Debug)
+pub fn HotLoadMvccStore::equal(Self, Self) -> Bool
+pub fn HotLoadMvccStore::not_equal(Self, Self) -> Bool
+pub fn HotLoadMvccStore::to_repr(Self) -> @debug.Repr
+
+pub struct HotLoadRecord {
+  path : String
+  epoch : Int32
+  interface_changed : Bool
+  replacements : Int32
+  rolled_back : Bool
+  reason : String
+} derive(Eq, @debug.Debug)
+pub fn HotLoadRecord::equal(Self, Self) -> Bool
+pub fn HotLoadRecord::not_equal(Self, Self) -> Bool
+pub fn HotLoadRecord::to_repr(Self) -> @debug.Repr
+
+pub struct HotLoadReport {
+  accepted : Bool
+  epoch_before : Int32
+  epoch_after : Int32
+  interface_changed : Bool
+  stale : Array[String]
+  replacements : Int32
+  rolled_back : Bool
+  reason : String
+} derive(Eq, @debug.Debug)
+pub fn HotLoadReport::equal(Self, Self) -> Bool
+pub fn HotLoadReport::not_equal(Self, Self) -> Bool
+pub fn HotLoadReport::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleBinaryLoad {
+  status : ModuleBinaryStatus
+  module_ : CompiledModule?
+} derive(Eq, @debug.Debug)
+pub fn ModuleBinaryLoad::equal(Self, Self) -> Bool
+pub fn ModuleBinaryLoad::not_equal(Self, Self) -> Bool
+pub fn ModuleBinaryLoad::to_repr(Self) -> @debug.Repr
+
+pub(all) enum ModuleBinaryStatus {
+  ModuleBinaryOk
+  ModuleBinaryBadMagic
+  ModuleBinaryUnsupportedVersion
+  ModuleBinaryTruncated
+  ModuleBinaryChecksumMismatch
+  ModuleBinaryMalformed
+  ModuleBinaryTrailingBytes
+  ModuleBinaryValidationFailed
+} derive(Eq, @debug.Debug)
+pub fn ModuleBinaryStatus::equal(Self, Self) -> Bool
+pub fn ModuleBinaryStatus::not_equal(Self, Self) -> Bool
+pub fn ModuleBinaryStatus::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleBinding {
+  name : String
+  ordinal : Int32
+} derive(Eq, @debug.Debug)
+pub fn ModuleBinding::equal(Self, Self) -> Bool
+pub fn ModuleBinding::not_equal(Self, Self) -> Bool
+pub fn ModuleBinding::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleBuildPlanReport {
+  ok : Bool
+  topological_order : Array[String]
+  cycle_detected : Bool
+  missing_dependency : String?
+} derive(Eq, @debug.Debug)
+pub fn ModuleBuildPlanReport::equal(Self, Self) -> Bool
+pub fn ModuleBuildPlanReport::not_equal(Self, Self) -> Bool
+pub fn ModuleBuildPlanReport::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleCompileCache {
+  entries : Array[ModuleCompileCacheEntry]
+} derive(Eq, @debug.Debug)
+pub fn ModuleCompileCache::equal(Self, Self) -> Bool
+pub fn ModuleCompileCache::not_equal(Self, Self) -> Bool
+pub fn ModuleCompileCache::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleCompileCacheEntry {
+  module_path : String
+  fingerprint : String
+  compiled : CompiledModule
+} derive(Eq, @debug.Debug)
+pub fn ModuleCompileCacheEntry::equal(Self, Self) -> Bool
+pub fn ModuleCompileCacheEntry::not_equal(Self, Self) -> Bool
+pub fn ModuleCompileCacheEntry::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleDecl {
+  name : String
+  ty : @kernel.DTerm
+  body : @kernel.DTerm?
+  exported : Bool
+  transparent : Bool
+} derive(Eq, @debug.Debug)
+pub fn ModuleDecl::equal(Self, Self) -> Bool
+pub fn ModuleDecl::not_equal(Self, Self) -> Bool
+pub fn ModuleDecl::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleDef {
+  path : String
+  params : Array[@kernel.DTelescopeEntry]
+  imports : Array[ModuleImport]
+  opens : Array[String]
+  decls : Array[ModuleDecl]
+  items : Array[ModuleItem]
+} derive(Eq, @debug.Debug)
+pub fn ModuleDef::equal(Self, Self) -> Bool
+pub fn ModuleDef::not_equal(Self, Self) -> Bool
+pub fn ModuleDef::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleDependencyFingerprint {
+  path : String
+  interface_hash : Int32
+} derive(Eq, @debug.Debug)
+pub fn ModuleDependencyFingerprint::equal(Self, Self) -> Bool
+pub fn ModuleDependencyFingerprint::not_equal(Self, Self) -> Bool
+pub fn ModuleDependencyFingerprint::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleEntry {
+  canonical_name : String
+  local_name : String
+  source_module : String
+  ty : @kernel.DTerm
+  body : @kernel.DTerm?
+  exported : Bool
+  transparent : Bool
+} derive(Eq, @debug.Debug)
+pub fn ModuleEntry::equal(Self, Self) -> Bool
+pub fn ModuleEntry::not_equal(Self, Self) -> Bool
+pub fn ModuleEntry::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleEnv {
+  modules : Array[ModuleDef]
+} derive(Eq, @debug.Debug)
+pub fn ModuleEnv::equal(Self, Self) -> Bool
+pub fn ModuleEnv::not_equal(Self, Self) -> Bool
+pub fn ModuleEnv::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleExport {
+  name : String
+  ordinal : Int32
+  transparent : Bool
+} derive(Eq, @debug.Debug)
+pub fn ModuleExport::equal(Self, Self) -> Bool
+pub fn ModuleExport::not_equal(Self, Self) -> Bool
+pub fn ModuleExport::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleImport {
+  module_path : String
+  alias_name : String
+  args : Array[@kernel.DTerm]
+  only : Array[String]
+  hiding : Array[String]
+  opened : Bool
+  renames : Array[ModuleRename]
+} derive(Eq, @debug.Debug)
+pub fn ModuleImport::equal(Self, Self) -> Bool
+pub fn ModuleImport::not_equal(Self, Self) -> Bool
+pub fn ModuleImport::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleIncrementalBuildReport {
+  ok : Bool
+  compiled_env : CompiledModuleEnv
+  recompiled_paths : Array[String]
+  cache_hit_paths : Array[String]
+  relinked_instance : ModuleInstance?
+} derive(Eq, @debug.Debug)
+pub fn ModuleIncrementalBuildReport::equal(Self, Self) -> Bool
+pub fn ModuleIncrementalBuildReport::not_equal(Self, Self) -> Bool
+pub fn ModuleIncrementalBuildReport::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleInstance {
+  module_path : String
+  decls : Array[ModuleInstanceDecl]
+  bindings : Array[ModuleBinding]
+} derive(Eq, @debug.Debug)
+pub fn ModuleInstance::equal(Self, Self) -> Bool
+pub fn ModuleInstance::not_equal(Self, Self) -> Bool
+pub fn ModuleInstance::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleInstanceDecl {
+  name : String
+  canonical_name : String
+  ty : @kernel.DTerm
+  body : @kernel.DTerm
+  exported : Bool
+  transparent : Bool
+} derive(Eq, @debug.Debug)
+pub fn ModuleInstanceDecl::equal(Self, Self) -> Bool
+pub fn ModuleInstanceDecl::not_equal(Self, Self) -> Bool
+pub fn ModuleInstanceDecl::to_repr(Self) -> @debug.Repr
+
+pub enum ModuleItem {
+  ModuleItemImport(Int32)
+  ModuleItemDecl(Int32)
+} derive(Eq, @debug.Debug)
+pub fn ModuleItem::equal(Self, Self) -> Bool
+pub fn ModuleItem::not_equal(Self, Self) -> Bool
+pub fn ModuleItem::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleRename {
+  from_name : String
+  to_name : String
+} derive(Eq, @debug.Debug)
+pub fn ModuleRename::equal(Self, Self) -> Bool
+pub fn ModuleRename::not_equal(Self, Self) -> Bool
+pub fn ModuleRename::to_repr(Self) -> @debug.Repr
+
+pub struct ModuleSignature {
+  module_path : String
+  entries : Array[ModuleEntry]
+  bindings : Array[ModuleBinding]
+  exports : Array[ModuleExport]
+} derive(Eq, @debug.Debug)
+pub fn ModuleSignature::equal(Self, Self) -> Bool
+pub fn ModuleSignature::not_equal(Self, Self) -> Bool
+pub fn ModuleSignature::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ModuleTlvSection {
+  tag : Int32
+  critical : Bool
+  payload : Array[Int32]
+} derive(Eq, @debug.Debug)
+pub fn ModuleTlvSection::equal(Self, Self) -> Bool
+pub fn ModuleTlvSection::not_equal(Self, Self) -> Bool
+pub fn ModuleTlvSection::to_repr(Self) -> @debug.Repr
+
+pub(all) struct SharedDagBundle {
+  modules : Array[CompiledModule]
+  registry : @kernel.DSchemaRegistrySnapshot
+}
+
+pub struct SharedDagBundleLoad {
+  status : ModuleBinaryStatus
+  bundle : SharedDagBundle?
+  shared_term_entries : Int32
+  interned_dag_nodes : Int32
+  reused_dag_nodes : Int32
+}
+
+type WalOp
+
+// Type aliases
+
+// Traits

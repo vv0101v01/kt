@@ -787,9 +787,12 @@ pub fn check_loop_inverse_assoc_and_classification() -> Bool {
       return false
     }
   }
-  let mixed = SphereLoopCompose(
-    SphereLoopInverse(SphereLoopGenerator),
-    SphereLoopCompose(SphereLoopGenerator, SphereLoopGenerator),
+  let mixed = SphereLoopExpr::SphereLoopCompose(
+    SphereLoopExpr::SphereLoopInverse(SphereLoopExpr::SphereLoopGenerator),
+    SphereLoopExpr::SphereLoopCompose(
+      SphereLoopExpr::SphereLoopGenerator,
+      SphereLoopExpr::SphereLoopGenerator,
+    ),
   )
   if sphere_loop_expr_normal_form(mixed) != sphere_loop_canonical_expr(1) ||
     !sphere_loop_expr_same_class(mixed, sphere_loop_canonical_expr(1)) ||
@@ -885,7 +888,10 @@ pub fn check_loop_inverse_assoc_and_classification() -> Bool {
   }
   // Normalization cells classify closed representative words by
   // degree, including inverse-of-composite and total cancellation.
-  let gg = SphereLoopCompose(SphereLoopGenerator, SphereLoopGenerator)
+  let gg = SphereLoopExpr::SphereLoopCompose(
+    SphereLoopExpr::SphereLoopGenerator,
+    SphereLoopExpr::SphereLoopGenerator,
+  )
   let expressions : Array[SphereLoopExpr] = [
     SphereLoopInverse(gg),
     mixed,
@@ -922,10 +928,10 @@ pub fn check_loop_inverse_assoc_and_classification() -> Bool {
 /// assignment, and reports budget exhaustion without assigning
 /// the blocked meta.
 pub fn check_hou_residual_solver() -> Bool {
-  let gx = UApp(UConst("g"), UVar(1))
-  let sy = USucc(UVar(0))
-  let rigid_lhs = UMeta(0, [gx, sy])
-  let rigid_rhs = UPair(gx, sy)
+  let gx = UTerm::UApp(UTerm::UConst("g"), UTerm::UVar(1))
+  let sy = UTerm::USucc(UTerm::UVar(0))
+  let rigid_lhs = UTerm::UMeta(0, [gx, sy])
+  let rigid_rhs = UTerm::UPair(gx, sy)
   let u0 = unifier_new()
   ignore(hou_fresh_meta(u0, 0))
   let mgu = hou_unify_mgu(rigid_lhs, rigid_rhs, 2, u0)

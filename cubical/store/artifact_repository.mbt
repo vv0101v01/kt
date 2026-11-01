@@ -101,7 +101,7 @@ pub fn artifact_memory_byte_store_new() -> ArtifactByteStore {
 /// One committed artifact: its logical identity (`kind`, `name`)
 /// and the content-addressed blob holding its bytes, with the
 /// length and dual checksums recorded in the commit manifest.
-pub struct ArtifactRecord {
+pub(all) struct ArtifactRecord {
   kind : String
   name : String
   blob_key : String
@@ -907,7 +907,7 @@ pub fn artifact_repository_get_dterm_dag_into(
 // ------------------------------------------------------------------
 
 ///|
-pub struct ArtifactChainEntry {
+pub(all) struct ArtifactChainEntry {
   sequence : Int32
   removed : Bool
   record : ArtifactRecord
@@ -1053,7 +1053,7 @@ fn artifact_chain_load_state(
 }
 
 ///|
-fn artifact_chain_save(
+pub fn artifact_chain_save(
   repo : ArtifactRepository,
   entries : Array[ArtifactChainEntry],
 ) -> Bool {

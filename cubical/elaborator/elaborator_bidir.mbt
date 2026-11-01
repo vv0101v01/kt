@@ -1,4 +1,7 @@
 ///|
+using @kernel {type DTerm, d_nat_lit, dep_check_closed, dep_nf_closed}
+
+///|
 // Pattern higher-order unification and a bidirectional elaborator.
 //
 // Full higher-order unification is undecidable, so the unifier here
@@ -28,7 +31,7 @@
 // dependent checker.
 
 ///|
-pub enum UTerm {
+pub(all) enum UTerm {
   UVar(Int32)
   UMeta(Int32, Array[UTerm])
   UConst(String)
@@ -1038,7 +1041,7 @@ pub fn hou_unify(
 
 ///|
 /// Status of the certified pattern-unification API below.
-pub enum HouMguStatus {
+pub(all) enum HouMguStatus {
   /// Solved, and the returned substitution is a most general
   /// unifier for the Miller-pattern problem.
   HouMguPrincipal
@@ -1063,7 +1066,7 @@ pub extend HouMguStatus with Eq::{not_equal, equal}
 ///|
 /// One residual higher-order equation, at the displayed context
 /// depth, normalized under the current partial substitution.
-pub struct HouConstraint {
+pub(all) struct HouConstraint {
   lhs : UTerm
   rhs : UTerm
   depth : Int32

@@ -1,4 +1,139 @@
 ///|
+using @face_bdd {type Dim, dim_eq_sem, dim_simplify, face_simplify}
+
+///|
+using @finite {
+  type Equiv,
+  type PVal,
+  type Ty,
+  type UPath,
+  coe_computes,
+  coe_upath,
+  equiv_bool_not,
+  equiv_comp,
+  equiv_ext_eq,
+  equiv_id,
+  equiv_inv,
+  equiv_prod,
+  equiv_swap,
+  equiv_wf,
+  ua,
+  upath_eq,
+}
+
+///|
+using @algebra {
+  type Rat,
+  rat_add,
+  rat_int,
+  rat_is_zero,
+  rat_make,
+  rat_mul,
+  rat_one,
+  rat_sub,
+  rat_zero,
+}
+
+///|
+using @kernel {
+  type DCheckedTypeLine,
+  type DDimEnv,
+  type DEnv,
+  type DEquivParts,
+  type DHitSpec,
+  type DInductiveSpec,
+  type DNeutral,
+  type DSystem,
+  type DTerm,
+  type DValue,
+  as_glue_equiv,
+  as_pi,
+  bool_not_equiv_term,
+  bool_schema,
+  checked_coe_value,
+  checked_line_endpoints,
+  checked_line_fn,
+  checked_line_level,
+  checked_ua_line,
+  circle_point,
+  circle_schema,
+  coe_value,
+  comp_value,
+  conv_at,
+  conv_at_under_face,
+  conv_ty,
+  d_as_type,
+  d_check,
+  d_tube,
+  dapp_dim,
+  dapp_typed,
+  darg_external,
+  darg_function,
+  darg_recursive,
+  dconstructor_spec,
+  ddim_cons,
+  ddim_empty,
+  ddim_from_array,
+  ddim_len,
+  denv_cons,
+  denv_empty,
+  denv_len,
+  dep_check_closed,
+  dep_nf_closed,
+  dequiv_branch_value,
+  deval_dim,
+  dfst_typed,
+  dhit_arg_face,
+  dhit_cell_spec,
+  dhit_face,
+  dhit_spec,
+  dim_is_one,
+  dim_is_zero,
+  dinductive_spec,
+  dsnd_typed,
+  dsystem_empty,
+  dsystem_of,
+  dsystem_singleton,
+  dtelescope_entry,
+  dterm_shift,
+  dv_is_bool_dep,
+  equiv_bwd_value,
+  equiv_fun_value,
+  equiv_fwd_value,
+  equiv_id_value,
+  equiv_inv_fun_value,
+  equiv_make_value,
+  equiv_parts,
+  equiv_retr_value,
+  equiv_sect_value,
+  eval_hit_elim,
+  eval_inductive_elim,
+  fill_value,
+  force_value,
+  glue_equiv_base_of,
+  glue_equiv_collapse,
+  glue_equiv_partial_values,
+  hcomp_value,
+  hfill_value,
+  hit_cell_value,
+  hit_intro_term,
+  hit_schema_validate,
+  inductive_schema_validate,
+  memo_dim_line,
+  nat_schema,
+  nat_schema_lit,
+  quote_at,
+  quote_ty,
+  quotient_schema,
+  reflect_var,
+  schema_intro_term,
+  tube_branch,
+  ua_line_value,
+  ua_type_at,
+  ua_value,
+}
+
+///|
 // High-level cubical algorithms over the dependent kernel.
 //
 // The kernel already provides the primitive Kan operations
@@ -276,7 +411,7 @@ pub fn dpath_trans_term(ty : DTerm, p : DTerm, q : DTerm) -> DTerm {
 
 ///|
 // Shared test helper (also used by equiv_laws/univalence law checks).
-fn cubical_bool_is(v : DValue, expected : Bool) -> Bool {
+pub fn cubical_bool_is(v : DValue, expected : Bool) -> Bool {
   conv_at(0, 0, DVBoolTy, v, DVBool(expected))
 }
 

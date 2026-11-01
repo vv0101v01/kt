@@ -66,7 +66,7 @@
 
 ///|
 /// What a Brunerie number does under normalisation.
-pub enum BrunerieNorm {
+pub(all) enum BrunerieNorm {
   /// Normalises to the given integer.
   NormalisesTo(Int32)
   /// Simplified, but does not normalise in reasonable time.

@@ -34,7 +34,7 @@
 ///|
 /// What a proposed hot load would do, decided before anything is
 /// mutated.
-pub enum HotLoadDecision {
+pub(all) enum HotLoadDecision {
   /// No object is installed at this path yet; this is a pure addition.
   HotAdd
   /// Interface hash unchanged: swap in place, dependents unaffected.

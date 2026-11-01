@@ -45,7 +45,7 @@
 
 ///|
 /// The outcome of a matching attempt.
-pub enum HouMatchResult {
+pub(all) enum HouMatchResult {
   /// A solution, verified by beta/eta conversion against the constraint.
   HouMatchSolved(UTerm)
   /// Every candidate of size `<= bound` was tried; none verified.  This

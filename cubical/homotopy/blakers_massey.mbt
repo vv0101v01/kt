@@ -60,7 +60,7 @@
 
 ///|
 /// Where an ingredient of a result comes from.
-pub enum Origin {
+pub(all) enum Origin {
   /// Proved in this repository, by the named executable check.
   Proved(String)
   /// Established in an earlier phase of this repository.

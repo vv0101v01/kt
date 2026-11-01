@@ -22,7 +22,7 @@
 | 聯邦／層級 | 核心套件路徑 | 數學與演算法職責 |
 |---|---|---|
 | **基底 `V₁`** | `gcd/` | 整數／多項式／有限體 RREF／`ℤ`-矩陣 Hermite 與 Smith 正規形（SNF）／CRT 多模重構／雙零化子 Grassmann 交和對偶／自由群 $F_2$ 字約化 |
-| **F1 `cubical`** | `cubical/face_bdd`、`cubical/finite`、`cubical/hermitian`、`cubical/kernel`、`.`（演進至 `elaborator`/`store`/`homotopy`）、`algebra/`、`hostfs/`、`cmd/main` | 依賴立方型別核心（NbE、`coe`/`comp`/`hcomp`、Glue、歸納—遞迴與高階歸納型 HIT）、計算性單值性、合成同倫（$S^n$、$K_n$、Blakers–Massey、Brunerie $\pi_4(S^3)\cong\mathbb{Z}/2\mathbb{Z}$）、ROBDD／CDCL-LRAT、精確代數與超越數認證、Ed25519 BFT 持久層 |
+| **F1 `cubical`** | `cubical/{face_bdd,finite,hermitian,kernel,elaborator,homotopy,store}`、`algebra/`、`hostfs/`、`.`（薄門面＋定理總表）、`cmd/main` | 依賴立方可信核心（NbE、`coe`/`comp`/`hcomp`、Glue、歸納—遞迴與高階歸納型 HIT）、計算性單值性與合成同倫（$S^n$、$K_n$、Blakers–Massey、Brunerie $\pi_4(S^3)\cong\mathbb{Z}/2\mathbb{Z}$）、雙向精緻化與 Huet/Goldfarb 高階合一、ROBDD／CDCL-LRAT、精確代數與超越數認證、Ed25519 BFT 與 MVCC 熱載入持久層 |
 | **F2 `symlib`** | `symlib/`、`cmd/symdemo`、`cmd/symbench` | 有限置換群 Schreier–Sims、著色圖規範形與自同構群、Burnside 軌道計數、`G-Set` 單子、有限範疇與左／右 Kan 擴張 |
 | **F3 `semiring`** | `semiring/*`（16 套件）、`cmd/semiringreport` | 冪等／星閉／熱帶半環、稠密與 CSR 稀疏矩陣 Kleene 閉包、加權有向圖、熱帶多項式與指派、Brzozowski 正規形與因子圖 |
 | **F4 `topos`** | `topos/` | Grothendieck 景與篩、兩步層化、子物件分類子 $\Omega_J$ 與開閉子拓撲斯核、Kripke–Joyal 語義、分類 Topos、非阿貝爾 $G$-主叢 Čech 上同調、單純神經同倫與上積 DG-代數 |
@@ -51,4 +51,4 @@ moon run --release cmd/showcase --target wasm-gc   # 七聯邦 K_7 星稜柱 46/
 moon run --release cmd/main --target wasm-gc       # Cubical 129/129 定理總表
 ```
 
-局部開發時的 **1 秒級 `debug_inspect` 隨寫隨測隨刪工作流** 與 **`cubical` 根目錄四波段重構進度（Wave 1–3 ✅ 已完成，僅餘最終波 Wave 4）** 請參閱 [`agent.v2.md`](agent.v2.md)。
+局部開發時的 **1 秒內（實測 `0.22s–0.95s`）`debug_inspect` 隨寫隨測隨刪工作流** 與 **`cubical` 七子套件無環分層治理規範（Wave 1–4 ✅ 全數完成，全倉 38 套件）** 請參閱 [`agent.v2.md`](agent.v2.md)。

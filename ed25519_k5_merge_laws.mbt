@@ -716,9 +716,9 @@ pub fn check_phase16_sphere_homotopy_and_k5() -> Bool {
 /// unifier iterator, topological multi-module DAG incremental relinking, and
 /// deterministic three-way repository merge.
 pub fn check_phase16_hou_stream_and_module_merge() -> Bool {
-  let c_fn = UConst("c")
-  let a_tm = UConst("a")
-  let b_tm = UConst("b")
+  let c_fn = UTerm::UConst("c")
+  let a_tm = UTerm::UConst("a")
+  let b_tm = UTerm::UConst("b")
   let u_pre = unifier_new()
   ignore(hou_fresh_meta(u_pre, 0))
   ignore(hou_fresh_meta(u_pre, 0))
@@ -758,7 +758,7 @@ pub fn check_phase16_hou_stream_and_module_merge() -> Bool {
 
   let u_stream = unifier_new()
   ignore(hou_fresh_meta(u_stream, 0))
-  let ca = UApp(c_fn, a_tm)
+  let ca = UTerm::UApp(c_fn, a_tm)
   let eq_multi = HouConstraint::{ lhs: UMeta(0, [ca, ca]), rhs: ca, depth: 0, }
   let stream = hou_unifier_stream_new(
     [eq_multi],

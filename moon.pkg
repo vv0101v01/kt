@@ -1,6 +1,5 @@
 import {
   "moonbitlang/core/debug",
-  "moonbitlang/core/math",
   "vv0101v01/cubical-hermitian/gcd",
   "vv0101v01/cubical-hermitian/algebra",
   "vv0101v01/cubical-hermitian/hostfs",
@@ -9,4 +8,7 @@ import {
   "vv0101v01/cubical-hermitian/cubical/finite",
   "vv0101v01/cubical-hermitian/cubical/hermitian",
   "vv0101v01/cubical-hermitian/cubical/kernel",
+  "vv0101v01/cubical-hermitian/cubical/elaborator",
+  "vv0101v01/cubical-hermitian/cubical/store",
+  "vv0101v01/cubical-hermitian/cubical/homotopy",
 }

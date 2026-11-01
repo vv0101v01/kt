@@ -62,58 +62,50 @@
 
 ---
 
-## 三、`cubical` 根目錄（77 檔、`81.7k` 行）四波段穩健重構總藍圖
+## 三、`cubical` 七子套件無環分層架構（Wave 1–4 全面完成）
 
-### 3.1 重構核心原則（SCC-Preserving Modularization）
+### 3.1 核心設計準則（SCC-Preserving Modularization）
 1. **保護強連通互遞迴核心（不強拆 SCC）**：
-   依頂層符號 Tarjan 強連通分量（SCC）實證，`dependent-kernel` 的互遞迴核心（`NbE 求值 ↔ Kan 填充 ↔ Glue 等價 ↔ 歸納/HIT Schema`）必須完整保留在單一 `cubical/kernel` 套件內，避免跨包解環引入函數指標間接層或被迫改為 `pub(all)` 破壞核心封裝。
-2. **建立編譯器級可信核心（Trusted Kernel）**：
-   外圍子系統（布林 BDD、厄米特投影、有限立方、合成同倫、雙向精緻化／高階合一、模組持久化與 BFT 熱載入）與核心之間**零循環依賴**，應拆為獨立子套件，使 `cubical/kernel` 內部的私有 `DValue`／`CheckedLine` 構造子受編譯器強制保護，不再被外圍模組直接穿透。
-3. **根除編年史命名債（No `phase*` Filenames）**：
-   全面廢除以歷史期數命名的檔案（如 `phase15_*`、`phase21_*`、`schema_phase9.mbt`、`equivalence_phase9/10.mbt`），一律按**數學結構或系統職責**命名，並將超過 `2,500` 行的巨型檔案按子主題拆分為高內聚模組。
-4. **薄門面無縫相容（Thin Root Facade）**：
-   外部套件（`bridge`、`cmd/main`、`cmd/showcase`）實際僅引用根套件 **85 個公開符號**。頂層 `root` 最終收斂為薄門面（透過 `pub using` 重導出所需符號＋`verify.mbt`），確保跨聯邦橋接 **100% 零破壞平滑演進**。
+   依頂層符號 Tarjan 強連通分量（SCC）實證，`dependent-kernel` 的互遞迴核心（`NbE 求值 ↔ Kan 填充 ↔ Glue 等價 ↔ 歸納/HIT Schema`）完整封裝於單一 `cubical/kernel` 套件內，避免跨包解環引入函數指標間接層或被迫改為 `pub(all)` 破壞核心封裝。
+2. **編譯器級可信核心（Trusted Kernel）**：
+   外圍六大子系統（`face_bdd`、`finite`、`hermitian`、`elaborator`、`store`、`homotopy`）與核心之間**零循環依賴**，使 `cubical/kernel` 內部的不變量載體（`CheckedLine`、`CheckedDCube`、`CheckedSystem`、`SchemaRegistry`、`DClosure`、`DTermInterner`）受編譯器強制鎖定為唯讀 `pub struct`，任何外圍套件均無法繞過檢驗器直接偽造。
+3. **根除編年史命名債（Zero `phase*` Filenames）**：
+   全倉禁止新增任何以期數命名的檔案（如 `phase*`），一律按數學結構或系統職責命名，單檔維持高內聚且聚焦。
+4. **極薄精選門面（Curated Thin Root Facade）**：
+   頂層 `facade.mbt` 僅以 `pub using` 重導出跨聯邦 `@bridge` 與執行檔實際使用的精選符號（根套件 `pkg.generated.mbti` 由重構前逾 `4,300` 行精簡 `90%` 至 `452` 行），內部定律檢驗匯入一律保持 `using` 私有化。
 
-### 3.2 目標子套件拓撲結構
+### 3.2 `cubical` 子套件物理拓撲結構（全倉 38 套件）
 
 ```text
-                       root（薄門面 Facade + verify.mbt 總控）
+                root（極薄精選門面 facade.mbt + 定理／定律總控 verify.mbt）
           ┌──────────────┼───────────────────┐
           ▼              ▼                   ▼
-  cubical/homotopy   cubical/store   cubical/elaborator
+  cubical/homotopy   cubical/store   cubical/elaborator   ◄── 三者彼此零依賴正交平行！
   (球面/單值性/Kn/   (二進位模組/WAL/  (雙向精緻化/Huet HOU/
    BM/Brunerie/HIT)   Ed25519 BFT/     高階匹配/Goldfarb)
           │           Tarjan 熱載入)          │
           └──────────────┴─────────┬─────────┘
                                    ▼
-                            cubical/kernel  ◄── 可信核心（封裝私有 DValue / CheckedLine）
-                       (NbE + Kan + Glue + DSystem + 歸納/HIT Schema + ε₀ 序數)
+                            cubical/kernel  ◄── 可信核心（零浮點、零代數耦合、密封不變量）
+                       (NbE + Kan + Glue + DSystem + 歸納/HIT/Open-IR + ε₀/Mahlo)
                                    │
-                       ┌───────────┴───────────┐
-                       ▼                       ▼
-                cubical/finite          cubical/hermitian
-             (η-NbE / Wiring /         (複矩陣 / 投影 P²=P=P† /
-              有限 Glue / CCC)          開盒剪枝 / 精確代數證書影子)
-                       └───────────┬───────────┘
+                ┌──────────────────┼──────────────────┐
+                ▼                  │                  ▼
+         cubical/finite ◄──────────┴────────── cubical/hermitian
+      (η-NbE / Wiring /                     (複矩陣 / 投影 P²=P=P† /
+       有限宇宙 PathP·Glue)                  Karoubi·子空間 Glue / 代數證書影子)
+                └──────────────────┬──────────────────┘
                                    ▼
                            cubical/face_bdd
-                  (區間 Dir/Face · ROBDD DAG · Watched CDCL/LRAT · 割寬 #SAT)
+                  (區間 Dim/Face · ROBDD DAG · Watched CDCL/LRAT · 割寬 #SAT)
 ```
 
-### 3.3 分波穩健推進路線（可分 2～4 次獨立提交完成，每波必過全套靜態與建置門檻）
+### 3.3 四波段重構完成紀錄與 `< 1 秒` 單包微測試實測基準
 
-- **Wave 1（✅ 已完成）：全倉去編年史化、大雜燴拆解與層號正序（同套件內零風險整備）**
-  - 已拆解跨領域大雜燴檔 `phase21_homotopy_hou_bft.mbt` 與 `phase21_schema_dsystem_bdd.mbt` 為純領域模組（`bdd_cutwidth.mbt`、`ordinal_mahlo.mbt`、`dsystem_sheaf_reify.mbt`、`higher_coherence_k6.mbt`、`hou_goldfarb.mbt`、`module_bft_mvcc.mbt` 與 `mahlo_k6_bft_laws.mbt`），並將 `kan_ast.mbt` 中純 `Dim`/`Face` 語義輔助下沉至 `bdd.mbt`。
-  - 已將 `equivalence_phase9/10.mbt` 合併為 `adjoint_equivalence.mbt`；將巨檔 `schema_phase9.mbt`（`5.7k` 行）拆分為 `schema_universe_poly.mbt`、`schema_inductive_recursive.mbt`、`schema_open_ir.mbt`（均 `< 2,050` 行）；將 `hou_elaborator.mbt`（`4.7k` 行）拆分為 `elaborator_bidir.mbt` 與 `hou_unify_stream.mbt`；摺疊移除空殼 `hostfs_imports.mbt` 與 `algebra_imports.mbt`；全倉根目錄與 `algebra/` 所有 `*phase*` 檔案已 100% 正名清零。
-  - 已移除臨時觀察者元件 `phase21-breakthroughs` 與 `hostfs-imports`，將 `laws`（`L8`）與 `registry`（`L9`）置於所有核心與前端元件之上，消除全部反向層依賴（`pkg.generated.mbti` 位元組零差異驗證通過）。
-- **Wave 2（✅ 已完成）：底層基礎三子套件抽離（`cubical/face_bdd`、`cubical/finite`、`cubical/hermitian`）**
-  - 已按嚴格自底向上無環拓撲抽離三個獨立實體套件：`cubical/face_bdd`（`L0`，5 檔 `6,211` 行，零業務依賴，單包 `moon test` 實測 `0.38s`）、`cubical/finite`（`L1`，4 檔 `1,828` 行，僅依賴 `face_bdd`，零浮點／代數耦合，單包實測 `0.22s`）、`cubical/hermitian`（`L2`，9 檔 `3,199` 行，整合複矩陣投影、Karoubi／子空間 Glue 模型與精確代數證書影子，單包實測 `0.57s`）。
-  - 內部不變量結構體（如 `BddManager`、`Wiring`、`Equiv`、`Complex`、`CMat`、`ProjectorCertificate` 等）維持唯讀 `pub struct` 封裝；頂層 `facade.mbt` 以 `pub using` 無縫轉發，`@bridge` 與四個 Wasm-GC 執行檔零破壞通過。
-- **Wave 3（✅ 已完成）：可信依賴核心子套件獨立封裝（`cubical/kernel`）**
-  - 已按自底向上無環拓撲將互遞迴核心 `dependent-kernel` ＋ `dependent-kan-lines`（20 檔 `30,899` 行）實體抽離為 `cubical/kernel`，全包僅依賴 `cubical/face_bdd` 與 `cubical/finite`（**零浮點、零有理數代數、零儲存／前端耦合**），單包 `moon test cubical/kernel` 實測僅 **`0.95s`**（`< 1 秒`！）。
-  - 核心內部不變量載體（`CheckedLine`、`CheckedDCube`、`CheckedSystem`、`SchemaRegistry`、`DClosure`、`DTermInterner`、`PositivityReport` 等）由編譯器強制保護為唯讀 `pub struct`，任何外圍套件均無法繞過核心檢驗器直接偽造。
-- **Wave 4（最終波・下一步）：上層三大子套件抽離與薄門面收斂（`cubical/elaborator` ＋ `cubical/store` ＋ `cubical/homotopy`）**
-  - 在 `cubical/kernel` 之上平行抽離雙向精緻化與高階合一（`cubical/elaborator`）、模組持久化與 Ed25519 BFT／MVCC 熱載入（`cubical/store`）及合成同倫（`cubical/homotopy`），使頂層 `root` 最終收斂為極薄門面與定理總表。
+- **Wave 1（✅ 已完成）**：全倉 `*phase*` 編年史檔名 100% 清零、大雜燴與巨檔（`schema_*`、`elaborator_*`、`bdd_cutwidth`、`ordinal_mahlo`、`higher_coherence_k6`、`hou_goldfarb`、`module_bft_mvcc`、`adjoint_equivalence`）精準拆解、純 `Dim`/`Face` 語義謂詞下沉與元件 DAG 單調正序。
+- **Wave 2（✅ 已完成）**：自底向上實體抽離無環基礎三包 `cubical/face_bdd`（`0.38s`）、`cubical/finite`（`0.22s`）、`cubical/hermitian`（`0.57s`）。
+- **Wave 3（✅ 已完成）**：實體抽離 `30.9k` 行可信依賴核心 `cubical/kernel`（零浮點與代數依賴，編譯器密封核心不變量，單包微測試實測 `0.95s`）。
+- **Wave 4（✅ 已完成）**：平行抽離彼此零耦合之上層三大子套件 `cubical/elaborator`（`0.35s`）、`cubical/homotopy`（`0.38s`）、`cubical/store`（`0.58s`），並將頂層 `root` 收斂為精選門面＋定理總表（`root` 單包微測試由 `11.05s` 降至 **`0.63s`**，`pkg.generated.mbti` 精簡 `90%`，`cmd/showcase` `46/46` 大一統證書全數通過）。
 
 ---
 

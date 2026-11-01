@@ -234,7 +234,7 @@ pub fn check_phase21_homotopy_hou_and_bft_mvcc() -> Bool {
   //    Case A (Arrow return type): `?F a == \z. h a z` (`extra_return_types = [B]`) -> `F = \x. \z. h x z`!
   //    Case B (Second-order spine + inner lambda): `?F (\g. g (g c)) == f (f c)` -> `F = \H. H (\x. f x)`!
   let u = unifier_new()
-  let b_ty = UType(0)
+  let b_ty = UTerm::UType(0)
   let arrow_res = hou_match_higher_order_lambda(
     u,
     [UConst("a")],
@@ -249,8 +249,14 @@ pub fn check_phase21_homotopy_hou_and_bft_mvcc() -> Bool {
     _ => return false
   }
   // `\g. g (g c)` has `UVar(0) = g`: `ULam(UPi(b_ty, b_ty), UApp(UVar(0), UApp(UVar(0), UConst("c"))))`
-  let ho_arg = ULam(UPi(b_ty, b_ty), UApp(UVar(0), UApp(UVar(0), UConst("c"))))
-  let ho_rhs = UApp(UConst("f"), UApp(UConst("f"), UConst("c")))
+  let ho_arg = UTerm::ULam(
+    UTerm::UPi(b_ty, b_ty),
+    UTerm::UApp(UTerm::UVar(0), UTerm::UApp(UTerm::UVar(0), UTerm::UConst("c"))),
+  )
+  let ho_rhs = UTerm::UApp(
+    UTerm::UConst("f"),
+    UTerm::UApp(UTerm::UConst("f"), UTerm::UConst("c")),
+  )
   let inner_lam_res = hou_match_higher_order_lambda(
     u,
     [ho_arg],

@@ -8,7 +8,7 @@
 /// fragment and the guesses allowed by the supplied depth did not
 /// solve the equation.  General HOU is undecidable, so this API is
 /// deliberately transactional and budget-explicit.
-pub enum HouSearchStatus {
+pub(all) enum HouSearchStatus {
   HouSolved
   HouNoUnifier
   HouResidual
@@ -1947,7 +1947,7 @@ pub extend HouFlexFlexEdge with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend HouFlexFlexEdge with Eq::{not_equal, equal}
 
 ///|
-pub enum HouDelayedSolveStatus {
+pub(all) enum HouDelayedSolveStatus {
   HouDelayedSolved
   HouDelayedPreUnifier
   HouDelayedNoUnifier

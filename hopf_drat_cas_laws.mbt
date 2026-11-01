@@ -642,8 +642,8 @@ pub fn check_phase14_internal_circle_sect_and_hopf_invariant() -> Bool {
 /// Item 7A: Cross-constraint Huet backtracking (`hou_solve_constraints_backtracking`)
 /// and bounded complete normal-form unifier enumeration (`hou_enumerate_unifiers`).
 pub fn check_phase14_hou_backtracking_and_enumeration() -> Bool {
-  let ca = UApp(UConst("c"), UConst("a"))
-  let cb = UApp(UConst("c"), UConst("b"))
+  let ca = UTerm::UApp(UTerm::UConst("c"), UTerm::UConst("a"))
+  let cb = UTerm::UApp(UTerm::UConst("c"), UTerm::UConst("b"))
   let eq1 = HouConstraint::{ lhs: UMeta(0, [ca, ca]), rhs: ca, depth: 0, }
   let eq2 = HouConstraint::{ lhs: UMeta(0, [ca, cb]), rhs: cb, depth: 0, }
 

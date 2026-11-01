@@ -1,0 +1,338 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/cubical/elaborator"
+
+import {
+  "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/cubical/kernel",
+}
+
+// Values
+pub fn check_hou_bounded_search() -> Bool
+
+pub fn check_hou_elaborator() -> Bool
+
+pub fn check_hou_matching() -> Bool
+
+pub fn check_hou_phase9_extensions() -> Bool
+
+pub fn check_hou_search_extensions() -> Bool
+
+pub fn elab_check(Elaborator, STerm, UTerm) -> ElabResult?
+
+pub fn elab_infer(Elaborator, STerm) -> ElabResult?
+
+pub fn elab_result_to_dterm(Elaborator, ElabResult) -> @kernel.DTerm?
+
+pub fn elab_type_to_dterm(Elaborator, ElabResult) -> @kernel.DTerm?
+
+pub fn elaborator_new() -> Elaborator
+
+pub fn goldfarb_church_iterator(Int32) -> UTerm
+
+pub fn goldfarb_church_unary(Int32) -> UTerm
+
+pub fn goldfarb_verify_diophantine_encoding(Int32, Int32) -> GoldfarbDiophantineReport
+
+pub fn hou_conv(UTerm, UTerm, Unifier) -> Bool
+
+pub fn hou_enumerate_unifiers(Array[HouConstraint], Unifier, max_solutions? : Int32, max_nodes? : Int32, max_depth? : Int32, max_projection_args? : Int32, round_budget? : Int32) -> HouEnumerationReport
+
+pub fn hou_fresh_meta(Unifier, Int32) -> UTerm
+
+pub fn hou_match(Unifier, Int32, Array[UTerm], UTerm, Array[UTerm], size_bound? : Int32, node_budget? : Int32) -> HouMatchResult
+
+pub fn hou_match_higher_order_lambda(Unifier, Array[UTerm], UTerm, Array[UTerm], Array[UTerm], size_bound? : Int32, inner_lambda_budget? : Int32) -> HouMatchResult
+
+pub fn hou_match_solved_within(Unifier, Int32, Array[UTerm], UTerm, Array[UTerm], size_bound? : Int32) -> Bool
+
+pub fn hou_reify_delayed_flex_flex(Unifier, Array[HouFlexFlexEdge]) -> Bool
+
+pub fn hou_search_unify(UTerm, UTerm, Int32, Unifier, max_nodes? : Int32, max_depth? : Int32, max_projection_args? : Int32) -> HouSearchReport
+
+pub fn hou_search_unify_bool(UTerm, UTerm, Int32, Unifier, max_nodes? : Int32, max_depth? : Int32) -> Bool
+
+pub fn hou_search_unify_iterative(UTerm, UTerm, Int32, Unifier, max_nodes_per_round? : Int32, depth_cap? : Int32, max_projection_args? : Int32) -> HouIterativeReport
+
+pub fn hou_semantic_optimize(UTerm, Unifier) -> UTerm
+
+pub fn hou_solve_constraints(Array[HouConstraint], Unifier, max_nodes_per_round? : Int32, depth_cap? : Int32, max_projection_args? : Int32, max_rounds? : Int32) -> HouResidualSolveReport
+
+pub fn hou_solve_constraints_backtracking(Array[HouConstraint], Unifier, max_nodes? : Int32, max_depth? : Int32, max_projection_args? : Int32, round_budget? : Int32) -> HouResidualSolveReport
+
+pub fn hou_solve_with_delayed_flex_flex(Array[HouConstraint], Unifier, reify_flex_flex? : Bool, max_nodes? : Int32, max_depth? : Int32, max_projection_args? : Int32, round_budget? : Int32) -> HouDelayedGraphReport
+
+pub fn hou_unifier_stream_is_exhausted(HouLazyUnifierStream) -> Bool
+
+pub fn hou_unifier_stream_new(Array[HouConstraint], Unifier, max_nodes? : Int32, max_depth? : Int32, max_projection_args? : Int32, round_budget? : Int32, reify_flex_flex? : Bool) -> HouLazyUnifierStream
+
+pub fn hou_unifier_stream_next(HouLazyUnifierStream) -> Array[(Int32, UTerm)]?
+
+pub fn hou_unifier_stream_nodes(HouLazyUnifierStream) -> Int32
+
+pub fn hou_unify(UTerm, UTerm, Int32, Unifier) -> Bool
+
+pub fn hou_unify_mgu(UTerm, UTerm, Int32, Unifier) -> HouMguReport
+
+pub fn hou_unify_residual(UTerm, UTerm, Int32, Unifier, max_nodes_per_round? : Int32, depth_cap? : Int32, max_projection_args? : Int32, max_rounds? : Int32) -> HouResidualSolveReport
+
+pub fn unifier_new() -> Unifier
+
+pub fn uterm_contains_unsolved_meta(UTerm, Unifier) -> Bool
+
+pub fn uterm_whnf(UTerm, Unifier) -> UTerm
+
+pub fn uty_arrow(UTerm, UTerm) -> UTerm
+
+pub fn uty_bool() -> UTerm
+
+pub fn uty_nat() -> UTerm
+
+pub fn uty_unit() -> UTerm
+
+// Errors
+
+// Types and methods
+pub struct ElabResult {
+  term : UTerm
+  ty : UTerm
+} derive(Eq, @debug.Debug)
+pub fn ElabResult::equal(Self, Self) -> Bool
+pub fn ElabResult::not_equal(Self, Self) -> Bool
+pub fn ElabResult::to_repr(Self) -> @debug.Repr
+
+pub struct ElabVar {
+  name : String
+  ty : UTerm
+} derive(Eq, @debug.Debug)
+pub fn ElabVar::equal(Self, Self) -> Bool
+pub fn ElabVar::not_equal(Self, Self) -> Bool
+pub fn ElabVar::to_repr(Self) -> @debug.Repr
+
+pub struct Elaborator {
+  unifier : Unifier
+  vars : Array[ElabVar]
+} derive(Eq, @debug.Debug)
+pub fn Elaborator::equal(Self, Self) -> Bool
+pub fn Elaborator::not_equal(Self, Self) -> Bool
+pub fn Elaborator::to_repr(Self) -> @debug.Repr
+
+pub(all) struct GoldfarbDiophantineReport {
+  a : Int32
+  b : Int32
+  c_sum : Int32
+  c_prod : Int32
+  commutes_with_succ_a : Bool
+  commutes_with_succ_b : Bool
+  addition_eq_holds : Bool
+  multiplication_eq_holds : Bool
+  wrong_product_refuted : Bool
+} derive(Eq, @debug.Debug)
+pub fn GoldfarbDiophantineReport::equal(Self, Self) -> Bool
+pub fn GoldfarbDiophantineReport::not_equal(Self, Self) -> Bool
+pub fn GoldfarbDiophantineReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct HouConstraint {
+  lhs : UTerm
+  rhs : UTerm
+  depth : Int32
+} derive(Eq, @debug.Debug)
+pub fn HouConstraint::equal(Self, Self) -> Bool
+pub fn HouConstraint::not_equal(Self, Self) -> Bool
+pub fn HouConstraint::to_repr(Self) -> @debug.Repr
+
+pub struct HouDelayedGraphReport {
+  status : HouDelayedSolveStatus
+  substitution : Array[(Int32, UTerm)]
+  delayed_edges : Array[HouFlexFlexEdge]
+  woke_edges : Int32
+  nodes : Int32
+  branches_tried : Int32
+} derive(Eq, @debug.Debug)
+pub fn HouDelayedGraphReport::equal(Self, Self) -> Bool
+pub fn HouDelayedGraphReport::not_equal(Self, Self) -> Bool
+pub fn HouDelayedGraphReport::to_repr(Self) -> @debug.Repr
+
+pub(all) enum HouDelayedSolveStatus {
+  HouDelayedSolved
+  HouDelayedPreUnifier
+  HouDelayedNoUnifier
+  HouDelayedBudgetExceeded
+} derive(Eq, @debug.Debug)
+pub fn HouDelayedSolveStatus::equal(Self, Self) -> Bool
+pub fn HouDelayedSolveStatus::not_equal(Self, Self) -> Bool
+pub fn HouDelayedSolveStatus::to_repr(Self) -> @debug.Repr
+
+pub(all) struct HouEnumerationReport {
+  solutions : Array[Array[(Int32, UTerm)]]
+  search_exhausted : Bool
+  capped : Bool
+  nodes : Int32
+  branches_tried : Int32
+  max_depth_reached : Int32
+} derive(Eq, @debug.Debug)
+pub fn HouEnumerationReport::equal(Self, Self) -> Bool
+pub fn HouEnumerationReport::not_equal(Self, Self) -> Bool
+pub fn HouEnumerationReport::to_repr(Self) -> @debug.Repr
+
+pub struct HouFlexFlexEdge {
+  lhs_meta : Int32
+  lhs_arity : Int32
+  lhs : UTerm
+  rhs_meta : Int32
+  rhs_arity : Int32
+  rhs : UTerm
+  depth : Int32
+} derive(Eq, @debug.Debug)
+pub fn HouFlexFlexEdge::equal(Self, Self) -> Bool
+pub fn HouFlexFlexEdge::not_equal(Self, Self) -> Bool
+pub fn HouFlexFlexEdge::to_repr(Self) -> @debug.Repr
+
+pub struct HouIterativeReport {
+  report : HouSearchReport
+  solved_at_depth : Int32
+  rounds : Int32
+} derive(Eq, @debug.Debug)
+pub fn HouIterativeReport::equal(Self, Self) -> Bool
+pub fn HouIterativeReport::not_equal(Self, Self) -> Bool
+pub fn HouIterativeReport::to_repr(Self) -> @debug.Repr
+
+pub struct HouLazyUnifierStream {
+  constraints : Array[HouConstraint]
+  initial : Unifier
+  stack : Array[HouStreamFrame]
+  emitted : Array[Array[(Int32, UTerm)]]
+  max_nodes : Int32
+  max_depth : Int32
+  max_projection_args : Int32
+  round_budget : Int32
+  reify_flex_flex : Bool
+  mut root_started : Bool
+  mut exhausted : Bool
+  mut nodes_expanded : Int32
+}
+
+pub(all) enum HouMatchResult {
+  HouMatchSolved(UTerm)
+  HouMatchNoneWithinBound(Int32)
+  HouMatchBudgetExceeded(Int32)
+} derive(Eq, @debug.Debug)
+pub fn HouMatchResult::equal(Self, Self) -> Bool
+pub fn HouMatchResult::not_equal(Self, Self) -> Bool
+pub fn HouMatchResult::to_repr(Self) -> @debug.Repr
+
+pub struct HouMguReport {
+  status : HouMguStatus
+  substitution : Array[(Int32, UTerm)]
+  residual : Array[HouConstraint]
+} derive(Eq, @debug.Debug)
+pub fn HouMguReport::equal(Self, Self) -> Bool
+pub fn HouMguReport::not_equal(Self, Self) -> Bool
+pub fn HouMguReport::to_repr(Self) -> @debug.Repr
+
+pub(all) enum HouMguStatus {
+  HouMguPrincipal
+  HouMguNoUnifier
+  HouMguResidual
+} derive(Eq, @debug.Debug)
+pub fn HouMguStatus::equal(Self, Self) -> Bool
+pub fn HouMguStatus::not_equal(Self, Self) -> Bool
+pub fn HouMguStatus::to_repr(Self) -> @debug.Repr
+
+pub struct HouResidualSolveReport {
+  status : HouSearchStatus
+  substitution : Array[(Int32, UTerm)]
+  residual : Array[HouConstraint]
+  initial_constraints : Int32
+  solved_constraints : Int32
+  search_rounds : Int32
+  nodes : Int32
+  branches_tried : Int32
+  max_depth_reached : Int32
+} derive(Eq, @debug.Debug)
+pub fn HouResidualSolveReport::equal(Self, Self) -> Bool
+pub fn HouResidualSolveReport::not_equal(Self, Self) -> Bool
+pub fn HouResidualSolveReport::to_repr(Self) -> @debug.Repr
+
+pub struct HouSearchReport {
+  status : HouSearchStatus
+  solved_metas : Int32
+  nodes : Int32
+  branches_tried : Int32
+  max_depth_reached : Int32
+} derive(Eq, @debug.Debug)
+pub fn HouSearchReport::equal(Self, Self) -> Bool
+pub fn HouSearchReport::not_equal(Self, Self) -> Bool
+pub fn HouSearchReport::to_repr(Self) -> @debug.Repr
+
+pub(all) enum HouSearchStatus {
+  HouSolved
+  HouNoUnifier
+  HouResidual
+  HouBudgetExceeded
+} derive(Eq, @debug.Debug)
+pub fn HouSearchStatus::equal(Self, Self) -> Bool
+pub fn HouSearchStatus::not_equal(Self, Self) -> Bool
+pub fn HouSearchStatus::to_repr(Self) -> @debug.Repr
+
+type HouStreamFrame
+
+pub enum STerm {
+  SVar(String)
+  SLam(String, UTerm?, STerm)
+  SApp(STerm, STerm)
+  SPair(STerm, STerm)
+  SFst(STerm)
+  SSnd(STerm)
+  SBoolLit(Bool)
+  SUnitLit
+  SNatZero
+  SSucc(STerm)
+  SNatElim(STerm, STerm, STerm, STerm)
+  SAnn(STerm, UTerm)
+  SHole
+} derive(Eq, @debug.Debug)
+pub fn STerm::equal(Self, Self) -> Bool
+pub fn STerm::not_equal(Self, Self) -> Bool
+pub fn STerm::to_repr(Self) -> @debug.Repr
+
+pub struct UMetaInfo {
+  context_depth : Int32
+  mut solution : UTerm?
+} derive(Eq, @debug.Debug)
+pub fn UMetaInfo::equal(Self, Self) -> Bool
+pub fn UMetaInfo::not_equal(Self, Self) -> Bool
+pub fn UMetaInfo::to_repr(Self) -> @debug.Repr
+
+pub(all) enum UTerm {
+  UVar(Int32)
+  UMeta(Int32, Array[UTerm])
+  UConst(String)
+  UType(Int32)
+  ULam(UTerm, UTerm)
+  UApp(UTerm, UTerm)
+  UPi(UTerm, UTerm)
+  UImplicitPi(UTerm, UTerm)
+  USigma(UTerm, UTerm)
+  UPair(UTerm, UTerm)
+  UFst(UTerm)
+  USnd(UTerm)
+  UBoolLit(Bool)
+  UNatZero
+  USucc(UTerm)
+  UNatElim(UTerm, UTerm, UTerm, UTerm)
+} derive(Eq, @debug.Debug)
+pub fn UTerm::equal(Self, Self) -> Bool
+pub fn UTerm::not_equal(Self, Self) -> Bool
+pub fn UTerm::to_repr(Self) -> @debug.Repr
+
+pub struct Unifier {
+  metas : Array[UMetaInfo]
+  mut solved_count : Int32
+} derive(Eq, @debug.Debug)
+pub fn Unifier::equal(Self, Self) -> Bool
+pub fn Unifier::not_equal(Self, Self) -> Bool
+pub fn Unifier::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

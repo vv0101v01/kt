@@ -1,4 +1,59 @@
 ///|
+using @face_bdd {type Dim, type Face, contains_int}
+
+///|
+using @kernel {
+  type DArgKind,
+  type DConstructorArg,
+  type DConstructorConstraint,
+  type DConstructorSpec,
+  type DEquivBranch,
+  type DFaceTerm,
+  type DFunctorParamArg,
+  type DHitCellSpec,
+  type DHitFaceExpr,
+  type DHitSpec,
+  type DInductiveSpec,
+  type DLevelExpr,
+  type DPositiveFunctor,
+  type DSchemaRegistry,
+  type DSchemaRegistrySnapshot,
+  type DTelescopeEntry,
+  type DTerm,
+  type DTermDagImportReport,
+  type DTermDagNode,
+  type DTermDagSnapshot,
+  type DTermInternTable,
+  type DTubeTerm,
+  type DValue,
+  bool_not_term,
+  d_as_type,
+  d_check,
+  d_nat_lit,
+  ddim_empty,
+  dep_check_closed,
+  dep_nf_closed,
+  dtelescope_entry,
+  dterm_cache_key,
+  dterm_children,
+  dterm_dag_import,
+  dterm_dag_snapshot,
+  dterm_dag_snapshot_validate,
+  dterm_intern_id,
+  dterm_intern_node,
+  dterm_intern_table_new,
+  dterm_local_shell,
+  dterm_map_vars_at,
+  dterm_shift,
+  dterm_tree_node_count,
+  registry_string_hash,
+  schema_env,
+  schema_registry_manifest,
+  schema_registry_restore,
+  schema_registry_snapshot,
+}
+
+///|
 // Parameterized modules (functors), imports/opens and namespaces.
 //
 // A module is a telescope of parameters, followed by imports and

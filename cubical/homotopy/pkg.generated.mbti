@@ -1,0 +1,876 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/cubical/homotopy"
+
+import {
+  "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/algebra",
+  "vv0101v01/cubical-hermitian/cubical/face_bdd",
+  "vv0101v01/cubical-hermitian/cubical/finite",
+  "vv0101v01/cubical-hermitian/cubical/kernel",
+}
+
+// Values
+pub fn adjoint_equiv_type_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn adjoint_id_value(@kernel.DValue) -> DAdjointEquivParts
+
+pub fn adjointify_equiv_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> DAdjointEquivParts
+
+pub fn assoc_euler_characteristic(Int32) -> Int32
+
+pub fn assoc_fvector(Int32) -> Array[Int32]
+
+pub fn assoc_tree_value(@kernel.DValue, Array[@kernel.DValue], Paren, Int32) -> @kernel.DValue
+
+pub fn assoc_two_faces(Int32) -> (Int32, Int32)
+
+pub fn based_map_type_term(@kernel.DTerm, @kernel.DTerm, @kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn based_map_type_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn bm_gap(Int32, Int32) -> Int32
+
+pub fn brunerie_family_decreasing(Array[BrunerieNumber]) -> Bool
+
+pub fn brunerie_family_establishes(Array[BrunerieNumber]) -> (Bool, Int32)
+
+pub fn brunerie_new_family() -> Array[BrunerieNumber]
+
+pub fn brunerie_norm_establishes(Int32) -> Bool
+
+pub fn brunerie_original() -> BrunerieNumber
+
+pub fn brunerie_whitehead_lives_in() -> Int32
+
+pub fn catalan(Int32) -> Int32
+
+pub fn check_adjoint_equivalence_and_fibers() -> Bool
+
+pub fn check_assoc_faces() -> Bool
+
+pub fn check_blakers_massey() -> Bool
+
+pub fn check_brunerie_pi4_s3() -> Bool
+
+pub fn check_circle_encode_decode() -> Bool
+
+pub fn check_cubical_algorithms() -> Bool
+
+pub fn check_finite_univalence() -> Bool
+
+pub fn check_general_adjointification_and_contractible_fibers() -> Bool
+
+pub fn check_glue_equiv_quote_preserves_syntax() -> Bool
+
+pub fn check_homotopy_universal() -> Bool
+
+pub fn check_hopf_exact_rational() -> Bool
+
+pub fn check_hopf_numeric() -> Bool
+
+pub fn check_lemiso_generic_points() -> Bool
+
+pub fn check_propositional_truncation() -> Bool
+
+pub fn check_sphere3() -> Bool
+
+pub fn check_sphere_homotopy_representatives() -> Bool
+
+pub fn check_sphere_loop_representatives_internal() -> Bool
+
+pub fn check_univalence() -> Bool
+
+pub fn check_variable_endpoint_hits() -> Bool
+
+pub fn circle_0_connected_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_cover_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn circle_decode_encode_retr_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_decode_encode_x_retr_value(@kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_decode_step_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_decode_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_decode_x_value(@kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_degree_value(Int32, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_encode_decode_sect_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_encode_decode_x_sect_value(@kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_encode_decode_x_sect_with_zset_value(@kernel.DValue, @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_encode_pieces_value(Array[@kernel.DValue], Int32) -> @kernel.DValue
+
+pub fn circle_encode_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_encode_x_value(@kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_hit_base_value() -> @kernel.DValue
+
+pub fn circle_hit_loop_path_value() -> @kernel.DValue
+
+pub fn circle_hit_loop_power_value(Int32) -> @kernel.DValue
+
+pub fn circle_hit_type_value() -> @kernel.DValue
+
+pub fn circle_loop_space_equiv_integer_value(Int32) -> @kernel.DValue
+
+pub fn circle_loop_space_type_value() -> @kernel.DValue
+
+pub fn circle_path_equiv_cover_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_path_equiv_cover_with_zset_value(@kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_rot_equiv_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_rot_eval_base_eq_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_self_loop_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_to_susp_bool_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn cocone_to_based_loop_equiv_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn conn_of_sphere(Int32) -> Int32
+
+pub fn contractible_fibers_type_term(@kernel.DTerm, @kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn cubical_bool_is(@kernel.DValue, Bool) -> Bool
+
+pub fn cyclic_of_beta(Int32) -> FgAb
+
+pub fn dfunext_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn dj_singleton_elim_value((@kernel.DValue, @kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_assoc3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_assoc_path3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_associahedron_k5_cell5_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_associahedron_k6_coherence_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_cong_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn dpath_cong_value(@kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn dpath_eckmann_hilton3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_funext_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn dpath_k5_hemi_north4_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k5_hemi_south4_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k5_lhs1_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k5_rhs1_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k5_route_inner3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k5_route_outer3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k6_hemi_north4_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k6_hemi_south4_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k6_lhs1_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k6_rhs1_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k6_route_north2_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_k6_route_south2_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_left_inverse3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_left_unit3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_lr_unit_coherence4_value(@kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_of_pathp_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_pentagon4_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_pentagon_bot3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_pentagon_path_bot3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_pentagon_path_top3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_pentagon_top3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_prefix_value(@kernel.DValue, @face_bdd.Dim) -> @kernel.DValue
+
+pub fn dpath_refl_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn dpath_right_inverse3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_right_unit3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_right_unit_general_value(@kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_segment_value(@kernel.DValue, @face_bdd.Dim) -> @kernel.DValue
+
+pub fn dpath_singleton_n_transport_value((Array[@kernel.DValue]) -> @kernel.DValue, @kernel.DValue, Array[@kernel.DValue], Int32) -> @kernel.DValue
+
+pub fn dpath_square_boundary3_value(@kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_subst_trans_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_sym_compose3_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_sym_term(@kernel.DTerm) -> @kernel.DTerm
+
+pub fn dpath_sym_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn dpath_trans_square_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_trans_sym_cancel_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_trans_term(@kernel.DTerm, @kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn dpath_trans_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpath_triple_square_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpathp_eq_in_set_family_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dpathp_of_transport_eq_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dprop_is_set_value(@kernel.DValue, (@kernel.DValue, @kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn dtransport_back_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn dtransport_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn empty_inductive_elim_value(@kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn empty_inductive_schema() -> @kernel.DInductiveSpec
+
+pub fn empty_inductive_type_value() -> @kernel.DValue
+
+pub fn equiv_bidirectional_certified(@kernel.DValue) -> Bool
+
+pub fn equiv_bidirectional_certified_in(@kernel.DEnv, @kernel.DEnv, @kernel.DDimEnv, @kernel.DValue) -> Bool
+
+pub fn equiv_compose_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn equiv_contractible_fibers_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn equiv_fiber_center_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn equiv_fiber_contraction_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn equiv_fiber_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn equiv_fiber_type_value(@kernel.DEquivParts, @kernel.DValue) -> @kernel.DValue
+
+pub fn equiv_improved_sect_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn equiv_to_universe_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn equiv_triangle_type(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn equiv_with_improved_sect(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn f2_invert_word(Array[Int32]) -> Array[Int32]
+
+pub fn f2_reduce_word(Array[Int32]) -> Array[Int32]
+
+pub fn fg_is_trivial(FgAb) -> Bool
+
+pub fn fg_rank_le(FgAb, FgAb) -> Bool
+
+pub fn fg_z() -> FgAb
+
+pub fn fg_zero() -> FgAb
+
+pub fn fg_zmod(Int32) -> FgAb
+
+pub fn fiber_type_term(@kernel.DTerm, @kernel.DTerm, @kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn fibration_loop_equiv_fiber_path_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn finite_transport(@finite.UPath, @finite.PVal) -> @finite.PVal
+
+pub fn freudenthal_pi1_susp_connected_equiv_unit_value(@kernel.DValue, @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn freudenthal_status(Int32, Int32) -> FreuStatus
+
+pub fn freudenthal_susp_loop1_preserves_refl_value(@kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn freudenthal_susp_loop1_to_loop2_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn gap_equiv_below(Int32) -> Int32
+
+pub fn gap_surj_at(Int32) -> Int32
+
+pub fn homotopy_group_type_term(@kernel.DTerm, @kernel.DTerm, Int32) -> @kernel.DTerm
+
+pub fn homotopy_universal_remaining() -> Array[String]
+
+pub fn hopf_connecting_loop_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
+
+pub fn hopf_family_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
+
+pub fn hopf_freudenthal_retraction_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
+
+pub fn hopf_invariant_susp_retraction_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
+
+pub fn hopf_invariant_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
+
+pub fn hopf_les_injective(Int32) -> Bool
+
+pub fn hopf_les_iso(Int32) -> Bool
+
+pub fn hopf_les_surjective(Int32) -> Bool
+
+pub fn hopf_linking_number_numeric(Int32) -> Double
+
+pub fn hopf_map_rat(Array[@algebra.Rat]) -> Array[@algebra.Rat]
+
+pub fn hopf_map_s3_to_s2(Array[Double]) -> Array[Double]
+
+pub fn hopf_north_fiber(Double) -> Array[Double]
+
+pub fn hopf_phase_rotate(Array[Double], Double) -> Array[Double]
+
+pub fn hopf_rotate_rat(Array[@algebra.Rat], @algebra.Rat, @algebra.Rat) -> Array[@algebra.Rat]
+
+pub fn hopf_south_fiber(Double) -> Array[Double]
+
+pub fn hopf_total_loop_equiv_fiber_seq_value(dlevel? : Int32) -> @kernel.DValue
+
+pub fn hopf_total_space_type_value(dlevel? : Int32) -> @kernel.DValue
+
+pub fn hopf_unit_subst_eq_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
+
+pub fn integer_is_set_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn integer_nat_value(Int32) -> @kernel.DValue
+
+pub fn integer_pred_succ_retr_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn integer_pred_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn integer_schema() -> @kernel.DInductiveSpec
+
+pub fn integer_succ_equiv_value() -> @kernel.DValue
+
+pub fn integer_succ_pred_sect_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn integer_succ_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn integer_term(Int32) -> @kernel.DTerm
+
+pub fn integer_to_pi2_s2_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
+
+pub fn integer_type_term() -> @kernel.DTerm
+
+pub fn integer_type_value() -> @kernel.DValue
+
+pub fn integer_value(Int32) -> @kernel.DValue
+
+pub fn is_contr_type_term(@kernel.DTerm) -> @kernel.DTerm
+
+pub fn iterated_refl_term(@kernel.DTerm, Int32) -> @kernel.DTerm
+
+pub fn iterated_refl_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn james_cell_dim(Int32, Int32) -> Int32
+
+pub fn james_cells(Int32, Int32) -> Array[Int32]
+
+pub fn james_cons_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn james_nil_value(@kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn james_rec_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn james_schema() -> @kernel.DHitSpec
+
+pub fn james_schema_at(Int32) -> @kernel.DHitSpec
+
+pub fn james_type_value(@kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn join_cocone_type_value(@kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn join_dim(Int32, Int32) -> Int32
+
+pub fn join_inl_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn join_inr_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn join_push_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @face_bdd.Dim, level? : Int32) -> @kernel.DValue
+
+pub fn join_rec_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn join_schema() -> @kernel.DHitSpec
+
+pub fn join_schema_at(Int32) -> @kernel.DHitSpec
+
+pub fn join_sphere_dim(Int32, Int32) -> Int32
+
+pub fn join_type_value(@kernel.DValue, @kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn kan_box((@face_bdd.Dim) -> @kernel.DValue, @kernel.DSystem, @kernel.DValue, Int32) -> KanBox
+
+pub fn kan_box_comp(KanBox) -> @kernel.DValue
+
+pub fn kan_box_fill(KanBox) -> (@face_bdd.Dim) -> @kernel.DValue
+
+pub fn kan_box_pathp(KanBox) -> @kernel.DValue
+
+pub fn les_middle_is_injective(FgAb) -> Bool
+
+pub fn les_middle_is_iso(FgAb, FgAb) -> Bool
+
+pub fn les_middle_is_surjective(FgAb) -> Bool
+
+pub fn loop_space_type_term(@kernel.DTerm, @kernel.DTerm, Int32) -> @kernel.DTerm
+
+pub fn loop_space_type_value(@kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn loop_suspension_adjunction_equiv_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn paren_all(Int32) -> Array[Paren]
+
+pub fn paren_k5_lhs1() -> Paren
+
+pub fn paren_leaves(Paren) -> Int32
+
+pub fn paren_left_spine(Int32) -> Paren
+
+pub fn paren_renumber(Paren) -> Paren
+
+pub fn paren_right_spine(Int32) -> Paren
+
+pub fn paren_rotation_edge_count(Int32) -> Int32
+
+pub fn paren_rotation_graph_connected(Int32) -> Bool
+
+pub fn paren_rotations(Paren) -> Array[Paren]
+
+pub fn path_to_equiv_map_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn path_to_equiv_term(@kernel.DTerm, @kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn path_to_equiv_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, Int32) -> @kernel.DValue
+
+pub fn pathp_equiv_transport_eq_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn pi1_set_circle_equiv_integer_value(Int32) -> @kernel.DValue
+
+pub fn pi1_susp2_circle_equiv_unit_value(Int32) -> @kernel.DValue
+
+pub fn pi1_susp_circle_equiv_unit_value(Int32) -> @kernel.DValue
+
+pub fn pi2_s2_hopf_hom_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
+
+pub fn pi2_s2_hopf_retract_sect_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
+
+pub fn pi2_s2_iso_z_halves() -> (Bool, Bool)
+
+pub fn pi2_s2_iso_z_origins() -> Array[Origin]
+
+pub fn pi2_s2_type_value() -> @kernel.DValue
+
+pub fn pi3_s2_iso_pi3_s3() -> Bool
+
+pub fn pi3_s2_iso_pi3_s3_origins() -> Array[Origin]
+
+pub fn pi3_s3_iso_pi2_s2() -> Bool
+
+pub fn pi3_s3_iso_pi2_s2_origins() -> Array[Origin]
+
+pub fn pi3_sphere_type_term(Int32) -> @kernel.DTerm
+
+pub fn pi4_s3_group(Int32) -> FgAb
+
+pub fn pi4_s3_iso_pi4_s2() -> Bool
+
+pub fn pi4_s3_origins() -> Array[Origin]
+
+pub fn pi_circle(Int32) -> FgAb
+
+pub fn prop_trunc_elim_prop_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn prop_trunc_point_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn prop_trunc_schema() -> @kernel.DHitSpec
+
+pub fn prop_trunc_schema_at(Int32) -> @kernel.DHitSpec
+
+pub fn prop_trunc_squash_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn prop_trunc_type_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn s3_is_join_of_two_circles() -> Bool
+
+pub fn set_trunc_elim_prop_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn set_trunc_elim_set_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn set_trunc_equiv_of_equiv_set_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn set_trunc_hub_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn set_trunc_is_set_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn set_trunc_loop_trivial_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn set_trunc_point_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn set_trunc_point_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn set_trunc_rec_set_value(@kernel.DValue, @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn set_trunc_schema() -> @kernel.DHitSpec
+
+pub fn set_trunc_schema_at(Int32) -> @kernel.DHitSpec
+
+pub fn set_trunc_spoke_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn set_trunc_type_term(@kernel.DTerm) -> @kernel.DTerm
+
+pub fn set_trunc_type_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn sigma_cong_snd_equiv_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue) -> @kernel.DValue
+
+pub fn sigma_path_equiv_subst_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn sigma_path_equiv_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn singleton_contraction_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn sphere2_meridian_path_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn sphere2_north_term() -> @kernel.DTerm
+
+pub fn sphere2_north_value() -> @kernel.DValue
+
+pub fn sphere2_schema() -> @kernel.DHitSpec
+
+pub fn sphere2_susp_loop1_to_loop2_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
+
+pub fn sphere2_type_value() -> @kernel.DValue
+
+pub fn sphere3_from_swapped_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn sphere3_meridian_term(@kernel.DTerm, @face_bdd.Dim) -> @kernel.DTerm
+
+pub fn sphere3_meridian_value(@kernel.DValue, @face_bdd.Dim) -> @kernel.DValue
+
+pub fn sphere3_north_term() -> @kernel.DTerm
+
+pub fn sphere3_north_value() -> @kernel.DValue
+
+pub fn sphere3_schema() -> @kernel.DHitSpec
+
+pub fn sphere3_south_term() -> @kernel.DTerm
+
+pub fn sphere3_south_value() -> @kernel.DValue
+
+pub fn sphere3_swapped_equiv_value() -> @kernel.DValue
+
+pub fn sphere3_swapped_meridian_value(@kernel.DValue, @face_bdd.Dim) -> @kernel.DValue
+
+pub fn sphere3_swapped_north_value() -> @kernel.DValue
+
+pub fn sphere3_swapped_retr_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn sphere3_swapped_schema() -> @kernel.DHitSpec
+
+pub fn sphere3_swapped_sect_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn sphere3_swapped_south_value() -> @kernel.DValue
+
+pub fn sphere3_to_swapped_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn sphere3_type_term() -> @kernel.DTerm
+
+pub fn sphere3_type_value() -> @kernel.DValue
+
+pub fn sphere_degree_value(Int32, Int32, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn sphere_loop_canonical_expr(Int32) -> SphereLoopExpr
+
+pub fn sphere_loop_canonical_value(Int32, Int32) -> @kernel.DValue
+
+pub fn sphere_loop_compose_value(Int32, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn sphere_loop_expr_degree(SphereLoopExpr) -> Int32
+
+pub fn sphere_loop_expr_normal_form(SphereLoopExpr) -> SphereLoopExpr
+
+pub fn sphere_loop_expr_normalize3_value(Int32, SphereLoopExpr, dlevel? : Int32) -> @kernel.DValue
+
+pub fn sphere_loop_expr_of_integer(Int32) -> SphereLoopExpr
+
+pub fn sphere_loop_expr_same_class(SphereLoopExpr, SphereLoopExpr) -> Bool
+
+pub fn sphere_loop_expr_value(Int32, SphereLoopExpr) -> @kernel.DValue
+
+pub fn sphere_loop_power_value(Int32, Int32) -> @kernel.DValue
+
+pub fn sphere_north_term(Int32) -> @kernel.DTerm
+
+pub fn sphere_north_value(Int32) -> @kernel.DValue
+
+pub fn sphere_schema(Int32) -> @kernel.DHitSpec
+
+pub fn sphere_type_term(Int32) -> @kernel.DTerm
+
+pub fn sphere_type_value(Int32) -> @kernel.DValue
+
+pub fn stree_all(Int32) -> Array[Stree]
+
+pub fn stree_dim(Stree) -> Int32
+
+pub fn stree_leaves(Stree) -> Int32
+
+pub fn subst_pathp_value((@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn subst_refl_eq_value((@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn subst_trans_eq_value((@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn subst_value((@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn susp_0_connected_of_pointed_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn susp_based_to_cocone_equiv_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn susp_bool_equiv_circle_value(Int32) -> @kernel.DValue
+
+pub fn susp_bool_to_circle_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn susp_cocone_type_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn susp_merid_path_value(@kernel.DValue, @kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn susp_north_value(@kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn susp_south_value(@kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn susp_type_schema() -> @kernel.DHitSpec
+
+pub fn susp_type_schema_at(Int32) -> @kernel.DHitSpec
+
+pub fn susp_type_value(@kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn susp_universal_equiv_value(@kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn suspend_loop_value(@kernel.DHitSpec, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, Int32) -> @kernel.DValue
+
+pub fn suspension_gap(Int32) -> Int32
+
+pub fn suspension_map_value(@kernel.DHitSpec, @kernel.DHitSpec, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn suspension_meridian_path_value(@kernel.DHitSpec, @kernel.DValue) -> @kernel.DValue
+
+pub fn suspension_schema(String, @kernel.DHitSpec) -> @kernel.DHitSpec?
+
+pub fn suspension_unit_loop_value(@kernel.DHitSpec, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn transport_back_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn transport_checked_line_value(@kernel.DCheckedTypeLine, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn transport_filler_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, Int32) -> (@face_bdd.Dim) -> @kernel.DValue
+
+pub fn transport_pathp_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn transport_roundtrip_path_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn transport_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn trunc_inc_value(@kernel.DValue, Int32, @kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn trunc_point_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn trunc_rec_unit_term(@kernel.DTerm) -> @kernel.DTerm
+
+pub fn trunc_rec_value(@kernel.DValue, Int32, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn trunc_schema(Int32) -> @kernel.DHitSpec
+
+pub fn trunc_schema_at(Int32, Int32) -> @kernel.DHitSpec
+
+pub fn trunc_squash_path_term(@kernel.DTerm, @kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn trunc_squash_term(@kernel.DTerm, @kernel.DTerm, @kernel.DTerm, @face_bdd.Dim) -> @kernel.DTerm
+
+pub fn trunc_type_term(@kernel.DTerm) -> @kernel.DTerm
+
+pub fn trunc_type_value(@kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn ua_beta_back_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn ua_beta_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn ua_map_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
+
+pub fn ua_transport_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn univalence_equiv_value(@kernel.DValue, @kernel.DValue, Int32, Int32) -> @kernel.DValue
+
+pub fn univalence_retr_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, Int32) -> @kernel.DValue
+
+pub fn univalence_sect_square_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, Int32) -> @kernel.DValue
+
+pub fn universe_path_normal_form(UniversePath, Int32) -> @kernel.DValue
+
+pub fn universe_path_of_checked_line(@kernel.DCheckedTypeLine) -> UniversePath
+
+pub fn universe_path_of_ua_term_closed(@kernel.DTerm) -> UniversePath?
+
+pub fn universe_path_to_equiv_value(UniversePath, Int32) -> @kernel.DValue
+
+pub fn universe_path_transport_conv(UniversePath, UniversePath, Int32) -> Bool
+
+pub fn upath_refl(@finite.Ty) -> @finite.UPath
+
+pub fn upath_sym(@finite.UPath) -> @finite.UPath
+
+pub fn upath_to_equiv(@finite.UPath) -> @finite.Equiv
+
+pub fn upath_trans(@finite.UPath, @finite.UPath) -> @finite.UPath?
+
+pub fn wedge_connectivity_circle_left_coh_value((@kernel.DValue, @kernel.DValue) -> @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn wedge_connectivity_circle_right_coh_value((@kernel.DValue) -> @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn wedge_connectivity_circle_set_ext_value((@kernel.DValue, @kernel.DValue) -> @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn wedge_glue_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @face_bdd.Dim, level? : Int32) -> @kernel.DValue
+
+pub fn wedge_rec_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
+
+pub fn wedge_schema() -> @kernel.DHitSpec
+
+pub fn wedge_schema_at(Int32) -> @kernel.DHitSpec
+
+pub fn wedge_square_filler_report(Array[Int32], Array[Int32], Array[Int32], Array[Int32]) -> WedgeSquareFillerReport
+
+pub fn wedge_type_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn wedge_winl_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn wedge_winr_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, level? : Int32) -> @kernel.DValue
+
+pub fn whitehead_degree(Int32, Int32) -> Int32
+
+// Errors
+
+// Types and methods
+pub(all) enum BrunerieNorm {
+  NormalisesTo(Int32)
+  DoesNotNormalise
+  NeverNormalised
+} derive(Eq, @debug.Debug)
+pub fn BrunerieNorm::equal(Self, Self) -> Bool
+pub fn BrunerieNorm::not_equal(Self, Self) -> Bool
+pub fn BrunerieNorm::to_repr(Self) -> @debug.Repr
+
+pub struct BrunerieNumber {
+  name : String
+  complexity : Int32
+  norm : BrunerieNorm
+} derive(Eq, @debug.Debug)
+pub fn BrunerieNumber::equal(Self, Self) -> Bool
+pub fn BrunerieNumber::not_equal(Self, Self) -> Bool
+pub fn BrunerieNumber::to_repr(Self) -> @debug.Repr
+
+pub struct DAdjointEquivParts {
+  equiv : @kernel.DEquivParts
+  triangle : @kernel.DValue
+}
+
+pub struct FgAb {
+  rank : Int32
+  torsion : Array[Int32]
+} derive(Eq, @debug.Debug)
+pub fn FgAb::equal(Self, Self) -> Bool
+pub fn FgAb::not_equal(Self, Self) -> Bool
+pub fn FgAb::to_repr(Self) -> @debug.Repr
+
+pub enum FreuStatus {
+  FreuEquiv
+  FreuSurj
+  FreuNone
+} derive(Eq, @debug.Debug)
+pub fn FreuStatus::equal(Self, Self) -> Bool
+pub fn FreuStatus::not_equal(Self, Self) -> Bool
+pub fn FreuStatus::to_repr(Self) -> @debug.Repr
+
+pub struct KanBox {
+  line : (@face_bdd.Dim) -> @kernel.DValue
+  system : @kernel.DSystem
+  base : @kernel.DValue
+  dlevel : Int32
+}
+
+pub(all) enum Origin {
+  Proved(String)
+  Prior(String)
+  Imported(String)
+} derive(Eq, @debug.Debug)
+pub fn Origin::equal(Self, Self) -> Bool
+pub fn Origin::not_equal(Self, Self) -> Bool
+pub fn Origin::to_repr(Self) -> @debug.Repr
+
+pub enum Paren {
+  PLeaf(Int32)
+  PNode(Paren, Paren)
+} derive(Eq, @debug.Debug)
+pub fn Paren::equal(Self, Self) -> Bool
+pub fn Paren::not_equal(Self, Self) -> Bool
+pub fn Paren::to_repr(Self) -> @debug.Repr
+
+pub(all) enum SphereLoopExpr {
+  SphereLoopRefl
+  SphereLoopGenerator
+  SphereLoopInverse(SphereLoopExpr)
+  SphereLoopCompose(SphereLoopExpr, SphereLoopExpr)
+} derive(Eq, @debug.Debug)
+pub fn SphereLoopExpr::equal(Self, Self) -> Bool
+pub fn SphereLoopExpr::not_equal(Self, Self) -> Bool
+pub fn SphereLoopExpr::to_repr(Self) -> @debug.Repr
+
+pub enum Stree {
+  SLeaf
+  SNode(Array[Stree])
+} derive(Eq, @debug.Debug)
+pub fn Stree::equal(Self, Self) -> Bool
+pub fn Stree::not_equal(Self, Self) -> Bool
+pub fn Stree::to_repr(Self) -> @debug.Repr
+
+pub struct UniversePath {
+  line : @kernel.DCheckedTypeLine
+  src : @kernel.DValue
+  dst : @kernel.DValue
+  level : Int32
+}
+
+pub(all) struct WedgeSquareFillerReport {
+  abelian_winding_a : Int32
+  abelian_winding_b : Int32
+  reduced_f2_boundary_word : Array[Int32]
+  fills_in_wedge_s1_s1 : Bool
+  fills_in_abelianized_torus : Bool
+} derive(Eq, @debug.Debug)
+pub fn WedgeSquareFillerReport::equal(Self, Self) -> Bool
+pub fn WedgeSquareFillerReport::not_equal(Self, Self) -> Bool
+pub fn WedgeSquareFillerReport::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

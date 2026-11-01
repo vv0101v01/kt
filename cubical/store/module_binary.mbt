@@ -19,7 +19,7 @@
 // malformed file is rejected rather than expanded without limit.
 
 ///|
-pub enum ModuleBinaryStatus {
+pub(all) enum ModuleBinaryStatus {
   ModuleBinaryOk
   ModuleBinaryBadMagic
   ModuleBinaryUnsupportedVersion
@@ -72,7 +72,7 @@ pub fn compiled_module_binary_supported_versions() -> Array[Int32] {
 /// Machine-readable version policy for the compiled-module
 /// format: the current written version, every readable version,
 /// and the oldest version this build can still write on request.
-pub struct BinaryVersionPolicy {
+pub(all) struct BinaryVersionPolicy {
   current : Int32
   supported : Array[Int32]
   oldest_writable : Int32
@@ -3070,7 +3070,7 @@ pub fn check_module_binary_versions_and_store() -> Bool {
 ///|
 /// Unified bundle persisting compiled modules together with a schema-registry
 /// snapshot over a single shared v3 term-DAG table (`CHSHRBUN` v1).
-pub struct SharedDagBundle {
+pub(all) struct SharedDagBundle {
   modules : Array[CompiledModule]
   registry : DSchemaRegistrySnapshot
 }

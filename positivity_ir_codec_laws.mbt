@@ -405,7 +405,7 @@ pub fn check_self_family_and_gather_shapes() -> Bool {
 pub fn check_hou_pattern_mgu_and_residuals() -> Bool {
   let u = unifier_new()
   let f = hou_fresh_meta(u, 2)
-  let rhs = UPair(UVar(0), UConst("c"))
+  let rhs = UTerm::UPair(UTerm::UVar(0), UTerm::UConst("c"))
   let report = hou_unify_mgu(f, rhs, 2, u)
   if report.status != HouMguPrincipal || report.substitution.length() != 1 {
     return false
@@ -453,8 +453,14 @@ pub fn check_hou_pattern_mgu_and_residuals() -> Bool {
   let u4 = unifier_new()
   ignore(hou_fresh_meta(u4, 0))
   ignore(hou_fresh_meta(u4, 0))
-  let original_lhs = UPair(UMeta(0, [UVar(0)]), UMeta(1, [UVar(0), UVar(0)]))
-  let original_rhs = UPair(UConst("c"), UPair(UVar(0), UConst("c")))
+  let original_lhs = UTerm::UPair(
+    UTerm::UMeta(0, [UTerm::UVar(0)]),
+    UTerm::UMeta(1, [UTerm::UVar(0), UTerm::UVar(0)]),
+  )
+  let original_rhs = UTerm::UPair(
+    UTerm::UConst("c"),
+    UTerm::UPair(UTerm::UVar(0), UTerm::UConst("c")),
+  )
   let partial = hou_unify_mgu(original_lhs, original_rhs, 1, u4)
   if partial.status != HouMguResidual ||
     partial.residual.length() != 1 ||
