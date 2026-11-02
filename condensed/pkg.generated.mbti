@@ -77,6 +77,32 @@ pub fn cond_prof_valid(CondProfinite) -> Bool
 
 pub fn cond_prof_zq(Int32, Int32, Int32) -> CondProfinite
 
+pub fn cond_q8_elimination_object() -> CanonObject
+
+pub fn cond_q_axis_angle(CondVector3, Double) -> CondQuaternion?
+
+pub fn cond_q_conj(CondQuaternion) -> CondQuaternion
+
+pub fn cond_q_exact_flow(CondQuaternion, CondQuaternion, Double) -> CondQuaternion?
+
+pub fn cond_q_improper_integral(cutoff? : Double, panels? : Int32) -> CondImproperIntegralReport
+
+pub fn cond_q_mul(CondQuaternion, CondQuaternion) -> CondQuaternion
+
+pub fn cond_q_norm2(CondQuaternion) -> Double
+
+pub fn cond_q_ode_convergence() -> CondQuaternionOdeReport
+
+pub fn cond_q_reflect(CondQuaternion, CondVector3) -> CondVector3
+
+pub fn cond_q_rotate(CondQuaternion, CondVector3) -> CondVector3
+
+pub fn cond_quaternion_axis_conserved() -> Bool
+
+pub fn cond_quaternion_axis_ledger() -> CondInvariantLedger
+
+pub fn cond_quaternion_axis_report() -> CondQuaternionAxisReport
+
 pub fn cond_solid_module_build(CondProfinite, Int32, Int32, Int32) -> CondSolidModule
 
 pub fn cond_spectral_sheaf_build(String, Array[Int32], Bool, @gcd.FpMat, @gcd.FpMat) -> CondSpectralSheaf
@@ -198,6 +224,23 @@ pub fn CondConjectureStatus::equal(Self, Self) -> Bool
 pub fn CondConjectureStatus::not_equal(Self, Self) -> Bool
 pub fn CondConjectureStatus::to_repr(Self) -> @debug.Repr
 
+pub(all) struct CondImproperIntegralReport {
+  cutoff : Double
+  panels : Int32
+  finite_part : Double
+  tail_estimate : Double
+  tail_upper_bound : Double
+  coarse_limit_estimate : Double
+  limit_estimate : Double
+  cauchy_delta : Double
+  target : Double
+  residual : Double
+  converged : Bool
+} derive(Eq, @debug.Debug)
+pub fn CondImproperIntegralReport::equal(Self, Self) -> Bool
+pub fn CondImproperIntegralReport::not_equal(Self, Self) -> Bool
+pub fn CondImproperIntegralReport::to_repr(Self) -> @debug.Repr
+
 pub(all) struct CondInvariantLedger {
   entries : Array[CondLedgerEntry]
   tip : UInt64
@@ -236,6 +279,54 @@ pub fn CondProfinite::equal(Self, Self) -> Bool
 pub fn CondProfinite::not_equal(Self, Self) -> Bool
 pub fn CondProfinite::to_repr(Self) -> @debug.Repr
 
+pub(all) struct CondQuaternion {
+  w : Double
+  x : Double
+  y : Double
+  z : Double
+} derive(Eq, @debug.Debug)
+pub fn CondQuaternion::equal(Self, Self) -> Bool
+pub fn CondQuaternion::not_equal(Self, Self) -> Bool
+pub fn CondQuaternion::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondQuaternionAxisReport {
+  dual_ok : Bool
+  implication_ok : Bool
+  reflection_ok : Bool
+  forward_reverse_ok : Bool
+  coarse_fine_ok : Bool
+  discrete_compact_ok : Bool
+  sequence_antisequence_ok : Bool
+  elimination_category_ok : Bool
+  integral : CondImproperIntegralReport
+  ode : CondQuaternionOdeReport
+  conservation_laws_passed : Int32
+  conservation_laws_failed : Int32
+  ledger_entries : Int32
+  ledger_tip : UInt64
+  persistent_snapshot_ok : Bool
+  tamper_detected : Bool
+  conserved : Bool
+} derive(Eq, @debug.Debug)
+pub fn CondQuaternionAxisReport::equal(Self, Self) -> Bool
+pub fn CondQuaternionAxisReport::not_equal(Self, Self) -> Bool
+pub fn CondQuaternionAxisReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondQuaternionOdeReport {
+  steps : Array[Int32]
+  errors : Array[Double]
+  norm_drifts : Array[Double]
+  observed_order : Double
+  richardson_limit_error : Double
+  max_norm_drift : Double
+  fine_norm_drift : Double
+  reverse_roundtrip_error : Double
+  converged : Bool
+} derive(Eq, @debug.Debug)
+pub fn CondQuaternionOdeReport::equal(Self, Self) -> Bool
+pub fn CondQuaternionOdeReport::not_equal(Self, Self) -> Bool
+pub fn CondQuaternionOdeReport::to_repr(Self) -> @debug.Repr
+
 pub(all) struct CondSolidModule {
   base_tower : CondProfinite
   free_chain : CondChain
@@ -264,6 +355,15 @@ pub(all) struct CondSpectralSheaf {
 pub fn CondSpectralSheaf::equal(Self, Self) -> Bool
 pub fn CondSpectralSheaf::not_equal(Self, Self) -> Bool
 pub fn CondSpectralSheaf::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CondVector3 {
+  x : Double
+  y : Double
+  z : Double
+} derive(Eq, @debug.Debug)
+pub fn CondVector3::equal(Self, Self) -> Bool
+pub fn CondVector3::not_equal(Self, Self) -> Bool
+pub fn CondVector3::to_repr(Self) -> @debug.Repr
 
 pub(all) struct KoszulTorReport {
   generators_g : Int32

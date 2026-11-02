@@ -1,7 +1,7 @@
 # cubical-hermitian — 一部可執行的數學工程史
 
 > MoonBit · `vv0101v01/cubical-hermitian` v2.0.0 · `preferred_target = "wasm"`
-> **8 聯邦 + 統一頂點 · 39 套件 · 48 元件 · 218 個 `.mbt` · 150,868 行**
+> **8 聯邦 + 統一頂點 · 39 套件 · 48 元件 · 222 個 `.mbt` · 152,883 行**
 > `python3 tools/arch_check.py` → `architecture ok` · `cmd/main` → **129/129 定理** · `cmd/showcase` → **47/47 證書**
 
 這個倉庫把「依賴立方型別論 × 精確代數 × 有限對稱 × 拓撲斯 × 概形 × 凝聚數學 × 張量幾何」寫成
@@ -15,7 +15,7 @@
 ## 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                       # 218 .mbt / 150,868 行、39 套件、48 元件
+python3 tools/arch_check.py                       # 222 .mbt / 152,883 行、39 套件、48 元件
 moon check --deny-warn --target wasm-gc           # 0 warnings, 0 errors
 moon run --release cmd/main     --target wasm-gc  # 129/129 定理總表
 moon run --release cmd/showcase --target wasm-gc  # 47/47 大一統證書
@@ -75,7 +75,7 @@ moon run cmd/semiringreport --target native       # 19 節量測報告（含限�
 
 ## 三、三條技術主線
 
-**主線 A · 立方型別論核心**（`cubical/`，7 個子套件、64 檔、70,789 行）
+**主線 A · 立方型別論核心**（`cubical/`，7 個子套件、65 檔、71,077 行）
 
 ```text
 簡單型別 NbE → +η → 依賴 Π/Σ/宇宙 → Kan 全型別 → schema 生成器（inductive/HIT/open-IR）
@@ -119,6 +119,8 @@ minimal 多項式餘式、`Trop` 的根與重數）。
 | 猜想實驗室 | `CONJ-01..12`、演化族 6 | `@conjecture` |
 | 張量圖譜 | `𝔽₃` 6,561 張量秩計數 `[1, 128, 4032, 2400]` | `@tensor`、`spec.mbt` |
 | 同倫 | `π₁(S¹)≃ℤ`、`π₂(S²)≃ℤ`、`π₄(S³)≅ℤ/2ℤ` | `@homotopy` |
+| 指定有限模型的局部相干角 | `11040→552→0`；`276` 個規範類、總重數 `11040` | `@homotopy`、`@bridge` |
+| 直覺猜想與反例攻擊 | **5 條**：1 條有界倖存、4 條反例後修正 | [`bridge/INTUITIVE_CONJECTURES.md`](bridge/INTUITIVE_CONJECTURES.md) |
 | 上同調 | `h¹(ℙ¹, O(−2)) = 1`；`T²` 杯秩 1 vs `S¹∨S¹∨S²` 秩 0 | `@scheme`、`@topos` |
 | 量化工程的極限 | 26 變量鏈 51 節點、`#SAT=66,791,053`；`n=24` 方塊 1 次求值 | `@face_bdd`、`cubical/kernel` |
 
@@ -156,7 +158,7 @@ minimal 多項式餘式、`Trop` 的根與重數）。
 | 代數幾何／範疇論 | [`symlib/`](symlib/README.md) → [`topos/`](topos/README.md) → [`scheme/`](scheme/README.md) → [`condensed/`](condensed/README.md) |
 | 科學方法自動化 | [`tensor/`](tensor/README.md) → [`conjecture/`](conjecture/README.md) → [`bridge/`](bridge/README.md) |
 | 改架構／接下這個專案 | **[`agent.md`](agent.md)**（英文交接手冊：43 份 README 索引、閱讀路徑、模板、onboarding）→ [`agent.v2.md`](agent.v2.md)（治理與通報） |
-| 逐條規格 | `spec.mbt` 的 `spec_registry`；逐符號登記由 `tools/audit_spec.py` 自 `pkg.generated.mbti` 生成 |
+| 逐條規格 | `spec.mbt` 的 `spec_registry`；`spec_registry_sound()` 檢查非空欄位、名稱與符號唯一性，`spec_covers` 查詢登記覆蓋 |
 
 **全倉 43 份資料夾 README**（16 個頂層 + 27 個巢狀子套件）都是「逐個讀完該資料夾每一個碼檔」後寫的，
 索引與表格在 [`agent.md`](agent.md) Part II。

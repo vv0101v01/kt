@@ -1199,15 +1199,16 @@
       "package": "cubical-homotopy",
       "layer": 7,
       "files": [
-        "cubical/homotopy/associahedron.mbt"
+        "cubical/homotopy/associahedron.mbt",
+        "cubical/homotopy/coherence_angle_elimination.mbt"
       ],
       "depends_on": [
         "dependent-kernel",
         "foundation",
         "cubical"
       ],
-      "summary_en": "Stasheff associahedra K_n for arbitrary n: Schroder-tree face lattice, f-vector, Euler characteristic, and the pentagon/square 2-face property, cross-checked against the Tamari rotation graph.",
-      "summary_zh": "任意 n 的 Stasheff 結合多面體 K_n：Schröder 樹面格、f-向量、Euler 示性數與二維面必為五邊形或正方形，並與 Tamari 旋轉圖互相對帳。"
+      "summary_en": "Stasheff associahedra K_n for arbitrary n: Schroder-tree face lattice, f-vector, Euler characteristic, pentagon/square 2-faces, Tamari rotation cross-checks, and finite local-coherence-angle quotient audits.",
+      "summary_zh": "任意 n 的 Stasheff 結合多面體 K_n：Schröder 樹面格、f-向量、Euler 示性數、五邊形／正方形二維面、Tamari 旋轉對帳，以及有限局部相干角商消元審計。"
     },
     {
       "id": "blakers-massey",

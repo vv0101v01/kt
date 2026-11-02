@@ -21,13 +21,14 @@
 
 ---
 
-## 2. 檔案清單（3 檔，約 2.4k 行）
+## 2. 檔案清單（4 檔，約 3.2k 行）
 
 | 檔案 | 行數 | 內容 |
 |---|---:|---|
 | `profinite_solid.mbt` | 682 | 高階結構 ①② ＋ 範疇 ①（`CondCategory`）：`CondProfinite`、`CondChain`、`CondAnima`、`CondSolidModule`、`CondProMorphism` |
 | `spectral_homotopy.mbt` | 1050 | 譜序列引擎、Serre 收斂、Steenrod–Adams `Ext_A(F₂,F₂)`、`2η = 0`、Koszul `Tor`、高階結構 ③（`CondSpectralSheaf`） |
 | `analytic_stack_chiasm.mbt` | 715 | 高階結構 ④（`CondAnalyticStack`）、範疇 ②（`CanonElimCategory`）、`CondInvariantLedger`、五透鏡寫入、`Conj-1..4` |
+| `quaternion_axis.mbt` | 802 | 共軛四元數、`Q₈/±1` 消元範疇、倒影／逆順向／反序列、瑕積分尾部界、RK4 常微分方程收斂與 Richardson 極限、精確守恆律賬本 |
 
 ---
 
@@ -123,6 +124,18 @@ pub(all) struct CondLedgerEntry { seq; kind; values; parents; prev_hash; hash }
 
 `cond_evaluate_new_conjectures` 逐條給出 `CondConjectureStatus`（含反例見證），`conjecture/` 再把其中可轉移者提升為 12 條跨聯邦猜想的一部分。
 
+### 3.4 `quaternion_axis.mbt` — 共軛四元數與凝聚中軸守恆
+
+這一檔把連續旋轉與有限消元放進同一個**有邊界的**證書，而不把兩者混為一談：
+
+* **對偶／蘊含**：共軛是反自同構，`conj(pq)=conj(q)conj(p)`；只有單位範數才蘊含 `q⁻¹=conj(q)`，非單位四元數是負對照。
+* **倒影／逆順向**：純單位四元數給 Householder 倒影 `v↦nvn`（行列式 `-1`、二次回到自身）；單位四元數共軛旋轉 `v↦qvq*` 的行列式是 `+1`，以 `q*` 逆向還原。
+* **大／細、離散／緊緻**：`Q₈` 的 8 個元素經正負號消元得到 4 個射影類；同一報告另檢查 profinite／緊緻點的固態間隙。緊緻性是所用 `S³`／profinite 模型的數學背景，程式只計算其有限見證，不宣稱由浮點證出拓撲緊緻性。
+* **序列／反序列**：順向作用 `q₁,q₂,q₃` 對應乘積 `q₃q₂q₁`，其逆是相反次序的共軛乘積。
+* **瑕積分與極限**：以 composite Simpson 計算 `∫₀ᴮ dx/(1+x²)`，再加上精確尾部 `atan(1/B)`；尾部上界為 `1/B`，極限目標是 `π/2`。
+* **常微分方程與收斂**：對 `q'=qω/2` 使用**不再正規化**的 RK4，讓範數漂移保持可見；步數 `4,8,16,32` 的誤差序列檢查四階收斂，並以 Richardson 外插估計步長趨零的極限。
+* **永續守恆的精確範圍**：16 筆整數範數觀測在 `CondInvariantLedger` 自動產生 3 條獨立 `ℤ`-線性守恆律；舊快照不被追加操作修改，竄改負對照會使雜湊鏈驗證失敗。這是有限離散模型的精確守恆與持久證據，**不是無限時間浮點守恆定理**。
+
 ---
 
 ## 4. 主檢核入口
@@ -133,6 +146,9 @@ pub(all) struct CondLedgerEntry { seq; kind; values; parents; prev_hash; hash }
 | `cond_check_structure_3_and_spectral_homotopy()` | Serre、Steenrod–Adams（`2η = 0`）、`CondSpectralSheaf`、Koszul `Tor` |
 | `cond_check_structure_4_category_2_ledger_and_conjectures()` | 解析棧、`CanonElimCategory`、賬本鏈驗、四猜想 |
 | `cond_check_federation_all()` | 本聯邦總開關（`cmd/showcase` 與 `bridge` 會呼叫） |
+| `cond_quaternion_axis_report()` | 共軛／消元／倒影／逆順向／粗細／離散緊緻／反序列，以及瑕積分、ODE、極限與賬本總證書 |
+| `cond_quaternion_axis_ledger()` | 16 筆精確觀測＋3 條導出守恆律＋1 筆定理摘要的持久雜湊鏈 |
+| `cond_quaternion_axis_conserved()` | 給跨聯邦 law runner 使用的布林總開關 |
 
 ---
 

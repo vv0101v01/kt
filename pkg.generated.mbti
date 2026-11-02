@@ -87,6 +87,8 @@ pub fn check_circle_torus_square_comp() -> Bool
 
 pub fn check_coe_definitional() -> Bool
 
+pub fn check_coherence_angle_elimination() -> Bool
+
 pub fn check_commuting() -> Bool
 
 pub fn check_constructor_constraints() -> Bool
@@ -148,6 +150,10 @@ pub fn check_hit_schema_torus_comp() -> Bool
 pub fn check_hit_schema_validation() -> Bool
 
 pub fn check_hoas() -> Bool
+
+pub fn check_hopf_exact_rational() -> Bool
+
+pub fn check_hopf_numeric() -> Bool
 
 pub fn check_hou_pattern_mgu_and_residuals() -> Bool
 
@@ -291,6 +297,10 @@ pub fn circle_decode_value(@kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn circle_encode_value(@kernel.DValue, Int32) -> @kernel.DValue
 
+pub fn coherence_angle_elimination_report() -> @homotopy.CoherenceAngleEliminationReport
+
+pub fn coherence_quotient_summary(Int32, Int32) -> @homotopy.CoherenceQuotientSummary
+
 pub fn conv_at(Int32, Int32, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> Bool
 
 pub fn cx_approx_eq(@hermitian.Complex, @hermitian.Complex) -> Bool
@@ -329,6 +339,10 @@ pub fn flatten_pval(@finite.PVal) -> Array[@finite.PVal]
 
 pub fn grid() -> Array[Double]
 
+pub fn hopf_map_s3_to_s2(Array[Double]) -> Array[Double]
+
+pub fn hopf_phase_rotate(Array[Double], Double) -> Array[Double]
+
 pub fn integer_type_term() -> @kernel.DTerm
 
 pub fn integer_type_value() -> @kernel.DValue
@@ -354,6 +368,20 @@ pub fn mat_identity(Int32) -> @hermitian.CMat
 pub fn mat_mul(@hermitian.CMat, @hermitian.CMat) -> @hermitian.CMat
 
 pub fn mat_trace_re(@hermitian.CMat) -> Double
+
+pub fn paren_all(Int32) -> Array[@homotopy.Paren]
+
+pub fn paren_leaves(@homotopy.Paren) -> Int32
+
+pub fn paren_left_spine(Int32) -> @homotopy.Paren
+
+pub fn paren_right_spine(Int32) -> @homotopy.Paren
+
+pub fn paren_rotation_edge_count(Int32) -> Int32
+
+pub fn paren_rotation_graph_connected(Int32) -> Bool
+
+pub fn paren_rotations(@homotopy.Paren) -> Array[@homotopy.Paren]
 
 pub fn pi1_susp2_circle_equiv_unit_value(Int32) -> @kernel.DValue
 
@@ -434,6 +462,10 @@ pub fn SpecKind::to_repr(Self) -> @debug.Repr
 pub using @face_bdd {type Bdd}
 
 pub using @hermitian {type CMat}
+
+pub using @homotopy {type CoherenceAngleEliminationReport}
+
+pub using @homotopy {type CoherenceQuotientSummary}
 
 pub using @hermitian {type Complex}
 

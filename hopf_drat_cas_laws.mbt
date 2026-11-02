@@ -1,6 +1,6 @@
 ///|
 /// Phase 14 (`§1.17`) executable law suite covering all 7 boundary items
-/// from Section 4 of `SPEC.md` / `SPEC.en.md`.
+/// registered in `spec.mbt`.
 
 ///|
 /// Item 1A: Portable positivity witnesses (`DPositivityWitness`) and

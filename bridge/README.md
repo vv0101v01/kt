@@ -18,7 +18,7 @@
 
 ---
 
-## 2. 檔案清單（13 檔，約 4.5k 行）
+## 2. 檔案清單（15 檔，約 5.4k 行）
 
 | 檔案 | 行數 | 內容 |
 |---|---:|---|
@@ -35,6 +35,8 @@
 | `tropical_bridge.mbt` | 239 | 熱帶行列式 ↔ 置換最佳指派；`ℚ((t))` 的 `t`-進賦值 ↔ `@strop` 的 min-plus（Kapranov–Berkovich） |
 | `face_semiring.mbt` | 173 | `cubical.Face` 商去語義等價（ROBDD 規範形）後，實作 `Semiring`/`IdempotentSemiring`/`StarSemiring`/`OrderedSemiring` |
 | `free_category.mbt` | 95 | DAG 的自由範疇 → `@sym.FinCat` 的內部建構器（`free_category_to_fincat`） |
+| `rotation_axis_bridge.mbt` | 465 | 共軛四元數凝聚中軸 ↔ Jacobi／Jordan／Hopf／Tamari 四族旋轉；逐族關係對齊、消元前後 `previous/current/deltas` 數值比較，以及 `11040→552→0` 相干角消元總報告 |
+| `intuitive_conjecture_lab.mbt` | 415 | 五條由實際結構直覺提出的猜想與反例攻擊：1 條有界倖存、4 條反例後修正；完整人讀報告見 [`INTUITIVE_CONJECTURES.md`](INTUITIVE_CONJECTURES.md) |
 
 ---
 
@@ -93,6 +95,19 @@ pub(all) struct BridgeCertificate {
 * **`D₂`（連續分析 ↔ 高階同倫）**：`@scheme` 的 `ℚ((t))` Laurent → 凝聚 `CondAnalyticStack` → `cubical` 的 `π₄(S³)`。
 
 `verify_x_overlap_chiasmus()` 驗證兩條對角線在 `X`-樞紐（`@condensed` + `@gcd`）**乾淨相交**（共享不變量三元組相同），`DoubleVArchitectureReport` 則記錄 `lower_v_gcd_apex_ok`、`six_federations_verified/6`、`k6_bridges_verified/15`、`seven_boundaries_breakthrough_ok`。
+
+### 5.1 四族旋轉的關係對齊（`rotation_axis_bridge.mbt`）
+
+`verify_rotation_axis_bridge()` 以 `@condensed.cond_quaternion_axis_report()` 為共同參考，再呼叫四族真正的上游實作：
+
+| 旋轉族 | 實際檢查的關係 | 量化見證 |
+|---|---|---|
+| Jacobi 酉區間旋轉 | 伴隨／逆元蘊含、8→16 bits 粗細區間、依序相似變換 | `U†U-I` 區間含零；非對角平方上界不增；兩種精度證書各自 sound |
+| Jordan 實旋轉塊 | 逆順向、倒影負對照、有限離散階 | `R⁴=I`、`R²≠I`、`RR³=R³R=I`；`det R=1` 而倒影 `det=-1` |
+| Hopf 相位旋轉 | 共軛相位、逆順向、相位合成與反序列、緊緻載體代表元 | `θ=0.37`、`φ=-0.11`；`S³/S²` 範數與纖維不變量，並跑精確有理及數值雙路 |
+| Tamari 結合多面體旋轉 | 左右逆順向、有限圖、序列／反序列路徑 | `K₃` 根旋轉往返；`K₄` 有 5 頂點、5 條旋轉邊且圖連通 |
+
+這是一張**關係對齊表**，不是宣稱四族物件彼此同構；不適用於某族的關係不會被強行填入。共同的瑕積分、RK4／Richardson 極限與 3 條精確守恆律由凝聚層提供。本輪固定消元前基準，逐族公開 `previous/current/deltas`，以 `1e-12` 為回歸容差並拒絕 NaN／Inf；相干角報告逐項列舉 `11040`，第一段消去 `10488` 後餘 `552`，第二段把這 `552` 全部解析到 `276` 個規範類，故未解角為 `0` 且類重數仍總和 `11040`。`rotation_axis_certificate()` 是獨立證書，不計入歷史 **47/47**，因此沒有暗改既有里程碑；`cmd/showcase` 另印本橋的 PASS 行並納入總成功條件。
 
 ---
 
@@ -169,7 +184,11 @@ println(x.chiasm_commutes, dv.k6_bridges_verified)
 let atlas = @bridge.build_fine_grained_geometry_logic_atlas()
 for row in atlas { println(row.id, row.witness_holds, row.contrast_holds) }
 
-// 4) 證書總表
+// 4) 四族旋轉 × 共軛四元數凝聚中軸
+let rotations = @bridge.verify_rotation_axis_bridge()
+assert_true(rotations.holds)             // 4/4，含 3/3 精確守恆律
+
+// 5) 證書總表（歷史 47 條；旋轉中軸證書獨立輸出）
 let certs = @bridge.bridge_certificates()
 assert_true(@bridge.certificates_all_ok(certs))
 ```

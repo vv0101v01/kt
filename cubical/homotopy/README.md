@@ -1,4 +1,4 @@
-# `cubical/homotopy/` — 合成同倫與計算性單值性（Layer 3，13 檔 11,993 行）
+# `cubical/homotopy/` — 合成同倫與計算性單值性（Layer 3，14 檔 12,281 行）
 
 > **套件**：`vv0101v01/cubical-hermitian/cubical/homotopy` · **Layer 3**
 > **依賴**：`gcd`、`algebra`、`cubical-face-bdd`、`cubical-finite`、`cubical-kernel`
@@ -33,6 +33,7 @@
 | `truncation.mbt` | 598 | 命題截斷／集合截斷（由參數面生成的 HIT） |
 | `homotopy_universal.mbt` | 592 | join、wedge、`n`-截斷、James 構造 |
 | `associahedron.mbt` | 650 | 任意 `n` 的 Stasheff `Kₙ` |
+| `coherence_angle_elimination.mbt` | 288 | 有限局部相干角兩段商消元、重數守恆、Kan／associahedron 見證、錯配負對照，以及供猜想反例搜索的任意 `(n,m)` 商摘要 |
 | `higher_coherence_k6.mbt` | 452 | `F₂` 非交換方形填充、`K₆` 相干、六項突破證書 |
 | `blakers_massey.mbt` | 497 | Blakers–Massey、Freudenthal、球面低階同倫群 |
 | `brunerie_pi4_s3.mbt` | 423 | `π₄(S³) ≅ ℤ/2ℤ` |
@@ -127,6 +128,7 @@ Mac Lane 相干定理保證每個結合子圖都交換 ⇒ 逐 `n` 建構即可�
 * 翻轉圖：`paren_rotations`、`paren_rotation_edge_count`、`paren_rotation_graph_connected`；
 * 不變量：`assoc_fvector`、`assoc_two_faces`、`catalan`、`assoc_euler_characteristic`；
 * 核心值：`assoc_tree_value`、`check_assoc_faces()`。
+* 有限相干角：`coherence_angle_elimination_report()` 逐項列舉 `24×23×20=11040`，先把每個有序胞腔對的 20 個填充代表商成 `552`，再逆向對配成 `276` 個規範類且未解角為 `0`；類重數總和仍為 `11040`，並以錯配負對照、`check_kan_dep_all()` 與 `check_assoc_faces()` 核驗。這是本次指定的有限模型，不是所有胞腔複形的通用基數定理。
 `bridge/K7-16` 用 `assoc_fvector(4) = [5, 5, 1]` 對接 `tensor` 的 `C₃ = 5`、`C₄ = 14`。
 
 ### 7.2 `higher_coherence_k6.mbt`（`F₂` 非交換）

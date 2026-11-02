@@ -11,7 +11,7 @@
 | 子套件 | target | 依賴 | 用途 |
 |---|---|---|---|
 | `cmd/main` | 全 target | `root`（`vv0101v01/cubical-hermitian`） | 印出 **129/129 定理／定律總表** |
-| `cmd/showcase` | 全 target | `bridge`、`semiring/graph`、`symlib`、`root` | 印出 **7/7 聯邦 · K₇ 21/21 · 47/47 大一統＋硬體加速證書** |
+| `cmd/showcase` | 全 target | `bridge`、`semiring/graph`、`symlib`、`root`、`moonbitlang/core/debug` | 印出 **7/7 聯邦 · K₇ 21/21 · 47/47 大一統＋硬體加速證書** |
 | `cmd/symdemo` | native 建議 | `symlib`、`moonbitlang/core/bench` | `symlib` 全功能演示（自同構群／作用／折疊／單子／範疇化） |
 | `cmd/symbench` | native 建議 | `symlib`、`moonbitlang/core/bench` | 7 個**衍生演算法** vs 暴力／全搜索的對照基準 |
 | `cmd/semiringreport` | **native only** | 15 個 `semiring/*` 子套件 + `moonbitlang/core/math` | 19 節量測報告（約 66 秒，屬**慢閘門**） |
@@ -38,13 +38,13 @@ fn main {
 ```
 `moon.pkg` 只有一個 import：`"vv0101v01/cubical-hermitian" @lib`（即根套件 `root`）。
 
-* `@lib` 是**極薄精選門面**（`facade.mbt`，`pub using` 重導出 `@bridge` 與執行檔實際使用的符號；根 `pkg.generated.mbti` 已由重構前逾 4,300 行精簡 ~90% 至 452 行）。
+* `@lib` 是**極薄精選門面**（`facade.mbt`，`pub using` 重導出 `@bridge` 與執行檔實際使用的符號；根 `pkg.generated.mbti` 已由重構前逾 4,300 行精簡 ~90% 至 484 行）。
 * `print_report()` 由 `verify.mbt` 提供：逐條印 `定理名 → PASS/FAIL`，若任何一條失敗則回傳 `false`，`guard` 使程序以 `abort` 結束 ⇒ **CI 可直接用 exit code 判定**。
 * `verify.mbt`（39.7 KB）是定理登記表本體，`spec.mbt`（147 KB）是規格；兩者都在根套件，不在本目錄。
 
 ---
 
-## 3. `cmd/showcase/`（104 行）— 大一統展示
+## 3. `cmd/showcase/`（136 行）— 大一統展示
 
 `main.mbt` 的輸出結構（依印出順序）：
 
@@ -61,14 +61,15 @@ Golden Grand Unification — Seven-Federation Double-V, X-Overlap & Lakatosian D
 [PASS=..] X-Overlap Chiasmus: D1=.., D2=.., invariants=..
 [PASS=..] Double-V: V1_gcd=.., federations=6/6, K6=15/15, boundaries_7=..
 [PASS=..] Star-Prism Discovery: federations=7/7, K7=21/21, conjectures=12/12, evolve=6/6, lakatos_refined=..
+[PASS=..] Conjugate-Quaternion Condensed Axis: families=4/4, integral_residual=.., RK4_order=.., conservation_laws=3/3
 -- Unified Certificate Ledger --
 [PASS] <source>: <name>
         <detail>
 ```
 
-它呼叫的 5 個入口全部來自 `@bridge`：
-`seven_federation_descriptors()`、`verify_k7_federation_bridges()`、`verify_x_overlap_chiasmus()`、`verify_double_v_architecture()`、`verify_seven_federation_star_prism()`、`bridge_certificates()`。
-另外統計 `source == "atlas"` 的通過數（幾何—邏輯 18 項圖譜）與 `source == "bridge/unification"` 的五邊形／六柱大一統證書。
+它呼叫的 7 個入口全部來自 `@bridge`：
+`seven_federation_descriptors()`、`verify_k7_federation_bridges()`、`verify_x_overlap_chiasmus()`、`verify_double_v_architecture()`、`verify_seven_federation_star_prism()`、`verify_rotation_axis_bridge()`、`bridge_certificates()`。
+另外統計 `source == "atlas"` 的通過數（幾何—邏輯 18 項圖譜）與 `source == "bridge/unification"` 的五邊形／六柱大一統證書；旋轉段亦輸出相干角 `11040→552→0`、276 個規範類與四族／中軸逐項數值差分；猜想段另印五條直覺猜想、實際搜索、反例與修正版（1 條有界倖存、4 條反例後修正）。
 
 ---
 

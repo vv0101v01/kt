@@ -5,9 +5,11 @@ import {
   "moonbitlang/core/debug",
   "vv0101v01/cubical-hermitian",
   "vv0101v01/cubical-hermitian/accel",
+  "vv0101v01/cubical-hermitian/condensed",
   "vv0101v01/cubical-hermitian/cubical/face_bdd",
   "vv0101v01/cubical-hermitian/cubical/finite",
   "vv0101v01/cubical-hermitian/cubical/hermitian",
+  "vv0101v01/cubical-hermitian/cubical/homotopy",
   "vv0101v01/cubical-hermitian/cubical/kernel",
   "vv0101v01/cubical-hermitian/scheme",
   "vv0101v01/cubical-hermitian/semiring/cat",
@@ -52,6 +54,8 @@ pub fn check_free_category_bridge() -> Bool
 
 pub fn check_graph_symmetry_bridges() -> Bool
 
+pub fn check_intuitive_conjecture_lab() -> Bool
+
 pub fn check_perm_wiring_bridge() -> Bool
 
 pub fn check_square_cell_symmetry() -> Bool
@@ -74,6 +78,8 @@ pub fn glivenko_double_negation_formula(@topos.GeoFormula) -> @topos.GeoFormula
 
 pub fn grand_unification_certificates() -> Array[BridgeCertificate]
 
+pub fn intuitive_conjecture_outcome_label(IntuitiveConjectureOutcome) -> String
+
 pub fn matrix_permutation_symmetries(@hermitian.CMat, Int32) -> Array[@symlib.Perm]
 
 pub fn matrix_support_graph(@hermitian.CMat) -> @symlib.Graph
@@ -93,6 +99,8 @@ pub fn permutation_matrix(@symlib.Perm) -> @hermitian.CMat
 pub fn qpoly_tropicalize_padic(@vv0101v01/cubical-hermitian/algebra.QPoly, Int32) -> @trop.UniPoly
 
 pub fn rat_padic_valuation(@vv0101v01/cubical-hermitian/algebra.Rat, Int32) -> Int32?
+
+pub fn rotation_axis_certificate() -> BridgeCertificate
 
 pub fn run_grand_unification_system() -> GrandUnificationReport
 
@@ -144,6 +152,8 @@ pub fn verify_five_federation_pentagon_unification() -> Bool
 
 pub fn verify_glivenko_topos_subtopos_bridge() -> Bool
 
+pub fn verify_intuitive_conjecture_lab() -> IntuitiveConjectureLabReport
+
 pub fn verify_k5_federation_bridges() -> Array[FederationPairBridge]
 
 pub fn verify_k6_11_condensed_cubical_bridge() -> (Bool, String)
@@ -177,6 +187,8 @@ pub fn verify_kapranov_tropical_laurent_bridge() -> Bool
 pub fn verify_quadratic_etale_torsor_galois_bridge() -> Bool
 
 pub fn verify_quaternary_normal_forms() -> Bool
+
+pub fn verify_rotation_axis_bridge() -> RotationAxisBridgeReport
 
 pub fn verify_semiring_kleene_alexandroff_topos_bridge() -> Bool
 
@@ -317,6 +329,79 @@ pub(all) struct GrandUnificationReport {
 pub fn GrandUnificationReport::equal(Self, Self) -> Bool
 pub fn GrandUnificationReport::not_equal(Self, Self) -> Bool
 pub fn GrandUnificationReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct IntuitiveConjectureLabReport {
+  records : Array[IntuitiveConjectureRecord]
+  bounded_survivals : Int32
+  refuted_and_refined : Int32
+  holds : Bool
+} derive(Eq, @debug.Debug)
+pub fn IntuitiveConjectureLabReport::equal(Self, Self) -> Bool
+pub fn IntuitiveConjectureLabReport::not_equal(Self, Self) -> Bool
+pub fn IntuitiveConjectureLabReport::to_repr(Self) -> @debug.Repr
+
+pub(all) enum IntuitiveConjectureOutcome {
+  BoundedSurvival
+  RefutedAndRefined
+} derive(Eq, @debug.Debug)
+pub fn IntuitiveConjectureOutcome::equal(Self, Self) -> Bool
+pub fn IntuitiveConjectureOutcome::not_equal(Self, Self) -> Bool
+pub fn IntuitiveConjectureOutcome::to_repr(Self) -> @debug.Repr
+
+pub(all) struct IntuitiveConjectureRecord {
+  id : String
+  title : String
+  intuition : String
+  statement : String
+  search_scope : String
+  outcome : IntuitiveConjectureOutcome
+  counterexample : String
+  refined_statement : String
+  evidence : String
+  audit_ok : Bool
+} derive(Eq, @debug.Debug)
+pub fn IntuitiveConjectureRecord::equal(Self, Self) -> Bool
+pub fn IntuitiveConjectureRecord::not_equal(Self, Self) -> Bool
+pub fn IntuitiveConjectureRecord::to_repr(Self) -> @debug.Repr
+
+pub(all) struct KtRotationFamilyAlignment {
+  family : String
+  relations : Array[String]
+  quantitative_witness : String
+  holds : Bool
+} derive(Eq, @debug.Debug)
+pub fn KtRotationFamilyAlignment::equal(Self, Self) -> Bool
+pub fn KtRotationFamilyAlignment::not_equal(Self, Self) -> Bool
+pub fn KtRotationFamilyAlignment::to_repr(Self) -> @debug.Repr
+
+pub(all) struct RotationAxisBridgeReport {
+  families : Array[KtRotationFamilyAlignment]
+  families_passed : Int32
+  comparisons : Array[RotationNumericComparison]
+  comparisons_passed : Int32
+  axis_comparison : RotationNumericComparison
+  coherence : @homotopy.CoherenceAngleEliminationReport
+  axis : @condensed.CondQuaternionAxisReport
+  holds : Bool
+} derive(Eq, @debug.Debug)
+pub fn RotationAxisBridgeReport::equal(Self, Self) -> Bool
+pub fn RotationAxisBridgeReport::not_equal(Self, Self) -> Bool
+pub fn RotationAxisBridgeReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct RotationNumericComparison {
+  family : String
+  metrics : Array[String]
+  previous : Array[Double]
+  current : Array[Double]
+  deltas : Array[Double]
+  max_abs_delta : Double
+  tolerance : Double
+  shape_ok : Bool
+  holds : Bool
+} derive(Eq, @debug.Debug)
+pub fn RotationNumericComparison::equal(Self, Self) -> Bool
+pub fn RotationNumericComparison::not_equal(Self, Self) -> Bool
+pub fn RotationNumericComparison::to_repr(Self) -> @debug.Repr
 
 pub(all) struct SevenFederationStarPrismReport {
   seven_federations_verified : Int32

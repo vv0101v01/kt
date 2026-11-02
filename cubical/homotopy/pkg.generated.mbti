@@ -54,6 +54,8 @@ pub fn check_brunerie_pi4_s3() -> Bool
 
 pub fn check_circle_encode_decode() -> Bool
 
+pub fn check_coherence_angle_elimination() -> Bool
+
 pub fn check_cubical_algorithms() -> Bool
 
 pub fn check_finite_univalence() -> Bool
@@ -135,6 +137,10 @@ pub fn circle_self_loop_value(@kernel.DValue, Int32) -> @kernel.DValue
 pub fn circle_to_susp_bool_value(@kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn cocone_to_based_loop_equiv_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn coherence_angle_elimination_report() -> CoherenceAngleEliminationReport
+
+pub fn coherence_quotient_summary(Int32, Int32) -> CoherenceQuotientSummary
 
 pub fn conn_of_sphere(Int32) -> Int32
 
@@ -788,6 +794,41 @@ pub struct BrunerieNumber {
 pub fn BrunerieNumber::equal(Self, Self) -> Bool
 pub fn BrunerieNumber::not_equal(Self, Self) -> Bool
 pub fn BrunerieNumber::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CoherenceAngleEliminationReport {
+  local_cells : Int32
+  filler_variants : Int32
+  total_angles : Int32
+  enumerated_angles : Int32
+  coarse_representatives : Int32
+  coarse_eliminated : Int32
+  remaining_before_reverse_elimination : Int32
+  reverse_pair_classes : Int32
+  reverse_pair_eliminated : Int32
+  remaining_after : Int32
+  conserved_incidence_count : Int32
+  partition_ok : Bool
+  negative_control_detected : Bool
+  kan_filler_ok : Bool
+  associahedron_ok : Bool
+  holds : Bool
+} derive(Eq, @debug.Debug)
+pub fn CoherenceAngleEliminationReport::equal(Self, Self) -> Bool
+pub fn CoherenceAngleEliminationReport::not_equal(Self, Self) -> Bool
+pub fn CoherenceAngleEliminationReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct CoherenceQuotientSummary {
+  local_cells : Int32
+  filler_variants : Int32
+  total_angles : Int32
+  ordered_classes : Int32
+  unordered_classes : Int32
+  conserved_incidence_count : Int32
+  holds : Bool
+} derive(Eq, @debug.Debug)
+pub fn CoherenceQuotientSummary::equal(Self, Self) -> Bool
+pub fn CoherenceQuotientSummary::not_equal(Self, Self) -> Bool
+pub fn CoherenceQuotientSummary::to_repr(Self) -> @debug.Repr
 
 pub struct DAdjointEquivParts {
   equiv : @kernel.DEquivParts

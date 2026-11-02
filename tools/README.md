@@ -57,16 +57,16 @@ python3 tools/arch_check.py --check        # 顯式只檢查（等同預設）
 
 ```text
 architecture ok: 8 federations + unification apex, 39 packages, 48 components,
-                 218 .mbt files, 150868 .mbt lines
-  federation cubical   (11 pkgs): 107 files, 102794 lines
+                 222 .mbt files, 152883 .mbt lines
+  federation cubical   (11 pkgs): 108 files, 103095 lines
   federation symlib    ( 3 pkgs):  29 files,   9671 lines
   federation semiring  (16 pkgs):  43 files,  12577 lines
   federation topos     ( 1 pkgs):   6 files,   6767 lines
   federation scheme    ( 1 pkgs):   5 files,   4982 lines
-  federation condensed ( 2 pkgs):   5 files,   3643 lines
+  federation condensed ( 2 pkgs):   6 files,   4445 lines
   federation discovery ( 2 pkgs):   4 files,   3060 lines
   federation accel     ( 1 pkgs):   5 files,   2722 lines
-  apex unification     ( 2 pkgs):  14 files,   4652 lines
+  apex unification     ( 2 pkgs):  16 files,   5564 lines
 ```
 
 ---

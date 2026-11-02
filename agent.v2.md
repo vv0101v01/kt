@@ -74,7 +74,7 @@
 3. **根除編年史命名債（Zero `phase*` Filenames）**：
    全倉禁止新增任何以期數命名的檔案（如 `phase*`），一律按數學結構或系統職責命名，單檔維持高內聚且聚焦。
 4. **極薄精選門面（Curated Thin Root Facade）**：
-   頂層 `facade.mbt` 僅以 `pub using` 重導出跨聯邦 `@bridge` 與執行檔實際使用的精選符號（根套件 `pkg.generated.mbti` 由重構前逾 `4,300` 行精簡 `90%` 至 `452` 行），內部定律檢驗匯入一律保持 `using` 私有化。
+   頂層 `facade.mbt` 僅以 `pub using` 重導出跨聯邦 `@bridge` 與執行檔實際使用的精選符號（根套件 `pkg.generated.mbti` 由重構前逾 `4,300` 行精簡約 `89%` 至 `484` 行），內部定律檢驗匯入一律保持 `using` 私有化。
 
 ### 3.2 `cubical` 子套件物理拓撲結構（全倉 38 套件）
 
@@ -135,4 +135,101 @@
    - 每個工作群組調用數上限維持 `workgroup_size <= 256`，`var<workgroup>` 共享記憶體維持 `<= 16,384` bytes，且二維共享區塊統一採用 `16 × 17`（`+1` 欄填充）消除 32-bank 記憶體衝突；`subgroups` 特性必須同時提供 `enable subgroups;` 特化版與純共享記憶體可移植回退版。
 2. **以逐位數學等價證書取代環境敏感基準測試**：
    - 因沙盒或雲端容器環境欠缺穩定實體 GPU 時脈，不設常駐效能基準測試腳本；所有 CPU SWAR（`UInt64` 位切片、M4RI、扁平競技場）與 WebGPU 32 位核心一律以 `verify_accel_federation()` 與跨聯邦主定義（`@gcd`、`@face_bdd`、`@algebra`、`@semiring/trop`、`@tensor`）作 **100% 逐位數學等價檢驗**（單包 `accel` 即時微測試耗時約 `0.24s`）。
+
+---
+
+## 六、工作報告：2026-11-02 共軛四元數 × 消元範疇 × 四族旋轉凝聚中軸
+
+### 6.1 What changed
+
+* 新增 `condensed/quaternion_axis.mbt`（802 行）：Hamilton 積與共軛、單位四元數旋轉、Householder 倒影、`Q₈/±1` 規範消元範疇、順／逆序列、瑕積分、RK4 常微分方程、Richardson 極限與持久守恆賬本。
+* 新增 `bridge/rotation_axis_bridge.mbt`（278 行）：直接呼叫 Jacobi、Jordan、Hopf、Tamari 上游公開實作，逐族登記實際成立的關係；不把四族旋轉誤稱為同構。
+* `facade.mbt` 精選重導出 Hopf 與 Tamari 公開函式；`cmd/showcase/main.mbt` 新增中軸定量 PASS 行並納入總成功條件；`condensed/moon.pkg` 只新增 `moonbitlang/core/math`，沒有新增業務套件邊。
+* 更新 3 份 `.mbti`、各層 README 與統計。套件／元件數不變（39／48），`.mbt` 由 218 增至 220。
+
+### 6.2 Why / invariant
+
+* 對偶是反自同構 `conj(pq)=conj(q)conj(p)`；單位範數才蘊含 `q⁻¹=conj(q)`，非單位例子必須拒絕反推。
+* 共軛旋轉保持方向（det `+1`），倒影是獨合且反向（det `-1`）；順向乘積 `q₃q₂q₁` 的逆必須是反序列共軛乘積。
+* `Q₈` 的 8 元素經正負號消元成 4 類，所有共軛 morphism 保持該等價關係；16 筆整數範數觀測應有 3 條獨立 `ℤ`-線性守恆律。
+* 數值層必須公開尾部、步長與誤差：RK4 不正規化，讓範數漂移可被量到；舊賬本快照不可因追加而改變，篡改必須使驗鏈失敗。
+
+### 6.3 How verified
+
+* 官方安裝器 `https://cli.moonbitlang.com/install/unix.sh` 安裝最新 stable：`moon 0.1.20261029`、`moonc v0.10.19+97801ee1b (2026-10-30)`。語法按現行 `extend ... with Trait::{...}`、顯式寬度整數與 `pub(all)` 報告型別撰寫。
+* Tier A／C：`moon info --target wasm-gc && moon fmt`、`moon check --deny-warn --target wasm-gc`、`moon build --target wasm-gc` 全部通過，0 warnings／0 errors。`.mbti` 是預期新增 API：`condensed +100`、`bridge +25`、root `+22` 行，無意外刪改。
+* `python3 tools/arch_check.py`：`architecture ok: 8 federations + unification apex, 39 packages, 48 components, 220 .mbt files, 151961 .mbt lines`；federation `condensed = 6 files / 4445 lines`，apex `= 15 files / 4935 lines`。
+* Tier B 局部即時測試（皆已刪除）：`condensed` 與 `bridge` 各 1/1；四族結果為 Jacobi／Jordan／Hopf／Tamari `true,true,true,true`，總橋 `4/4`。
+* 瑕積分：`B=64, panels=4096`，`finite Simpson + atan(1/B) = 1.5707963267949048`，對 `π/2` 殘差 `8.215650382226158e-15`，尾部上界 `1/64`。
+* ODE：步數 `4,8,16,32` 的誤差為 `[9.72437828532119e-6, 6.079483412572543e-7, 3.799949714550167e-8, 2.3750111597599967e-9]`；實測階數 `3.9999741296849374`，Richardson 極限誤差 `5.181372564008819e-11`；範數平方漂移由 `3.168168945855143e-6` 降至 `9.71454028331209e-11`。
+* 獨立第二路徑：Python 複平面 `z'=iz` RK4 給出相同階數與 Richardson 值；獨立 Simpson 得相同積分；整數守恆三條獨立 nullspace 見證逐列點積為零。賬本 `20` 筆（16 觀測＋3 定律＋1 摘要），`3/3` 定律審核通過，舊快照持久且篡改負對照被抓住。
+* 端到端：`cmd/showcase` 印出 `families=4/4 ... conservation_laws=3/3, ledger_entries=20`，原有 `47/47 certificates passed`、`all_ok=true`；`cmd/main` 為 `passed 129/129`。
+* 如實記錄開發失敗：第一版以粗步最大漂移作 `1e-8` 閾值，得到 `conserved=false`；改成公開整條漂移序列並檢查細步漂移後才通過。另一次臨時測試在迴圈內更新同一 `debug_inspect`，觸發 256 update passes；改成單一 `statuses` 陣列後 1/1。兩個臨時測試塊均未留存。
+
+### 6.4 Still open / boundaries
+
+* 「永續守恆」只指**有限精確離散模型的守恆律＋不可變雜湊鏈證據**；浮點 ODE 只有指定步長與容差的收斂證據，不是無限時間、無誤差或實數域形式化定理。
+* `S³`／profinite 的緊湊拓撲是模型背景；程式驗的是有限代表元、範數與固態間隙，不宣稱用數值計算證明緊緻性。
+* 四族旋轉是關係對齊而非彼此同構；不適用於某族的關係不強行登記。
+* `rotation_axis_certificate()` 獨立輸出，歷史 `47/47` 不改成 `48/48`；本次只建立工作樹變更，未提交或推送 Git。
+
+---
+
+## 七、工作報告：2026-11-02 局部相干角消元、四族數值差分與全倉健檢
+
+### 7.1 What changed
+
+* 新增 `cubical/homotopy/coherence_angle_elimination.mbt`（238 行）：逐項枚舉指定有限模型的 `24×23×20=11040` 個局部相干角索引；先把每個有序胞腔對的 20 個 Kan 填充代表商成 `552`，再將逆向有序對配對到 `276` 個規範類。報告同時呼叫現有 `check_kan_dep_all()` 與 `check_assoc_faces()`，不是只寫常數 PASS。
+* 第一段消去 `10488` 個重複代表，第二段再消去 `276` 個逆向重複；最後 `remaining_after=0`，而 `276` 個規範類的重數總和仍為 `11040`。因此「未解局部角歸零」不等於把守恆基數刪成零，也不等於規範類數必須是零。
+* 錯配一個索引會同時破壞類重數與逆向配對審計，負對照必須被抓住；正常與篡改分割都逐項重算，不用硬編布林值取代檢查。
+* `bridge/rotation_axis_bridge.mbt` 擴為 465 行：四族與凝聚中軸都公開 `previous/current/deltas/max_abs_delta`，以固定消元前基準及 `1e-12` 回歸容差比較；形狀不符、NaN 或 Inf 均不得通過。Jordan 另加入精確 `norm² 25→25` 守恆檢查。
+* 健檢修正：`rotation_array_close` 不再讓 NaN 因浮點比較皆 false 而誤過；Tamari 見證輸出實際 `connected`，並移除重複連通計算。另清除不存在的規格附錄與外部審計腳本斷鏈，改為如實描述現有 `spec_registry_sound()` 的非空與唯一性檢查。
+* `facade.mbt` 精選導出相干角報告，`cmd/showcase` 印出消元與逐項數值差分；新檔登記入 `architecture.json` 的 `associahedron` 元件。舊 `47/47` 與 `129/129` 里程碑不變。
+
+### 7.2 消元前後數值
+
+* Jacobi `[粗區間總寬, 細區間總寬, 初始非對角平方上界, 最終非對角平方上界]`：`[0.2578125, 0.001007080078125, 2, 0.002471923828125] → 同值`，四項差值皆 `0`。
+* Jordan `[det R, 旋轉前 norm², 旋轉後 norm², 倒影 det]`：`[1, 25, 25, -1] → 同值`，四項差值皆 `0`。
+* Hopf `[S³ 原範數², S³ 相位合成後範數², S² 原像範數², S² 相位合成後像範數²]`：`[1, 1.0000000000000002, 1, 1.0000000000000004] → 同值`，四項差值皆 `0`。
+* Tamari `[K₄ 頂點數, 旋轉邊數, 連通旗標]`：`[5, 5, 1] → 同值`，三項差值皆 `0`。
+* 凝聚中軸 `[積分殘差, RK4 階數, Richardson 誤差, 細步範數漂移, 精確守恆律, 賬本筆數]`：`[8.215650382226158e-15, 3.9999741296849374, 5.181372564008819e-11, 9.71454028331209e-11, 3, 20] → 同值`，六項差值皆 `0`。
+
+### 7.3 How verified
+
+* 在修改消元前先用一次性橋接測試擷取舊基準，隨即刪除；其後 homotopy 分割報告與 bridge 總報告各做局部即時測試，包含錯配與 NaN 負對照，全部通過且所有臨時 `test` 區塊均已刪除。
+* 最終 `moon info --target wasm-gc && moon fmt`、`moon check --deny-warn --target wasm-gc`、`moon build --target wasm-gc` 全數成功，0 warnings／0 errors。
+* `python3 tools/arch_check.py`：`architecture ok: 8 federations + unification apex, 39 packages, 48 components, 221 .mbt files, 152400 .mbt lines`；cubical federation `108 files / 103043 lines`，apex `15 files / 5133 lines`。
+* 全倉掃描：TODO／FIXME／XXX／HACK、合併衝突標記、行尾空白、Tab、常駐測試檔／頂層測試塊皆為 `0`；完全重複的 `.mbt` 函式區塊為 `0`。三組內容相同的 `moon.pkg` 是不同套件恰好使用相同依賴，並非可刪死碼；公開但未於倉內呼叫的 API 也未被貿然刪除。
+* 最終 `cmd/main` 為 `passed 129/129`；`cmd/showcase` 為 `47/47 certificates passed`、`all_ok=true`、硬體加速 `all_ok=true`。輸出保存於 `_build/final-main.out`、`_build/final-showcase.out`、`_build/final-arch.out`。
+
+### 7.4 Boundaries
+
+* `11040` 在本次是使用者指定的胞腔細分／高維 Kan **局部相干角幾何組合基數**，不是弧度、百分比或技術債數量。`24` 個局部胞腔與每對 `20` 個填充代表是為此指定基數建立的有限索引模型；現有 associahedron f-vector 並未自行推出這兩個參數，故不得宣稱這是所有胞腔複形的通用定理。
+* `276` 是消元後保留重數的規範相干類數，不是未處理角；`remaining_after=0` 指 552 個剩餘局部角全部完成解析。
+* 四族差分是固定有限代表元與指定容差下的回歸證據；精確整數／有理結果不依賴浮點容差，但 Hopf、積分與 ODE 仍不構成無限時間或整個實數域的一般形式化定理。四族仍是關係對齊而非彼此同構。
+* 本輪沙盒當時沒有可用 `.git` 歷史；基準由消元前第一手源碼即時擷取，未聲稱使用 `git diff`，當時亦未提交或推送。
+
+---
+
+## 八、工作報告：2026-11-02 五條直覺猜想、反例攻擊與修正
+
+### 8.1 方法與交付
+
+* 新增 `bridge/intuitive_conjecture_lab.mbt`（415 行）與人讀報告 `bridge/INTUITIVE_CONJECTURES.md`。每條記錄都保留直覺、原猜想、搜索範圍、反例、修正版與機驗證據；`audit_ok` 只表示實驗結果成立，不表示原猜想為真。
+* 新增任意 `(n,m)` 的 `coherence_quotient_summary`，讓第一條猜想真的重新枚舉不同規模，而非只重算 24/20 的固定報告。五條猜想是獨立實驗，不改既有 12 條猜想圖譜或 47 份證書的數量。
+
+### 8.2 五條結果
+
+1. **C-INT-01 相干角兩段商消元的規模守恆**：猜想總角數 `n(n−1)m`、規範類 `n(n−1)/2` 且重數守恆。窮舉 `2≤n≤32、1≤m≤9` 共 279 點，全部通過；狀態是**有界倖存**，不是一般證明。
+2. **C-INT-02 Tamari 旋轉圖都是二分圖**：被 **K₄=C₅** 否證；5 頂點、5 邊、2-正則、連通且非二分。修正為保留連通與 `(n−2)`-正則而刪去二分性，修正版於 `n=3..8` 全過。
+3. **C-INT-03 det=+1 足以保持歐氏範數**：剪切 `S=[[1,1],[0,1]]` 給出精確反例，`det=1` 但 `norm² 1→2`。修正為要求 `RᵀR=I`（複數則要求酉性）。
+4. **C-INT-04 Jacobi 從 8 到 16 bits 必嚴格縮短區間**：`diag(1,2)` 的粗細總寬都是精確 `0` 且無旋轉，否證嚴格性。修正為一般只主張非增；非對角樣本的嚴格 `0.2578125→0.001007080078125` 只是一個正面實例。
+5. **C-INT-05 Hopf 任意長浮點相位序列共用固定 1e-12 範數界**：在 `θ=0.37` 下第 **9650** 步首次越界，漂移 `1.000088900582341e-12`；第 9000 步仍為 `9.339196083146817e-13`。修正為使用步數相關誤差預算或另行分析正規化，不外推短序列證據。
+
+### 8.3 最終驗證
+
+* 一次性探索與正式報告的局部測試均在驗證後刪除；正式五項審計為 `true,true,true,true,true`，結果為 **1 條有界倖存、4 條反例後修正**。
+* `moon info/fmt`、`moon check --deny-warn --target wasm-gc`、`moon build --target wasm-gc` 全過；`python3 tools/arch_check.py` 為 **39 套件、48 元件、222 個 `.mbt`、152883 行**。
+* `cmd/main` 最終為 **129/129**；`cmd/showcase` 為 **47/47**、`intuition_lab=5/5`、`all_ok=true`，硬體加速亦全過。輸出見 `_build/final-main.out`、`_build/final-showcase.out`、`_build/final-arch.out`。
+* 提交前掃描無 GitHub token 字樣、無常駐臨時測試、無 whitespace 錯誤；登錄資訊不得寫入倉庫或 Git 設定。
 

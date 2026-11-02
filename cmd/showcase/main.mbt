@@ -44,6 +44,36 @@ fn main {
   println(
     "[PASS=\{sp_rep.star_prism_commutes}] Star-Prism Discovery: federations=\{sp_rep.seven_federations_verified}/7, K7=\{sp_rep.k7_bridges_verified}/21, conjectures=\{sp_rep.conjectures_evaluated}/12, evolve=\{sp_rep.evolution_families_verified}/6, lakatos_refined=\{sp_rep.lakatos_refinements_verified}",
   )
+  let rotation_axis = @bridge.verify_rotation_axis_bridge()
+  println(
+    "[PASS=\{rotation_axis.holds}] Conjugate-Quaternion Condensed Axis: families=\{rotation_axis.families_passed}/4, integral_residual=\{rotation_axis.axis.integral.residual}, RK4_order=\{rotation_axis.axis.ode.observed_order}, Richardson_error=\{rotation_axis.axis.ode.richardson_limit_error}, conservation_laws=\{rotation_axis.axis.conservation_laws_passed}/3, ledger_entries=\{rotation_axis.axis.ledger_entries}",
+  )
+  println(
+    "[PASS=\{rotation_axis.coherence.holds}] Coherence angles: total=\{rotation_axis.coherence.total_angles}, coarse_eliminated=\{rotation_axis.coherence.coarse_eliminated}, before_reverse=\{rotation_axis.coherence.remaining_before_reverse_elimination}, reverse_eliminated=\{rotation_axis.coherence.reverse_pair_eliminated}, canonical_classes=\{rotation_axis.coherence.reverse_pair_classes}, remaining=\{rotation_axis.coherence.remaining_after}, conserved_incidences=\{rotation_axis.coherence.conserved_incidence_count}, negative_control=\{rotation_axis.coherence.negative_control_detected}",
+  )
+  for comparison in rotation_axis.comparisons {
+    println(
+      "[PASS=\{comparison.holds}] Numeric baseline \{comparison.family}: previous=\{@debug.to_string(comparison.previous)}, current=\{@debug.to_string(comparison.current)}, deltas=\{@debug.to_string(comparison.deltas)}, max_abs_delta=\{comparison.max_abs_delta}",
+    )
+  }
+  println(
+    "[PASS=\{rotation_axis.axis_comparison.holds}] Numeric baseline Condensed axis: previous=\{@debug.to_string(rotation_axis.axis_comparison.previous)}, current=\{@debug.to_string(rotation_axis.axis_comparison.current)}, deltas=\{@debug.to_string(rotation_axis.axis_comparison.deltas)}",
+  )
+  let intuitive_lab = @bridge.verify_intuitive_conjecture_lab()
+  println(
+    "-- Five Intuition-Driven Conjectures: Counterexample Attacks (survived=\{intuitive_lab.bounded_survivals}, refuted+refined=\{intuitive_lab.refuted_and_refined}) --",
+  )
+  for record in intuitive_lab.records {
+    println(
+      "[\{@bridge.intuitive_conjecture_outcome_label(record.outcome)}; audit=\{record.audit_ok}] \{record.id}: \{record.title}",
+    )
+    println("        直覺：\{record.intuition}")
+    println("        猜想：\{record.statement}")
+    println("        搜索：\{record.search_scope}")
+    println("        反例：\{record.counterexample}")
+    println("        修正／邊界：\{record.refined_statement}")
+    println("        證據：\{record.evidence}")
+  }
   println("-- Unified Certificate Ledger --")
   let certificates = @bridge.bridge_certificates()
   let mut atlas_passed = 0
@@ -75,9 +105,11 @@ fn main {
     x_rep.chiasm_commutes &&
     dv_rep.upper_v_synthesis_apex_ok &&
     sp_rep.star_prism_commutes &&
+    rotation_axis.holds &&
+    intuitive_lab.holds &&
     all_certs_ok
   println(
-    "seven-federation star-prism unification: federations=\{fed_passed}/7, K7_bridges=\{k7_passed}/21, conjectures=\{sp_rep.conjectures_evaluated}/12, x_overlap=\{x_rep.chiasm_commutes}, star_prism=\{sp_rep.star_prism_commutes}, atlas=\{atlas_passed}/18, all_ok=\{unif_ok}",
+    "seven-federation star-prism unification: federations=\{fed_passed}/7, K7_bridges=\{k7_passed}/21, conjectures=\{sp_rep.conjectures_evaluated}/12, intuition_lab=\{intuitive_lab.records.length()}/5, x_overlap=\{x_rep.chiasm_commutes}, star_prism=\{sp_rep.star_prism_commutes}, atlas=\{atlas_passed}/18, all_ok=\{unif_ok}",
   )
   let cycle = @sgraph.Graph::build(4, [0, 1, 2, 3], [1, 2, 3, 0], [1, 1, 1, 1])
   let report = @bridge.weighted_graph_report(cycle, 32)

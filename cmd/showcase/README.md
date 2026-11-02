@@ -1,8 +1,8 @@
-# `cmd/showcase/` — 七聯邦 × 雙 V 架構的敘事式驗證（104 行）
+# `cmd/showcase/` — 七聯邦 × 雙 V 架構的敘事式驗證（136 行）
 
 > **套件**：`vv0101v01/cubical-hermitian/cmd/showcase` · `pkgtype(kind: "executable")`
-> **依賴**：`bridge`、`semiring-graph`（`@sgraph`）、`symlib`（`@sym`）、`root`（`@cub`）
-> **1 檔 104 行** · 全 target 可編譯
+> **依賴**：`bridge`、`semiring-graph`（`@sgraph`）、`symlib`（`@sym`）、`root`（`@cub`）、`moonbitlang/core/debug`
+> **1 檔 136 行** · 全 target 可編譯
 
 ---
 
@@ -30,6 +30,8 @@
 | X-Overlap | `@bridge.verify_x_overlap_chiasmus()` → `chiasm_commutes`、`diagonal_d1_syntax_nonarch_ok`、`diagonal_d2_analytic_homotopy_ok`、`shared_chiasm_invariants` | 「兩條對角線交換」的交錯圖；D1（語法／非阿基米德）、D2（解析／同倫） |
 | 雙 V | `@bridge.verify_double_v_architecture()` → `upper_v_synthesis_apex_ok`、`lower_v_gcd_apex_ok`、`six_federations_verified`、`k6_bridges_verified`、`seven_boundaries_breakthrough_ok` | 上方 V（聯邦 → 合成 apex）、下方 V（聯邦 → `gcd` apex）；`K₆ = 15` |
 | 星稜鏡 | `@bridge.verify_seven_federation_star_prism(k7_precomputed=Some(k7_edges))` → `star_prism_commutes`、`seven_federations_verified`、`k7_bridges_verified`、`conjectures_evaluated`、`evolution_families_verified`、`lakatos_refinements_verified` | 把 `K₇` 的 21 條邊當成稜鏡的稜；`conjectures = 12`、`evolve = 6` |
+| 四元數凝聚中軸 | `@bridge.verify_rotation_axis_bridge()` → `families_passed`、`comparisons`、`coherence`、`axis` | 四族 `4/4`；相干角 `11040→552→0`（276 個規範類、總重數守恆），並逐項印出四族與中軸的消元前後數值及差值；不改 47 條歷史證書數 |
+| 直覺猜想實驗 | `@bridge.verify_intuitive_conjecture_lab()` | 五條原猜想、直覺、搜索範圍、反例與修正版；1 條有界倖存、4 條反例後修正，納入總成功條件但不改既有 12 條猜想數 |
 | 證書帳本 | `@bridge.bridge_certificates()` | 47 張證書的彙總（`ATLAS-01..18`、`pentagon` 等） |
 
 `k7_precomputed=Some(k7_edges)` 是**避免重算**的設計：`K₇` 的 21 條邊在上面已算過，此處直接注入 ⇒ 整份報告只算一次。

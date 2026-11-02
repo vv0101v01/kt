@@ -14,7 +14,7 @@ overlap, `agent.v2.md` governs the detail and this file governs the procedure an
 
 **Repository at a glance** — MoonBit package `vv0101v01/cubical-hermitian` v2.0.0,
 `preferred_target = "wasm"`, **8 federations + 1 unification apex**, **39 packages**, **48 components**,
-**218 `.mbt` files**, **150,868 lines** (verified by `python3 tools/arch_check.py`).
+**222 `.mbt` files**, **152,883 lines** (verified by `python3 tools/arch_check.py`).
 
 ---
 
@@ -199,8 +199,8 @@ defect.
 | `architecture.json` | Machine-readable source of truth: 8 federations, 39 packages, 48 components | JSON |
 | `tools/arch_check.py` | Enforces the above and prints the totals quoted everywhere | Python |
 
-**Total documentation written for this map: 16 + 27 = 43 per-folder READMEs, 5,438 lines**
-(2,501 lines for the 16 top-level files, 2,937 for the 27 nested ones).
+**Total documentation written for this map: 16 + 27 = 43 per-folder READMEs, 5,474 lines**
+(2,536 lines for the 16 top-level files, 2,938 for the 27 nested ones).
 
 **Rule for maintainers:** if you add, remove, split, merge, or rename a package, you update **three**
 places in one commit — `architecture.json`, the affected `README.md`(s), and the corresponding table row
@@ -219,46 +219,46 @@ folder's `README.md` in lines.
 |---:|---|---|---:|---:|---:|---|
 | 1 | [`gcd/`](gcd/README.md) | F6 · L0 (lower-V apex `V₁`) | 2 | 1,196 | 136 | Five-domain generic elimination GCD: `F_p` RREF, `ℤ` HNF/SNF, CRT, Grassmann duality, free-group reduction, six-domain certificates |
 | 2 | [`algebra/`](algebra/README.md) | F1 · L1 | 22 | 18,797 | 165 | Exact rational/algebraic tower: complete polynomial factorization, number fields, Jordan theory, certified intervals, transcendence certificates |
-| 3 | [`cubical/`](cubical/README.md) | F1 · L0–L5 (**7 sub-packages**) | 64 | 70,789 | 237 | The trusted dependent-cubical core: NbE, Kan, Glue, univalence, HITs, ROBDD/CDCL, elaborator, persistence |
+| 3 | [`cubical/`](cubical/README.md) | F1 · L0–L5 (**7 sub-packages**) | 65 | 71,077 | 238 | The trusted dependent-cubical core: NbE, Kan, Glue, univalence, HITs, ROBDD/CDCL, elaborator, persistence |
 | 4 | [`symlib/`](symlib/README.md) | F2 · L1 | 26 | 8,768 | 159 | Finite symmetry: individualisation–refinement, Schreier–Sims, canonical forms, `G`-sets & Burnside, categorification, Yoneda/Kan |
 | 5 | [`semiring/`](semiring/README.md) | F3 · L1–L4 (**15 sub-packages**) | 38 | 9,778 | 161 | Idempotent/star/tropical semirings and a "types are theorems" algorithm library, plus the 19-section measurement report |
 | 6 | [`topos/`](topos/README.md) | F4 · L2 | 6 | 6,767 | 140 | Grothendieck/elementary toposes: sites, sheaves, `Ω_J`, geometric morphisms, Diaconescu points, descent, cohomology, nerve homotopy |
 | 7 | [`scheme/`](scheme/README.md) | F5 · L2 | 5 | 4,982 | 142 | Algebraic geometry: Gröbner bases, glued schemes, Kähler/Fitting, Serre duality, valuative truth test, Chow motives |
-| 8 | [`condensed/`](condensed/README.md) | F6 · L3 (X-overlap hub) | 3 | 2,447 | 173 | Condensed mathematics: profinite towers, solid/liquid modules, Steenrod–Adams, persistent-invariant ledger, four conjectures |
+| 8 | [`condensed/`](condensed/README.md) | F6 · L3 (X-overlap hub) | 4 | 3,249 | 189 | Condensed mathematics: profinite towers, solid/liquid modules, Steenrod–Adams, persistent-invariant ledger, quaternion rotation axis, four conjectures |
 | 9 | [`tensor/`](tensor/README.md) | F7 · L2 | 2 | 1,769 | 165 | Multilinear tensor geometry: the 6,561-tensor `𝔽₃` atlas, discrete Radon, Clifford spinors, non-crossing forests, VR homology |
 | 10 | [`conjecture/`](conjecture/README.md) | F7 · L5 | 2 | 1,291 | 169 | Lakatos conjecture-evolution engine: automatic conservation-law discovery, out-of-sample transfer, five epistemic lenses, 12 cross-federation conjectures |
-| 11 | [`bridge/`](bridge/README.md) | apex · L7 (upper-V apex `V₂`) | 13 | 4,548 | 192 | `K₇` 21/21 cross-federation bridges, X-overlap chiasmus, double-V, the 18-item geometry–logic atlas, 47/47 unification certificates |
+| 11 | [`bridge/`](bridge/README.md) | apex · L7 (upper-V apex `V₂`) | 15 | 5,428 | 211 | `K₇` 21/21 bridges, four-family rotation axis, five intuition-driven conjectures with counterexample attacks, geometry–logic atlas, 47/47 certificates |
 | 12 | [`accel/`](accel/README.md) | F8 · L4 | 5 | 2,722 | 184 | CPU 64-bit SWAR (M4RI / GF(3) / Face) + Ozaki II / RNS NTT / Scanbox / HVM2 + 7 WGSL shaders |
 | 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 822 | 149 | Executable crash-consistency model (content `fsync` before the directory entry) + BFT `3f+1` quorum durable replicas |
-| 14 | [`cmd/`](cmd/README.md) | 5 executables · L2–L8 | 10 | 3,812 | 135 | Theorem ledger (`129`), unification showcase (`47`), symmetry demo/bench, semiring measurement report (`§1–§19`) |
+| 14 | [`cmd/`](cmd/README.md) | 5 executables · L2–L8 | 10 | 3,844 | 136 | Theorem ledger (`129`), unification showcase (`47`) plus rotation-axis report, symmetry demo/bench, semiring measurement report (`§1–§19`) |
 | 15 | [`tools/`](tools/README.md) | infrastructure (not a MoonBit package) | 0 | 0 | 96 | `arch_check.py`: federation partition, file ownership, `moon.pkg` imports, source reference graph, statistics |
 | 16 | [`webgpu/`](webgpu/README.md) | F8 browser side | 0 | 0 | 98 | Zero-dependency single-page verifier: `navigator.gpu` detection, 6 WGSL audits, CPU-SWAR bitwise cross-check |
 
-**Totals: 218 `.mbt` files, 150,868 lines** — identical to the `totals` printed by
+**Totals: 222 `.mbt` files, 152,883 lines** — identical to the `totals` printed by
 `python3 tools/arch_check.py`. Per-federation breakdown from the same run:
 
 | Federation | Packages | Files | Lines |
 |---|---:|---:|---:|
-| `cubical` | 11 | 107 | 102,794 |
+| `cubical` | 11 | 108 | 103,095 |
 | `symlib` | 3 | 29 | 9,671 |
 | `semiring` | 16 | 43 | 12,577 |
 | `topos` | 1 | 6 | 6,767 |
 | `scheme` | 1 | 5 | 4,982 |
-| `condensed` | 2 | 5 | 3,643 |
+| `condensed` | 2 | 6 | 4,445 |
 | `discovery` | 2 | 4 | 3,060 |
 | `accel` | 1 | 5 | 2,722 |
-| apex / unification | 2 | 14 | 4,652 |
-| root package | 1 | 18 | 12,380 |
+| apex / unification | 2 | 16 | 5,564 |
+| root package | 1 | 18 | 12,393 |
 
 ---
 
 ## 6. The 27 nested sub-packages
 
 `cubical/`, `semiring/`, and `cmd/` are **package groups**: each nested folder is its own `moon.pkg`
-with its own `README.md`. The three groups hold **112 `.mbt` files / 84,379 lines**; their READMEs total
-**2,937 lines**.
+with its own `README.md`. The three groups hold **113 `.mbt` files / 84,699 lines**; their READMEs total
+**2,941 lines**.
 
-### 6.1 `cubical/` — 7 sub-packages (64 files, 70,789 lines)
+### 6.1 `cubical/` — 7 sub-packages (65 files, 71,077 lines)
 
 | # | Sub-package | Layer | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
@@ -267,7 +267,7 @@ with its own `README.md`. The three groups hold **112 `.mbt` files / 84,379 line
 | 3 | [`cubical/hermitian/`](cubical/hermitian/README.md) | L2 | 9 | 3,199 | 143 | Hermitian projectors and certifiable cubical filling (float → `QuadC` → `AlgC`) + the Karoubi envelope |
 | 4 | [`cubical/kernel/`](cubical/kernel/README.md) | L2 | 20 | 30,899 | 180 | **The trust boundary**: dependent NbE, Kan, DSystem repair, inductive/HIT/open-IR schemas, ε₀ ordinals |
 | 5 | [`cubical/elaborator/`](cubical/elaborator/README.md) | L3 | 4 | 5,514 | 143 | Bidirectional elaboration; higher-order **matching** (decidable) / bounded Huet search / Goldfarb undecidability certificate |
-| 6 | [`cubical/homotopy/`](cubical/homotopy/README.md) | L3 | 13 | 11,993 | 187 | Computational homotopy: `π₁(S¹)≃ℤ`, `π₂(S²)≃ℤ`, `π₄(S³)≅ℤ/2ℤ`, Blakers–Massey, `Kₙ` coherence |
+| 6 | [`cubical/homotopy/`](cubical/homotopy/README.md) | L3 | 14 | 12,281 | 189 | Computational homotopy: `π₁(S¹)≃ℤ`, `π₂(S²)≃ℤ`, `π₄(S³)≅ℤ/2ℤ`, Blakers–Massey, `Kₙ` coherence |
 | 7 | [`cubical/store/`](cubical/store/README.md) | L5 | 9 | 11,147 | 184 | `CHMODBIN` / `CHDAGBIN` / `CHREGBIN`, version negotiation, Ed25519 WAL, SCC-atomic hot reload |
 
 ### 6.2 `semiring/` — 15 sub-packages (38 files, 9,778 lines)
@@ -290,12 +290,12 @@ with its own `README.md`. The three groups hold **112 `.mbt` files / 84,379 line
 | 14 | [`semiring/trop/`](semiring/trop/README.md) | L3 | 3 | 1,307 | 115 | Tropical polynomial roots with multiplicity, Newton polytope dual subdivision (integer area conservation), `trop_det` three ways |
 | 15 | [`semiring/app/`](semiring/app/README.md) | L4 | 2 | 371 | 79 | Transitive closure (three agreeing algorithms) + one matrix, two semirings, two different answers |
 
-### 6.3 `cmd/` — 5 executables (10 files, 3,812 lines)
+### 6.3 `cmd/` — 5 executables (10 files, 3,844 lines)
 
 | # | Sub-package | Target | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
 | 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | A six-line entry point: the `Bool` from `print_report()` becomes the exit code |
-| 2 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 104 | 64 | Narrative output for seven federations × `K₇` 21/21 × double-V, each with a quantitative witness |
+| 2 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 136 | 66 | Narrative output for seven federations × `K₇` 21/21 × double-V plus the quaternion rotation axis, each with a quantitative witness |
 | 3 | [`cmd/symdemo/`](cmd/symdemo/README.md) | all | 1 | 309 | 65 | `symlib` demo: "derived vs. direct" two-path agreement + monad laws |
 | 4 | [`cmd/symbench/`](cmd/symbench/README.md) | all | 2 | 594 | 88 | 12-case full-pipeline timing + seven derived-algorithm families (A–G) with `OK/FAIL × cost ratio` |
 | 5 | [`cmd/semiringreport/`](cmd/semiringreport/README.md) | **native only** | 5 | 2,799 | 118 | The 19-section measurement report; §19 turns every limitation into a measured number |
@@ -351,7 +351,7 @@ against real signatures** — if a function name or arity changes, the README ch
 
 ## 9. Onboarding checklist (first hour)
 
-1. `python3 tools/arch_check.py` → confirm `218 .mbt files, 150868 .mbt lines` on your machine. This is
+1. `python3 tools/arch_check.py` → confirm `222 .mbt files, 152883 .mbt lines` on your machine. This is
    your baseline; every later claim of "unchanged architecture" is measured against it.
 2. `moon check --deny-warn --target wasm-gc` → must be silent.
 3. `moon run --release cmd/main --target wasm-gc` → must end at `129/129`.

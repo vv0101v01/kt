@@ -1,6 +1,6 @@
-# `cubical/` — 依賴立方可信核心（7 個子套件、64 檔、70,789 行）
+# `cubical/` — 依賴立方可信核心（7 個子套件、65 檔、71,077 行）
 
-> **架構位置**：`architecture.json` 中 `cubical/*` 共 **7 個 MoonBit 套件**（Layer 0–5，合計 64 個 `.mbt`、70,789 行），與根套件 `root`（Layer 6）、`algebra/`、`hostfs/` 同屬 **F1 第一聯邦**（該聯邦 107 檔、102,794 行）。本目錄本身**不含 `moon.pkg`**，是純粹的實體分層容器。
+> **架構位置**：`architecture.json` 中 `cubical/*` 共 **7 個 MoonBit 套件**（Layer 0–5，合計 65 個 `.mbt`、71,077 行），與根套件 `root`（Layer 6）、`algebra/`、`hostfs/` 同屬 **F1 第一聯邦**（該聯邦 108 檔、103,095 行）。本目錄本身**不含 `moon.pkg`**，是純粹的實體分層容器。
 > 上游：`gcd`（Layer 0）；同聯邦另有 `algebra/`、`hostfs/`。
 > 執行入口：`cmd/main`（129/129 定理總表）。
 
@@ -49,7 +49,7 @@
 | `hermitian` | 2 | 9 | 3,199 | face_bdd, finite, algebra | 複線性代數、Hermitian 投影、向量偏系統、仿射立方體、Karoubi／句法範疇、子空間 Glue、精確代數證書 |
 | `kernel` | 2 | 20 | **30,899** | face_bdd, finite | 可信依賴核心：依賴 NbE、AST Kan、Glue 等價、密封 `Checked*`、DSystem 相容、歸納/HIT/Open-IR Schema、Cantor/Mahlo 序數 |
 | `elaborator` | 3 | 4 | 5,514 | kernel | 雙向表面精緻化、擴展 pattern 高階合一、Huet 延遲 flex-flex 串流、可判定高階匹配、Goldfarb 丟番圖 |
-| `homotopy` | 3 | 13 | 11,993 | gcd, algebra, face_bdd, finite, kernel | 球面 `S¹/S²/S³`、伴隨等價、截斷、Stasheff `Kₙ`、Blakers–Massey、Brunerie `π₄(S³)=ℤ/2ℤ`、通用 HIT |
+| `homotopy` | 3 | 14 | 12,281 | gcd, algebra, face_bdd, finite, kernel | 球面 `S¹/S²/S³`、伴隨等價、截斷、Stasheff `Kₙ`、Blakers–Massey、Brunerie `π₄(S³)=ℤ/2ℤ`、通用 HIT |
 | `store` | 5 | 9 | 11,147 | condensed, face_bdd, kernel | 分離模組編譯、二進位編解碼、認證 WAL 工件庫、Ed25519 BFT 法定人數、Tarjan SCC MVCC 熱載入 |
 
 ---
@@ -157,7 +157,7 @@
 
 ---
 
-## 8. `cubical/homotopy/`（Layer 3，11,993 行）
+## 8. `cubical/homotopy/`（Layer 3，12,281 行）
 
 | 檔案 | 行數 | 內容 |
 |---|---:|---|
@@ -171,6 +171,7 @@
 | `truncation.mbt` | 598 | **命題截斷**由「參數面」`dhit_arg_face` 生成：`‖A‖ ::= point(a) | squash(x y : ‖A‖) : x ⇝ y`；`prop_trunc_*`；集合截斷 `set_trunc_*`（`set_trunc_hub_value`、`set_trunc_loop_trivial_value`、`set_trunc_is_set_value`、`set_trunc_equiv_of_equiv_set_value`） |
 | `homotopy_universal.mbt` | 592 | 邊界 #6 缺少的型別形成子：**join**、**wedge**、**`n`-截斷**、**James 構造**，都宣告成真正的立方 HIT 並附遞歸原則：`join_push_value`、`wedge_glue_value`、`trunc_inc_value`、`james_cons_value`、`homotopy_universal_remaining` |
 | `associahedron.mbt` | 650 | **任意 `n` 的 Stasheff 結合多面體 `Kₙ`**：`Paren`（括號化）、`paren_all`、`paren_rotations`（翻轉圖）、`stree_all`、`assoc_fvector`、`assoc_two_faces`、`catalan`、`assoc_euler_characteristic`；Mac Lane 相干定理保證不需無限塔，逐 `n` 建構即可 |
+| `coherence_angle_elimination.mbt` | 288 | 指定有限胞腔／Kan 模型的局部相干角消元：逐項列舉 `11040`，兩段商至 `552` 再到未解角 `0`，以 `276` 個規範類保存總重數，附錯配負對照 |
 | `higher_coherence_k6.mbt` | 452 | 非交換「8 字形」`S¹∨S¹`（`π₁ = F₂ = ⟨a,b⟩`）的**方形邊界填充**：以 `@gcd.ugcd_free_group_reduce` 判 `top⁻¹·left·bottom·right⁻¹ = 1` **於 `F₂` 中**，而非只看阿貝爾化 `H₁ = ℤ²` 的繞數 `(0,0)`；另附指涉六項突破的證書（`[T-Singleton-N]`、`[T-Associahedron-K6]`、`[T-VarEndpoint-HIT]`、`[T-Adams-Brunerie-Bridge]`、`[T-HOU-InnerLam]`、`[T-Goldfarb-Diophantine]`、`[T-BFT-Ed25519-WAL]`、`[T-Tarjan-MVCC-HotLoad]`） |
 | `blakers_massey.mbt` | 497 | `FgAb`（自由阿貝爾群帶撓）、`les_middle_is_{injective,surjective,iso}`、`bm_gap`（連通度缺口）、`gap_equiv_below`、`freudenthal_status`、`pi3_s2_iso_pi3_s3`、`pi3_s3_iso_pi2_s2`、`pi2_s2_iso_z_halves` |
 | `brunerie_pi4_s3.mbt` | 423 | **Brunerie `π₄(S³) ≅ ℤ/2ℤ`**：`join_sphere_dim`、`s3_is_join_of_two_circles`、`whitehead_degree`、`james_cells`、`brunerie_original`／`brunerie_new_family`、`brunerie_family_decreasing`、`cyclic_of_beta`、`pi4_s3_group`、`pi4_s3_origins` |
@@ -197,11 +198,11 @@
 
 ---
 
-## 10. 根套件 `root`（Layer 6，18 檔 12,380 行）
+## 10. 根套件 `root`（Layer 6，18 檔 12,393 行）
 
 不在本目錄內，但由 `cubical` 的七個子套件餵養：
 
-* `facade.mbt`（20 KB）：**極薄精選門面**，只用 `pub using` 重導出跨聯邦 `@bridge` 與執行檔實際使用的符號；`pkg.generated.mbti` 由重構前 4,300+ 行精簡 ~90% 至 452 行。
+* `facade.mbt`（20 KB）：**極薄精選門面**，只用 `pub using` 重導出跨聯邦 `@bridge` 與執行檔實際使用的符號；`pkg.generated.mbti` 由重構前 4,300+ 行精簡 ~90% 至 484 行。本次另精選導出 Hopf／Tamari 與相干角消元報告，供四族旋轉橋直接呼叫上游實作。
 * `verify.mbt`（40 KB）：定理／定律總表，`print_report()` 逐條印 PASS/FAIL，`cmd/main` 的 `guard` 靠它決定 exit code（**129/129**）。
 * `spec.mbt`（148 KB）：規格與主體宣告。
 * 其餘 `*_laws.mbt`（`ast_laws`、`bdd_cdcl_dcube_laws`、`descent_drup_dag_laws`、`ed25519_k5_merge_laws`、`hopf_drat_cas_laws`、`lrat_yoneda_freudenthal_laws`、`mahlo_k6_bft_laws`、`positivity_ir_codec_laws`、`registry_persist_laws`、`schema_*_laws`、`semantic_system_laws`、`equiv_laws`、`dsystem_compat_laws`、`bdd_certified_laws`）：把子套件的不變量在**聯邦層**再核一次。
