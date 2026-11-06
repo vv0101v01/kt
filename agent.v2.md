@@ -255,7 +255,7 @@
 | `spec.mbt` | 符號登記同步到新現實（刪 `provable`/`reflect_stmt`/`reflect_down`/`is_limit_level`；加 `nf_in`/`enum_terms`/`v_level`/`sat`/`absolute_at`/`reflects`/`reflecting_levels`/`diagonal`/`derivable_bruteforce`/`complete_oriented`/`resolve_modules`/`scc`/`ieq_ok`/`iquot`/`iquot_schema`/`icheck_q`/`iit_fold_q`） |
 | 文件 | `meta/CAPABILITIES.md`（新建並改寫為能力三段式對帳＋淌欠結案表）、`meta/{reflect,instances,iit}/README.md`、`meta/README.md`、`README.md`、`lean/README.md`、`lean/labels/coverage.md`、`readme.v2.md`、本檔 |
 
-計量：`cmd/metatheory` **455 → 485**（+30 條能力定律，`law_*` 函式 56 → **63**）；標籤分佈 core 115（互異 102）／instances 147（144）／iit 164（87）／reflect 59（55）；`cmd/main` **129/129**；`cmd/showcase` **47/47**；`arch_check` → 44 套件、53 元件、**248** `.mbt`、**164,346** 行。
+計量：`cmd/metatheory` **455 → 485**（+30 條能力定律，`law_*` 函式 56 → **63**）；標籤分佈 core 115（互異 102）／instances 147（144）／iit 164（87）／reflect 59（55）；`cmd/main` **129/129**；`cmd/showcase` **47/47**；`arch_check` → 44 套件、53 元件、**248** `.mbt`、**164,345** 行。
 
 ### 9.2 Why / invariant
 
@@ -281,7 +281,7 @@ moon build --target wasm-gc                 # Finished, 0 errors
 moon run  cmd/metatheory --target wasm-gc   # 通過 485 / 485 定律
 moon run  cmd/main       --target wasm-gc   # passed 129/129
 moon run  cmd/showcase   --target wasm-gc   # 47/47 證書 + 硬體加速 all_ok
-python3 tools/arch_check.py                 # architecture ok: 44 packages, 53 components, 248 .mbt, 164346 lines
+python3 tools/arch_check.py                 # architecture ok: 44 packages, 53 components, 248 .mbt, 164,345 lines
 python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
 ```
 

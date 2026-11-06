@@ -8,7 +8,7 @@
 ## 0. 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                          # 9 聯邦 / 44 套件 / 53 元件 / 248 .mbt / 164,346 行
+python3 tools/arch_check.py                          # 9 聯邦 / 44 套件 / 53 元件 / 248 .mbt / 164,345 行
 moon check --deny-warn --target wasm-gc              # 0 warnings, 0 errors
 moon run --release cmd/metatheory --target wasm-gc   # 485/485 定律（逐條重算，不是引用）
 moon run --release cmd/main       --target wasm-gc   # 129/129 定理（舊聯邦未回歸）

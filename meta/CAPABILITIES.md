@@ -9,7 +9,7 @@
 
 本輪全部落在 **kt（MoonBit）側**，`lean/` 一行沒改（仍凍結在 492 條定理）。
 現況：`cmd/metatheory` **485 / 485 定律**、`cmd/main` **129 / 129**、`arch_check` → `architecture ok`
-（44 packages、248 `.mbt`、164156 行）。標籤分佈：core 115（互異 102）／instances 147（144）／
+（44 packages、248 `.mbt`、164,345 行）。標籤分佈：core 115（互異 102）／instances 147（144）／
 iit 164（87）／reflect 59（55），合計 485 條、**388 條互異**；定律函式 63 個。
 
 ---
