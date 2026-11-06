@@ -1,6 +1,14 @@
 # `lean/` — MoonBit 定律的 Lean 4 形式化
 
-**狀態：492 條定理已證明並登記；MoonBit 側現有 485 條標籤，其中 437 條（本輪前的全部）有 Lean 對應（見 [`labels/coverage.md`](labels/coverage.md)）；本輪新增的 48 條能力定律（NbE 一般 β／SLD 完備性／匯入圖 SCC／QIIT 商良定義／實例修補終止序／真實 club 反射）尚未鏡射，`lake build` 綠。**
+**狀態：492 條定理已證明並登記（宣告 580 條、登記 492 條），`lake build` 綠。**
+
+> ⚠️ **這不是 kt 的形式化。** 本目錄是與 kt **並行**的數學筆記：`Bool` 檢查與 `Prop` 命題之間**沒有形式橋**
+> （沒有 refinement、沒有 extraction、沒有 translation validation），所以「Lean 綠」不蘊含「kt 綠」。
+> 實測分類：580 條宣告中 **137 條是全稱／歸納**（kt 的取樣確立不了、這才是形式化的**理由**），
+> **403 條是 `decide`/`native_decide` 的具體計算**（kt 執行時本來就算得到），40 條其他。
+> 形式化的原因、範圍界定、六條未完成的證明義務（O1–O6）、以及「可用／不可用／如何處置」的判定，
+> 見 **[`WHY.md`](WHY.md)**；137 條全稱清單見 [`UNIVERSAL.md`](UNIVERSAL.md)。
+> 437 個舊標籤與本目錄定理的關係是**人讀的族對應**，不是同一命題（Lean 命題通常更強：全稱 vs 樣本）。
 
 ```
 lean-toolchain    leanprover/lean4:v4.35.0      （2026-10-12 的穩定版，經 elan 安裝）
