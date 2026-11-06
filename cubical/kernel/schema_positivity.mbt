@@ -22,13 +22,14 @@
 // generator knows how to synthesize induction hypotheses.
 
 ///|
+#derive(Debug, Eq)
 pub struct DPositivityReport {
   occurs : Bool
   strictly_positive : Bool
   positive_polarity : Bool
   negative_polarity : Bool
   unknown : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DPositivityReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -967,13 +968,14 @@ pub fn schema_telescope_family_occurs(
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct DPositivityDeclaration {
   head : DTerm
   arity : Int32
   strict_args : Array[Int32]
   positive_args : Array[Int32]
   scope : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DPositivityDeclaration with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1628,10 +1630,11 @@ pub fn inductive_parameter_positivity_declared(
 /// `DPositivityWitness` is verified by applying `definition` to fresh
 /// probe families, beta-reducing, and auditing the structural
 /// polarity of every parameter slot before trusting the declaration.
+#derive(Debug, Eq)
 pub struct DPositivityWitness {
   declaration : DPositivityDeclaration
   definition : DTerm
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DPositivityWitness with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1751,10 +1754,11 @@ pub fn dterm_family_strictly_positive_certified(
 ///   exhibiting `S : Type[univ_level]`, `P : S -> Type[univ_level]` (not
 ///   referencing `F`), and a natural family of equivalences
 ///   `Π (X : Type[univ_level]), Equiv (F X) (Σ (s : S), P s -> X)`.
+#derive(Debug, Eq)
 pub enum DFunctorPositivityEvidence {
   DFunctorCovariantLaws(DTerm, DTerm, DTerm)
   DFunctorContainerIso(DTerm, DTerm, DTerm)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DFunctorPositivityEvidence with @moonbitlang/core/debug.Debug::{
@@ -1765,12 +1769,13 @@ pub extend DFunctorPositivityEvidence with @moonbitlang/core/debug.Debug::{
 pub extend DFunctorPositivityEvidence with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct DFunctorialPositivityCert {
   level : Int32
   univ_level : Int32
   claim_strict : Bool
   evidence : DFunctorPositivityEvidence
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DFunctorialPositivityCert with @moonbitlang/core/debug.Debug::{

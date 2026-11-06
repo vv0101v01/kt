@@ -14,6 +14,7 @@
 ///|
 /// Unified status report produced by running the Five-Federation & Six-Pillar
 /// Grand Unification System (`五聯邦架構及大一統系統`).
+#derive(Debug, Eq)
 pub(all) struct GrandUnificationReport {
   five_federations_ok : Bool
   federations_verified_count : Int32
@@ -27,7 +28,7 @@ pub(all) struct GrandUnificationReport {
   total_certificates_passed : Int32
   total_certificates_count : Int32
   all_ok : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend GrandUnificationReport with @moonbitlang/core/debug.Debug::{to_repr}

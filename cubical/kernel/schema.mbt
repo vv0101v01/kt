@@ -25,6 +25,7 @@
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum DArgKind {
   DArgExternal
   DArgRecursive
@@ -32,7 +33,7 @@ pub(all) enum DArgKind {
   DArgNested
   DArgDecoded
   DArgDecodedFunction
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DArgKind with @moonbitlang/core/debug.Debug::{to_repr}
@@ -44,10 +45,11 @@ pub extend DArgKind with Eq::{not_equal, equal}
 /// One argument instantiating a parameter of a family applied by
 /// `DFunctorFamily`: an ordinary term, or the family being
 /// declared itself at the given index terms.
+#derive(Debug, Eq)
 pub(all) enum DFunctorParamArg {
   DFunctorParamTerm(DTerm)
   DFunctorParamSelf(Array[DTerm])
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DFunctorParamArg with @moonbitlang/core/debug.Debug::{to_repr}
@@ -63,6 +65,7 @@ pub extend DFunctorParamArg with Eq::{not_equal, equal}
 /// tag), lists, and functions from an external domain.  Every node is
 /// positive by construction, and the generator synthesizes both its
 /// semantic type and its induction-hypothesis functor.
+#derive(Debug, Eq)
 pub(all) enum DPositiveFunctor {
   DFunctorIdentity(Array[DTerm])
   DFunctorConst(DTerm)
@@ -102,7 +105,7 @@ pub(all) enum DPositiveFunctor {
   // Parameter and index arguments have the same meaning as in
   // `DFunctorFamily`.
   DFunctorSelfFamily(Array[DFunctorParamArg], Array[DTerm])
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DPositiveFunctor with @moonbitlang/core/debug.Debug::{to_repr}
@@ -196,11 +199,12 @@ pub fn dfunctor_self_family(
 /// followed by the constructor arguments.  An introduction is
 /// accepted only when `lhs` and `rhs` are convertible at `ty`; the
 /// generated eliminator case receives the corresponding Path proof.
+#derive(Debug, Eq)
 pub(all) struct DConstructorConstraint {
   ty : DTerm
   lhs : DTerm
   rhs : DTerm
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DConstructorConstraint with @moonbitlang/core/debug.Debug::{to_repr}
@@ -218,10 +222,11 @@ pub fn dconstructor_constraint(
 }
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct DTelescopeEntry {
   name : String
   ty : DTerm
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DTelescopeEntry with @moonbitlang/core/debug.Debug::{to_repr}
@@ -239,6 +244,7 @@ pub fn dtelescope_entry(name : String, ty : DTerm) -> DTelescopeEntry {
 /// For DArgRecursive, `index` gives the family indices and `ty` is
 /// unused.  For DArgFunction, `ty` is the domain and `index` terms are
 /// checked under one additional domain binder.
+#derive(Debug, Eq)
 pub(all) struct DConstructorArg {
   name : String
   kind : DArgKind
@@ -246,7 +252,7 @@ pub(all) struct DConstructorArg {
   index : Array[DTerm]
   nested : DPositiveFunctor
   target : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DConstructorArg with @moonbitlang/core/debug.Debug::{to_repr}
@@ -371,12 +377,13 @@ pub fn darg_mutual(
 /// A function into another component of a mutual block.
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct DConstructorSpec {
   name : String
   args : Array[DConstructorArg]
   result_index : Array[DTerm]
   constraints : Array[DConstructorConstraint]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DConstructorSpec with @moonbitlang/core/debug.Debug::{to_repr}
@@ -405,6 +412,7 @@ pub fn dconstructor_spec_constrained(
 }
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct DInductiveSpec {
   name : String
   level : Int32
@@ -413,7 +421,7 @@ pub(all) struct DInductiveSpec {
   constructors : Array[DConstructorSpec]
   decode_cases : Array[DTerm]
   decode_level : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DInductiveSpec with @moonbitlang/core/debug.Debug::{to_repr}
@@ -469,11 +477,12 @@ pub fn dinductive_recursive_spec(
 
 ///|
 /// Instantiate another cell as one face of a HIT cell.
+#derive(Debug, Eq)
 pub(all) struct DHitFaceExpr {
   cell : Int32
   args : Array[DTerm]
   dims : Array[Dim]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DHitFaceExpr with @moonbitlang/core/debug.Debug::{to_repr}
@@ -504,6 +513,7 @@ pub fn dhit_arg_face(term : DTerm) -> DHitFaceExpr {
 ///|
 /// A HIT cell.  `faces` has length `2 * dim_count`, ordered
 /// (dim 0 at 0, dim 0 at 1, dim 1 at 0, dim 1 at 1).
+#derive(Debug, Eq)
 pub(all) struct DHitCellSpec {
   name : String
   dim_count : Int32
@@ -511,7 +521,7 @@ pub(all) struct DHitCellSpec {
   result_index : Array[DTerm]
   faces : Array[DHitFaceExpr]
   constraints : Array[DConstructorConstraint]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DHitCellSpec with @moonbitlang/core/debug.Debug::{to_repr}
@@ -532,13 +542,14 @@ pub fn dhit_cell_spec(
 }
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct DHitSpec {
   name : String
   level : Int32
   params : Array[DTelescopeEntry]
   indices : Array[DTelescopeEntry]
   cells : Array[DHitCellSpec]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DHitSpec with @moonbitlang/core/debug.Debug::{to_repr}

@@ -83,10 +83,11 @@ using @kernel {
 // a linked implementation (see `module_compilation.mbt`).
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleRename {
   from_name : String
   to_name : String
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleRename with @moonbitlang/core/debug.Debug::{to_repr}
@@ -100,6 +101,7 @@ pub fn module_rename(from_name : String, to_name : String) -> ModuleRename {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleImport {
   module_path : String
   alias_name : String
@@ -108,7 +110,7 @@ pub struct ModuleImport {
   hiding : Array[String]
   opened : Bool
   renames : Array[ModuleRename]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleImport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -138,6 +140,7 @@ pub fn module_import(
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleDecl {
   name : String
   ty : DTerm
@@ -148,7 +151,7 @@ pub struct ModuleDecl {
   body : DTerm?
   exported : Bool
   transparent : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleDecl with @moonbitlang/core/debug.Debug::{to_repr}
@@ -188,10 +191,11 @@ pub fn module_decl_abstract(
 /// entries contributed by each item in item order.  Interleaving a
 /// local declaration before an import is what allows that import's
 /// functor arguments to mention the local declaration.
+#derive(Debug, Eq)
 pub enum ModuleItem {
   ModuleItemImport(Int32)
   ModuleItemDecl(Int32)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleItem with @moonbitlang/core/debug.Debug::{to_repr}
@@ -200,6 +204,7 @@ pub extend ModuleItem with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ModuleItem with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleDef {
   path : String
   params : Array[DTelescopeEntry]
@@ -211,7 +216,7 @@ pub struct ModuleDef {
   /// declarations); a nonempty list must mention every import and
   /// every declaration index exactly once.
   items : Array[ModuleItem]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleDef with @moonbitlang/core/debug.Debug::{to_repr}
@@ -232,9 +237,10 @@ pub fn module_def(
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleEnv {
   modules : Array[ModuleDef]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleEnv with @moonbitlang/core/debug.Debug::{to_repr}
@@ -272,6 +278,7 @@ pub fn module_env_find(env : ModuleEnv, path : String) -> ModuleDef? {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleEntry {
   canonical_name : String
   local_name : String
@@ -280,7 +287,7 @@ pub struct ModuleEntry {
   body : DTerm?
   exported : Bool
   transparent : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleEntry with @moonbitlang/core/debug.Debug::{to_repr}
@@ -289,10 +296,11 @@ pub extend ModuleEntry with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ModuleEntry with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleBinding {
   name : String
   ordinal : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleBinding with @moonbitlang/core/debug.Debug::{to_repr}
@@ -301,11 +309,12 @@ pub extend ModuleBinding with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ModuleBinding with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleExport {
   name : String
   ordinal : Int32
   transparent : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleExport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -314,12 +323,13 @@ pub extend ModuleExport with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ModuleExport with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleSignature {
   module_path : String
   entries : Array[ModuleEntry]
   bindings : Array[ModuleBinding]
   exports : Array[ModuleExport]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleSignature with @moonbitlang/core/debug.Debug::{to_repr}
@@ -328,6 +338,7 @@ pub extend ModuleSignature with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ModuleSignature with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleInstanceDecl {
   name : String
   canonical_name : String
@@ -335,7 +346,7 @@ pub struct ModuleInstanceDecl {
   body : DTerm
   exported : Bool
   transparent : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleInstanceDecl with @moonbitlang/core/debug.Debug::{to_repr}
@@ -344,11 +355,12 @@ pub extend ModuleInstanceDecl with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ModuleInstanceDecl with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleInstance {
   module_path : String
   decls : Array[ModuleInstanceDecl]
   bindings : Array[ModuleBinding]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleInstance with @moonbitlang/core/debug.Debug::{to_repr}

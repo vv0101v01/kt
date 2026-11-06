@@ -430,12 +430,13 @@ pub fn tree_forest_family() -> DMutualFamily? {
 
 ///|
 /// Universe-level expressions for declaration-level schemes.
+#derive(Debug, Eq)
 pub(all) enum DLevelExpr {
   DLevelConst(Int32)
   DLevelVar(Int32)
   DLevelSucc(DLevelExpr)
   DLevelMax(DLevelExpr, DLevelExpr)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DLevelExpr with @moonbitlang/core/debug.Debug::{to_repr}

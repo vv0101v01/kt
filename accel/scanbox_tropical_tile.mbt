@@ -5,11 +5,12 @@
 ///|
 /// Tile descriptor state machine tags for Scanbox / Merrill–Garland decoupled look-back:
 /// `0 = STATUS_NOT_READY`, `1 = STATUS_AGGREGATE_AVAILABLE`, `2 = STATUS_PREFIX_AVAILABLE`.
+#derive(Debug, Eq)
 pub struct ScanboxTileDescriptor {
   mut status : Int32
   mut aggregate : Int32
   mut inclusive_prefix : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ScanboxTileDescriptor with @moonbitlang/core/debug.Debug::{to_repr}
@@ -19,13 +20,14 @@ pub extend ScanboxTileDescriptor with Eq::{not_equal, equal}
 
 ///|
 /// Execution telemetry & result of single-pass Scanbox Decoupled Look-Back Scan.
+#derive(Debug, Eq)
 pub(all) struct ScanboxScanResult {
   inclusive : Array[Int32]
   exclusive : Array[Int32]
   num_tiles : Int32
   subgroup_size : Int32
   lookback_steps : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ScanboxScanResult with @moonbitlang/core/debug.Debug::{to_repr}

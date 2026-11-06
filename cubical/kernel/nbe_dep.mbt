@@ -81,10 +81,11 @@ using @finite {
 ///|
 /// One branch of a composition system in the AST: a tube body under
 /// the composition dimension, guarded by an ambient face.
+#derive(Debug, Eq)
 pub(all) struct DTubeTerm {
   face : Face
   body : DTerm
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DTubeTerm with @moonbitlang/core/debug.Debug::{to_repr}
@@ -100,10 +101,11 @@ pub fn d_tube(face : Face, body : DTerm) -> DTubeTerm {
 ///|
 /// One branch of a partial *element* in the AST.  Unlike a tube body,
 /// this body is an ordinary term in the ambient dimension context.
+#derive(Debug, Eq)
 pub(all) struct DFaceTerm {
   face : Face
   body : DTerm
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DFaceTerm with @moonbitlang/core/debug.Debug::{to_repr}
@@ -119,11 +121,12 @@ pub fn d_face_term(face : Face, body : DTerm) -> DFaceTerm {
 ///|
 /// One branch of a Glue type presented directly by an equivalence
 /// `partial ≃ base`, guarded by a face.
+#derive(Debug, Eq)
 pub(all) struct DEquivBranch {
   face : Face
   ty : DTerm
   equiv : DTerm
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DEquivBranch with @moonbitlang/core/debug.Debug::{to_repr}
@@ -137,6 +140,7 @@ pub fn d_equiv_branch(face : Face, ty : DTerm, equiv : DTerm) -> DEquivBranch {
 }
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum DTerm {
   DTVar(Int32)
   DUniv(Int32) // Type_i
@@ -210,7 +214,7 @@ pub(all) enum DTerm {
   DGlueEquiv(DTerm, Array[DEquivBranch]) // base type, equiv branches
   DUnglueEquiv(DTerm, DTerm, Array[DEquivBranch]) // glue term, base type, equiv branches
   DUa(DTerm) // an equivalence as a path in the universe
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DTerm with @moonbitlang/core/debug.Debug::{to_repr}

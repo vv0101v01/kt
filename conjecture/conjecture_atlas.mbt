@@ -14,13 +14,14 @@
 ///     exponential/cohomologically obstructed regimes;
 ///   • `LcOpenFrontier`: bidirectionally verified on base stems/dimensions with explicit
 ///     decidable subgoals for higher open cases.
+#derive(Debug, Eq)
 pub(all) enum ConjectureLifecycle {
   LcDerivedAndTransferred(Int32, String)
   LcRefutedAndRefined(String, String)
   LcVerifiedUpToBound(Int32, Int32)
   LcPhaseTransition(String, Int32, Int32)
   LcOpenFrontier(Int32, String)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ConjectureLifecycle with @moonbitlang/core/debug.Debug::{to_repr}
@@ -30,6 +31,7 @@ pub extend ConjectureLifecycle with Eq::{not_equal, equal}
 
 ///|
 /// Rich cross-federation conjecture record in the updated 12-entry Conjecture Atlas.
+#derive(Debug, Eq)
 pub(all) struct UpdatedConjectureRecord {
   id : String
   federations_bridged : Array[String]
@@ -37,7 +39,7 @@ pub(all) struct UpdatedConjectureRecord {
   lifecycle : ConjectureLifecycle
   epistemic_lens : EpistemicLensKind
   verified_consistent : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend UpdatedConjectureRecord with @moonbitlang/core/debug.Debug::{to_repr}
@@ -47,6 +49,7 @@ pub extend UpdatedConjectureRecord with Eq::{not_equal, equal}
 
 ///|
 /// Summary report of the Updated Conjecture & Creative Theorem Engine.
+#derive(Debug, Eq)
 pub(all) struct ConjectureSynthesisSummary {
   total_conjectures : Int32
   derived_and_transferred : Int32
@@ -58,7 +61,7 @@ pub(all) struct ConjectureSynthesisSummary {
   epistemic_lenses_ledger_ok : Bool
   new_creative_theorems_ok : Bool
   all_consistent : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ConjectureSynthesisSummary with @moonbitlang/core/debug.Debug::{

@@ -8,12 +8,13 @@
 
 ///|
 /// Matrix over prime field `F_p` (`2 <= p <= 2_147_483_647`; intermediate products widen to `Int64`).
+#derive(Debug, Eq)
 pub(all) struct FpMat {
   rows : Int32
   cols : Int32
   p : Int32
   data : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FpMat with @moonbitlang/core/debug.Debug::{to_repr}
@@ -23,11 +24,12 @@ pub extend FpMat with Eq::{not_equal, equal}
 
 ///|
 /// Reduced row echelon form result over `F_p`.
+#derive(Debug, Eq)
 pub(all) struct FpRrefResult {
   rref : FpMat
   rank : Int32
   pivots : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FpRrefResult with @moonbitlang/core/debug.Debug::{to_repr}
@@ -37,11 +39,12 @@ pub extend FpRrefResult with Eq::{not_equal, equal}
 
 ///|
 /// Exact `BigInt` matrix over `Z`.
+#derive(Debug, Eq)
 pub(all) struct ZMat {
   rows : Int32
   cols : Int32
   data : Array[BigInt]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ZMat with @moonbitlang/core/debug.Debug::{to_repr}
@@ -52,12 +55,13 @@ pub extend ZMat with Eq::{not_equal, equal}
 ///|
 /// Certified Smith Normal Form `U * M * V = D` over `Z` with unimodular `U, V`
 /// and positive divisibility chain `diag[0] | diag[1] | ... | diag[rank - 1]`.
+#derive(Debug, Eq)
 pub(all) struct ZSnfResult {
   u : ZMat
   diag : Array[BigInt]
   v : ZMat
   rank : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ZSnfResult with @moonbitlang/core/debug.Debug::{to_repr}

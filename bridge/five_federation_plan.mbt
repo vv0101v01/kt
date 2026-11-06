@@ -12,6 +12,7 @@
 
 ///|
 /// Canonical identifier of the five autonomous mathematical federations.
+#derive(Debug, Eq)
 pub(all) enum FederationId {
   Cubical
   Symlib
@@ -20,7 +21,7 @@ pub(all) enum FederationId {
   Scheme
   Condensed
   Discovery
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FederationId with @moonbitlang/core/debug.Debug::{to_repr}
@@ -30,6 +31,7 @@ pub extend FederationId with Eq::{not_equal, equal}
 
 ///|
 /// Architectural and mathematical health descriptor of one federation.
+#derive(Debug, Eq)
 pub(all) struct FederationDescriptor {
   id : FederationId
   slug : String
@@ -38,7 +40,7 @@ pub(all) struct FederationDescriptor {
   categorification_role : String
   live_health_ok : Bool
   summary : String
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FederationDescriptor with @moonbitlang/core/debug.Debug::{to_repr}
@@ -48,6 +50,7 @@ pub extend FederationDescriptor with Eq::{not_equal, equal}
 
 ///|
 /// One verified edge `(lhs, rhs)` of the complete `K_5` cross-federation graph.
+#derive(Debug, Eq)
 pub(all) struct FederationPairBridge {
   id : String
   lhs : FederationId
@@ -55,7 +58,7 @@ pub(all) struct FederationPairBridge {
   bridge_theorem : String
   holds : Bool
   quantitative_witness : String
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FederationPairBridge with @moonbitlang/core/debug.Debug::{to_repr}

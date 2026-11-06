@@ -106,11 +106,12 @@ pub fn rat_sqrt_if_square(r : Rat) -> Rat? {
 ///|
 
 ///|
+#derive(Debug, Eq)
 pub struct QuadNum {
   a : Rat
   b : Rat
   d : BigInt // squarefree; d == 1 exactly when b == 0
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend QuadNum with @moonbitlang/core/debug.Debug::{to_repr}
@@ -319,10 +320,11 @@ pub fn quad_denested_sqrt(x : QuadNum) -> (QuadNum, QuadNum)? {
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct AlgNum {
   modulus : QPoly
   poly : QPoly // reduced representative, degree < degree(modulus)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend AlgNum with @moonbitlang/core/debug.Debug::{to_repr}

@@ -27,6 +27,7 @@
 
 ///|
 /// One durability-relevant operation a backend may issue.
+#derive(Debug, Eq)
 pub enum StoreOp {
   /// Write `content` to `path`.  Neither content nor dirent durable.
   OpWrite(String, Int32)
@@ -41,7 +42,7 @@ pub enum StoreOp {
   /// Advisory whole-store lock / unlock (`flock`).  No durability effect.
   OpLock(String)
   OpUnlock(String)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend StoreOp with @moonbitlang/core/debug.Debug::{to_repr}
@@ -51,6 +52,7 @@ pub extend StoreOp with Eq::{not_equal, equal}
 
 ///|
 /// What a reader finds at a key after a crash.
+#derive(Debug, Eq)
 pub enum Recovery {
   /// The key is absent.
   RecoveredAbsent
@@ -59,7 +61,7 @@ pub enum Recovery {
   /// The name resolves, but the bytes were never flushed: a torn read.
   /// No correct protocol may ever produce this.
   RecoveredTorn
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Recovery with @moonbitlang/core/debug.Debug::{to_repr}
@@ -69,6 +71,7 @@ pub extend Recovery with Eq::{not_equal, equal}
 
 ///|
 /// The volatile + durable state of a tiny filesystem.
+#derive(Debug, Eq)
 pub struct DiskState {
   /// path -> inode (volatile)
   mut inode_at : Array[(String, Int32)]
@@ -80,7 +83,7 @@ pub struct DiskState {
   mut durable_dirent : Array[(String, Int32)]
   /// next fresh inode id
   mut next_inode : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DiskState with @moonbitlang/core/debug.Debug::{to_repr}

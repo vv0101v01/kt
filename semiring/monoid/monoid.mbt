@@ -26,9 +26,10 @@ using @alg {
 
 ///|
 /// 加法么半群（Int64），飽和運算避免溢位回繞。
+#derive(Eq)
 pub(all) struct SumI64 {
   v : Int64
-} derive(Eq)
+}
 
 ///|
 pub fn SumI64::of(v : Int64) -> SumI64 {
@@ -65,15 +66,17 @@ pub impl Show for SumI64 with fn output(self, logger) {
 
 ///|
 /// 最大值么半群（冪等）。
+#derive(Eq)
 pub(all) struct MaxI64 {
   v : Int64
-} derive(Eq)
+}
 
 ///|
 /// 最小值么半群（冪等）。
+#derive(Eq)
 pub(all) struct MinI64 {
   v : Int64
-} derive(Eq)
+}
 
 ///|
 pub impl Monoid for MaxI64 with fn empty() {

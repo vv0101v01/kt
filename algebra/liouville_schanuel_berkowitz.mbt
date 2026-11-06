@@ -12,6 +12,7 @@
 ///|
 /// Certified proof that the Liouville constant `L = sum_{k>=1} 10^{-k!}` is NOT a
 /// root of the integer polynomial `P(x) = sum_{j=0}^d coeffs[j] * x^j` (`d >= 1`).
+#derive(Debug, Eq)
 pub(all) struct LiouvilleTranscendenceCert {
   coeffs : Array[BigInt]
   degree : Int32
@@ -23,7 +24,7 @@ pub(all) struct LiouvilleTranscendenceCert {
   gap_lhs : BigInt
   gap_rhs : BigInt
   verified : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend LiouvilleTranscendenceCert with @moonbitlang/core/debug.Debug::{
@@ -36,6 +37,7 @@ pub extend LiouvilleTranscendenceCert with Eq::{not_equal, equal}
 ///|
 /// Schanuel / Lindemann–Weierstrass Q-linear independence & transcendence-degree
 /// witness over multiquadratic algebraic numbers.
+#derive(Debug, Eq)
 pub(all) struct SchanuelRankWitness {
   input_count : Int32
   q_linear_rank : Int32
@@ -43,7 +45,7 @@ pub(all) struct SchanuelRankWitness {
   lindemann_weierstrass_alg_indep : Bool
   schanuel_trdeg_lower_bound : Int32
   null_relation : Array[Rat]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend SchanuelRankWitness with @moonbitlang/core/debug.Debug::{to_repr}
@@ -53,13 +55,14 @@ pub extend SchanuelRankWitness with Eq::{not_equal, equal}
 
 ///|
 /// Report of division-free modular Berkowitz + Multi-Prime CRT characteristic polynomial.
+#derive(Debug, Eq)
 pub(all) struct BerkowitzCrtReport {
   dim : Int32
   primes_used : Int32
   modulus_product : BigInt
   hadamard_coeff_bound : BigInt
   charpoly : QPoly
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend BerkowitzCrtReport with @moonbitlang/core/debug.Debug::{to_repr}

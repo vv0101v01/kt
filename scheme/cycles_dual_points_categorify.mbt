@@ -10,10 +10,11 @@
 /// Closed prime divisor on `P^1_Q`: either the point at infinity `[0 : 1]`
 /// or the Galois orbit cut out by a monic irreducible polynomial `p(u) ∈ Q[u]`
 /// on `U_0 = Spec(Q[u])` (residue degree `[κ(P) : Q] = deg(p)`)!
+#derive(Debug, Eq)
 pub(all) enum PrimeDivisorP1 {
   PointAtInfinity
   FiniteIrreducible(@exactalg.QPoly)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend PrimeDivisorP1 with @moonbitlang/core/debug.Debug::{to_repr}
@@ -23,9 +24,10 @@ pub extend PrimeDivisorP1 with Eq::{not_equal, equal}
 
 ///|
 /// Canonical Weil divisor `Σ_i mults[i] * [primes[i]]` on `P^1_Q`.
+#derive(Debug, Eq)
 pub(all) struct WeilDivisorP1 {
   terms : Array[(PrimeDivisorP1, Int32)]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend WeilDivisorP1 with @moonbitlang/core/debug.Debug::{to_repr}
@@ -35,12 +37,13 @@ pub extend WeilDivisorP1 with Eq::{not_equal, equal}
 
 ///|
 /// Cohomology summary `(h^0, h^1, euler_characteristic)` of `O_{P^1}(n)`.
+#derive(Debug, Eq)
 pub(all) struct P1LineBundleCohomology {
   twist : Int32
   h0 : Int32
   h1 : Int32
   chi : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend P1LineBundleCohomology with @moonbitlang/core/debug.Debug::{to_repr}
@@ -51,13 +54,14 @@ pub extend P1LineBundleCohomology with Eq::{not_equal, equal}
 ///|
 /// Cohomology summary `(h^0, h^1, h^2, chi)` of `O_{P^2}(n)` computed from the
 /// exact 3-chart Čech cochain complex `C^0 -> C^1 -> C^2` on `P^2_Q`.
+#derive(Debug, Eq)
 pub(all) struct P2LineBundleCohomology {
   twist : Int32
   h0 : Int32
   h1 : Int32
   h2 : Int32
   chi : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend P2LineBundleCohomology with @moonbitlang/core/debug.Debug::{to_repr}
@@ -69,6 +73,7 @@ pub extend P2LineBundleCohomology with Eq::{not_equal, equal}
 /// Grothendieck–Serre Dualizing Complex report for a projective plane curve
 /// `C = V_+(F) ⊆ P^2_Q` of degree `d >= 1`, where
 /// `ω_C^• = RHom_{P^2}(O_C, ω_{P^2}^•) ≅ O_C(d - 3)[1]`!
+#derive(Debug, Eq)
 pub(all) struct PlaneCurveDualizingReport {
   degree : Int32
   canonical_twist : Int32
@@ -78,7 +83,7 @@ pub(all) struct PlaneCurveDualizingReport {
   h0_omega : Int32
   h1_omega : Int32
   serre_duality_holds : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend PlaneCurveDualizingReport with @moonbitlang/core/debug.Debug::{
@@ -92,6 +97,7 @@ pub extend PlaneCurveDualizingReport with Eq::{not_equal, equal}
 /// Explicit finite commutative ring `(carrier = {0..size-1}, zero, one, +, *)`
 /// used as a test algebra `R ∈ CommRing` for Grothendieck's **Functor of Points**
 /// `h_X(R) = Hom_{Sch}(Spec(R), X)`!
+#derive(Debug, Eq)
 pub(all) struct FiniteCommRing {
   size : Int32
   zero : Int32
@@ -99,7 +105,7 @@ pub(all) struct FiniteCommRing {
   neg_table : Array[Int32]
   add_table : Array[Int32]
   mul_table : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FiniteCommRing with @moonbitlang/core/debug.Debug::{to_repr}
@@ -109,11 +115,12 @@ pub extend FiniteCommRing with Eq::{not_equal, equal}
 
 ///|
 /// Morphism of finite commutative rings `φ : src -> dst` (`values.length() == src.size`).
+#derive(Debug, Eq)
 pub(all) struct FiniteRingHom {
   src : FiniteCommRing
   dst : FiniteCommRing
   values : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FiniteRingHom with @moonbitlang/core/debug.Debug::{to_repr}

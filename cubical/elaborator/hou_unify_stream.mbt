@@ -8,12 +8,13 @@
 /// fragment and the guesses allowed by the supplied depth did not
 /// solve the equation.  General HOU is undecidable, so this API is
 /// deliberately transactional and budget-explicit.
+#derive(Debug, Eq)
 pub(all) enum HouSearchStatus {
   HouSolved
   HouNoUnifier
   HouResidual
   HouBudgetExceeded
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouSearchStatus with @moonbitlang/core/debug.Debug::{to_repr}
@@ -22,13 +23,14 @@ pub extend HouSearchStatus with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend HouSearchStatus with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct HouSearchReport {
   status : HouSearchStatus
   solved_metas : Int32
   nodes : Int32
   branches_tried : Int32
   max_depth_reached : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouSearchReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -907,11 +909,12 @@ pub fn hou_search_unify_bool(
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct HouIterativeReport {
   report : HouSearchReport
   solved_at_depth : Int32
   rounds : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouIterativeReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1211,6 +1214,7 @@ pub fn check_hou_search_extensions() -> Bool {
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct HouResidualSolveReport {
   status : HouSearchStatus
   substitution : Array[(Int32, UTerm)]
@@ -1221,7 +1225,7 @@ pub struct HouResidualSolveReport {
   nodes : Int32
   branches_tried : Int32
   max_depth_reached : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouResidualSolveReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1559,6 +1563,7 @@ pub fn hou_unify_residual(
 /// `solutions` contains pairwise-distinct substitutions normalized over the
 /// initial metavariables; `search_exhausted` is `true` iff no branch hit the
 /// depth/node/solution cap, certifying completeness within the Huet search tree.
+#derive(Debug, Eq)
 pub(all) struct HouEnumerationReport {
   solutions : Array[Array[(Int32, UTerm)]]
   search_exhausted : Bool
@@ -1566,7 +1571,7 @@ pub(all) struct HouEnumerationReport {
   nodes : Int32
   branches_tried : Int32
   max_depth_reached : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouEnumerationReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1930,6 +1935,7 @@ pub fn hou_solve_constraints_backtracking(
 /// Suspended flex-flex constraint `?F a_1 ... a_m = ?G b_1 ... b_n` held in the
 /// metavariable-indexed delayed constraint graph until either `?F` or `?G`
 /// becomes instantiated to a rigid head.
+#derive(Debug, Eq)
 pub struct HouFlexFlexEdge {
   lhs_meta : Int32
   lhs_arity : Int32
@@ -1938,7 +1944,7 @@ pub struct HouFlexFlexEdge {
   rhs_arity : Int32
   rhs : UTerm
   depth : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouFlexFlexEdge with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1947,12 +1953,13 @@ pub extend HouFlexFlexEdge with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend HouFlexFlexEdge with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum HouDelayedSolveStatus {
   HouDelayedSolved
   HouDelayedPreUnifier
   HouDelayedNoUnifier
   HouDelayedBudgetExceeded
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouDelayedSolveStatus with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1961,6 +1968,7 @@ pub extend HouDelayedSolveStatus with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend HouDelayedSolveStatus with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct HouDelayedGraphReport {
   status : HouDelayedSolveStatus
   substitution : Array[(Int32, UTerm)]
@@ -1968,7 +1976,7 @@ pub struct HouDelayedGraphReport {
   woke_edges : Int32
   nodes : Int32
   branches_tried : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouDelayedGraphReport with @moonbitlang/core/debug.Debug::{to_repr}

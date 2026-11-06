@@ -35,10 +35,11 @@ fn gcd64(a : Int64, b : Int64) -> Int64 {
 ///
 /// 熱帶根一般不是整數（例：`min(0, 2x + 1)` 的根是 −1/2），
 /// 用有理數表示才能做**精確**的比較與乘法定理驗證。
+#derive(Eq)
 pub(all) struct Rat {
   n : Int64
   d : Int64
-} derive(Eq)
+}
 
 ///|
 pub extend Rat with Eq::{equal, not_equal}

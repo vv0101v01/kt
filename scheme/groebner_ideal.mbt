@@ -10,11 +10,12 @@
 ///   - `GRevLex`: graded reverse lexicographic (canonical default);
 ///   - `Elim(k)`: block elimination order eliminating the first `k` variables
 ///     `x_0, ..., x_{k-1}` over `x_k, ..., x_{n-1}` (each block GRevLex).
+#derive(Debug, Eq)
 pub(all) enum MonomialOrder {
   Lex
   GRevLex
   Elim(Int32)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend MonomialOrder with @moonbitlang/core/debug.Debug::{to_repr}
@@ -24,10 +25,11 @@ pub extend MonomialOrder with Eq::{not_equal, equal}
 
 ///|
 /// A nonzero monomial term `coeff * x_0^{exps[0]} ... x_{n-1}^{exps[n-1]}`.
+#derive(Debug, Eq)
 pub(all) struct MTerm {
   coeff : @exactalg.Rat
   exps : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend MTerm with @moonbitlang/core/debug.Debug::{to_repr}
@@ -38,10 +40,11 @@ pub extend MTerm with Eq::{not_equal, equal}
 ///|
 /// Canonical sparse multivariate polynomial over `Q` in `nvars` variables,
 /// stored sorted in strictly descending `GRevLex` order with nonzero coefficients.
+#derive(Debug, Eq)
 pub(all) struct MPoly {
   nvars : Int32
   terms : Array[MTerm]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend MPoly with @moonbitlang/core/debug.Debug::{to_repr}
@@ -55,11 +58,12 @@ pub extend MPoly with Eq::{not_equal, equal}
 /// divisible by `LM(gens[j])` for `j != i`, and `LM(gens)` is sorted ascending.
 /// Two ideals are equal iff their `ReducedGroebnerBasis` under the same `order`
 /// are structurally equal (`==`)!
+#derive(Debug, Eq)
 pub(all) struct ReducedGroebnerBasis {
   nvars : Int32
   order : MonomialOrder
   gens : Array[MPoly]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ReducedGroebnerBasis with @moonbitlang/core/debug.Debug::{to_repr}
@@ -70,10 +74,11 @@ pub extend ReducedGroebnerBasis with Eq::{not_equal, equal}
 ///|
 /// Polynomial ideal `I ⊆ Q[x_0, ..., x_{n-1}]` presented by generators together
 /// with its canonical `GRevLex` reduced Gröbner basis.
+#derive(Debug, Eq)
 pub(all) struct Ideal {
   nvars : Int32
   rgb : ReducedGroebnerBasis
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Ideal with @moonbitlang/core/debug.Debug::{to_repr}

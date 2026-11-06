@@ -22,10 +22,11 @@
 // destination child ids already occur there.
 
 ///|
+#derive(Debug, Eq)
 pub struct DTermDagBinaryLoad {
   status : ModuleBinaryStatus
   snapshot : DTermDagSnapshot?
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DTermDagBinaryLoad with @moonbitlang/core/debug.Debug::{to_repr}
@@ -257,13 +258,14 @@ pub fn dterm_dag_import_binary(
 /// length `base_node_count`. Nodes in `0 ..< base_node_count` are referenced
 /// directly by base id without re-transmitting their shells; `delta_nodes[k]`
 /// defines node id `base_node_count + k`.
+#derive(Debug, Eq)
 pub(all) struct DTermDagDelta {
   base_node_count : Int32
   base_digest_a : Int32
   base_digest_b : Int32
   delta_nodes : Array[DTermDagNode]
   roots : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DTermDagDelta with @moonbitlang/core/debug.Debug::{to_repr}
@@ -272,10 +274,11 @@ pub extend DTermDagDelta with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend DTermDagDelta with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct DTermDagDeltaBinaryLoad {
   status : ModuleBinaryStatus
   delta : DTermDagDelta?
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DTermDagDeltaBinaryLoad with @moonbitlang/core/debug.Debug::{to_repr}

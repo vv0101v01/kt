@@ -9,6 +9,7 @@
 ///   1. Non-Archimedean tropical bend roots (`@strop.UniPoly`) & `P^1` properness (`@scheme`);
 ///   2. Grothendieck site sheafification (`@topos`) on rational Laurent covers `U_+ u U_-`;
 ///   3. Archimedean exact rational trace/norm bounds (`@exactalg.Rat`) & solid `Z_p` completion.
+#derive(Debug, Eq)
 pub(all) struct CondAnalyticStack {
   ring_name : String
   tropical_bend_roots_count : Int32
@@ -18,7 +19,7 @@ pub(all) struct CondAnalyticStack {
   archimedean_trace_rat : @exactalg.Rat
   solid_completion_gap : Int32
   bipolar_coherent : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondAnalyticStack with @moonbitlang/core/debug.Debug::{to_repr}
@@ -32,6 +33,7 @@ pub extend CondAnalyticStack with Eq::{not_equal, equal}
 /// `equiv[x * size + y]` and a canonical normalizer `canon[x]` satisfying
 /// `[Ax-Canon-Idem]` (`canon[canon[x]] == canon[x]`) and `[Ax-Canon-Sound]`
 /// (`x ~ y => canon[x] == canon[y]`), with honest `is_complete` witness.
+#derive(Debug, Eq)
 pub(all) struct CanonObject {
   name : String
   size : Int32
@@ -41,7 +43,7 @@ pub(all) struct CanonObject {
   sound : Bool
   is_complete : Bool
   class_count : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CanonObject with @moonbitlang/core/debug.Debug::{to_repr}
@@ -53,11 +55,12 @@ pub extend CanonObject with Eq::{not_equal, equal}
 /// Morphism in **Category #2 (`CanonElimCategory`)**: equivariant map `map : dom -> cod`
 /// preserving equivalence (`x ~_dom y => map(x) ~_cod map(y)`) so `canon_cod o map`
 /// factors uniquely through `canon_dom`!
+#derive(Debug, Eq)
 pub(all) struct CanonMorphism {
   dom : CanonObject
   cod : CanonObject
   map : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CanonMorphism with @moonbitlang/core/debug.Debug::{to_repr}
@@ -67,6 +70,7 @@ pub extend CanonMorphism with Eq::{not_equal, equal}
 
 ///|
 /// Immutable entry in the Persistent Invariant-Deriving Ledger (`kind`: 0=obs, 1=derived_law, 2=theorem).
+#derive(Debug, Eq)
 pub(all) struct CondLedgerEntry {
   seq : Int32
   kind : Int32
@@ -74,7 +78,7 @@ pub(all) struct CondLedgerEntry {
   parents : Array[Int32]
   prev_hash : UInt64
   hash : UInt64
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondLedgerEntry with @moonbitlang/core/debug.Debug::{to_repr}
@@ -85,10 +89,11 @@ pub extend CondLedgerEntry with Eq::{not_equal, equal}
 ///|
 /// Hash-chained persistent ledger capable of automatically deriving exact `Z`-linear
 /// conservation laws (`ker_Z(observation_rows)`) and auditing them against provenance.
+#derive(Debug, Eq)
 pub(all) struct CondInvariantLedger {
   entries : Array[CondLedgerEntry]
   tip : UInt64
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondInvariantLedger with @moonbitlang/core/debug.Debug::{to_repr}
@@ -98,6 +103,7 @@ pub extend CondInvariantLedger with Eq::{not_equal, equal}
 
 ///|
 /// Epistemic status of a conjecture in the Conjecture Laboratory (`新猜想`).
+#derive(Debug, Eq)
 pub(all) enum CondConjectureStatus {
   /// Exhaustively verified up to explicit finite bound `n`; open in unbounded generality.
   VerifiedUpToBound(Int32)
@@ -105,7 +111,7 @@ pub(all) enum CondConjectureStatus {
   RefutedWithWitness(String)
   /// Quantitative phase-transition crossover threshold measured directly on finite instances.
   ThresholdMeasured(Int32, Int32)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondConjectureStatus with @moonbitlang/core/debug.Debug::{to_repr}
@@ -115,13 +121,14 @@ pub extend CondConjectureStatus with Eq::{not_equal, equal}
 
 ///|
 /// Registered entry in the New Conjectures Laboratory.
+#derive(Debug, Eq)
 pub(all) struct CondConjectureEntry {
   id : String
   title : String
   status : CondConjectureStatus
   instances_checked : Int32
   consistent_with_status : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondConjectureEntry with @moonbitlang/core/debug.Debug::{to_repr}

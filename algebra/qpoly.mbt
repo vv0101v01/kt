@@ -46,9 +46,10 @@ pub fn rat_sign(a : Rat) -> Int32 {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct QPoly {
   coeffs : Array[Rat] // low to high, normalized
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend QPoly with @moonbitlang/core/debug.Debug::{to_repr}

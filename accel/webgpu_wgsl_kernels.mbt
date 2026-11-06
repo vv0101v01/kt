@@ -8,6 +8,7 @@
 
 ///|
 /// Metadata & WGSL source descriptor for a browser-executable WebGPU compute kernel.
+#derive(Debug, Eq)
 pub(all) struct WgslComputeKernel {
   slug : String
   paper_family : String
@@ -15,7 +16,7 @@ pub(all) struct WgslComputeKernel {
   shared_mem_bytes : Int32
   uses_subgroups : Bool
   wgsl_source : String
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend WgslComputeKernel with @moonbitlang/core/debug.Debug::{to_repr}
@@ -25,6 +26,7 @@ pub extend WgslComputeKernel with Eq::{not_equal, equal}
 
 ///|
 /// Static W3C WebGPU browser-portability audit result for a WGSL compute kernel.
+#derive(Debug, Eq)
 pub(all) struct WgslPortabilityAudit {
   slug : String
   no_64bit_types : Bool
@@ -33,7 +35,7 @@ pub(all) struct WgslPortabilityAudit {
   has_compute_entrypoint : Bool
   balanced_delimiters : Bool
   browser_portable : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend WgslPortabilityAudit with @moonbitlang/core/debug.Debug::{to_repr}
@@ -548,6 +550,7 @@ pub fn audit_wgsl_browser_portability(
 
 ///|
 /// Unified mathematical & structural verification report for Federation 8 (`accel`).
+#derive(Debug, Eq)
 pub(all) struct AccelFederationReport {
   m4ri_gf2_and_rank_ok : Bool
   bitsliced_f3_all_6561_ok : Bool
@@ -558,7 +561,7 @@ pub(all) struct AccelFederationReport {
   hvm2_inet_strong_confluence_ok : Bool
   wgsl_browser_kernels_audited : Int32
   all_ok : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend AccelFederationReport with @moonbitlang/core/debug.Debug::{to_repr}

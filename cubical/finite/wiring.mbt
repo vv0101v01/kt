@@ -22,10 +22,11 @@
 // checked below as wiring equalities.
 
 ///|
+#derive(Debug, Eq)
 pub enum LeafKind {
   LKBool
   LKUnit
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend LeafKind with @moonbitlang/core/debug.Debug::{to_repr}
@@ -34,10 +35,11 @@ pub extend LeafKind with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend LeafKind with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct LeafMap {
   src_index : Int32 // -1 for constant Unit outputs
   neg : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend LeafMap with @moonbitlang/core/debug.Debug::{to_repr}

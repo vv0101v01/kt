@@ -46,11 +46,11 @@
      python3 tools/arch_check.py
      ```
    - 透過 `git diff *.mbti` 審視公開介面變化是否符合預期；若重構無意改變外部 API，`.mbti` 應保持零非預期變動。
-   - 跨聯邦重大變更完成後，可按需執行 `moon run --release cmd/showcase --target wasm-gc`（`47/47` 大一統證書）或 `moon run --release cmd/main --target wasm-gc`（`129/129` 定理總表）做端到端驗收。
+   - 跨聯邦重大變更完成後，可按需執行 `moon run --release cmd/showcase --target wasm-gc`（`47/47` 大一統證書）或 `moon run --release cmd/main --target wasm-gc`（`129/129` 定理總表）或 `moon run --release cmd/metatheory --target wasm-gc`（第九聯邦型別論機制定律逐條重算）做端到端驗收。
 
 ---
 
-## 二、宏觀架構治理（八聯邦雙V形＋星稜柱＋硬體加速 DAG）
+## 二、宏觀架構治理（九聯邦雙V形＋星稜柱＋硬體加速 DAG）
 
 全倉受 `architecture.json` 與 `tools/arch_check.py` 嚴格守門，遵循單向無環依賴（DAG，共 `39` 套件、`48` 元件）：
 
@@ -229,7 +229,93 @@
 ### 8.3 最終驗證
 
 * 一次性探索與正式報告的局部測試均在驗證後刪除；正式五項審計為 `true,true,true,true,true`，結果為 **1 條有界倖存、4 條反例後修正**。
-* `moon info/fmt`、`moon check --deny-warn --target wasm-gc`、`moon build --target wasm-gc` 全過；`python3 tools/arch_check.py` 為 **39 套件、48 元件、222 個 `.mbt`、152883 行**。
+* `moon info/fmt`、`moon check --deny-warn --target wasm-gc`、`moon build --target wasm-gc` 全過；`python3 tools/arch_check.py` 為 **44 套件、53 元件、245 個 `.mbt`、162396 行**。
 * `cmd/main` 最終為 **129/129**；`cmd/showcase` 為 **47/47**、`intuition_lab=5/5`、`all_ok=true`，硬體加速亦全過。輸出見 `_build/final-main.out`、`_build/final-showcase.out`、`_build/final-arch.out`。
 * 提交前掃描無 GitHub token 字樣、無常駐臨時測試、無 whitespace 錯誤；登錄資訊不得寫入倉庫或 Git 設定。
 
+
+---
+
+## 九、工作報告：2026-11-07 第九聯邦三軸的能力補完（QIIT 等式進 schema × NbE 一般 β × SLD 完備性 × 匯入圖 SCC × 真實 club 反射）
+
+本輪全部落在 `meta/`（kt 側），`lean/` 一行未改（仍凍結在 492 條定理）。目標是「把淌欠真做掉」而不是寫進 TODO：六個缺口逐條落地為可執行定律，並同步修掉三條工具與文件缺陷。
+
+### 9.1 What changed
+
+| 檔案 | 變更 |
+|---|---|
+| `meta/iit/schema.mbt` | 等式進 schema：`ISchema.eqs`、`ischema(..., eqs? = [])`、`ipat_vars`、**`ieq_ok`（至少一端是建構子／兩端若都是建構子則同 sort／樣式變數集合相同／非空洞）**，`ischema_ok` 逐條驗證等式並回報壞在哪一條 |
+| `meta/iit/quotient.mbt` | 兩條定律：`law_iit_quotient_equations_hold_and_iota_survives`（7 檢查）＋`law_iit_quotient_is_well_defined_on_all_stage_inhabitants`（6 檢查）；後者是**一般敘述**：對 Kleene 鏈上每一對居民檢查「商相等 ⇒ `iit_fold_q` 相等」（25 對）、商不逃出鏈、`sⁿz` 無窮多項收成 2 個等價類、`iit_stage` 與商在居民上交換 |
+| `meta/instances/engine.mbt` | 終止序：`rule_oriented`／`orientable`／`repair_step_oriented`／`complete_oriented`＋6 檢查；SLD 完備性：`enum_uterms`（目標窮舉）、`derivable_bruteforce`（**無剪枝**對照搜尋）、`env_chain`／`env_loop`＋6 檢查 |
+| `meta/instances/modules.mbt`（新增 11.7 KB） | `Module`／`ImportGraph`、迭代版 **Tarjan `scc`**、`cyclic_components`、`cycle_witness`（真迴路）、**`resolve_modules`**（DAG ⇒ 反拓撲典範序；有環 ⇒ 拒絕＋見證）＋6 檢查 |
+| `meta/reflect/nbe.mbt` | `enum_terms`（型別導向**窮舉**項）、`nf_in`（帶上下文的 `nf`）、`subst` 修正、`law_nbe_general_beta_over_all_terms`（5 檢查、316 個項） |
+| `meta/reflect/universe.mbt`（整檔替換） | 刪除玩具層級模型；改為真實集合論反射：`HFSet`（規範編碼）、`hf_mem`／`hf_power`／`v_level`、公式 `F` 與真滿足 `sat`、`absolute_at`、`reflects`／`reflecting_levels`、`unbounded_in_window`／`closed_upward_in_window`＋2 定律（6+6 檢查） |
+| `meta/reflect/club.mbt`（新增 7.2 KB） | `OrdFun`、`fun_omega_pow`（`ω^{1+α}`）、`fun_omega_omega_pow`（`ω^{ω+α}`）、`in_range`／`preimage`、`diagonal`（12.3 對角迭代）、`range_subset`＋6 檢查 |
+| `tools/gen_labels.py`（新增） | 讀 `cmd/metatheory` 的**實際輸出**重生 `lean/labels/moonbit-labels.md`（485 條／388 互異／119 族） |
+| `spec.mbt` | 符號登記同步到新現實（刪 `provable`/`reflect_stmt`/`reflect_down`/`is_limit_level`；加 `nf_in`/`enum_terms`/`v_level`/`sat`/`absolute_at`/`reflects`/`reflecting_levels`/`diagonal`/`derivable_bruteforce`/`complete_oriented`/`resolve_modules`/`scc`/`ieq_ok`/`iquot`/`iquot_schema`/`icheck_q`/`iit_fold_q`） |
+| 文件 | `meta/CAPABILITIES.md`（新建並改寫為能力三段式對帳＋淌欠結案表）、`meta/{reflect,instances,iit}/README.md`、`meta/README.md`、`README.md`、`lean/README.md`、`lean/labels/coverage.md`、`readme.v2.md`、本檔 |
+
+計量：`cmd/metatheory` **455 → 485**（+30 條能力定律，`law_*` 函式 56 → **63**）；標籤分佈 core 115（互異 102）／instances 147（144）／iit 164（87）／reflect 59（55）；`cmd/main` **129/129**；`cmd/showcase` **47/47**；`arch_check` → 44 套件、53 元件、**248** `.mbt`、**164,346** 行。
+
+### 9.2 Why / invariant
+
+* **QIIT**：純 II 只能同時定義互索引的族；QIIT 還要等式建構子。不變式：等式是 schema 的一部分且**必須通過 `ieq_ok`**（否則商的定義沒有意義）；商對**整條 Kleene 鏈**良定義（商相等 ⇒ 摺疊相等）、商不逃出鏈、ι 律在商後仍成立、純 `iit_fold` 不尊重等式（對照組證明差別有內容）、商保守（不把一切摺成一點）。
+* **全域實例**：`resolve_all` 有兩個剪枝（深度界、路徑去環）會影響完備性，所以用**刻意笨的**無剪枝 DFS 對照；修補必須產生**終止**的重寫系統，所以新規則要定向（head 節點數 > 每個 body），定向不了就報告而不是硬塞；跨模組組合的典範性要求匯入圖**無環**，有環就拒絕並給真迴路，無環則 Tarjan 的反拓撲發射序即典範解析序（與宣告順序無關）。
+* **反射**：舊版把「句子裡最大的原子編號 < 層級」當成可證性，等於用編碼遊戲繞過集合、∈ 與量詞。新版的不變式是模型論的：`V_α` 是真的累積層級、`sat` 是真的滿足關係、反射＝對所有 `x ∈ V_α` 的絕對性；club 的兩半（無界、對更大層級封閉）與「交集仍是 club」都是算出來的。
+* **NbE**：正規形能力不能靠樣本。不變式升級為「型別上大小 ≤ 10 的**所有**項都 β-正規、冪等、一步 β 與 η 收縮不改變 `nf`、且保型」。
+
+### 9.3 本輪抓到的真 bug（四條）
+
+1. **`nf` 不知道自由變數的型別**：中性應用的參數型別掉成 `TOne`，於是開項的正規形不冪等。修法：新增 `nf_in(ctx, ty, t)`，`eval_typed` 把超出環境的變數換回**原始上下文索引**（`x - env.length()`），並在應用點用 `infer(ctx, …)` 恢復參數型別。
+2. **`subst` 在開項上的 β 是錯的**：`((λ. #2) #0)` 應 β 化為 `#1`，舊碼給 `#2`（拿掉一層 binder 後索引 > j 的變數沒有減一）。樣本全是閉項所以從未被打到；修好後 #3「一步 β 保持 `nf`」才真的成立。
+3. **`spec.mbt` 的符號登記必須全倉唯一**：把 `nf` 加進反射條目後與立方體 NbE 條目重複，`spec_registry_sound` 失敗，`cmd/main` 由 129/129 掉成 **128/129 並在結尾 wasm trap**。修法：移除重複符號，`cmd/main` 回到 129/129。
+4. **`ord_mul_omega` 是右乘（`a·ω`）不是左乘**：俱樂部 normal function 若寫成 `ω·(1+α)` 會全部塌成 `ω`。改用 `α ↦ ω^{1+α}` 與 `α ↦ ω^{ω+α}`；並記錄 `α ↦ α·2` **不連續**，`ω^{ω+α}·2` 不是 club（`club.mbt` #6 正是這個現象的正面版本）。
+
+另外兩條工程教訓：MoonBit 同 package 內 top-level 識別字不得重複（`IEquation` 搬進 `schema.mbt` 後舊檔必須同時刪）；`moon build` 有快取，只 `tail -2` 會誤判成功，必須 grep `Error` 並實際 `moon run`。
+
+### 9.4 How verified
+
+```bash
+export PATH="$HOME/.moon/bin:$PATH"
+moon build --target wasm-gc                 # Finished, 0 errors
+moon run  cmd/metatheory --target wasm-gc   # 通過 485 / 485 定律
+moon run  cmd/main       --target wasm-gc   # passed 129/129
+moon run  cmd/showcase   --target wasm-gc   # 47/47 證書 + 硬體加速 all_ok
+python3 tools/arch_check.py                 # architecture ok: 44 packages, 53 components, 248 .mbt, 164346 lines
+python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
+```
+
+* 關鍵量化證據：NbE 一般 β **316 個項**；SLD 完備性 **21,672 組**目標/深度對照；QIIT 良定義 **25 對**居民；`s(s x)=x` 下 `s⁴z = z`、無限多 `sⁿz` 收成 **2 類**。
+* 工具鏈可重建性：本輪開始時沙盒的 `~/.moon` 已隨快照消失，重跑 `install/unix.sh` 並 `moon update`（registry 索引）後 `moonbitlang/async` 才可解析，`moon build` 回到 0 error —— 已在 `readme.v2.md` §2.2 記錄，避免下次誤判為程式碼壞掉。
+
+### 9.5 Boundaries（明示）
+
+* **集合論反射是有限視窗版**：`universe.mbt` 的「`V`」是物化的 `V_4`（16 個集合），不是全部 HF 集合；`club.mbt` 用探針集與具體極限（`sup_n (1+n) = ω`），不是對所有序數的全稱量化。
+* **QIIT 良定義**是在一條 Kleene 鏈（fuel 5、上限 64）的居民上逐對檢查，不是對所有 QIIT 項的全稱定理；商用燃料上界（32），互觸等式用完即停，不假裝等價閉包。
+* **SLD 完備性**是在窮舉出的目標空間（簽名 `Int/Bool/Array/Pair/Show`、大小 ≤ 6）內與無剪枝搜尋對照，不是所有 Horn 程式的全稱完備性定理。
+* **實例修補**用節點數度量定向（不是完整 RPO/KBO），存在「節點數不定向但其實終止」的系統會被報告為未定向；回合數是上界。
+* **Lean 側仍凍結在 492 條定理**，本輪新增的 48 條能力定律尚未鏡射（`lean/labels/coverage.md` 已標明只涵蓋遷移前的 437 條）；`lean/KtLaws/Reflect/Universe.lean` 仍是**舊玩具模型**的鏡射，屬留檔、不代表能力 —— kt 側的玩具已刪除。
+
+### 9.6 交付清單（給下一次接手）
+
+1. 新能力入口：`meta/instances/modules.mbt`（匯入圖）、`meta/reflect/club.mbt`（club 組合學）、`meta/reflect/universe.mbt`（HF 語意）。
+2. 對帳主文件：`meta/CAPABILITIES.md`（能力三段式＋淌欠結案表＋驗證指令）。
+3. 可重跑工具：`tools/gen_laws.py`（定律登記）、`tools/gen_labels.py`（標籤重生）。
+4. 下一步（若要繼續推進）：把「等式進 schema」的良定義性提升為對任意 QIIT 項的全稱敘述（需要 signed 表示與 logical relation，屬證明義務）；把 Lean 側的玩具宇宙鏡射換成 HF 版本或明確標為廢棄。
+
+### 9.7 持續整合（`/.github/workflows/ci.yml`）
+
+2026-11-07 之前的遠端倉庫**沒有任何 workflow**（`actions/workflows` 為 0），所以「CI 通過」只能靠本機人肉複跑。本輪補上一條真實可跑的閘門，步驟與本機驗證完全一致：
+
+| 步驟 | 指令 | 通過條件 |
+|---|---|---|
+| 工具鏈 | 官方 `cli.moonbitlang.com/install/unix.sh`＋`moon update` | `moon version` 有輸出（不依賴第三方 action，避免 marketplace 依賴漂移） |
+| 靜態 | `moon check --deny-warn --target wasm-gc` | 0 warning／0 error |
+| 建置 | `moon build --target wasm-gc` | `Finished` |
+| 登記新鮮度 | `python3 tools/gen_laws.py && git diff --exit-code -- 'meta/*/laws.mbt'` | 重新產生後工作區無差異（防「加了 `law_*` 卻忘記重生 `laws.mbt`」） |
+| 定律 | `moon run cmd/metatheory --target wasm-gc` | `通過 485 / 485 定律` |
+| 定理 | `moon run cmd/main --target wasm-gc` | `passed 129/129` |
+| 證書 | `moon run cmd/showcase --target wasm-gc` | `47/47`、硬體加速 `all_ok=true` |
+| 架構 | `python3 tools/arch_check.py` | `architecture ok` |
+
+觸發：`push` 到 `main`、`pull_request` 與 `workflow_dispatch`；`concurrency` 對同一 ref 取消舊跑，避免長跑堆積。

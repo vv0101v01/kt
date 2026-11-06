@@ -2,9 +2,10 @@
 /// Face 公式商去語義等價後的一個類，以 cubical 的 canonical ROBDD
 /// 儲存。從 Face 建構時必須先過 `bdd_of_face`；裸 Face AST 的
 /// 結構相等不是語義相等（例如 `φ ∨ φ` 與 `φ`）。
+#derive(Eq)
 pub(all) struct FaceClass {
   bdd : @cub.Bdd
-} derive(Eq)
+}
 
 ///|
 pub extend FaceClass with Eq::{equal, not_equal}

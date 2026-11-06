@@ -11,11 +11,12 @@
 ///|
 /// Observation matrix along a mathematical evolution / deformation trajectory
 /// (`[D-RowSet]`): each row is one state's integer invariant tuple.
+#derive(Debug, Eq)
 pub(all) struct ObservationRowSet {
   name : String
   columns : Array[String]
   rows : Array[Array[Int32]]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ObservationRowSet with @moonbitlang/core/debug.Debug::{to_repr}
@@ -218,13 +219,14 @@ pub fn relation_in_derived_span(
 
 ///|
 /// Report for a two-stage evolutionary discovery & out-of-sample transfer experiment (`[P-Transfer]`).
+#derive(Debug, Eq)
 pub(all) struct EvolutionTransferReport {
   family_id : String
   derived_count : Int32
   target_derived_on_train : Bool
   target_holds_on_transfer : Bool
   mirage_rejected_on_transfer : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend EvolutionTransferReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -595,13 +597,14 @@ pub fn discover_six_evolution_laws() -> Array[EvolutionTransferReport] {
 ///|
 /// The five epistemic relational lenses (`相對`, `對偶`, `對比`, `蘊含`, `比率`)
 /// used to extract new theorems, counterexamples, and preconditions systematically.
+#derive(Debug, Eq)
 pub(all) enum EpistemicLensKind {
   LensRelative
   LensDual
   LensContrast
   LensImplication
   LensScaleRatio
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend EpistemicLensKind with @moonbitlang/core/debug.Debug::{to_repr}
@@ -614,6 +617,7 @@ pub extend EpistemicLensKind with Eq::{not_equal, equal}
 /// for `k` predicates: stores transitive implication matrix `implies[i][j]`,
 /// explicit minimal counterexample sample ID `counterexample[i][j]` (`-1` when `i => j`),
 /// and number of non-singleton equivalence classes (`i != j` with `i <=> j`).
+#derive(Debug, Eq)
 pub(all) struct ImplicationLatticeReport {
   num_samples : Int32
   num_predicates : Int32
@@ -621,7 +625,7 @@ pub(all) struct ImplicationLatticeReport {
   counterexamples : Array[Array[Int32]]
   strict_unidirectional_edges : Int32
   nontrivial_equiv_pairs : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ImplicationLatticeReport with @moonbitlang/core/debug.Debug::{

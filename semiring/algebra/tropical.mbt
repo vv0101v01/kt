@@ -14,9 +14,10 @@ pub let trop_inf : Int32 = 0x3FFF_FFFF
 
 ///|
 /// 熱帶半環元素（min-plus）。
+#derive(Eq)
 pub(all) struct Trop {
   v : Int32
-} derive(Eq)
+}
 
 ///|
 /// 建構：權值會被夾在合法範圍內（超過 INF 視為 +∞）。
@@ -144,9 +145,10 @@ pub impl GroupElement for Trop with fn order_bound(_a) {
 
 ///|
 /// 熱帶半環的最大值版本 (max,+)：⊕ = max、⊗ = +，零元 = -∞。
+#derive(Eq)
 pub(all) struct TropMax {
   v : Int32
-} derive(Eq)
+}
 
 ///|
 pub let trop_neg_inf : Int32 = -0x3FFF_FFFF
@@ -255,9 +257,10 @@ pub let cap_max : Int32 = 0x3FFF_FFFF
 ///
 /// 這是一個格序半環：join = max = ⊕、meet = min = ⊗，
 /// 且 min/max 互相分配，故 ⊗ 對 ⊕ 及 meet 皆分配。
+#derive(Eq)
 pub(all) struct Bottleneck {
   w : Int32
-} derive(Eq)
+}
 
 ///|
 pub fn Bottleneck::new(w : Int32) -> Bottleneck {
@@ -347,9 +350,10 @@ pub impl StarSemiring for Bottleneck with fn star(_a) {
 /// 這是**非冪等**半環：Floyd–Warshall 的原地更新在這裡是錯的
 /// （同一條路徑會被重複累加），見 matrix/star.mbt 的型別約束與
 /// tests 中的負面案例。
+#derive(Eq)
 pub(all) struct Counting {
   n : Int64
-} derive(Eq)
+}
 
 ///|
 pub fn Counting::new(n : Int64) -> Counting {
@@ -417,9 +421,10 @@ pub impl StarSemiring for Counting with fn star(a) {
 
 ///|
 /// 機率半環 (Double, +, ×)。
+#derive(Eq)
 pub(all) struct Prob {
   p : Double
-} derive(Eq)
+}
 
 ///|
 pub fn Prob::new(p : Double) -> Prob {
@@ -468,9 +473,10 @@ pub fn Prob::star_checked(self : Prob) -> Result[Prob, String] {
 
 ///|
 /// 布林半環 (∨, ∧)：可作為關係代數的標量版。
+#derive(Eq)
 pub(all) struct BoolSr {
   b : Bool
-} derive(Eq)
+}
 
 ///|
 pub fn BoolSr::of(b : Bool) -> BoolSr {

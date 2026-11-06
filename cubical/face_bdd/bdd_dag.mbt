@@ -576,10 +576,11 @@ pub fn bdd_dag_witness(m : BddManager, root : Int32) -> Array[Bool]? {
 }
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum FaceDecision {
   FaceDecided(Bool)
   FaceBudgetExceeded
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FaceDecision with @moonbitlang/core/debug.Debug::{to_repr}
@@ -700,11 +701,12 @@ fn face_dpll(
 }
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum FaceSatDecision {
   FaceSat(Array[Bool])
   FaceUnsat
   FaceSearchBudgetExceeded
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FaceSatDecision with @moonbitlang/core/debug.Debug::{to_repr}

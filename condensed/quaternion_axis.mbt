@@ -14,12 +14,13 @@
 
 ///|
 /// Quaternion `w + x i + y j + z k` used by the condensed rotation axis.
+#derive(Debug, Eq)
 pub(all) struct CondQuaternion {
   w : Double
   x : Double
   y : Double
   z : Double
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondQuaternion with @moonbitlang/core/debug.Debug::{to_repr}
@@ -29,11 +30,12 @@ pub extend CondQuaternion with Eq::{not_equal, equal}
 
 ///|
 /// Three-dimensional vector acted on by quaternion conjugation/reflection.
+#derive(Debug, Eq)
 pub(all) struct CondVector3 {
   x : Double
   y : Double
   z : Double
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondVector3 with @moonbitlang/core/debug.Debug::{to_repr}
@@ -44,6 +46,7 @@ pub extend CondVector3 with Eq::{not_equal, equal}
 ///|
 /// Converging truncated integrals of `1 / (1 + x^2)` on `[0, B]`.
 /// The tail is exactly `atan(1/B)` and is bounded above by `1/B`.
+#derive(Debug, Eq)
 pub(all) struct CondImproperIntegralReport {
   cutoff : Double
   panels : Int32
@@ -56,7 +59,7 @@ pub(all) struct CondImproperIntegralReport {
   target : Double
   residual : Double
   converged : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondImproperIntegralReport with @moonbitlang/core/debug.Debug::{
@@ -69,6 +72,7 @@ pub extend CondImproperIntegralReport with Eq::{not_equal, equal}
 ///|
 /// Step-doubling report for `q' = (1/2) q omega`, `omega^2 = -|omega|^2`.
 /// RK4 states are deliberately NOT renormalized: norm drift remains visible.
+#derive(Debug, Eq)
 pub(all) struct CondQuaternionOdeReport {
   steps : Array[Int32]
   errors : Array[Double]
@@ -79,7 +83,7 @@ pub(all) struct CondQuaternionOdeReport {
   fine_norm_drift : Double
   reverse_roundtrip_error : Double
   converged : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondQuaternionOdeReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -89,6 +93,7 @@ pub extend CondQuaternionOdeReport with Eq::{not_equal, equal}
 
 ///|
 /// Full relational and conservation report for the condensed rotation axis.
+#derive(Debug, Eq)
 pub(all) struct CondQuaternionAxisReport {
   dual_ok : Bool
   implication_ok : Bool
@@ -107,7 +112,7 @@ pub(all) struct CondQuaternionAxisReport {
   persistent_snapshot_ok : Bool
   tamper_detected : Bool
   conserved : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondQuaternionAxisReport with @moonbitlang/core/debug.Debug::{

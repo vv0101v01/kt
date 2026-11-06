@@ -39,10 +39,11 @@
 //     extension and remains outside this fragment.
 
 ///|
+#derive(Debug, Eq)
 pub struct MultiQuadNum {
   basis : Array[BigInt]
   coeffs : Array[Rat]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend MultiQuadNum with @moonbitlang/core/debug.Debug::{to_repr}

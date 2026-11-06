@@ -11,13 +11,14 @@
 
 ///|
 /// Order-3 tensor of shape `dim0 x dim1 x dim2` over prime field `F_p` (`field = p`).
+#derive(Debug, Eq)
 pub(all) struct Tensor3 {
   dim0 : Int32
   dim1 : Int32
   dim2 : Int32
   field : Int32
   data : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Tensor3 with @moonbitlang/core/debug.Debug::{to_repr}
@@ -239,6 +240,7 @@ pub fn t3_check_sl2_shear_and_s3_invariance(t : Tensor3) -> Bool {
 /// Complete exhaustive classification of all `3^8 = 6,561` `2x2x2` tensors over `F_3`
 /// (`[T-Strassen-F3]`): stores exact tensor rank (`0..3`), unordered 2-term rank-1
 /// decomposition multiplicity, and Cayley hyperdeterminant for every base-3 code `0..6560`.
+#derive(Debug, Eq)
 pub(all) struct F3Tensor222Atlas {
   total_tensors : Int32
   rank_counts : Array[Int32]
@@ -251,7 +253,7 @@ pub(all) struct F3Tensor222Atlas {
   ranks : Array[Int32]
   rank2_decomp_counts : Array[Int32]
   hyperdets : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend F3Tensor222Atlas with @moonbitlang/core/debug.Debug::{to_repr}
@@ -372,11 +374,12 @@ pub fn f3_tensor222_atlas_build() -> F3Tensor222Atlas {
 
 ///|
 /// Discrete Radon transform parameters on finite grid `Z_n^2` with values in `F_p`.
+#derive(Debug, Eq)
 pub(all) struct DiscreteRadon {
   n : Int32
   p : Int32
   dirs : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DiscreteRadon with @moonbitlang/core/debug.Debug::{to_repr}
@@ -530,6 +533,7 @@ pub fn radon_energy_triple(
 ///|
 /// Report for twisted group algebra `k^omega[(Z/ell)^d]` under bilinear 2-cocycle
 /// `omega(a, b) = sum_{i < j} B_{ij} a_i b_j (mod ell)`.
+#derive(Debug, Eq)
 pub(all) struct TwistedGroupReport {
   ell : Int32
   dim_d : Int32
@@ -538,7 +542,7 @@ pub(all) struct TwistedGroupReport {
   center_dim : Int32
   cocycle_sum_mod_ell : Int32
   coboundary_gauge_invariant : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend TwistedGroupReport with @moonbitlang/core/debug.Debug::{to_repr}

@@ -1,8 +1,8 @@
 # cubical-hermitian — 一部可執行的數學工程史
 
 > MoonBit · `vv0101v01/cubical-hermitian` v2.0.0 · `preferred_target = "wasm"`
-> **8 聯邦 + 統一頂點 · 39 套件 · 48 元件 · 222 個 `.mbt` · 152,883 行**
-> `python3 tools/arch_check.py` → `architecture ok` · `cmd/main` → **129/129 定理** · `cmd/showcase` → **47/47 證書**
+> **9 聯邦 + 統一頂點 · 44 套件 · 53 元件 · 245 個 `.mbt` · 162,396 行**
+> `python3 tools/arch_check.py` → `architecture ok` · `cmd/main` → **129/129 定理** · `cmd/metatheory` → **485/485 定律** · `cmd/showcase` → **47/47 證書**
 
 這個倉庫把「依賴立方型別論 × 精確代數 × 有限對稱 × 拓撲斯 × 概形 × 凝聚數學 × 張量幾何」寫成
 一份**可編譯、可判定、可複驗**的程式。它不是論文附錄，而是一條**有年月、有瓶頸、有突破**的工程線。
@@ -15,9 +15,11 @@
 ## 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                       # 222 .mbt / 152,883 行、39 套件、48 元件
+python3 tools/arch_check.py                       # 245 .mbt / 162,396 行、44 套件、53 元件
 moon check --deny-warn --target wasm-gc           # 0 warnings, 0 errors
-moon run --release cmd/main     --target wasm-gc  # 129/129 定理總表
+moon run --release cmd/main        --target wasm-gc  # 129/129 定理總表
+moon run --release cmd/metatheory  --target wasm-gc  # 485/485 定律（反射 × 全域實例 × 歸納-歸納）
+python3 tools/health_scan.py > tools/health_report.md # 死碼／重複／債務盤點（報告，非閘門）
 moon run --release cmd/showcase --target wasm-gc  # 47/47 大一統證書
 moon run cmd/semiringreport --target native       # 19 節量測報告（含限制的量化邊界）
 ```
@@ -46,6 +48,7 @@ moon run cmd/semiringreport --target native       # 19 節量測報告（含限�
 | **第十四期** | 規模化 | 同時 IR、全部最大完成、增量 DAG 與共用 bundle、Hensel／Van Hoeij、剪枝 BDD／DRAT、Eckmann–Hilton／五邊形 4-胞、TLV／認證 CAS／增量同步 | `hensel_multiquad_deflation.mbt`、`artifact_repository.mbt`、`associahedron.mbt` |
 | **第十五期** | 推核心到極限 | BDD／SAT／宿主立方極限推進；`π₁(S¹) ≃ ℤ`；基點環路—懸掛伴隨；Freudenthal 懸掛定理 | `bdd_cutwidth.mbt`、`circle_classify.mbt`、`sphere_homotopy.mbt` |
 | **第十六期** | 六大核心工程完備 | 大宇宙與開放同時 IR、容器正性；DSATUR 最大團與 0~1 黏合方塊；標準 SHA／Ed25519＋WAL；精確 LLL／Van Hoeij；Hopf–Freudenthal 收縮；Huet 延遲約束圖／惰性串流／三方倉庫合併 | `schema_open_ir.mbt`、`module_bft_mvcc.mbt`、`lll_van_hoeij_rouche.mbt`、`hou_unify_stream.mbt` |
+| **第二十二期** | 型別論機制的三根軸（＋四項續作） | 反射＝NbE `decide_eq` ＋可重放憑證 `check_cert` ＋宇宙保守性／Mahlo 反射；全域實例＝Horn/SLD ＋序數終止 ＋臨界對一致性 ＋黏合與鏡像對偶；歸納-歸納＝切片塔 Kleene 鏈（Fin 落後 Nat 一階）＋索引檢查 ＋互遞迴消除器。續作：**STLC 的 β 與索引傳輸**、**一致性判準的完備化**（可達目標宇宙＋區域實例＋擴充穩定性＋Newman）、**可導性擬陣判準**（交換公理太弱，次模性反例）、**R(4,4)=18 與 R(3,5)=14 用 Paley 見證夾死** | 第九聯邦 `meta/`、`cmd/metatheory`（485/485 定律）、[`meta/README.md`](meta/README.md) |
 | **第二十一期** | 七大邊界總帳 + 重構 | 七項能力邊界全部以「突破／變化／推遠／剔除」四重處置收乾；重構成**雙 V 形 + X 形交疊**；新增 `@gcd` 與 `@condensed`；四項猜想進實驗室 | 見下兩節、`architecture.json`、`bridge/` |
 | **v2 Wave 1–4** | 拆包與收斂 | 編年史檔名清零；`cubical` 拆成 7 個無環子套件；`root` 收斂為門面＋定理總表 | `root` 單包微測試 **11.05s → 0.63s**、`pkg.generated.mbti` 精簡 **90%** |
 
@@ -106,6 +109,24 @@ minimal 多項式餘式、`Trop` 的根與重數）。
 這一線的價值不在「多一個功能」，而在**讓前面的數學家不會因為編譯順序、位元組格式或
 崩潰時序而失去可信度**。
 
+**主線 D · 型別論機制的三根軸**（`meta/`，5 套件、19 檔 —— 第九聯邦）
+
+```text
+數學地板（序數 · 合一/反合一 · 擬陣 · 有限複形 · Ramsey）
+   ├─ 反射：          reify ⊣ reflect（NbE）→ decide_eq（快）＋ check_cert（逐步重放） → 宇宙抬升保守性 → Mahlo 式反射
+   ├─ 全域實例：      Horn/SLD 解析 → 序數終止 → 臨界對一致性 → 黏合（H¹ 障礙）→ 鏡像對偶 → Ramsey 深度窗口
+   └─ 歸納-歸納：     schema → 索引檢查 → 切片塔 Kleene 鏈（Fin 落後 Nat 一階）→ 互遞迴消除器 → 序數終止憑證
+                      → STLC 的 β（ctx_insert / subst_insert 的索引傳輸）→ 逐步型別保持
+```
+
+四項續作把「已知未做」變成可執行：STLC 的 β、一致性判準的完備化（可達目標宇宙＋區域實例＋
+擴充穩定性＋Newman 引導）、可導性擬陣判準（交換公理太弱，給出次模性反例）、以及
+**R(4,4) = 18 / R(3,5) = 14**（Paley 圖 P₁₇ 給下界、遞迴上界 9+9 給上界，兩邊夾死，
+不需要 2^153 的窮舉）。細節見 [`meta/README.md`](meta/README.md) §6.5。
+
+這一線的判準和前六期一樣：**不是「實作了特性」，而是「機制中的每一條命題都被重算一次」**。
+`moon run cmd/metatheory` 逐條印出被機器重算的定律與最小見證，不引用任何外部結論。
+
 ---
 
 ## 四、里程碑數字
@@ -123,6 +144,14 @@ minimal 多項式餘式、`Trop` 的根與重數）。
 | 直覺猜想與反例攻擊 | **5 條**：1 條有界倖存、4 條反例後修正 | [`bridge/INTUITIVE_CONJECTURES.md`](bridge/INTUITIVE_CONJECTURES.md) |
 | 上同調 | `h¹(ℙ¹, O(−2)) = 1`；`T²` 杯秩 1 vs `S¹∨S¹∨S²` 秩 0 | `@scheme`、`@topos` |
 | 量化工程的極限 | 26 變量鏈 51 節點、`#SAT=66,791,053`；`n=24` 方塊 1 次求值 | `@face_bdd`、`cubical/kernel` |
+| **型別論機制定律** | **485 / 485** | `cmd/metatheory`（第九聯邦，逐條重算） |
+| Ramsey 的更大值 | **R(4,4)=18**、**R(3,5)=14**（Paley P₁₇ 下界 ＋ 遞迴上界夾死） | `meta/core/ramsey_ex.mbt` |
+| STLC 的 β | 每一步約簡都 `icheck` 通過且索引不變（含走入 binder 的索引傳輸） | `meta/iit/stlc.mbt` |
+| 可導性擬陣性 | 判準（無合成規則落在目標集上 ＋ 每規則最多覆蓋一目標），12 樣本與嚴格秩公理逐一對帳 | `meta/instances/characterize.mbt` |
+| 全代碼健檢 | 死碼候選 **14 → 4**、完全相同函式體 **0**、結構極相近 **0** | [`tools/health_report.md`](tools/health_report.md) |
+| 形式化（進行中） | **492** 條定理已在 Lean 4.35.0 中證明並登記（437 個舊標籤全部有對應；本輪新增 48 條能力定律尚未鏡射）（含 **R(3,4) = 9、R(4,4) = 18、R(3,5) = 14 的精確值**、R(3,3) ≤ 6、R(3,4) ≤ 10、擬陣的秩公理／交換公理／**貪心最優**／對偶 `r** = r`／Q 上線性擬陣、**Euler–Poincaré 全稱版與覆蓋神經的 H¹ 黏合判準**、字典序遞移與 ord_max 是 lattice join／結合的全稱版本、10 條 CNF 恆等式、**歸納-歸納型別的 ι 律與終止性（對所有項）**、**STLC 的 β 索引傳輸與主體約簡**、**擬陣判準／Möbius 併攏障礙／Newman 引理／完備一致性**、**宇宙反射的保守性與 Mahlo 式反射**（極限層成立、臨界後繼失效）、**NbE 的 β/η/冪等/保型，且「先 reflect 再 reify 等於直接 reify」對所有型別成立**、**快判定與逐步憑證兩條路徑一致且篡改被拒**、**實例憑證不靠搜尋即可獨立複驗**） | [`lean/`](lean/README.md) |
+| 反射的兩條判斷路徑 | NbE `decide_eq` 與逐步憑證 `check_cert` 在所有樣本上一致 | `meta/reflect/proof.mbt` |
+| 歸納-歸納的相位差 | `Fin` 的擴張永遠落後 `Nat` 一階（第 1 階段 `Fin = ∅`、第 2 階段才出現） | `meta/iit/schema.mbt` |
 
 ---
 
@@ -143,7 +172,10 @@ minimal 多項式餘式、`Trop` 的根與重數）。
         [ 下 V₁：@gcd 泛消元新最大公因數基底 ]  F_p RREF · ℤ HNF/SNF · 擴張歐氏 · 五域消元
 ```
 
-八個聯邦各自可獨立編譯、獨立驗證；`@gcd`（下頂點）與 `@bridge`（上頂點）是唯一被允許橫向聚合的兩處。
+九個聯邦各自可獨立編譯、獨立驗證；`@gcd`（下頂點）與 `@bridge`（上頂點）是唯一被允許橫向聚合的兩處。
+第九聯邦 `meta/` 不接依賴圖的任一端：它只依賴自己的 `meta/core`，用命題「重算」而非「引用」來支撐三大機制
+（反射／全域實例／歸納-歸納，見 [`meta/README.md`](meta/README.md)）。它是**橫向**加入的第五條主線，
+不改變原有雙 V 形的上下頂點。
 完整依賴圖與層級見 `architecture.json`，規則見 `agent.v2.md`。
 
 ---
@@ -153,6 +185,11 @@ minimal 多項式餘式、`Trop` 的根與重數）。
 | 你想做的事 | 從這裡開始 |
 |---|---|
 | 全景與快速上手 | 本檔 → [`readme.v2.md`](readme.v2.md) |
+| 型別論機制（反射／實例／歸納-歸納） | [`meta/README.md`](meta/README.md) → `meta/reflect/nbe.mbt` → `meta/instances/engine.mbt` → `meta/iit/schema.mbt` |
+| 程式碼健檢／債務盤點 | `python3 tools/health_scan.py` → [`tools/health_report.md`](tools/health_report.md) |
+| 三個能力的能力對帳 | [`meta/CAPABILITIES.md`](meta/CAPABILITIES.md)（能不能用／能不能自己檢查／邊界在哪） |
+| 定律的 Lean 4 形式化 | [`lean/README.md`](lean/README.md)（`lake build`；目前 492 條定理、437 個舊標籤（340 個互異）全覆蓋；MoonBit 側現有 485 條） |
+| 為什麼不用 Why3 + Z3 | [`meta/prove_feasibility.md`](meta/prove_feasibility.md)（`moon prove` 實測報告） |
 | 型別論／證明助理 | [`cubical/finite/`](cubical/finite/README.md) → [`cubical/kernel/`](cubical/kernel/README.md) → [`cubical/homotopy/`](cubical/homotopy/README.md) |
 | 演算法／效能 | [`semiring/matrix/`](semiring/matrix/README.md) → [`semiring/sim/`](semiring/sim/README.md) → [`accel/`](accel/README.md) → [`cmd/semiringreport/`](cmd/semiringreport/README.md) |
 | 代數幾何／範疇論 | [`symlib/`](symlib/README.md) → [`topos/`](topos/README.md) → [`scheme/`](scheme/README.md) → [`condensed/`](condensed/README.md) |

@@ -7,13 +7,14 @@
 /// assignments, partitions `{0,1}^n` into `stalk_count` symbolic ROBDD regions whose
 /// disjunction is `True` (verified via ROBDD tautology `OR_i region_i == True`) and
 /// checks term conversion once per symbolic stalk!
+#derive(Debug, Eq)
 pub(all) struct SheafPartitionConvReport {
   n_bool_vars : Int32
   stalk_count : Int32
   partition_covers_top : Bool
   all_stalks_convertible : Bool
   equivalent_brute_force_cases : BigInt
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend SheafPartitionConvReport with @moonbitlang/core/debug.Debug::{
@@ -84,6 +85,7 @@ pub fn conv_sheaf_glued_boolean_partition(
 /// Report for `[T-Clique-Kernel]`: exact Maximum-Cardinality Clique solver with
 /// polynomial-time **Universal-Vertex Extraction + Neighborhood-Domination + Simplicial
 /// Elimination** kernelization before DSATUR branch-and-bound.
+#derive(Debug, Eq)
 pub(all) struct KernelizedCliqueReport {
   original_vertices : Int32
   universal_extracted : Int32
@@ -92,7 +94,7 @@ pub(all) struct KernelizedCliqueReport {
   max_clique_size : Int32
   clique_vertices : Array[Int32]
   valid_clique : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend KernelizedCliqueReport with @moonbitlang/core/debug.Debug::{to_repr}

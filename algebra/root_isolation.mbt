@@ -1141,12 +1141,13 @@ pub fn check_root_isolation() -> Bool {
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct SeparatedEigenInterval {
   lo : Rat
   hi : Rat
   multiplicity : Int32
   cluster : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend SeparatedEigenInterval with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1155,10 +1156,11 @@ pub extend SeparatedEigenInterval with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend SeparatedEigenInterval with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct JacobiClusterSeparation {
   intervals : Array[SeparatedEigenInterval]
   complete : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend JacobiClusterSeparation with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1471,6 +1473,7 @@ pub fn check_jacobi_cluster_separation() -> Bool {
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct JacobiAdaptiveReport {
   cluster_aware : JacobiClusterAwareReport
   separation : JacobiClusterSeparation?
@@ -1478,7 +1481,7 @@ pub struct JacobiAdaptiveReport {
   exact_width_bits : Int32
   target_met : Bool
   max_interval_width : Rat
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend JacobiAdaptiveReport with @moonbitlang/core/debug.Debug::{to_repr}

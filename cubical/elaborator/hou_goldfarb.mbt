@@ -160,6 +160,7 @@ pub fn hou_match_higher_order_lambda(
 /// Report for `[T-Goldfarb-Diophantine]`: constructive compilation of Diophantine
 /// multiplication `a * b == c` and addition `a + b == c` into second-order `UTerm`
 /// unification constraints (Goldfarb 1981).
+#derive(Debug, Eq)
 pub(all) struct GoldfarbDiophantineReport {
   a : Int32
   b : Int32
@@ -170,7 +171,7 @@ pub(all) struct GoldfarbDiophantineReport {
   addition_eq_holds : Bool
   multiplication_eq_holds : Bool
   wrong_product_refuted : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend GoldfarbDiophantineReport with @moonbitlang/core/debug.Debug::{

@@ -6,12 +6,13 @@
 
 ///|
 /// Bit-packed dense matrix over `GF(2)` storing 64 columns per `UInt64` word.
+#derive(Debug, Eq)
 pub struct Gf2BitMatrix {
   rows : Int32
   cols : Int32
   words_per_row : Int32
   data : Array[UInt64]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Gf2BitMatrix with @moonbitlang/core/debug.Debug::{to_repr}
@@ -185,33 +186,17 @@ pub fn gf2_rref_rank_u64(a : Gf2BitMatrix) -> Int32 {
 /// Dual-rail bit-sliced vector of 64 elements in `GF(3) = {0, 1, 2}`:
 /// lane `i` encodes `0` as `(0, 0)`, `1` as `(1, 0)`, and `2` as `(0, 1)`
 /// with canonical invariant `(lo & hi) == 0UL`.
+#derive(Debug, Eq)
 pub struct Gf3Slice64 {
   lo : UInt64
   hi : UInt64
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Gf3Slice64 with @moonbitlang/core/debug.Debug::{to_repr}
 
 ///|
 pub extend Gf3Slice64 with Eq::{not_equal, equal}
-
-///|
-pub fn gf3_slice64_pack(trits : Array[Int32], offset : Int32) -> Gf3Slice64 {
-  let mut lo = 0UL
-  let mut hi = 0UL
-  let mut i = 0
-  while i < 64 && offset + i < trits.length() {
-    let v = (trits[offset + i] % 3 + 3) % 3
-    if v == 1 {
-      lo = lo | (1UL << i)
-    } else if v == 2 {
-      hi = hi | (1UL << i)
-    }
-    i = i + 1
-  }
-  Gf3Slice64::{ lo, hi, }
-}
 
 ///|
 pub fn gf3_slice64_get(s : Gf3Slice64, lane : Int32) -> Int32 {
@@ -261,6 +246,7 @@ pub fn gf3_mul64(a : Gf3Slice64, b : Gf3Slice64) -> Gf3Slice64 {
 
 ///|
 /// Report of batched 64-way SWAR bit-sliced `F_3^{2x2x2}` Cayley hyperdeterminant sweep.
+#derive(Debug, Eq)
 pub(all) struct BitslicedF3HyperdetReport {
   total_tensors : Int32
   u64_chunks_processed : Int32
@@ -268,7 +254,7 @@ pub(all) struct BitslicedF3HyperdetReport {
   det_eq_one : Int32
   det_eq_two : Int32
   matches_tensor_atlas : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend BitslicedF3HyperdetReport with @moonbitlang/core/debug.Debug::{

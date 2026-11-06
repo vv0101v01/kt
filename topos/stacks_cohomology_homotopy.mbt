@@ -41,10 +41,11 @@ pub(all) struct CoverDescentDiagram {
 
 ///|
 /// A descent datum `(x_i ∈ M(U_i), φ_{ij} : p2^*(x_j) -> p1^*(x_i) in M(U_{ij}))`.
+#derive(Debug, Eq)
 pub(all) struct DescentDatum {
   local_objs : Array[Int32]
   transitions : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DescentDatum with @moonbitlang/core/debug.Debug::{to_repr}
@@ -54,11 +55,12 @@ pub extend DescentDatum with Eq::{not_equal, equal}
 
 ///|
 /// Rectangular exact rational matrix `nrows × ncols` for homological algebra.
+#derive(Debug, Eq)
 pub(all) struct RectQMat {
   nrows : Int32
   ncols : Int32
   rows : Array[Array[@exactalg.Rat]]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend RectQMat with @moonbitlang/core/debug.Debug::{to_repr}
@@ -93,13 +95,14 @@ pub(all) struct SimplicialNerve {
 
 ///|
 /// Extracted homotopy invariants of a site / cover nerve.
+#derive(Debug, Eq)
 pub(all) struct HomotopyTypeSummary {
   pi0_components : Int32
   pi1_free_rank : Int32
   pi1_torsion_invariants : Array[Int32]
   betti_numbers : Array[Int32]
   euler_characteristic : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HomotopyTypeSummary with @moonbitlang/core/debug.Debug::{to_repr}

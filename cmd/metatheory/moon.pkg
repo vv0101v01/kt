@@ -1,0 +1,8 @@
+import {
+  "vv0101v01/cubical-hermitian/meta/core",
+  "vv0101v01/cubical-hermitian/meta/instances",
+  "vv0101v01/cubical-hermitian/meta/iit",
+  "vv0101v01/cubical-hermitian/meta/reflect",
+}
+
+pkgtype(kind: "executable")

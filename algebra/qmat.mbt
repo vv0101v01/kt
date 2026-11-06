@@ -11,10 +11,11 @@
 pub type QVec = Array[Rat]
 
 ///|
+#derive(Debug, Eq)
 pub struct QMat {
   n : Int32
   rows : Array[Array[Rat]]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend QMat with @moonbitlang/core/debug.Debug::{to_repr}

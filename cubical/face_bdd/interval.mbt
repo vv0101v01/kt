@@ -13,6 +13,7 @@
 // pruning of unsatisfiable / subsumed branches — rests on these decisions.
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum Dim {
   DZero
   DOne
@@ -20,7 +21,7 @@ pub(all) enum Dim {
   DNeg(Dim)
   DAnd(Dim, Dim)
   DOr(Dim, Dim)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Face with @moonbitlang/core/debug.Debug::{to_repr}
@@ -125,6 +126,7 @@ pub fn interval_laws_hold(samples : Array[Double]) -> Bool {
 }
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum Face {
   FTop
   FBot
@@ -132,7 +134,7 @@ pub(all) enum Face {
   FEq1(Dim)
   FAnd(Face, Face)
   FOr(Face, Face)
-} derive(Debug, Eq)
+}
 
 ///|
 /// Does the face hold at this endpoint assignment?

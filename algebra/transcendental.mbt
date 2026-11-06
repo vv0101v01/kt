@@ -39,6 +39,7 @@
 /// A rational enclosure `[lo, hi]` of a real constant, together with the
 /// number of series terms summed and the rigorous tail bound used to
 /// widen the partial sum into an enclosure.
+#derive(Debug, Eq)
 pub struct CertEnclosure {
   lo : Rat
   hi : Rat
@@ -46,7 +47,7 @@ pub struct CertEnclosure {
   terms : Int32
   /// A rational `r >= 0` with `value - partial_sum` in `[0, r]`.
   tail : Rat
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CertEnclosure with @moonbitlang/core/debug.Debug::{to_repr}
@@ -158,6 +159,7 @@ pub fn certified_pi(n_terms : Int32) -> CertEnclosure {
 /// The certificate stores the witnesses and `verified` records an
 /// independent re-derivation of every inequality from the stored `m`,
 /// `n`, `a` and the enclosure of `e`.
+#derive(Debug, Eq)
 pub struct EIrrCertificate {
   /// The numerator of the refuted rational.
   p : BigInt
@@ -182,7 +184,7 @@ pub struct EIrrCertificate {
   q_divides_m : Bool
   /// Independent re-verification of all of the above.
   verified : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend EIrrCertificate with @moonbitlang/core/debug.Debug::{to_repr}
@@ -274,6 +276,7 @@ pub fn e_refute_rational(p : BigInt, q : Int32) -> Bool {
 
 ///|
 /// Result of a "refine until 0 is excluded" refutation.
+#derive(Debug, Eq)
 pub struct RefutationResult {
   /// True when the certified enclosure excludes the target value.
   refuted : Bool
@@ -281,7 +284,7 @@ pub struct RefutationResult {
   terms : Int32
   lo : Rat
   hi : Rat
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend RefutationResult with @moonbitlang/core/debug.Debug::{to_repr}

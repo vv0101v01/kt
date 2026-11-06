@@ -19,6 +19,7 @@
 // malformed file is rejected rather than expanded without limit.
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum ModuleBinaryStatus {
   ModuleBinaryOk
   ModuleBinaryBadMagic
@@ -28,7 +29,7 @@ pub(all) enum ModuleBinaryStatus {
   ModuleBinaryMalformed
   ModuleBinaryTrailingBytes
   ModuleBinaryValidationFailed
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleBinaryStatus with @moonbitlang/core/debug.Debug::{to_repr}
@@ -37,10 +38,11 @@ pub extend ModuleBinaryStatus with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ModuleBinaryStatus with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleBinaryLoad {
   status : ModuleBinaryStatus
   module_ : CompiledModule?
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleBinaryLoad with @moonbitlang/core/debug.Debug::{to_repr}
@@ -72,11 +74,12 @@ pub fn compiled_module_binary_supported_versions() -> Array[Int32] {
 /// Machine-readable version policy for the compiled-module
 /// format: the current written version, every readable version,
 /// and the oldest version this build can still write on request.
+#derive(Debug, Eq)
 pub(all) struct BinaryVersionPolicy {
   current : Int32
   supported : Array[Int32]
   oldest_writable : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend BinaryVersionPolicy with @moonbitlang/core/debug.Debug::{to_repr}
@@ -2876,12 +2879,13 @@ pub struct CompiledModuleStore {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct CompiledModuleStoreStats {
   entries : Int32
   total_bytes : Int32
   hits : Int32
   misses : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CompiledModuleStoreStats with @moonbitlang/core/debug.Debug::{
@@ -3262,11 +3266,12 @@ pub fn shared_dag_bundle_load_binary_report(
 ///|
 /// Typed TLV extension section attached to a forward-compatible compiled-module
 /// envelope (`CHMODENV` v1).
+#derive(Debug, Eq)
 pub(all) struct ModuleTlvSection {
   tag : Int32
   critical : Bool
   payload : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleTlvSection with @moonbitlang/core/debug.Debug::{to_repr}
@@ -3275,12 +3280,13 @@ pub extend ModuleTlvSection with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ModuleTlvSection with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct CompiledModuleEnvelopeLoad {
   status : ModuleBinaryStatus
   module_ : CompiledModule?
   recognized_sections : Array[ModuleTlvSection]
   skipped_noncritical_tags : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CompiledModuleEnvelopeLoad with @moonbitlang/core/debug.Debug::{

@@ -13,6 +13,7 @@
 
 ///|
 /// Auditable before/after counts for the finite coherence-angle quotient.
+#derive(Debug, Eq)
 pub(all) struct CoherenceAngleEliminationReport {
   local_cells : Int32
   filler_variants : Int32
@@ -30,7 +31,7 @@ pub(all) struct CoherenceAngleEliminationReport {
   kan_filler_ok : Bool
   associahedron_ok : Bool
   holds : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CoherenceAngleEliminationReport with @moonbitlang/core/debug.Debug::{
@@ -42,6 +43,7 @@ pub extend CoherenceAngleEliminationReport with Eq::{not_equal, equal}
 
 ///|
 /// Parameter-sized quotient summary used to attack the scaling conjecture.
+#derive(Debug, Eq)
 pub(all) struct CoherenceQuotientSummary {
   local_cells : Int32
   filler_variants : Int32
@@ -50,7 +52,7 @@ pub(all) struct CoherenceQuotientSummary {
   unordered_classes : Int32
   conserved_incidence_count : Int32
   holds : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CoherenceQuotientSummary with @moonbitlang/core/debug.Debug::{

@@ -616,11 +616,12 @@ pub fn tube_paths_conv_under_face(
 }
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum DSystemIncompatibility {
   DSystemOk
   DSystemBaseIncompatible
   DSystemBranchesIncompatible
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DSystemIncompatibility with @moonbitlang/core/debug.Debug::{to_repr}
@@ -629,12 +630,13 @@ pub extend DSystemIncompatibility with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend DSystemIncompatibility with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct DSystemCompatibility {
   compatible : Bool
   reason : DSystemIncompatibility
   branch : Int32
   other_branch : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DSystemCompatibility with @moonbitlang/core/debug.Debug::{to_repr}

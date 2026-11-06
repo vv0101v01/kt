@@ -1138,12 +1138,13 @@ pub fn checked_dcube_extensional_eq(
 }
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct DCubeYonedaReport {
   natural : Bool
   generic_reified_term : DTerm
   audited_substitutions : Int32
   failed_substitutions : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DCubeYonedaReport with @moonbitlang/core/debug.Debug::{to_repr}

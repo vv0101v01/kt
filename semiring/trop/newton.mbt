@@ -24,10 +24,11 @@
 
 ///|
 /// 平面整點。
+#derive(Eq)
 pub(all) struct Pt2 {
   x : Int32
   y : Int32
-} derive(Eq)
+}
 
 ///|
 pub extend Pt2 with Eq::{equal, not_equal}
@@ -257,12 +258,13 @@ pub fn BPoly::newton_area2(self : BPoly) -> Int64 {
 
 ///|
 /// 抬升平面的法向量：`nx·x + ny·y + nz·z = d`，且 `nz > 0`（下凸包）。
+#derive(Eq)
 pub(all) struct Plane {
   nx : Int64
   ny : Int64
   nz : Int64
   d : Int64
-} derive(Eq)
+}
 
 ///|
 pub extend Plane with Eq::{equal, not_equal}

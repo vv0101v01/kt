@@ -9,10 +9,11 @@
 // A matrix satisfying both is exactly an orthogonal projector.
 
 ///|
+#derive(Debug, Eq)
 pub struct Complex {
   re : Double
   im : Double
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Complex with @moonbitlang/core/debug.Debug::{to_repr}

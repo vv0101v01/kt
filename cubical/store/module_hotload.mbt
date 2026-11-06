@@ -34,6 +34,7 @@
 ///|
 /// What a proposed hot load would do, decided before anything is
 /// mutated.
+#derive(Debug, Eq)
 pub(all) enum HotLoadDecision {
   /// No object is installed at this path yet; this is a pure addition.
   HotAdd
@@ -44,7 +45,7 @@ pub(all) enum HotLoadDecision {
   HotRelink(Array[String])
   /// Rejected before any mutation, with a reason.
   HotReject(String)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HotLoadDecision with @moonbitlang/core/debug.Debug::{to_repr}
@@ -54,6 +55,7 @@ pub extend HotLoadDecision with Eq::{not_equal, equal}
 
 ///|
 /// One entry in the hot-load audit log.
+#derive(Debug, Eq)
 pub struct HotLoadRecord {
   path : String
   /// Epoch after a successful apply; the pre-apply epoch otherwise.
@@ -64,7 +66,7 @@ pub struct HotLoadRecord {
   rolled_back : Bool
   /// Empty on success; the rejection or rollback reason otherwise.
   reason : String
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HotLoadRecord with @moonbitlang/core/debug.Debug::{to_repr}
@@ -74,6 +76,7 @@ pub extend HotLoadRecord with Eq::{not_equal, equal}
 
 ///|
 /// The outcome of one `hot_load_apply`.
+#derive(Debug, Eq)
 pub struct HotLoadReport {
   accepted : Bool
   epoch_before : Int32
@@ -84,7 +87,7 @@ pub struct HotLoadReport {
   replacements : Int32
   rolled_back : Bool
   reason : String
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HotLoadReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -94,11 +97,12 @@ pub extend HotLoadReport with Eq::{not_equal, equal}
 
 ///|
 /// A live module environment that can be updated at runtime.
+#derive(Debug, Eq)
 pub struct HotLoadEnv {
   mut modules : Array[CompiledModule]
   mut epoch : Int32
   mut history : Array[HotLoadRecord]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HotLoadEnv with @moonbitlang/core/debug.Debug::{to_repr}

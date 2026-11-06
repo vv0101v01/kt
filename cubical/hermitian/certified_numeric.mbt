@@ -99,10 +99,11 @@ using @finite {
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct QuadC {
   re : QuadNum
   im : QuadNum
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend QuadC with @moonbitlang/core/debug.Debug::{to_repr}

@@ -9,10 +9,11 @@
 // its counterexample instead of silently rewriting history.
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum IntuitiveConjectureOutcome {
   BoundedSurvival
   RefutedAndRefined
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend IntuitiveConjectureOutcome with @moonbitlang/core/debug.Debug::{
@@ -25,6 +26,7 @@ pub extend IntuitiveConjectureOutcome with Eq::{not_equal, equal}
 ///|
 /// One conjecture, the intuition that suggested it, and the outcome of an
 /// actual bounded counterexample search.
+#derive(Debug, Eq)
 pub(all) struct IntuitiveConjectureRecord {
   id : String
   title : String
@@ -36,7 +38,7 @@ pub(all) struct IntuitiveConjectureRecord {
   refined_statement : String
   evidence : String
   audit_ok : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend IntuitiveConjectureRecord with @moonbitlang/core/debug.Debug::{
@@ -49,12 +51,13 @@ pub extend IntuitiveConjectureRecord with Eq::{not_equal, equal}
 ///|
 /// Five records plus outcome counts.  `holds` audits the experiment, not the
 /// truth of every original statement.
+#derive(Debug, Eq)
 pub(all) struct IntuitiveConjectureLabReport {
   records : Array[IntuitiveConjectureRecord]
   bounded_survivals : Int32
   refuted_and_refined : Int32
   holds : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend IntuitiveConjectureLabReport with @moonbitlang/core/debug.Debug::{
@@ -407,9 +410,4 @@ pub fn verify_intuitive_conjecture_lab() -> IntuitiveConjectureLabReport {
     audits_ok &&
     bounded_survivals + refuted_and_refined == 5,
   }
-}
-
-///|
-pub fn check_intuitive_conjecture_lab() -> Bool {
-  verify_intuitive_conjecture_lab().holds
 }

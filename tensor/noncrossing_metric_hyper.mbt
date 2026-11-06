@@ -24,6 +24,7 @@ pub fn nc_chords_cross(
 
 ///|
 /// Report for the Stasheff/Tamari triangulation flip graph of a convex `n`-gon (`n >= 4`).
+#derive(Debug, Eq)
 pub(all) struct TriangulationFlipReport {
   n_gon : Int32
   catalan_count : Int32
@@ -31,7 +32,7 @@ pub(all) struct TriangulationFlipReport {
   is_regular_degree : Int32
   is_connected : Bool
   dual_tree_rows : Array[Array[Int32]]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend TriangulationFlipReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -416,10 +417,11 @@ pub fn nc_forest_grothendieck_site_ok(n : Int32, p : Int32) -> (Int32, Bool) {
 
 ///|
 /// Finite integer-valued metric space `(X = {0..n-1}, dist)`.
+#derive(Debug, Eq)
 pub(all) struct FiniteMetricSpace {
   n : Int32
   dist : Array[Array[Int32]]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FiniteMetricSpace with @moonbitlang/core/debug.Debug::{to_repr}
@@ -544,6 +546,7 @@ pub fn metric_gh_twice_exact(
 
 ///|
 /// Vietoris–Rips homological & cohomological report at threshold `scale_r` over `F_p`.
+#derive(Debug, Eq)
 pub(all) struct VrHomologyReport {
   scale_r : Int32
   simplex_counts : Array[Int32]
@@ -553,7 +556,7 @@ pub(all) struct VrHomologyReport {
   homology_cohomology_dual : Bool
   euler_simplicial : Int32
   euler_betti : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend VrHomologyReport with @moonbitlang/core/debug.Debug::{to_repr}

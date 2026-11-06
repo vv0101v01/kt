@@ -20,11 +20,12 @@
 // checked against; library decision paths never call it.
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum Bdd {
   BddZero
   BddOne
   BddNode(Int32, Bdd, Bdd) // variable, low (x=0), high (x=1)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Bdd with @moonbitlang/core/debug.Debug::{to_repr}

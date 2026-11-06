@@ -45,6 +45,7 @@
 
 ///|
 /// The outcome of a matching attempt.
+#derive(Debug, Eq)
 pub(all) enum HouMatchResult {
   /// A solution, verified by beta/eta conversion against the constraint.
   HouMatchSolved(UTerm)
@@ -53,7 +54,7 @@ pub(all) enum HouMatchResult {
   HouMatchNoneWithinBound(Int32)
   /// The node budget ran out before the bound was exhausted.
   HouMatchBudgetExceeded(Int32)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouMatchResult with @moonbitlang/core/debug.Debug::{to_repr}

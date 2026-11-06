@@ -17,6 +17,7 @@
 
 ///|
 /// Bigraded spectral sequence page `E_r^{p, q}` over `F_prime`.
+#derive(Debug, Eq)
 pub(all) struct SsPage {
   r : Int32
   np : Int32
@@ -25,7 +26,7 @@ pub(all) struct SsPage {
   diffs : Array[Array[@gcd.FpMat?]]
   prime : Int32
   qflip : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend SsPage with @moonbitlang/core/debug.Debug::{to_repr}
@@ -35,6 +36,7 @@ pub extend SsPage with Eq::{not_equal, equal}
 
 ///|
 /// Serre spectral sequence convergence report for sphere fibrations `F -> E -> B`.
+#derive(Debug, Eq)
 pub(all) struct SerreReport {
   base_betti : Array[Int32]
   fiber_betti : Array[Int32]
@@ -43,7 +45,7 @@ pub(all) struct SerreReport {
   dd_zero : Bool
   converges_to_s3 : Bool
   hurewicz_h2_s2_rank : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend SerreReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -53,6 +55,7 @@ pub extend SerreReport with Eq::{not_equal, equal}
 
 ///|
 /// Mod-2 Steenrod algebra minimal resolution report for Adams `E_2^{s,t} = Ext_A^{s,t}(F_2, F_2)`.
+#derive(Debug, Eq)
 pub(all) struct AdamsExtReport {
   trunc_deg : Int32
   s_max : Int32
@@ -64,7 +67,7 @@ pub(all) struct AdamsExtReport {
   two_eta_ext23 : Int32
   hopf_h2_ext14 : Int32
   koszul_e_sq1_diagonal_ok : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend AdamsExtReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -77,6 +80,7 @@ pub extend AdamsExtReport with Eq::{not_equal, equal}
 /// Sheaf of graded cochain algebras over a Grothendieck site coupled with Twisted
 /// Atiyah–Hirzebruch Spectral Sequence `d_3 = Sq^3 + H u (-)`, measuring both local-to-global
 /// Čech twist gluing obstruction `cech_obstruction = k^1 - r^0` and twisted `E_4` survivor ranks.
+#derive(Debug, Eq)
 pub(all) struct CondSpectralSheaf {
   space_name : String
   betti : Array[Int32]
@@ -86,7 +90,7 @@ pub(all) struct CondSpectralSheaf {
   e2_total_rank : Int32
   e4_total_rank : Int32
   dd_zero : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondSpectralSheaf with @moonbitlang/core/debug.Debug::{to_repr}
@@ -96,13 +100,14 @@ pub extend CondSpectralSheaf with Eq::{not_equal, equal}
 
 ///|
 /// Koszul resolution & derived tensor report over `F_2[x_1, ..., x_g]`.
+#derive(Debug, Eq)
 pub(all) struct KoszulTorReport {
   generators_g : Int32
   dd_zero_all_degrees : Bool
   exact_in_positive_degrees : Bool
   tor_classical_ranks : Array[Int32]
   tor_two_sided_ranks : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend KoszulTorReport with @moonbitlang/core/debug.Debug::{to_repr}

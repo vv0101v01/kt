@@ -23,25 +23,17 @@
 ///|
 /// An exact rational in lowest terms, backed by arbitrary-precision
 /// integers.  The denominator is always positive; zero is `0/1`.
+#derive(Debug, Eq)
 pub struct Rat {
   num : BigInt
   den : BigInt
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Rat with @moonbitlang/core/debug.Debug::{to_repr}
 
 ///|
 pub extend Rat with Eq::{not_equal, equal}
-
-///|
-pub fn int_abs(x : Int32) -> Int32 {
-  if x < 0 {
-    0 - x
-  } else {
-    x
-  }
-}
 
 ///|
 pub fn bigint_abs(x : BigInt) -> BigInt {

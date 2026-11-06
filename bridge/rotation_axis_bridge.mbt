@@ -10,12 +10,13 @@
 
 ///|
 /// One upstream `kt` rotation family and the relations verified for it.
+#derive(Debug, Eq)
 pub(all) struct KtRotationFamilyAlignment {
   family : String
   relations : Array[String]
   quantitative_witness : String
   holds : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend KtRotationFamilyAlignment with @moonbitlang/core/debug.Debug::{
@@ -27,6 +28,7 @@ pub extend KtRotationFamilyAlignment with Eq::{not_equal, equal}
 
 ///|
 /// One family-wise numeric comparison against the pre-elimination baseline.
+#derive(Debug, Eq)
 pub(all) struct RotationNumericComparison {
   family : String
   metrics : Array[String]
@@ -37,7 +39,7 @@ pub(all) struct RotationNumericComparison {
   tolerance : Double
   shape_ok : Bool
   holds : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend RotationNumericComparison with @moonbitlang/core/debug.Debug::{
@@ -49,6 +51,7 @@ pub extend RotationNumericComparison with Eq::{not_equal, equal}
 
 ///|
 /// Four-family alignment, numeric before/after audits and coherence quotient.
+#derive(Debug, Eq)
 pub(all) struct RotationAxisBridgeReport {
   families : Array[KtRotationFamilyAlignment]
   families_passed : Int32
@@ -58,7 +61,7 @@ pub(all) struct RotationAxisBridgeReport {
   coherence : @cub.CoherenceAngleEliminationReport
   axis : @condensed.CondQuaternionAxisReport
   holds : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend RotationAxisBridgeReport with @moonbitlang/core/debug.Debug::{

@@ -1,0 +1,4 @@
+// meta/instances — 依賴 meta/core（合一、擬陣、Ramsey、複形、序數）
+import {
+  "vv0101v01/cubical-hermitian/meta/core",
+}

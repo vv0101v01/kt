@@ -21,6 +21,7 @@
 
 ///|
 /// 一次限流判定。
+#derive(Eq)
 pub(all) enum Decision {
   Allowed
   ///
@@ -29,7 +30,7 @@ pub(all) enum Decision {
   ///
   /// 被全域閘門在雜湊前直接丟棄（多點齊發防禦的快速路徑）。
   Shedded
-} derive(Eq)
+}
 
 ///|
 pub impl Show for Decision with fn output(self, logger) {

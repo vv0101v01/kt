@@ -13,10 +13,11 @@
 /// A sieve S on an object `target` of `cat`: a canonical sorted list of
 /// morphism indices `f` with `cod[f] == target`, closed under precomposition
 /// `f ∈ S, cod[g] == dom[f]  ==>  f ∘ g ∈ S`.
+#derive(Debug, Eq)
 pub(all) struct Sieve {
   target : Int32
   arrows : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Sieve with @moonbitlang/core/debug.Debug::{to_repr}
@@ -27,10 +28,11 @@ pub extend Sieve with Eq::{not_equal, equal}
 ///|
 /// Grothendieck topology J on a finite category: for each object `u`,
 /// `covers[u]` holds the canonical sorted list of J-covering sieves on `u`.
+#derive(Debug, Eq)
 pub(all) struct GrothendieckTopology {
   nobj : Int32
   covers : Array[Array[Sieve]]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend GrothendieckTopology with @moonbitlang/core/debug.Debug::{to_repr}

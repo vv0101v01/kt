@@ -60,6 +60,7 @@
 
 ///|
 /// Where an ingredient of a result comes from.
+#derive(Debug, Eq)
 pub(all) enum Origin {
   /// Proved in this repository, by the named executable check.
   Proved(String)
@@ -67,7 +68,7 @@ pub(all) enum Origin {
   Prior(String)
   /// Imported from the literature and not re-derived here.
   Imported(String)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Origin with @moonbitlang/core/debug.Debug::{to_repr}
@@ -79,10 +80,11 @@ pub extend Origin with Eq::{equal, not_equal}
 /// A finitely generated abelian group: `Z^rank` plus cyclic invariant
 /// factors.  This is a decidable setting, which is what makes the long
 /// exact sequence below computable.
+#derive(Debug, Eq)
 pub struct FgAb {
   rank : Int32
   torsion : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FgAb with @moonbitlang/core/debug.Debug::{to_repr}
@@ -92,6 +94,7 @@ pub extend FgAb with Eq::{equal, not_equal}
 
 ///|
 /// What Freudenthal predicts of the suspension map at a given degree.
+#derive(Debug, Eq)
 pub enum FreuStatus {
   /// The map `pi_k(X) -> pi_{k+1}(Sigma X)` is an equivalence.
   FreuEquiv
@@ -99,7 +102,7 @@ pub enum FreuStatus {
   FreuSurj
   /// Outside the stable range; nothing is claimed.
   FreuNone
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FreuStatus with @moonbitlang/core/debug.Debug::{to_repr}

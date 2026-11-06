@@ -12,10 +12,11 @@
 /// `alg_sqrt_in_field`).  A genuinely biquadratic radicand whose
 /// root lives only in a different biquadratic or a higher
 /// multiquadratic field is not denested.
+#derive(Debug, Eq)
 pub struct BiquadNum {
   basis : Array[BigInt]
   coeffs : Array[Rat]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend BiquadNum with @moonbitlang/core/debug.Debug::{to_repr}

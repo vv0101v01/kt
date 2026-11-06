@@ -90,10 +90,11 @@ pub fn rat_round_up_pow2(a : Rat, bits : Int32) -> Rat {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct RatInterval {
   lo : Rat
   hi : Rat
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend RatInterval with @moonbitlang/core/debug.Debug::{to_repr}
@@ -233,10 +234,11 @@ pub fn rat_interval_sqrt(a : RatInterval, bits : Int32) -> RatInterval? {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct QCpx {
   re : Rat
   im : Rat
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend QCpx with @moonbitlang/core/debug.Debug::{to_repr}
@@ -260,10 +262,11 @@ pub fn qcpx_is_zero(a : QCpx) -> Bool {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct QCpxMat {
   n : Int32
   rows : Array[Array[QCpx]]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend QCpxMat with @moonbitlang/core/debug.Debug::{to_repr}
@@ -310,10 +313,11 @@ pub fn qcpx_mat_is_hermitian(a : QCpxMat) -> Bool {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct CInterval {
   re : RatInterval
   im : RatInterval
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CInterval with @moonbitlang/core/debug.Debug::{to_repr}
@@ -414,10 +418,11 @@ fn cinterval_abs_sq_upper(a : CInterval) -> Rat {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct QCIntervalMat {
   n : Int32
   rows : Array[Array[CInterval]]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend QCIntervalMat with @moonbitlang/core/debug.Debug::{to_repr}
@@ -619,6 +624,7 @@ pub fn qci_off_frobenius_sq_upper(a : QCIntervalMat) -> Rat {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct JacobiCoefficients {
   p : Int32
   q : Int32
@@ -626,7 +632,7 @@ pub struct JacobiCoefficients {
   sine : RatInterval
   phase : CInterval
   modulus : RatInterval
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend JacobiCoefficients with @moonbitlang/core/debug.Debug::{to_repr}
@@ -779,6 +785,7 @@ pub fn jacobi_unitary_residual_contains_zero(
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct JacobiRotationCertificate {
   before : QCIntervalMat
   after : QCIntervalMat
@@ -788,7 +795,7 @@ pub struct JacobiRotationCertificate {
   unitary_residual_contains_zero : Bool
   before_off_sq_upper : Rat
   after_off_sq_upper : Rat
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend JacobiRotationCertificate with @moonbitlang/core/debug.Debug::{
@@ -799,11 +806,12 @@ pub extend JacobiRotationCertificate with @moonbitlang/core/debug.Debug::{
 pub extend JacobiRotationCertificate with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct EigenInterval {
   lo : Rat
   hi : Rat
   count : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend EigenInterval with @moonbitlang/core/debug.Debug::{to_repr}
@@ -812,6 +820,7 @@ pub extend EigenInterval with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend EigenInterval with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct JacobiCertificate {
   precision_bits : Int32
   initial : QCIntervalMat
@@ -819,7 +828,7 @@ pub struct JacobiCertificate {
   transform : QCIntervalMat
   rotations : Array[JacobiRotationCertificate]
   eigenvalues : Array[EigenInterval]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend JacobiCertificate with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1183,13 +1192,14 @@ pub fn check_Jacobi_arbitrary_precision() -> Bool {
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct JacobiClusterAwareReport {
   certificate : JacobiCertificate
   precision_bits_used : Int32
   restarts : Int32
   separated : Bool
   max_cluster_width : Rat
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend JacobiClusterAwareReport with @moonbitlang/core/debug.Debug::{

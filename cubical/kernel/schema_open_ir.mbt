@@ -1161,12 +1161,13 @@ pub fn simultaneous_ir_compile_joint(
 ///   codes `f : T_{decoder_idx}(a_{source_arg}) -> U`, binding `m`
 ///   simultaneous functional hypotheses
 ///   `λx. T_0(f(x)), ..., λx. T_{m-1}(f(x))`.
+#derive(Debug, Eq)
 pub enum DOpenIRArgKind {
   DOpenArgExternal(DTerm)
   DOpenArgCode
   DOpenArgDecodedVal(Int32, Int32)
   DOpenArgDecodedCodeFn(Int32, Int32)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DOpenIRArgKind with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1175,10 +1176,11 @@ pub extend DOpenIRArgKind with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend DOpenIRArgKind with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct DOpenIRArg {
   name : String
   kind : DOpenIRArgKind
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DOpenIRArg with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1215,10 +1217,11 @@ pub fn dopen_arg_decoded_code_fn(
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct DOpenIRConstructor {
   name : String
   args : Array[DOpenIRArg]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DOpenIRConstructor with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1235,11 +1238,12 @@ pub fn dopen_ir_constructor(
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct DOpenIRDecoder {
   name : String
   decode_level : Int32
   cases : Array[DTerm]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DOpenIRDecoder with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1257,12 +1261,13 @@ pub fn dopen_ir_decoder(
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct DOpenSimultaneousIRSpec {
   name : String
   level : Int32
   constructors : Array[DOpenIRConstructor]
   decoders : Array[DOpenIRDecoder]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DOpenSimultaneousIRSpec with @moonbitlang/core/debug.Debug::{to_repr}

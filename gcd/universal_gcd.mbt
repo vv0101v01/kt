@@ -20,6 +20,7 @@
 
 ///|
 /// Six-domain Universal GCD certificate for a pair `(m, n)`.
+#derive(Debug, Eq)
 pub(all) struct UgcdSixFoldCertificate {
   m : Int32
   n : Int32
@@ -34,7 +35,7 @@ pub(all) struct UgcdSixFoldCertificate {
   canon_join_classes : Int32
   bezout_product_holds : Bool
   all_six_agree : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend UgcdSixFoldCertificate with @moonbitlang/core/debug.Debug::{to_repr}

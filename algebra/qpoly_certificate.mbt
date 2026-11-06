@@ -30,13 +30,14 @@
 // ==================================================================
 
 ///|
+#derive(Debug, Eq)
 pub enum QPolyIrreducibilityCertificate {
   CertLinear
   CertLowDegreeNoRationalRoot
   CertModPrime(Int32)
   CertEisenstein(Int32, Int32) // prime, shift
   CertModDegreePatterns(Array[Int32]) // usable primes, in scan order
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend QPolyIrreducibilityCertificate with @moonbitlang/core/debug.Debug::{

@@ -252,9 +252,10 @@ pub fn crypto_sha512_hex(msg : Array[Int32]) -> String {
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct Ed25519PublicKey {
   bytes : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Ed25519PublicKey with @moonbitlang/core/debug.Debug::{to_repr}
@@ -263,10 +264,11 @@ pub extend Ed25519PublicKey with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend Ed25519PublicKey with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct Ed25519Keypair {
   seed : Array[Int32]
   public_key : Ed25519PublicKey
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Ed25519Keypair with @moonbitlang/core/debug.Debug::{to_repr}
@@ -275,9 +277,10 @@ pub extend Ed25519Keypair with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend Ed25519Keypair with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct Ed25519Signature {
   bytes : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Ed25519Signature with @moonbitlang/core/debug.Debug::{to_repr}
@@ -821,11 +824,12 @@ enum WalOp {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct ArtifactWalRecoveryReport {
   replayed_transactions : Int32
   discarded_torn_bytes : Int32
   active_tx_rolled_back : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactWalRecoveryReport with @moonbitlang/core/debug.Debug::{

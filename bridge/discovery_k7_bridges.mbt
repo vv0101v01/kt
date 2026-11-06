@@ -7,6 +7,7 @@
 
 ///|
 /// Report for the **Seven-Federation Star-Prism & Lakatosian Discovery Loop Architecture**.
+#derive(Debug, Eq)
 pub(all) struct SevenFederationStarPrismReport {
   seven_federations_verified : Int32
   k7_bridges_verified : Int32
@@ -15,7 +16,7 @@ pub(all) struct SevenFederationStarPrismReport {
   lakatos_refinements_verified : Int32
   epistemic_lenses_sealed : Bool
   star_prism_commutes : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend SevenFederationStarPrismReport with @moonbitlang/core/debug.Debug::{

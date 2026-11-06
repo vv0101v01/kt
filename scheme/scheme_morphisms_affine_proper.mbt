@@ -9,12 +9,13 @@
 /// `is_empty == true` when `U_i ∩ U_j = ∅`; otherwise `U_{ij} = Spec(ring)`
 /// equipped with open-immersion pullbacks `from_i : A_i -> ring` and
 /// `from_j : A_j -> ring`!
+#derive(Debug, Eq)
 pub(all) struct ChartOverlap {
   is_empty : Bool
   ring : CoordRing
   from_i : RingHom
   from_j : RingHom
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ChartOverlap with @moonbitlang/core/debug.Debug::{to_repr}
@@ -25,10 +26,11 @@ pub extend ChartOverlap with Eq::{not_equal, equal}
 ///|
 /// General scheme `X = ∪_{i=0}^{m-1} U_i` glued from affine charts `charts[i]`
 /// along pairwise overlaps `overlaps[i * m + j]`!
+#derive(Debug, Eq)
 pub(all) struct Scheme {
   charts : Array[AffineScheme]
   overlaps : Array[ChartOverlap]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Scheme with @moonbitlang/core/debug.Debug::{to_repr}
@@ -40,12 +42,13 @@ pub extend Scheme with Eq::{not_equal, equal}
 /// Morphism of schemes `f : src -> dst`: each source chart `U_i` maps into
 /// target chart `chart_map[i] = j` via contravariant ring homomorphism
 /// `ring_maps[i] : O_Y(V_j) -> O_X(U_i)`, commuting with overlap restrictions!
+#derive(Debug, Eq)
 pub(all) struct SchemeMorphism {
   src : Scheme
   dst : Scheme
   chart_map : Array[Int32]
   ring_maps : Array[RingHom]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend SchemeMorphism with @moonbitlang/core/debug.Debug::{to_repr}
@@ -56,11 +59,12 @@ pub extend SchemeMorphism with Eq::{not_equal, equal}
 ///|
 /// Exact truncated formal Laurent series `Σ_{k = val}^{val + coeffs.length() - 1} coeffs[k - val] * t^k`
 /// in the discrete valuation field `K = Q((t))` over DVR `R = Q[[t]]`!
+#derive(Debug, Eq)
 pub(all) struct LaurentSeries {
   val : Int32
   prec : Int32
   coeffs : Array[@exactalg.Rat]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend LaurentSeries with @moonbitlang/core/debug.Debug::{to_repr}
@@ -71,12 +75,13 @@ pub extend LaurentSeries with Eq::{not_equal, equal}
 ///|
 /// Summary of testing the DVR Valuative Criterion (`Spec(Q((t))) -> X` vs
 /// `Spec(Q[[t]]) -> X`) across probing generic Laurent arcs on `X`.
+#derive(Debug, Eq)
 pub(all) struct PropernessReport {
   is_separated : Bool
   existence_holds : Bool
   uniqueness_holds : Bool
   is_proper : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend PropernessReport with @moonbitlang/core/debug.Debug::{to_repr}

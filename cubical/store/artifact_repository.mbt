@@ -101,6 +101,7 @@ pub fn artifact_memory_byte_store_new() -> ArtifactByteStore {
 /// One committed artifact: its logical identity (`kind`, `name`)
 /// and the content-addressed blob holding its bytes, with the
 /// length and dual checksums recorded in the commit manifest.
+#derive(Debug, Eq)
 pub(all) struct ArtifactRecord {
   kind : String
   name : String
@@ -109,7 +110,7 @@ pub(all) struct ArtifactRecord {
   hash_a : Int32
   hash_b : Int32
   format_version : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactRecord with @moonbitlang/core/debug.Debug::{to_repr}
@@ -134,12 +135,13 @@ pub fn artifact_repository_new(
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct ArtifactRepositoryStats {
   records : Int32
   total_bytes : Int32
   puts : Int32
   recoveries : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactRepositoryStats with @moonbitlang/core/debug.Debug::{to_repr}
@@ -907,6 +909,7 @@ pub fn artifact_repository_get_dterm_dag_into(
 // ------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct ArtifactChainEntry {
   sequence : Int32
   removed : Bool
@@ -915,7 +918,7 @@ pub(all) struct ArtifactChainEntry {
   previous_b : Int32
   entry_a : Int32
   entry_b : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactChainEntry with @moonbitlang/core/debug.Debug::{to_repr}
@@ -924,6 +927,7 @@ pub extend ArtifactChainEntry with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ArtifactChainEntry with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ArtifactChainReport {
   valid : Bool
   entries : Int32
@@ -931,7 +935,7 @@ pub struct ArtifactChainReport {
   head_a : Int32
   head_b : Int32
   covers_index : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactChainReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1441,11 +1445,12 @@ pub fn artifact_repository_recover_chained(
 ///|
 /// Symmetric MAC key authenticating repository integrity chains against an
 /// untrusted byte store (`CHARTAUT` v1).
+#derive(Debug, Eq)
 pub(all) struct ArtifactAuthKey {
   key_id : String
   secret_a : Int32
   secret_b : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactAuthKey with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1454,12 +1459,13 @@ pub extend ArtifactAuthKey with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ArtifactAuthKey with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum ArtifactCasStatus {
   ArtifactCasCommitted
   ArtifactCasConflict
   ArtifactCasAuthFailed
   ArtifactCasIoError
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactCasStatus with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1468,6 +1474,7 @@ pub extend ArtifactCasStatus with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ArtifactCasStatus with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct ArtifactSyncReport {
   ok : Bool
   transferred_blobs : Int32
@@ -1475,7 +1482,7 @@ pub(all) struct ArtifactSyncReport {
   tombstones_applied : Int32
   final_head_a : Int32
   final_head_b : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactSyncReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1764,11 +1771,12 @@ pub fn artifact_repository_sync_incremental(
 // ===========================================================================
 
 ///|
+#derive(Debug, Eq)
 pub enum ArtifactMergePolicy {
   ArtifactMergeAbortOnConflict
   ArtifactMergePreferLeft
   ArtifactMergePreferRight
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactMergePolicy with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1792,13 +1800,14 @@ pub fn artifact_merge_policy_prefer_right() -> ArtifactMergePolicy {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct ArtifactMergeConflict {
   kind : String
   name : String
   base_blob_key : String?
   left_blob_key : String?
   right_blob_key : String?
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactMergeConflict with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1807,6 +1816,7 @@ pub extend ArtifactMergeConflict with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ArtifactMergeConflict with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ArtifactThreeWayMergeReport {
   ok : Bool
   lca_entries : Int32
@@ -1818,7 +1828,7 @@ pub struct ArtifactThreeWayMergeReport {
   conflicts : Array[ArtifactMergeConflict]
   final_head_a : Int32
   final_head_b : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ArtifactThreeWayMergeReport with @moonbitlang/core/debug.Debug::{

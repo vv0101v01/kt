@@ -33,6 +33,7 @@ using @face_bdd {type Face, face_holds, face_sat, face_witness}
 // genuine equality on normal forms.
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum Term {
   TmVar(Int32) // de Bruijn index
   TmLam(Term)
@@ -45,7 +46,7 @@ pub(all) enum Term {
   TmCoeRefl // coe along refl, as a function
   TmCoeUaSwap // coe along ua(swap), as a function
   TmAnn(Term, LTy) // type annotation (erased by evaluation; for typed NbE)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Term with @moonbitlang/core/debug.Debug::{to_repr}

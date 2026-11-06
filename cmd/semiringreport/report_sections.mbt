@@ -783,9 +783,10 @@ fn sec9_monoid() -> Unit {
 
 ///|
 /// 破壞分配律的半環：times(a,b) = a + b + 1。
+#derive(Eq)
 pub(all) struct ReportBroken {
   v : Int32
-} derive(Eq)
+}
 
 ///|
 pub fn ReportBroken::of(v : Int32) -> ReportBroken {
@@ -819,9 +820,10 @@ pub impl Semiring for ReportBroken with fn times(a, b) {
 
 ///|
 /// 謊稱冪等的半環：⊕ 是普通加法。
+#derive(Eq)
 pub(all) struct ReportLying {
   v : Int32
-} derive(Eq)
+}
 
 ///|
 pub fn ReportLying::of(v : Int32) -> ReportLying {

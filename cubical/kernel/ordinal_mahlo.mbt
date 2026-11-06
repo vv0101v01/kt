@@ -24,10 +24,11 @@
 /// Cantor Normal Form ordinal `< epsilon_0`:
 /// `omega^{exp_0} * coeff_0 + ... + omega^{exp_{k-1}} * coeff_{k-1}`
 /// with strictly decreasing `CantorOrdinal` exponents `exp_0 > exp_1 > ...` and `coeff_i > 0`.
+#derive(Debug, Eq)
 pub enum CantorOrdinal {
   COZero
   COSum(Array[(CantorOrdinal, Int32)])
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CantorOrdinal with @moonbitlang/core/debug.Debug::{to_repr}
@@ -120,6 +121,7 @@ pub fn cantor_ord_add(a : CantorOrdinal, b : CantorOrdinal) -> CantorOrdinal {
 /// Indexed Container specification `(index_ty, shape_ty, pos_ty, next_index, target_index)`
 /// compiled via `[T-IdxContainer-Elim]` into the core's `DPositiveFunctor` (`DFunctorSigma` +
 /// `DFunctorConst(DPath(...))` + `DFunctorContainer`) without enlarging the trusted kernel!
+#derive(Debug, Eq)
 pub(all) struct IndexedContainerSpec {
   index_ty : DTerm
   shape_ty : DTerm
@@ -127,7 +129,7 @@ pub(all) struct IndexedContainerSpec {
   next_index : DTerm
   requested_index : DTerm
   constructor_out_index : DTerm
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend IndexedContainerSpec with @moonbitlang/core/debug.Debug::{to_repr}
@@ -157,6 +159,7 @@ pub fn compile_indexed_container_to_positive_functor(
 /// certifies a finite mutual `(Ctx, Ty)` code system + reflected sub-universe code `u_mahlo`
 /// whose decoding `El(u_mahlo)` closes under `Pi`, `Sigma`, `Path`, and `W`-containers while
 /// strictly descending in `CantorOrdinal` rank below `omega^omega < epsilon_0`.
+#derive(Debug, Eq)
 pub(all) struct MahloReflectionCert {
   universe_level : Int32
   closed_under_pi_sigma_path_w : Bool
@@ -164,7 +167,7 @@ pub(all) struct MahloReflectionCert {
   mahlo_code_rank : CantorOrdinal
   super_universe_rank : CantorOrdinal
   strict_rank_descent : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend MahloReflectionCert with @moonbitlang/core/debug.Debug::{to_repr}

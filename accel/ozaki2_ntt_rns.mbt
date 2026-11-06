@@ -455,11 +455,12 @@ pub fn rns_stockham_poly_mul_exact(
 ///|
 /// 30-bit Montgomery Reducer (`p = 998244353 = 119 * 2^23 + 1`, `R = 2^32`)
 /// with branchless Harvey lazy reduction (`Cheddar` / `ZKProphet` CPU reference).
+#derive(Debug, Eq)
 pub struct Mont30Prime {
   p : UInt64
   neg_p_inv_u32 : UInt64
   r2_mod_p : UInt64
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Mont30Prime with @moonbitlang/core/debug.Debug::{to_repr}

@@ -6,10 +6,11 @@
 ///|
 /// A compatible (matching) family `{ x_f ∈ P(dom(f)) }_{f ∈ sieve.arrows}`
 /// satisfying `P.res[g](x_f) == x_{f ∘ g}` for every composable `g`.
+#derive(Debug, Eq)
 pub(all) struct MatchingFamily {
   sieve : Sieve
   values : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend MatchingFamily with @moonbitlang/core/debug.Debug::{to_repr}

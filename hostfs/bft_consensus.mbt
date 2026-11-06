@@ -14,6 +14,7 @@
 
 ///|
 /// Vote cast by replica `replica_id` in view `view` at slot `slot` for `value_hash`.
+#derive(Debug, Eq)
 pub(all) struct BftReplicaVote {
   replica_id : Int32
   view : Int32
@@ -21,7 +22,7 @@ pub(all) struct BftReplicaVote {
   key : String
   value : Int32
   mac_tag : UInt64
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend BftReplicaVote with @moonbitlang/core/debug.Debug::{to_repr}
@@ -31,6 +32,7 @@ pub extend BftReplicaVote with Eq::{not_equal, equal}
 
 ///|
 /// Certified BFT Quorum Commit Certificate (`>= 2f + 1` distinct valid replica votes).
+#derive(Debug, Eq)
 pub(all) struct BftQuorumCommit {
   n_replicas : Int32
   f_byzantine_max : Int32
@@ -41,7 +43,7 @@ pub(all) struct BftQuorumCommit {
   value : Int32
   signer_ids : Array[Int32]
   quorum_met : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend BftQuorumCommit with @moonbitlang/core/debug.Debug::{to_repr}
@@ -51,13 +53,14 @@ pub extend BftQuorumCommit with Eq::{not_equal, equal}
 
 ///|
 /// Replicated crash-durable cluster of `n_replicas = 3f + 1` `DiskState` nodes.
+#derive(Debug, Eq)
 pub(all) struct BftDurableCluster {
   n_replicas : Int32
   f_max : Int32
   byzantine_ids : Array[Int32]
   disks : Array[DiskState]
   committed_log : Array[BftQuorumCommit]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend BftDurableCluster with @moonbitlang/core/debug.Debug::{to_repr}

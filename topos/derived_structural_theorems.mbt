@@ -12,6 +12,7 @@
 ///|
 /// Report of Open/Closed Subtopos Nucleus Complementarity for a subterminal
 /// truth value `U ↪ 1` (closed sieve on terminal / global section of `Ω`).
+#derive(Debug, Eq)
 pub(all) struct SubtoposComplementReport {
   open_lt_valid : Bool
   closed_lt_valid : Bool
@@ -19,7 +20,7 @@ pub(all) struct SubtoposComplementReport {
   join_is_inconsistent : Bool
   internal_lem_holds : Bool
   subtopos_boolean_complement_holds : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend SubtoposComplementReport with @moonbitlang/core/debug.Debug::{

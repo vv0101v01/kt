@@ -1,0 +1,6 @@
+name = "KtLaws"
+defaultTargets = ["KtLaws"]
+buildDir = "build"
+
+[[lean_lib]]
+name = "KtLaws"

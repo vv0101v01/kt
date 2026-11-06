@@ -46,10 +46,11 @@
 ///|
 /// A parenthesization of n composable paths: a binary tree whose leaves
 /// are path indices.
+#derive(Debug, Eq)
 pub enum Paren {
   PLeaf(Int32)
   PNode(Paren, Paren)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Paren with @moonbitlang/core/debug.Debug::{to_repr}
@@ -59,10 +60,11 @@ pub extend Paren with Eq::{equal, not_equal}
 
 ///|
 /// A face of the associahedron: a plane tree with no unary nodes.
+#derive(Debug, Eq)
 pub enum Stree {
   SLeaf
   SNode(Array[Stree])
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Stree with @moonbitlang/core/debug.Debug::{to_repr}

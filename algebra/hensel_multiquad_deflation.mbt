@@ -22,11 +22,12 @@
 ///|
 /// One monic irreducible factor together with its multiplicity and
 /// an optional portable irreducibility witness.
+#derive(Debug, Eq)
 pub struct QPolyCertifiedFactor {
   factor : QPoly
   multiplicity : Int32
   certificate : QPolyIrreducibilityCertificate?
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend QPolyCertifiedFactor with @moonbitlang/core/debug.Debug::{to_repr}
@@ -36,12 +37,13 @@ pub extend QPolyCertifiedFactor with Eq::{not_equal, equal}
 
 ///|
 /// Portable complete factorization certificate over Q.
+#derive(Debug, Eq)
 pub struct QPolyFactorCertificate {
   leading : Rat
   factors : Array[QPolyCertifiedFactor]
   hensel_prime : Int32
   hensel_exponent : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend QPolyFactorCertificate with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1011,12 +1013,13 @@ pub fn radical_to_multiquad_upto(
 /// `minpoly` is its unique monic irreducible minimal polynomial over Q,
 /// and `root_index` (0-based) selects its unique real root among the
 /// ordered Sturm-isolated real roots of `minpoly`.
+#derive(Debug, Eq)
 pub struct RealAlgRadical {
   minpoly : QPoly
   root_index : Int32
   lower : Rat
   upper : Rat
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend RealAlgRadical with @moonbitlang/core/debug.Debug::{to_repr}

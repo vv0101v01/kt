@@ -11,6 +11,7 @@
 /// Node tags in the flat Interaction Combinator arena:
 /// `0 = FREE`, `1 = ROOT`, `2 = ERA`, `3 = CON` (constructor / `λ` / `app`, label `0`),
 /// `4 = DUP` (duplicator fan with integer label `>= 1`).
+#derive(Debug, Eq)
 pub struct INetArena {
   kinds : Array[Int32]
   labels : Array[Int32]
@@ -19,7 +20,7 @@ pub struct INetArena {
   mut comm_steps : Int32
   mut eras_steps : Int32
   mut waves_executed : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend INetArena with @moonbitlang/core/debug.Debug::{to_repr}
@@ -29,11 +30,12 @@ pub extend INetArena with Eq::{not_equal, equal}
 
 ///|
 /// Wave scheduling policy for simulating parallel GPU redex execution orders.
+#derive(Debug, Eq)
 pub(all) enum INetWaveSchedule {
   ScheduleForward
   ScheduleReverse
   ScheduleOddEven
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend INetWaveSchedule with @moonbitlang/core/debug.Debug::{to_repr}
@@ -419,6 +421,7 @@ pub fn inet_readback_church_nat(net : INetArena, root : Int32) -> Int32 {
 ///|
 /// Strong Confluence certificate comparing Forward, Reversed, and Odd-Even parallel
 /// GPU wave schedules on `(c_a * c_b)`.
+#derive(Debug, Eq)
 pub(all) struct INetConfluenceCertificate {
   a : Int32
   b : Int32
@@ -427,7 +430,7 @@ pub(all) struct INetConfluenceCertificate {
   comm_steps : Int32
   eras_steps : Int32
   schedules_confluent : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend INetConfluenceCertificate with @moonbitlang/core/debug.Debug::{

@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: MoonBit 驗證閘（check / build / 定律 / 定理 / 架構）
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 安裝 MoonBit 工具鏈（官方 install 腳本）
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+
+      - name: 工具鏈版本
+        run: moon version
+
+      - name: 更新 registry 索引（moonbitlang/async 等依賴解析所需）
+        run: moon update
+
+      - name: 靜態檢查（零警告閘）
+        run: moon check --deny-warn --target wasm-gc
+
+      - name: Wasm-GC 建置
+        run: moon build --target wasm-gc
+
+      - name: 定律登記不得過期（gen_laws.py 後工作區必須無差異）
+        run: |
+          python3 tools/gen_laws.py
+          git diff --exit-code -- 'meta/*/laws.mbt'
+
+      - name: 第九聯邦定律總表（485 / 485）
+        run: moon run cmd/metatheory --target wasm-gc
+
+      - name: Cubical 定理總表（129 / 129）
+        run: moon run cmd/main --target wasm-gc
+
+      - name: 大一統證書（47 / 47 ＋ 硬體加速）
+        run: moon run cmd/showcase --target wasm-gc
+
+      - name: 架構閘（聯邦白名單、分層、零殘留測試）
+        run: python3 tools/arch_check.py

@@ -395,10 +395,11 @@ pub fn dterm_distinct_subterm_count(t : DTerm) -> Int32 {
 /// One node of a persistent `DTerm` DAG: a local shell (children
 /// replaced by positional marker variables) and the snapshot-local
 /// intern ids of its children, in `dterm_children` order.
+#derive(Debug, Eq)
 pub(all) struct DTermDagNode {
   shell : DTerm
   children : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DTermDagNode with @moonbitlang/core/debug.Debug::{to_repr}
@@ -412,10 +413,11 @@ pub extend DTermDagNode with Eq::{not_equal, equal}
 /// id is smaller than its parent's id.  This is both the exported
 /// form of an intern table's reachable graph and the value carried
 /// by the `CHDAGBIN` byte codec.
+#derive(Debug, Eq)
 pub(all) struct DTermDagSnapshot {
   nodes : Array[DTermDagNode]
   roots : Array[Int32]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DTermDagSnapshot with @moonbitlang/core/debug.Debug::{to_repr}
@@ -428,12 +430,13 @@ pub extend DTermDagSnapshot with Eq::{not_equal, equal}
 /// the destination id of every source node and root, and how many
 /// source nodes were newly added versus deduplicated against nodes
 /// already present in the destination table.
+#derive(Debug, Eq)
 pub(all) struct DTermDagImportReport {
   node_ids : Array[Int32]
   root_ids : Array[Int32]
   added_nodes : Int32
   reused_nodes : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DTermDagImportReport with @moonbitlang/core/debug.Debug::{to_repr}

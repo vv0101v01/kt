@@ -12,6 +12,7 @@
 ///   • `Diagonal D_2` (`Continuous Analysis ↔ Higher Homotopy`):
 ///     Hermitian Projector / Brunerie `pi_4(S^3)` -> `@condensed` Solid/Liquid + Steenrod–Adams `Ext_A` ->
 ///     `@topos` Nerve Cohomology / `@exactalg` Liouville–Berkowitz Transcendence.
+#derive(Debug, Eq)
 pub(all) struct XOverlapChiasmReport {
   diagonal_d1_syntax_nonarch_ok : Bool
   diagonal_d2_analytic_homotopy_ok : Bool
@@ -20,7 +21,7 @@ pub(all) struct XOverlapChiasmReport {
   x_pivot_2_categories_ok : Bool
   shared_chiasm_invariants : (Int32, Int32, Int32)
   chiasm_commutes : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend XOverlapChiasmReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -35,6 +36,7 @@ pub extend XOverlapChiasmReport with Eq::{not_equal, equal}
 ///   • `Upper-V (V_2 = @bridge)`: Complete `K_6` (`15/15` bridges across `6` federations)
 ///     synthesis apex where all 7 transformed/eliminated capability boundaries, 4 condensed
 ///     higher structures, 2 new categories, and 4 conjectures unite!
+#derive(Debug, Eq)
 pub(all) struct DoubleVArchitectureReport {
   lower_v_gcd_apex_ok : Bool
   six_federations_verified : Int32
@@ -43,7 +45,7 @@ pub(all) struct DoubleVArchitectureReport {
   seven_boundaries_breakthrough_ok : Bool
   four_conjectures_evaluated : Int32
   upper_v_synthesis_apex_ok : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend DoubleVArchitectureReport with @moonbitlang/core/debug.Debug::{

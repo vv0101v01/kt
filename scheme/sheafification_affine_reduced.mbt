@@ -6,10 +6,11 @@
 
 ///|
 /// Finitely presented commutative `Q`-algebra `A = Q[x_0, ..., x_{nvars-1}] / ideal`.
+#derive(Debug, Eq)
 pub(all) struct CoordRing {
   nvars : Int32
   ideal : Ideal
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CoordRing with @moonbitlang/core/debug.Debug::{to_repr}
@@ -21,11 +22,12 @@ pub extend CoordRing with Eq::{not_equal, equal}
 /// Commutative `Q`-algebra homomorphism `φ : src -> dst` specified by the images
 /// `var_images[i] ∈ dst` of each generator `x_i` of `src` (contravariantly
 /// defining an affine scheme morphism `Spec(dst) -> Spec(src)`!).
+#derive(Debug, Eq)
 pub(all) struct RingHom {
   src : CoordRing
   dst : CoordRing
   var_images : Array[MPoly]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend RingHom with @moonbitlang/core/debug.Debug::{to_repr}
@@ -36,11 +38,12 @@ pub extend RingHom with Eq::{not_equal, equal}
 ///|
 /// A section `num / den_base^{exp}` of the structure sheaf `O_{Spec(A)}(D(den_base))`
 /// (in the localized ring `A_{den_base}`).
+#derive(Debug, Eq)
 pub(all) struct LocalizedSection {
   num : MPoly
   den_base : MPoly
   exp : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend LocalizedSection with @moonbitlang/core/debug.Debug::{to_repr}
@@ -60,9 +63,10 @@ pub(all) struct QuasiCoherentModule {
 
 ///|
 /// Affine scheme `Spec(ring)`.
+#derive(Debug, Eq)
 pub(all) struct AffineScheme {
   ring : CoordRing
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend AffineScheme with @moonbitlang/core/debug.Debug::{to_repr}

@@ -2,13 +2,14 @@
 /// Non-Abelian Figure-Eight `S^1 v S^1` (`pi_1 = F_2 = <a, b>`) Square Boundary Filler Report:
 /// distinguishes genuine `F_2` free-group boundary word cancellation (`top^{-1} * left * bottom * right^{-1} == 1`
 /// in `F_2`) from naive abelianized `H_1 = Z^2` winding `(w_a, w_b) == (0, 0)`!
+#derive(Debug, Eq)
 pub(all) struct WedgeSquareFillerReport {
   abelian_winding_a : Int32
   abelian_winding_b : Int32
   reduced_f2_boundary_word : Array[Int32]
   fills_in_wedge_s1_s1 : Bool
   fills_in_abelianized_torus : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend WedgeSquareFillerReport with @moonbitlang/core/debug.Debug::{to_repr}

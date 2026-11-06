@@ -22,11 +22,12 @@
 // the same code path as J(p) for any well-formed (hence constant) p.
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum Ty {
   TyBool
   TyUnit
   TyProd(Ty, Ty)
-} derive(Debug, Eq)
+}
 
 ///|
 /// Cross-package constructor for the Bool finite type.  The enum itself
@@ -58,11 +59,12 @@ pub extend Ty with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend Ty with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum PVal {
   PVUnit
   PVBool(Bool)
   PVPair(PVal, PVal)
-} derive(Debug, Eq)
+}
 
 ///|
 /// All elements of a finite type.

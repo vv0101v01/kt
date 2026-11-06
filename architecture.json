@@ -131,6 +131,19 @@
       ],
       "summary_en": "Federation 8 (CPU SWAR & Browser Free WebGPU Frontier Acceleration) — M4RI GF(2) Gray-code GEMM, dual-rail 64-trit GF(3) bitslicing across all 6,561 2x2x2 Cayley hyperdeterminants, 64-way Face SWAR #SAT, Ozaki Scheme II INT8 DP4A CRT exact/FP64 GEMM, 32-bit RNS Stockham Auto-Sort NTT & 30-bit Montgomery REDC, Scanbox decoupled look-back prefix scan, 3-phase padded Tropical Kleene closure, HVM2 flat-arena parallel Interaction Combinators, and 7 audited W3C Browser WebGPU WGSL compute shaders.",
       "summary_zh": "第八聯邦（CPU SWAR 與瀏覽器免費 WebGPU 前沿硬體加速聯邦） — M4RI GF(2) 格雷碼矩陣乘、雙軌 64-trit GF(3) 位切片全體 6,561 張量超行列式掃描、64 路 Face 超立方體 #SAT、Ozaki Scheme II INT8 DP4A 中國剩餘定理精確／FP64 矩陣乘、32 位 RNS Stockham 免位反轉 NTT 與 30 位 Montgomery 規約、Scanbox 解耦回看前綴掃描、三相無衝突共享記憶體熱帶 Kleene 閉包、HVM2 扁平競技場並行交互組合子，以及 7 個經靜態可移植性審計之 W3C 瀏覽器 WebGPU WGSL 計算著色器。"
+    },
+    {
+      "id": "meta",
+      "packages": [
+        "meta-core",
+        "meta-instances",
+        "meta-iit",
+        "meta-reflect",
+        "cmd-metatheory"
+      ],
+      "allowed_external_packages": [],
+      "summary_en": "Federation 9 — Metatheory: ordinals/matroids/Ramsey/complexes as the mathematical floor; global instances with coherence and descent gluing; inductive-inductive types with term-valued indices; reflection with replayable certificates.",
+      "summary_zh": "第九聯邦 — 元理論：以序數／擬陣／Ramsey／複形為數學底層；全域實例的一致性與下降黏合；索引為項的歸納-歸納型別；可重放憑證的反射。"
     }
   ],
   "unification": {
@@ -628,6 +641,63 @@
       ],
       "summary_en": "CPU 64-bit SWAR (M4RI GF(2), dual-rail GF(3) 6,561-tensor hyperdeterminant sweep, Face hypercube #SAT), Ozaki Scheme II INT8 DP4A CRT exact/FP64 GEMM, 32-bit RNS Stockham NTT & 30-bit Montgomery REDC, Scanbox decoupled look-back scan, 3-phase blocked Tropical closure, HVM2 flat-arena Interaction Combinators, and W3C Browser WebGPU WGSL shaders.",
       "summary_zh": "CPU 64 位 SWAR（M4RI GF(2)、雙軌 GF(3) 6,561 張量超行列式、Face 超立方體 #SAT）、Ozaki Scheme II INT8 DP4A CRT 精確／FP64 矩陣乘、32 位 RNS Stockham NTT 與 30 位 Montgomery 規約、Scanbox 解耦回看掃描、三相熱帶閉包、HVM2 扁平競技場交互組合子與瀏覽器 WebGPU WGSL 計算著色器。"
+    },
+    {
+      "id": "meta-core",
+      "path": "meta/core",
+      "moon": "vv0101v01/cubical-hermitian/meta/core",
+      "layer": 0,
+      "depends_on": [],
+      "summary_en": "Math-structure floor: Cantor-normal-form ordinals, exact rational matrix rank, first-order unification/MGU + anti-unification, matroids (rank/greedy/duality), Ramsey search, finite complexes and Cech nerve cohomology.",
+      "summary_zh": "數學結構底層：Cantor 範式序數、精確有理數矩陣秩、一階合一／MGU 與反合一、擬陣（秩／貪心／對偶）、Ramsey 搜尋、有限複形與 Čech 神經上同調。"
+    },
+    {
+      "id": "meta-instances",
+      "path": "meta/instances",
+      "moon": "vv0101v01/cubical-hermitian/meta/instances",
+      "layer": 1,
+      "depends_on": [
+        "meta-core"
+      ],
+      "summary_en": "Global instances (typeclasses) as Horn resolution: SLD + MGU, ordinal termination measure, critical-pair coherence, derived matroid + minimal instance basis, Cech/descent gluing with monodromy obstruction, mirror duality, Ramsey depth window.",
+      "summary_zh": "全域實例（typeclass）作為 Horn 解析：SLD＋MGU、序數終止度量、臨界對一致性、可導性擬陣與極小實例基、Čech／下降黏合與單值化障礙、鏡像對偶、Ramsey 深度窗口。"
+    },
+    {
+      "id": "meta-iit",
+      "path": "meta/iit",
+      "moon": "vv0101v01/cubical-hermitian/meta/iit",
+      "layer": 1,
+      "depends_on": [
+        "meta-core"
+      ],
+      "summary_en": "Inductive-inductive types: schemas with term-valued indices, dependent index checking, slice-tower Kleene fixpoint, mutual eliminators with iota law, ordinal termination certificates; Nat/Fin, Even/Odd, and STLC Ctx/Ty/Tm.",
+      "summary_zh": "歸納-歸納型別：索引為項的 schema、相依索引檢查、切片塔 Kleene 不動點、滿足 ι 律的互遞迴消除器、序數終止憑證；Nat/Fin、Even/Odd 與 STLC 的 Ctx/Ty/Tm。"
+    },
+    {
+      "id": "meta-reflect",
+      "path": "meta/reflect",
+      "moon": "vv0101v01/cubical-hermitian/meta/reflect",
+      "layer": 2,
+      "depends_on": [
+        "meta-core",
+        "meta-instances"
+      ],
+      "summary_en": "Reflection: NbE reify/reflect adjunction, replayable beta-eta certificates with an independent checker, universe reflection with decidable conservativity and Mahlo-style limit reflection, and instance derivations reified into search-free proofs.",
+      "summary_zh": "反射：NbE 的 reify／reflect 伴隨、可獨立重放的 βη 憑證、可判定保守性的宇宙反射與 Mahlo 式極限反射、實例推導反射成無需搜尋的憑證。"
+    },
+    {
+      "id": "cmd-metatheory",
+      "path": "cmd/metatheory",
+      "moon": "vv0101v01/cubical-hermitian/cmd/metatheory",
+      "layer": 3,
+      "depends_on": [
+        "meta-core",
+        "meta-instances",
+        "meta-iit",
+        "meta-reflect"
+      ],
+      "summary_en": "Executable law table for the meta federation: every claimed proposition is recomputed and printed.",
+      "summary_zh": "meta 聯邦的可執行定律總表：每一條宣稱的命題都被重新計算並印出。"
     }
   ],
   "components": [
@@ -1332,6 +1402,73 @@
       ],
       "summary_en": "Frontier CPU SWAR & Browser Free WebGPU (WGSL) hardware-acceleration algorithms cross-verified bit-for-bit against Federations 1, 3, 6, and 7.",
       "summary_zh": "前沿 CPU SWAR 與瀏覽器免費 WebGPU（WGSL）硬體加速算法核心，與第 1、3、6、7 聯邦逐位對齊驗證。"
+    },
+    {
+      "id": "meta-core",
+      "package": "meta-core",
+      "layer": 0,
+      "files": [
+        "meta/core/*.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Ordinals (CNF), exact linear algebra, unification, matroid, Ramsey, complex/nerve.",
+      "summary_zh": "序數（CNF）、精確線性代數、合一、擬陣、Ramsey、複形／神經。"
+    },
+    {
+      "id": "meta-instances",
+      "package": "meta-instances",
+      "layer": 1,
+      "files": [
+        "meta/instances/*.mbt"
+      ],
+      "depends_on": [
+        "meta-core"
+      ],
+      "summary_en": "Instance resolution, coherence, matroidal basis, gluing, mirror duality.",
+      "summary_zh": "實例解析、一致性、擬陣基、黏合、鏡像對偶。"
+    },
+    {
+      "id": "meta-iit",
+      "package": "meta-iit",
+      "layer": 1,
+      "files": [
+        "meta/iit/*.mbt"
+      ],
+      "depends_on": [
+        "meta-core"
+      ],
+      "summary_en": "II schemas, index checking, Kleene fixpoints, mutual eliminators.",
+      "summary_zh": "II schema、索引檢查、Kleene 不動點、互遞迴消除器。"
+    },
+    {
+      "id": "meta-reflect",
+      "package": "meta-reflect",
+      "layer": 2,
+      "files": [
+        "meta/reflect/*.mbt"
+      ],
+      "depends_on": [
+        "meta-core",
+        "meta-instances"
+      ],
+      "summary_en": "NbE reflection, replayable certificates, universe reflection, instance proofs.",
+      "summary_zh": "NbE 反射、可重放憑證、宇宙反射、實例憑證。"
+    },
+    {
+      "id": "cmd-metatheory",
+      "package": "cmd-metatheory",
+      "layer": 3,
+      "files": [
+        "cmd/metatheory/*.mbt"
+      ],
+      "depends_on": [
+        "meta-core",
+        "meta-instances",
+        "meta-iit",
+        "meta-reflect"
+      ],
+      "summary_en": "Law table runner.",
+      "summary_zh": "定律總表執行器。"
     }
   ],
   "exceptions": []

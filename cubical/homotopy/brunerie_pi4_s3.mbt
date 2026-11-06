@@ -66,6 +66,7 @@
 
 ///|
 /// What a Brunerie number does under normalisation.
+#derive(Debug, Eq)
 pub(all) enum BrunerieNorm {
   /// Normalises to the given integer.
   NormalisesTo(Int32)
@@ -73,7 +74,7 @@ pub(all) enum BrunerieNorm {
   DoesNotNormalise
   /// Never successfully normalised.
   NeverNormalised
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend BrunerieNorm with @moonbitlang/core/debug.Debug::{to_repr}
@@ -85,11 +86,12 @@ pub extend BrunerieNorm with Eq::{equal, not_equal}
 /// One Brunerie number: an integer `n` with `pi_4(S^3) ~= Z/n Z`.
 /// `complexity` counts the maps composed to produce it, which is the
 /// sense in which `beta_1, beta_2, beta_3` have decreasing complexity.
+#derive(Debug, Eq)
 pub struct BrunerieNumber {
   name : String
   complexity : Int32
   norm : BrunerieNorm
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend BrunerieNumber with @moonbitlang/core/debug.Debug::{to_repr}

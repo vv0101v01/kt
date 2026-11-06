@@ -15,11 +15,12 @@
 ///|
 /// Profinite inverse tower `S = lim_n S_n` with finite level sizes and surjective
 /// one-hot transition matrices `maps[n] : S_{n+1} -> S_n` (`rows = |S_n|, cols = |S_{n+1}|`).
+#derive(Debug, Eq)
 pub(all) struct CondProfinite {
   sizes : Array[Int32]
   maps : Array[@gcd.FpMat]
   p : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondProfinite with @moonbitlang/core/debug.Debug::{to_repr}
@@ -29,11 +30,12 @@ pub extend CondProfinite with Eq::{not_equal, equal}
 
 ///|
 /// Condensed linear chain `(V_n, trans_n : V_{n+1} -> V_n)` over `F_p`.
+#derive(Debug, Eq)
 pub(all) struct CondChain {
   dims : Array[Int32]
   trans : Array[@gcd.FpMat]
   p : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondChain with @moonbitlang/core/debug.Debug::{to_repr}
@@ -46,6 +48,7 @@ pub extend CondChain with Eq::{not_equal, equal}
 /// Condensed Postnikov–Kan Profinite Homotopy Stack tracking levelwise `Z`-homotopy
 /// ranks and integral bonding matrices `bonding[n] : pi_k(X_{n+1}) -> pi_k(X_n)`,
 /// computing both `lim^0` rank and Milnor `lim^1` non-vanishing torsion growth.
+#derive(Debug, Eq)
 pub(all) struct CondAnima {
   name : String
   pi0_tower : CondProfinite
@@ -55,7 +58,7 @@ pub(all) struct CondAnima {
   coker_torsion_orders : Array[BigInt]
   mittag_leffler_holds : Bool
   milnor_lim1_nonvanishing : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondAnima with @moonbitlang/core/debug.Debug::{to_repr}
@@ -68,6 +71,7 @@ pub extend CondAnima with Eq::{not_equal, equal}
 /// Solid Condensed Module `M^■` paired with its `p`-Liquid analytic norm envelope
 /// (`0 < p_num / p_den <= 1`), recording solid gap, Mittag-Leffler `Ext^1` vanishing,
 /// and exact `p`-convexity subadditivity.
+#derive(Debug, Eq)
 pub(all) struct CondSolidModule {
   base_tower : CondProfinite
   free_chain : CondChain
@@ -78,7 +82,7 @@ pub(all) struct CondSolidModule {
   liquid_p_num : Int32
   liquid_p_den : Int32
   liquid_subadditive_holds : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondSolidModule with @moonbitlang/core/debug.Debug::{to_repr}
@@ -90,11 +94,12 @@ pub extend CondSolidModule with Eq::{not_equal, equal}
 /// Morphism in **Category #1 (`範疇 ①` — `CondCategory`)**: coherent level-preserving
 /// pro-morphism `(level_maps[n] : S_n -> T_n)` commuting with transition maps
 /// `T.maps[n] * level_maps[n+1] == level_maps[n] * S.maps[n]`.
+#derive(Debug, Eq)
 pub(all) struct CondProMorphism {
   dom : CondProfinite
   cod : CondProfinite
   level_maps : Array[@gcd.FpMat]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CondProMorphism with @moonbitlang/core/debug.Debug::{to_repr}

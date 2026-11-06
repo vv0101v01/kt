@@ -31,6 +31,7 @@ using @kernel {type DTerm, d_nat_lit, dep_check_closed, dep_nf_closed}
 // dependent checker.
 
 ///|
+#derive(Debug, Eq)
 pub(all) enum UTerm {
   UVar(Int32)
   UMeta(Int32, Array[UTerm])
@@ -48,7 +49,7 @@ pub(all) enum UTerm {
   UNatZero
   USucc(UTerm)
   UNatElim(UTerm, UTerm, UTerm, UTerm)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend UTerm with @moonbitlang/core/debug.Debug::{to_repr}
@@ -79,10 +80,11 @@ pub fn uty_arrow(a : UTerm, b : UTerm) -> UTerm {
 ///|
 
 ///|
+#derive(Debug, Eq)
 pub struct UMetaInfo {
   context_depth : Int32
   mut solution : UTerm?
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend UMetaInfo with @moonbitlang/core/debug.Debug::{to_repr}
@@ -91,10 +93,11 @@ pub extend UMetaInfo with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend UMetaInfo with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct Unifier {
   metas : Array[UMetaInfo]
   mut solved_count : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Unifier with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1041,6 +1044,7 @@ pub fn hou_unify(
 
 ///|
 /// Status of the certified pattern-unification API below.
+#derive(Debug, Eq)
 pub(all) enum HouMguStatus {
   /// Solved, and the returned substitution is a most general
   /// unifier for the Miller-pattern problem.
@@ -1055,7 +1059,7 @@ pub(all) enum HouMguStatus {
   /// normalized constraints; solving those under the partial
   /// substitution is equivalent to solving the original problem.
   HouMguResidual
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouMguStatus with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1066,11 +1070,12 @@ pub extend HouMguStatus with Eq::{not_equal, equal}
 ///|
 /// One residual higher-order equation, at the displayed context
 /// depth, normalized under the current partial substitution.
+#derive(Debug, Eq)
 pub(all) struct HouConstraint {
   lhs : UTerm
   rhs : UTerm
   depth : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouConstraint with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1079,13 +1084,14 @@ pub extend HouConstraint with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend HouConstraint with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct HouMguReport {
   status : HouMguStatus
   /// Assignments made by this call, as `(meta id, solution)`
   /// pairs with solutions zonked under the final unifier.
   substitution : Array[(Int32, UTerm)]
   residual : Array[HouConstraint]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HouMguReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1464,6 +1470,7 @@ pub fn hou_fresh_meta(unifier : Unifier, depth : Int32) -> UTerm {
 }
 
 ///|
+#derive(Debug, Eq)
 pub enum STerm {
   SVar(String)
   SLam(String, UTerm?, STerm)
@@ -1478,7 +1485,7 @@ pub enum STerm {
   SNatElim(STerm, STerm, STerm, STerm)
   SAnn(STerm, UTerm)
   SHole
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend STerm with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1487,10 +1494,11 @@ pub extend STerm with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend STerm with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ElabVar {
   name : String
   ty : UTerm
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ElabVar with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1499,10 +1507,11 @@ pub extend ElabVar with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ElabVar with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct Elaborator {
   unifier : Unifier
   vars : Array[ElabVar]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend Elaborator with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1511,10 +1520,11 @@ pub extend Elaborator with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend Elaborator with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ElabResult {
   term : UTerm
   ty : UTerm
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ElabResult with @moonbitlang/core/debug.Debug::{to_repr}

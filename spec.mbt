@@ -13,12 +13,13 @@
 // missing external audit script is required for this internal check.
 
 ///|
+#derive(Debug, Eq)
 pub enum SpecKind {
   SpecType
   SpecOperator
   SpecStructure
   SpecTheorem
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend SpecKind with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1739,6 +1740,41 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "觀測軌跡 F_p 零空間成對加減飽和整數基、Floyd–Warshall 五謂詞蘊含閉包與最小反例矩陣、五態 Lakatos 猜想生命週期與雜湊鏈入賬紀錄",
       "跨尺度演化不變量函子 [E-Derive]+[P-Transfer]、相對／對偶／對比／蘊含／比率五大認識論透鏡與七大聯邦 K₇ 完全圖星稜柱大一統",
       "6 組演化定律自動發現並剔除小規模海市蜃樓（含三次至四次平面曲線 Hironaka–Serre 虧格轉移）、5 項天真猜想反例推翻與精煉定理配對、共 12 項猜想（CONJ-01..12）全數機器核驗",
+    ),
+    entry(
+      "反射三件套（快速判定 / 可重放憑證 / 獨立重放檢查）",
+      SpecStructure,
+      [
+        "decide_eq", "prove_eq", "check_cert", "cert_size", "reify", "reflect", "nf_in",
+        "enum_terms", "v_level", "sat", "absolute_at", "reflects", "reflecting_levels",
+        "diagonal", "prove_instance", "check_instance_proof",
+      ],
+      "NbE 語義值域上的正常形式：reify ∘ reflect 即 η-展開；βη 正常形式為規範形",
+      "reify ⊣ reflect 構成語法／語義兩層的伴隨；反射的語意版本是 HF 累積層級上的絕對性 V_α ⊨ φ",
+      "decide_eq（快、語義）與 check_cert（慢、逐步重放）兩條互不信任的路徑必須一致；一般 β 以型別上窮舉的項逐一檢查；反射層級在視窗內無界且對更大層級封閉（club），有限公式集的 club 交集仍無界",
+    ),
+    entry(
+      "全域實例解析與一致性",
+      SpecStructure,
+      [
+        "resolve_all", "derivable_bruteforce", "terminating", "critical_pairs", "coherent",
+        "minimal_instance_basis", "derivability_is_matroidal", "glues", "mirror_env",
+        "dual_derivable", "ramsey_window", "complete_oriented", "resolve_modules", "scc",
+      ],
+      "Horn 子句集的 SLD 推導樹；見證項 evidence 由推導結構遞迴給出",
+      "可導性閉包是目標集合上的閉包算子（平坦情形為擬陣）；覆蓋的黏合是層的下降條件；mirror_env 是環境範疇上的對合",
+      "序數度量 ω^{深度} 嚴格下降判終止；臨界對 + 典範化判一致；神經 H¹ 判黏合；Ramsey 窗口給有限記憶體迴圈偵測；不完備的可能被無剪枝暴力搜尋否證（21672 組目標/深度全一致）；新規則須 head > body 才收（定向）；模組匯入圖跑 Tarjan，SCC 為環即拒絕並給真迴路，DAG 給典範解析序",
+    ),
+    entry(
+      "歸納-歸納切片塔",
+      SpecStructure,
+      [
+        "icheck", "iit_stage", "iit_enumerate", "iit_fold", "iit_measure", "ischema_ok",
+        "ieq_ok", "iquot", "iquot_schema", "icheck_q", "iit_fold_q",
+      ],
+      "族序列的 Kleene 鏈 T_{n+1} = T_n ∪ F(T_n)：切片範疇上自函子的初始代數，以階段逼近",
+      "切片範疇 Set/I 上的初始代數（非乘積範疇的互遞迴不動點）；索引索引的相位差即切片的方向",
+      "icheck 逐個遞迴參數驗索引表達式；iit_measure = ω^{size} 給出具體終止憑證；ι 律以「重建即恆等」判定；等式建構子住在 schema（`ieq_ok` 檢查 head/sort/樣式變數/非空洞），商對整條 Kleene 鏈良定義（商相等 ⇒ iit_fold_q 相等）",
     ),
     entry(
       "規格登記自身",

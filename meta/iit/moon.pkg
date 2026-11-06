@@ -1,0 +1,4 @@
+// meta/iit — 歸納-歸納型別（inductive-inductive types）
+import {
+  "vv0101v01/cubical-hermitian/meta/core",
+}

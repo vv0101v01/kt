@@ -12,12 +12,13 @@
 // guessing when its step budget is exhausted.
 
 ///|
+#derive(Debug, Eq)
 pub struct FaceCnfStats {
   variables : Int32
   auxiliary_variables : Int32
   clauses : Int32
   literals : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FaceCnfStats with @moonbitlang/core/debug.Debug::{to_repr}
@@ -26,13 +27,14 @@ pub extend FaceCnfStats with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend FaceCnfStats with Eq::{not_equal, equal}
 
 ///|
+#derive(Eq)
 priv enum FaceBoolExpr {
   FBEConst(Bool)
   FBEVar(Int32)
   FBENot(FaceBoolExpr)
   FBEAnd(FaceBoolExpr, FaceBoolExpr)
   FBEOr(FaceBoolExpr, FaceBoolExpr)
-} derive(Eq)
+}
 
 ///|
 fn fbe_not(a : FaceBoolExpr) -> FaceBoolExpr {
@@ -525,6 +527,7 @@ pub fn face_eq_watched_dpll(
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct FaceCdclStats {
   decisions : Int32
   conflicts : Int32
@@ -532,7 +535,7 @@ pub struct FaceCdclStats {
   learned : Int32
   deleted : Int32
   restarts : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FaceCdclStats with @moonbitlang/core/debug.Debug::{to_repr}
@@ -552,10 +555,11 @@ pub struct FaceCdclResult {
 /// delete a currently active clause.  Clause identity for a
 /// deletion is literal-set identity, because the solver permutes
 /// the two watched literals of a stored clause during search.
+#derive(Debug, Eq)
 pub(all) enum FaceCdclProofStep {
   CdclProofAdd(Array[Int32])
   CdclProofDelete(Array[Int32])
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FaceCdclProofStep with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1868,10 +1872,11 @@ pub fn face_cdcl_drup_trim(
 ///   `literals[0]`.
 /// - `LratDelete(step_id, deleted_clause_ids)`: deletes active clauses in
 ///   `O(1)` per ID without literal-set scanning.
+#derive(Debug, Eq)
 pub(all) enum FaceLratStep {
   LratAdd(Int32, Array[Int32], Array[Int32], Array[(Int32, Array[Int32])])
   LratDelete(Int32, Array[Int32])
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FaceLratStep with @moonbitlang/core/debug.Debug::{to_repr}
@@ -1880,6 +1885,7 @@ pub extend FaceLratStep with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend FaceLratStep with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct FaceLratElaborateReport {
   valid : Bool
   original_clauses : Int32
@@ -1888,7 +1894,7 @@ pub(all) struct FaceLratElaborateReport {
   lrat_deletes : Int32
   total_hints : Int32
   steps : Array[FaceLratStep]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend FaceLratElaborateReport with @moonbitlang/core/debug.Debug::{to_repr}

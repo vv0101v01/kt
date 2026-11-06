@@ -4,6 +4,7 @@
 
 ///|
 /// Cryptographic RFC 8032 Ed25519 `2f+1`-of-`3f+1` BFT Quorum Certificate & WAL Commit Report.
+#derive(Debug, Eq)
 pub(all) struct BftEd25519WalReport {
   n_validators : Int32
   quorum_required : Int32
@@ -11,7 +12,7 @@ pub(all) struct BftEd25519WalReport {
   forged_signature_rejected : Bool
   wal_committed_and_recovered : Bool
   condensed_ledger_verified : Bool
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend BftEd25519WalReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -114,11 +115,12 @@ pub fn bft_ed25519_quorum_commit_to_wal() -> BftEd25519WalReport {
 ///|
 /// Tarjan Strongly Connected Components (SCC) + Atomic Multi-Version Concurrency
 /// Control (`MVCC`) Snapshot Store for Cyclic Module Hot-Swapping (Boundary §4.3).
+#derive(Debug, Eq)
 pub(all) struct HotLoadMvccSnapshot {
   epoch : Int32
   modules : Array[(String, Int32)]
   scc_groups : Array[Array[String]]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HotLoadMvccSnapshot with @moonbitlang/core/debug.Debug::{to_repr}
@@ -127,9 +129,10 @@ pub extend HotLoadMvccSnapshot with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend HotLoadMvccSnapshot with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub(all) struct HotLoadMvccStore {
   snapshots : Array[HotLoadMvccSnapshot]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend HotLoadMvccStore with @moonbitlang/core/debug.Debug::{to_repr}

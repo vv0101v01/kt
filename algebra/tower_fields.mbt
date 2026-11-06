@@ -39,12 +39,13 @@
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct CubicNum {
   m : BigInt
   a : Rat
   b : Rat
   c : Rat
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CubicNum with @moonbitlang/core/debug.Debug::{to_repr}
@@ -425,10 +426,11 @@ pub fn radical_to_cubic(e : RadicalExpr) -> CubicNum? {
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct TriquadNum {
   gens : Array[BigInt]
   coeffs : Array[Rat]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend TriquadNum with @moonbitlang/core/debug.Debug::{to_repr}

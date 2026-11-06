@@ -18,10 +18,11 @@
 // live separately in `module_binary.mbt`.
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleDependencyFingerprint {
   path : String
   interface_hash : Int32
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleDependencyFingerprint with @moonbitlang/core/debug.Debug::{
@@ -47,6 +48,7 @@ pub fn compiled_module_producer_default() -> String {
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct CompiledModule {
   format_version : Int32
   module_path : String
@@ -60,7 +62,7 @@ pub struct CompiledModule {
   /// Producer identification recorded by the v2 binary format;
   /// empty for objects parsed from legacy v1 payloads.
   producer : String
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CompiledModule with @moonbitlang/core/debug.Debug::{to_repr}
@@ -347,9 +349,10 @@ pub fn compiled_module_is_implementation(
 // ---------------------------------------------------------------------------
 
 ///|
+#derive(Debug, Eq)
 pub struct CompiledModuleEnv {
   modules : Array[CompiledModule]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend CompiledModuleEnv with @moonbitlang/core/debug.Debug::{to_repr}
@@ -483,11 +486,12 @@ pub fn module_source_fingerprint(
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleCompileCacheEntry {
   module_path : String
   fingerprint : String
   compiled : CompiledModule
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleCompileCacheEntry with @moonbitlang/core/debug.Debug::{to_repr}
@@ -496,9 +500,10 @@ pub extend ModuleCompileCacheEntry with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend ModuleCompileCacheEntry with Eq::{not_equal, equal}
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleCompileCache {
   entries : Array[ModuleCompileCacheEntry]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleCompileCache with @moonbitlang/core/debug.Debug::{to_repr}
@@ -885,12 +890,13 @@ pub fn check_module_compilation() -> Bool {
 // ===========================================================================
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleBuildPlanReport {
   ok : Bool
   topological_order : Array[String]
   cycle_detected : Bool
   missing_dependency : String?
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleBuildPlanReport with @moonbitlang/core/debug.Debug::{to_repr}
@@ -984,13 +990,14 @@ pub fn module_topological_plan(
 }
 
 ///|
+#derive(Debug, Eq)
 pub struct ModuleIncrementalBuildReport {
   ok : Bool
   compiled_env : CompiledModuleEnv
   recompiled_paths : Array[String]
   cache_hit_paths : Array[String]
   relinked_instance : ModuleInstance?
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend ModuleIncrementalBuildReport with @moonbitlang/core/debug.Debug::{

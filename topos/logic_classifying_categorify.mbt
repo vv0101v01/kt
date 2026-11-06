@@ -7,6 +7,7 @@
 ///|
 /// First-order / geometric formula in de Bruijn-indexed context `x_0, ..., x_{n-1}`:
 /// `GExists(body)` and `GForall(body)` bind variable `x_n` inside `body`.
+#derive(Debug, Eq)
 pub(all) enum GeoFormula {
   GTrue
   GFalse
@@ -17,7 +18,7 @@ pub(all) enum GeoFormula {
   GExists(GeoFormula)
   GImplies(GeoFormula, GeoFormula)
   GForall(GeoFormula)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend GeoFormula with @moonbitlang/core/debug.Debug::{to_repr}
@@ -27,10 +28,11 @@ pub extend GeoFormula with Eq::{not_equal, equal}
 
 ///|
 /// Atomic constraint in canonical Geometric DNF.
+#derive(Debug, Eq)
 pub(all) enum GeoAtom {
   AtomPred(Int32, Array[Int32])
   AtomEq(Int32, Int32)
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend GeoAtom with @moonbitlang/core/debug.Debug::{to_repr}
@@ -41,10 +43,11 @@ pub extend GeoAtom with Eq::{not_equal, equal}
 ///|
 /// One clause `∃ y_0 ... y_{num_exists - 1}. ∧_{a ∈ atoms} a` in canonical
 /// Geometric Disjunctive-Existential Normal Form.
+#derive(Debug, Eq)
 pub(all) struct GeoConjClause {
   num_exists : Int32
   atoms : Array[GeoAtom]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend GeoConjClause with @moonbitlang/core/debug.Debug::{to_repr}
@@ -54,10 +57,11 @@ pub extend GeoConjClause with Eq::{not_equal, equal}
 
 ///|
 /// Canonical Joyal–Reyes Geometric Normal Form `∨_{c ∈ clauses} c`.
+#derive(Debug, Eq)
 pub(all) struct GeoNormalForm {
   free_arity : Int32
   clauses : Array[GeoConjClause]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend GeoNormalForm with @moonbitlang/core/debug.Debug::{to_repr}
@@ -67,11 +71,12 @@ pub extend GeoNormalForm with Eq::{not_equal, equal}
 
 ///|
 /// Geometric sequent `premise ⊢_{x_0,...,x_{arity-1}} conclusion`.
+#derive(Debug, Eq)
 pub(all) struct GeoSequent {
   arity : Int32
   premise : GeoFormula
   conclusion : GeoFormula
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend GeoSequent with @moonbitlang/core/debug.Debug::{to_repr}
@@ -97,10 +102,11 @@ pub(all) struct SheafStructure {
 
 ///|
 /// Propositional geometric sequent `∧_{p ∈ premise_atoms} p  ⊢  ∨_{branch ∈ branches} ∧_{q ∈ branch} q`.
+#derive(Debug, Eq)
 pub(all) struct PropGeoAxiom {
   premise_atoms : Array[Int32]
   branches : Array[Array[Int32]]
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend PropGeoAxiom with @moonbitlang/core/debug.Debug::{to_repr}

@@ -6,6 +6,7 @@
 
 ///|
 /// One verified row of the Fine-Grained Geometry–Logic Correspondence Atlas.
+#derive(Debug, Eq)
 pub(all) struct GeometryLogicAtlasEntry {
   id : String
   domain : String
@@ -15,7 +16,7 @@ pub(all) struct GeometryLogicAtlasEntry {
   witness_holds : Bool
   contrast_holds : Bool
   quantitative_summary : String
-} derive(Debug, Eq)
+}
 
 ///|
 pub extend GeometryLogicAtlasEntry with @moonbitlang/core/debug.Debug::{to_repr}
