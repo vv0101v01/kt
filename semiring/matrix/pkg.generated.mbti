@@ -92,7 +92,6 @@ pub fn[E : @algebra.Semiring] Csr::from_dense(Mat[E]) -> Self[E]
 pub fn[E : @algebra.Semiring] Csr::from_triplets(Int32, Int32, Array[Int32], Array[Int32], Array[E]) -> Self[E]
 pub fn[E] Csr::get(Self[E], Int32, Int32) -> E?
 pub fn[E] Csr::nnz(Self[E]) -> Int32
-pub fn[E] Csr::row_nnz(Self[E], Int32) -> Int32
 pub fn[E] Csr::row_range(Self[E], Int32) -> (Int32, Int32)
 pub fn[E : @algebra.Semiring] Csr::to_dense(Self[E]) -> Mat[E]
 

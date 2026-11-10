@@ -326,20 +326,6 @@ pub fn paren_rotation_graph_connected(n : Int32) -> Bool {
 // ---------------------------------------------------------------------------
 
 ///|
-pub fn stree_leaves(s : Stree) -> Int32 {
-  match s {
-    SLeaf => 1
-    SNode(kids) => {
-      let mut n = 0
-      for i in 0..<kids.length() {
-        n = n + stree_leaves(kids[i])
-      }
-      n
-    }
-  }
-}
-
-///|
 /// Dimension of the face: sum over internal nodes of (arity - 2).
 pub fn stree_dim(s : Stree) -> Int32 {
   match s {

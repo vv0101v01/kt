@@ -468,6 +468,5 @@ pub fn tm_id_at(a : LTy) -> Term {
 /// Composition as a *typed arrow* A→C from g : A→B and f : B→C,
 /// annotated so that iterated compositions remain inferrable.
 pub fn tm_comp_at(f : Term, g : Term, a : LTy, b : LTy, c : LTy) -> Term {
-  let _ = b
-  TmAnn(tm_comp_closed(f, g), LFun(a, c))
+  TmAnn(tm_comp_closed(TmAnn(f, LFun(b, c)), TmAnn(g, LFun(a, b))), LFun(a, c))
 }

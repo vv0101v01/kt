@@ -71,21 +71,6 @@ pub extend BidirSubstructuralMode with @debug.Debug::{to_repr}
 pub extend BidirSubstructuralMode with Eq::{not_equal, equal}
 
 ///|
-/// 宇宙層級代數表達式：`max_i (ℓ_{var_i} + offset_i, const_base)`。
-#derive(Debug, Eq)
-pub(all) enum LevelExpr {
-  LConst(Int32)
-  LVar(Int32, Int32)
-  LMax(LevelExpr, LevelExpr)
-}
-
-///|
-pub extend LevelExpr with @debug.Debug::{to_repr}
-
-///|
-pub extend LevelExpr with Eq::{not_equal, equal}
-
-///|
 /// 宇宙層級不等式約束 `lhs + delta <= rhs`（`delta = 1` 表示嚴格 `U_{lhs} : U_{rhs}`）。
 #derive(Debug, Eq)
 pub(all) struct LevelConstraint {

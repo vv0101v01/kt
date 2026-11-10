@@ -43,25 +43,6 @@ fn suspension_schema_unchecked(name : String, base : DHitSpec) -> DHitSpec {
 }
 
 ///|
-/// Checked suspension of an unindexed HIT schema.  Parameters of the
-/// base HIT are inherited.  Indexed base HITs are rejected because a
-/// constructor argument cannot refer to the result indices in this
-/// schema language.
-pub fn suspension_schema(name : String, base : DHitSpec) -> DHitSpec? {
-  if name.length() == 0 ||
-    base.indices.length() != 0 ||
-    !hit_schema_validate(base) {
-    return None
-  }
-  let out = suspension_schema_unchecked(name, base)
-  if hit_schema_validate(out) {
-    Some(out)
-  } else {
-    None
-  }
-}
-
-///|
 /// The generated 2-sphere, presented as the suspension of S^1.
 pub fn sphere2_schema() -> DHitSpec {
   suspension_schema_unchecked("Sphere2S", circle_schema())

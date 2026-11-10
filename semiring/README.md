@@ -80,13 +80,13 @@
 * `newton.mbt`：雙變數熱帶多項式 `BPoly`；把支撐集抬升取**下凸包**再投影 ⇒ 正則細分 `Plane`/`Face`/`DualEdge`，即「熱帶幾何基本定理」的可執行版；`balancing_residuals` 驗平衡條件。
 * `tla.mbt`：`trop_det`（`min_σ Σ A[i][σ(i)]`）以匈牙利演算法 `O(n³)` 計算，並與 `trop_det_bruteforce`（`O(n!)`）、`trop_det_dp` 三方交叉；`trop_det_tie_count` 抓「最佳指派不唯一」。
 
-### 3.5 `nf/`（約 712 行）— 規範形式
-1. `regex.mbt`：ACI 正規形（`RSum` 攤平 + 排序去重、`RProd` 用 0/1 吸收律）+ **Brzozowski 導數** `deriv`；`rx_accepts` 判定。
+### 3.5 `nf/`（865 行）— 規範形式
+1. `regex.mbt`：ACI 正規形（`RSum` 攤平 + 排序去重、`RProd` 用 0/1 吸收律）+ **Brzozowski 導數** `deriv` 與可空判定 `nullable`。
 2. `dfa.mbt`：`dfa_of_regex` → `dfa_minimize` → `dfa_canonical`（BFS 首次到達順序編號 + 固定符號序）⇒ **逐位元可比對的字串**；`dfa_equiv`/`regex_equiv` 於是只要比字串。
 3. `sexpr.mbt`：自由冪等半環的等式判定：`normalize` 給多項式正規形，並以兩條獨立路徑驗證（`idempotent_identity_holds` vs `_via_dfa`）。
 
-### 3.6 `monoid/`（530 行）
-`SegTree`（任意么半群，`O(log n)` 查／改）、`SparseTable`（**冪等**么半群，`O(1)` 查、`O(n log n)` 建）、`Fenwick`（**群**，`O(n)` 建、`O(log n)` 前綴與區間）；附 `SumI64`/`MaxI64`/`MinI64`/`AffineM`/`OppositeM` 實例。
+### 3.6 `monoid/`（467 行）
+`SegTree`（任意么半群，`O(log n)` 查／改）、`SparseTable`（**冪等**么半群，`O(1)` 查、`O(n log n)` 建）、`Fenwick`（**群**，`O(n)` 建、`O(log n)` 前綴與區間）；附 `SumI64`/`MaxI64`/`AffineM`/`OppositeM` 實例。
 
 ### 3.7 `cat/`（約 550 行）— 範疇化三條路線
 * `setmat.mbt`：數字 `a ↦ 集合 A`、`+ ↦ ⊔`、`× ↦ ×`；`decategorify` 取基數還原。

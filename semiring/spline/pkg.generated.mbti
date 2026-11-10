@@ -8,8 +8,6 @@ import {
 // Values
 pub fn affine_steps(Double, Array[Double]) -> Array[@monoid.AffineM]
 
-pub fn bspline_basis(Array[Double], Int32, Int32, Double) -> Double
-
 pub fn cubic_pole() -> Double
 
 pub fn interp_cubic_banded(Array[Double]) -> Array[Double]

@@ -4,6 +4,7 @@ package "vv0101v01/cubical-hermitian"
 import {
   "moonbitlang/core/debug",
   "vv0101v01/cubical-hermitian/cubical/autonomy",
+  "vv0101v01/cubical-hermitian/cubical/elaborator",
   "vv0101v01/cubical-hermitian/cubical/face_bdd",
   "vv0101v01/cubical-hermitian/cubical/finite",
   "vv0101v01/cubical-hermitian/cubical/hermitian",
@@ -13,13 +14,15 @@ import {
 }
 
 // Values
-pub fn all_checks_pass() -> Bool
-
 pub fn amalgamate_signatures_pushout(String, @structures.DepSignature, @structures.DepSignature, @structures.DepSignature) -> @structures.DepSignature
 
 pub fn assoc_euler_characteristic(Int32) -> Int32
 
 pub fn assoc_fvector(Int32) -> Array[Int32]
+
+pub fn bd_conv(@elaborator.BidirDagArena, Int32, Int32) -> Bool
+
+pub fn bd_whnf(@elaborator.BidirDagArena, Int32) -> Int32
 
 pub fn bdd_and(@face_bdd.Bdd, @face_bdd.Bdd) -> @face_bdd.Bdd
 
@@ -30,6 +33,20 @@ pub fn bdd_not(@face_bdd.Bdd) -> @face_bdd.Bdd
 pub fn bdd_of_face(@face_bdd.Face, Int32) -> @face_bdd.Bdd
 
 pub fn bdd_or(@face_bdd.Bdd, @face_bdd.Bdd) -> @face_bdd.Bdd
+
+pub fn bidir_dag_alloc(@elaborator.BidirDagArena, @elaborator.BidirDagNode) -> Int32
+
+pub fn bidir_dag_check_memo(@elaborator.BidirDagArena, Array[Int32], Int32, Int32) -> Bool
+
+pub fn bidir_dag_check_unmemoized(@elaborator.BidirDagArena, Array[Int32], Int32, Int32) -> Bool
+
+pub fn bidir_dag_compile_dterm(@elaborator.BidirDagArena, Array[Int32], Int32, Int32?) -> @kernel.DTerm?
+
+pub fn bidir_dag_infer_memo(@elaborator.BidirDagArena, Array[Int32], Int32) -> Int32?
+
+pub fn bidir_dag_invalidate_cache(@elaborator.BidirDagArena) -> Unit
+
+pub fn bidir_dag_new(log2_memo_cap? : Int32) -> @elaborator.BidirDagArena
 
 pub fn brunerie_new_family() -> Array[@homotopy.BrunerieNumber]
 
@@ -307,17 +324,79 @@ pub fn check_universe_schemes() -> Bool
 
 pub fn check_work4_54_structures_26_verbs_14_patterns() -> Bool
 
+pub fn check_work4_stage2_dedicated_structures() -> Bool
+
 pub fn circle_decode_value(@kernel.DValue, Int32) -> @kernel.DValue
 
+pub fn circle_degree_map_value(Int32, Int32) -> @kernel.DValue
+
 pub fn circle_encode_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn circle_loop_power_value(Int32, Int32) -> @kernel.DValue
+
+pub fn circle_product_to_torus_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn classify_finite_map_equivalences(Int32, Array[Int32]) -> @structures.FiniteEquivQuadrilogy
 
 pub fn coherence_angle_elimination_report() -> @homotopy.CoherenceAngleEliminationReport
 
 pub fn coherence_quotient_summary(Int32, Int32) -> @homotopy.CoherenceQuotientSummary
 
+pub fn compute_hit2_homology(@structures.CubicalHit2Presentation) -> @structures.Hit2HomologySummary
+
 pub fn compute_integral_cellular_homology(@structures.IntegralCellularComplex) -> @structures.IntegralHomologyReport
 
+pub fn connection_join_square_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn connection_meet_square_value(@kernel.DValue) -> @kernel.DValue
+
 pub fn conv_at(Int32, Int32, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> Bool
+
+pub fn cub_qiit_elim_ty_to_dvalue(@structures.CubQiitTy) -> @kernel.DValue
+
+pub fn cub_qiit_reify_id_sub_path(@structures.CubQiitCon, @structures.CubQiitTy) -> (@kernel.DValue, Bool)
+
+pub fn cub_qiit_simplify_ty(@structures.CubQiitTy) -> @structures.CubQiitTy
+
+pub fn cubical_cohesive_guarded_mode_2cat() -> @structures.CubicalMode2Cat
+
+pub fn cubical_glue_datum_aligned(Int32, Int32, @structures.CubicalGlueSpec, @structures.CubicalGlueDatum) -> Bool
+
+pub fn cubical_glue_eval_type(@structures.CubicalGlueSpec) -> @kernel.DValue
+
+pub fn cubical_glue_intro_value(@structures.CubicalGlueSpec, @structures.CubicalGlueDatum) -> @kernel.DValue
+
+pub fn cubical_glue_unglue_value(@structures.CubicalGlueSpec, @kernel.DValue) -> @kernel.DValue
+
+pub fn cubical_lift_in_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn cubical_lift_out_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn cubical_lift_type_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn cubical_mode_2cat_valid(@structures.CubicalMode2Cat) -> Bool
+
+pub fn cubical_mtt_check(@structures.CubicalMode2Cat, @structures.CubicalMttCtx, @structures.CubicalMttTerm, @structures.CubicalMttTerm) -> Bool
+
+pub fn cubical_mtt_synth(@structures.CubicalMode2Cat, @structures.CubicalMttCtx, @structures.CubicalMttTerm) -> @structures.CubicalMttTerm?
+
+pub fn cubical_mtt_tip_mode(@structures.CubicalMode2Cat, @structures.CubicalMttCtx) -> Int32?
+
+pub fn cubical_nf_is_canonical(@structures.SimpleCubicalTy, @structures.CubicalNf) -> Bool
+
+pub fn cubical_normalize_to_nf(Array[@structures.SimpleCubicalTy], Int32, @structures.SimpleCubicalTy, @structures.CwfCubicalTerm) -> @structures.CubicalNf
+
+pub fn cwf_apply_dim_subst(@face_bdd.Dim, Array[@face_bdd.Dim]) -> @face_bdd.Dim
+
+pub fn cwf_apply_subst(@structures.CwfCubicalTerm, @structures.CwfParallelSubst) -> @structures.CwfCubicalTerm
+
+pub fn cwf_subst_compose(@structures.CwfParallelSubst, @structures.CwfParallelSubst) -> @structures.CwfParallelSubst
+
+pub fn cwf_subst_id(Int32, Int32) -> @structures.CwfParallelSubst
+
+pub fn cwf_subst_lift_dim(@structures.CwfParallelSubst) -> @structures.CwfParallelSubst
+
+pub fn cwf_subst_lift_tm(@structures.CwfParallelSubst) -> @structures.CwfParallelSubst
 
 pub fn cx_approx_eq(@hermitian.Complex, @hermitian.Complex) -> Bool
 
@@ -325,7 +404,17 @@ pub fn cx_real(Double) -> @hermitian.Complex
 
 pub fn cx_zero() -> @hermitian.Complex
 
+pub fn dependent_curry_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn dependent_funext_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn dependent_happly_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn dependent_uncurry_sigma_elim_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
 pub fn diagnose_and_repair_square_boundary(@kernel.DValue, Array[(Int32, Bool, @kernel.DCubeFunction)]) -> (@structures.BoundaryRepairStatus, Int32, @kernel.DValue?)
+
+pub fn dim_de_morgan_nnf(@face_bdd.Dim) -> @face_bdd.Dim
 
 pub fn dim_eq_demorgan(@face_bdd.Dim, @face_bdd.Dim) -> Bool
 
@@ -336,6 +425,10 @@ pub fn dim_is_zero_demorgan(@face_bdd.Dim) -> Bool
 pub fn dim_truth_u64(@face_bdd.Dim, Int32) -> UInt64
 
 pub fn dim_var(Int32) -> @face_bdd.Dim
+
+pub fn dual_swar_check_resource_term(Int32, Array[@structures.UsageMult], @structures.DualSwarDepTerm) -> Bool
+
+pub fn dual_swar_eval_usage(Int32, UInt64, Int32, @structures.DualSwarDepTerm) -> UInt64?
 
 pub fn elems_of(@finite.Ty) -> Array[@finite.PVal]
 
@@ -379,7 +472,13 @@ pub fn hopf_map_s3_to_s2(Array[Double]) -> Array[Double]
 
 pub fn hopf_phase_rotate(Array[Double], Double) -> Array[Double]
 
+pub fn hs_classify_family_2d(String, @structures.HsCubicalFamily2D) -> @structures.HsClassifierCode2D
+
+pub fn hs_pullback_universal_el_2d(@structures.HsClassifierCode2D) -> @structures.HsCubicalFamily2D
+
 pub fn infer_cubical_bidir(Array[(Bool, @structures.CubicalBidirType)], Int32, @face_bdd.Face, @structures.CubicalBidirTerm, @structures.BidirSubstructuralMode) -> @structures.BidirCheckOutcome
+
+pub fn integer_matrix_smith_invariants(Int32, Int32, Array[Int32]) -> Array[Int32]
 
 pub fn integer_type_term() -> @kernel.DTerm
 
@@ -409,6 +508,10 @@ pub fn mat_mul(@hermitian.CMat, @hermitian.CMat) -> @hermitian.CMat
 
 pub fn mat_trace_re(@hermitian.CMat) -> Double
 
+pub fn memo_elab_infer(@elaborator.MemoElabSession, @elaborator.STerm) -> @elaborator.ElabResult?
+
+pub fn memo_elab_session_new() -> @elaborator.MemoElabSession
+
 pub fn paren_all(Int32) -> Array[@homotopy.Paren]
 
 pub fn paren_leaves(@homotopy.Paren) -> Int32
@@ -431,15 +534,15 @@ pub fn pi4_s3_group(Int32) -> @homotopy.FgAb
 
 pub fn print_report() -> Bool
 
+pub fn pushout_span_to_hit2(String, @structures.CubicalPushoutSpan) -> @structures.CubicalHit2Presentation
+
+pub fn realign_hs_family_code_2d(@structures.HsCubicalFamily2D, Int32, Array[Int32], Array[Array[Int32]]) -> @structures.HsClassifierCode2D
+
 pub fn run_all_checks() -> Array[CheckResult]
 
 pub fn sample_terms() -> Array[@finite.Term]
 
 pub fn sample_vectors() -> Array[Array[@hermitian.Complex]]
-
-pub fn spec_count() -> Int32
-
-pub fn spec_covers(String) -> Bool
 
 pub fn spec_registry() -> Array[SpecEntry]
 
@@ -447,9 +550,15 @@ pub fn spec_registry_sound() -> Bool
 
 pub fn swan_id_j_elim((@kernel.DValue, @structures.SwanIdValue) -> @kernel.DValue, @kernel.DValue, @structures.SwanIdValue, Int32) -> @kernel.DValue
 
+pub fn swar_lane_to_usage_mult(Int32) -> @structures.UsageMult
+
+pub fn torus_to_circle_product_value(@kernel.DValue, Int32) -> @kernel.DValue
+
 pub fn ty_bool() -> @finite.Ty
 
 pub fn ty_prod(@finite.Ty, @finite.Ty) -> @finite.Ty
+
+pub fn usage_mult_to_swar_lane(@structures.UsageMult) -> Int32
 
 pub fn verify_absorbing_pointed_malcev_dichotomy() -> @autonomy.AbsorbingPointedZeroReport
 
@@ -465,13 +574,25 @@ pub fn verify_covering_pushout_and_torus_suite() -> @structures.CoveringPushoutT
 
 pub fn verify_cubical_autonomy_master_suite() -> @autonomy.CubicalAutonomyMasterReport
 
+pub fn verify_cubical_hits_pushout_torus_suite() -> @structures.CubicalHitsPushoutTorusReport
+
+pub fn verify_cubical_nbe_subst_connections_kan_suite() -> @structures.CubicalNbeSubstConnectionsKanReport
+
 pub fn verify_free_path_associativity_and_kernel_bridge() -> @autonomy.FreePathAssociativityReport
 
+pub fn verify_frontier_7pillars_cubical_suite() -> @structures.Frontier7PillarsCubicalReport
+
 pub fn verify_functorial_polymorphism_and_sip_suite() -> @structures.FunctorialPolySipReport
+
+pub fn verify_glue_hae_and_universe_classifier_suite() -> @structures.GlueHaeUniverseClassifierReport
 
 pub fn verify_high_dim_alternating_cube_and_dtree() -> @autonomy.HighDimAlternatingCubeReport
 
 pub fn verify_internal_infinity_groupoid_axioms() -> @autonomy.InfinityGroupoidInternalCert
+
+pub fn verify_memo_bidir_inductive_suite() -> @elaborator.MemoBidirInductiveReport
+
+pub fn verify_pushout_universal_cocone_bijection(@structures.CubicalPushoutSpan, Int32) -> (Bool, Int32, Int32)
 
 pub fn verify_reconstruction_repair_and_reflection_suite() -> @structures.ReconstructRepairReflectReport
 
@@ -536,6 +657,10 @@ pub using @structures {type AffineBidirFocusingReport}
 
 pub using @face_bdd {type Bdd}
 
+pub using @elaborator {type BidirDagArena}
+
+pub using @elaborator {type BidirDagNode}
+
 pub using @structures {type BoundaryRepairStatus}
 
 pub using @hermitian {type CMat}
@@ -550,11 +675,43 @@ pub using @structures {type CompositionPattern14}
 
 pub using @structures {type CoveringPushoutTorusReport}
 
+pub using @structures {type CubQiitCon}
+
+pub using @structures {type CubQiitTy}
+
 pub using @autonomy {type CubicalAutonomyMasterReport}
 
 pub using @structures {type CubicalBidirTerm}
 
 pub using @structures {type CubicalBidirType}
+
+pub using @structures {type CubicalGlueDatum}
+
+pub using @structures {type CubicalGlueSpec}
+
+pub using @structures {type CubicalHit2Presentation}
+
+pub using @structures {type CubicalHitsPushoutTorusReport}
+
+pub using @structures {type CubicalMode2Cat}
+
+pub using @structures {type CubicalMttCtx}
+
+pub using @structures {type CubicalMttEntry}
+
+pub using @structures {type CubicalMttTerm}
+
+pub using @structures {type CubicalNbeSubstConnectionsKanReport}
+
+pub using @structures {type CubicalNe}
+
+pub using @structures {type CubicalNf}
+
+pub using @structures {type CubicalPushoutSpan}
+
+pub using @structures {type CwfCubicalTerm}
+
+pub using @structures {type CwfParallelSubst}
 
 pub using @kernel {type DTerm}
 
@@ -566,13 +723,31 @@ pub using @face_bdd {type Dim}
 
 pub using @structures {type DiscreteCoveringSpace}
 
+pub using @structures {type DualSwarDepTerm}
+
 pub using @structures {type EilenbergZilberCubeFactor}
 
 pub using @finite {type Equiv}
 
 pub using @face_bdd {type Face}
 
+pub using @structures {type FiniteEquivQuadrilogy}
+
+pub using @structures {type Frontier7PillarsCubicalReport}
+
 pub using @structures {type FunctorialPolySipReport}
+
+pub using @structures {type GlueHaeUniverseClassifierReport}
+
+pub using @structures {type Hit2HomologySummary}
+
+pub using @structures {type HsClassifierCode2D}
+
+pub using @structures {type HsCubicalFamily2D}
+
+pub using @elaborator {type MemoBidirInductiveReport}
+
+pub using @elaborator {type MemoElabSession}
 
 pub using @structures {type OperationalVerb26}
 
@@ -583,6 +758,8 @@ pub using @structures {type PolyFunctor}
 pub using @structures {type ReconstructRepairReflectReport}
 
 pub using @structures {type ReflLoopExpr}
+
+pub using @structures {type SimpleCubicalTy}
 
 pub using @structures {type SwanIdFreePathEzReport}
 

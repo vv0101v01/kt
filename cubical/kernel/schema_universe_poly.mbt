@@ -294,11 +294,7 @@ fn dterm_instantiate_levels_list(
   levels : Array[Int32],
   ok : Array[Bool],
 ) -> Array[DTerm] {
-  let out : Array[DTerm] = []
-  for i in 0..<terms.length() {
-    out.push(dterm_instantiate_levels_go(terms[i], levels, ok))
-  }
-  out
+  terms.map(t => dterm_instantiate_levels_go(t, levels, ok))
 }
 
 ///|

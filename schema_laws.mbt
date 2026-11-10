@@ -312,8 +312,6 @@ pub fn check_hit_schema_circle_segment() -> Bool {
     return false
   }
   // Eliminating the generated loop into Bool under a dimension binder.
-  let loop_path = DTerm::DLamDim(hit_intro_term(circle, 1, [], [], [DVar(0)]))
-  let _ = loop_path
   let elim_loop = DTerm::DLamDim(
     hit_elim_term(
       circle,

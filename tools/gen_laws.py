@@ -39,7 +39,7 @@ def main():
     for pkg in PKGS:
         names = []
         for f in sorted(glob.glob(os.path.join(root, "meta", pkg, "*.mbt"))):
-            if f.endswith("laws.mbt"):
+            if os.path.basename(f) == "laws.mbt":
                 continue
             for n in laws_of(f):
                 if n not in names:

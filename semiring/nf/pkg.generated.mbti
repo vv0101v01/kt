@@ -2,8 +2,6 @@
 package "vv0101v01/cubical-hermitian/semiring/nf"
 
 // Values
-pub fn char_of(Int32) -> String
-
 pub fn deriv(Regex, Int32) -> Regex
 
 pub fn dfa_canonical(Dfa) -> String
@@ -34,8 +32,6 @@ pub fn regex_cmp(Regex, Regex) -> Int32
 
 pub fn regex_equiv(Regex, Regex, Array[Int32]) -> Bool
 
-pub fn rx_accepts(Regex, Array[Int32]) -> Bool
-
 pub fn sexpr_to_regex(SExpr) -> Regex
 
 // Errors
@@ -60,7 +56,6 @@ pub(all) enum Regex {
   RStar(Regex)
 }
 pub fn Regex::rank(Self) -> Int32
-pub fn Regex::to_text(Self) -> String
 
 pub(all) enum SExpr {
   SZero

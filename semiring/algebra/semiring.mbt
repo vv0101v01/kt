@@ -159,10 +159,6 @@ pub(open) trait Monoid: Eq {
 }
 
 ///|
-/// 交換么半群。
-pub(open) trait CommutativeMonoid: Monoid {}
-
-///|
 /// 冪等么半群：x ⊗ x = x。
 ///
 /// 這個標記是 sparse table 的型別級前提：只有冪等運算才允許

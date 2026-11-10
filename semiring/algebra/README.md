@@ -38,7 +38,7 @@
 | `OrderedSemiring` | `meet`、`top` | 有格結構（用於 `bridge/face_semiring.mbt`） |
 | `GroupElement` | `group_inv`、`order_bound` | 元素落在有限子群內 ⇒ `a*` 可 `O(log m)` |
 | `Monoid: Eq` | `empty`、`append` | 么半群 |
-| `CommutativeMonoid` / `IdempotentMonoid` / `GroupMonoid` | 子標記 | 分別給 Sparse Table、Fenwick 的型別約束 |
+| `IdempotentMonoid` / `GroupMonoid` | 子標記 | 分別給 Sparse Table、Fenwick 的型別約束 |
 
 `Ops`：`⊕`/`⊗` 的實際呼叫計數器，所有矩陣／圖演算法都可傳入，使「運算量」可量測而非估算。
 
@@ -111,6 +111,14 @@ pub fn LawReport::summary(self) -> String
 
 SplitMix64：`Rng::new(seed)`、`Rng::next_u64`、`Rng::next_int(bound)`、`Rng::range(lo, hi)`。
 **同一 seed ⇒ 同一實例**，因此測試、基準與量測報告在任何 target、任何 CI 執行都得到相同的資料與結論。
+
+---
+
+## 8.5 `resource_qtt_ctx.mbt` — 雙上下文半環分級資源系統（DILL / QTT）
+
+將半環聯邦核心 `Semiring`／`StarSemiring` 直接提升為定量依賴類型論（Atkey QTT / Barber DILL）左半模引擎：
+* **三值資源星閉半環 `LinUsage = {LinZero(0), LinOne(1), LinMany(ω)}`**（`to_code` 映射至 4-bit SWAR 碼 `{0, 1, 15}`，`usage_compatible` 判定子資源序 `actual ⊑ declared`）。
+* **泛型雙上下文 `DualResourceCtx[R]`**：正交分離無限制持久區 `unrestricted_tys`（`Γ`）與半環分級資源區 `resource_grades`（`Δ_{\vec{q}}`），提供 `qtt_ctx_zero_resources`（`0·Δ` 型別形成編譯期抹除）、`qtt_ctx_scale`、`qtt_ctx_add`、`qtt_ctx_var_demand` 與 `verify_dual_qtt_semiring_laws()`（窮舉 `27` 組三元組公理並橫跨 `LinUsage`、`Counting`、`BoolSr` 核驗左半模定律，於 `bridge/frontier_7pillars_unification.mbt` 與 `@swar.swar_grade16_*` 對帳）。
 
 ---
 

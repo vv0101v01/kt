@@ -218,16 +218,6 @@ pub fn set_trunc_schema() -> DHitSpec {
 }
 
 ///|
-pub fn set_trunc_type_term(a : DTerm) -> DTerm {
-  DHitType(set_trunc_schema(), [a])
-}
-
-///|
-pub fn set_trunc_point_term(a : DTerm, value : DTerm) -> DTerm {
-  hit_intro_term(set_trunc_schema(), 0, [a], [value], [])
-}
-
-///|
 pub fn set_trunc_type_value(a_ty : DValue) -> DValue {
   DVHitType(set_trunc_schema(), [a_ty], [])
 }
@@ -372,100 +362,6 @@ pub fn set_trunc_rec_set_value(
   eval_hit_elim(
     spec,
     (_, _) => b_ty,
-    [point_case, hub_case, spoke_case],
-    [a_ty],
-    [],
-    scrut,
-    dlevel,
-  )
-}
-
-///|
-/// Full dependent elimination of `‖A‖₀` into any h-Set family
-/// `motive_fam : ‖A‖₀ -> Type` equipped with `is_set_motive`.
-pub fn set_trunc_elim_set_value(
-  a_ty : DValue,
-  motive_fam : (DValue) -> DValue,
-  is_set_motive : (DValue, DValue, DValue, DValue, DValue) -> DValue,
-  point_branch : (DValue) -> DValue,
-  scrut : DValue,
-  dlevel : Int32,
-) -> DValue {
-  let spec = set_trunc_schema()
-  let c_spec = circle_schema()
-  let c_ty = DValue::DVHitType(c_spec, [], [])
-  let base = DValue::DVHitCell(c_spec, 0, [], [], [])
-  let point_case = DValue::DVLam(a => point_branch(a))
-  let hub_case = DValue::DVLam(f => {
-    DValue::DVLam(ih => {
-      subst_value(
-        z => motive_fam(z),
-        set_trunc_spoke_path_value(a_ty, f, base),
-        dapp_typed(ih, base, c_ty),
-        dlevel + 2,
-      )
-    })
-  })
-  let spoke_case = DValue::DVLam(f => {
-    DValue::DVLam(ih => {
-      let hub_pt = set_trunc_hub_value(a_ty, f)
-      let ih_base = dapp_typed(ih, base, c_ty)
-      let hub_val = subst_value(
-        z => motive_fam(z),
-        set_trunc_spoke_path_value(a_ty, f, base),
-        ih_base,
-        dlevel + 2,
-      )
-      DValue::DVLam(t => {
-        let spoke_line_at = (pt : DValue) => {
-          memo_dim_line(i => {
-            motive_fam(hit_cell_value(spec, 2, [a_ty], [f, pt], [i]))
-          })
-        }
-        let mot_t = (pt : DValue) => {
-          DValue::DVPathTy(spoke_line_at(pt), dapp_typed(ih, pt, c_ty), hub_val)
-        }
-        let base_spoke = subst_pathp_value(
-          z => motive_fam(z),
-          set_trunc_spoke_path_value(a_ty, f, base),
-          ih_base,
-          dlevel + 2,
-        )
-        let loop_line = memo_dim_line(j => {
-          mot_t(hit_cell_value(c_spec, 1, [], [], [j]))
-        })
-        let tr_spoke = transport_value(loop_line, base_spoke, dlevel + 3)
-        let loop_eq = dpathp_eq_in_set_family_value(
-          spoke_line_at(base),
-          ih_base,
-          hub_val,
-          tr_spoke,
-          base_spoke,
-          (a, b, p1, p2) => is_set_motive(hub_pt, a, b, p1, p2),
-          dlevel + 4,
-        )
-        let loop_p = dpathp_of_transport_eq_value(
-          loop_line,
-          base_spoke,
-          base_spoke,
-          loop_eq,
-          dlevel + 4,
-        )
-        eval_hit_elim(
-          c_spec,
-          (_, pt) => mot_t(pt),
-          [base_spoke, loop_p],
-          [],
-          [],
-          t,
-          dlevel + 4,
-        )
-      })
-    })
-  })
-  eval_hit_elim(
-    spec,
-    (_, z) => motive_fam(z),
     [point_case, hub_case, spoke_case],
     [a_ty],
     [],

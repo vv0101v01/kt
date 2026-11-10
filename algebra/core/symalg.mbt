@@ -807,44 +807,6 @@ pub fn sym_projector_rank_one(v : SymVec) -> SymMat {
   sym_mat_scale(frac_div(frac_one(), norm.re), sym_outer(v))
 }
 
-///|
-fn sym_minor(m : SymMat, skip_r : Int32, skip_c : Int32) -> SymMat {
-  let rows : Array[Array[SymC]] = []
-  for i in 0..<m.n {
-    if i == skip_r {
-      continue
-    }
-    let row : Array[SymC] = []
-    for j in 0..<m.n {
-      if j != skip_c {
-        row.push(m.rows[i][j])
-      }
-    }
-    rows.push(row)
-  }
-  SymMat::{ n: m.n - 1, rows, }
-}
-
-///|
-pub fn sym_det(m : SymMat) -> SymC {
-  if m.n == 0 {
-    return sc_one()
-  }
-  if m.n == 1 {
-    return m.rows[0][0]
-  }
-  let mut acc = sc_zero()
-  for j in 0..<m.n {
-    let term = sc_mul(m.rows[0][j], sym_det(sym_minor(m, 0, j)))
-    if j % 2 == 0 {
-      acc = sc_add(acc, term)
-    } else {
-      acc = sc_sub(acc, term)
-    }
-  }
-  acc
-}
-
 // ---------------------------------------------------------------------------
 // Univariate polynomials over SymC (for characteristic polynomials)
 // ---------------------------------------------------------------------------

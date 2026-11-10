@@ -3,10 +3,29 @@ package "vv0101v01/cubical-hermitian/cubical/elaborator"
 
 import {
   "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/accel/swar",
   "vv0101v01/cubical-hermitian/cubical/kernel",
 }
 
 // Values
+pub fn bd_conv(BidirDagArena, Int32, Int32) -> Bool
+
+pub fn bd_whnf(BidirDagArena, Int32) -> Int32
+
+pub fn bidir_dag_alloc(BidirDagArena, BidirDagNode) -> Int32
+
+pub fn bidir_dag_check_memo(BidirDagArena, Array[Int32], Int32, Int32) -> Bool
+
+pub fn bidir_dag_check_unmemoized(BidirDagArena, Array[Int32], Int32, Int32) -> Bool
+
+pub fn bidir_dag_compile_dterm(BidirDagArena, Array[Int32], Int32, Int32?) -> @kernel.DTerm?
+
+pub fn bidir_dag_infer_memo(BidirDagArena, Array[Int32], Int32) -> Int32?
+
+pub fn bidir_dag_invalidate_cache(BidirDagArena) -> Unit
+
+pub fn bidir_dag_new(log2_memo_cap? : Int32) -> BidirDagArena
+
 pub fn check_hou_bounded_search() -> Bool
 
 pub fn check_hou_elaborator() -> Bool
@@ -43,8 +62,6 @@ pub fn hou_match(Unifier, Int32, Array[UTerm], UTerm, Array[UTerm], size_bound? 
 
 pub fn hou_match_higher_order_lambda(Unifier, Array[UTerm], UTerm, Array[UTerm], Array[UTerm], size_bound? : Int32, inner_lambda_budget? : Int32) -> HouMatchResult
 
-pub fn hou_match_solved_within(Unifier, Int32, Array[UTerm], UTerm, Array[UTerm], size_bound? : Int32) -> Bool
-
 pub fn hou_reify_delayed_flex_flex(Unifier, Array[HouFlexFlexEdge]) -> Bool
 
 pub fn hou_search_unify(UTerm, UTerm, Int32, Unifier, max_nodes? : Int32, max_depth? : Int32, max_projection_args? : Int32) -> HouSearchReport
@@ -75,6 +92,10 @@ pub fn hou_unify_mgu(UTerm, UTerm, Int32, Unifier) -> HouMguReport
 
 pub fn hou_unify_residual(UTerm, UTerm, Int32, Unifier, max_nodes_per_round? : Int32, depth_cap? : Int32, max_projection_args? : Int32, max_rounds? : Int32) -> HouResidualSolveReport
 
+pub fn memo_elab_infer(MemoElabSession, STerm) -> ElabResult?
+
+pub fn memo_elab_session_new() -> MemoElabSession
+
 pub fn unifier_new() -> Unifier
 
 pub fn uterm_contains_unsolved_meta(UTerm, Unifier) -> Bool
@@ -89,9 +110,54 @@ pub fn uty_nat() -> UTerm
 
 pub fn uty_unit() -> UTerm
 
+pub fn verify_memo_bidir_inductive_suite() -> MemoBidirInductiveReport
+
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug)
+pub(all) struct BidirDagArena {
+  nodes : Array[BidirDagNode]
+  digests : Array[UInt64]
+  intern_map : Map[UInt64, Array[Int32]]
+  motive_table : Map[UInt64, Int32]
+  memo_infer : @swar.SwarMemoTable64
+  memo_check : @swar.SwarMemoTable64
+  mut memo_step_visits : Int32
+  mut unmemo_step_visits : Int32
+}
+pub fn BidirDagArena::equal(Self, Self) -> Bool
+pub fn BidirDagArena::not_equal(Self, Self) -> Bool
+pub fn BidirDagArena::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum BidirDagNode {
+  BDUniv(Int32)
+  BDNatTy
+  BDBoolTy
+  BDUnitTy
+  BDVar(Int32)
+  BDPi(Int32, Int32)
+  BDSigma(Int32, Int32)
+  BDLam(Int32)
+  BDApp(Int32, Int32)
+  BDPair(Int32, Int32)
+  BDFst(Int32)
+  BDSnd(Int32)
+  BDZero
+  BDSucc(Int32)
+  BDBoolLit(Bool)
+  BDUnitLit
+  BDAnn(Int32, Int32)
+  BDVecTy(Int32, Int32)
+  BDVecNil
+  BDVecCons(Int32, Int32)
+  BDNatInd(Int32, Int32, Int32)
+}
+pub fn BidirDagNode::equal(Self, Self) -> Bool
+pub fn BidirDagNode::not_equal(Self, Self) -> Bool
+pub fn BidirDagNode::to_repr(Self) -> @debug.Repr
+
 #derive(Eq, @debug.Debug)
 pub struct ElabResult {
   term : UTerm
@@ -294,6 +360,30 @@ pub fn HouSearchStatus::to_repr(Self) -> @debug.Repr
 type HouStreamFrame
 
 type HouTrailMark
+
+#derive(Eq, @debug.Debug)
+pub(all) struct MemoBidirInductiveReport {
+  diamond_depth : Int32
+  unmemoized_visits : Int32
+  memoized_visits : Int32
+  memo_cache_hits : Int32
+  epoch_invalidation_ok : Bool
+  bidir_vec_cons_nil_checked_ok : Bool
+  bidir_vec_wrong_index_rejected : Bool
+  bidir_nat_ind_motive_synthesized_ok : Bool
+  kernel_dterm_soundness_ok : Bool
+  existing_elaborator_memo_ok : Bool
+  all_ok : Bool
+}
+pub fn MemoBidirInductiveReport::equal(Self, Self) -> Bool
+pub fn MemoBidirInductiveReport::not_equal(Self, Self) -> Bool
+pub fn MemoBidirInductiveReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct MemoElabSession {
+  elab : Elaborator
+  cache : @swar.SwarMemoTable64
+  results : Array[ElabResult?]
+}
 
 #derive(Eq, @debug.Debug)
 pub enum STerm {

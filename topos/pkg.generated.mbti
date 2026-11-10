@@ -22,6 +22,20 @@ pub fn analyze_connected_topos(@site.Site) -> @site.ConnectedToposReport
 
 pub fn analyze_local_topos(@site.Site) -> @site.LocalToposReport
 
+pub fn artin_glued_booleans(@symlib.FinCat) -> (ArtinGluedObject, @site.PresheafHom, @site.PresheafHom)
+
+pub fn artin_glued_compose(ArtinGluedMorphism, ArtinGluedMorphism) -> ArtinGluedMorphism
+
+pub fn artin_glued_enumerate_global_elements(@symlib.FinCat, ArtinGluedObject) -> Array[ArtinGluedMorphism]
+
+pub fn artin_glued_morphism_valid(ArtinGluedObject, ArtinGluedObject, ArtinGluedMorphism) -> Bool
+
+pub fn artin_glued_object_valid(ArtinGluedObject) -> Bool
+
+pub fn artin_glued_product(@symlib.FinCat, ArtinGluedObject, ArtinGluedObject) -> (ArtinGluedObject, ArtinGluedMorphism, ArtinGluedMorphism)
+
+pub fn artin_glued_terminal(@symlib.FinCat) -> ArtinGluedObject
+
 pub fn boundary_simplex_nerve(Int32) -> SimplicialNerve
 
 pub fn build_circle_z2_torsor_stack(Bool) -> (GroupoidFibration, CoverDescentDiagram)
@@ -76,6 +90,8 @@ pub fn cohomology_dimensions(CochainComplexQ) -> Array[Int32]
 
 pub fn cohomology_dimensions_unchecked(CochainComplexQ) -> Array[Int32]
 
+pub fn compose_fin_functors(@symlib.FinFunctor, @symlib.FinFunctor) -> @symlib.FinFunctor
+
 pub fn compute_nerve_homotopy_type(SimplicialNerve) -> HomotopyTypeSummary
 
 pub fn covariant_representable_point(@symlib.FinCat, Int32) -> @site.FlatPointFunctor
@@ -85,8 +101,6 @@ pub fn descent_data_isomorphic(GroupoidFibration, CoverDescentDiagram, DescentDa
 pub fn direct_image_presheaf(@symlib.FinFunctor, @symlib.Presheaf) -> @symlib.Presheaf
 
 pub fn double_negation_lt_operator(@symlib.FinCat) -> (@site.SubobjectClassifierData, @site.PresheafHom)
-
-pub fn double_negation_sheaf_site(@symlib.FinCat) -> @site.Site
 
 pub fn enumerate_canonical_points(@site.Site) -> Array[@site.FlatPointFunctor]
 
@@ -220,6 +234,8 @@ pub fn rp2_minimal_nerve() -> SimplicialNerve
 
 pub fn section_to_matching_family(@symlib.Presheaf, @site.Sieve, Int32) -> @site.MatchingFamily
 
+pub fn sga4_recollement_reconstruct_arrow(Int32, Int32, Array[Int32]) -> @symlib.Presheaf
+
 pub fn sheafify(@site.Site, @symlib.Presheaf) -> @site.SheafificationResult
 
 pub fn sieve64_coheyting_boundary(@site.SitePrecomp64, @site.Sieve64) -> @site.Sieve64
@@ -338,6 +354,8 @@ pub fn verify_alexander_whitney_leibniz(SimplicialNerve, Array[@vv0101v01/cubica
 
 pub fn verify_alexandrov_grothendieck_duality() -> Bool
 
+pub fn verify_artin_gluing_and_geometric_composition_suite() -> ArtinGluingGeometricReport
+
 pub fn verify_beck_chevalley_quantifiers(@symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf, @site.PresheafHom, @site.PresheafHom, @site.Subpresheaf, @site.Subpresheaf) -> Bool
 
 pub fn verify_chu_space_universal_duality() -> Bool
@@ -394,6 +412,32 @@ pub(all) struct AlexandrovSpace {
 pub fn AlexandrovSpace::equal(Self, Self) -> Bool
 pub fn AlexandrovSpace::not_equal(Self, Self) -> Bool
 pub fn AlexandrovSpace::to_repr(Self) -> @debug.Repr
+
+pub(all) struct ArtinGluedMorphism {
+  sem_map : Array[Int32]
+  syn_hom : @site.PresheafHom
+}
+
+pub(all) struct ArtinGluedObject {
+  sem_card : Int32
+  syn_psh : @symlib.Presheaf
+  global_secs : Array[@site.PresheafHom]
+  display_map : Array[Int32]
+}
+
+#derive(Eq, @debug.Debug)
+pub(all) struct ArtinGluingGeometricReport {
+  raw_discrete2_bool_sections : Int32
+  glued_canonical_bool_elements : Int32
+  noncanonical_mixed_rejected : Bool
+  glued_product_universal_ok : Bool
+  sga4_recollement_roundtrip_ok : Bool
+  geometric_horizontal_comp_ok : Bool
+  all_ok : Bool
+}
+pub fn ArtinGluingGeometricReport::equal(Self, Self) -> Bool
+pub fn ArtinGluingGeometricReport::not_equal(Self, Self) -> Bool
+pub fn ArtinGluingGeometricReport::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
 pub(all) struct ChuMorphism {

@@ -906,15 +906,6 @@ pub fn cdcl_Luby(x0 : Int32) -> Int32 {
 }
 
 ///|
-fn cdcl_clone_clause(clause : Array[Int32]) -> Array[Int32] {
-  let out : Array[Int32] = []
-  for i in 0..<clause.length() {
-    out.push(clause[i])
-  }
-  out
-}
-
-///|
 /// Learned-clause database reduction, run only at decision level
 /// 0 (immediately after a restart).  Original clauses, unit
 /// learned clauses and clauses that are reasons for literals
@@ -949,7 +940,7 @@ fn cdcl_reduce_db(solver : FaceCdclSolver) -> Unit {
       clause.length() > 8 &&
       solver.clause_lbd[read] > 6
     if deletable {
-      solver.proof_steps.push(CdclProofDelete(cdcl_clone_clause(clause)))
+      solver.proof_steps.push(CdclProofDelete(clause.copy()))
     }
     if !deletable {
       remap[read] = write
@@ -1008,8 +999,8 @@ fn cdcl_search(solver : FaceCdclSolver) -> Int32 {
       let (learned, backtrack, lbd) = cdcl_analyze(solver, conflict)
       cdcl_cancel_to(solver, backtrack)
       let clause_index = solver.clauses.length()
-      solver.proof_clauses.push(cdcl_clone_clause(learned))
-      solver.proof_steps.push(CdclProofAdd(cdcl_clone_clause(learned)))
+      solver.proof_clauses.push(learned.copy())
+      solver.proof_steps.push(CdclProofAdd(learned.copy()))
       solver.clauses.push(learned)
       solver.clause_lbd.push(lbd)
       solver.clause_is_learned.push(true)
@@ -1101,7 +1092,7 @@ fn cdcl_run_solver(
   let builder = face_cnf_build(f, n)
   let original_clauses : Array[Array[Int32]] = []
   for ci in 0..<builder.clauses.length() {
-    original_clauses.push(cdcl_clone_clause(builder.clauses[ci]))
+    original_clauses.push(builder.clauses[ci].copy())
   }
   let variables = builder.next_variable - 1
   let watches : Array[Array[Int32]] = []
@@ -1211,15 +1202,14 @@ pub fn face_sat_cdcl_proof(
   let proof_steps : Array[FaceCdclProofStep] = []
   if code == 0 {
     for i in 0..<solver.proof_clauses.length() {
-      proof_clauses.push(cdcl_clone_clause(solver.proof_clauses[i]))
+      proof_clauses.push(solver.proof_clauses[i].copy())
     }
     proof_clauses.push([])
     for i in 0..<solver.proof_steps.length() {
       match solver.proof_steps[i] {
-        CdclProofAdd(clause) =>
-          proof_steps.push(CdclProofAdd(cdcl_clone_clause(clause)))
+        CdclProofAdd(clause) => proof_steps.push(CdclProofAdd(clause.copy()))
         CdclProofDelete(clause) =>
-          proof_steps.push(CdclProofDelete(cdcl_clone_clause(clause)))
+          proof_steps.push(CdclProofDelete(clause.copy()))
       }
     }
     proof_steps.push(CdclProofAdd([]))
@@ -1380,27 +1370,17 @@ pub fn face_cdcl_proof_check(
 }
 
 ///|
-fn cdcl_clause_contains(clause : Array[Int32], lit : Int32) -> Bool {
-  for i in 0..<clause.length() {
-    if clause[i] == lit {
-      return true
-    }
-  }
-  false
-}
-
-///|
 /// Literal-set equality for DRUP deletions.  Literal order and
 /// duplicates are ignored, matching the logical identity of a
 /// clause and the solver's watched-literal permutations.
 fn cdcl_clause_set_equal(a : Array[Int32], b : Array[Int32]) -> Bool {
   for i in 0..<a.length() {
-    if !cdcl_clause_contains(b, a[i]) {
+    if !b.contains(a[i]) {
       return false
     }
   }
   for i in 0..<b.length() {
-    if !cdcl_clause_contains(a, b[i]) {
+    if !a.contains(b[i]) {
       return false
     }
   }
@@ -1578,17 +1558,17 @@ pub fn face_cdcl_drat_check(
           let mut rat_ok = true
           for di in 0..<active.length() {
             let d = active[di]
-            if !cdcl_clause_contains(d, neg_pivot) {
+            if !d.contains(neg_pivot) {
               continue
             }
             let resolvent : Array[Int32] = []
             for i in 0..<clause.length() {
-              if !cdcl_clause_contains(resolvent, clause[i]) {
+              if !resolvent.contains(clause[i]) {
                 resolvent.push(clause[i])
               }
             }
             for i in 0..<d.length() {
-              if d[i] != neg_pivot && !cdcl_clause_contains(resolvent, d[i]) {
+              if d[i] != neg_pivot && !resolvent.contains(d[i]) {
                 resolvent.push(d[i])
               }
             }
@@ -2004,7 +1984,7 @@ pub fn face_cdcl_lrat_check(
     is_active[cid] = true
     for j in 0..<c.length() {
       let li = lrat_lit_index(c[j])
-      if !cdcl_clause_contains(occ[li], cid) {
+      if !occ[li].contains(cid) {
         occ[li].push(cid)
       }
     }
@@ -2131,22 +2111,22 @@ pub fn face_cdcl_lrat_check(
             if dcid <= 0 ||
               dcid > max_id ||
               !is_active[dcid] ||
-              cdcl_clause_contains(seen_rat_ids, dcid) {
+              seen_rat_ids.contains(dcid) {
               return false
             }
             let d = clauses_by_id[dcid]
-            if !cdcl_clause_contains(d, neg_pivot) {
+            if !d.contains(neg_pivot) {
               return false
             }
             seen_rat_ids.push(dcid)
             let resolvent : Array[Int32] = []
             for j in 0..<clause.length() {
-              if !cdcl_clause_contains(resolvent, clause[j]) {
+              if !resolvent.contains(clause[j]) {
                 resolvent.push(clause[j])
               }
             }
             for j in 0..<d.length() {
-              if d[j] != neg_pivot && !cdcl_clause_contains(resolvent, d[j]) {
+              if d[j] != neg_pivot && !resolvent.contains(d[j]) {
                 resolvent.push(d[j])
               }
             }
@@ -2169,18 +2149,18 @@ pub fn face_cdcl_lrat_check(
           let neg_list = occ[lrat_lit_index(neg_pivot)]
           for oi in 0..<neg_list.length() {
             let ocid = neg_list[oi]
-            if !is_active[ocid] || cdcl_clause_contains(seen_rat_ids, ocid) {
+            if !is_active[ocid] || seen_rat_ids.contains(ocid) {
               continue
             }
             let d = clauses_by_id[ocid]
             let resolvent : Array[Int32] = []
             for j in 0..<clause.length() {
-              if !cdcl_clause_contains(resolvent, clause[j]) {
+              if !resolvent.contains(clause[j]) {
                 resolvent.push(clause[j])
               }
             }
             for j in 0..<d.length() {
-              if d[j] != neg_pivot && !cdcl_clause_contains(resolvent, d[j]) {
+              if d[j] != neg_pivot && !resolvent.contains(d[j]) {
                 resolvent.push(d[j])
               }
             }
@@ -2313,17 +2293,17 @@ pub fn face_cdcl_elaborate_lrat(
           let rat_pairs : Array[(Int32, Array[Int32])] = []
           for di in 0..<active.length() {
             let d = active[di]
-            if !cdcl_clause_contains(d, neg_pivot) {
+            if !d.contains(neg_pivot) {
               continue
             }
             let resolvent : Array[Int32] = []
             for j in 0..<clause.length() {
-              if !cdcl_clause_contains(resolvent, clause[j]) {
+              if !resolvent.contains(clause[j]) {
                 resolvent.push(clause[j])
               }
             }
             for j in 0..<d.length() {
-              if d[j] != neg_pivot && !cdcl_clause_contains(resolvent, d[j]) {
+              if d[j] != neg_pivot && !resolvent.contains(d[j]) {
                 resolvent.push(d[j])
               }
             }

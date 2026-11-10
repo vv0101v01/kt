@@ -54,12 +54,11 @@ pub fn nat_s(_s : ISchema, n : IVal) -> IVal {
 }
 
 ///|
-pub fn nat_of_int(s : ISchema, n : Int32) -> IVal {
+pub fn nat_of_int(_s : ISchema, n : Int32) -> IVal {
   let mut v = ival(0, [])
   for _i in 0..<n {
     v = ival(1, [v])
   }
-  let _ = s
   v
 }
 

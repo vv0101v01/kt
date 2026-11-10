@@ -146,7 +146,7 @@ Mac Lane 相干定理保證每個結合子圖都交換 ⇒ 逐 `n` 建構即可�
 * `FgAb`（有限生成阿貝爾群帶撓：`fg_zero`、`fg_z`、`fg_zmod`、`fg_is_trivial`、`fg_rank_le`）；
 * 長正合片段：`les_middle_is_injective/surjective/iso`；
 * 連通度缺口：`bm_gap`、`gap_equiv_below`、`gap_surj_at`、`conn_of_sphere`；
-* 具體結論：`pi_circle`、`hopf_les_iso/injective/surjective`、`freudenthal_status`、`suspension_gap`、`pi3_s2_iso_pi3_s3`、`pi3_s3_iso_pi2_s2`、`pi2_s2_iso_z_halves`；
+* 具體結論：`pi_circle`、`hopf_les_iso/injective/surjective`、`freudenthal_status`、`suspension_gap`、`pi3_s2_iso_pi3_s3`、`pi3_s3_iso_pi2_s2`；
 * 誠實標記：`*_origins`（每個成分註明「自證」或「引用」），`check_blakers_massey()`。
 
 ### 8.2 `brunerie_pi4_s3.mbt`

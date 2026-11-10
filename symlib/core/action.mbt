@@ -231,22 +231,6 @@ pub fn FinAction::orbit_count(self : FinAction) -> Int32 {
 }
 
 ///|
-/// 是否可遷。
-pub fn FinAction::is_transitive(self : FinAction) -> Bool {
-  self.size > 0 && self.orbit(0).length() == self.size
-}
-
-///|
-/// 軌道折疊的代表元集（每軌道最小點）。
-pub fn FinAction::fundamental_domain(self : FinAction) -> Array[Int32] {
-  let out : Array[Int32] = []
-  for orb in self.orbits() {
-    out.push(orb[0])
-  }
-  out
-}
-
-///|
 /// 生成元 g 之不動點個數（Burnside 項）。
 pub fn FinAction::fixed_points(self : FinAction, g : Array[Int32]) -> Int32 {
   let mut c = 0

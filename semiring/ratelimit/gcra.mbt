@@ -245,8 +245,3 @@ fn KeyTable::evict(self : KeyTable, now : Int64) -> Int32 {
   let _ = now
   victim
 }
-
-///|
-pub fn KeyTable::capacity(self : KeyTable) -> Int32 {
-  self.slots.length()
-}

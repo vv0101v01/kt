@@ -273,10 +273,11 @@
       "moon": "vv0101v01/cubical-hermitian/cubical/elaborator",
       "layer": 3,
       "depends_on": [
+        "accel-swar",
         "cubical-kernel"
       ],
-      "summary_en": "Bidirectional surface elaboration, extended pattern HOU, Huet delayed flex-flex search streams, higher-order matching, and Goldfarb Diophantine compilation.",
-      "summary_zh": "雙向表面精緻化、擴展 pattern 高階合一、Huet 延遲 flex-flex 搜索串流、可判定高階匹配與 Goldfarb 丟番圖編譯。"
+      "summary_en": "Bidirectional surface elaboration, SWAR hash-consed memoized dependent/inductive type checking, extended pattern HOU, Huet delayed flex-flex search streams, higher-order matching, and Goldfarb Diophantine compilation.",
+      "summary_zh": "雙向表面精緻化、SWAR 雜湊共享記憶化依值／雙向歸納類型檢查、擴展 pattern 高階合一、Huet 延遲 flex-flex 搜索串流、可判定高階匹配與 Goldfarb 丟番圖編譯。"
     },
     {
       "id": "cubical-homotopy",
@@ -1006,9 +1007,11 @@
       "layer": 6,
       "files": [
         "cubical/elaborator/elaborator_bidir.mbt",
-        "cubical/elaborator/hou_unify_stream.mbt"
+        "cubical/elaborator/hou_unify_stream.mbt",
+        "cubical/elaborator/memo_bidir_inductive.mbt"
       ],
       "depends_on": [
+        "accel-swar",
         "dependent-kernel"
       ],
       "summary_en": "Surface elaboration and separate compilation: extended pattern HOU, parameterized modules, compiled interfaces, linking and incremental cache, interned-DAG binary snapshots, and artifact repositories with an append-only integrity chain. Nothing in the kernel may depend back on this layer.",

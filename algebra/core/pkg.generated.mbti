@@ -293,8 +293,6 @@ pub fn sc_var(Int32) -> SymC
 
 pub fn sc_zero() -> SymC
 
-pub fn sym_det(SymMat) -> SymC
-
 pub fn sym_inner(Array[SymC], Array[SymC]) -> SymC
 
 pub fn sym_is_hermitian(SymMat) -> Bool

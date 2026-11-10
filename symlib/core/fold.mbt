@@ -82,18 +82,6 @@ pub fn FoldedGraph::ratio(self : FoldedGraph) -> Double {
 }
 
 ///|
-/// 商圖邊重數（i ≤ j）。
-pub fn FoldedGraph::multiplicity(
-  self : FoldedGraph,
-  i : Int32,
-  j : Int32,
-) -> Int32 {
-  let lo = if i < j { i } else { j }
-  let hi = if i < j { j } else { i }
-  self.mul[lo][hi]
-}
-
-///|
 /// 邊軌道折疊：回傳 (邊軌道代表邊, 各軌道大小)。
 pub fn fold_edges(
   g : Graph,

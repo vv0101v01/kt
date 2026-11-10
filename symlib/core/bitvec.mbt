@@ -127,15 +127,6 @@ pub fn BitVec::and_popcount(self : BitVec, other : BitVec) -> Int32 {
 }
 
 ///|
-/// 是否全零。
-pub fn BitVec::is_empty(self : BitVec) -> Bool {
-  for i in 0..<self.words.length() {
-    guard self.words[i] == 0L else { return false }
-  }
-  true
-}
-
-///|
 /// 依遞增次序走訪所有設定位元。
 pub fn BitVec::each(self : BitVec, f : (Int32) -> Unit) -> Unit {
   for wi in 0..<self.words.length() {

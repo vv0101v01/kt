@@ -1,8 +1,8 @@
 # `cubical/elaborator/` — 雙向精緻化與高階合一／匹配（Layer 3）
 
-> **套件**：`vv0101v01/cubical-hermitian/cubical/elaborator` · **Layer 3** · 依賴 `cubical-kernel`
-> **被依賴**：`root`
-> **4 檔 5,514 行** · 單包微測試實測 **0.35s**
+> **套件**：`vv0101v01/cubical-hermitian/cubical/elaborator` · **Layer 3** · 依賴 `cubical-kernel`、`accel-swar`
+> **被依賴**：`cubical-structures`、`root`
+> **5 檔 6,900+ 行** · 單包微測試實測 **< 0.5s**
 > **與 `homotopy`、`store` 完全正交**：三者互不依賴，可平行開發／平行編譯。
 
 ---
@@ -35,6 +35,7 @@
 | `hou_match.mbt` | 597 | 高階**匹配**（可判定的那一側） |
 | `hou_unify_stream.mbt` | 2,514 | 有界 Huet 搜索、殘餘約束、延遲 flex-flex、惰性合一器串流 |
 | `hou_goldfarb.mbt` | 245 | `[T-HOU-InnerLam]` 內層 λ 匹配；`[T-Goldfarb-Diophantine]` 不可判定性歸約 |
+| `memo_bidir_inductive.mbt` | 1,389 | **雜湊共享 DAG 記憶化類型檢查 × 完備雙向依賴類型 × 雙向歸納精緻化**：`BidirDagArena`（`@swar.swar_merkle_node64` 節點共享 + `@swar.SwarMemoTable64` `O(1)` 時代失效快取，深度 10 鑽石依值 DAG 自無記憶 `18,422` 次造訪降至記憶化 `108` 次 = **`170×` 加速**）、Lennon-Bertrand 單一 `Sub` 轉換點雙向依值檢查、雙向索引 `Vec`（`BDVecNil`/`BDVecCons`）與動機自動合成 `BDNatInd`、編譯至 `@kernel.DTerm` 並通過 `dep_check_closed`/`dep_nf_closed`，以及包裝既有 `Elaborator` 之 `MemoElabSession` |
 
 ---
 

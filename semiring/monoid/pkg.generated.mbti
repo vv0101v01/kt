@@ -49,24 +49,8 @@ pub fn MaxI64::not_equal(Self, Self) -> Bool
 pub fn MaxI64::output(Self, &Logger) -> Unit
 pub fn MaxI64::to_string(Self) -> String
 pub impl Show for MaxI64
-pub impl @algebra.CommutativeMonoid for MaxI64
 pub impl @algebra.IdempotentMonoid for MaxI64
 pub impl @algebra.Monoid for MaxI64
-
-#derive(Eq)
-pub(all) struct MinI64 {
-  v : Int64
-}
-pub fn MinI64::combine(Self, Self) -> Self
-pub fn MinI64::empty() -> Self
-pub fn MinI64::equal(Self, Self) -> Bool
-pub fn MinI64::not_equal(Self, Self) -> Bool
-pub fn MinI64::output(Self, &Logger) -> Unit
-pub fn MinI64::to_string(Self) -> String
-pub impl Show for MinI64
-pub impl @algebra.CommutativeMonoid for MinI64
-pub impl @algebra.IdempotentMonoid for MinI64
-pub impl @algebra.Monoid for MinI64
 
 pub(all) struct OppositeM[M] {
   inner : M
@@ -75,7 +59,6 @@ pub fn[M : @algebra.Monoid] OppositeM::combine(Self[M], Self[M]) -> Self[M]
 pub fn[M : @algebra.Monoid] OppositeM::empty() -> Self[M]
 pub fn[M : @algebra.Monoid] OppositeM::equal(Self[M], Self[M]) -> Bool
 pub fn[M : @algebra.Monoid] OppositeM::not_equal(Self[M], Self[M]) -> Bool
-pub fn[M] OppositeM::of(M) -> Self[M]
 pub fn[M : Show] OppositeM::output(Self[M], &Logger) -> Unit
 pub fn[M : Show] OppositeM::to_string(Self[M]) -> String
 pub impl[M : @algebra.Monoid] Eq for OppositeM[M]
@@ -111,7 +94,6 @@ pub fn SumI64::of(Int64) -> Self
 pub fn SumI64::output(Self, &Logger) -> Unit
 pub fn SumI64::to_string(Self) -> String
 pub impl Show for SumI64
-pub impl @algebra.CommutativeMonoid for SumI64
 pub impl @algebra.GroupMonoid for SumI64
 pub impl @algebra.Monoid for SumI64
 

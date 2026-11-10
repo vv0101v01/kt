@@ -8,6 +8,7 @@
 | `quotient.mbt` | QIIT 商的**定律檔**：等式住在 schema 裡、四次 `s` 全消、消除器尊重等式、純 `iit_fold` 不尊重（對照組）、索引檢查商不變、ι 律在商後仍成立、商是保守的 |
 | `stlc.mbt` | STLC 的 `Ctx/Ty/Tm` 索引傳輸：`subst_insert`／`stlc_weaken`／`stlc_beta`／`stlc_norm` |
 | `examples.mbt` | `Even/Odd`（無限、不穩定）、`Nat/Fin`（**Fin 落後 Nat 一階**）、`STLC Ctx/Ty/Tm` |
+| `qiit_displayed_cwf.mbt` | **四分類內蘊帶族範疇（CwF）互遞迴 QIIT**（`QiitCon`、`QiitTy`、`QiitSub`、`QiitTm` + 跨等式轉換子 `QTmCoh`）：商正規化 `qiit_norm_*`、相依索引檢查 `qiit_check_*`、Kaposi–Kovács–Altenkirch 展示代數 `QiitDisplayedCwfAlgebra` 相干審計 `qiit_verify_displayed_coherence` 與 `law_qiit_intrinsic_cwf_and_displayed_eliminator` |
 
 **不變式**：`icheck(v) ⟹ sort/index 一致`；`iit_fold` 滿足 ι 律（重建即恆等）；索引依賴圖無環。
 

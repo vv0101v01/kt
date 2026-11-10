@@ -153,6 +153,10 @@ fn main {
   println(
     "Nine-Federation K_9 Star-Prism & F7->F9->F4->F1 Promotion: federations=\{k9_rep.nine_federations_verified}/9, K9_bridges=\{k9_rep.k9_bridges_verified}/36, V5_HF64=\{k9_rep.v5_ackermann_65536_sets_verified}, promote(F7_edges=\{pp.f7_bitplane_implications_found}, ctz_cex=\{pp.f7_hardware_ctz_counterexample}, F9_hits=\{pp.f9_slg_tabling_cache_hits}, H1_zero=\{pp.f9_bareiss_gluing_h1_zero}, F4_Sieve64=\{pp.f4_sieve64_global_truth_holds}, F1_LJF=\{pp.f1_ljf_focused_unique_proof})=\{k9_rep.all_holds}",
   )
+  let f7_pentad = @bridge.verify_frontier_7pillars_grand_unification()
+  println(
+    "Stage-3 Seven-Pillar Frontier Pentad (F1×F3×F4×F8×F9): MTT_2Functor=\{f7_pentad.f9_f1_mtt_2functor_embedding_ok}, DualQTT_SWAR=\{f7_pentad.f3_f8_f1_dual_qtt_swar_homomorphism_ok}, QIIT_CwF_Path=\{f7_pentad.f9_f1_qiit_cwf_displayed_path_coherence_ok}, Artin_OrtonPitts=\{f7_pentad.f4_f1_artin_gluing_orton_pitts_canonicity_ok}, Memo_Bidir_Ind=\{f7_pentad.f8_f1_merkle_memo_bidir_inductive_ok} (DAG \{f7_pentad.diamond_dag_unmemoized_visits}->\{f7_pentad.diamond_dag_memoized_visits}, \{f7_pentad.diamond_dag_speedup_ratio}x), all_holds=\{f7_pentad.all_holds}",
+  )
   guard all_certs_ok &&
     wiring_ok &&
     unif_ok &&
@@ -160,7 +164,8 @@ fn main {
     triad_rep.all_holds &&
     triad_f236.all_holds &&
     autonomy_rep.holds &&
-    k9_rep.all_holds else {
+    k9_rep.all_holds &&
+    f7_pentad.all_holds else {
     abort("showcase failed")
   }
 }

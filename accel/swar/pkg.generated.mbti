@@ -117,15 +117,43 @@ pub fn swar_coheyting_sub64(UInt64, UInt64, Array[UInt64]) -> UInt64
 
 pub fn swar_downset_closure64(UInt64, Array[UInt64]) -> UInt64
 
+pub fn swar_grade16_add_sat(UInt64, UInt64) -> UInt64
+
+pub fn swar_grade16_get(UInt64, Int32) -> Int32
+
+pub fn swar_grade16_scale_sat(UInt64, Int32) -> UInt64
+
+pub fn swar_grade16_set(UInt64, Int32, Int32) -> UInt64
+
+pub fn swar_grade16_usage_compatible(UInt64, UInt64, Int32) -> Bool
+
 pub fn swar_heyting_impl64(UInt64, UInt64, UInt64, Array[UInt64]) -> UInt64
+
+pub fn swar_memo_bump_epoch(SwarMemoTable64) -> Unit
+
+pub fn swar_memo_get(SwarMemoTable64, UInt64) -> Int32?
+
+pub fn swar_memo_new(Int32) -> SwarMemoTable64
+
+pub fn swar_memo_put(SwarMemoTable64, UInt64, Int32) -> Unit
+
+pub fn swar_merkle_node64(Int32, UInt64, UInt64) -> UInt64
+
+pub fn swar_merkle_seq64(Int32, Array[UInt64]) -> UInt64
+
+pub fn swar_mix64(UInt64) -> UInt64
 
 pub fn swar_pack_bitplane(Int32, (Int32) -> Bool) -> Array[UInt64]
 
 pub fn swar_popcount64(UInt64) -> Int32
 
+pub fn swar_unmix64(UInt64) -> UInt64
+
 pub let trop_inf_i32 : Int32
 
 pub fn tropical_blocked_kleene_closure(Int32, Array[Int32], block_size? : Int32) -> Array[Int32]
+
+pub fn verify_swar_memo_and_grade16_laws() -> Bool
 
 pub fn webgpu_rns_ntt_primes() -> Array[(Int32, Int32)]
 
@@ -233,6 +261,20 @@ pub struct ScanboxTileDescriptor {
 pub fn ScanboxTileDescriptor::equal(Self, Self) -> Bool
 pub fn ScanboxTileDescriptor::not_equal(Self, Self) -> Bool
 pub fn ScanboxTileDescriptor::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct SwarMemoTable64 {
+  mask : Int32
+  keys : FixedArray[UInt64]
+  vals : FixedArray[Int32]
+  epochs : FixedArray[Int32]
+  mut cur_epoch : Int32
+  mut hits : Int32
+  mut misses : Int32
+}
+pub fn SwarMemoTable64::equal(Self, Self) -> Bool
+pub fn SwarMemoTable64::not_equal(Self, Self) -> Bool
+pub fn SwarMemoTable64::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

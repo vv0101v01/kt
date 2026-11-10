@@ -87,8 +87,6 @@ pub fn artifact_repository_verify_authenticated(ArtifactRepository, ArtifactAuth
 
 pub fn artifact_repository_verify_ed25519(ArtifactRepository, Ed25519PublicKey) -> Bool
 
-pub fn artifact_wal_abort_tx(ArtifactWalStore) -> Bool
-
 pub fn artifact_wal_begin_tx(ArtifactWalStore) -> Int32?
 
 pub fn artifact_wal_byte_store(ArtifactWalStore) -> ArtifactByteStore
@@ -245,13 +243,9 @@ pub fn hot_load_env_epoch(HotLoadEnv) -> Int32
 
 pub fn hot_load_env_history(HotLoadEnv) -> Array[HotLoadRecord]
 
-pub fn hot_load_env_modules(HotLoadEnv) -> Array[CompiledModule]
-
 pub fn hot_load_env_new(CompiledModuleEnv) -> HotLoadEnv
 
 pub fn hot_load_env_to_compiled(HotLoadEnv) -> CompiledModuleEnv
-
-pub fn hot_load_instantiate(HotLoadEnv, ModuleDef, Array[@kernel.DTerm]) -> ModuleInstance?
 
 pub fn hot_load_mvcc_commit_atomic(HotLoadMvccStore, Array[String], Array[Array[Int32]], Array[(String, Int32)], Bool) -> (HotLoadMvccStore, Bool)
 
@@ -306,8 +300,6 @@ pub fn module_instantiate(ModuleEnv, ModuleDef, Array[@kernel.DTerm]) -> ModuleI
 pub fn module_link_instantiate(CompiledModuleEnv, ModuleDef, Array[@kernel.DTerm], extra_sources? : Array[ModuleDef]) -> ModuleInstance?
 
 pub fn module_link_signature(CompiledModuleEnv, ModuleDef, extra_sources? : Array[ModuleDef]) -> ModuleSignature?
-
-pub fn module_ref(ModuleSignature, String) -> @kernel.DTerm?
 
 pub fn module_rename(String, String) -> ModuleRename
 

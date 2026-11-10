@@ -254,8 +254,6 @@ pub fn glue_line_coherent(GlueLineFinite) -> Bool
 
 pub fn in_image(CMat, Array[Complex]) -> Bool
 
-pub fn in_kernel(CMat, Array[Complex]) -> Bool
-
 pub fn inner(Array[Complex], Array[Complex]) -> Complex
 
 pub fn int_pow(Int32, Int32) -> Int32
@@ -288,8 +286,6 @@ pub fn map_cube_equiv_line(LinEquivLine, Cube, Int32) -> Cube
 
 pub fn map_cube_matrix(CMat, Cube) -> Cube
 
-pub fn mat_add(CMat, CMat) -> CMat
-
 pub fn mat_adjoint(CMat) -> CMat
 
 pub fn mat_approx_eq(CMat, CMat) -> Bool
@@ -309,8 +305,6 @@ pub fn mat_sub(CMat, CMat) -> CMat
 pub fn mat_trace_re(CMat) -> Double
 
 pub fn mat_vec(CMat, Array[Complex]) -> Array[Complex]
-
-pub fn mat_zero(Int32) -> CMat
 
 pub fn numeric_mat_max_deviation(CMat, CMat) -> Double
 
@@ -339,8 +333,6 @@ pub fn path_trans(Cube, Cube) -> Cube
 pub fn path_trans_endpoints(Cube, Cube) -> Bool
 
 pub fn projector_certificate_ok(ProjectorCertificate) -> Bool
-
-pub fn projector_from_orthonormal(Array[Array[Complex]], Int32) -> CMat
 
 pub fn prune_cube(CMat, Cube) -> Cube
 
@@ -392,15 +384,11 @@ pub fn subline_from_unit_path((Double) -> Array[Complex]) -> SubLine
 
 pub fn system_compatible(VecSystem, Int32) -> Bool
 
-pub fn system_domain_bdd(VecSystem, Int32) -> @face_bdd.Bdd
-
 pub fn system_eq_mod(VecSystem, VecSystem, Int32) -> Bool
 
 pub fn system_eq_mod_sym(VecSystem, VecSystem, Int32) -> Bool
 
 pub fn system_extend_top(VecSystem, Array[Complex], Int32) -> VecSystem?
-
-pub fn system_lookup(VecSystem, Array[Bool]) -> Array[Complex]?
 
 pub fn system_normal_form(VecSystem, Int32) -> SystemNF
 

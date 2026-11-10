@@ -41,6 +41,7 @@ pub fn verify_malcev_presheaf_autonomy_bridge() -> MalcevPresheafAutonomyBridgeR
     swar.degenerate_4cubes_count
   let holds = master.all_theorems_verified &&
     atlas.all_54_structures_and_interactions_ok &&
+    @structures.check_work4_stage2_dedicated_structures() &&
     atlas.verified_structure_count == 54 &&
     atlas.distinct_verbs_covered == 26 &&
     atlas.distinct_patterns_covered == 14 &&

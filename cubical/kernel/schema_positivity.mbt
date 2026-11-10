@@ -38,23 +38,6 @@ pub extend DPositivityReport with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend DPositivityReport with Eq::{not_equal, equal}
 
 ///|
-pub fn dpositivity_report(
-  occurs : Bool,
-  strictly_positive : Bool,
-  positive_polarity : Bool,
-  negative_polarity : Bool,
-  unknown : Bool,
-) -> DPositivityReport {
-  DPositivityReport::{
-    occurs,
-    strictly_positive,
-    positive_polarity,
-    negative_polarity,
-    unknown,
-  }
-}
-
-///|
 fn positivity_absent() -> DPositivityReport {
   DPositivityReport::{
     occurs: false,
@@ -984,16 +967,6 @@ pub extend DPositivityDeclaration with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend DPositivityDeclaration with Eq::{not_equal, equal}
 
 ///|
-fn positivity_int_contains(xs : Array[Int32], v : Int32) -> Bool {
-  for i in 0..<xs.length() {
-    if xs[i] == v {
-      return true
-    }
-  }
-  false
-}
-
-///|
 /// Shape-checked declaration constructor: positive arity,
 /// argument positions in range, no duplicates, and no position
 /// declared both strictly positive and merely positive.
@@ -1009,7 +982,7 @@ pub fn dpositivity_declaration(
   }
   for i in 0..<strict_args.length() {
     let p = strict_args[i]
-    if p < 0 || p >= arity || positivity_int_contains(positive_args, p) {
+    if p < 0 || p >= arity || positive_args.contains(p) {
       return None
     }
     for j in (i + 1)..<strict_args.length() {
@@ -1315,7 +1288,7 @@ fn dterm_family_positivity_type_decl(
         Some(decl) => {
           let mut out = positivity_absent()
           for i in 0..<args.length() {
-            let part = if positivity_int_contains(decl.strict_args, i) {
+            let part = if decl.strict_args.contains(i) {
               dterm_family_positivity_type_decl(
                 args[i],
                 name,
@@ -1326,7 +1299,7 @@ fn dterm_family_positivity_type_decl(
                 scope,
                 depth,
               )
-            } else if positivity_int_contains(decl.positive_args, i) {
+            } else if decl.positive_args.contains(i) {
               positivity_non_strict(
                 dterm_family_positivity_type_decl(
                   args[i],

@@ -13,8 +13,8 @@ no longer exists. [`agent.v2.md`](agent.v2.md) remains the authoritative governa
 overlap, `agent.v2.md` governs the detail and this file governs the procedure and the map.
 
 **Repository at a glance** — MoonBit package `vv0101v01/cubical-hermitian` v2.0.0,
-`preferred_target = "wasm"`, **8 federations + 1 unification apex**, **39 packages**, **48 components**,
-**222 `.mbt` files**, **152,883 lines** (verified by `python3 tools/arch_check.py`).
+`preferred_target = "wasm"`, **9 federations + 1 unification apex**, **52 packages**, **61 components**,
+**286 `.mbt` files**, **185,986 lines** (verified by `python3 tools/arch_check.py`).
 
 ---
 
@@ -58,7 +58,7 @@ python3 tools/arch_check.py
 
 The bar is **0 warnings, 0 errors**. An unused variable, a non-exhaustive branch, a deprecated form, or a
 cross-layer import is a failure, not a note. `arch_check.py` must print
-`architecture ok: 8 federations + unification apex, 39 packages, 48 components, …`.
+`architecture ok: 9 federations + unification apex, 52 packages, 61 components, …`.
 
 #### Tier B — localized test at the bottom of the file (the whole point of this policy)
 
@@ -218,7 +218,7 @@ same severity as a failing gate.
 |---:|---|---|---:|---:|---|
 | 1 | [`gcd/`](gcd/README.md) | F6 · L0 (lower-V apex `V₁`) | 3 | 1,683 | Five-domain generic elimination GCD: 16-lane lazy `F_p` RREF, HMM `ℤ`-SNF, Bareiss det, modular HNF, CRT, Wang rational recon & digest chain |
 | 2 | [`algebra/`](algebra/README.md) | F1 · L1–L2 (`algebra/core` + `algebra`) | 23 | 19,282 | Exact rational/algebraic tower (`Rat` `Int64` fast path, Bareiss/Ozaki-II `QMat`, complete factorization, number fields, Jordan, certified intervals, transcendence) |
-| 3 | [`cubical/`](cubical/README.md) | F1 · L0–L6 (**9 sub-packages**) | 77 | 78,794 | Trusted dependent-cubical core: Kalman free De Morgan `I_DM`, CCHM `Cofib(n)`, NbE, Kan, Glue, univalence, HITs, `O(Δ)` HOU, BFT/MVCC store, universal algebra autonomy & 54 cubical structures |
+| 3 | [`cubical/`](cubical/README.md) | F1 · L0–L6 (**9 sub-packages**) | 80 | 81,437 | Trusted dependent-cubical core: Kalman free De Morgan `I_DM`, CCHM `Cofib(n)`, NbE, Kan, Glue, univalence, HITs, `O(Δ)` HOU, BFT/MVCC store, universal algebra autonomy & all 54 higher cubical structures (zero piggybacking) |
 | 4 | [`symlib/`](symlib/README.md) | F2 · L0–L1 (`symlib/core` + `symlib`) | 27 | 9,061 | Finite symmetry: hardware `popcnt` `BitVec`, unbounded `PermLut`, Schreier–Sims, McKay search, Holt arbitrary-rank subgroup lattices, Burnside Möbius & groupoid Yoneda/Kan |
 | 5 | [`semiring/`](semiring/README.md) | F3 · L1–L4 (**15 sub-packages**) | 39 | 10,982 | `@swar` Bool/GF(2) GEMM, 3D gift-wrapping Newton subdivision, Karp tropical eigenpairs, Johnson negative-weight APSP, Min-Fill VE & Hopcroft `O(\|Σ\|\|Q\|log\|Q\|)` minimal DFA |
 | 6 | [`topos/`](topos/README.md) | F4 · L2–L3 (`topos/site` + `topos`) | 9 | 8,210 | Grothendieck sites, `Sieve64` SWAR bi-Heyting kernel, MAC matching families, `¬¬` Boolean sheafification, Alexandrov/Chu dualities, geometric morphisms, Torsors & cohomology |
@@ -226,19 +226,19 @@ same severity as a failing gate.
 | 8 | [`condensed/`](condensed/README.md) | F6 · L1–L4 (`condensed/core` + `condensed`) | 5 | 3,376 | Profinite towers, constructive Nöbeling unimodular basis, Roos–Milnor `R¹lim`, solid/liquid modules, 64× `@swar` Steenrod–Adams (`h₃=σ`, `η³=4ν`) & analytic stacks |
 | 9 | [`tensor/`](tensor/README.md) | F7 · L2 | 2 | 2,151 | 64-trit `𝔽₃` 6,561-tensor rank atlas `[1, 128, 4032, 2400]`, MRV/MAC exact Gromov–Hausdorff, dominated VR collapse, Radon & Clifford spinors |
 | 10 | [`conjecture/`](conjecture/README.md) | F7 · L3–L5 (`conjecture/kernel` + `conjecture`) | 3 | 1,436 | Half-GCD rational reconstruction, 64-bit `ctz` bitplane implication lattice, Lakatos conjecture-evolution engine & 12 cross-federation conjectures |
-| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 18 | 6,626 | **`K₉ = 36/36` all-pairs bridges**, `F7→F9→F4→F1` promotion, `F8×F5×F1` & `F2×F3×F6` triads, 18-entry geometry–logic atlas & 47/47 certificates |
+| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 18 | 6,627 | **`K₉ = 36/36` all-pairs bridges**, `F7→F9→F4→F1` promotion, `F8×F5×F1` & `F2×F3×F6` triads, 18-entry geometry–logic atlas & 47/47 certificates |
 | 12 | [`accel/`](accel/README.md) | F8 · L0–L4 (`accel/swar` + `accel`) | 10 | 3,601 | `L0` 64-bit SWAR primitives (M4RI RREF, 64-trit `GF(3)`, Ozaki-II CRT, Stockham NTT, Cube64 butterfly, Scanbox, HVM2 `INetArena`) + 8/8 portable WGSL shaders |
 | 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 828 | Executable crash-consistency model (`fsync` ordering) + BFT `3f+1` quorum durable replicas |
-| 14 | [`meta/`](meta/README.md) | F9 · L0–L2 (**4 library sub-packages**) | 29 | 13,967 | Zero-business-dependency metatheory floor & three-axis engine: Paterson–Wegman DAG MGU, Bareiss, SLG tabling, bidirectional E-graph QIIT, NbE reflection, `V₅ = 65,536` HF64 & Paley Ramsey |
-| 15 | [`cmd/`](cmd/README.md) | 6 executables · L2–L9 | 11 | 4,013 | `cmd/main` (`137/137`), `cmd/metatheory` (`545/545`), `cmd/showcase` (`47/47` + `K₉=36/36`), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
-| 16 | [`tools/`](tools/README.md) | infrastructure | 0 | 0 | `arch_check.py`, `health_scan.py` (`5,745` fns, `0` dead code, `0` duplicates), `gen_laws.py`, `gen_labels.py` |
+| 14 | [`meta/`](meta/README.md) | F9 · L0–L2 (**4 library sub-packages**) | 30 | 14,278 | Zero-business-dependency metatheory floor & three-axis engine: Paterson–Wegman DAG MGU, Bareiss, SLG tabling, bidirectional E-graph QIIT, NbE reflection, `V₅ = 65,536` HF64, Vogt/HS realignment & Paley Ramsey |
+| 15 | [`cmd/`](cmd/README.md) | 6 executables · L2–L9 | 11 | 4,013 | `cmd/main` (`138/138`), `cmd/metatheory` (`553/553`), `cmd/showcase` (`47/47` + `K₉=36/36`), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
+| 16 | [`tools/`](tools/README.md) | infrastructure | 0 | 0 | `arch_check.py`, `health_scan.py` (`5,794` fns, `0` dead code, `0` duplicates), `gen_laws.py`, `gen_labels.py` |
 | 17 | [`webgpu/`](webgpu/README.md) | F8 browser side | 0 | 0 | Zero-dependency browser verifier for all 8 registered WGSL compute shaders + CPU-SWAR bitwise cross-check |
 
-**(Plus root package `.` : `18` `.mbt` files, `12,769` lines → Grand Total: `52` packages, `61` components, `282` `.mbt` files, `182,929` lines.)**
+**(Plus root package `.` : `18` `.mbt` files, `12,871` lines → Grand Total: `52` packages, `61` components, `286` `.mbt` files, `185,986` lines.)**
 
 | Federation | Packages | Files | Lines |
 |---|---:|---:|---:|
-| `cubical` (incl. root, `algebra`, `hostfs`, `cmd/main`) | 14 | 121 | 111,679 |
+| `cubical` (incl. root, `algebra`, `hostfs`, `cmd/main`) | 14 | 124 | 114,424 |
 | `symlib` | 4 | 30 | 9,964 |
 | `semiring` | 16 | 44 | 13,795 |
 | `topos` | 2 | 9 | 8,210 |
@@ -246,8 +246,8 @@ same severity as a failing gate.
 | `condensed` | 3 | 8 | 5,059 |
 | `discovery` | 3 | 5 | 3,587 |
 | `accel` | 2 | 10 | 3,601 |
-| `meta` | 5 | 30 | 14,092 |
-| `unification` (apex) | 2 | 19 | 6,792 |
+| `meta` | 5 | 31 | 14,403 |
+| `unification` (apex) | 2 | 19 | 6,793 |
 
 ---
 
@@ -255,7 +255,7 @@ same severity as a failing gate.
 
 `cubical/`, `semiring/`, `cmd/`, and `meta/` are package groups, joined by the 6 decoupled lightweight core sub-packages (`symlib/core`, `algebra/core`, `condensed/core`, `topos/site`, `conjecture/kernel`, `accel/swar`). Every nested folder is its own `moon.pkg` with its own `README.md`.
 
-### 6.1 `cubical/` — 9 sub-packages (77 files, 78,794 lines)
+### 6.1 `cubical/` — 9 sub-packages (80 files, 81,437 lines)
 
 | # | Sub-package | Layer | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
@@ -267,7 +267,7 @@ same severity as a failing gate.
 | 6 | [`cubical/homotopy/`](cubical/homotopy/README.md) | L3 | 14 | 12,264 | 189 | Computational homotopy: `π₁(S¹)≃ℤ`, `π₂(S²)≃ℤ`, `π₄(S³)≅ℤ/2ℤ`, Blakers–Massey, `Kₙ` coherence |
 | 7 | [`cubical/store/`](cubical/store/README.md) | L3 | 9 | 11,193 | 184 | `CHMODBIN` / `CHDAGBIN` / `CHREGBIN`, version negotiation, Ed25519 BFT WAL, SCC-atomic MVCC hot reload |
 | 8 | [`cubical/autonomy/`](cubical/autonomy/README.md) | L5 | 5 | 2,645 | 85 | Constructive universal algebra autonomy, Mal'cev congruences/quotients, affine & bi-De Morgan cubical duality, Moore free paths, degeneracy trees, 5D alternating boundaries, bidirectional NF pruning & `¬¬` presheaf gluing |
-| 9 | [`cubical/structures/`](cubical/structures/README.md) | L6 | 6 | 4,374 | 87 | All 54 higher cubical structures (Swan strict `Id`, free path fibration, 65,536-cube Eilenberg–Zilber split, affine bidirectional & `LJF` focusing, polynomial container Yoneda & SIP, Galois covering correspondence, torus/`RP²` torsion, HOU motive reconstruction, matroid boundary repair, computational reflection) + 26-verb × 14-composition atlas |
+| 9 | [`cubical/structures/`](cubical/structures/README.md) | L6 | 9 | 7,017 | 115 | All 54 higher cubical structures with dedicated non-aliased realizations (CCHM `Glue`, Vogt 2-cell HAE, HS `U8` universe realignment, Klein pushout torsion, `Σ⊣Ω`, `T²≃S¹×S¹`, CwF subst, reduction-free NbE, connections, 3D open box, Swan `Id`, `65,536` EZ split, `LJF`, poly SIP, `S₃` Galois cover, HOU repair & reflection) + 26×14 atlas |
 
 ### 6.2 `semiring/` — 15 sub-packages (39 files, 10,982 lines)
 
@@ -293,18 +293,18 @@ same severity as a failing gate.
 
 | # | Sub-package | Target | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
-| 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | Entry point for the `137/137` theorem ledger (`print_report()`) |
-| 2 | [`cmd/metatheory/`](cmd/metatheory/README.md) | all | 1 | 125 | 31 | Ninth Federation entry point recomputing all `545/545` metatheory laws across `86` `law_*` functions |
+| 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | Entry point for the `138/138` theorem ledger (`print_report()`) |
+| 2 | [`cmd/metatheory/`](cmd/metatheory/README.md) | all | 1 | 125 | 31 | Ninth Federation entry point recomputing all `553/553` metatheory laws across `90` `law_*` functions |
 | 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 166 | 66 | Nine federations × `K₉ = 36/36` × three cross-federation triads/pipelines × `47/47` certificates |
 | 4 | [`cmd/symdemo/`](cmd/symdemo/README.md) | all | 1 | 309 | 65 | `symlib` demo: "derived vs. direct" two-path agreement + monad laws |
 | 5 | [`cmd/symbench/`](cmd/symbench/README.md) | all | 2 | 594 | 88 | 12-case full-pipeline timing + seven derived-algorithm families (A–G) |
 | 6 | [`cmd/semiringreport/`](cmd/semiringreport/README.md) | **native only** | 5 | 2,813 | 118 | The 19-section measurement report; §19 turns every limitation into a measured number |
 
-### 6.4 `meta/` & decoupled lightweight core sub-packages — 10 sub-packages (53 files, 29,938 lines)
+### 6.4 `meta/` & decoupled lightweight core sub-packages — 10 sub-packages (54 files, 30,233 lines)
 
 | # | Sub-package | Layer | `.mbt` | Lines | What it is |
 |---:|---|---|---:|---:|---|
-| 1 | [`meta/core/`](meta/core/README.md) | L0 | 12 | 4,903 | Ordinals, `Int64` Bareiss, Paterson–Wegman linear DAG MGU, matroids, complexes, Paley Ramsey (`R(4,4)=18, R(3,5)=14`) & universal algebra laws |
+| 1 | [`meta/core/`](meta/core/README.md) | L0 | 13 | 5,198 | Ordinals, `Int64` Bareiss, Paterson–Wegman linear DAG MGU, matroids, complexes, Paley Ramsey (`R(4,4)=18, R(3,5)=14`), Vogt HAE, HS realignment & universal algebra laws |
 | 2 | [`meta/instances/`](meta/instances/README.md) | L1 | 6 | 4,206 | Horn/SLG tabled resolution, ordinal termination, critical-pair coherence, `H¹` gluing & matroid characterization |
 | 3 | [`meta/iit/`](meta/iit/README.md) | L1 | 5 | 2,811 | Induction-induction Kleene slice tower (`Fin` lags `Nat`), bidirectional E-graph QIIT & STLC β index transport |
 | 4 | [`meta/reflect/`](meta/reflect/README.md) | L2 | 6 | 2,047 | NbE `decide_eq` + replayable certificates `check_cert`, Ackermann `V₅ = 65,536` HF64 & Mahlo universe reflection |
@@ -334,8 +334,8 @@ same severity as a failing gate.
 **Changing the architecture** — `agent.v2.md` (governance) → §1–§3 of this file (verification and
 reporting) → `tools/` → `architecture.json`.
 
-**Just need to run something** — `moon run cmd/main --target wasm-gc` (137/137 theorems),
-`moon run cmd/metatheory --target wasm-gc` (545/545 laws),
+**Just need to run something** — `moon run cmd/main --target wasm-gc` (138/138 theorems),
+`moon run cmd/metatheory --target wasm-gc` (553/553 laws),
 `moon run cmd/showcase --target wasm-gc` (47/47 certificates + K_9=36/36),
 `moon run cmd/semiringreport --target native` (the measurement report).
 
@@ -367,10 +367,10 @@ against real signatures** — if a function name or arity changes, the README ch
 
 ## 9. Onboarding checklist (first hour)
 
-1. `python3 tools/arch_check.py` → confirm `52 packages, 61 components, 282 .mbt files, 182929 .mbt lines` on your machine. This is
+1. `python3 tools/arch_check.py` → confirm `52 packages, 61 components, 286 .mbt files, 185986 .mbt lines` on your machine. This is
    your baseline; every later claim of "unchanged architecture" is measured against it.
 2. `moon check --deny-warn --target wasm-gc` → must be silent.
-3. `moon run cmd/main --target wasm-gc` → must end at `137/137` (`cmd/metatheory` → `545 / 545`).
+3. `moon run cmd/main --target wasm-gc` → must end at `138/138` (`cmd/metatheory` → `553 / 553`).
 4. Read `cubical/finite/README.md`, then `semiring/algebra/README.md` — they are the two smallest
    self-contained views of what this repository is about.
 5. Read §1.2 Tier B of this file once more, then make a one-line change to some file and walk the loop

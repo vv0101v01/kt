@@ -144,11 +144,6 @@ pub fn hot_load_env_history(env : HotLoadEnv) -> Array[HotLoadRecord] {
 }
 
 ///|
-pub fn hot_load_env_modules(env : HotLoadEnv) -> Array[CompiledModule] {
-  env.modules
-}
-
-///|
 fn hot_load_find(env : HotLoadEnv, path : String) -> CompiledModule? {
   compiled_modules_find_by_path(env.modules, path)
 }
@@ -424,16 +419,6 @@ pub fn hot_load_apply(
     rolled_back: false,
     reason: "",
   }
-}
-
-///|
-/// Instantiate a client module against the live environment.
-pub fn hot_load_instantiate(
-  env : HotLoadEnv,
-  module_ : ModuleDef,
-  args : Array[DTerm],
-) -> ModuleInstance? {
-  module_link_instantiate(hot_load_env_to_compiled(env), module_, args)
 }
 
 ///|

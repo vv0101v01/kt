@@ -119,25 +119,6 @@ pub fn join_push_value(
 }
 
 ///|
-/// The type of join-cocones into `c_ty`: a pair of maps plus, for each
-/// `a : A`, `b : B`, a path between their values.
-pub fn join_cocone_type_value(
-  a_ty : DValue,
-  b_ty : DValue,
-  c_ty : DValue,
-) -> DValue {
-  DVSigma(DVPi(a_ty, _ => c_ty), f => {
-    DVSigma(DVPi(b_ty, _ => c_ty), g => {
-      DVPi(a_ty, a => {
-        DVPi(b_ty, b => {
-          DVPathTy(_ => c_ty, dapp_typed(f, a, a_ty), dapp_typed(g, b, b_ty))
-        })
-      })
-    })
-  })
-}
-
-///|
 /// Join recursion: a cocone `(f, g, p)` induces `A * B -> C`, built by
 /// the HIT eliminator.
 pub fn join_rec_value(
@@ -231,18 +212,6 @@ pub fn wedge_winr_value(
   level~ : Int32 = 0,
 ) -> DValue {
   hit_cell_value(wedge_schema_at(level), 1, [a_ty, b_ty, a0, b0], [b], [])
-}
-
-///|
-pub fn wedge_glue_value(
-  a_ty : DValue,
-  b_ty : DValue,
-  a0 : DValue,
-  b0 : DValue,
-  dim : Dim,
-  level~ : Int32 = 0,
-) -> DValue {
-  hit_cell_value(wedge_schema_at(level), 2, [a_ty, b_ty, a0, b0], [], [dim])
 }
 
 ///|
@@ -376,16 +345,6 @@ pub fn james_type_value(a_ty : DValue, level~ : Int32 = 0) -> DValue {
 ///|
 pub fn james_nil_value(a_ty : DValue, level~ : Int32 = 0) -> DValue {
   hit_cell_value(james_schema_at(level), 0, [a_ty], [], [])
-}
-
-///|
-pub fn james_cons_value(
-  a_ty : DValue,
-  a : DValue,
-  x : DValue,
-  level~ : Int32 = 0,
-) -> DValue {
-  hit_cell_value(james_schema_at(level), 1, [a_ty], [a, x], [])
 }
 
 ///|

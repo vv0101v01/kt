@@ -395,10 +395,7 @@ fn sec5_graph() -> Unit {
     let pg = Graph::random_two(rng, pn, 25, 20)
     let (dist, conv) = time_min(1, fn() { pareto_sssp(pg, 0) })
     let (d, _) = dist
-    line(
-      "| \{pn} | \{pg.edges()} | \{total_labels(d)} | \{f2(time_min(1, fn() { pareto_sssp(pg, 0) }) |> fn(x) { x.1 })} |",
-    )
-    let _ = conv
+    line("| \{pn} | \{pg.edges()} | \{total_labels(d)} | \{f2(conv)} |")
   }
   line("")
   line(
@@ -455,14 +452,13 @@ fn sec6_spline() -> Unit {
   for n in [64, 128, 256, 512, 1024] {
     let y = Array::makei(n, fn(_i) { rng.next_double() * 2.0 - 1.0 })
     let reps = if n > 512 { 1 } else { 2 }
-    let (cd, t_dense) = time_min(reps, fn() { interp_cubic_dense(y) })
+    let (_, t_dense) = time_min(reps, fn() { interp_cubic_dense(y) })
     let (ci, t_iter) = time_min(reps, fn() { interp_cubic_periodic(y) })
     let mut worst = 0.0
     for i in 0..<n {
       let lhs = (ci[(i + n - 1) % n] + 4.0 * ci[i] + ci[(i + 1) % n]) / 6.0
       worst = worst.max((lhs - y[i]).abs())
     }
-    let _ = cd
     line(
       "| \{n} | \{f2(t_dense)} | \{f2(t_iter)} | \{ratio(t_dense, t_iter)}× | \{f1(worst * 1.0e15)}e-15 |",
     )
@@ -522,7 +518,7 @@ fn sec7_ratelimit() -> Unit {
     }
     (allowed, lim.stats(), lim.table_used())
   })
-  let (allowed, stats, used) = res
+  let (_, stats, used) = res
   let (a, th, sh) = stats
   line("| 指標 | 值 |")
   line("|---|---|")
@@ -534,7 +530,6 @@ fn sec7_ratelimit() -> Unit {
   line(
     "| 決策吞吐 | \{f1(200000.0 / (t / 1000000.0) / 1000000.0)} M decisions/s |",
   )
-  let _ = allowed
   line("")
   line("### 7b. 多點齊發（5 萬個不同鍵，同一微秒）")
   line("")

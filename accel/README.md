@@ -170,9 +170,8 @@ for k in @accel.webgpu_frontier_kernel_suite() {
 
 ## 7. 依賴與邊界
 
-* **依賴**：`gcd`、`cubical-face-bdd`、`algebra`、`semiring-trop`、`tensor`；**不依賴** `cubical/kernel`（加速層不需要可信核心，只需主定義）。
-* **依賴**：`accel-swar`（`L0` 零依賴硬體核心，透過 `reexport_swar.mbt` `pub using @swar` 無縫重導出）、`gcd`、`cubical-face-bdd`、`algebra-core`、`semiring-trop`、`tensor`。
-* **被依賴**：`cubical-autonomy`、`cubical-structures`、`bridge`（`accel_bridge.mbt`）、`root`。
+* **依賴**：`accel-swar`（`L0` 零依賴硬體核心，透過 `reexport_swar.mbt` `pub using @swar` 無縫重導出，含 `SwarMemoTable64` 時代失效記憶化快取與 `swar_grade16_*` 16 通道 4-bit QTT 飽和半模原語）、`gcd`、`cubical-face-bdd`、`algebra-core`、`semiring-trop`、`tensor`。
+* **被依賴**：`cubical-autonomy`、`cubical-structures`（直接調用 `swar_grade16_*` 與 `SwarMemoTable64`）、`bridge`（`accel_bridge.mbt` 與 `frontier_7pillars_unification.mbt`，計入 `48/48` 證書）、`root`。
 * **設計準則**：任何新加速核心必須 (a) 提供等價證書入口，(b) 若上 GPU，必須納入 `wgsl_all_registered_kernels()`（8/8 靜態單一真相源並與 `webgpu/index.html` 對齊）且通過 `audit_wgsl_browser_portability`，(c) 不得引入 `f64`/`u64`/`i64` 到 WGSL。
 
 ---

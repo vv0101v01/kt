@@ -105,14 +105,6 @@ pub fn double_negation_lt_operator(
 }
 
 ///|
-/// Build the double-negation Grothendieck site `(c, J_¬¬)` whose category of
-/// sheaves `Sh_¬¬(PSh(c))` is the Booleanization of `PSh(c)`.
-pub fn double_negation_sheaf_site(c : @sym.FinCat) -> Site {
-  let (omega_psh, j_nn) = double_negation_lt_operator(c)
-  site_new(c, topology_of_lawvere_tierney(omega_psh, j_nn))
-}
-
-///|
 /// Compute the F_p singular resonance spectrum `σ(T) = { λ ∈ F_p | det(λI − T) = 0 }`
 /// of a finite endomorphism `op : {0..n-1} -> {0..n-1}` lifted to `F_p^n`,
 /// plus `(fixed_dim = dim ker(I − T), zero_kernel_dim = dim ker(T))`.

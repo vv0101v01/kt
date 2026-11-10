@@ -395,16 +395,6 @@ fn module_state_new() -> ModuleElabState {
 }
 
 ///|
-fn module_contains(names : Array[String], name : String) -> Bool {
-  for i in 0..<names.length() {
-    if names[i] == name {
-      return true
-    }
-  }
-  false
-}
-
-///|
 fn module_add_binding(
   state : ModuleElabState,
   name : String,
@@ -557,10 +547,10 @@ fn module_renamed(import_ : ModuleImport, name : String) -> String {
 
 ///|
 fn module_import_selected(import_ : ModuleImport, name : String) -> Bool {
-  if module_contains(import_.hiding, name) {
+  if import_.hiding.contains(name) {
     return false
   }
-  import_.only.length() == 0 || module_contains(import_.only, name)
+  import_.only.length() == 0 || import_.only.contains(name)
 }
 
 ///|
@@ -620,7 +610,7 @@ fn module_elaborate_into(
   stack : Array[String],
   bind_locals : Bool,
 ) -> ModuleSegment? {
-  if module_contains(stack, module_.path) {
+  if stack.contains(module_.path) {
     return None
   }
   let stack2 : Array[String] = []
@@ -722,10 +712,10 @@ fn module_elaborate_into(
           }
         }
         let opened = import_.opened ||
-          module_contains(module_.opens, import_.module_path) ||
+          module_.opens.contains(import_.module_path) ||
           (
             import_.alias_name.length() > 0 &&
-            module_contains(module_.opens, import_.alias_name)
+            module_.opens.contains(import_.alias_name)
           )
         for i in 0..<target_segment.exports.length() {
           let ex = target_segment.exports[i]
@@ -836,15 +826,6 @@ pub fn module_resolve(signature : ModuleSignature, name : String) -> Int32? {
     }
   }
   None
-}
-
-///|
-/// A reference to a resolved entry in the full signature telescope.
-pub fn module_ref(signature : ModuleSignature, name : String) -> DTerm? {
-  match module_resolve(signature, name) {
-    Some(ordinal) => Some(DTVar(signature.entries.length() - 1 - ordinal))
-    None => None
-  }
 }
 
 ///|

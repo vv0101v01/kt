@@ -364,14 +364,21 @@ fn u_fresh_var(next_var : Array[Int32]) -> UTerm {
 ///|
 /// 給記憶表用的結構鍵（小項才用；夠用即可）。
 fn u_key(t : UTerm) -> Int32 {
+  let m = 1000003L
   match t {
-    UVar(x) => x * 7919
+    UVar(x) => {
+      let r = x.to_int64() * 7919L % m
+      (if r < 0L { r + m } else { r }).to_int()
+    }
     UFfn(f, xs) => {
-      let mut h = 104729 + f * 31
-      for x in xs {
-        h = (h * 3 + u_key(x)) % 1000003
+      let mut h = (104729L + f.to_int64() * 31L) % m
+      if h < 0L {
+        h = h + m
       }
-      h
+      for x in xs {
+        h = (h * 3L + u_key(x).to_int64()) % m
+      }
+      h.to_int()
     }
   }
 }

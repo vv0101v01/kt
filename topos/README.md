@@ -134,10 +134,12 @@ println(ht.betti_numbers, ht.euler_characteristic)               // [1, 2, 1, 0]
 
 ---
 
-## 7. 驗證
+## 7. 驗證與 Artin 膠合逗號範疇（`artin_gluing_geometric.mbt`）
+
+* **`artin_gluing_geometric.mbt`**：在 `@sym.Presheaf` 與 `topos/site` 全域截面函子 `Γ = Hom(1, -)` 上建構 **Artin 膠合逗號範疇 `Gl(Γ) = Set ↓ Γ`**（`ArtinGluedObject`、`ArtinGluedMorphism`、`artin_glued_terminal`、`artin_glued_product`、`artin_glued_booleans`、`artin_glued_enumerate_global_elements`），機器證明在非連通雙點景 `Discrete(2)` 上將純語法預層 `1 + 1` 的 `4` 個全域截面精確篩為 `2` 個規範布林元（綜合 Tait 可計算性 STC 正規性），並實作謝爾賓斯基箭頭範疇 `0 -> 1` 之 **SGA4 開—閉重黏合** `sga4_recollement_reconstruct_arrow` 與有限函子幾何拉回水平複合律 `compose_fin_functors`（由 `verify_artin_gluing_and_geometric_composition_suite()` 完整核驗，並於 `cubical/structures` 及 `bridge` 與 Orton–Pitts 扭轉 `Glue` 對帳）。
 
 ```bash
-moon test topos --target wasm-gc
+moon check --deny-warn --target wasm-gc
 ```
 每一檔結尾都有 `verify_*` / `check_*` 一等函式（非測試檔），例如
-`verify_general_yoneda_lemma`、`analyze_local_topos`、`verify_essential_geometric_triple_adjunction`、`verify_stack_effective_descent`、`verify_euler_poincare`。
+`verify_general_yoneda_lemma`、`analyze_local_topos`、`verify_essential_geometric_triple_adjunction`、`verify_stack_effective_descent`、`verify_euler_poincare`、`verify_artin_gluing_and_geometric_composition_suite`。

@@ -308,7 +308,6 @@ pub fn check_phase15_dcube_strength4_phf_and_yoneda_audit() -> Bool {
 /// 0-truncated fundamental group isomorphism `pi_1(S^1) = ||Omega^1(S^1)||_0 ≃ Z`.
 pub fn check_phase15_bidirectional_bijectivity_and_pi1_circle() -> Bool {
   let z_ty = integer_type_value()
-  let c_ty = circle_hit_type_value()
   let loop_ty = circle_loop_space_type_value()
   let st_loop_ty = set_trunc_type_value(loop_ty)
 
@@ -452,7 +451,6 @@ pub fn check_phase15_bidirectional_bijectivity_and_pi1_circle() -> Bool {
   let cover_base = circle_path_equiv_cover_value(base_c, 16)
   let cov_b_fwd = equiv_fwd_value(cover_base, loop_ty, z_ty)
   let cov_b_bwd = equiv_bwd_value(cover_base, loop_ty, z_ty)
-  let _ = c_ty
   for k in [-2, -1, 0, 1, 2] {
     let zk = integer_value(k)
     let lk = circle_decode_value(zk, 16)

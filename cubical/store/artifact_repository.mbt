@@ -155,14 +155,14 @@ pub extend ArtifactRepositoryStats with Eq::{not_equal, equal}
 
 ///|
 fn artifact_hash_pair(bytes : Array[Int32]) -> (Int32, Int32) {
-  let mut a = 17
-  let mut b = 29
+  let mut a = 17L
+  let mut b = 29L
   for i in 0..<bytes.length() {
-    let byte = bytes[i] & 255
-    a = (a * 31 + byte + 1) % 1000000007
-    b = (b * 131 + byte + 7) % 998244353
+    let byte = (bytes[i] & 255).to_int64()
+    a = (a * 31L + byte + 1L) % 1000000007L
+    b = (b * 131L + byte + 7L) % 998244353L
   }
-  (a, b)
+  (a.to_int(), b.to_int())
 }
 
 ///|

@@ -521,7 +521,6 @@ pub fn prove_pair(g1 : Graph, g2 : Graph) -> Array[Cert] {
     ),
   )
   // 7 星團回提
-  let lift = isomorphism_via_line(g1, g2)
   let (wa, wb, wc) = whitney_cert(g1, g2)
   out.push(
     cert(
@@ -530,7 +529,6 @@ pub fn prove_pair(g1 : Graph, g2 : Graph) -> Array[Cert] {
       "線圖同構 ψ 之星團回提 ⇒ 頂點同構（逐邊驗證），與引擎一致",
     ),
   )
-  let _ = lift
   // 8 Aut 函子性
   if iso {
     match phi {

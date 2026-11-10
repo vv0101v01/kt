@@ -1,7 +1,7 @@
 # `bridge/` — 上 V 頂點 `V₂`：星稜柱、`K₉ = 36/36` 全配對橋、三大三元／四元合流管線與 47/47 大一統證書
 
 > **架構位置**：`architecture.json` 中的 `bridge`，**Layer 8**（倒數第二層），依賴全部九大聯邦之上游公開介面（含 `meta` 四套件、`cubical-autonomy`、`cubical-structures`、`accel`、`condensed`、`scheme`、`topos`、`semiring-*`、`symlib`、`gcd`、`root`）。
-> 角色：**雙 V 形的上頂點 `V₂`**，也是**唯一**被允許同時匯入全部九大聯邦的整合層（18 個 `.mbt` 檔，共 **6,626 行**）。
+> 角色：**雙 V 形的上頂點 `V₂`**，也是**唯一**被允許同時匯入全部九大聯邦的整合層（18 個 `.mbt` 檔，共 **6,627 行**）。
 > MoonBit 套件名：`vv0101v01/cubical-hermitian/bridge`。執行入口：`cmd/showcase`。
 
 ---
@@ -212,6 +212,6 @@ assert_true(k9.all_holds)                // 9/9 聯邦 · K9=36/36 · 四聯邦�
 ## 11. 驗證
 
 ```bash
-moon run cmd/showcase --target wasm-gc               # 9/9 聯邦 · K9=36/36 · F8↔F5↔F1 + F2↔F3↔F6 雙三元橋 · F7->F9->F4->F1 晉升 · 47/47 證書
+moon run cmd/showcase --target wasm-gc               # 9/9 聯邦 · K9=36/36 · F8↔F5↔F1 + F2↔F3↔F6 + F1×F3×F4×F8×F9 七支柱五元橋 · F7->F9->F4->F1 晉升 · 48/48 證書
 python3 tools/arch_check.py                          # 確認沒有任何下層反向匯入 bridge
 ```

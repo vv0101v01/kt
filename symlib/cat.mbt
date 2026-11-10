@@ -249,18 +249,6 @@ pub fn GSet::of(group : PermGroup) -> GSet {
 }
 
 ///|
-/// 態射集 hom(x, y)（列舉群元素版，僅限小群）。
-pub fn GSet::hom(self : GSet, x : Int32, y : Int32, cap : Int32) -> Array[Perm] {
-  let out : Array[Perm] = []
-  for g in self.group.elements(cap) {
-    if g.apply(x) == y {
-      out.push(g)
-    }
-  }
-  out
-}
-
-///|
 /// 連通分量 = 軌道（軌道折疊即廣群之骨架 skeleton）。
 pub fn GSet::components(self : GSet) -> Array[Array[Int32]] {
   self.group.orbit_partition()

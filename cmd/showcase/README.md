@@ -32,7 +32,8 @@
 | 星稜鏡 | `@bridge.verify_seven_federation_star_prism(k7_precomputed=Some(k7_edges))` → `star_prism_commutes`、`seven_federations_verified`、`k7_bridges_verified`、`conjectures_evaluated`、`evolution_families_verified`、`lakatos_refinements_verified` | 把 `K₇` 的 21 條邊當成稜鏡的稜；`conjectures = 12`、`evolve = 6` |
 | 四元數凝聚中軸 | `@bridge.verify_rotation_axis_bridge()` → `families_passed`、`comparisons`、`coherence`、`axis` | 四族 `4/4`；相干角 `11040→552→0`（276 個規範類、總重數守恆），並逐項印出四族與中軸的消元前後數值及差值；不改 47 條歷史證書數 |
 | 直覺猜想實驗 | `@bridge.verify_intuitive_conjecture_lab()` | 五條原猜想、直覺、搜索範圍、反例與修正版；1 條有界倖存、4 條反例後修正，納入總成功條件但不改既有 12 條猜想數 |
-| 證書帳本 | `@bridge.bridge_certificates()` | 47 張證書的彙總（`ATLAS-01..18`、`pentagon` 等） |
+| 七支柱五聯邦前沿合流 | `@bridge.verify_frontier_7pillars_grand_unification()` | 橫跨 `F1 × F3 × F4 × F8 × F9` 對帳多模態 2-函子嵌入、SWAR 雙上下文 QTT 半模同態、內蘊 CwF 與立方路徑 QIIT、Artin 膠合 ↔ Orton–Pitts `Glue` 正規性及深度 10 鑽石 DAG `18,422 -> 108`（`170×`）記憶化雙向依值／歸納檢查 |
+| 證書帳本 | `@bridge.bridge_certificates()` | 48 張證書的彙總（`ATLAS-01..18`、`pentagon`、`bridge/frontier7` 等） |
 
 `k7_precomputed=Some(k7_edges)` 是**避免重算**的設計：`K₇` 的 21 條邊在上面已算過，此處直接注入 ⇒ 整份報告只算一次。
 

@@ -23,36 +23,6 @@
 using @mon {type AffineM, type OppositeM, prefix_scan}
 
 ///|
-/// Cox–de Boor 遞迴：第 i 個 p 次 B 樣條在 t 的值。
-///
-/// 直接照定義遞迴，O(p²)。用於驗證 de Boor 演算法（交叉檢查）。
-pub fn bspline_basis(
-  knots : Array[Double],
-  p : Int32,
-  i : Int32,
-  t : Double,
-) -> Double {
-  if p == 0 {
-    if (t >= knots[i] && t < knots[i + 1]) ||
-      (t == knots[i + 1] && i + 1 == knots.length() - 1) {
-      return 1.0
-    }
-    return 0.0
-  }
-  let mut left = 0.0
-  let d1 = knots[i + p] - knots[i]
-  if d1 > 0.0 {
-    left = (t - knots[i]) / d1 * bspline_basis(knots, p - 1, i, t)
-  }
-  let mut right = 0.0
-  let d2 = knots[i + p + 1] - knots[i + 1]
-  if d2 > 0.0 {
-    right = (knots[i + p + 1] - t) / d2 * bspline_basis(knots, p - 1, i + 1, t)
-  }
-  left + right
-}
-
-///|
 /// 均勻三次樣條在整數節點的配點矩陣是循環矩陣 (z⁻¹+4+z)/6。
 /// 這裡回傳其「整數版本」的係數：對角 4、次對角 1。
 fn collocation_dense(n : Int32, periodic : Bool) -> Array[Array[Double]] {

@@ -138,16 +138,6 @@ fn disk_inode_content(st : DiskState, inode : Int32) -> Int32? {
 }
 
 ///|
-fn disk_has(xs : Array[Int32], v : Int32) -> Bool {
-  for i in 0..<xs.length() {
-    if xs[i] == v {
-      return true
-    }
-  }
-  false
-}
-
-///|
 pub fn disk_apply(st : DiskState, op : StoreOp) -> Unit {
   match op {
     OpWrite(path, content) => {
@@ -168,7 +158,7 @@ pub fn disk_apply(st : DiskState, op : StoreOp) -> Unit {
       match disk_lookup(st.inode_at, path) {
         None => ()
         Some(inode) =>
-          if !disk_has(st.durable_inode, inode) {
+          if !st.durable_inode.contains(inode) {
             st.durable_inode.push(inode)
           }
       }
@@ -203,7 +193,7 @@ pub fn disk_recover(st : DiskState, key : String) -> Recovery {
   match disk_lookup(st.durable_dirent, key) {
     None => RecoveredAbsent
     Some(inode) =>
-      if !disk_has(st.durable_inode, inode) {
+      if !st.durable_inode.contains(inode) {
         // The name is durable but the bytes are not: a torn read.
         RecoveredTorn
       } else {

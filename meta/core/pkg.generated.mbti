@@ -8,6 +8,8 @@ pub fn binom(Int32, Int32) -> Int32
 
 pub fn chk(Array[(String, Bool)], String, Bool) -> Unit
 
+pub fn cohesive_flat_mode_2cat() -> ModeTheory2Cat
+
 pub fn complex_of_maximal(Int32, Array[Array[Int32]]) -> Complex
 
 pub fn cover_glues(Array[Array[Int32]]) -> Bool
@@ -34,6 +36,8 @@ pub fn law_algebra_bareiss64_sylvester_exactness() -> Array[(String, Bool)]
 
 pub fn law_algebra_exact_rational_rank() -> Array[(String, Bool)]
 
+pub fn law_artin_gluing_stc_and_sga4_recollement_meta() -> Array[(String, Bool)]
+
 pub fn law_burnside_table_of_marks_mobius() -> Array[(String, Bool)]
 
 pub fn law_cchm_cofibration_three_valued() -> Array[(String, Bool)]
@@ -46,7 +50,15 @@ pub fn law_complex_simplicial_complexes_betti_numbers_and_euler_poincar() -> Arr
 
 pub fn law_covering_galois_correspondence() -> Array[(String, Bool)]
 
+pub fn law_demorgan_connections_and_cwf_subst() -> Array[(String, Bool)]
+
+pub fn law_dual_qtt_and_memo_bidir_completeness_meta() -> Array[(String, Bool)]
+
+pub fn law_equiv_quadrilogy_and_vogt_coherence() -> Array[(String, Bool)]
+
 pub fn law_ez_degeneracy_partition_stirling() -> Array[(String, Bool)]
+
+pub fn law_hs_realignment_and_glue_collapse() -> Array[(String, Bool)]
 
 pub fn law_kalman_demorgan_diamond() -> Array[(String, Bool)]
 
@@ -68,6 +80,8 @@ pub fn law_matroid_matroid_greedy_is_optimal_on_a_graphic_matroid() -> Array[(St
 
 pub fn law_matroid_matroid_linear_matroid_over_q() -> Array[(String, Bool)]
 
+pub fn law_mtt_2cat_interchange_and_fitch_locks() -> Array[(String, Bool)]
+
 pub fn law_myhill_nerode_hopcroft_minimality() -> Array[(String, Bool)]
 
 pub fn law_nobeling_profinite_free_basis() -> Array[(String, Bool)]
@@ -79,6 +93,8 @@ pub fn law_ordinal_ordinal_cnf_laws() -> Array[(String, Bool)]
 pub fn law_polarized_focusing_adjunction() -> Array[(String, Bool)]
 
 pub fn law_polynomial_yoneda_and_parametricity() -> Array[(String, Bool)]
+
+pub fn law_pushout_cocone_and_loop_susp_adjunction() -> Array[(String, Bool)]
 
 pub fn law_ramsey_ex_paley_graph_gives_r44_ge_18() -> Array[(String, Bool)]
 
@@ -137,6 +153,12 @@ pub fn matrix_rank(Array[Array[Int32]]) -> Int32
 pub fn matrix_rank_bareiss64_with_cert(Array[Array[Int32]]) -> (Int32, Bool)
 
 pub fn matrix_rank_qrat64(Array[Array[Int32]]) -> Int32
+
+pub fn mode_2cat_verify_laws(ModeTheory2Cat) -> Bool
+
+pub fn mtt_find_fitch_2cell_key(ModeTheory2Cat, Int32, Int32) -> Int32?
+
+pub fn mtt_normalize_fitch_locks(ModeTheory2Cat, Int32, Array[Int32]) -> Int32?
 
 pub fn nerve_of_cover(Array[Array[Int32]]) -> Complex
 
@@ -276,6 +298,24 @@ pub(all) struct Matroid {
   ground : Int32
   rankf : (Array[Int32]) -> Int32
 }
+
+#derive(Eq)
+pub struct ModeTheory2Cat {
+  n_modes : Int32
+  n_mod1 : Int32
+  dom1 : Array[Int32]
+  cod1 : Array[Int32]
+  id1 : Array[Int32]
+  comp1 : Array[Array[Int32]]
+  n_cell2 : Int32
+  src2 : Array[Int32]
+  dst2 : Array[Int32]
+  id2 : Array[Int32]
+  vcomp2 : Array[Array[Int32]]
+  hcomp2 : Array[Array[Int32]]
+}
+pub fn ModeTheory2Cat::equal(Self, Self) -> Bool
+pub fn ModeTheory2Cat::not_equal(Self, Self) -> Bool
 
 pub(all) struct OrdTerm {
   coef : Int32

@@ -1,6 +1,6 @@
-## MoonBit 側 545 條定律標籤（逐條）
+## MoonBit 側 553 條定律標籤（逐條）
 
-原始 545 條；去重後 448 條互異。這份清單由 `tools/gen_labels.py` 讀 `cmd/metatheory` 的實際輸出產生，不是手抄。
+原始 553 條；去重後 456 條互異。這份清單由 `tools/gen_labels.py` 讀 `cmd/metatheory` 的實際輸出產生，不是手抄。
 
 ## core / bareiss64 sylvester exactness #1 (7x7 high-minor exact division & full rank)  (1)
 
@@ -73,6 +73,22 @@
 
 - covering-galois: pointed covering morphism E_{H1} -> E_{H2} exists iff H_1 <= H_2 #3
 
+## core / kleene-demorgan-interval-connection-duality-and-distributivity  (1)
+
+- kleene-demorgan-interval-connection-duality-and-distributivity
+
+## core / equiv-quadrilogy-fin3-27-maps-agree-6-bijections  (1)
+
+- equiv-quadrilogy-fin3-27-maps-agree-6-bijections
+
+## core / equiv-quadrilogy-fin4-256-maps-agree-24-bijections  (1)
+
+- equiv-quadrilogy-fin4-256-maps-agree-24-bijections
+
+## core / vogt-adjointification-annihilates-162-winding-obstructions  (1)
+
+- vogt-adjointification-annihilates-162-winding-obstructions
+
 ## core / ez-cube: 3-cube degeneracy strata equal [2, 6, 30, 218] summing to 256  (1)
 
 - ez-cube: 3-cube degeneracy strata equal [2, 6, 30, 218] summing to 256 #1
@@ -84,6 +100,14 @@
 ## core / ez-cube: strata[k] == C(n,k)*nondeg(k) and Moebius nondeg(4) == 64594  (1)
 
 - ez-cube: strata[k] == C(n,k)*nondeg(k) and Moebius nondeg(4) == 64594 #3
+
+## core / hs-realignment-96-cofib-s3-squares-commute  (1)
+
+- hs-realignment-96-cofib-s3-squares-commute
+
+## core / glue-bot-cofibration-strict-base-identity  (1)
+
+- glue-bot-cofibration-strict-base-identity
 
 ## core / kalman-demorgan: M_4 satisfies involution, De Morgan, absorption & distributivity  (1)
 
@@ -250,6 +274,14 @@
 ## core / poly-yoneda: polymorphic swap preserves all 16 binary relations while non-parametric XOR map is rejected  (1)
 
 - poly-yoneda: polymorphic swap preserves all 16 binary relations while non-parametric XOR map is rejected #2
+
+## core / pushout-universal-cocone-cardinality-y1-to-y4  (1)
+
+- pushout-universal-cocone-cardinality-y1-to-y4
+
+## core / loop-suspension-adjunction-pointed-bg-cardinalities  (1)
+
+- loop-suspension-adjunction-pointed-bg-cardinalities
 
 ## core / ramsey: Paley graph gives R(4,4) ≥ 18  (9)
 

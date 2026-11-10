@@ -442,7 +442,6 @@ pub(all) struct GSet {
 }
 pub fn GSet::components(Self) -> Array[Array[Int32]]
 pub fn GSet::groupoid_cardinality(Self) -> Double
-pub fn GSet::hom(Self, Int32, Int32, Int32) -> Array[@core.Perm]
 pub fn GSet::of(@core.PermGroup) -> Self
 pub fn GSet::orbit_sum_cardinality(Self) -> Double
 

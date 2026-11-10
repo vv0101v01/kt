@@ -13,12 +13,7 @@
 // ===========================================================================
 
 ///|
-using @alg {
-  trait Monoid,
-  trait CommutativeMonoid,
-  trait IdempotentMonoid,
-  trait GroupMonoid,
-}
+using @alg {trait Monoid, trait IdempotentMonoid, trait GroupMonoid}
 
 // ---------------------------------------------------------------------------
 // 常用實例
@@ -52,9 +47,6 @@ pub impl Monoid for SumI64 with fn combine(a, b) {
 }
 
 ///|
-pub impl CommutativeMonoid for SumI64
-
-///|
 pub impl GroupMonoid for SumI64 with fn invert(a) {
   { v: -a.v, }
 }
@@ -68,13 +60,6 @@ pub impl Show for SumI64 with fn output(self, logger) {
 /// 最大值么半群（冪等）。
 #derive(Eq)
 pub(all) struct MaxI64 {
-  v : Int64
-}
-
-///|
-/// 最小值么半群（冪等）。
-#derive(Eq)
-pub(all) struct MinI64 {
   v : Int64
 }
 
@@ -93,38 +78,10 @@ pub impl Monoid for MaxI64 with fn combine(a, b) {
 }
 
 ///|
-pub impl CommutativeMonoid for MaxI64
-
-///|
 pub impl IdempotentMonoid for MaxI64
 
 ///|
 pub impl Show for MaxI64 with fn output(self, logger) {
-  logger.write_string(self.v.to_string())
-}
-
-///|
-pub impl Monoid for MinI64 with fn empty() {
-  { v: 0x7FFF_FFFF_FFFF_FFFFL, }
-}
-
-///|
-pub impl Monoid for MinI64 with fn combine(a, b) {
-  if a.v <= b.v {
-    a
-  } else {
-    b
-  }
-}
-
-///|
-pub impl CommutativeMonoid for MinI64
-
-///|
-pub impl IdempotentMonoid for MinI64
-
-///|
-pub impl Show for MinI64 with fn output(self, logger) {
   logger.write_string(self.v.to_string())
 }
 
@@ -412,11 +369,6 @@ pub(all) struct OppositeM[M] {
 }
 
 ///|
-pub fn[M] OppositeM::of(x : M) -> OppositeM[M] {
-  { inner: x, }
-}
-
-///|
 pub impl[M : Monoid] Monoid for OppositeM[M] with fn empty() {
   { inner: Monoid::empty(), }
 }
@@ -470,18 +422,6 @@ pub extend MaxI64 with Show::{output, to_string}
 /// 0.10 起 `impl` 不再自動把方法提升為一般方法；這裡顯式宣告。
 
 ///|
-pub extend MinI64 with Monoid::{empty, combine}
-
-///|
-/// 0.10 起 `impl` 不再自動把方法提升為一般方法；這裡顯式宣告。
-
-///|
-pub extend MinI64 with Show::{output, to_string}
-
-///|
-/// 0.10 起 `impl` 不再自動把方法提升為一般方法；這裡顯式宣告。
-
-///|
 pub extend AffineM with Eq::{equal, not_equal}
 
 ///|
@@ -519,12 +459,6 @@ pub extend OppositeM with Eq::{equal, not_equal}
 
 ///|
 pub extend MaxI64 with Eq::{equal, not_equal}
-
-///|
-/// `derive(Eq)` 產生的 impl 同樣需要顯式 extend（0.10 的方法提升規則）。
-
-///|
-pub extend MinI64 with Eq::{equal, not_equal}
 
 ///|
 /// `derive(Eq)` 產生的 impl 同樣需要顯式 extend（0.10 的方法提升規則）。

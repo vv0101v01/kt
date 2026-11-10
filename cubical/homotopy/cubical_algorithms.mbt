@@ -50,7 +50,6 @@ using @kernel {
   as_pi,
   bool_not_equiv_term,
   bool_schema,
-  checked_coe_value,
   checked_line_endpoints,
   checked_line_fn,
   checked_line_level,
@@ -174,16 +173,6 @@ pub fn transport_back_value(
   dlevel : Int32,
 ) -> DValue {
   coe_value(line, DOne, DZero, v, dlevel)
-}
-
-///|
-/// Transport along a checked (substitutable) type line.
-pub fn transport_checked_line_value(
-  line : DCheckedTypeLine,
-  v : DValue,
-  dlevel : Int32,
-) -> DValue {
-  checked_coe_value(line, DZero, DOne, v, dlevel)
 }
 
 ///|
@@ -334,17 +323,6 @@ pub fn subst_value(
   dlevel : Int32,
 ) -> DValue {
   transport_value(memo_dim_line(j => fam(dapp_dim(p, j))), v, dlevel)
-}
-
-///|
-/// The dependent path over `p` whose far endpoint is `subst B p v`.
-pub fn subst_pathp_value(
-  fam : (DValue) -> DValue,
-  p : DValue,
-  v : DValue,
-  dlevel : Int32,
-) -> DValue {
-  transport_pathp_value(j => fam(dapp_dim(p, j)), v, dlevel)
 }
 
 // ---------------------------------------------------------------------------
@@ -1321,44 +1299,6 @@ pub fn dpath_of_pathp_value(
 }
 
 ///|
-/// Dependent path equality in a family whose right endpoint fiber `line(1)`
-/// is an h-Set: given `p1, p2 : PathP (i => line(i)) u0 u1` and a witness
-/// `is_set_line1 : (a b : line(1)) -> (alpha beta : Path (line(1)) a b) -> Path (...) alpha beta`,
-/// constructs `Path (PathP (i => line(i)) u0 u1) p1 p2` with definitionally
-/// exact boundaries `p1`, `p2`, `u0`, and `u1`.
-pub fn dpathp_eq_in_set_family_value(
-  line : (Dim) -> DValue,
-  u0 : DValue,
-  u1 : DValue,
-  p1 : DValue,
-  p2 : DValue,
-  is_set_line1 : (DValue, DValue, DValue, DValue) -> DValue,
-  dlevel : Int32,
-) -> DValue {
-  let mline = memo_dim_line(line)
-  let open_fill = (r : Dim, i : Dim) => {
-    let sys = dsystem_of([
-      tube_branch(face_simplify(FEq0(r)), k => dapp_dim(p1, k)),
-      tube_branch(face_simplify(FEq1(r)), k => dapp_dim(p2, k)),
-    ])
-    fill_value(mline, sys, u0, dlevel + 2)(i)
-  }
-  let top_cap = DValue::DVPathLam(r => open_fill(r, DOne))
-  let lid = is_set_line1(u1, u1, top_cap, dpath_refl_value(u1))
-  DVPathLam(r => {
-    DVPathLam(i => {
-      let sys = dsystem_of([
-        tube_branch(face_simplify(FEq0(r)), _ => dapp_dim(p1, i)),
-        tube_branch(face_simplify(FEq1(r)), _ => dapp_dim(p2, i)),
-        tube_branch(face_simplify(FEq0(i)), _ => u0),
-        tube_branch(face_simplify(FEq1(i)), j => dapp_dim(dapp_dim(lid, j), r)),
-      ])
-      hcomp_value(mline(i), sys, open_fill(r, i), dlevel + 4)
-    })
-  })
-}
-
-///|
 /// Cubical Paulin-Mohring `J` (based singleton contraction): given
 /// `motive : (y : A, p : Path A a0 y) -> Type`, `refl_case : motive(a0, refl a0)`,
 /// and `p : Path A a0 y`, transports `refl_case` along `w => (p(w), p_{<= w})`.
@@ -1372,53 +1312,6 @@ pub fn dj_singleton_elim_value(
     memo_dim_line(w => motive(dapp_dim(p, w), dpath_prefix_value(p, w))),
     refl_case,
     dlevel,
-  )
-}
-
-///|
-/// HoTT Lemma 3.3.4 (every h-Proposition is an h-Set): given `is_prop : (u v : P) -> Path P u v`
-/// and `p, q : Path P x y`, constructs `Path (Path P x y) p q` with exact
-/// endpoints `p` and `q` by factoring through `canon(y) = sym(is_prop x x) . is_prop x y`.
-pub fn dprop_is_set_value(
-  p_ty : DValue,
-  is_prop : (DValue, DValue) -> DValue,
-  x : DValue,
-  y : DValue,
-  p : DValue,
-  q : DValue,
-  dlevel : Int32,
-) -> DValue {
-  let canon = (target : DValue) => {
-    dpath_trans_value(
-      p_ty,
-      dpath_sym_value(is_prop(x, x)),
-      is_prop(x, target),
-      dlevel,
-    )
-  }
-  let base_cancel = dpath_left_inverse3_value(
-    p_ty,
-    x,
-    is_prop(x, x),
-    dlevel + 1,
-  )
-  let canon_to_path = (r : DValue) => {
-    dj_singleton_elim_value(
-      (y1, r1) => {
-        let eq_ty = DValue::DVPathTy(_ => p_ty, x, y1)
-        DVPathTy(_ => eq_ty, canon(y1), r1)
-      },
-      base_cancel,
-      r,
-      dlevel + 3,
-    )
-  }
-  let path_ty = DValue::DVPathTy(_ => p_ty, x, y)
-  dpath_trans_value(
-    path_ty,
-    dpath_sym_value(canon_to_path(p)),
-    canon_to_path(q),
-    dlevel + 4,
   )
 }
 
@@ -1546,51 +1439,6 @@ pub fn sigma_path_equiv_value(
     DVLam(pr => dpath_refl_value(pr)),
     DVLam(q => dpath_refl_value(q)),
   )
-}
-
-///|
-/// Fiberwise congruence of `DVSigma` in the second component:
-/// given `fiber_eq : (x : A) -> Equiv (P x) (Q x)`, constructs
-///   `Equiv (Σ (x : A), P x) (Σ (x : A), Q x)`.
-pub fn sigma_cong_snd_equiv_value(
-  a_ty : DValue,
-  p_fam : (DValue) -> DValue,
-  q_fam : (DValue) -> DValue,
-  fiber_eq : (DValue) -> DValue,
-) -> DValue {
-  let src = DValue::DVSigma(a_ty, p_fam)
-  let dst = DValue::DVSigma(a_ty, q_fam)
-  let fwd = DValue::DVLam(w => {
-    let x = dfst_typed(w, p_fam)
-    let y = dsnd_typed(w, a_ty, p_fam)
-    DValue::DVPair(x, equiv_fun_value(fiber_eq(x), p_fam(x), q_fam(x), y))
-  })
-  let bwd = DValue::DVLam(w => {
-    let x = dfst_typed(w, q_fam)
-    let z = dsnd_typed(w, a_ty, q_fam)
-    DValue::DVPair(x, equiv_inv_fun_value(fiber_eq(x), p_fam(x), q_fam(x), z))
-  })
-  let sect = DValue::DVLam(w => {
-    let x = dfst_typed(w, q_fam)
-    let z = dsnd_typed(w, a_ty, q_fam)
-    let s = dapp_typed(
-      equiv_sect_value(fiber_eq(x), p_fam(x), q_fam(x)),
-      z,
-      q_fam(x),
-    )
-    DValue::DVPathLam(i => DValue::DVPair(x, dapp_dim(s, i)))
-  })
-  let retr = DValue::DVLam(w => {
-    let x = dfst_typed(w, p_fam)
-    let y = dsnd_typed(w, a_ty, p_fam)
-    let r = dapp_typed(
-      equiv_retr_value(fiber_eq(x), p_fam(x), q_fam(x)),
-      y,
-      p_fam(x),
-    )
-    DValue::DVPathLam(i => DValue::DVPair(x, dapp_dim(r, i)))
-  })
-  equiv_make_value(src, dst, fwd, bwd, sect, retr)
 }
 
 ///|

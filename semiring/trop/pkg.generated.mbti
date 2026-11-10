@@ -89,7 +89,6 @@ pub(all) struct Pt2 {
   x : Int32
   y : Int32
 }
-pub fn Pt2::cross(Self, Self) -> Int64
 pub fn Pt2::equal(Self, Self) -> Bool
 pub fn Pt2::lattice_len(Self) -> Int32
 pub fn Pt2::new(Int32, Int32) -> Self

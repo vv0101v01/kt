@@ -72,6 +72,7 @@ pub fn bridge_certificates() -> Array[BridgeCertificate] {
     out.push(c)
   }
   out.push(accel_hardware_certificate())
+  out.push(frontier_7pillars_bridge_certificate())
   out
 }
 

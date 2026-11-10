@@ -95,9 +95,3 @@ pub fn system_eq_mod_sym(a : VecSystem, b : VecSystem, nvars : Int32) -> Bool {
   }
   true
 }
-
-///|
-/// The defined region of a system as a BDD (the union of its faces).
-pub fn system_domain_bdd(s : VecSystem, nvars : Int32) -> Bdd {
-  bdd_not(system_normal_form(s, nvars).undefined)
-}

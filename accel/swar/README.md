@@ -12,7 +12,7 @@
 
 ---
 
-## 2. 檔案清單（6 個 `.mbt`，共 2,300 行）
+## 2. 檔案清單（7 個 `.mbt`）
 
 | 檔案 | 行數 | 職責 |
 |---|---:|---|
@@ -22,6 +22,7 @@
 | `cubical_degeneracy_core.mbt` | 366 | 64-bit 立方體退化遮罩 `O(1)` 合成、位元蝴蝶面抽取 `cube64_extract_face_swar`、退化插入 `cube64_insert_degeneracy_swar` 與交替面微分 `∂² = 0` |
 | `scanbox_morton_core.mbt` | 350 | Scanbox 解耦回看並行前綴掃描（Decoupled Look-back Prefix Scan）與 2D/3D Morton Z-階空間填充曲線位元交錯 |
 | `hvm2_inet_arena.mbt` | 466 | HVM2 扁平陣列競技場 `INetArena` 並行交互組合子（Lafont Interaction Combinators）與閉合 Peano `λ` 項求值器 `inet_eval_closed_peano_lam` |
+| `hashcons_memo_swar.mbt` | 268 | Stafford Mix13 64-bit 雙射雜湊／逆演 `swar_mix64`／`swar_unmix64`、Merkle 節點摘要 `swar_merkle_node64`／`swar_merkle_seq64`、`O(1)` 時代無清零失效開放定址快取 `SwarMemoTable64`，以及 16 通道 × 4-bit 飽和半模定量類型論（QTT）資源向量 `swar_grade16_*`（`0` 抹除、`1` 線性、`15 = ω` 無限制） |
 
 ---
 
@@ -34,11 +35,12 @@
 | `[T-Ozaki2-Stockham]` INT8 切片 CRT 重建精確整數／浮點 GEMM 與 Stockham RNS 多項式卷積 | `ozaki2_int_gemm_dp4a`、`poly_mul_rns_ntt` |
 | `[T-Cube64-Butterfly]` 64-bit 蝴蝶面抽取與退化插入滿足全套立方體恆等式與 `∂_{k-1}∘∂_k = 0` | `cube64_degeneracy_mask`、`cube64_extract_face_swar` |
 | `[T-HVM2-Confluence]` 交互網正向與反向排程強合流並與依賴型 NbE 閉合 Peano 求值一致 | `inet_eval_closed_peano_lam` |
+| `[T-Mix13-Memo-Grade16]` Stafford Mix13 精確雙射、`SwarMemoTable64` `O(1)` 時代失效與 16×4-bit SWAR QTT 飽和半模相容律 | `swar_memo_new`、`swar_grade16_add_sat`、`swar_grade16_scale_sat`、`swar_grade16_usage_compatible`、`verify_swar_memo_and_grade16_laws` |
 
 ---
 
 ## 4. 依賴關係圖與驗證
 
 * 上游依賴：無（`L0` 零外部業務依賴，僅使用內建硬體指令 `popcnt` / `ctz` / `clz`）。
-* 下游消費者：`algebra/core`、`semiring/matrix`、`condensed/core`、`topos/site`、`scheme`、`tensor`、`conjecture/kernel`、`accel`、`bridge`。
-* 驗證方式：`moon check --deny-warn --target wasm-gc` 零警告；由 `verify.mbt`、`bridge/accel_bridge.mbt` 與 `cmd/showcase` 常駐核驗。
+* 下游消費者：`algebra/core`、`semiring/matrix`、`condensed/core`、`topos/site`、`scheme`、`tensor`、`conjecture/kernel`、`cubical/elaborator`（`BidirDagArena` 記憶化檢型）、`accel`（重導出供 `cubical/structures` 16 通道 SWAR 雙上下文資源檢驗）、`bridge`。
+* 驗證方式：`moon check --deny-warn --target wasm-gc` 零警告；由 `verify.mbt`、`bridge/accel_bridge.mbt`、`bridge/frontier_7pillars_unification.mbt` 與 `cmd/showcase` 常駐核驗。

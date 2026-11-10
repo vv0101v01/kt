@@ -474,12 +474,6 @@ pub fn PermGroup::orbit_partition(self : PermGroup) -> Array[Array[Int32]] {
 }
 
 ///|
-/// 是否可遷（單軌道）。
-pub fn PermGroup::is_transitive(self : PermGroup) -> Bool {
-  self.n > 0 && self.orbit(0).length() == self.n
-}
-
-///|
 /// Schreier 引理：穩定子 G_x 的生成元。
 pub fn PermGroup::stabilizer(self : PermGroup, x : Int32) -> PermGroup {
   guard x >= 0 && x < self.n else {
@@ -541,22 +535,6 @@ pub fn PermGroup::elements(self : PermGroup, cap : Int32) -> Array[Perm] {
     }
   }
   out
-}
-
-///|
-/// 固定 `x` 的元素個數（Burnside 原始和用；僅限小群）。
-pub fn PermGroup::fixed_point_count(
-  self : PermGroup,
-  x : Int32,
-  cap : Int32,
-) -> Int32 {
-  let mut c = 0
-  for g in self.elements(cap) {
-    if g.apply(x) == x {
-      c = c + 1
-    }
-  }
-  c
 }
 
 ///|

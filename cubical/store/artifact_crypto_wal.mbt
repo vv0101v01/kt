@@ -1126,16 +1126,6 @@ pub fn artifact_wal_delete(wal : ArtifactWalStore, key : String) -> Bool {
 }
 
 ///|
-pub fn artifact_wal_abort_tx(wal : ArtifactWalStore) -> Bool {
-  if wal.active_tx_id == 0 {
-    return false
-  }
-  wal.active_tx_id = 0
-  wal.staged.clear()
-  true
-}
-
-///|
 /// Durable two-step WAL commit: appends the SHA-256-sealed transaction frame
 /// to `wal.wal_key` BEFORE materializing `wal.staged` into `wal.backing`.
 pub fn artifact_wal_commit_tx(wal : ArtifactWalStore) -> Bool {

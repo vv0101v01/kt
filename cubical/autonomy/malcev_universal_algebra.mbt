@@ -374,7 +374,7 @@ pub fn generate_congruence(
     }
     x
   }
-  let queue : Array[(Int32, Int32)] = []
+  let mut dirty = false
   let merge = fn(a : Int32, b : Int32) -> Unit {
     let ra = find_root(a)
     let rb = find_root(b)
@@ -382,16 +382,14 @@ pub fn generate_congruence(
       let lo = if ra < rb { ra } else { rb }
       let hi = if ra < rb { rb } else { ra }
       parent[hi] = lo
-      queue.push((lo, hi))
+      dirty = true
     }
   }
   for pair in seed_pairs {
     merge(pair.0, pair.1)
   }
-  let mut head = 0
-  while head < queue.length() {
-    let _ = queue[head]
-    head = head + 1
+  while dirty {
+    dirty = false
     for op in alg.ops {
       if op.arity == 1 {
         for x in 0..<n {

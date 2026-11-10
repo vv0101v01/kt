@@ -39,12 +39,6 @@ pub fn Pt2::new(x : Int32, y : Int32) -> Pt2 {
 }
 
 ///|
-/// 叉積 `a × b = a.x·b.y − a.y·b.x`。
-pub fn Pt2::cross(a : Pt2, b : Pt2) -> Int64 {
-  a.x.to_int64() * b.y.to_int64() - a.y.to_int64() * b.x.to_int64()
-}
-
-///|
 /// 原始化（除以 gcd），保留方向。
 pub fn Pt2::prim(self : Pt2) -> Pt2 {
   let g = gcd64(self.x.to_int64(), self.y.to_int64())

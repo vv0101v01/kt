@@ -158,30 +158,6 @@ pub fn path_to_equiv_value(
 }
 
 ///|
-/// `ua` as a semantic value (the Glue line), named for this layer.
-pub fn equiv_to_universe_path_value(
-  e : DValue,
-  src : DValue,
-  dst : DValue,
-  level : Int32,
-) -> DValue {
-  ua_value(e, src, dst, level)
-}
-
-///|
-/// Transport along `ua(e)`.
-pub fn ua_transport_value(
-  e : DValue,
-  src : DValue,
-  dst : DValue,
-  level : Int32,
-  x : DValue,
-  dlevel : Int32,
-) -> DValue {
-  transport_value(ua_line_value(e, src, dst, level), x, dlevel)
-}
-
-///|
 /// `uaβ`: the path in `dst` from `equivFun e x` to
 /// `transport (ua e) x`, obtained by ungluing the transport filler
 /// over the Glue line.

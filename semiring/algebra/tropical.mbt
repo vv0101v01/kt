@@ -154,17 +154,6 @@ pub(all) struct TropMax {
 pub let trop_neg_inf : Int32 = -0x3FFF_FFFF
 
 ///|
-pub fn TropMax::new(w : Int32) -> TropMax {
-  if w <= trop_neg_inf {
-    { v: trop_neg_inf, }
-  } else if w >= -trop_neg_inf {
-    { v: -trop_neg_inf, }
-  } else {
-    { v: w, }
-  }
-}
-
-///|
 pub fn TropMax::is_neg_inf(self : TropMax) -> Bool {
   self.v <= trop_neg_inf
 }
@@ -231,16 +220,6 @@ pub impl StarSemiring for TropMax with fn star(a) {
     { v: 0, }
   } else {
     { v: trop_neg_inf, }
-  }
-}
-
-///|
-/// 對外可檢查的 star：回傳 star 值，並在閉包不存在時給出錯誤。
-pub fn Trop::star_checked(self : Trop) -> Result[Trop, String] {
-  if self.v < 0 {
-    Err("negative cycle: tropical closure diverges (x = \{self.v})")
-  } else {
-    Ok({ v: 0, })
   }
 }
 
@@ -459,16 +438,6 @@ pub impl Semiring for Prob with fn plus(a, b) {
 ///|
 pub impl Semiring for Prob with fn times(a, b) {
   { p: a.p * b.p, }
-}
-
-///|
-/// p* = 1/(1-p)，僅在 |p| < 1 時收斂 ⇒ 以 Option 明確表達前提。
-pub fn Prob::star_checked(self : Prob) -> Result[Prob, String] {
-  if self.p >= 1.0 || self.p <= -1.0 {
-    Err("probability closure diverges: |p| >= 1")
-  } else {
-    Ok({ p: 1.0 / (1.0 - self.p), })
-  }
 }
 
 ///|
@@ -833,16 +802,6 @@ pub impl StarSemiring for TropF with fn star(a) {
     { v: 0.0, }
   } else {
     { v: @double.infinity, }
-  }
-}
-
-///|
-/// 可檢查的 star：負權 ⇒ 明確錯誤，而不是一個看起來像答案的 +∞。
-pub fn TropF::star_checked(self : TropF) -> Result[TropF, String] {
-  if self.v < 0.0 {
-    Err("negative cycle: tropical closure diverges (x = \{self.v})")
-  } else {
-    Ok({ v: 0.0, })
   }
 }
 

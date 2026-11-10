@@ -702,19 +702,6 @@ pub fn triquad_div(x : TriquadNum, y : TriquadNum) -> TriquadNum? {
 }
 
 ///|
-fn triquad_sqrt_interval(d : BigInt, k : Int32) -> (Rat, Rat) {
-  let mut scale = 1N
-  for _i in 0..<k {
-    scale = scale * 2N
-  }
-  let t = match bigint_nth_root_floor(d * scale * scale, 2) {
-    Some(v) => v
-    None => 0N
-  }
-  (rat_make_big(t, scale), rat_make_big(t + 1N, scale))
-}
-
-///|
 /// Exact sign in the real embedding, by dyadic interval
 /// refinement of the three square roots.
 pub fn triquad_sign(x : TriquadNum) -> Int32 {
@@ -725,7 +712,7 @@ pub fn triquad_sign(x : TriquadNum) -> Int32 {
   while k <= 512 {
     let intervals : Array[(Rat, Rat)] = []
     for i in 0..<3 {
-      intervals.push(triquad_sqrt_interval(x.gens[i], k))
+      intervals.push(dyadic_sqrt_interval(x.gens[i], k))
     }
     let mut total_lo = rat_zero()
     let mut total_hi = rat_zero()

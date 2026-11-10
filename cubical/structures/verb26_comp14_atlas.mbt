@@ -159,6 +159,9 @@ pub fn build_work4_54_certificates_and_interactions() -> (
   let r_cov = verify_covering_pushout_and_torus_suite()
   let r_rep = verify_reconstruction_repair_and_reflection_suite()
   let r_aut = @autonomy.verify_cubical_autonomy_master_suite()
+  let r_glue = verify_glue_hae_and_universe_classifier_suite()
+  let r_hit = verify_cubical_hits_pushout_torus_suite()
+  let r_nbe = verify_cubical_nbe_subst_connections_kan_suite()
 
   // 萬有奇異譜驗證：冪等核投影 T^2 = T 在 F_5 上特徵值譜恰為 {0, 1}，對合反射 R^2 = I 在 F_5 上譜恰為 {1, 4(-1)}！
   let (spec_proj, _, _) = @topos.operator_singular_spectrum_fp(
@@ -201,7 +204,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V05_Embed,
       C09_OperadSlotInsert,
       spec_proj,
-      r_focus.affine_path_accepted,
+      r_nbe.cwf_subst_monoid_and_dim_comm_ok,
     ),
     mk(
       2,
@@ -219,7 +222,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V24_CrossCompare,
       C12_CategoryLocalization,
       spec_proj,
-      r_swan.swan_refl_strict_definitional_j,
+      r_nbe.cofibration_local_sheaf_conversion_ok,
     ),
     mk(
       4,
@@ -228,7 +231,8 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V26_PropTransform,
       C05_TensorAdditiveDuality,
       spec_proj,
-      r_focus.implication_vs_forall_separated,
+      r_focus.implication_vs_forall_separated &&
+      r_nbe.dependent_curry_and_sigma_elim_beta_eta_ok,
     ),
     mk(
       5,
@@ -237,6 +241,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V01_Derive,
       C01_KanExtension,
       spec_proj,
+      r_nbe.dependent_funext_happly_roundtrip_ok &&
       r_focus.implication_vs_forall_separated,
     ),
     mk(
@@ -256,7 +261,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V18_Fuse,
       C02_SheafStackGluing,
       spec_proj,
-      r_focus.glue_top_strict_reduction_ok,
+      r_glue.glue_double_twisted_line_kan_coe_ok,
     ),
     mk(
       8,
@@ -292,7 +297,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V09_CommonalityGeneralize,
       C04_MonadDistributiveLaw,
       spec_proj,
-      r_swan.free_path_diagonal_hae_retraction_ok,
+      r_nbe.connection_squares_8_laws_and_duality_ok,
     ),
     mk(
       12,
@@ -301,7 +306,8 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V13_Complex,
       C07_AmalgamatedPushout,
       spec_proj,
-      r_cov.susp_s1_gives_s2_betti == [1, 0, 1],
+      r_hit.klein_bottle_pushout_torsion_z_plus_z2_ok &&
+      r_hit.pushout_universal_cocone_bijection_ok,
     ),
     mk(
       13,
@@ -310,7 +316,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V15_Evolution,
       C09_OperadSlotInsert,
       spec_proj,
-      r_focus.affine_path_accepted,
+      r_nbe.canonical_nf_grammar_and_6_beta_eta_ok,
     ),
     mk(
       14,
@@ -319,6 +325,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V25_AssertGuard,
       C14_GameTensorPipeline,
       spec_proj,
+      r_nbe.bidirectional_type_formation_and_mismatch_rej_ok &&
       r_focus.wrong_path_endpoint_rejected,
     ),
     mk(
@@ -461,6 +468,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V07_Compute,
       C09_OperadSlotInsert,
       spec_proj,
+      r_nbe.hfill_and_3d_open_box_filler_verified_ok &&
       r_swan.heterogeneous_comp_equals_coe_hcomp,
     ),
     mk(
@@ -470,6 +478,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V20_Compatible,
       C09_OperadSlotInsert,
       spec_proj,
+      r_nbe.structured_hcomp_pi_sigma_path_ok &&
       r_focus.hcomp_incompatible_overlap_rejected,
     ),
     mk(
@@ -497,6 +506,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V07_Compute,
       C05_TensorAdditiveDuality,
       spec_proj,
+      r_nbe.dependent_funext_happly_roundtrip_ok &&
       r_swan.swan_id_path_roundtrip_equiv,
     ),
     mk(
@@ -515,7 +525,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V05_Embed,
       C02_SheafStackGluing,
       spec_proj,
-      r_focus.glue_top_strict_reduction_ok,
+      r_glue.glue_type_strict_top_and_bot_collapse_ok,
     ),
     mk(
       36,
@@ -524,7 +534,8 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V07_Compute,
       C03_PullbackFiberProduct,
       spec_proj,
-      r_focus.glue_top_strict_reduction_ok,
+      r_glue.glue_data_beta_and_neutral_eta_ok &&
+      r_glue.glue_misaligned_datum_rejected,
     ),
     mk(
       37,
@@ -533,7 +544,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V26_PropTransform,
       C11_MoritaEquivalence,
       spec_invol,
-      r_sip.sip_bool_xor_to_xnor_ua_transport_ok,
+      r_glue.finite_256_maps_quadrilogy_exact_24_ok,
     ),
     mk(
       38,
@@ -542,7 +553,8 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V22_Prove,
       C12_CategoryLocalization,
       spec_proj,
-      r_swan.free_path_diagonal_hae_retraction_ok,
+      r_glue.s1_incoherent_qinv_detected &&
+      r_glue.vogt_adjointified_winding_and_2cell_ok,
     ),
     mk(
       39,
@@ -551,7 +563,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V05_Embed,
       C11_MoritaEquivalence,
       spec_proj,
-      r_sip.sip_bool_xor_to_xnor_ua_transport_ok,
+      r_glue.hs_pullback_and_realignment_strict_ok,
     ),
     mk(
       40,
@@ -560,8 +572,8 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V26_PropTransform,
       C01_KanExtension,
       spec_proj,
-      r_sip.universe_lift_roundtrip_ok &&
-      r_sip.sip_bool_xor_to_xnor_ua_transport_ok,
+      r_glue.universe_lift_neutral_beta_eta_and_coe_ok &&
+      r_glue.univalence_bool_iso_beta_eta_ok,
     ),
     mk(
       41,
@@ -580,7 +592,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V13_Complex,
       C07_AmalgamatedPushout,
       spec_proj,
-      r_cov.galois_covering_theorem_holds,
+      r_hit.kernel_hit_schemas_and_2d_homology_ok,
     ),
     mk(
       43,
@@ -589,7 +601,8 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V25_AssertGuard,
       C07_AmalgamatedPushout,
       spec_proj,
-      r_focus.affine_path_accepted,
+      r_hit.circle_degree_beta_and_functoriality_ok &&
+      r_hit.pushout_universal_cocone_bijection_ok,
     ),
     mk(
       44,
@@ -598,7 +611,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V06_LinkCouple,
       C07_AmalgamatedPushout,
       spec_proj,
-      r_cov.rp2_h1_two_torsion_factors == [2],
+      r_hit.circle_degree_beta_and_functoriality_ok,
     ),
     mk(
       45,
@@ -607,8 +620,8 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V06_LinkCouple,
       C05_TensorAdditiveDuality,
       spec_proj,
-      r_cov.torus_betti_kunneth == [1, 2, 1] &&
-      r_cov.torus_commutator_lifts_closed_vs_wedge_open,
+      r_hit.torus_circle_product_generic_2cube_roundtrip_ok &&
+      r_hit.torus_commutator_cap_and_biwinding_obstruction_ok,
     ),
     mk(
       46,
@@ -617,7 +630,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V01_Derive,
       C07_AmalgamatedPushout,
       spec_proj,
-      r_cov.susp_s1_gives_s2_betti == [1, 0, 1],
+      r_hit.suspension_bool_circle_and_loop_adjunction_ok,
     ),
     mk(
       47,
@@ -626,7 +639,8 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V25_AssertGuard,
       C14_GameTensorPipeline,
       spec_proj,
-      r_focus.affine_path_accepted && r_focus.wrong_path_endpoint_rejected,
+      r_nbe.bidirectional_type_formation_and_mismatch_rej_ok &&
+      r_focus.affine_path_accepted,
     ),
     mk(
       48,
@@ -663,6 +677,7 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V22_Prove,
       C04_MonadDistributiveLaw,
       spec_proj,
+      r_nbe.hfill_and_3d_open_box_filler_verified_ok &&
       r_aut.free_moore_path_associativity_ok,
     ),
     mk(
@@ -690,8 +705,8 @@ pub fn build_work4_54_certificates_and_interactions() -> (
       V07_Compute,
       C10_ChuSpaceDuality,
       spec_proj,
-      r_aut.bidirectional_nf_pruning_ok &&
-      r_swan.swan_refl_strict_definitional_j,
+      r_nbe.canonical_nf_grammar_and_6_beta_eta_ok &&
+      r_nbe.kernel_quote_subst_naturality_ok,
     ),
   ]
 
@@ -918,4 +933,40 @@ pub fn verify_work4_all_54_structures_and_interactions() -> Work4Complete54Repor
 /// 布林門面檢驗入口（供 `verify.mbt` 定理總表直接呼叫）。
 pub fn check_work4_54_structures_26_verbs_14_patterns() -> Bool {
   verify_work4_all_54_structures_and_interactions().all_54_structures_and_interactions_ok
+}
+
+///|
+/// Stage 2 專屬結構總檢驗門面（驗證膠水三元組/Vogt HAE/HS 重對齊、2D HIT/推出餘錐雙射/懸置伴隨/圓環 2-立方往返、
+/// 以及雙分類 CwF 平行代換/局部層轉換/無歸約 NbE/依值柯里化與外延/連接對偶/結構化 hcomp/3D 開放盒全部 27 條定理）。
+pub fn check_work4_stage2_dedicated_structures() -> Bool {
+  let g = verify_glue_hae_and_universe_classifier_suite()
+  let h = verify_cubical_hits_pushout_torus_suite()
+  let n = verify_cubical_nbe_subst_connections_kan_suite()
+  g.glue_type_strict_top_and_bot_collapse_ok &&
+  g.glue_data_beta_and_neutral_eta_ok &&
+  g.glue_misaligned_datum_rejected &&
+  g.glue_double_twisted_line_kan_coe_ok &&
+  g.finite_256_maps_quadrilogy_exact_24_ok &&
+  g.s1_incoherent_qinv_detected &&
+  g.vogt_adjointified_winding_and_2cell_ok &&
+  g.hs_pullback_and_realignment_strict_ok &&
+  g.universe_lift_neutral_beta_eta_and_coe_ok &&
+  g.univalence_bool_iso_beta_eta_ok &&
+  h.kernel_hit_schemas_and_2d_homology_ok &&
+  h.klein_bottle_pushout_torsion_z_plus_z2_ok &&
+  h.pushout_universal_cocone_bijection_ok &&
+  h.circle_degree_beta_and_functoriality_ok &&
+  h.suspension_bool_circle_and_loop_adjunction_ok &&
+  h.torus_circle_product_generic_2cube_roundtrip_ok &&
+  h.torus_commutator_cap_and_biwinding_obstruction_ok &&
+  n.cwf_subst_monoid_and_dim_comm_ok &&
+  n.cofibration_local_sheaf_conversion_ok &&
+  n.canonical_nf_grammar_and_6_beta_eta_ok &&
+  n.kernel_quote_subst_naturality_ok &&
+  n.bidirectional_type_formation_and_mismatch_rej_ok &&
+  n.dependent_curry_and_sigma_elim_beta_eta_ok &&
+  n.dependent_funext_happly_roundtrip_ok &&
+  n.connection_squares_8_laws_and_duality_ok &&
+  n.structured_hcomp_pi_sigma_path_ok &&
+  n.hfill_and_3d_open_box_filler_verified_ok
 }

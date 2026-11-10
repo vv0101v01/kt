@@ -427,23 +427,6 @@ pub fn hou_match(
   }
 }
 
-///|
-/// Convenience: does a matching problem have a verified solution within
-/// the bound?
-pub fn hou_match_solved_within(
-  unifier : Unifier,
-  meta_id : Int32,
-  spine : Array[UTerm],
-  rhs : UTerm,
-  param_types : Array[UTerm],
-  size_bound~ : Int32 = 6,
-) -> Bool {
-  match hou_match(unifier, meta_id, spine, rhs, param_types, size_bound~) {
-    HouMatchSolved(_) => true
-    _ => false
-  }
-}
-
 // ---------------------------------------------------------------------------
 // Law
 // ---------------------------------------------------------------------------

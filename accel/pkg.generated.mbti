@@ -129,11 +129,37 @@ pub fn swar_coheyting_sub64(UInt64, UInt64, Array[UInt64]) -> UInt64
 
 pub fn swar_downset_closure64(UInt64, Array[UInt64]) -> UInt64
 
+pub fn swar_grade16_add_sat(UInt64, UInt64) -> UInt64
+
+pub fn swar_grade16_get(UInt64, Int32) -> Int32
+
+pub fn swar_grade16_scale_sat(UInt64, Int32) -> UInt64
+
+pub fn swar_grade16_set(UInt64, Int32, Int32) -> UInt64
+
+pub fn swar_grade16_usage_compatible(UInt64, UInt64, Int32) -> Bool
+
 pub fn swar_heyting_impl64(UInt64, UInt64, UInt64, Array[UInt64]) -> UInt64
+
+pub fn swar_memo_bump_epoch(@swar.SwarMemoTable64) -> Unit
+
+pub fn swar_memo_get(@swar.SwarMemoTable64, UInt64) -> Int32?
+
+pub fn swar_memo_new(Int32) -> @swar.SwarMemoTable64
+
+pub fn swar_memo_put(@swar.SwarMemoTable64, UInt64, Int32) -> Unit
+
+pub fn swar_merkle_node64(Int32, UInt64, UInt64) -> UInt64
+
+pub fn swar_merkle_seq64(Int32, Array[UInt64]) -> UInt64
+
+pub fn swar_mix64(UInt64) -> UInt64
 
 pub fn swar_pack_bitplane(Int32, (Int32) -> Bool) -> Array[UInt64]
 
 pub fn swar_popcount64(UInt64) -> Int32
+
+pub fn swar_unmix64(UInt64) -> UInt64
 
 pub let trop_inf_i32 : Int32
 
@@ -142,6 +168,8 @@ pub fn tropical_blocked_kleene_closure(Int32, Array[Int32], block_size? : Int32)
 pub fn verify_accel_federation() -> AccelFederationReport
 
 pub fn verify_cubical_swar_degeneracy_suite() -> CubicalSwarDegeneracyReport
+
+pub fn verify_swar_memo_and_grade16_laws() -> Bool
 
 pub fn webgpu_all_registered_kernels() -> Array[WgslComputeKernel]
 
@@ -257,5 +285,7 @@ pub using @swar {type Mont30Prime}
 pub using @swar {type ScanboxScanResult}
 
 pub using @swar {type ScanboxTileDescriptor}
+
+pub using @swar {type SwarMemoTable64}
 
 // Traits

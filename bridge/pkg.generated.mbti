@@ -18,7 +18,6 @@ import {
   "vv0101v01/cubical-hermitian/semiring/cat",
   "vv0101v01/cubical-hermitian/semiring/graph",
   "vv0101v01/cubical-hermitian/semiring/matrix",
-  "vv0101v01/cubical-hermitian/semiring/nf",
   "vv0101v01/cubical-hermitian/semiring/trop",
   "vv0101v01/cubical-hermitian/symlib",
   "vv0101v01/cubical-hermitian/tensor",
@@ -79,6 +78,8 @@ pub fn five_federation_descriptors() -> Array[FederationDescriptor]
 
 pub fn free_category_to_fincat(@cat.DiGraph) -> @symlib.FinCat
 
+pub fn frontier_7pillars_bridge_certificate() -> BridgeCertificate
+
 pub fn glivenko_double_negation_formula(@site.GeoFormula) -> @site.GeoFormula
 
 pub fn grand_unification_certificates() -> Array[BridgeCertificate]
@@ -137,11 +138,7 @@ pub fn translate_cubical_dim_to_mpoly(@face_bdd.Dim, Int32) -> @scheme.MPoly
 
 pub fn translate_cubical_dterm_to_geo_formula(@kernel.DTerm) -> @site.GeoFormula
 
-pub fn translate_cubical_face_to_geo_formula(@face_bdd.Face) -> @site.GeoFormula
-
 pub fn translate_cubical_face_to_zariski_ideal(@face_bdd.Face, Int32, Bool) -> @scheme.Ideal
-
-pub fn translate_sexpr_to_geo_formula(@nf.SExpr) -> @site.GeoFormula
 
 pub fn tropical_matrix_symmetries(Array[Array[Int64]], Int32) -> Array[@vv0101v01/cubical-hermitian/symlib/core.Perm]
 
@@ -162,6 +159,8 @@ pub fn verify_f2_f3_f6_triad_bridge() -> F2F3F6TriadBridgeReport
 pub fn verify_f8_f5_f1_triad_bridge() -> F8F5F1TriadBridgeReport
 
 pub fn verify_five_federation_pentagon_unification() -> Bool
+
+pub fn verify_frontier_7pillars_grand_unification() -> Frontier7PillarsPentadReport
 
 pub fn verify_glivenko_topos_subtopos_bridge() -> Bool
 
@@ -373,6 +372,22 @@ pub(all) struct FourFederationPromotionReport {
 pub fn FourFederationPromotionReport::equal(Self, Self) -> Bool
 pub fn FourFederationPromotionReport::not_equal(Self, Self) -> Bool
 pub fn FourFederationPromotionReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub struct Frontier7PillarsPentadReport {
+  f9_f1_mtt_2functor_embedding_ok : Bool
+  f3_f8_f1_dual_qtt_swar_homomorphism_ok : Bool
+  f9_f1_qiit_cwf_displayed_path_coherence_ok : Bool
+  f4_f1_artin_gluing_orton_pitts_canonicity_ok : Bool
+  f8_f1_merkle_memo_bidir_inductive_ok : Bool
+  diamond_dag_unmemoized_visits : Int32
+  diamond_dag_memoized_visits : Int32
+  diamond_dag_speedup_ratio : Int32
+  all_holds : Bool
+}
+pub fn Frontier7PillarsPentadReport::equal(Self, Self) -> Bool
+pub fn Frontier7PillarsPentadReport::not_equal(Self, Self) -> Bool
+pub fn Frontier7PillarsPentadReport::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
 pub(all) struct GeometryLogicAtlasEntry {

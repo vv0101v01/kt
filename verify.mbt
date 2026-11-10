@@ -1030,18 +1030,19 @@ pub fn run_all_checks() -> Array[CheckResult] {
         ad.eta_cubed_eq_4nu_ext36 == 1
       },
     },
+    CheckResult::{
+      name: "工作內容4全專題獨立實現：CCHM 膠水/Vogt 半伴隨/HS 重對齊/推出餘錐/Σ⊣Ω/T²≃S¹×S¹/CwF 代換/無歸約 NbE/連接對偶/3D 開放盒",
+      ok: check_work4_stage2_dedicated_structures(),
+    },
+    CheckResult::{
+      name: "七大前沿類型論支柱：多模態 2-範疇與 Fitch 鎖、Artin 膠合與幾何複合、16 通道 SWAR 雙上下文 QTT、立方路徑 QIIT、O(d) 記憶化雙向依值與雙向歸納",
+      ok: {
+        let r7 = verify_frontier_7pillars_cubical_suite()
+        let mb = verify_memo_bidir_inductive_suite()
+        r7.all_ok && mb.all_ok && r7.memo_unmemo_speedup_ratio >= 150
+      },
+    },
   ]
-}
-
-///|
-pub fn all_checks_pass() -> Bool {
-  let results = run_all_checks()
-  for i in 0..<results.length() {
-    if !results[i].ok {
-      return false
-    }
-  }
-  true
 }
 
 ///|

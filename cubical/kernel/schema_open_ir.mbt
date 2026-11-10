@@ -1131,17 +1131,6 @@ pub fn simultaneous_ir_compile_joint_block(
   result
 }
 
-///|
-pub fn simultaneous_ir_compile_joint(
-  spec : DSimultaneousIRSpec,
-  function_index : Int32,
-) -> DTerm? {
-  if function_index < 0 || function_index >= spec.functions.length() {
-    return None
-  }
-  simultaneous_ir_compile_joint_block(spec)[function_index]
-}
-
 // ---------------------------------------------------------------------------
 // Phase 16: Dybjer–Setzer Open Simultaneous Induction-Recursion
 // ---------------------------------------------------------------------------
@@ -1162,7 +1151,7 @@ pub fn simultaneous_ir_compile_joint(
 ///   simultaneous functional hypotheses
 ///   `λx. T_0(f(x)), ..., λx. T_{m-1}(f(x))`.
 #derive(Debug, Eq)
-pub enum DOpenIRArgKind {
+pub(all) enum DOpenIRArgKind {
   DOpenArgExternal(DTerm)
   DOpenArgCode
   DOpenArgDecodedVal(Int32, Int32)
@@ -1189,22 +1178,8 @@ pub extend DOpenIRArg with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend DOpenIRArg with Eq::{not_equal, equal}
 
 ///|
-pub fn dopen_arg_external(name : String, ty : DTerm) -> DOpenIRArg {
-  DOpenIRArg::{ name, kind: DOpenArgExternal(ty), }
-}
-
-///|
 pub fn dopen_arg_code(name : String) -> DOpenIRArg {
   DOpenIRArg::{ name, kind: DOpenArgCode, }
-}
-
-///|
-pub fn dopen_arg_decoded_val(
-  name : String,
-  source_arg : Int32,
-  decoder_idx : Int32,
-) -> DOpenIRArg {
-  DOpenIRArg::{ name, kind: DOpenArgDecodedVal(source_arg, decoder_idx), }
 }
 
 ///|
@@ -1288,15 +1263,10 @@ pub fn dopen_simultaneous_ir_spec(
 ///|
 /// Inhabitant of an open simultaneous IR code universe `U`, paired with
 /// constructor-argument values supporting higher-order code families.
-pub enum DOpenIRArgVal {
+pub(all) enum DOpenIRArgVal {
   DOpenValTerm(DTerm)
   DOpenValCode(DOpenIRCode)
   DOpenValCodeFn((DValue) -> DOpenIRCode)
-}
-
-///|
-pub fn dopen_val_term(tm : DTerm) -> DOpenIRArgVal {
-  DOpenValTerm(tm)
 }
 
 ///|

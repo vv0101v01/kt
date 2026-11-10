@@ -216,9 +216,66 @@
 - [x] **全倉健康檢查、除錯、去重、減債、死碼清零與 CI 同步（2026-11-10）**：
   - 升級 `tools/health_scan.py`（泛型 `fn[...]`、`Type::method`、`\{...}` 插值保留、無引用型別／空殼 `enum` 與純函式體查重）；修復 `cat_thin` 傳遞閉包與平坦索引、`CyclicSet` 負餘數與硬體 `popcnt`、以及 4 檔 IEEE-754 `NaN` 比較反轉臭蟲；補齊 `DLevelDecl`、`model_satisfies_theory`、`FinSet::id`，刪除孤立型別 `AbelianPresheafQ` 與全部冗餘死碼，合併 `comma_down`/`comma_up`、`integer_succ_value`/`integer_pred_value` 等 7 組重複實作，並同步 `.github/workflows/ci.yml` 與全倉文檔（**`52` 套件、`61` 元件、`282` 檔、`182,929` 行、`5,745` 函式 `0` 死碼／`0` 無引用型別／`0` 空殼列舉／`0` 完全重複**，四目標 `wasm-gc`/`wasm`/`js`/`native` 零警告通過）。
 
+---
 
+## 十一、`工作內容4.md` 全體 54 項專題無別名獨立數學結構實現（Stage 1 & Stage 2，2026-11-10）
 
+- [x] **Stage 1（全倉 README 與 52 套件文檔同步推送＋永久遺忘憑證）**：
+  - 完成 `README.md`、`agent.md` 及新增／拆分套件 `README.md` 全面校準，推送 `d180b91` 至 `origin/main` 後徹底清除並永久遺忘遠端憑證（`.git/config` 驗證零憑證）。
+- [x] **Stage 2（針對 `工作內容4.md` 原先僅間接見證／共用布林旗標之全部 25 項專題編寫獨立數學結構與演算法）**：
+  1. **`cubical/structures/glue_hae_universe_classifier.mbt`（706 行，`#7, #35, #36, #37, #38, #39, #40`，`10/10` 通過）**：
+     - **CCHM `Glue` 與膠水資料對齊守衛（`#35, #36`）**：`CubicalGlueSpec` / `CubicalGlueDatum` 實作 `φ ≡ ⊤` 嚴格塌縮回 `T`、`φ ≡ ⊥` 嚴格塌縮回 `B`、開放中性項 `unglue`/`glue` β/η、錯位偽膠水對攔截，以及雙扭曲入口／出口 `ua(not)` 線之 Kan `coe` 計算（`not ∘ not = id`）。
+     - **四重等價分類與 Vogt 半伴隨化 2-胞（`#37, #38`）**：`classify_finite_map_equivalences` 在 `Fin(4)` 全部 `256` 個自映射上獨立判定準逆、雙可逆、半伴隨與可縮纖維四重全等（精確篩出 `24` 個雙射）；在非截斷 1-群胚 `S¹` 上檢出失相干準逆 `(id, id, η=loop², ε=loop⁻¹)` 之繞數阻礙 `w(ap_f(η))=+2 ≠ -1=w(ε)`，經 `@homotopy.adjointify_equiv_value` 修復為 `w(ε')=+2`，並以 `circle_decode_encode_retr_value` 合成經 `@kernel.conv_at` 驗證端點之 2D Vogt 三角相干方塊。
+     - **Hofmann–Streicher 泛立方宇宙重對齊與單值宇宙（`#39, #7, #40`）**：`hs_classify_family_2d`、`hs_pullback_universal_el_2d` 與 Orton–Pitts `U8` 重對齊 `realign_hs_family_code_2d`；開放中性項 `Lift` 定義 β/η 與 `coe` 交換；`ua(not)` 布林單值同構往返。
+  2. **`cubical/structures/cubical_hits_pushout_torus.mbt`（803 行，`#12, #42, #43, #44, #45, #46`，`7/7` 通過）**：
+     - **2D HIT Smith 整同調與同倫推出泛餘錐（`#12, #43`）**：核驗 `@kernel` 全部 HIT Schema 良構；`integer_matrix_smith_invariants` 實算 `S¹`、`RP²`、`T²` 與 Klein 瓶推出 `H₁(K) ≅ ℤ ⊕ ℤ/2ℤ`（Betti `[1,1,0]`、撓率 `[2]`）；`verify_pushout_universal_cocone_bijection` 在非平凡跨度上精確驗證 `27 == 27` 泛餘錐雙射。
+     - **圓形度數映射、懸置伴隨 `Σ ⊣ Ω` 與開放 2-立方 `T² ≃ S¹ × S¹`（`#42, #44, #45, #46`）**：`circle_degree_map_value` 驗證點-β、路徑-β 及複合函子性 `w(deg_3 ∘ deg_2) = +6`、`w(deg_{-2} ∘ deg_3) = -6`；`@homotopy.susp_bool_equiv_circle_value` 驗證 `ΣBool ≃ S¹` 與 `Σ ⊣ Ω` 伴隨往返；`torus_to_circle_product_value` 與 `circle_product_to_torus_value` 在開放中性 2-立方體上定義恆等往返。
+  3. **`cubical/structures/cubical_nbe_subst_connections_kan.mbt`（1,083 行，`#1, #3, #4, #5, #11, #13, #14, #28, #29, #30, #33, #47, #51, #54`，`10/10` 通過）**：
+     - **雙分類 CwF 平行代換、上纖維化層黏合轉換與無歸約立方 NbE（`#1, #3, #4, #5, #11, #29, #30`）**：`cwf_subst_compose` 跨綁定器結合律、`conv_at_under_face_in` 邊界 `(i=0)∨(i=1)` 層黏合轉換、無紅ex 長 η `CubicalNf`/`CubicalNe` 反射—再化正規化、核心 `quote_at` 維度代換自然性、雙向 `d_check`/`d_infer` 形成與錯配攔截。
+     - **依值柯里化、依值函數外延、連接對偶、結構化 `hcomp` 與 3D 開放盒填充（`#13, #14, #28, #33, #47, #51, #54`）**：開放中性項上 `(Σx:A.B)→C ≃ Πx:A.B→C` 與 `dependent_funext_value`/`dependent_happly_value` 定義往返；De Morgan NNF 連接方塊 `p(i∧j)` / `p(i∨j)` 全部 8 條邊界冪等律與對合對偶；`Π`/`Σ`/`Path` 結構化 `hcomp`（`S¹×S¹` 雙繞數 `(2,-1)`）及 `I³ → S¹` 3D 開放盒填充器（5 面 8 稜核驗）。
+  4. **全倉接線、元理論定律與四目標零警告驗收**：
+     - 升級 `verb26_comp14_atlas.mbt` 將 `#1..#54` 全部接線至專屬見證並新增 `check_work4_stage2_dedicated_structures()`；新增 `meta/core/glue_vogt_realignment.mbt`（4 個 `law_*` 函式）；同步 `facade.mbt`、`spec.mbt`（`1,652` 唯一公開符號）、`verify.mbt`（第 **138** 項主檢核）與 `bridge/malcev_presheaf_autonomy_bridge.mbt`。
+     - 實測全綠：**`52` 套件、`61` 元件、`286` 檔、`185,986` 行**；`moon check --deny-warn` 四目標（`wasm-gc`/`wasm`/`js`/`native`）零警告；`cmd/main` **`passed 138/138`**；`cmd/metatheory` **`通過 553 / 553 定律`**（`90` 個 `law_*`）；`cmd/showcase` **`47/47` 證書 + `54/54` 獨立結構**；`health_scan.py` **`5,794` 函式 `0` 死碼／`0` 無引用型別／`0` 空殼列舉／`0` 完全重複**。
 
+---
 
+## 十二、Stage 3 七大前沿類型論支柱與五聯邦大一統（`F1 × F3 × F4 × F8 × F9`，2026-11-10）
 
+- [x] **跨聯邦縱深落點規劃與既有個別功能無縫接線**：
+  1. **`L0 accel/swar/hashcons_memo_swar.mbt` + `accel/reexport_swar.mbt`（`F8` 硬體底層）**：
+     - 實作 Stafford Mix13 64-bit 雙射雜湊／逆演 `swar_mix64` / `swar_unmix64`、Merkle 節點／序列摘要 `swar_merkle_node64` / `swar_merkle_seq64`、`O(1)` 時代遞增無清零失效開放定址快取 `SwarMemoTable64`（`swar_memo_get` / `swar_memo_put` / `swar_memo_bump_epoch`），以及單暫存器 16 通道 × 4-bit 飽和半模 QTT 資源向量 `swar_grade16_get` / `set` / `add_sat` / `scale_sat` / `usage_compatible` 與 `verify_swar_memo_and_grade16_laws()`，同時賦能 `cubical/elaborator` 記憶化檢型與 `cubical/structures` 硬體雙上下文資源檢查。
+  2. **`L1 semiring/algebra/resource_qtt_ctx.mbt`（`F3` 半環資源代數層）**：
+     - 新增三值資源星閉半環 `LinUsage = {LinZero(0), LinOne(1), LinMany(ω)}`（`Semiring` + `StarSemiring`，`to_code` 對齊 4-bit SWAR `{0, 1, 15}`），以及泛型雙上下文左半模 `DualResourceCtx[R]`（無限制持久區 `Γ` + 分級資源區 `Δ_{\vec{q}}`，支援 `qtt_ctx_zero_resources` `0·Δ` 編譯期型別抹除、`qtt_ctx_scale`、`qtt_ctx_add`、`qtt_ctx_var_demand` 與橫跨 `LinUsage`/`Counting`/`BoolSr` 之 `verify_dual_qtt_semiring_laws()`）。
+  3. **`L0 meta/core/multimodal_qiit_qtt_meta.mbt` + `L1 meta/iit/qiit_displayed_cwf.mbt`（`F9` 元理論與互遞迴商歸納層）**：
+     - `meta/core`：建構嚴格有限模式 2-範疇 `ModeTheory2Cat`（凝聚平坦 `♭ = Δ∘Π` 與全體四元組 Godement 縱橫互換律 `(δ•β)★(γ•α) == (δ★γ)•(β★α)`）、Fitch 鎖函子正規化 `mtt_normalize_fitch_locks` 與逆變 2-胞腔鑰匙 `mtt_find_fitch_2cell_key`，並提供 Artin 逗號範疇 `2^k → 2` 截面篩選、SGA4 開閉重黏合 `○∘• = 1` 及四元線性—仿射—無限制半環／鑽石 DAG 記憶化定律（新增 3 個 `law_*`）。
+     - `meta/iit`：將單一 sort 非依賴商歸納提升為 **4-分類內蘊帶族範疇（CwF）互遞迴 QIIT**（`QiitCon`、`QiitTy`、`QiitSub`、`QiitTm` + 跨等式轉換子 `QTmCoh`），實作商正規化 `qiit_norm_*`、相依索引檢查 `qiit_check_*`、Kaposi–Kovács–Altenkirch 展示代數 `QiitDisplayedCwfAlgebra` 相干審計 `qiit_verify_displayed_coherence` 與 `law_qiit_intrinsic_cwf_and_displayed_eliminator`（`cmd/metatheory` 升至 **`565 / 565`** 定律、`94` 個 `law_*`）。
+  4. **`L3 topos/artin_gluing_geometric.mbt`（`F4` 拓撲斯幾何複合與膠合層）**：
+     - 在 `@sym.Presheaf` 與全域截面函子 `Γ = Hom(1, -)` 上建構 **Artin 膠合逗號範疇 `Gl(Γ) = Set ↓ Γ`**（`ArtinGluedObject`、`ArtinGluedMorphism`、`artin_glued_terminal`、`artin_glued_product`、`artin_glued_booleans`、`artin_glued_enumerate_global_elements`），證明在雙連通景 `Discrete(2)` 上將 `1 + 1` 的 `4` 個全域截面篩為 `2` 個規範布林元並拒絕混合非規範截面；實作箭頭景 `0 -> 1` 之 **SGA4 開—閉重黏合** `sga4_recollement_reconstruct_arrow` 與有限函子幾何拉回水平複合律 `compose_fin_functors`。
+  5. **`L3 cubical/elaborator/memo_bidir_inductive.mbt`（`F1` 記憶化類型檢查 × 雙向依賴類型 × 雙向歸納精緻化）**：
+     - 建構雜湊共享競技場 `BidirDagArena` + `@swar.SwarMemoTable64`，遵循 Lennon-Bertrand 完備雙向依賴型系統將 NbE 定義轉換嚴格收束於唯一 `Sub` 方向切換規則；在深度 10 鑽石依值 DAG 上實測自無記憶 **`18,422`** 次節點造訪降至記憶化 **`108`** 次（**`170×` 加速**），並支援 `O(1)` 時代失效；實作雙向索引向量 `BDVecTy`/`BDVecNil`/`BDVecCons`（錯配長度索引必拒）與雙向動機合成自然數歸納 `BDNatInd`，經 `bidir_dag_compile_dterm` 編譯入 `@kernel.DTerm` 通過 `dep_check_closed` 與 `dep_nf_closed` 正規形核驗，並提供包裝既有 `Elaborator`（`STerm`）之 `MemoElabSession`。
+  6. **`L6 cubical/structures/multimodal_gluing_dual_qiit_bidir.mbt`（`F1` 高階立方七支柱融合層）**：
+     - 建構 3-模式凝聚—守衛—離散嚴格 2-範疇 `CubicalMode2Cat`（`Set, Space, Clocked`）與雙向多模態檢查器 `cubical_mtt_synth`/`cubical_mtt_check`，形式化推導模態餘單位 `⟨♭|Bool⟩ → Bool`、模態餘乘 `⟨♭|Bool⟩ → ⟨♭|⟨♭|Bool⟩⟩`、守衛點 `Bool → ⟨▹|Bool⟩` 並嚴格阻斷清晰逆命題 `Bool → ⟨♭|Bool⟩`；將既有 `CubicalGlueSpec` 扭轉 `coe` 與 `@topos` Artin 膠合布林雙射對帳；將既有 `UsageMult` 接入 `@accel.swar_grade16_*` 實作 `DualSwarDepTerm`（`0·Γ` 型別抹除＋加法分支線性對齊）；將互遞迴立方路徑 QIIT `CQIdSubPath` 消除為 `@kernel.DVPathLam` 並核驗 `DZero`/`DOne` 端點轉換。
+  7. **`L8 bridge/frontier_7pillars_unification.mbt` + `L9 cmd/showcase` + `L7 root`（大一統頂點與全倉閘門）**：
+     - 證明 `F1 × F3 × F4 × F8 × F9` 五聯邦五元合流（`M_meta ↪ M_cubical` 嚴格 2-函子嵌入、`LinUsage → 16×4b SWAR` 半模同態、4-分類 CwF QIIT ↔ 1D 立方路徑 QIIT、Artin 膠合 ↔ Orton–Pitts `Glue`、以及 `170×` 記憶化雙向依值／歸納），接入 `bridge_certificates()`（**`48/48`**）、`verify.mbt` 第 **139** 項（**`passed 139/139`**）與 `spec.mbt`。
+
+---
+
+## 十三、Stage 4 全倉深度健康檢查、除錯、去重、減債與無價值／反價值死碼清零（2026-11-10）
+
+- [x] **工具鏈升級（`tools/health_scan.py` v3 + `tools/gen_laws.py`）**：
+  - 修復 `tools/gen_laws.py` 子目錄路徑名稱擷取問題（`os.path.basename`）；
+  - 升級 `tools/health_scan.py` 至 v3：排除自遞迴、虛假導出（`facade.mbt` / `reexport_*.mbt` / `spec.mbt` 字串 / `extend` trait stub）並以**不動點遞移傳播**捕捉孤島互調死碼鏈；掃描預設參數運算式；支援型別與被呼叫函式保留之同套件私有助手 α 等價查重。
+- [x] **關鍵臭蟲與「仲衰過唔用」（Worse-than-Not-Using）反價值程式碼修補**：
+  1. **`cubical/homotopy/blakers_massey.mbt`（`fg_rank_le` 撓率盲區臭蟲＋恆真偽檢驗與死結構清除）**：修復 `fg_rank_le` 原先僅比較自由秩 `t.rank <= s.rank` 而忽略撓率不變因子（導致誤判 `ℤ/2ℤ` 為 `0` 的商、`ℤ/4ℤ` 為 `ℤ/2ℤ` 的商）；移除從未被檢驗的死紀錄 `pi2_s2_iso_z_halves` 與 `let _computed` 丟棄計算，並將 `gz == gz && g0 == g0` 自反恆真式替換為真實的 `fg_is_trivial(g0)`、`!fg_is_trivial(gz)` 與撓率不變因子整除回歸斷言。
+  2. **`cubical/finite/nbe_eta.mbt`（`tm_comp_at` 中介型別 `b` 抹除臭蟲）**：修復 `tm_comp_at(f, g, a, b, c)` 原先 `let _ = b` 丟棄中介型別（導致 `a == c ≠ b` 且 `f, g` 為未標註 `TmCoeUaSwap` 時 `ty_infer` 失效），改以 `TmAnn(f, LFun(b, c))` 與 `TmAnn(g, LFun(a, b))` 保留完整中介複合型別資訊。
+  3. **`cubical/store/artifact_repository.mbt` 與 `meta/core/unify.mbt`（32-bit 有號整數溢位／雜湊碰撞）**：將 `artifact_hash_pair` 乘法雜湊升級為 `Int64` 無溢位運算（消除 `native` C 有號溢位 UB 風險）；將 `u_key(l, r)` 自易在 `r ≥ 1,000,003` 時發生碰撞與溢位的 `Int32` 乘法鍵升級為無碰撞 64-bit 位元打包 `(l.to_int64() << 32) | (r.to_int64() & 0xFFFF_FFFFL)`。
+  4. **`spec.mbt`（二次方掃描退化與誤導性計數器）**：將 `spec_registry_sound()` 自 $O(N^2 + S^2)$ 雙重巢狀迴圈升級為 $O(N + S)$ `Map([])` 雜湊表查重，並移除重複且語義含混（條目數 vs 符號數）的未呼叫包裝函式 `spec_symbol_count`、`spec_covers`、`spec_count`。
+- [x] **「用處極微」與「有點用途但實質毫無價值」之冗餘／重複實作清零（零負面影響驗證通過）**：
+  - 徹底清除全倉 **73 個無真實呼叫者之冗餘函式／方法**與 **3 個孤立空轉型別／trait**（`LevelExpr`、`CommutativeMonoid`、`MinI64`），並將 `DOpenIRArgKind` 與 `DOpenIRArgVal` 升級為 `pub(all) enum` 以一等建構子取代死包裝函式，同步校準 `facade.mbt`、`algebra/reexport_core.mbt`、`spec.mbt` 與各套件 `.mbti`／`README.md`。
+  - 消除跨檔與局部重複輪子：合併 `algebra/{multiquad_tower,tower_fields}.mbt` 重複的 `dyadic_sqrt_interval`；以 `qvec_is_zero` 取代 `algebra/biquad_denest.mbt` 與 `multiquad_tower.mbt` 之 `rat_vec_all_zero`；以核心既有 `dterm_free_var_occurs` 取代 `conv_case_split.mbt` 重寫的 `cs_mentions_var`；將手寫迴圈 `dterm_map_vars_list`、`dterm_instantiate_levels_list`、`phase11_copy_bytes`、`cdcl_clone_clause`、`cdcl_clause_contains`、`positivity_int_contains`、`module_contains`、`disk_has` 精簡為標準 `.map(...)` / `.copy()` / `.contains(...)`；清除 `cmd/semiringreport` 重複跑兩次的 `pareto_sssp` 與多處無效配置／`let _ =` 技術債。
+- [x] **全閘門最終驗收**：
+  - `python3 tools/arch_check.py` → `architecture ok: 9 federations + unification apex, 52 packages, 61 components, 294 .mbt files, 189,616 .mbt lines`。
+  - `moon check --deny-warn` 四目標（`wasm-gc`, `wasm`, `js`, `native`）全數 **`0 warnings, 0 errors`**。
+  - `python3 tools/health_scan.py` → **`5,810` 函式／方法：`0` 遞移死碼、`0` 無引用型別、`0` 空殼 `enum`、`0` 完全或 α 等價重複組**。
+  - 執行期驗證：`cmd/metatheory` **`565 / 565`**、`cmd/showcase` **`48 / 48` 證書 + `54 / 54` 結構 + 數值基線零漂移**、`cmd/symdemo` 與 `cmd/semiringreport` 全數通過，且 `spec_registry_sound()`、`fg_rank_le`、`tm_comp_at` 等全部 Stage 4 目標回歸檢查 `100%` 通過。
 

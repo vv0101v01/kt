@@ -176,7 +176,6 @@ pub using @acore {
   sym_is_idempotent,
   sym_outer,
   sym_projector_rank_one,
-  sym_det,
   upoly_normalize,
   upoly_zero,
   upoly_const,

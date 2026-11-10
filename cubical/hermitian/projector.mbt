@@ -29,16 +29,6 @@ pub fn outer(v : CVec) -> CMat {
 }
 
 ///|
-/// Projector onto the span of an orthonormal family: P = Σₖ vₖ·vₖ†.
-pub fn projector_from_orthonormal(basis : Array[CVec], n : Int32) -> CMat {
-  let mut acc = mat_zero(n)
-  for k in 0..<basis.length() {
-    acc = mat_add(acc, outer(basis[k]))
-  }
-  acc
-}
-
-///|
 /// Complementary projector I − P (projects onto ker P).
 pub fn complement(p : CMat) -> CMat {
   mat_sub(mat_identity(p.n), p)
@@ -54,12 +44,6 @@ pub fn decompose(p : CMat, v : CVec) -> (CVec, CVec) {
 /// Membership in the λ=1 eigenspace: P v ≈ v.
 pub fn in_image(p : CMat, v : CVec) -> Bool {
   vec_approx_eq(mat_vec(p, v), v)
-}
-
-///|
-/// Membership in the λ=0 eigenspace (kernel): P v ≈ 0.
-pub fn in_kernel(p : CMat, v : CVec) -> Bool {
-  vec_approx_eq(mat_vec(p, v), vec_zero(v.length()))
 }
 
 ///|

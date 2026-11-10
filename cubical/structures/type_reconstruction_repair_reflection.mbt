@@ -234,12 +234,9 @@ pub fn diagnose_and_repair_square_boundary(
 pub fn verify_reconstruction_repair_and_reflection_suite() -> ReconstructRepairReflectReport {
   // 1. 聯動 `@elaborator` Miller 模式高階合一：重構依賴消去隱式動機 `?M(x) ≡ Pair(x, x)`！
   let unif = @elaborator.unifier_new()
-  let _ = @elaborator.hou_fresh_meta(unif, 0)
+  let meta_m = @elaborator.hou_fresh_meta(unif, 1)
   let b_ty = @elaborator.uty_bool()
-  let lhs = @elaborator.UTerm::ULam(
-    b_ty,
-    @elaborator.UTerm::UMeta(0, [@elaborator.UTerm::UVar(0)]),
-  )
+  let lhs = @elaborator.UTerm::ULam(b_ty, meta_m)
   let rhs = @elaborator.UTerm::ULam(
     b_ty,
     @elaborator.UTerm::UPair(

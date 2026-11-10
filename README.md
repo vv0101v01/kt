@@ -1,27 +1,27 @@
 # cubical-hermitian — 一部可執行的數學工程史
 
 > MoonBit · `vv0101v01/cubical-hermitian` v2.0.0 · `preferred_target = "wasm"`
-> **9 聯邦 + `unification` 大一統頂點 · 52 套件 · 61 元件 · 282 個 `.mbt` · 182,929 行 · 5,745 函式／方法（0 死碼 · 0 無引用型別 · 0 空殼 `enum` · 0 完全重複）**
-> `python3 tools/arch_check.py` → `architecture ok` · `cmd/main` → **137/137 定理** · `cmd/metatheory` → **545/545 定律** · `cmd/showcase` → **9/9 聯邦 + `K₉ = 36/36` 全配對橋 + 三大跨聯邦合流管線 + 47/47 證書 + 54/54 高階立方結構**
+> **9 聯邦 + `unification` 大一統頂點 · 52 套件 · 61 元件 · 294 個 `.mbt` · 189,616 行 · 5,810 函式／方法（0 死碼 · 0 無引用型別 · 0 空殼 `enum` · 0 完全／α 等價重複）**
+> `python3 tools/arch_check.py` → `architecture ok` · `cmd/main` → **139/139 定理** · `cmd/metatheory` → **565/565 定律** · `cmd/showcase` → **9/9 聯邦 + `K₉ = 36/36` 全配對橋 + 四大跨聯邦合流管線 + 48/48 證書 + 54/54 高階立方結構獨立實現**
 
 這個倉庫把「依賴立方型別論 × 精確代數 × 有限對稱 × 冪等／熱帶半環 × 格羅滕迪克拓撲斯 × 代數幾何概形 × 凝聚數學 × 多線性張量與猜想發現 × 64-bit SWAR／WebGPU 硬體加速 × 元理論三軸引擎」寫成一份**可編譯、可判定、可複驗**的程式。它不是論文附錄，而是一條**有年月、有瓶頸、有突破**的工程線。
 
 本 README 是全倉規格書（SPEC）的**工程史與架構全景濃縮版**：只保留「為什麼要這樣做、卡在哪、怎麼破、留下什麼」。
-逐條規格與逐符號登記（`1,598` 個唯一公開符號，`0` 幽靈條目）看根套件 `spec.mbt` 的 `spec_registry`；全倉 **52 個套件資料夾**皆配備獨立 `README.md` 供逐檔精讀。
+逐條規格與逐符號登記（`158` 條規格、`1,649` 個唯一公開符號，`0` 幽靈條目）看根套件 `spec.mbt` 的 `spec_registry`；全倉 **52 個套件資料夾**皆配備獨立 `README.md` 供逐檔精讀。
 
 ---
 
 ## 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                           # 9 聯邦 + 頂點、52 套件、61 元件、282 .mbt / 182,929 行
+python3 tools/arch_check.py                           # 9 聯邦 + 頂點、52 套件、61 元件、294 .mbt / 189,616 行
 moon check --deny-warn --target wasm-gc               # 0 warnings, 0 errors（wasm-gc / wasm / js / native 四目標零警告）
 moon run cmd/symdemo        --target wasm-gc          # F2 有限對稱、Schreier–Sims、衍生演算法與單子律快驗
-moon run cmd/metatheory     --target wasm-gc          # 545/545 定律（86 個 law_*、448 互異、179 族，逐條重算）
-moon run cmd/main           --target wasm-gc          # 137/137 立方與跨領域主定理總表
-moon run cmd/showcase       --target wasm-gc          # 9/9 聯邦 · K_9=36/36 全配對橋 · 三大三元／四元合流管線 · 47/47 證書
+moon run cmd/metatheory     --target wasm-gc          # 565/565 定律（94 個 law_*，逐條重算）
+moon run cmd/main           --target wasm-gc          # 139/139 立方與跨領域主定理總表
+moon run cmd/showcase       --target wasm-gc          # 9/9 聯邦 · K_9=36/36 全配對橋 · 四大跨聯邦合流管線 · 48/48 證書
 moon run cmd/semiringreport --target native           # 19 節半環與圖演算法量測報告（含限制之精確量化邊界）
-python3 tools/health_scan.py > tools/health_report.md # 全倉 5,745 函式／方法：0 死碼、0 無引用型別、0 空殼 enum、0 完全重複
+python3 tools/health_scan.py > tools/health_report.md # 全倉 5,810 函式／方法：0 死碼、0 無引用型別、0 空殼 enum、0 重複
 ```
 
 ---
@@ -40,7 +40,7 @@ python3 tools/health_scan.py > tools/health_report.md # 全倉 5,745 函式／�
 | **自主泛代數 × 雙重否定預層 × 54 高階立方結構** | 構造性泛代數、`¬¬` 層化與全譜立方結構 | 瑪爾切夫一步同餘可換 `θ∘ψ=ψ∘θ=θ∨ψ`、吸收零塌縮 vs 點化零阿貝爾二分；雙重否定核 `j(x)=¬¬x` 布林反射子 Topos 與亞歷山德羅夫／雙 Heyting／Chu 對偶；**Swan/CCHM 嚴格計算 `J` 恆等型 `Id_A(x,y)`**、極化聚焦 `LJF_cub`、函子多項式米田與單值 SIP、`S₃` 非阿貝爾覆蓋伽羅瓦對應、全體 `65,536` 個 4-立方體 `O(1)` SWAR Eilenberg–Zilber 標準分解（`[2,8,60,872,64594]`）與 `26 動詞 × 14 組合` 交互圖譜 | `cubical/autonomy/`、`cubical/structures/`、`topos/double_negation_alexandrov.mbt`、`accel/cubical_degeneracy_swar.mbt`、`bridge/malcev_presheaf_autonomy_bridge.mbt` |
 | **縱向重構第一輪 `S1–S4`** | `F4 × F7 × F9 × accel/swar × K₉` | 修補 `meta` 巢狀集合剖析、升級 `Int64` Bareiss、雙向 E-graph QIIT、**Paterson–Wegman 線性 DAG MGU**、SLG 記憶化與 **`V₅ = 65,536` HF64 遺傳有限集宇宙**；提取零依賴 `L0 accel/swar`（64-trit `GF(3)`、MRV/MAC 精確 Gromov–Hausdorff、Half-GCD 有理重構）；拆出無線性代數 `topos/site` 與 `Sieve64` 雙 Heyting 核；打通 **`K₉ = 36/36` 九聯邦完全配對橋**與 `F7 → F9 → F4 → F1` 自動晉升鏈 | `accel/swar/`、`topos/site/`、`conjecture/kernel/`、`meta/{core,instances,iit,reflect}/`、`bridge/meta_k9_unification.mbt` |
 | **縱向重構第二輪 `R1–R4`** | `F1 × F5 × F8` 底層下沉與三元合流 | M4RI `GF(2)` RREF、Ozaki-II DP4A CRT、Stockham NTT、Scanbox 與 HVM2 `INetArena` 下沉至 `L0 accel/swar`（對齊 `8/8` WGSL 著色器）；拆出 `L1 algebra/core`（`Rat` `Int64` 快徑、Ozaki-II `QMat`）；**Kalman 正負雙軌自由 De Morgan 區間 `I_DM` 與自由 CCHM 上纖維化格 `Cofib(n)`** 修補布林坍縮；HOU `O(Δ)` Trail-Stack 增量回溯；`scheme` 實作 **64-bit `Mono64` SWAR、Yan Geobuckets、Lazard–Macaulay M4RI 布林 F4、三素數 CRT 模 F4 與 Grassmann–Plücker 行列式**；建立 `F8 ↔ F5 ↔ F1` 三元橋 | `accel/swar/{m4ri_gf2,ozaki2_ntt_rns,hvm2_inet_arena}.mbt`、`algebra/core/`、`cubical/face_bdd/demorgan_cchm_swar.mbt`、`scheme/f4_macaulay_swar.mbt`、`bridge/accel_bridge.mbt` |
-| **縱向重構第三輪 `T1–T4` ＋ 全倉健檢清零** | `F2 × F3 × F6` 收官與 `0` 死碼認證 | `gcd` 16-lane 延遲取模 `F_p`、HMM 範數導引 `ℤ`-SNF、Domich–Kannan–Trotter 模有界 `ℤ`-HNF；拆出第五 `L0` 基石 `symlib/core`（無度數上限 `PermLut`、**Holt 任意生成元秩子群共軛類格 `A₅:9, B₃:33`**、Burnside Möbius、群胚一般米田雙射）；`semiring` 串接 `@swar` Four-Russians/M4RI 矩陣乘、**3D 脊邊禮品包裝牛頓細分 `O(n log n + n·#Faces)`**、Karp 熱帶特徵對、Johnson 負權 APSP、Min-Fill 精確變數消去與 Valmari–Hopcroft `O(|Σ||Q|log|Q|)` 最小 DFA；拆出 `L1 condensed/core` 實作**構造性 Nöbeling 自由整數基底（`|det(B_ℤ)|=1`）**與 **64× `@swar` Steenrod–Adams 極小分解（直抵 `h₃=σ` 與 `Ext_A^{3,6}=1` `η³=4ν`）**；升級 `health_scan.py` v2 並修復 `cat_thin`、`CyclicSet` 與 `NaN` 比較漏洞，達成 **`5,745` 函式 `0` 死碼／`0` 無引用型別／`0` 空殼列舉／`0` 完全重複** | `symlib/core/`、`symlib/{marks,yoneda}.mbt`、`semiring/{matrix,trop,graph,bp,nf,app}/`、`condensed/core/`、`bridge/f2_f3_f6_triad_bridge.mbt`、`tools/health_scan.py` |
+| **縱向重構第三輪 `T1–T4` ＋ 54 項高階立方結構全獨立實現 ＋ 全倉健檢清零** | `F2 × F3 × F6` 收官、`工作內容4` 無別名全實現與 `0` 死碼認證 | `gcd` 16-lane 延遲取模 `F_p`、HMM 範數導引 `ℤ`-SNF、Domich–Kannan–Trotter 模有界 `ℤ`-HNF；拆出第五 `L0` 基石 `symlib/core`（無度數上限 `PermLut`、**Holt 任意生成元秩子群共軛類格 `A₅:9, B₃:33`**、Burnside Möbius、群胚一般米田雙射）；`semiring` 串接 `@swar` Four-Russians/M4RI 矩陣乘、**3D 脊邊禮品包裝牛頓細分 `O(n log n + n·#Faces)`**、Karp 熱帶特徵對、Johnson 負權 APSP、Min-Fill 精確變數消去與 Valmari–Hopcroft `O(|Σ||Q|log|Q|)` 最小 DFA；拆出 `L1 condensed/core` 實作**構造性 Nöbeling 自由整數基底（`|det(B_ℤ)|=1`）**與 **64× `@swar` Steenrod–Adams 極小分解（直抵 `h₃=σ` 與 `Ext_A^{3,6}=1` `η³=4ν`）**；於 `cubical/structures` 完成 **CCHM `Glue`、Vogt 半伴隨 2-胞、Hofmann–Streicher `U8` 重對齊、Klein 瓶推出撓率、`Σ⊣Ω`、開放 2-立方 `T²≃S¹×S¹`、雙分類 CwF 代換、無歸約 NbE、連接對偶與 `I³→S¹` 3D 開放盒**獨立實現（`54/54` 零搭便車）；達成 **`5,794` 函式 `0` 死碼／`0` 無引用型別／`0` 空殼列舉／`0` 完全重複** | `symlib/core/`、`semiring/{matrix,trop,graph,bp,nf,app}/`、`condensed/core/`、`cubical/structures/{glue_hae_universe_classifier,cubical_hits_pushout_torus,cubical_nbe_subst_connections_kan}.mbt`、`meta/core/glue_vogt_realignment.mbt`、`tools/health_scan.py` |
 
 ---
 
@@ -65,20 +65,20 @@ python3 tools/health_scan.py > tools/health_report.md # 全倉 5,745 函式／�
 
 ---
 
-## 三、九大聯邦 ＋ 大一統頂點全景（`52` 套件 · `61` 元件 · `282` 檔 · `182,929` 行）
+## 三、九大聯邦 ＋ 大一統頂點全景（`52` 套件 · `61` 元件 · `294` 檔 · `189,616` 行）
 
 | 聯邦 | 規模（`arch_check.py` 實測） | 所屬套件（`pkgL0 .. pkgL9`） | 核心數學結構與代表演算法 |
-|---|---|---|
-| **F1 `cubical`** | `14` 套件<br>`121` 檔 / `111,679` 行 | `cubical-face-bdd`(`L0`), `algebra-core`(`L1`), `cubical-finite`(`L1`), `hostfs`(`L1`), `algebra`(`L2`), `cubical-kernel`(`L2`), `cubical-elaborator`(`L3`), `cubical-hermitian`(`L3`), `cubical-homotopy`(`L3`), `cubical-store`(`L3`), `cubical-autonomy`(`L5`), `cubical-structures`(`L6`), `root`(`L7`), `cmd-main`(`L8`) | Kalman 自由 De Morgan `I_DM` 與 CCHM `Cofib(n)`、ROBDD／CDCL-LRAT；可信依賴立方核心（NbE、Kan、Glue、Open-IR、`ε₀`/Mahlo）；`O(Δ)` Trail-Stack HOU；`π₁(S¹)`/`π₂(S²)`/Brunerie `π₄(S³)`/`K₆`；瑪爾切夫泛代數自主層與 **54 項高階立方結構 × 26 動詞 × 14 組合**；`algebra/core` Ozaki-II／Bareiss 與分裂域塔；Ed25519 BFT／MVCC 模組庫（`cmd/main` **`137/137`**） |
-| **F2 `symlib`** | `4` 套件<br>`30` 檔 / `9,964` 行 | `symlib-core`(`L0`), `symlib`(`L1`), `cmd-symdemo`(`L2`), `cmd-symbench`(`L2`) | **`L0 symlib/core`**：硬體 `popcnt`/`and_popcount` `BitVec`、無度數上限 `PermLut`、零配置 Schreier–Sims（含 `A_n`, `B_n`）、位向量 1-WL 與 McKay 同構引擎；**`L1 symlib`**：Holt 陪集剪枝任意秩子群格（`A₅:9, B₃:33`）、Burnside Möbius 分解、`G-Set` 單子、Warshall `cat_thin`、Kan 擴張與非薄／群胚一般米田雙射 |
-| **F3 `semiring`** | `16` 套件<br>`44` 檔 / `13,795` 行 | `semiring-{algebra,nf,par,ratelimit,sim}`(`L1`), `semiring-{bp,io,matrix,monoid,trop}`(`L2`), `semiring-{cat,graph,spline}`(`L3`), `semiring-{app,par-host}`(`L4`), `cmd-semiringreport`(`L5`) | `@swar` Four-Russians 64-bit 布林矩陣乘 `mul_bool_swar`、M4RI `mul_gf2_m4ri_swar`、64-bit 布林／分塊熱帶閉包；3D 脊邊禮品包裝牛頓正則細分；Karp 熱帶特徵值與臨界特徵向量；Bellman–Ford＋Johnson 負權 APSP；Min-Fill 精確變數消去；Valmari–Hopcroft `O(\|Σ\|\|Q\|log\|Q\|)` 最小 DFA 與 19 節實測報告 |
-| **F4 `topos`** | `2` 套件<br>`9` 檔 / `8,210` 行 | `topos-site`(`L2`), `topos`(`L3`) | **`L2 topos/site`**：零線性代數耦合景、`Sieve64` 64-bit 雙 Heyting 核、MAC 相容族枚舉、本徵幾何態射 `Lan ⊣ u* ⊣ Ran`、Diaconescu `G`-主叢與一階幾何理論 Kripke–Joyal 力迫 `model_satisfies_theory`；**`L3 topos`**：雙重否定 `Sh_{¬¬}` 布林層化、亞歷山德羅夫／Chu 對偶、`RP²` 模撓率上同調與杯積 |
+|---|---|---|---|
+| **F1 `cubical`** | `14` 套件<br>`126` 檔 / `116,167` 行 | `cubical-face-bdd`(`L0`), `algebra-core`(`L1`), `cubical-finite`(`L1`), `hostfs`(`L1`), `algebra`(`L2`), `cubical-kernel`(`L2`), `cubical-elaborator`(`L3`), `cubical-hermitian`(`L3`), `cubical-homotopy`(`L3`), `cubical-store`(`L3`), `cubical-autonomy`(`L5`), `cubical-structures`(`L6`), `root`(`L7`), `cmd-main`(`L8`) | Kalman 自由 De Morgan `I_DM` 與 CCHM `Cofib(n)`、ROBDD／CDCL-LRAT；可信依賴立方核心（NbE、Kan、Glue、Open-IR、`ε₀`/Mahlo）；`O(Δ)` Trail-Stack HOU 與 `O(d)` 記憶化雙向依值／歸納（鑽石 DAG `170×`）；`π₁(S¹)`/`π₂(S²)`/Brunerie `π₄(S³)`/`K₆`；瑪爾切夫泛代數自主層、**54 項高階立方結構獨立實現**與多模態 2-範疇／雙上下文 SWAR QTT；`algebra/core` Ozaki-II／Bareiss；Ed25519 BFT／MVCC 模組庫（`cmd/main` **`139/139`**） |
+| **F2 `symlib`** | `4` 套件<br>`30` 檔 / `9,830` 行 | `symlib-core`(`L0`), `symlib`(`L1`), `cmd-symdemo`(`L2`), `cmd-symbench`(`L2`) | **`L0 symlib/core`**：硬體 `popcnt`/`and_popcount` `BitVec`、無度數上限 `PermLut`、零配置 Schreier–Sims（含 `A_n`, `B_n`）、位向量 1-WL 與 McKay 同構引擎；**`L1 symlib`**：Holt 陪集剪枝任意秩子群格（`A₅:9, B₃:33`）、Burnside Möbius 分解、`G-Set` 單子、Warshall `cat_thin`、Kan 擴張與非薄／群胚一般米田雙射 |
+| **F3 `semiring`** | `16` 套件<br>`45` 檔 / `13,885` 行 | `semiring-{algebra,nf,par,ratelimit,sim}`(`L1`), `semiring-{bp,io,matrix,monoid,trop}`(`L2`), `semiring-{cat,graph,spline}`(`L3`), `semiring-{app,par-host}`(`L4`), `cmd-semiringreport`(`L5`) | `@swar` Four-Russians 64-bit 布林矩陣乘 `mul_bool_swar`、M4RI `mul_gf2_m4ri_swar`、64-bit 布林／分塊熱帶閉包；`LinUsage` 與泛型雙上下文半模 `DualResourceCtx[R]`；3D 脊邊禮品包裝牛頓正則細分；Karp 熱帶特徵值與臨界特徵向量；Bellman–Ford＋Johnson 負權 APSP；Min-Fill 精確變數消去；Valmari–Hopcroft `O(\|Σ\|\|Q\|log\|Q\|)` 最小 DFA 與 19 節實測報告 |
+| **F4 `topos`** | `2` 套件<br>`10` 檔 / `8,607` 行 | `topos-site`(`L2`), `topos`(`L3`) | **`L2 topos/site`**：零線性代數耦合景、`Sieve64` 64-bit 雙 Heyting 核、MAC 相容族枚舉、本徵幾何態射 `Lan ⊣ u* ⊣ Ran`、Diaconescu `G`-主叢與一階幾何理論 Kripke–Joyal 力迫 `model_satisfies_theory`；**`L3 topos`**：**Artin 膠合逗號範疇 `Gl(Γ)`**、SGA4 開閉重黏合、雙重否定 `Sh_{¬¬}` 布林層化、亞歷山德羅夫／Chu 對偶、`RP²` 模撓率上同調與杯積 |
 | **F5 `scheme`** | `1` 套件<br>`6` 檔 / `6,150` 行 | `scheme`(`L3`) | 64-bit `Mono64` SWAR 單項式整除／`GRevLex`、Yan 地理桶、Gebauer–Möller、M4RI 布林 F4、三素數 CRT 模 F4、Grassmann–Plücker／Berkowitz 行列式、黏合概形、仿射纖維積、`Ω¹_{B/A}`、Fitting 平滑性、吹脹解消、Serre 對偶與 Chow 動機 `h(ℙ¹) = 1 ⊕ 𝕃` |
 | **F6 `condensed`** | `3` 套件<br>`8` 檔 / `5,059` 行 | `gcd`(`L0`), `condensed-core`(`L1`), `condensed`(`L4`) | **下頂點 `V₁` (`gcd`)**：16-lane 延遲取模 `F_p`、HMM `ℤ`-SNF、Bareiss 行列式、DKT 模有界 `ℤ`-HNF、CRT、`ugcd_rat_recon_bigint` 與摘要鏈；**`L1 condensed/core`**：`CompactProfiniteTower`、構造性 Nöbeling 自由基底、Roos–Milnor `R¹lim`、`CondAnima`、`CondSolidModule` 與 **64× `@swar` Steenrod–Adams 極小分解**；**`L4 condensed`**：`CondAnalyticStack`、共軛四元數消元中軸與凝聚四猜想 |
 | **F7 `discovery`** | `3` 套件<br>`5` 檔 / `3,587` 行 | `tensor`(`L2`), `discovery-kernel`(`L3`), `conjecture`(`L5`) | `tensor`：64-trit `GF(3)` 全體 `6,561` 張量秩圖譜 `[1, 128, 4032, 2400]`、64-bit MRV/MAC Gromov–Hausdorff 距離、支配坍縮 VR 同調、Radon 反演、Clifford 旋量；`conjecture/kernel`：Half-GCD 有理重構與 64-bit `ctz` 位平面蘊含格；`conjecture`：6 演化轉移律與 12 項 Lakatos 猜想 |
-| **F8 `accel`** | `2` 套件<br>`10` 檔 / `3,601` 行 | `accel-swar`(`L0`), `accel`(`L4`) + `webgpu/index.html` | **`L0 accel/swar`**：64-bit 硬體原語全集（M4RI RREF、64-trit `GF(3)`、Ozaki-II DP4A CRT、Stockham NTT、立方蝴蝶、Scanbox、HVM2 `INetArena`）；**`L4 accel`**：跨聯邦加速見證與 **8/8 靜態可移植性審計通過之瀏覽器零依賴 WebGPU WGSL 著色器** |
-| **F9 `meta`** | `5` 套件<br>`30` 檔 / `14,092` 行 | `meta-core`(`L0`), `meta-instances`(`L1`), `meta-iit`(`L1`), `meta-reflect`(`L2`), `cmd-metatheory`(`L3`) | **零外部業務依賴之元理論地板與三軸引擎（`545/545` 定律、`86` 個 `law_*`、`448` 互異、`179` 族）**：反射（NbE + 逐步憑證 + `V₅ = 65,536` HF64 + Mahlo）、全域實例（SLG 記憶解析 + 臨界對 + 擬陣判準）、歸納—歸納（Kleene 切片塔 + 雙向 E-graph QIIT + STLC β），以及 Paley `R(4,4)=18` / `R(3,5)=14`、Burnside Möbius、Karp 對偶與 Nöbeling 單模反演定律 |
-| **頂點 `unification`** | `2` 套件<br>`19` 檔 / `6,792` 行 | `bridge`(`L8`), `cmd-showcase`(`L9`) | **九聯邦完全圖 `K₉ = 36/36` 全配對跨聯邦雙邊橋**、`F7 → F9 → F4 → F1` 四聯邦定理自動晉升管線、**`F8 ↔ F5 ↔ F1` 硬體—符號—型別三元橋**、**`F2 ↔ F3 ↔ F6` 對稱—半環—凝聚三元橋**、五聯邦五角大一統定理、`ATLAS-01..18` 幾何—邏輯圖譜、旋轉差分與 **`47/47` 大一統證書** |
+| **F8 `accel`** | `2` 套件<br>`11` 檔 / `3,887` 行 | `accel-swar`(`L0`), `accel`(`L4`) + `webgpu/index.html` | **`L0 accel/swar`**：64-bit 硬體原語全集（M4RI RREF、64-trit `GF(3)`、Ozaki-II DP4A CRT、Stockham NTT、立方蝴蝶、Scanbox、HVM2 `INetArena`、Stafford Mix13 Merkle 時代快取 `SwarMemoTable64`、16×4-bit 飽和半模 `swar_grade16_*`）；**`L4 accel`**：跨聯邦加速見證與 **8/8 靜態可移植性審計通過之瀏覽器零依賴 WebGPU WGSL 著色器** |
+| **F9 `meta`** | `5` 套件<br>`33` 檔 / `15,460` 行 | `meta-core`(`L0`), `meta-instances`(`L1`), `meta-iit`(`L1`), `meta-reflect`(`L2`), `cmd-metatheory`(`L3`) | **零外部業務依賴之元理論地板與三軸引擎（`565/565` 定律、`94` 個 `law_*`）**：反射（NbE + 逐步憑證 + `V₅ = 65,536` HF64 + Mahlo）、全域實例（SLG 記憶解析 + 臨界對 + 擬陣判準）、歸納—歸納（Kleene 切片塔 + 雙向 E-graph QIIT + **4-分類內蘊 CwF QIIT 展示消除器** + STLC β），以及嚴格模式 2-範疇 MTT、Paley `R(4,4)=18` / `R(3,5)=14`、Burnside Möbius、Karp 對偶、Nöbeling 單模反演、Vogt 伴隨化與 HS 重對齊定律 |
+| **頂點 `unification`** | `2` 套件<br>`20` 檔 / `6,984` 行 | `bridge`(`L8`), `cmd-showcase`(`L9`) | **九聯邦完全圖 `K₉ = 36/36` 全配對跨聯邦雙邊橋**、`F7 → F9 → F4 → F1` 四聯邦定理自動晉升管線、**`F8 ↔ F5 ↔ F1` 三元橋**、**`F2 ↔ F3 ↔ F6` 三元橋**、**`F1 × F3 × F4 × F8 × F9` 七大前沿支柱五元合流**、`ATLAS-01..18` 幾何—邏輯圖譜、旋轉差分與 **`48/48` 大一統證書** |
 
 ---
 
@@ -86,11 +86,11 @@ python3 tools/health_scan.py > tools/health_report.md # 全倉 5,745 函式／�
 
 | 項目 | 實測數字 | 驗證入口／出處 |
 |---|---|---|
-| **主定理總表** | **137 / 137**（規格註冊表 `1,598` 個唯一公開符號，`0` 幽靈條目） | `cmd/main`（`verify.mbt` + `spec.mbt`） |
-| **第九聯邦元理論定律** | **545 / 545**（`86` 個 `law_*` 函式、`448` 條互異標籤、`179` 個定律族） | `cmd/metatheory`（逐條重算） |
-| **大一統證書與全配對橋** | **47 / 47 證書** · **`K₉ = 36 / 36` 九聯邦完全雙邊橋** · **3 條跨聯邦三元／四元合流管線** | `cmd/showcase`（`bridge/`） |
-| **高階立方結構與範疇組合** | **54 / 54 結構證書** × **26 個運算動詞** × **14 種範疇組合模式**（14 條交互定理） | `cubical/structures` |
-| **全倉靜態健檢（`health_scan.py` v2）** | **`5,745` 函式／方法：死碼 `0`、無引用型別 `0`、空殼 `enum` `0`、完全重複 `0`** | [`tools/health_report.md`](tools/health_report.md) |
+| **主定理總表** | **139 / 139**（`158` 條規格、`1,649` 個唯一公開符號，`O(N)` 雜湊核驗 `0` 幽靈條目） | `cmd/main`（`verify.mbt` + `spec.mbt`） |
+| **第九聯邦元理論定律** | **565 / 565**（`94` 個 `law_*` 函式，逐條重算） | `cmd/metatheory`（逐條重算） |
+| **大一統證書與全配對橋** | **48 / 48 證書** · **`K₉ = 36 / 36` 九聯邦完全雙邊橋** · **4 條跨聯邦三元／四元／五元合流管線** | `cmd/showcase`（`bridge/`） |
+| **高階立方結構與範疇組合** | **54 / 54 獨立結構證書** × **26 個運算動詞** × **14 種範疇組合模式**（14 條交互定理，零別名搭便車） | `cubical/structures` |
+| **全倉靜態健檢（`health_scan.py` v3）** | **`5,810` 函式／方法：遞移死碼 `0`、無引用型別 `0`、空殼 `enum` `0`、完全與 α 等價重複 `0`** | [`tools/health_report.md`](tools/health_report.md) |
 | **多目標零警告編譯閘** | **`wasm-gc` · `wasm` · `js` · `native` 四大目標皆 `0 warnings, 0 errors`** | `moon check --deny-warn` |
 | **同倫與凝聚 Steenrod–Adams** | `π₁(S¹)≃ℤ`、`π₂(S²)≃ℤ`、`π₄(S³)≅ℤ/2ℤ`；Adams 極小分解至 `t=12` 證出 `h₀,h₁,h₂,h₃` 與 **`Ext_A^{3,6}=1`（`η³=4ν`）** | `cubical/homotopy`、`condensed/core` |
 | **有限對稱與 Burnside 環** | Holt 任意生成元秩子群共軛類格：`S₄(24):11`、**`A₅(60):9`**、**`B₃(48):33`**（含 3-生成元初等阿貝爾子群 `(C₂)³`） | `symlib/marks.mbt` |
@@ -155,4 +155,4 @@ python3 tools/health_scan.py > tools/health_report.md # 全倉 5,745 函式／�
 
 ## 授權與狀態
 
-授權見 [`LICENSE`](LICENSE)。本倉庫為研究級數學與系統工程：`137/137` 主定理、`545/545` 元理論定律、`47/47` 大一統證書與 `K₉ = 36/36` 跨聯邦全橋皆為**每次 CI 現場重算之結果**；每一項演算法的前提與退化邊界皆量化記錄於 `cmd/semiringreport` §19 與各套件 `README.md` 中。
+授權見 [`LICENSE`](LICENSE)。本倉庫為研究級數學與系統工程：`139/139` 主定理、`565/565` 元理論定律、`48/48` 大一統證書與 `K₉ = 36/36` 跨聯邦全橋皆為**每次 CI 現場重算之結果**；每一項演算法的前提與退化邊界皆量化記錄於 `cmd/semiringreport` §19 與各套件 `README.md` 中。

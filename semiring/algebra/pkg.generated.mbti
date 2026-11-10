@@ -18,15 +18,31 @@ pub fn[S : StarSemiring + Show] check_star(String, () -> S, samples? : Int32) ->
 
 pub fn[S : StarSemiring + IdempotentSemiring + Show] check_star_idem(String, () -> S, samples? : Int32) -> LawReport
 
+pub fn[R] dual_ctx_empty() -> DualResourceCtx[R]
+
+pub fn[R] dual_ctx_push_resource(DualResourceCtx[R], Int32, R) -> DualResourceCtx[R]
+
+pub fn[R] dual_ctx_push_unrestricted(DualResourceCtx[R], Int32) -> DualResourceCtx[R]
+
 pub fn[E : GroupElement] geom_sum_group(E, Int32) -> E
 
 pub fn[E : Semiring] pow_squaring(E, Int32) -> E
+
+pub fn[R : Semiring] qtt_ctx_add(DualResourceCtx[R], DualResourceCtx[R]) -> DualResourceCtx[R]?
+
+pub fn[R : Semiring] qtt_ctx_scale(R, DualResourceCtx[R]) -> DualResourceCtx[R]
+
+pub fn[R : Semiring] qtt_ctx_var_demand(DualResourceCtx[R], Int32, R) -> DualResourceCtx[R]?
+
+pub fn[R : Semiring] qtt_ctx_zero_resources(DualResourceCtx[R]) -> DualResourceCtx[R]
 
 pub fn[E : GroupElement] star_by_doubling(E) -> E
 
 pub let trop_inf : Int32
 
 pub let trop_neg_inf : Int32
+
+pub fn verify_dual_qtt_semiring_laws() -> Bool
 
 // Errors
 
@@ -112,7 +128,6 @@ pub(all) struct CyclicSet {
 }
 pub fn CyclicSet::cardinality(Self) -> Int32
 pub fn CyclicSet::contains(Self, Int32) -> Bool
-pub fn CyclicSet::empty(Int32) -> Self
 pub fn CyclicSet::equal(Self, Self) -> Bool
 pub fn CyclicSet::group_id(Self) -> Self
 pub fn CyclicSet::group_inv(Self) -> Self
@@ -122,7 +137,6 @@ pub fn CyclicSet::le(Self, Self) -> Bool
 pub fn CyclicSet::not_equal(Self, Self) -> Bool
 pub fn CyclicSet::of_range(Int32, Array[Int32]) -> Self
 pub fn CyclicSet::one() -> Self
-pub fn CyclicSet::one_of(Int32) -> Self
 pub fn CyclicSet::order_bound(Self) -> Int32
 pub fn CyclicSet::output(Self, &Logger) -> Unit
 pub fn CyclicSet::plus(Self, Self) -> Self
@@ -138,12 +152,42 @@ pub impl IdempotentSemiring for CyclicSet
 pub impl Semiring for CyclicSet
 pub impl StarSemiring for CyclicSet
 
+#derive(Eq)
+pub(all) struct DualResourceCtx[R] {
+  unrestricted_tys : Array[Int32]
+  resource_tys : Array[Int32]
+  resource_grades : Array[R]
+}
+pub fn[R : Eq] DualResourceCtx::equal(Self[R], Self[R]) -> Bool
+pub fn[R : Eq] DualResourceCtx::not_equal(Self[R], Self[R]) -> Bool
+
 pub(all) struct LawReport {
   mut checks : Int32
   violations : Array[String]
 }
 pub fn LawReport::ok(Self) -> Bool
 pub fn LawReport::summary(Self) -> String
+
+#derive(Eq)
+pub(all) enum LinUsage {
+  LinZero
+  LinOne
+  LinMany
+}
+pub fn LinUsage::equal(Self, Self) -> Bool
+pub fn LinUsage::from_count(Int32) -> Self
+pub fn LinUsage::is_one(Self) -> Bool
+pub fn LinUsage::is_zero(Self) -> Bool
+pub fn LinUsage::not_equal(Self, Self) -> Bool
+pub fn LinUsage::one() -> Self
+pub fn LinUsage::plus(Self, Self) -> Self
+pub fn LinUsage::star(Self) -> Self
+pub fn LinUsage::times(Self, Self) -> Self
+pub fn LinUsage::to_code(Self) -> Int32
+pub fn LinUsage::usage_compatible(Self, Self) -> Bool
+pub fn LinUsage::zero() -> Self
+pub impl Semiring for LinUsage
+pub impl StarSemiring for LinUsage
 
 pub struct Ops {
   mut plus : Int64
@@ -168,12 +212,10 @@ pub fn ParetoSet::is_identity(Self) -> Bool
 pub fn ParetoSet::is_one(Self) -> Bool
 pub fn ParetoSet::is_zero(Self) -> Bool
 pub fn ParetoSet::join(Self, Self) -> Self
-pub fn ParetoSet::label(Self, Int32) -> Array[Int32]
 pub fn ParetoSet::le(Self, Self) -> Bool
 pub fn ParetoSet::meet(Self, Self) -> Self
 pub fn ParetoSet::not_equal(Self, Self) -> Bool
 pub fn ParetoSet::one() -> Self
-pub fn ParetoSet::one_of(Int32) -> Self
 pub fn ParetoSet::output(Self, &Logger) -> Unit
 pub fn ParetoSet::plus(Self, Self) -> Self
 pub fn ParetoSet::point(Array[Int32]) -> Self
@@ -200,7 +242,6 @@ pub fn Prob::not_equal(Self, Self) -> Bool
 pub fn Prob::one() -> Self
 pub fn Prob::output(Self, &Logger) -> Unit
 pub fn Prob::plus(Self, Self) -> Self
-pub fn Prob::star_checked(Self) -> Result[Self, String]
 pub fn Prob::times(Self, Self) -> Self
 pub fn Prob::to_string(Self) -> String
 pub fn Prob::value(Self) -> Double
@@ -238,7 +279,6 @@ pub fn Trop::order_bound(Self) -> Int32
 pub fn Trop::output(Self, &Logger) -> Unit
 pub fn Trop::plus(Self, Self) -> Self
 pub fn Trop::star(Self) -> Self
-pub fn Trop::star_checked(Self) -> Result[Self, String]
 pub fn Trop::times(Self, Self) -> Self
 pub fn Trop::to_string(Self) -> String
 pub fn Trop::value(Self) -> Int32
@@ -266,7 +306,6 @@ pub fn TropF::one() -> Self
 pub fn TropF::output(Self, &Logger) -> Unit
 pub fn TropF::plus(Self, Self) -> Self
 pub fn TropF::star(Self) -> Self
-pub fn TropF::star_checked(Self) -> Result[Self, String]
 pub fn TropF::times(Self, Self) -> Self
 pub fn TropF::to_string(Self) -> String
 pub fn TropF::value(Self) -> Double
@@ -287,7 +326,6 @@ pub fn TropMax::is_neg_inf(Self) -> Bool
 pub fn TropMax::is_one(Self) -> Bool
 pub fn TropMax::is_zero(Self) -> Bool
 pub fn TropMax::le(Self, Self) -> Bool
-pub fn TropMax::new(Int32) -> Self
 pub fn TropMax::not_equal(Self, Self) -> Bool
 pub fn TropMax::one() -> Self
 pub fn TropMax::output(Self, &Logger) -> Unit
@@ -305,9 +343,6 @@ pub impl StarSemiring for TropMax
 // Type aliases
 
 // Traits
-pub(open) trait CommutativeMonoid : Monoid {
-}
-
 pub(open) trait GroupElement : Semiring {
   fn group_inv(Self) -> Self
   fn order_bound(Self) -> Int32

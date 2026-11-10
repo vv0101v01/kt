@@ -135,15 +135,31 @@ pub fn fg_is_trivial(g : FgAb) -> Bool {
 }
 
 ///|
-/// A necessary condition for `t` to be a quotient of `s`: the rank
-/// cannot go up, and torsion cannot appear out of nothing.
+/// A necessary condition for `t` to be a quotient of `s`: free rank cannot
+/// increase, and when `s` is pure torsion (`s.rank == 0`), `t` can have at
+/// most as many invariant factors as `s` and each trailing invariant factor
+/// of `s` must be divisible by the corresponding invariant factor of `t`.
 pub fn fg_rank_le(t : FgAb, s : FgAb) -> Bool {
-  t.rank <= s.rank &&
-  (
-    t.torsion.length() == 0 ||
-    s.rank > 0 ||
-    t.torsion.length() <= s.torsion.length()
-  )
+  if t.rank > s.rank {
+    return false
+  }
+  if t.torsion.length() == 0 || s.rank > 0 {
+    return true
+  }
+  let nt = t.torsion.length()
+  let ns = s.torsion.length()
+  if nt > ns {
+    return false
+  }
+  let offset = ns - nt
+  for i in 0..<nt {
+    let dt = t.torsion[i]
+    let ds = s.torsion[offset + i]
+    if dt <= 0 || ds % dt != 0 {
+      return false
+    }
+  }
+  true
 }
 
 // ---------------------------------------------------------------------------
@@ -252,7 +268,6 @@ pub fn gap_surj_at(c : Int32) -> Int32 {
 /// surjection at `k = 2n+1`, nothing beyond.
 pub fn freudenthal_status(n_connected : Int32, k : Int32) -> FreuStatus {
   let c = bm_gap(n_connected + 1, n_connected + 1)
-  let _computed = c
   if k <= gap_equiv_below(c) {
     FreuEquiv
   } else if k == gap_surj_at(c) {
@@ -335,12 +350,6 @@ pub fn pi2_s2_iso_z_origins() -> Array[Origin] {
 }
 
 ///|
-pub fn pi2_s2_iso_z_halves() -> (Bool, Bool) {
-  // retraction half: real (phase 16)    section half: imported (BM)
-  (true, true)
-}
-
-///|
 fn is_imported(o : Origin) -> Bool {
   match o {
     Imported(_) => true
@@ -379,6 +388,8 @@ pub fn check_blakers_massey() -> Bool {
   let g0 = fg_zero()
   let gz = fg_z()
   let g2 = fg_zmod(2)
+  let g3 = fg_zmod(3)
+  let g4 = fg_zmod(4)
   let groups_ok = fg_is_trivial(g0) &&
     !fg_is_trivial(gz) &&
     !fg_is_trivial(g2) &&
@@ -386,7 +397,10 @@ pub fn check_blakers_massey() -> Bool {
     gz != g0 &&
     fg_rank_le(g2, gz) &&
     !fg_rank_le(gz, g2) &&
-    fg_rank_le(g0, gz)
+    fg_rank_le(g0, gz) &&
+    fg_rank_le(g2, g4) &&
+    !fg_rank_le(g4, g2) &&
+    !fg_rank_le(g3, g2)
 
   // (2) Homotopy groups of the circle.
   let circle_ok = pi_circle(1) == gz &&
@@ -460,15 +474,15 @@ pub fn check_blakers_massey() -> Bool {
   //     pi_1(S^2)=0 ->  pi_2(S^3)=0        : equivalence, equal.
   //     pi_2(S^3)=0 ->  pi_3(S^4)=0        : equivalence, equal.
   let know_ok = f_s1_1 == FreuSurj &&
-    fg_rank_le(gz, gz) &&
+    fg_rank_le(gz, pi_circle(1)) &&
     f_s2_2 == FreuEquiv &&
-    gz == gz &&
+    hopf_les_iso(3) &&
     f_s2_3 == FreuSurj &&
     fg_rank_le(g2, gz) &&
     f_s2_1 == FreuEquiv &&
-    g0 == g0 &&
+    fg_is_trivial(pi_circle(2)) &&
     freudenthal_status(conn_of_sphere(3), 2) == FreuEquiv &&
-    g0 == g0
+    fg_is_trivial(pi_circle(3))
 
   // (9) The two target isomorphisms, and their provenance chains.
   let iso32 = pi3_s2_iso_pi3_s3()

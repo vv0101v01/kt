@@ -1068,8 +1068,6 @@ pub fn sym_bilinear_ansatz(Array[@core.SymC], Array[@core.SymC], Array[@core.Sym
 
 pub fn sym_bilinear_from_corners(Array[@core.SymC], Array[@core.SymC], Array[@core.SymC], Array[@core.SymC]) -> (@core.SymFrac, @core.SymFrac) -> Array[@core.SymC]
 
-pub fn sym_det(@core.SymMat) -> @core.SymC
-
 pub fn sym_frac_one_minus(@core.SymFrac) -> @core.SymFrac
 
 pub fn sym_hermitian2(Int32, Int32, Int32, Int32) -> @core.SymMat

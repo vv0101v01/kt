@@ -70,8 +70,6 @@ pub fn iterm_eq(ITerm, ITerm) -> Bool
 
 pub fn iterm_of_val(IVal) -> ITerm
 
-pub fn iterm_to_string(ITerm) -> String
-
 pub fn ival(Int32, Array[IVal]) -> IVal
 
 pub fn ival_eq(IVal, IVal) -> Bool
@@ -104,6 +102,8 @@ pub fn law_iit_quotient_is_well_defined_on_all_stage_inhabitants() -> Array[(Str
 
 pub fn law_iit_schema_placeholders_are_rejected() -> Array[(String, Bool)]
 
+pub fn law_qiit_intrinsic_cwf_and_displayed_eliminator() -> Array[(String, Bool)]
+
 pub fn law_stlc_normalization_reaches_a_stuck_value() -> Array[(String, Bool)]
 
 pub fn law_stlc_stlc_beta_is_index_preserving() -> Array[(String, Bool)]
@@ -117,6 +117,26 @@ pub fn nat_of_int(ISchema, Int32) -> IVal
 pub fn nat_s(ISchema, IVal) -> IVal
 
 pub fn nat_z(ISchema) -> IVal
+
+pub fn qiit_check_con(QiitCon) -> Bool
+
+pub fn qiit_check_sub(QiitCon, QiitCon, QiitSub) -> Bool
+
+pub fn qiit_check_tm(QiitCon, QiitTy, QiitTm) -> Bool
+
+pub fn qiit_check_ty(QiitCon, QiitTy) -> Bool
+
+pub fn qiit_norm_con(QiitCon) -> QiitCon
+
+pub fn qiit_norm_sub(QiitSub) -> QiitSub
+
+pub fn qiit_norm_tm(QiitTm) -> QiitTm
+
+pub fn qiit_norm_ty(QiitTy) -> QiitTy
+
+pub fn qiit_standard_set_cwf_algebra() -> QiitDisplayedCwfAlgebra
+
+pub fn qiit_verify_displayed_coherence(QiitDisplayedCwfAlgebra) -> Bool
 
 pub fn quot_fuel() -> Int32
 
@@ -206,6 +226,51 @@ pub(all) struct IVal {
   ctor : Int32
   args : Array[IVal]
 }
+
+#derive(Eq)
+pub(all) enum QiitCon {
+  QEmp
+  QExt(QiitCon, QiitTy)
+}
+pub fn QiitCon::equal(Self, Self) -> Bool
+pub fn QiitCon::not_equal(Self, Self) -> Bool
+
+pub(all) struct QiitDisplayedCwfAlgebra {
+  con_card : (QiitCon) -> Int32
+  ty_fiber_card : (QiitCon, QiitTy) -> Int32
+  eval_sub : (QiitSub, Array[Int32]) -> Array[Int32]
+  eval_tm : (QiitTm, Array[Int32]) -> Int32
+}
+
+#derive(Eq)
+pub(all) enum QiitSub {
+  QSubId(QiitCon)
+  QSubComp(QiitCon, QiitCon, QiitCon, QiitSub, QiitSub)
+  QSubEps(QiitCon)
+  QSubExt(QiitCon, QiitCon, QiitTy, QiitSub, QiitTm)
+  QSubP(QiitCon, QiitTy)
+}
+pub fn QiitSub::equal(Self, Self) -> Bool
+pub fn QiitSub::not_equal(Self, Self) -> Bool
+
+#derive(Eq)
+pub(all) enum QiitTm {
+  QTmQ(QiitCon, QiitTy)
+  QTmConst(QiitCon, Int32, Int32)
+  QTmSub(QiitCon, QiitCon, QiitTy, QiitTm, QiitSub)
+  QTmCoh(QiitCon, QiitTy, QiitTy, QiitTm)
+}
+pub fn QiitTm::equal(Self, Self) -> Bool
+pub fn QiitTm::not_equal(Self, Self) -> Bool
+
+#derive(Eq)
+pub(all) enum QiitTy {
+  QBase(QiitCon, Int32)
+  QPi(QiitCon, QiitTy, QiitTy)
+  QTySub(QiitCon, QiitCon, QiitTy, QiitSub)
+}
+pub fn QiitTy::equal(Self, Self) -> Bool
+pub fn QiitTy::not_equal(Self, Self) -> Bool
 
 // Type aliases
 

@@ -31,12 +31,6 @@ pub fn ParetoSet::empty(dim : Int32) -> ParetoSet {
 }
 
 ///|
-/// 單位元 {0}^dim。
-pub fn ParetoSet::one_of(dim : Int32) -> ParetoSet {
-  { dim, pts: Array::make(dim, 0), }
-}
-
-///|
 /// 由單一向量建立。
 pub fn ParetoSet::point(vec : Array[Int32]) -> ParetoSet {
   { dim: vec.length(), pts: vec.copy(), }
@@ -48,16 +42,6 @@ pub fn ParetoSet::size(self : ParetoSet) -> Int32 {
     return 0
   }
   self.pts.length() / self.dim
-}
-
-///|
-/// 取出第 i 個標籤（回傳副本）。
-pub fn ParetoSet::label(self : ParetoSet, i : Int32) -> Array[Int32] {
-  let out = Array::make(self.dim, 0)
-  for j in 0..<self.dim {
-    out[j] = self.pts[i * self.dim + j]
-  }
-  out
 }
 
 ///|
@@ -382,17 +366,6 @@ fn cyclic_dim(a : Int32, b : Int32) -> Int32 {
   } else {
     b
   }
-}
-
-///|
-pub fn CyclicSet::empty(m : Int32) -> CyclicSet {
-  { m, bits: 0UL, }
-}
-
-///|
-/// ℤ_m 中的 {0}（乘法單位元語義下的 one）。
-pub fn CyclicSet::one_of(m : Int32) -> CyclicSet {
-  { m, bits: 1UL, }
 }
 
 ///|

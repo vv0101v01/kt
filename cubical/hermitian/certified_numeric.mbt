@@ -39,7 +39,6 @@ using @face_bdd {
   bdd_of_face,
   bdd_or,
   eps,
-  face_holds,
   face_le,
   face_sat,
   face_unsat,

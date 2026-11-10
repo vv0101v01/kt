@@ -79,7 +79,6 @@ pub fn BitVec::each(Self, (Int32) -> Unit) -> Unit
 pub fn BitVec::equal(Self, Self) -> Bool
 pub fn BitVec::get(Self, Int32) -> Bool
 pub fn BitVec::hash(Self) -> Int32
-pub fn BitVec::is_empty(Self) -> Bool
 pub fn BitVec::length(Self) -> Int32
 pub fn BitVec::make(Int32) -> Self
 pub fn BitVec::make_full(Int32) -> Self
@@ -102,8 +101,6 @@ pub(all) struct FinAction {
 pub fn FinAction::burnside_orbit_count(Self, PermGroup, Int32) -> Int32
 pub fn FinAction::card(Self) -> Int32
 pub fn FinAction::fixed_points(Self, Array[Int32]) -> Int32
-pub fn FinAction::fundamental_domain(Self) -> Array[Int32]
-pub fn FinAction::is_transitive(Self) -> Bool
 pub fn FinAction::lift(Self, Perm) -> Array[Int32]
 pub fn FinAction::new(Int32, Array[Array[Int32]]) -> Self
 pub fn FinAction::of_group(PermGroup) -> Self
@@ -130,7 +127,6 @@ pub(all) struct FoldedGraph {
   mul : Array[Array[Int32]]
   edge_total : Int32
 }
-pub fn FoldedGraph::multiplicity(Self, Int32, Int32) -> Int32
 pub fn FoldedGraph::orbit_count(Self) -> Int32
 pub fn FoldedGraph::output(Self, &Logger) -> Unit
 pub fn FoldedGraph::ratio(Self) -> Double
@@ -195,11 +191,9 @@ pub(all) struct Part {
 }
 pub fn Part::cell_count(Self) -> Int32
 pub fn Part::cell_sizes(Self) -> Array[Int32]
-pub fn Part::cells(Self) -> Array[Array[Int32]]
 pub fn Part::copy(Self) -> Self
 pub fn Part::discrete(Array[Int32]) -> Self
 pub fn Part::is_discrete(Self) -> Bool
-pub fn Part::trivial(Int32) -> Self
 
 pub(all) struct Perm {
   n : Int32
@@ -210,7 +204,6 @@ pub fn Perm::compose(Self, Self) -> Self
 pub fn Perm::conjugate_by(Self, Self) -> Self
 pub fn Perm::cycles(Self) -> Array[Array[Int32]]
 pub fn Perm::equal(Self, Self) -> Bool
-pub fn Perm::fixed_point_count(Self) -> Int32
 pub fn Perm::from_cycles(Int32, Array[Array[Int32]]) -> Self
 pub fn Perm::from_img(Array[Int32]) -> Self
 pub fn Perm::identity(Int32) -> Self
@@ -224,7 +217,6 @@ pub fn Perm::order(Self) -> Int32
 pub fn Perm::output(Self, &Logger) -> Unit
 pub fn Perm::pow(Self, Int32) -> Self
 pub fn Perm::random(Int32, Int32) -> (Self, Int32)
-pub fn Perm::sign(Self) -> Int32
 pub fn Perm::size(Self) -> Int32
 pub fn Perm::to_repr(Self) -> @debug.Repr
 pub fn Perm::to_string(Self) -> String
@@ -246,10 +238,8 @@ pub fn PermGroup::contains(Self, Perm) -> Bool
 pub fn PermGroup::cyclic(Int32) -> Self
 pub fn PermGroup::dihedral(Int32) -> Self
 pub fn PermGroup::elements(Self, Int32) -> Array[Perm]
-pub fn PermGroup::fixed_point_count(Self, Int32, Int32) -> Int32
 pub fn PermGroup::generators(Self) -> Array[Perm]
 pub fn PermGroup::hyperoctahedral(Int32) -> Self
-pub fn PermGroup::is_transitive(Self) -> Bool
 pub fn PermGroup::new(Int32, Array[Perm]) -> Self
 pub fn PermGroup::orbit(Self, Int32) -> Array[Int32]
 pub fn PermGroup::orbit_partition(Self) -> Array[Array[Int32]]

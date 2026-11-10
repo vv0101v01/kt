@@ -119,7 +119,6 @@ pub fn law_proof_reflection_decide_fast_check_independently() -> Array[
 ] {
   let out : Array[(String, Bool)] = []
   let b0 = TBase(0)
-  let arr = TArr(b0, b0)
   let idt = TLam(b0, TVar(0))
   let some = TApp(idt, TStar)
   // 快：反射判定
@@ -188,7 +187,6 @@ pub fn law_proof_reflection_decide_fast_check_independently() -> Array[
       @core.chk(out, "reflection: decide fast, check independently #11", d)
     }
   }
-  let _ = arr
   out
 }
 

@@ -5,15 +5,6 @@
 // ---------------------------------------------------------------------------
 
 ///|
-fn phase11_copy_bytes(bytes : Array[Int32]) -> Array[Int32] {
-  let out : Array[Int32] = []
-  for i in 0..<bytes.length() {
-    out.push(bytes[i])
-  }
-  out
-}
-
-///|
 fn phase11_truncate_bytes(bytes : Array[Int32], keep : Int32) -> Array[Int32] {
   let out : Array[Int32] = []
   for i in 0..<keep {
@@ -41,7 +32,7 @@ pub fn check_schema_registry_byte_persistence() -> Bool {
   if report.status != ModuleBinaryOk {
     return false
   }
-  let corrupted = phase11_copy_bytes(bytes)
+  let corrupted = bytes.copy()
   corrupted[bytes.length() - 1] = (corrupted[bytes.length() - 1] + 1) % 256
   if !(match schema_registry_snapshot_from_binary(corrupted) {
       Some(_) => false
@@ -56,7 +47,7 @@ pub fn check_schema_registry_byte_persistence() -> Bool {
     }) {
     return false
   }
-  let bad_magic = phase11_copy_bytes(bytes)
+  let bad_magic = bytes.copy()
   bad_magic[0] = 88
   if schema_registry_snapshot_load_binary_report(bad_magic).status !=
     ModuleBinaryBadMagic {

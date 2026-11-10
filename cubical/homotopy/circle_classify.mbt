@@ -862,25 +862,6 @@ pub fn circle_encode_decode_x_sect_with_zset_value(
 }
 
 ///|
-/// Dependent fiberwise section `(x : S^1) (c : Cover x) ->
-/// Path (Cover x) (circle_encode_x_value x (circle_decode_x_value x c)) c`,
-/// proved by `circle_schema()` elimination on `x` (over `base` it is
-/// `circle_encode_decode_sect_value`, and over `loop` each fiber `Cover(base) = Z`
-/// is an h-Set via `integer_is_set_value`).
-pub fn circle_encode_decode_x_sect_value(
-  x : DValue,
-  c : DValue,
-  dlevel : Int32,
-) -> DValue {
-  circle_encode_decode_x_sect_with_zset_value(
-    x,
-    c,
-    (a, b, p1, p2) => integer_is_set_value(a, b, p1, p2, dlevel + 8),
-    dlevel,
-  )
-}
-
-///|
 /// Loop-space retraction `(p : Omega(S^1)) -> Path (Omega(S^1)) (decode (encode p)) p`
 /// on **arbitrary open/neutral loops** `p : Path S^1 base base`, obtained by
 /// specializing `circle_decode_encode_x_retr_value` to `x = base` (where

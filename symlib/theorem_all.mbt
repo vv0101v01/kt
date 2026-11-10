@@ -488,11 +488,10 @@ fn cert_known_aut_orders(out : Array[Cert]) -> Unit {
   ]
   let mut ok18 = true
   for t in known {
-    let (nm, gg, want) = t
+    let (_, gg, want) = t
     if aut_order(gg) != want {
       ok18 = false
     }
-    let _ = nm
   }
   out.push(
     cert("known-aut-orders", ok18, "6 個圖譜之 |Aut| 與文獻值相符"),

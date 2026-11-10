@@ -28,7 +28,7 @@
 |---|---|
 | `SumI64` | `SumI64::of(v)`；`⊗ = +`，`1 = 0` |
 | `AffineM` | `AffineM::new(a, b)`、`::apply(x) = a·x + b`；**複合順序是關鍵**（`(f⊗g)(x) = f(g(x))`，故不可交換） |
-| `OppositeM[M]` | `OppositeM::of(x)`：把任何么半群的**乘法順序顛倒**（`Monoid` 的 `append` 反向）—— 用來測「順序敏感」的實作是否真的正確 |
+| `OppositeM[M]` | `OppositeM::{ value: x }`：把任何么半群的**乘法順序顛倒**（`Monoid` 的 `append` 反向）—— 用來測「順序敏感」的實作是否真的正確 |
 
 ### 2.2 前綴
 ```moonbit
@@ -66,7 +66,7 @@ let fw = @mon.Fenwick::build([@mon.SumI64::of(5), @mon.SumI64::of(7)])
 println(fw.range(0, 1).value)        // 12
 
 // 4) 翻轉順序的么半群（測順序敏感性）
-let opp = @mon.OppositeM::of(@mon.SumI64::of(1))
+let opp = @mon.OppositeM::{ value: @mon.SumI64::of(1) }
 ```
 
 ---

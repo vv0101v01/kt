@@ -41,18 +41,6 @@ pub fn branch(face : Face, value : CVec) -> VecBranch {
 }
 
 ///|
-/// The value prescribed at an endpoint assignment, if any branch is active.
-/// For compatible systems the choice of active branch does not matter.
-pub fn system_lookup(s : VecSystem, env : Array[Bool]) -> CVec? {
-  for i in 0..<s.branches.length() {
-    if face_holds(s.branches[i].face, env) {
-      return Some(s.branches[i].value)
-    }
-  }
-  None
-}
-
-///|
 /// Compatibility: whenever two faces can hold simultaneously, the
 /// prescribed values agree.
 pub fn system_compatible(s : VecSystem, nvars : Int32) -> Bool {

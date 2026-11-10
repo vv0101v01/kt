@@ -2204,13 +2204,6 @@ pub fn sphere2_meridian_path_value(x : DValue) -> DValue {
 }
 
 ///|
-/// Total space `E_Hopf = Σ (x : S^2), Hopf(x)` of Brunerie's Hopf fibration
-/// (`S^1 -> E_Hopf -> S^2`, homotopically `S^3`).
-pub fn hopf_total_space_type_value(dlevel~ : Int32 = 16) -> DValue {
-  DVSigma(sphere2_type_value(), pt => hopf_family_value(pt, dlevel~))
-}
-
-///|
 /// First-class bidirectional Hopf fiber-sequence loop space equivalence
 ///   `Equiv (Ω¹(E_Hopf, (north, base))) (Σ (p : Ω¹(S^2, north)), Path S^1 (subst Hopf p base) base)`.
 pub fn hopf_total_loop_equiv_fiber_seq_value(dlevel~ : Int32 = 16) -> DValue {
@@ -2411,14 +2404,6 @@ pub fn hopf_invariant_susp_retraction_value(
   )
   let step2 = circle_encode_decode_sect_value(z, dlevel + 10)
   dpath_trans_value(z_ty, step1, step2, dlevel + 12)
-}
-
-///|
-/// 0-truncated second homotopy group `π_2(S^2) = ‖Ω²(S^2, north)‖_0`.
-pub fn pi2_s2_type_value() -> DValue {
-  set_trunc_type_value(
-    loop_space_type_value(sphere2_type_value(), sphere2_north_value(), 2),
-  )
 }
 
 ///|

@@ -88,8 +88,8 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "特徵空間分解",
       SpecTheorem,
       [
-        "outer", "projector_from_orthonormal", "complement", "decompose", "in_image",
-        "in_kernel", "eigenspace_well_formed", "prune_to_eigenspace", "pruning_is_retraction",
+        "outer", "complement", "decompose", "in_image", "eigenspace_well_formed",
+        "prune_to_eigenspace", "pruning_is_retraction",
       ],
       "v 分解為 (Pv, (I−P)v) 的有序正交對",
       "冪等態射在 Hilb 中分裂：im(P) 是 retract，Cⁿ ≅ im(P) ⊕ ker(P) 是雙積 (biproduct)",
@@ -154,8 +154,8 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "系統（偏元素）與剪枝",
       SpecStructure,
       [
-        "VecBranch", "VecSystem", "system_lookup", "system_compatible", "prune_system",
-        "system_union", "union_commutes_mod", "system_extend_top",
+        "VecBranch", "VecSystem", "system_compatible", "prune_system", "system_union",
+        "union_commutes_mod", "system_extend_top",
       ],
       "符號規範形：以有效區域 BDD 分割端點立方體的值類別（system_normal_form）",
       "面上 presheaf 的偏元素；聯集是餘積式拼接，商由區域分割給出",
@@ -164,9 +164,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
     entry(
       "系統符號規範形",
       SpecOperator,
-      [
-        "SymRegion", "SystemNF", "system_normal_form", "system_eq_mod_sym", "system_domain_bdd",
-      ],
+      ["SymRegion", "SystemNF", "system_normal_form", "system_eq_mod_sym"],
       "不交 BDD 區域＋值標籤，按值字典序排列，另加未定義區域",
       "偏元素到面格切片範疇中的像分解 (image factorisation)",
       "有效區域 φᵢ ∧ ¬(前覆蓋) 以 bdd_and/bdd_not/bdd_or 計算",
@@ -340,7 +338,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
       SpecStructure,
       [
         "Rat", "Poly", "PolyTerm", "SymFrac", "SymC", "SymMat", "UPoly", "poly_add",
-        "poly_mul", "frac_eq", "sym_det", "charpoly_sym", "sym_projector_rank_one",
+        "poly_mul", "frac_eq", "charpoly_sym", "sym_projector_rank_one",
       ],
       "Q 上多變量多項式規範形（合併、去零、字典序）；分式以交叉相乘判定相等；複量為實符號有序對",
       "多項式戒與其分式體提供矩陣的代數語義；特徵多項式是 det(XI−A) 的精確展開",
@@ -448,8 +446,8 @@ pub fn spec_registry() -> Array[SpecEntry] {
       SpecStructure,
       [
         "DPositiveFunctor", "DConstructorConstraint", "DMutualFamily", "DLevelExpr",
-        "dpositivity_report", "positive_functor_map", "compile_mutual_inductive",
-        "instantiate_inductive_level_scheme", "quotient_schema", "decode_term", "check_schema_extensions",
+        "positive_functor_map", "compile_mutual_inductive", "instantiate_inductive_level_scheme",
+        "quotient_schema", "decode_term", "check_schema_extensions",
       ],
       "遞迴引數以完整型別或 DPositiveFunctor 解碼，IH 依函子結構生成；互歸納編譯為 Sum-indexed 單一 schema；商是帶等式 cell 的 HIT，任意有限維 cells 逐維以 face expression 化簡",
       "正性函子與互歸納族的初始代數、Tarski 解碼的歸納—遞迴對，以及宇宙層級指派下的 schema 族",
@@ -471,8 +469,8 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "AST 一等 Equiv、ua 與 GlueEquiv",
       SpecStructure,
       [
-        "DEquivParts", "DGlueEquivParts", "as_equiv_type", "mk_equiv_term", "infer_ua",
-        "comp_equiv_value", "comp_glue_equiv_value", "check_equiv_ast",
+        "DEquivParts", "DGlueEquivParts", "as_equiv_type", "infer_ua", "comp_equiv_value",
+        "comp_glue_equiv_value", "check_equiv_ast",
       ],
       "Equiv 值由正向函數、反向函數與 section/retraction Path 證明組成；GlueEquiv 分支保存完整 partial type 與其指向 base 的一等等價",
       "AST 內帶同倫逆的等價範疇；ua 把等價送入宇宙路徑，GlueEquiv 是沿偏等價系統黏合的型別",
@@ -483,8 +481,8 @@ pub fn spec_registry() -> Array[SpecEntry] {
       SpecStructure,
       [
         "DCheckedTypeLine", "DSchemaRegistry", "DInductivePlan", "checked_type_line",
-        "checked_comp_value", "schema_registry_register_inductive", "schema_registry_validate_hit",
-        "default_schema_registry", "check_phase6_infrastructure",
+        "schema_registry_register_inductive", "schema_registry_validate_hit", "default_schema_registry",
+        "check_phase6_infrastructure",
       ],
       "受檢查線保存已驗證的開放型別 body 與環境而不保存任意宿主函數；schema 以穩定鍵 intern 為 plan，telescope 保存完整前綴鏈",
       "由句法 body 表示的型別線與維度代換自然交換；註冊表是 schema elaboration 函數的有限共享圖",
@@ -541,8 +539,8 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "懸掛球面與 S³",
       SpecStructure,
       [
-        "suspension_schema", "sphere_schema", "sphere2_schema", "sphere3_schema",
-        "sphere3_meridian_term", "sphere3_meridian_value", "check_sphere3",
+        "sphere_schema", "sphere2_schema", "sphere3_schema", "sphere3_meridian_term",
+        "sphere3_meridian_value", "check_sphere3",
       ],
       "Susp(X) 由 north、south 與每點一條 meridian 生成；S² 與 S³ 分別是圓的一次與兩次懸掛，端點在 hit_cell_value 中化簡",
       "把 X×I 的上下端各塌縮成一點的 HIT；消去子由南北兩點的值和所有 meridian 上的依賴路徑組成",
@@ -579,7 +577,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
       [
         "ModuleDef", "ModuleImport", "ModuleDecl", "ModuleEnv", "ModuleSignature",
         "ModuleInstance", "module_signature", "module_validate", "module_resolve",
-        "module_ref", "module_instantiate", "module_instance_find", "check_module_system",
+        "module_instantiate", "module_instance_find", "check_module_system",
       ],
       "模組是參數、imports、本地宣告組成的 telescope；bindings 把限定名、別名與 opened/renamed 名映射到 telescope ordinal，實例是同時代換的閉合宣告列",
       "參數化模組是函子，import 是遞迴函子套用後內聯，open 是名字投影而非複製宣告；opaque export 在邊界後成為中性常數",
@@ -590,11 +588,10 @@ pub fn spec_registry() -> Array[SpecEntry] {
       SpecStructure,
       [
         "KanBox", "kan_box", "kan_box_fill", "kan_box_comp", "kan_box_pathp", "transport_value",
-        "transport_back_value", "transport_checked_line_value", "transport_filler_value",
-        "transport_pathp_value", "dpath_refl_value", "dpath_sym_value", "dpath_segment_value",
-        "dpath_prefix_value", "dpath_trans_square_value", "dpath_trans_value", "dpath_cong_value",
-        "dpath_funext_value", "subst_value", "subst_pathp_value", "dtransport_term",
-        "dpath_trans_term", "dfunext_term", "check_cubical_algorithms",
+        "transport_back_value", "transport_filler_value", "transport_pathp_value",
+        "dpath_refl_value", "dpath_sym_value", "dpath_segment_value", "dpath_prefix_value",
+        "dpath_trans_square_value", "dpath_trans_value", "dpath_cong_value", "dpath_funext_value",
+        "subst_value", "dtransport_term", "dpath_trans_term", "dfunext_term", "check_cubical_algorithms",
       ],
       "transport 是沿型別線的 coe，filler 是其 PathP；路徑傳遞是 hcomp 方塊的頂邊，funext 與 subst 分別是逐點路徑與族線 coe，KanBox 把開盒的線、系統與 base 打包",
       "cubical CwF 中由 Kan 纖維化結構生成的路徑物件運算：反演、串接、函子性與依賴代入",
@@ -606,12 +603,11 @@ pub fn spec_registry() -> Array[SpecEntry] {
       [
         "UniversePath", "upath_to_equiv", "upath_refl", "upath_sym", "upath_trans",
         "finite_transport", "transport_roundtrip_path_value", "path_to_equiv_value",
-        "equiv_to_universe_path_value", "ua_transport_value", "ua_beta_path_value",
-        "ua_beta_back_path_value", "univalence_retr_path_value", "univalence_sect_square_value",
-        "univalence_equiv_value", "universe_path_of_checked_line", "universe_path_of_ua_term_closed",
-        "universe_path_to_equiv_value", "universe_path_normal_form", "universe_path_transport_conv",
-        "path_to_equiv_term", "ua_map_term", "path_to_equiv_map_term", "check_finite_univalence",
-        "check_univalence",
+        "ua_beta_path_value", "ua_beta_back_path_value", "univalence_retr_path_value",
+        "univalence_sect_square_value", "univalence_equiv_value", "universe_path_of_checked_line",
+        "universe_path_of_ua_term_closed", "universe_path_to_equiv_value", "universe_path_normal_form",
+        "universe_path_transport_conv", "path_to_equiv_term", "ua_map_term", "path_to_equiv_map_term",
+        "check_finite_univalence", "check_univalence",
       ],
       "有限宇宙的路徑以 wiring 等價為範形；依賴 AST 的宇宙路徑以受檢查型別線表示，pathToEquiv 取其 coe 等價，ua 取 Glue 線，uaβ 由 transport filler unglue 得到，往返分別由 Equiv 中的同倫與二維 Glue 方塊見證",
       "宇宙的路徑範疇與等價範疇之間的等價 (Equiv A B) ≃ Path U A B；Glue 是沿等價的黏合，transport 是其 coe 函子",
@@ -1171,7 +1167,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
       SpecOperator,
       [
         "simultaneous_ir_general_eliminator_type", "simultaneous_ir_compile_joint_block",
-        "simultaneous_ir_compile_joint", "check_phase14_joint_simultaneous_ir_mutual",
+        "check_phase14_joint_simultaneous_ir_mutual",
       ],
       "範形為在單一基礎歸納族上的聯合 Σ 元組動機 Πx. f₀(x)×⋯×fₖ₋₁(x) 之單次消去器，各分量透過索引投影取得閉項表示，覆蓋雙向循環互遞迴、DFunctorSum 餘積函子與小／依賴上域（層級 ≤ base.level）",
       "互依同時函數組成的同步歸納遞迴結構同構於基礎初始代數到相依乘積族的唯一截面；foreign IH 沿嚴格正函子（含 Product/Sum/List/Pi）作投影提升，將交互遞迴收斂為單一高階消去",
@@ -1193,7 +1189,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
       SpecOperator,
       [
         "DSystemRepairAllMaxima", "dsystem_repair_all_maxima", "cs_finite_closed_inhabitants",
-        "conv_terms_finite_case_split_report", "conv_terms_finite_case_split", "check_phase14_dsystem_all_maxima_and_finite_case_split",
+        "conv_terms_finite_case_split_report", "check_phase14_dsystem_all_maxima_and_finite_case_split",
       ],
       "最大完成集範形為分支相容圖各連通分量最大團的笛卡兒積列舉連同衝突分量數、總最大完成數與預算旗標；有限 case-split 範形為空／單元／Bool／有限和積無遞迴閉歸納族的閉合居民窮舉樹與差異導引報告",
       "互不相交衝突分量的最大相容子系統分解為獨立團範疇的乘積；無遞迴有限型別在脈絡切片中同構於有限餘積，全體居民代入構成對離散有限假設的 η 外延決定程序",
@@ -1368,16 +1364,14 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "一般雙向雙射認證、集合截斷萬有性與圓基本群 π₁(S¹)≃ℤ（第十五期）",
       SpecTheorem,
       [
-        "dj_singleton_elim_value", "dpathp_of_transport_eq_value", "dpathp_eq_in_set_family_value",
-        "equiv_compose_value", "equiv_bidirectional_certified_in", "equiv_bidirectional_certified",
-        "dprop_is_set_value", "set_trunc_schema", "set_trunc_schema_at", "set_trunc_type_term",
-        "set_trunc_type_value", "set_trunc_point_term", "set_trunc_point_value",
-        "set_trunc_hub_value", "set_trunc_spoke_path_value", "set_trunc_loop_trivial_value",
-        "set_trunc_is_set_value", "set_trunc_rec_set_value", "set_trunc_elim_prop_value",
-        "set_trunc_elim_set_value", "set_trunc_equiv_of_equiv_set_value", "integer_succ_pred_sect_value",
-        "integer_pred_succ_retr_value", "integer_is_set_value", "circle_encode_x_value",
-        "circle_decode_step_value", "circle_decode_x_value", "circle_encode_decode_x_sect_with_zset_value",
-        "circle_encode_decode_x_sect_value", "circle_decode_encode_x_retr_value",
+        "dj_singleton_elim_value", "dpathp_of_transport_eq_value", "equiv_compose_value",
+        "equiv_bidirectional_certified_in", "equiv_bidirectional_certified", "set_trunc_schema",
+        "set_trunc_schema_at", "set_trunc_type_value", "set_trunc_point_value", "set_trunc_hub_value",
+        "set_trunc_spoke_path_value", "set_trunc_loop_trivial_value", "set_trunc_is_set_value",
+        "set_trunc_rec_set_value", "set_trunc_elim_prop_value", "set_trunc_equiv_of_equiv_set_value",
+        "integer_succ_pred_sect_value", "integer_pred_succ_retr_value", "integer_is_set_value",
+        "circle_encode_x_value", "circle_decode_step_value", "circle_decode_x_value",
+        "circle_encode_decode_x_sect_with_zset_value", "circle_decode_encode_x_retr_value",
         "circle_decode_encode_retr_value", "circle_path_equiv_cover_with_zset_value",
         "circle_path_equiv_cover_value", "circle_loop_space_equiv_integer_value",
         "pi1_set_circle_equiv_integer_value", "check_phase15_bidirectional_bijectivity_and_pi1_circle",
@@ -1420,15 +1414,15 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "大宇宙累積同時 IR、Dybjer–Setzer 開放同時 IR 與語義容器正性憑證（第十六期）",
       SpecStructure,
       [
-        "simultaneous_ir_joint_motive_level", "DOpenIRArgKind", "DOpenIRArg", "dopen_arg_external",
-        "dopen_arg_code", "dopen_arg_decoded_val", "dopen_arg_decoded_code_fn", "DOpenIRConstructor",
-        "dopen_ir_constructor", "DOpenIRDecoder", "dopen_ir_decoder", "DOpenSimultaneousIRSpec",
-        "dopen_simultaneous_ir_spec", "DOpenIRArgVal", "dopen_val_term", "dopen_val_code",
-        "dopen_val_code_fn", "DOpenIRCode", "dopen_ir_intro", "open_ir_validate",
-        "open_ir_check_code", "open_ir_eval_decode", "open_ir_elim_value", "open_ir_lower_single_decoder",
-        "DFunctorPositivityEvidence", "DFunctorialPositivityCert", "dfunctorial_positivity_covariant_cert",
-        "dfunctorial_positivity_container_cert", "dfunctorial_positivity_verify",
-        "dterm_family_strictly_positive_functorial", "check_phase16_schema_large_open_positivity",
+        "simultaneous_ir_joint_motive_level", "DOpenIRArgKind", "DOpenIRArg", "dopen_arg_code",
+        "dopen_arg_decoded_code_fn", "DOpenIRConstructor", "dopen_ir_constructor",
+        "DOpenIRDecoder", "dopen_ir_decoder", "DOpenSimultaneousIRSpec", "dopen_simultaneous_ir_spec",
+        "DOpenIRArgVal", "dopen_val_code", "dopen_val_code_fn", "DOpenIRCode", "dopen_ir_intro",
+        "open_ir_validate", "open_ir_check_code", "open_ir_eval_decode", "open_ir_elim_value",
+        "open_ir_lower_single_decoder", "DFunctorPositivityEvidence", "DFunctorialPositivityCert",
+        "dfunctorial_positivity_covariant_cert", "dfunctorial_positivity_container_cert",
+        "dfunctorial_positivity_verify", "dterm_family_strictly_positive_functorial",
+        "check_phase16_schema_large_open_positivity",
       ],
       "累積宇宙同時 IR 以 joint_motive_level = maxᵢ function_universe_level(fᵢ) 聯合編譯跨宇宙互賴區塊；Dybjer–Setzer 開放同時 IR DOpenSimultaneousIRSpec 承載多解碼器 (T₁,…,Tₘ) 與互賴函數式遞迴引數 (x : Tⱼ(a)) → U；語義正性憑證區分容器同構 Equiv(F X, Σs:S. P(s)→X)（授予嚴格正性）與協變函子律（僅授予非嚴格正性）",
       "累積宇宙中 Σ 型動機在最高分量宇宙層級統一打包大宇宙解碼器與小宇宙計數函數；開放歸納—遞迴族是多切片纖維範疇 Famₘ(Type) 上的同步初始代數；多項式容器範疇對嚴格正性自函子給出反循環語義刻畫",
@@ -1455,8 +1449,8 @@ pub fn spec_registry() -> Array[SpecEntry] {
         "ed25519_sign", "ed25519_verify", "artifact_repository_seal_ed25519", "artifact_repository_verify_ed25519",
         "ArtifactWalRecoveryReport", "ArtifactWalStore", "artifact_wal_store_open",
         "artifact_wal_recover", "artifact_wal_begin_tx", "artifact_wal_put", "artifact_wal_delete",
-        "artifact_wal_abort_tx", "artifact_wal_commit_tx", "artifact_wal_checkpoint",
-        "artifact_wal_byte_store", "check_phase16_crypto_ed25519_and_wal",
+        "artifact_wal_commit_tx", "artifact_wal_checkpoint", "artifact_wal_byte_store",
+        "check_phase16_crypto_ed25519_and_wal",
       ],
       "FIPS 180-4 SHA-256/SHA-512 摘要；GF(2²⁵⁵−19) 扭曲愛德華曲線 −x²+y²=1+dx²y² 上 RFC 8032 Pure-Ed25519 64 位元組確定性簽章與 CHARTSIG 非對稱倉庫封緘（含公鑰固定、反高階扭轉與 S<L 防延展檢查）；CHWALJRN 預寫式交易日誌以 SHA-256 幀校驗保證重放冪等與斷尾回滾",
       "內容定址儲存的密碼學雜湊給出抗碰撞單射指紋；非對稱簽章把知識庫完整性錨定於唯讀公鑰驗證態射；預寫式日誌（WAL）是可失敗狀態轉移單子到原子冪等提交單子的伴隨實現",
@@ -1482,15 +1476,14 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "纖維化環路序列等價、開放變量 Hopf–Freudenthal 收縮與五維 Stasheff K₅ 相干胞（第十六期）",
       SpecTheorem,
       [
-        "pathp_equiv_transport_eq_value", "sigma_path_equiv_value", "sigma_cong_snd_equiv_value",
-        "sigma_path_equiv_subst_value", "fibration_loop_equiv_fiber_path_value",
-        "hopf_total_space_type_value", "hopf_total_loop_equiv_fiber_seq_value", "circle_rot_eval_base_eq_value",
-        "sphere2_susp_loop1_to_loop2_value", "hopf_unit_subst_eq_value", "hopf_freudenthal_retraction_value",
-        "hopf_invariant_susp_retraction_value", "pi2_s2_type_value", "pi2_s2_hopf_hom_value",
-        "integer_to_pi2_s2_value", "pi2_s2_hopf_retract_sect_value", "dpath_k5_lhs1_value",
-        "dpath_k5_rhs1_value", "dpath_k5_route_outer3_value", "dpath_k5_route_inner3_value",
-        "dpath_k5_hemi_north4_value", "dpath_k5_hemi_south4_value", "dpath_associahedron_k5_cell5_value",
-        "check_phase16_sphere_homotopy_and_k5",
+        "pathp_equiv_transport_eq_value", "sigma_path_equiv_value", "sigma_path_equiv_subst_value",
+        "fibration_loop_equiv_fiber_path_value", "hopf_total_loop_equiv_fiber_seq_value",
+        "circle_rot_eval_base_eq_value", "sphere2_susp_loop1_to_loop2_value", "hopf_unit_subst_eq_value",
+        "hopf_freudenthal_retraction_value", "hopf_invariant_susp_retraction_value",
+        "pi2_s2_hopf_hom_value", "integer_to_pi2_s2_value", "pi2_s2_hopf_retract_sect_value",
+        "dpath_k5_lhs1_value", "dpath_k5_rhs1_value", "dpath_k5_route_outer3_value",
+        "dpath_k5_route_inner3_value", "dpath_k5_hemi_north4_value", "dpath_k5_hemi_south4_value",
+        "dpath_associahedron_k5_cell5_value", "check_phase16_sphere_homotopy_and_k5",
       ],
       "依賴和路徑分裂與異質路徑傳輸等價合成為纖維化環路等價 Ω¹(ΣB P) ≃ Σ(p:Ω¹B).(subst P p e₀ ≡ e₀) 並實例化於單值 Hopf 全空間 E_Hopf；開放自由環路 p:Ω¹(S¹) 上構造 ∂_Hopf(σ_{S²}(p))≡p 二維同倫，導出 π₂(S²)=‖Ω²(S²)‖₀ 到 ℤ 的內部認證分裂收縮；五條路徑經 Stasheff 結合多面體 K₅ 構造南北雙五邊形路線間的五維相干填充胞",
       "纖維化序列 F→E→B 誘導長精確環路序列，Hopf 纖維化 S¹→E_Hopf→S² 的連接映射在懸掛環路上構成恆等收縮，刻畫 π₂(S²) 的自由循環生成元；A_∞ 環路空間在五重結合上的相干性由四維多面體 K₅ 的 5-胞分類",
@@ -1531,9 +1524,8 @@ pub fn spec_registry() -> Array[SpecEntry] {
       [
         "HotLoadDecision", "HotLoadRecord", "HotLoadReport", "HotLoadEnv", "hot_load_env_new",
         "hot_load_env_to_compiled", "hot_load_env_epoch", "hot_load_env_history",
-        "hot_load_env_modules", "hot_load_dependents", "hot_load_consistent", "hot_load_stale_modules",
-        "hot_load_plan", "hot_load_apply", "hot_load_instantiate", "hot_load_signature",
-        "check_module_runtime_hot_loading",
+        "hot_load_dependents", "hot_load_consistent", "hot_load_stale_modules", "hot_load_plan",
+        "hot_load_apply", "hot_load_signature", "check_module_runtime_hot_loading",
       ],
       "HotLoadEnv 為 (modules, epoch, history) 的活環境；HotLoadDecision 四態為 HotAdd／HotOpaqueSwap／HotRelink(paths)／HotReject(reason)；HotLoadReport 為 (accepted, epoch_before, epoch_after, interface_changed, stale, replacements, rolled_back, reason)",
       "一致性不變式：對每個已安裝模組 M 與其每個依賴指紋 d，d.path 處安裝的物件滿足 interface_hash = d.interface_hash——這正是靜態連結器接受的環境集合；介面雜湊是從實作範疇到簽章範疇遺忘函子的商不變性，故不透明替換是該商上的恆等態射而介面變更則使依賴沿指紋拉回變為陳舊",
@@ -1556,9 +1548,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
     entry(
       "高階匹配判定程序（第十七期 b 段）",
       SpecOperator,
-      [
-        "HouMatchResult", "hou_conv", "hou_match", "hou_match_solved_within", "check_hou_matching",
-      ],
+      ["HouMatchResult", "hou_conv", "hou_match", "check_hou_matching"],
       "HouMatchResult 三態為 HouMatchSolved(solution)／HouMatchNoneWithinBound(bound)／HouMatchBudgetExceeded(bound)；bound 是答案的一部份，永不單獨宣稱「無解」",
       "匹配是合一在「右側無元變數」條件下的單側片斷：合一自二階起不可判定（Goldfarb 1981），而匹配在任意階可判定（二階 Huet–Lang 1978、三階 Dowek 1992、四階 Padovani 2000、任意階 Stirling 2009）；相異變數脊柱時代入 ?F:=λx̄.M 於 (?F x̄) 直接得 M，故解唯一且無需界限",
       "相異變數脊柱 ?F x y == and(x,y) 給出唯一解並以 βη 轉換重驗；重複脊柱 ?F x x == g x 的投影解同樣通過重驗；?F x == f(f(f x)) 在 bound=3 時如實回報 NoneWithinBound(3) 而在 bound=5 時解出並重驗；右側含元變數者拒絕而非猜測；已解 meta 與長度不符者拒絕；轉換核驗器自身通過 β、η 與反向否例",
@@ -1585,8 +1575,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
         "pi_circle", "hopf_les_iso", "hopf_les_injective", "hopf_les_surjective",
         "conn_of_sphere", "bm_gap", "gap_equiv_below", "gap_surj_at", "suspension_gap",
         "freudenthal_status", "pi3_s2_iso_pi3_s3", "pi3_s2_iso_pi3_s3_origins", "pi3_s3_iso_pi2_s2",
-        "pi3_s3_iso_pi2_s2_origins", "pi2_s2_iso_z_origins", "pi2_s2_iso_z_halves",
-        "check_blakers_massey",
+        "pi3_s3_iso_pi2_s2_origins", "pi2_s2_iso_z_origins", "check_blakers_massey",
       ],
       "連接度是整數、同倫群是有限生成交換群（秩＋不變因子），兩者皆可判定，故 Blakers–Massey 的數值內容與恰當序列代數可以真正機械驗證",
       "Blakers–Massey 間隙公式 gap(m,n)=m+n；Freudenthal 穩定範圍由此推導而非斷言：ΣX 是推出 1⊔_X 1，X 為 n-連通時 X→1 是 (n+1)-連通，故間隙為 2n+2 連通，c-連通給出 k≤c−2 等價、k=c−1 滿射，代入得 k≤2n 等價、k=2n+1 滿射；Hopf 纖維序列 S¹→S³→S² 在 k 次給出 π_k(S¹)→π_k(S³)→π_k(S²)→π_{k−1}(S¹)，兩側為零則中間為同構",
@@ -1597,11 +1586,10 @@ pub fn spec_registry() -> Array[SpecEntry] {
       SpecOperator,
       [
         "join_schema_at", "join_schema", "join_type_value", "join_inl_value", "join_inr_value",
-        "join_push_value", "join_cocone_type_value", "join_rec_value", "wedge_schema_at",
-        "wedge_schema", "wedge_type_value", "wedge_winl_value", "wedge_winr_value",
-        "wedge_glue_value", "wedge_rec_value", "trunc_schema_at", "trunc_schema",
-        "trunc_type_value", "trunc_inc_value", "trunc_rec_value", "james_schema_at",
-        "james_schema", "james_type_value", "james_nil_value", "james_cons_value",
+        "join_push_value", "join_rec_value", "wedge_schema_at", "wedge_schema", "wedge_type_value",
+        "wedge_winl_value", "wedge_winr_value", "wedge_rec_value", "trunc_schema_at",
+        "trunc_schema", "trunc_type_value", "trunc_inc_value", "trunc_rec_value",
+        "james_schema_at", "james_schema", "james_type_value", "james_nil_value",
         "james_rec_value", "join_dim", "james_cell_dim", "homotopy_universal_remaining",
         "check_homotopy_universal",
       ],
@@ -1627,10 +1615,9 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "定理登記表與範例",
       SpecTheorem,
       [
-        "CheckResult", "run_all_checks", "all_checks_pass", "print_report", "example_projector",
-        "sample_terms", "check_projector", "check_eigenspace", "check_cube_comp",
-        "check_nbe", "check_eta_all", "check_bdd_canonical", "check_glue_comp_all",
-        "check_categories_all",
+        "CheckResult", "run_all_checks", "print_report", "example_projector", "sample_terms",
+        "check_projector", "check_eigenspace", "check_cube_comp", "check_nbe", "check_eta_all",
+        "check_bdd_canonical", "check_glue_comp_all", "check_categories_all",
       ],
       "條目 (名稱, Bool)；全表 PASS 為總驗收範式",
       "每一條目是一條可判定命題在具體見證上的實現",
@@ -1793,8 +1780,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
       SpecStructure,
       [
         "sieve_double_negation", "sieve_coheyting_sub", "sieve_coheyting_boundary",
-        "double_negation_lt_operator", "double_negation_sheaf_site", "AlexandrovSpace",
-        "ChuSpace", "verify_double_negation_presheaf_template",
+        "double_negation_lt_operator", "AlexandrovSpace", "ChuSpace", "verify_double_negation_presheaf_template",
       ],
       "雙重否定核 j(S) = ¬¬S 為 Ω 上唯一稠密冪等核態射；co-Heyting 差 (S ⇐ T) 由集合差 S \\ T 生成之最小下閉篩唯一決定",
       "Grothendieck 預層 Topos PSh(C) 至布林反射子 Topos Sh_¬¬(PSh(C)) 之左正合層化伴隨 a_¬¬ ⊣ i_¬¬，與亞歷山德羅夫下閉開集伽羅瓦對偶及 Chu(Set,K) 自對偶",
@@ -1882,37 +1868,86 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "54/54 結構證書、26/26 運算動詞、14/14 範疇組合與 14/14 交互定理全數通過，含開盒修補繞數 +3、角點衝突對 (0,1) 攔截與 S¹/T² 反射對帳",
     ),
     entry(
-      "規格登記自身",
+      "CCHM 黏合類型與膠水資料、四重等價與 Vogt 半伴隨化、Hofmann–Streicher 泛立方體宇宙重對齊及單值宇宙同構",
+      SpecTheorem,
+      [
+        "CubicalGlueSpec", "CubicalGlueDatum", "FiniteEquivQuadrilogy", "HsCubicalFamily2D",
+        "HsClassifierCode2D", "GlueHaeUniverseClassifierReport", "cubical_glue_eval_type",
+        "cubical_glue_datum_aligned", "cubical_glue_intro_value", "cubical_glue_unglue_value",
+        "classify_finite_map_equivalences", "hs_classify_family_2d", "hs_pullback_universal_el_2d",
+        "realign_hs_family_code_2d", "cubical_lift_type_value", "cubical_lift_in_value",
+        "cubical_lift_out_value", "verify_glue_hae_and_universe_classifier_suite",
+      ],
+      "Glue [φ_k ↦ (T_k, e_k)] B 在 φ_k≡⊤/⊥ 處嚴格塌縮並以對齊部分值對封裝膠水元；HS 預層分類碼以頂點基數與邊單值置換對表出，經 Orton–Pitts U8 共軛傳輸局部嚴格重對齊",
+      "黏合構造是沿上纖維化部分等價將纖維拉回基底的嚴格同倫笛卡兒提升；準逆、雙可逆、半伴隨與可縮纖維在有限集四重全等，而在 1-群胚 S¹ 上由 Vogt 公式消除三角繞數阻礙",
+      "256 個 Fin(4) 自映射精確篩出 24 個雙射，S¹ 失相干準逆 (loop², loop⁻¹) 經 Vogt 伴隨化修復繞數 +2 並構造 2D 相干方塊，入口／出口 Glue 線 Kan 往返與 Lift 中性 β/η 全數通過",
+    ),
+    entry(
+      "2D 高階歸納類型 Smith 整同調、同倫推出泛餘錐雙射、圓形度數函子、懸置 Σ⊣Ω 伴隨與圓環 2-立方往返",
       SpecStructure,
       [
-        "SpecKind", "SpecEntry", "spec_registry", "spec_registry_sound", "spec_covers",
-        "spec_count",
+        "CubicalHit2Presentation", "Hit2HomologySummary", "CubicalPushoutSpan", "CubicalHitsPushoutTorusReport",
+        "integer_matrix_smith_invariants", "compute_hit2_homology", "pushout_span_to_hit2",
+        "verify_pushout_universal_cocone_bijection", "circle_loop_power_value", "circle_degree_map_value",
+        "torus_to_circle_product_value", "circle_product_to_torus_value", "verify_cubical_hits_pushout_torus_suite",
       ],
+      "2D HIT 由點、1-路徑與帶號字 2-胞腔表達，整邊界矩陣經行列歐幾里得對角化為 Smith 不變因子；推出商與餘錐由聯合消去器對應，T² 與 S¹×S¹ 互為雙重圓形消去截面",
+      "推出跨度 A←C→B 的餘錐範疇表現泛上極限函子 Hom(A⊔^C B, -)；懸置作為端點塌縮推出誘導指點類型範疇上的左伴隨 Σ ⊣ Ω",
+      "核心全部 HIT Schema 良構，Klein 瓶推出同調 H₁≅ℤ⊕ℤ/2ℤ 檢出撓率 [2]，非平凡跨度 27==27 餘錐雙射，deg_3∘deg_2=+6／deg_{-2}∘deg_3=-6，ΣBool≃S¹ 與 Σ⊣Ω 伴隨及 T²≃S¹×S¹ 開放 2-立方定義往返全數核驗",
+    ),
+    entry(
+      "雙分類 CwF 平行代換么半群、上纖維化層轉換、無歸約立方 NbE、依值柯里化與函數外延、連接對偶及 3D 開放盒填充",
+      SpecOperator,
+      [
+        "CwfCubicalTerm", "CwfParallelSubst", "SimpleCubicalTy", "CubicalNe", "CubicalNf",
+        "CubicalNbeSubstConnectionsKanReport", "dim_de_morgan_nnf", "cwf_apply_dim_subst",
+        "cwf_subst_lift_tm", "cwf_subst_lift_dim", "cwf_apply_subst", "cwf_subst_compose",
+        "cwf_subst_id", "cubical_normalize_to_nf", "cubical_nf_is_canonical", "dependent_curry_value",
+        "dependent_uncurry_sigma_elim_value", "dependent_funext_value", "dependent_happly_value",
+        "connection_meet_square_value", "connection_join_square_value", "verify_cubical_nbe_subst_connections_kan_suite",
+        "check_work4_stage2_dedicated_structures",
+      ],
+      "平行代換分離項索引與 De Morgan NNF 維度映射；CubicalNf/CubicalNe 文法結構性禁止 β-紅ex 並強制 Π/Σ/Path 長 η 展開；連接方塊由 NNF 交聯算子誘導",
+      "雙分類代換構成帶族範疇（CwF）在立方區間索引上的嚴格作用么半群；反射—再化對給出語法商到正規形的無歸約截面，依值柯里化與依值外延分別表現 Σ⊣Π* 與區間指數交換律",
+      "跨綁定器代換結合律、邊界 ∂I=(i=0)∨(i=1) 層黏合轉換、6 條 β/η 定律與 quote_at 自然性、依值柯里化與依值 funext 開放中性項往返、連接 8 律與對偶、Π/Σ hcomp 及 I³→S¹ 五面 8 稜相容 3D 開放盒填充全數通過",
+    ),
+    entry(
+      "七大前沿類型論支柱：多模態依賴類型論、Artin 膠合與幾何複合、SWAR 雙上下文資源 QTT、立方路徑 QIIT 與記憶化雙向依值／歸納系統",
+      SpecTheorem,
+      [
+        "BidirDagArena", "BidirDagNode", "MemoBidirInductiveReport", "MemoElabSession",
+        "CubicalMode2Cat", "CubicalMttTerm", "CubicalMttEntry", "CubicalMttCtx",
+        "DualSwarDepTerm", "CubQiitCon", "CubQiitTy", "Frontier7PillarsCubicalReport",
+        "bidir_dag_new", "bidir_dag_alloc", "bidir_dag_invalidate_cache", "bd_whnf",
+        "bd_conv", "bidir_dag_infer_memo", "bidir_dag_check_memo", "bidir_dag_check_unmemoized",
+        "bidir_dag_compile_dterm", "memo_elab_session_new", "memo_elab_infer", "verify_memo_bidir_inductive_suite",
+        "cubical_cohesive_guarded_mode_2cat", "cubical_mode_2cat_valid", "cubical_mtt_tip_mode",
+        "cubical_mtt_synth", "cubical_mtt_check", "usage_mult_to_swar_lane", "swar_lane_to_usage_mult",
+        "dual_swar_eval_usage", "dual_swar_check_resource_term", "cub_qiit_simplify_ty",
+        "cub_qiit_elim_ty_to_dvalue", "cub_qiit_reify_id_sub_path", "verify_frontier_7pillars_cubical_suite",
+      ],
+      "嚴格模式 2-範疇 Godement 互換律與 Fitch 左伴隨鎖正規形；Artin 逗號範疇 Set↓Γ 規範截面篩選；16×4-bit SWAR 飽和半模與 0·Γ 抹除；雜湊共享 DAG + Stafford Mix13 時代快取雙向依值推導",
+      "MTT 左伴隨鎖 Γ.lock_μ ⊣ ⟨μ|A⟩ 與 2-胞腔逆變鑰匙、Orton–Pitts 扭轉 Glue 與 Artin 膠合正規性對偶、Atkey 定量半模作用及 Kaposi–Kovács–Altenkirch 展示代數截面消除子",
+      "3-模式凝聚—守衛 2-範疇互換律、⟨♭|B⟩→B／⟨♭|B⟩→⟨♭|⟨♭|B⟩⟩／B→⟨▹|B⟩ 與清晰阻斷、Discrete(2) 膠合布林 4→2 篩選、SWAR 線性／抹除攔截、1D 路徑 QIIT 端點對齊及深度 10 鑽石 DAG 18422→108（170x）記憶化雙向 Vec/NatInd 核心編譯全數通過",
+    ),
+    entry(
+      "規格登記自身",
+      SpecStructure,
+      ["SpecKind", "SpecEntry", "spec_registry", "spec_registry_sound"],
       "條目本身即 (名稱, 類別, 符號, 範形, 範疇, 判定) 六元組",
       "登記是「規格的規格」；內部一致性由 spec_registry_sound 對非空欄位、條目名稱與符號唯一性核驗",
-      "spec_registry_sound() 非空欄位、名稱與符號唯一性審計；spec_covers 查詢登記覆蓋",
+      "spec_registry_sound() 以 O(N) 雜湊映射核驗非空欄位、條目名稱與符號唯一性",
     ),
   ]
 }
 
 ///|
-fn spec_symbol_count(reg : Array[SpecEntry], sym : String) -> Int32 {
-  let mut count = 0
-  for i in 0..<reg.length() {
-    for k in 0..<reg[i].symbols.length() {
-      if reg[i].symbols[k] == sym {
-        count = count + 1
-      }
-    }
-  }
-  count
-}
-
-///|
 /// The registry is sound: every entry fully specified, names unique, and
-/// no symbol claimed by two entries.
+/// no symbol claimed by two entries (`O(N)` hash-set verification).
 pub fn spec_registry_sound() -> Bool {
   let reg = spec_registry()
+  let seen_names : Map[String, Bool] = Map([])
+  let seen_syms : Map[String, Bool] = Map([])
   for i in 0..<reg.length() {
     let e = reg[i]
     if e.name == "" ||
@@ -1922,26 +1957,17 @@ pub fn spec_registry_sound() -> Bool {
       e.symbols.length() == 0 {
       return false
     }
-    for j in 0..<reg.length() {
-      if i != j && reg[j].name == e.name {
-        return false
-      }
+    if seen_names.contains(e.name) {
+      return false
     }
+    seen_names[e.name] = true
     for k in 0..<e.symbols.length() {
-      if spec_symbol_count(reg, e.symbols[k]) != 1 {
+      let sym = e.symbols[k]
+      if sym == "" || seen_syms.contains(sym) {
         return false
       }
+      seen_syms[sym] = true
     }
   }
   true
-}
-
-///|
-pub fn spec_covers(sym : String) -> Bool {
-  spec_symbol_count(spec_registry(), sym) >= 1
-}
-
-///|
-pub fn spec_count() -> Int32 {
-  spec_registry().length()
 }

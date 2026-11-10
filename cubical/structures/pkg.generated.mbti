@@ -22,9 +22,25 @@ pub fn check_relational_parametricity_pair(PolyFunctor, PolyFunctor, Int32, Int3
 
 pub fn check_work4_54_structures_26_verbs_14_patterns() -> Bool
 
+pub fn check_work4_stage2_dedicated_structures() -> Bool
+
+pub fn circle_degree_map_value(Int32, Int32) -> @kernel.DValue
+
+pub fn circle_loop_power_value(Int32, Int32) -> @kernel.DValue
+
+pub fn circle_product_to_torus_value(@kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn classify_finite_map_equivalences(Int32, Array[Int32]) -> FiniteEquivQuadrilogy
+
 pub fn classify_pi_quantifier_role(CubicalBidirType) -> (Bool, Bool)
 
+pub fn compute_hit2_homology(CubicalHit2Presentation) -> Hit2HomologySummary
+
 pub fn compute_integral_cellular_homology(IntegralCellularComplex) -> IntegralHomologyReport
+
+pub fn connection_join_square_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn connection_meet_square_value(@kernel.DValue) -> @kernel.DValue
 
 pub fn covering_2cell_homotopy_invariant(DiscreteCoveringSpace) -> Bool
 
@@ -34,7 +50,67 @@ pub fn covering_is_connected(DiscreteCoveringSpace) -> Bool
 
 pub fn covering_lift_word(DiscreteCoveringSpace, Int32, Array[Int32]) -> Int32
 
+pub fn cub_qiit_elim_ty_to_dvalue(CubQiitTy) -> @kernel.DValue
+
+pub fn cub_qiit_reify_id_sub_path(CubQiitCon, CubQiitTy) -> (@kernel.DValue, Bool)
+
+pub fn cub_qiit_simplify_ty(CubQiitTy) -> CubQiitTy
+
+pub fn cubical_cohesive_guarded_mode_2cat() -> CubicalMode2Cat
+
+pub fn cubical_glue_datum_aligned(Int32, Int32, CubicalGlueSpec, CubicalGlueDatum) -> Bool
+
+pub fn cubical_glue_eval_type(CubicalGlueSpec) -> @kernel.DValue
+
+pub fn cubical_glue_intro_value(CubicalGlueSpec, CubicalGlueDatum) -> @kernel.DValue
+
+pub fn cubical_glue_unglue_value(CubicalGlueSpec, @kernel.DValue) -> @kernel.DValue
+
+pub fn cubical_lift_in_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn cubical_lift_out_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn cubical_lift_type_value(@kernel.DValue) -> @kernel.DValue
+
+pub fn cubical_mode_2cat_valid(CubicalMode2Cat) -> Bool
+
+pub fn cubical_mtt_check(CubicalMode2Cat, CubicalMttCtx, CubicalMttTerm, CubicalMttTerm) -> Bool
+
+pub fn cubical_mtt_synth(CubicalMode2Cat, CubicalMttCtx, CubicalMttTerm) -> CubicalMttTerm?
+
+pub fn cubical_mtt_tip_mode(CubicalMode2Cat, CubicalMttCtx) -> Int32?
+
+pub fn cubical_nf_is_canonical(SimpleCubicalTy, CubicalNf) -> Bool
+
+pub fn cubical_normalize_to_nf(Array[SimpleCubicalTy], Int32, SimpleCubicalTy, CwfCubicalTerm) -> CubicalNf
+
+pub fn cwf_apply_dim_subst(@face_bdd.Dim, Array[@face_bdd.Dim]) -> @face_bdd.Dim
+
+pub fn cwf_apply_subst(CwfCubicalTerm, CwfParallelSubst) -> CwfCubicalTerm
+
+pub fn cwf_subst_compose(CwfParallelSubst, CwfParallelSubst) -> CwfParallelSubst
+
+pub fn cwf_subst_id(Int32, Int32) -> CwfParallelSubst
+
+pub fn cwf_subst_lift_dim(CwfParallelSubst) -> CwfParallelSubst
+
+pub fn cwf_subst_lift_tm(CwfParallelSubst) -> CwfParallelSubst
+
+pub fn dependent_curry_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn dependent_funext_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn dependent_happly_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
+pub fn dependent_uncurry_sigma_elim_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue) -> @kernel.DValue
+
 pub fn diagnose_and_repair_square_boundary(@kernel.DValue, Array[(Int32, Bool, @kernel.DCubeFunction)]) -> (BoundaryRepairStatus, Int32, @kernel.DValue?)
+
+pub fn dim_de_morgan_nnf(@face_bdd.Dim) -> @face_bdd.Dim
+
+pub fn dual_swar_check_resource_term(Int32, Array[UsageMult], DualSwarDepTerm) -> Bool
+
+pub fn dual_swar_eval_usage(Int32, UInt64, Int32, DualSwarDepTerm) -> UInt64?
 
 pub fn ez_canonical_cube64_factor(UInt64, Int32) -> EilenbergZilberCubeFactor
 
@@ -42,7 +118,13 @@ pub fn ez_reconstruct_cube64(EilenbergZilberCubeFactor) -> UInt64
 
 pub fn focused_ljf_cubical_prove(Array[PolarCubicalFormula], Array[Int32], Array[PolarCubicalFormula], PolarCubicalFormula, Int32) -> (Bool, Int32)
 
+pub fn hs_classify_family_2d(String, HsCubicalFamily2D) -> HsClassifierCode2D
+
+pub fn hs_pullback_universal_el_2d(HsClassifierCode2D) -> HsCubicalFamily2D
+
 pub fn infer_cubical_bidir(Array[(Bool, CubicalBidirType)], Int32, @face_bdd.Face, CubicalBidirTerm, BidirSubstructuralMode) -> BidirCheckOutcome
+
+pub fn integer_matrix_smith_invariants(Int32, Int32, Array[Int32]) -> Array[Int32]
 
 pub fn is_dep_structure_hom(DepStructure, DepStructure, Array[Int32]) -> Bool
 
@@ -57,6 +139,10 @@ pub fn poly_fmap(PolyFunctor, Int32, Int32, Array[Int32]) -> Array[Int32]
 pub fn poly_functor_card(PolyFunctor, Int32) -> Int32
 
 pub fn poly_rel_lift(PolyFunctor, Int32, Int32, Array[Bool]) -> Array[Bool]
+
+pub fn pushout_span_to_hit2(String, CubicalPushoutSpan) -> CubicalHit2Presentation
+
+pub fn realign_hs_family_code_2d(HsCubicalFamily2D, Int32, Array[Int32], Array[Array[Int32]]) -> HsClassifierCode2D
 
 pub fn refl_denote_s1_kan_path(ReflLoopExpr) -> @kernel.DValue
 
@@ -78,9 +164,15 @@ pub fn swan_id_well_formed(SwanIdValue, Int32) -> Bool
 
 pub fn swan_id_well_formed_at(Int32, SwanIdValue, Int32) -> Bool
 
+pub fn swar_lane_to_usage_mult(Int32) -> UsageMult
+
+pub fn torus_to_circle_product_value(@kernel.DValue, Int32) -> @kernel.DValue
+
 pub fn unfocused_cubical_sequent_count(Array[PolarCubicalFormula], PolarCubicalFormula, Int32) -> (Bool, Int32)
 
 pub fn usage_branch_join(UsageMult, UsageMult) -> UsageMult
+
+pub fn usage_mult_to_swar_lane(UsageMult) -> Int32
 
 pub fn usage_seq_add(UsageMult, UsageMult) -> UsageMult
 
@@ -88,7 +180,17 @@ pub fn verify_affine_bidirectional_and_focusing_suite() -> AffineBidirFocusingRe
 
 pub fn verify_covering_pushout_and_torus_suite() -> CoveringPushoutTorusReport
 
+pub fn verify_cubical_hits_pushout_torus_suite() -> CubicalHitsPushoutTorusReport
+
+pub fn verify_cubical_nbe_subst_connections_kan_suite() -> CubicalNbeSubstConnectionsKanReport
+
+pub fn verify_frontier_7pillars_cubical_suite() -> Frontier7PillarsCubicalReport
+
 pub fn verify_functorial_polymorphism_and_sip_suite() -> FunctorialPolySipReport
+
+pub fn verify_glue_hae_and_universe_classifier_suite() -> GlueHaeUniverseClassifierReport
+
+pub fn verify_pushout_universal_cocone_bijection(CubicalPushoutSpan, Int32) -> (Bool, Int32, Int32)
 
 pub fn verify_reconstruction_repair_and_reflection_suite() -> ReconstructRepairReflectReport
 
@@ -188,6 +290,26 @@ pub fn CoveringPushoutTorusReport::not_equal(Self, Self) -> Bool
 pub fn CoveringPushoutTorusReport::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
+pub(all) enum CubQiitCon {
+  CQEmp
+  CQExt(CubQiitCon, CubQiitTy)
+}
+pub fn CubQiitCon::equal(Self, Self) -> Bool
+pub fn CubQiitCon::not_equal(Self, Self) -> Bool
+pub fn CubQiitCon::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum CubQiitTy {
+  CQBool(CubQiitCon)
+  CQCircle(CubQiitCon)
+  CQIdSubst(CubQiitCon, CubQiitTy)
+  CQIdSubPath(CubQiitCon, CubQiitTy, @face_bdd.Dim)
+}
+pub fn CubQiitTy::equal(Self, Self) -> Bool
+pub fn CubQiitTy::not_equal(Self, Self) -> Bool
+pub fn CubQiitTy::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
 pub(all) enum CubicalBidirTerm {
   BVar(Int32)
   BBool(Bool)
@@ -223,6 +345,178 @@ pub fn CubicalBidirType::equal(Self, Self) -> Bool
 pub fn CubicalBidirType::not_equal(Self, Self) -> Bool
 pub fn CubicalBidirType::to_repr(Self) -> @debug.Repr
 
+pub struct CubicalGlueDatum {
+  partial_fibers : Array[@kernel.DValue]
+  base_elem : @kernel.DValue
+}
+
+pub struct CubicalGlueSpec {
+  branches : Array[@kernel.DEquivBranchValue]
+  base_ty : @kernel.DValue
+  level : Int32
+}
+
+#derive(Eq, @debug.Debug)
+pub(all) struct CubicalHit2Presentation {
+  name : String
+  num_points : Int32
+  paths_1 : Array[(Int32, Int32)]
+  squares_2 : Array[Array[(Int32, Int32)]]
+}
+pub fn CubicalHit2Presentation::equal(Self, Self) -> Bool
+pub fn CubicalHit2Presentation::not_equal(Self, Self) -> Bool
+pub fn CubicalHit2Presentation::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct CubicalHitsPushoutTorusReport {
+  kernel_hit_schemas_and_2d_homology_ok : Bool
+  klein_bottle_pushout_torsion_z_plus_z2_ok : Bool
+  pushout_universal_cocone_bijection_ok : Bool
+  circle_degree_beta_and_functoriality_ok : Bool
+  suspension_bool_circle_and_loop_adjunction_ok : Bool
+  torus_circle_product_generic_2cube_roundtrip_ok : Bool
+  torus_commutator_cap_and_biwinding_obstruction_ok : Bool
+}
+pub fn CubicalHitsPushoutTorusReport::equal(Self, Self) -> Bool
+pub fn CubicalHitsPushoutTorusReport::not_equal(Self, Self) -> Bool
+pub fn CubicalHitsPushoutTorusReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub struct CubicalMode2Cat {
+  n_modes : Int32
+  n_mod1 : Int32
+  dom1 : Array[Int32]
+  cod1 : Array[Int32]
+  id1 : Array[Int32]
+  comp1 : Array[Array[Int32]]
+  n_cell2 : Int32
+  src2 : Array[Int32]
+  dst2 : Array[Int32]
+  id2 : Array[Int32]
+  vcomp2 : Array[Array[Int32]]
+  hcomp2 : Array[Array[Int32]]
+}
+pub fn CubicalMode2Cat::equal(Self, Self) -> Bool
+pub fn CubicalMode2Cat::not_equal(Self, Self) -> Bool
+pub fn CubicalMode2Cat::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct CubicalMttCtx {
+  root_mode : Int32
+  entries : Array[CubicalMttEntry]
+}
+pub fn CubicalMttCtx::equal(Self, Self) -> Bool
+pub fn CubicalMttCtx::not_equal(Self, Self) -> Bool
+pub fn CubicalMttCtx::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum CubicalMttEntry {
+  MttBind(Int32, CubicalMttTerm)
+  MttLock(Int32)
+}
+pub fn CubicalMttEntry::equal(Self, Self) -> Bool
+pub fn CubicalMttEntry::not_equal(Self, Self) -> Bool
+pub fn CubicalMttEntry::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, Hash, @debug.Debug)
+pub(all) enum CubicalMttTerm {
+  MttUniv(Int32)
+  MttBoolTy
+  MttBoolLit(Bool)
+  MttVar(Int32, Int32)
+  MttModTy(Int32, CubicalMttTerm)
+  MttModIntro(Int32, CubicalMttTerm)
+  MttLetMod(Int32, Int32, CubicalMttTerm, CubicalMttTerm, CubicalMttTerm)
+  MttPi(Int32, CubicalMttTerm, CubicalMttTerm)
+  MttLam(Int32, CubicalMttTerm, CubicalMttTerm)
+  MttApp(Int32, CubicalMttTerm, CubicalMttTerm)
+}
+pub fn CubicalMttTerm::equal(Self, Self) -> Bool
+pub fn CubicalMttTerm::hash(Self) -> Int32
+pub fn CubicalMttTerm::hash_combine(Self, Hasher) -> Unit
+pub fn CubicalMttTerm::not_equal(Self, Self) -> Bool
+pub fn CubicalMttTerm::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct CubicalNbeSubstConnectionsKanReport {
+  cwf_subst_monoid_and_dim_comm_ok : Bool
+  cofibration_local_sheaf_conversion_ok : Bool
+  canonical_nf_grammar_and_6_beta_eta_ok : Bool
+  kernel_quote_subst_naturality_ok : Bool
+  bidirectional_type_formation_and_mismatch_rej_ok : Bool
+  dependent_curry_and_sigma_elim_beta_eta_ok : Bool
+  dependent_funext_happly_roundtrip_ok : Bool
+  connection_squares_8_laws_and_duality_ok : Bool
+  structured_hcomp_pi_sigma_path_ok : Bool
+  hfill_and_3d_open_box_filler_verified_ok : Bool
+}
+pub fn CubicalNbeSubstConnectionsKanReport::equal(Self, Self) -> Bool
+pub fn CubicalNbeSubstConnectionsKanReport::not_equal(Self, Self) -> Bool
+pub fn CubicalNbeSubstConnectionsKanReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum CubicalNe {
+  NeVar(Int32)
+  NeApp(CubicalNe, CubicalNf)
+  NeFst(CubicalNe)
+  NeSnd(CubicalNe)
+  NePathApp(CubicalNe, @face_bdd.Dim)
+}
+pub fn CubicalNe::equal(Self, Self) -> Bool
+pub fn CubicalNe::not_equal(Self, Self) -> Bool
+pub fn CubicalNe::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum CubicalNf {
+  NfLam(CubicalNf)
+  NfPair(CubicalNf, CubicalNf)
+  NfPathLam(CubicalNf)
+  NfBool(Bool)
+  NfCirclePt(@face_bdd.Dim)
+  NfBaseNe(CubicalNe)
+}
+pub fn CubicalNf::equal(Self, Self) -> Bool
+pub fn CubicalNf::not_equal(Self, Self) -> Bool
+pub fn CubicalNf::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct CubicalPushoutSpan {
+  card_a : Int32
+  card_b : Int32
+  card_c : Int32
+  leg_f : Array[Int32]
+  leg_g : Array[Int32]
+}
+pub fn CubicalPushoutSpan::equal(Self, Self) -> Bool
+pub fn CubicalPushoutSpan::not_equal(Self, Self) -> Bool
+pub fn CubicalPushoutSpan::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum CwfCubicalTerm {
+  CTVar(Int32)
+  CTBool(Bool)
+  CTLam(CwfCubicalTerm)
+  CTApp(CwfCubicalTerm, CwfCubicalTerm)
+  CTPair(CwfCubicalTerm, CwfCubicalTerm)
+  CTFst(CwfCubicalTerm)
+  CTSnd(CwfCubicalTerm)
+  CTPathLam(CwfCubicalTerm)
+  CTPathApp(CwfCubicalTerm, @face_bdd.Dim)
+  CTCirclePt(@face_bdd.Dim)
+}
+pub fn CwfCubicalTerm::equal(Self, Self) -> Bool
+pub fn CwfCubicalTerm::not_equal(Self, Self) -> Bool
+pub fn CwfCubicalTerm::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct CwfParallelSubst {
+  tm_map : Array[CwfCubicalTerm]
+  dim_map : Array[@face_bdd.Dim]
+}
+pub fn CwfParallelSubst::equal(Self, Self) -> Bool
+pub fn CwfParallelSubst::not_equal(Self, Self) -> Bool
+pub fn CwfParallelSubst::to_repr(Self) -> @debug.Repr
+
 #derive(Eq, @debug.Debug)
 pub(all) struct DepSignature {
   sig_name : String
@@ -256,6 +550,20 @@ pub fn DiscreteCoveringSpace::not_equal(Self, Self) -> Bool
 pub fn DiscreteCoveringSpace::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
+pub(all) enum DualSwarDepTerm {
+  DCNatLit(Int32)
+  DCModalVar(Int32)
+  DCResVar(Int32)
+  DCVecIndexTy(DualSwarDepTerm)
+  DCDepAnn(DualSwarDepTerm, DualSwarDepTerm)
+  DCTensorPair(DualSwarDepTerm, DualSwarDepTerm)
+  DCAdditiveIf(Int32, DualSwarDepTerm, DualSwarDepTerm)
+}
+pub fn DualSwarDepTerm::equal(Self, Self) -> Bool
+pub fn DualSwarDepTerm::not_equal(Self, Self) -> Bool
+pub fn DualSwarDepTerm::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
 pub(all) struct EilenbergZilberCubeFactor {
   ambient_dim : Int32
   core_dim : Int32
@@ -265,6 +573,33 @@ pub(all) struct EilenbergZilberCubeFactor {
 pub fn EilenbergZilberCubeFactor::equal(Self, Self) -> Bool
 pub fn EilenbergZilberCubeFactor::not_equal(Self, Self) -> Bool
 pub fn EilenbergZilberCubeFactor::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct FiniteEquivQuadrilogy {
+  has_quasi_inverse : Bool
+  has_bi_invertible : Bool
+  has_half_adjoint : Bool
+  has_contractible_fibers : Bool
+}
+pub fn FiniteEquivQuadrilogy::equal(Self, Self) -> Bool
+pub fn FiniteEquivQuadrilogy::not_equal(Self, Self) -> Bool
+pub fn FiniteEquivQuadrilogy::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub struct Frontier7PillarsCubicalReport {
+  mtt_2cat_interchange_ok : Bool
+  mtt_counit_comult_guarded_ok : Bool
+  mtt_crisp_modal_blocking_ok : Bool
+  cubical_artin_glue_canonicity_ok : Bool
+  dual_swar_qtt_erasure_and_linearity_ok : Bool
+  cubical_qiit_path_eliminator_ok : Bool
+  memo_bidir_inductive_dag_ok : Bool
+  memo_unmemo_speedup_ratio : Int32
+  all_ok : Bool
+}
+pub fn Frontier7PillarsCubicalReport::equal(Self, Self) -> Bool
+pub fn Frontier7PillarsCubicalReport::not_equal(Self, Self) -> Bool
+pub fn Frontier7PillarsCubicalReport::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
 pub(all) struct FunctorialPolySipReport {
@@ -279,6 +614,53 @@ pub(all) struct FunctorialPolySipReport {
 pub fn FunctorialPolySipReport::equal(Self, Self) -> Bool
 pub fn FunctorialPolySipReport::not_equal(Self, Self) -> Bool
 pub fn FunctorialPolySipReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct GlueHaeUniverseClassifierReport {
+  glue_type_strict_top_and_bot_collapse_ok : Bool
+  glue_data_beta_and_neutral_eta_ok : Bool
+  glue_misaligned_datum_rejected : Bool
+  glue_double_twisted_line_kan_coe_ok : Bool
+  finite_256_maps_quadrilogy_exact_24_ok : Bool
+  s1_incoherent_qinv_detected : Bool
+  vogt_adjointified_winding_and_2cell_ok : Bool
+  hs_pullback_and_realignment_strict_ok : Bool
+  universe_lift_neutral_beta_eta_and_coe_ok : Bool
+  univalence_bool_iso_beta_eta_ok : Bool
+}
+pub fn GlueHaeUniverseClassifierReport::equal(Self, Self) -> Bool
+pub fn GlueHaeUniverseClassifierReport::not_equal(Self, Self) -> Bool
+pub fn GlueHaeUniverseClassifierReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct Hit2HomologySummary {
+  pi0_components : Int32
+  euler_characteristic : Int32
+  h1_free_rank : Int32
+  h1_torsion_factors : Array[Int32]
+}
+pub fn Hit2HomologySummary::equal(Self, Self) -> Bool
+pub fn Hit2HomologySummary::not_equal(Self, Self) -> Bool
+pub fn Hit2HomologySummary::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct HsClassifierCode2D {
+  code_tag : String
+  vertex_type_codes : Array[Int32]
+  edge_equiv_perms : Array[Array[Int32]]
+}
+pub fn HsClassifierCode2D::equal(Self, Self) -> Bool
+pub fn HsClassifierCode2D::not_equal(Self, Self) -> Bool
+pub fn HsClassifierCode2D::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct HsCubicalFamily2D {
+  vertex_cards : Array[Int32]
+  edge_transports : Array[Array[Int32]]
+}
+pub fn HsCubicalFamily2D::equal(Self, Self) -> Bool
+pub fn HsCubicalFamily2D::not_equal(Self, Self) -> Bool
+pub fn HsCubicalFamily2D::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
 pub(all) struct IntegralCellularComplex {
@@ -310,16 +692,6 @@ pub(all) struct LevelConstraint {
 pub fn LevelConstraint::equal(Self, Self) -> Bool
 pub fn LevelConstraint::not_equal(Self, Self) -> Bool
 pub fn LevelConstraint::to_repr(Self) -> @debug.Repr
-
-#derive(Eq, @debug.Debug)
-pub(all) enum LevelExpr {
-  LConst(Int32)
-  LVar(Int32, Int32)
-  LMax(LevelExpr, LevelExpr)
-}
-pub fn LevelExpr::equal(Self, Self) -> Bool
-pub fn LevelExpr::not_equal(Self, Self) -> Bool
-pub fn LevelExpr::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, Hash, @debug.Debug)
 pub(all) enum OperationalVerb26 {
@@ -422,6 +794,18 @@ pub(all) struct SigOpField {
 pub fn SigOpField::equal(Self, Self) -> Bool
 pub fn SigOpField::not_equal(Self, Self) -> Bool
 pub fn SigOpField::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum SimpleCubicalTy {
+  STyBool
+  STyCircle
+  STyArr(SimpleCubicalTy, SimpleCubicalTy)
+  STyProd(SimpleCubicalTy, SimpleCubicalTy)
+  STyPath(SimpleCubicalTy)
+}
+pub fn SimpleCubicalTy::equal(Self, Self) -> Bool
+pub fn SimpleCubicalTy::not_equal(Self, Self) -> Bool
+pub fn SimpleCubicalTy::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
 pub(all) struct SwanIdFreePathEzReport {

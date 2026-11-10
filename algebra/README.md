@@ -81,7 +81,7 @@
 ## 4. 關鍵機制細讀
 
 ### 4.1 `symalg.mbt` — 一切的標量基礎
-`Rat` 是 `(BigInt 分子, BigInt 分母)` 且恆常約分；`Poly` 是「合併同類項、去零、字典序排序」的**規範形**多元多項式，因此 `poly_eq` 就是結構相等（O(項數)），不需要展開。`SymC` 是 `SymFrac` 對的複數，`SymMat` 於是支援 `sym_mat_mul`、`sym_det`、`sym_is_hermitian`、`sym_is_idempotent`、`sym_projector_rank_one`、`charpoly_sym` ⇒ **Hermitian 投影子的 `P² = P = P†` 可以在符號層直接判定**，這正是 `cubical/hermitian/certified_*` 的後端。
+`Rat` 是 `(BigInt 分子, BigInt 分母)` 且恆常約分；`Poly` 是「合併同類項、去零、字典序排序」的**規範形**多元多項式，因此 `poly_eq` 就是結構相等（O(項數)），不需要展開。`SymC` 是 `SymFrac` 對的複數，`SymMat` 於是支援 `sym_mat_mul`、`sym_is_hermitian`、`sym_is_idempotent`、`sym_projector_rank_one`、`charpoly_sym` ⇒ **Hermitian 投影子的 `P² = P = P†` 可以在符號層直接判定**，這正是 `cubical/hermitian/certified_*` 的後端。
 
 ### 4.2 `qmat.mbt` — 有理線性代數
 `qrows_rref` / `qmat_rank` / `qmat_nullspace` 是全倉「精確秩」的唯一入口（`topos` 的 Betti 數、`scheme` 的 Čech 上同調維度、`condensed` 的 `lim` 維度都呼叫它）。`qmat_charpoly` 用 Newton 恆等式（`p_k = tr(A^k)`）搭配冪和，避免行列式展開的 `n!`；`qmat_minimal_polynomial` 用 Krylov 消去子求消去多項式。

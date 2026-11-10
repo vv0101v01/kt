@@ -285,24 +285,6 @@ pub fn iterm_eq(a : ITerm, b : ITerm) -> Bool {
 }
 
 ///|
-pub fn iterm_to_string(t : ITerm) -> String {
-  match t {
-    IVar(k) => "x\{k}"
-    IHole => "_"
-    ICtor(c, xs) =>
-      if xs.length() == 0 {
-        "#\{c}"
-      } else {
-        let parts : Array[String] = []
-        for x in xs {
-          parts.push(iterm_to_string(x))
-        }
-        "#\{c}(\{parts.join(",")})"
-      }
-  }
-}
-
-///|
 pub fn ival_to_string(s : ISchema, v : IVal) -> String {
   let name = if v.ctor >= 0 && v.ctor < s.ctors.length() {
     s.ctors[v.ctor].name

@@ -100,8 +100,6 @@ pub fn circle_degree_value(Int32, @kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn circle_encode_decode_sect_value(@kernel.DValue, Int32) -> @kernel.DValue
 
-pub fn circle_encode_decode_x_sect_value(@kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
-
 pub fn circle_encode_decode_x_sect_with_zset_value(@kernel.DValue, @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn circle_encode_pieces_value(Array[@kernel.DValue], Int32) -> @kernel.DValue
@@ -244,11 +242,7 @@ pub fn dpath_trans_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) 
 
 pub fn dpath_triple_square_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
 
-pub fn dpathp_eq_in_set_family_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, Int32) -> @kernel.DValue
-
 pub fn dpathp_of_transport_eq_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
-
-pub fn dprop_is_set_value(@kernel.DValue, (@kernel.DValue, @kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn dtransport_back_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
 
@@ -277,8 +271,6 @@ pub fn equiv_fiber_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @k
 pub fn equiv_fiber_type_value(@kernel.DEquivParts, @kernel.DValue) -> @kernel.DValue
 
 pub fn equiv_improved_sect_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
-
-pub fn equiv_to_universe_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn equiv_triangle_type(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue
 
@@ -352,8 +344,6 @@ pub fn hopf_south_fiber(Double) -> Array[Double]
 
 pub fn hopf_total_loop_equiv_fiber_seq_value(dlevel? : Int32) -> @kernel.DValue
 
-pub fn hopf_total_space_type_value(dlevel? : Int32) -> @kernel.DValue
-
 pub fn hopf_unit_subst_eq_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
 
 pub fn integer_is_set_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
@@ -392,8 +382,6 @@ pub fn james_cell_dim(Int32, Int32) -> Int32
 
 pub fn james_cells(Int32, Int32) -> Array[Int32]
 
-pub fn james_cons_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, level? : Int32) -> @kernel.DValue
-
 pub fn james_nil_value(@kernel.DValue, level? : Int32) -> @kernel.DValue
 
 pub fn james_rec_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
@@ -403,8 +391,6 @@ pub fn james_schema() -> @kernel.DHitSpec
 pub fn james_schema_at(Int32) -> @kernel.DHitSpec
 
 pub fn james_type_value(@kernel.DValue, level? : Int32) -> @kernel.DValue
-
-pub fn join_cocone_type_value(@kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue
 
 pub fn join_dim(Int32, Int32) -> Int32
 
@@ -480,11 +466,7 @@ pub fn pi2_s2_hopf_hom_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
 
 pub fn pi2_s2_hopf_retract_sect_value(@kernel.DValue, dlevel? : Int32) -> @kernel.DValue
 
-pub fn pi2_s2_iso_z_halves() -> (Bool, Bool)
-
 pub fn pi2_s2_iso_z_origins() -> Array[Origin]
-
-pub fn pi2_s2_type_value() -> @kernel.DValue
 
 pub fn pi3_s2_iso_pi3_s3() -> Bool
 
@@ -520,8 +502,6 @@ pub fn s3_is_join_of_two_circles() -> Bool
 
 pub fn set_trunc_elim_prop_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
 
-pub fn set_trunc_elim_set_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
-
 pub fn set_trunc_equiv_of_equiv_set_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn set_trunc_hub_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
@@ -529,8 +509,6 @@ pub fn set_trunc_hub_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
 pub fn set_trunc_is_set_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn set_trunc_loop_trivial_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
-
-pub fn set_trunc_point_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
 
 pub fn set_trunc_point_value(@kernel.DValue, @kernel.DValue) -> @kernel.DValue
 
@@ -542,11 +520,7 @@ pub fn set_trunc_schema_at(Int32) -> @kernel.DHitSpec
 
 pub fn set_trunc_spoke_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue
 
-pub fn set_trunc_type_term(@kernel.DTerm) -> @kernel.DTerm
-
 pub fn set_trunc_type_value(@kernel.DValue) -> @kernel.DValue
-
-pub fn sigma_cong_snd_equiv_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue) -> @kernel.DValue
 
 pub fn sigma_path_equiv_subst_value(@kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
 
@@ -638,10 +612,6 @@ pub fn stree_all(Int32) -> Array[Stree]
 
 pub fn stree_dim(Stree) -> Int32
 
-pub fn stree_leaves(Stree) -> Int32
-
-pub fn subst_pathp_value((@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
-
 pub fn subst_refl_eq_value((@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn subst_trans_eq_value((@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
@@ -680,13 +650,9 @@ pub fn suspension_map_value(@kernel.DHitSpec, @kernel.DHitSpec, (@kernel.DValue)
 
 pub fn suspension_meridian_path_value(@kernel.DHitSpec, @kernel.DValue) -> @kernel.DValue
 
-pub fn suspension_schema(String, @kernel.DHitSpec) -> @kernel.DHitSpec?
-
 pub fn suspension_unit_loop_value(@kernel.DHitSpec, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn transport_back_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
-
-pub fn transport_checked_line_value(@kernel.DCheckedTypeLine, @kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn transport_filler_value((@face_bdd.Dim) -> @kernel.DValue, @kernel.DValue, Int32) -> (@face_bdd.Dim) -> @kernel.DValue
 
@@ -722,8 +688,6 @@ pub fn ua_beta_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32,
 
 pub fn ua_map_term(@kernel.DTerm, @kernel.DTerm) -> @kernel.DTerm
 
-pub fn ua_transport_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, @kernel.DValue, Int32) -> @kernel.DValue
-
 pub fn univalence_equiv_value(@kernel.DValue, @kernel.DValue, Int32, Int32) -> @kernel.DValue
 
 pub fn univalence_retr_path_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, Int32) -> @kernel.DValue
@@ -753,8 +717,6 @@ pub fn wedge_connectivity_circle_left_coh_value((@kernel.DValue, @kernel.DValue)
 pub fn wedge_connectivity_circle_right_coh_value((@kernel.DValue) -> @kernel.DValue, @kernel.DValue) -> @kernel.DValue
 
 pub fn wedge_connectivity_circle_set_ext_value((@kernel.DValue, @kernel.DValue) -> @kernel.DValue, (@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, (@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
-
-pub fn wedge_glue_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @face_bdd.Dim, level? : Int32) -> @kernel.DValue
 
 pub fn wedge_rec_value(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32, level? : Int32) -> @kernel.DValue
 

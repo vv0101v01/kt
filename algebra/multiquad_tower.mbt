@@ -188,7 +188,7 @@ fn multiquad_one_with_basis(basis : Array[BigInt]) -> MultiQuadNum {
 
 ///|
 pub fn multiquad_is_zero(x : MultiQuadNum) -> Bool {
-  rat_vec_all_zero(x.coeffs)
+  qvec_is_zero(x.coeffs)
 }
 
 ///|
@@ -436,7 +436,7 @@ pub fn multiquad_sqrt_rat(r : Rat) -> MultiQuadNum? {
 }
 
 ///|
-fn multiquad_sqrt_interval(d : BigInt, k : Int32) -> (Rat, Rat) {
+fn dyadic_sqrt_interval(d : BigInt, k : Int32) -> (Rat, Rat) {
   let mut scale = 1N
   for _ in 0..<k {
     scale = scale * 2N
@@ -459,7 +459,7 @@ pub fn multiquad_sign(x : MultiQuadNum) -> Int32 {
   while k <= 512 {
     let intervals : Array[(Rat, Rat)] = []
     for i in 0..<x.basis.length() {
-      intervals.push(multiquad_sqrt_interval(x.basis[i], k))
+      intervals.push(dyadic_sqrt_interval(x.basis[i], k))
     }
     let mut total_lo = rat_zero()
     let mut total_hi = rat_zero()

@@ -127,18 +127,6 @@ pub fn Perm::moved_points(self : Perm) -> Array[Int32] {
 }
 
 ///|
-/// 不動點個數。
-pub fn Perm::fixed_point_count(self : Perm) -> Int32 {
-  let mut c = 0
-  for i in 0..<self.n {
-    if self.img[i] == i {
-      c = c + 1
-    }
-  }
-  c
-}
-
-///|
 /// 完整輪分解（含不動點）。
 pub fn Perm::cycles(self : Perm) -> Array[Array[Int32]] {
   let seen = Array::make(self.n, false)
@@ -189,21 +177,6 @@ pub fn Perm::order(self : Perm) -> Int32 {
     o = o / gcd(o, l) * l
   }
   o
-}
-
-///|
-/// 奇偶性：偶置換為 1，奇置換為 -1。
-pub fn Perm::sign(self : Perm) -> Int32 {
-  // 輪分解中，長度 l 的輪貢獻 (l-1) 個對換
-  let mut transpositions = 0
-  for c in self.cycles() {
-    transpositions = transpositions + (c.length() - 1)
-  }
-  if transpositions % 2 == 0 {
-    1
-  } else {
-    -1
-  }
 }
 
 ///|

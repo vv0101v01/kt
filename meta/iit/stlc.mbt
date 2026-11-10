@@ -462,7 +462,6 @@ pub fn law_stlc_weakening_and_context_insert_are_consistent() -> Array[
     !iterm_eq(iindex_of(s, v)[0], iindex_of(s, w)[0]),
   )
   // 弱化是單射（位置資訊沒丟）：不同變數弱化後仍不同
-  let v_lam = stlc_lam(stlc_cons(n(), nil()), n(), n(), stlc_vz(nil(), n()))
   let w2 = stlc_weaken(stlc_ex_arg(), n())
   @core.chk(
     out,
@@ -499,7 +498,6 @@ pub fn law_stlc_weakening_and_context_insert_are_consistent() -> Array[
     "iit: weakening and context insert are consistent #9",
     !icheck(s, bad),
   )
-  let _ = v_lam
   out
 }
 

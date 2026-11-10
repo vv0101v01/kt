@@ -175,15 +175,6 @@ pub fn mat_identity(n : Int32) -> CMat {
 }
 
 ///|
-pub fn mat_zero(n : Int32) -> CMat {
-  let rows : Array[Array[Complex]] = []
-  for _i in 0..<n {
-    rows.push(vec_zero(n))
-  }
-  CMat::{ n, rows, }
-}
-
-///|
 pub fn mat_from_rows(rows : Array[Array[Complex]]) -> CMat {
   CMat::{ n: rows.length(), rows, }
 }
@@ -191,15 +182,6 @@ pub fn mat_from_rows(rows : Array[Array[Complex]]) -> CMat {
 ///|
 pub fn mat_get(m : CMat, i : Int32, j : Int32) -> Complex {
   m.rows[i][j]
-}
-
-///|
-pub fn mat_add(a : CMat, b : CMat) -> CMat {
-  let rows : Array[Array[Complex]] = []
-  for i in 0..<a.n {
-    rows.push(vec_add(a.rows[i], b.rows[i]))
-  }
-  CMat::{ n: a.n, rows, }
 }
 
 ///|

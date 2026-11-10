@@ -62,7 +62,6 @@ pub(all) struct KeyTable {
   mut evictions : Int64
   mut probes : Int64
 }
-pub fn KeyTable::capacity(Self) -> Int32
 pub fn KeyTable::get_or_insert(Self, UInt64, Int64) -> Int32
 pub fn KeyTable::new(Int32) -> Self
 

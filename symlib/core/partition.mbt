@@ -17,24 +17,6 @@ pub(all) struct Part {
 }
 
 ///|
-/// 平凡分割（單一格含全部頂點）。
-pub fn Part::trivial(n : Int32) -> Part {
-  let lab = Array::make(n, 0)
-  let ptn = Array::make(n, 0)
-  let cell_of = Array::make(n, 0)
-  for i in 0..<n {
-    lab[i] = i
-    if i < n - 1 {
-      ptn[i] = 1
-    } else {
-      ptn[i] = 0
-    }
-    cell_of[i] = 0
-  }
-  { n, lab, ptn, cell_of, }
-}
-
-///|
 /// 離散分割（每格一點；`order[pos]` 為該位置頂點）。
 pub fn Part::discrete(order : Array[Int32]) -> Part {
   let n = order.length()
@@ -81,21 +63,6 @@ pub fn Part::cell_sizes(self : Part) -> Array[Int32] {
     if self.ptn[i] == 0 {
       out.push(i - start + 1)
       start = i + 1
-    }
-  }
-  out
-}
-
-///|
-/// 各格頂點列表。
-pub fn Part::cells(self : Part) -> Array[Array[Int32]] {
-  let out : Array[Array[Int32]] = []
-  let mut cur : Array[Int32] = []
-  for i in 0..<self.n {
-    cur.push(self.lab[i])
-    if self.ptn[i] == 0 {
-      out.push(cur)
-      cur = []
     }
   }
   out
