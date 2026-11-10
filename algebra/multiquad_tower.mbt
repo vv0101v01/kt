@@ -188,12 +188,7 @@ fn multiquad_one_with_basis(basis : Array[BigInt]) -> MultiQuadNum {
 
 ///|
 pub fn multiquad_is_zero(x : MultiQuadNum) -> Bool {
-  for i in 0..<x.coeffs.length() {
-    if !rat_is_zero(x.coeffs[i]) {
-      return false
-    }
-  }
-  true
+  rat_vec_all_zero(x.coeffs)
 }
 
 ///|

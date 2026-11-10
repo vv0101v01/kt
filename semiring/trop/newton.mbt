@@ -282,82 +282,175 @@ pub(all) struct Face {
 }
 
 ///|
-/// 正則細分：抬升所有支撐點 → 取「下凸包」的面 → 投影回平面。
-///
-/// 下凸包的判據：三點決定的平面 `N = (nx,ny,nz)`（必要時整體變號使 `nz > 0`），
-/// 且**所有**支撐點都滿足 `N·p ≥ D`。這正是「以帶正 z 分量的線性泛函最小化」，
-/// 也就是由熱帶方向 `w = (nx/nz, ny/nz)` 所選出的面。
-pub fn BPoly::subdivision(self : BPoly) -> Array[Face] {
-  let n = self.terms.length()
-  let planes : Array[Plane] = []
-  let tris : Array[Array[(Int32, Int32, Int32)]] = []
-  for a in 0..<n {
-    for b in (a + 1)..<n {
-      for c in (b + 1)..<n {
-        let pa = self.terms[a]
-        let pb = self.terms[b]
-        let pc = self.terms[c]
-        let ux = (pb.i - pa.i).to_int64()
-        let uy = (pb.j - pa.j).to_int64()
-        let uz = (pb.c - pa.c).to_int64()
-        let vx = (pc.i - pa.i).to_int64()
-        let vy = (pc.j - pa.j).to_int64()
-        let vz = (pc.c - pa.c).to_int64()
-        // N = u × v
-        let mut nx = uy * vz - uz * vy
-        let mut ny = uz * vx - ux * vz
-        let mut nz = ux * vy - uy * vx
-        if nz == 0L {
-          continue
+/// 計算三點 `(pa, pb, pc)` 決定的正則正規化下凸包平面（要求平面投影逆時針 `nz > 0`）。
+fn lower_plane_from_triple(pa : BTerm, pb : BTerm, pc : BTerm) -> Plane? {
+  let ux = (pb.i - pa.i).to_int64()
+  let uy = (pb.j - pa.j).to_int64()
+  let uz = (pb.c - pa.c).to_int64()
+  let vx = (pc.i - pa.i).to_int64()
+  let vy = (pc.j - pa.j).to_int64()
+  let vz = (pc.c - pa.c).to_int64()
+  let mut nx = uy * vz - uz * vy
+  let mut ny = uz * vx - ux * vz
+  let mut nz = ux * vy - uy * vx
+  if nz == 0L {
+    return None
+  }
+  let mut d = nx * pa.i.to_int64() + ny * pa.j.to_int64() + nz * pa.c.to_int64()
+  if nz < 0L {
+    nx = -nx
+    ny = -ny
+    nz = -nz
+    d = -d
+  }
+  let g = gcd64(gcd64(nx, ny), gcd64(nz, d))
+  let gg = if g == 0L { 1L } else { g }
+  Some({ nx: nx / gg, ny: ny / gg, nz: nz / gg, d: d / gg, })
+}
+
+///|
+/// 沿有向脊邊 `u -> v` 向左半平面 `{ w : cross2D(u, v, w) > 0 }` 旋轉搜尋唯一最小斜率下凸包面：
+/// 在所有滿足 `area(w) = cross2D(u, v, w) > 0` 的支撐點上，精確比較有理斜率
+/// `N(w_1)·w_2 < D(w_1)`（由 `area > 0` 保證嚴格弱序傳遞性），單趟 `O(m)` 找出相鄰下凸包平面。
+fn pivot_lower_plane_across_edge(
+  pts : Array[BTerm],
+  u : Int32,
+  v : Int32,
+) -> Plane? {
+  let pu = pts[u]
+  let pv = pts[v]
+  let dx = (pv.i - pu.i).to_int64()
+  let dy = (pv.j - pu.j).to_int64()
+  let mut best : Plane? = None
+  for w in 0..<pts.length() {
+    if w == u || w == v {
+      continue
+    }
+    let pw = pts[w]
+    let area = dx * (pw.j - pu.j).to_int64() - dy * (pw.i - pu.i).to_int64()
+    if area <= 0L {
+      continue
+    }
+    match best {
+      None => best = lower_plane_from_triple(pu, pv, pw)
+      Some(pl) => {
+        let val = pl.nx * pw.i.to_int64() +
+          pl.ny * pw.j.to_int64() +
+          pl.nz * pw.c.to_int64()
+        if val < pl.d {
+          best = lower_plane_from_triple(pu, pv, pw)
         }
-        let mut d = nx * pa.i.to_int64() +
-          ny * pa.j.to_int64() +
-          nz * pa.c.to_int64()
-        if nz < 0L {
-          nx = -nx
-          ny = -ny
-          nz = -nz
-          d = -d
-        }
-        // 全部點都要在平面上方
-        let mut ok = true
-        for k in 0..<n {
-          let t = self.terms[k]
-          let val = nx * t.i.to_int64() +
-            ny * t.j.to_int64() +
-            nz * t.c.to_int64()
-          if val < d {
-            ok = false
-            break
-          }
-        }
-        if !ok {
-          continue
-        }
-        let g = gcd64(gcd64(nx, ny), gcd64(nz, d))
-        let gg = if g == 0L { 1L } else { g }
-        let pl = { nx: nx / gg, ny: ny / gg, nz: nz / gg, d: d / gg, }
-        // 找同一個平面
-        let mut idx = -1
-        for k in 0..<planes.length() {
-          if planes[k] == pl {
-            idx = k
-            break
-          }
-        }
-        if idx < 0 {
-          planes.push(pl)
-          tris.push([])
-          idx = planes.length() - 1
-        }
-        tris[idx].push((a, b, c))
       }
     }
   }
-  let faces : Array[Face] = []
-  for k in 0..<planes.length() {
-    let pl = planes[k]
-    // 成員：落在平面上
+  best
+}
+
+///|
+/// 正則細分（3D 脊邊禮品包裝 BFS，由 `O(n⁴)` 降至 `O(n log n + n·#Faces)`）：
+/// 1. 支撐座標 `(i, j)` 去重保留最低係數 `min c`；
+/// 2. 取 2D 牛頓凸包首條極值邊 `h₀ -> h₁`，沿該共線邊界取 1D 下凸包首段 `(u₀, v₀)`，
+///    呼叫 `pivot_lower_plane_across_edge` `O(m)` 定位首個精確下凸包面；
+/// 3. 由正則細分對偶圖之連通性，沿每個已發現面的逆時針邊界 `(a, b)` 反向 `b -> a` 執行 BFS 跨脊推進，
+///    零浮點誤差、完整處理任意多點共面與格點共線退化。
+pub fn BPoly::subdivision(self : BPoly) -> Array[Face] {
+  let n = self.terms.length()
+  if n < 3 {
+    return []
+  }
+  // 1. 依 (i, j) 排序並壓縮同座標點（下凸包只可能取各 (i, j) 處最小 c）
+  let order = Array::makei(n, k => k)
+  order.sort_by(fn(a : Int32, b : Int32) -> Int32 {
+    let ta = self.terms[a]
+    let tb = self.terms[b]
+    if ta.i != tb.i {
+      ta.i.compare(tb.i)
+    } else if ta.j != tb.j {
+      ta.j.compare(tb.j)
+    } else {
+      ta.c.compare(tb.c)
+    }
+  })
+  let pts : Array[BTerm] = []
+  for k in order {
+    let t = self.terms[k]
+    if pts.length() == 0 {
+      pts.push(t)
+    } else {
+      let prev = pts[pts.length() - 1]
+      if prev.i != t.i || prev.j != t.j {
+        pts.push(t)
+      }
+    }
+  }
+  let m = pts.length()
+  if m < 3 {
+    return []
+  }
+  // 2. 取 pts 的 2D 下凸鏈首條邊 (l0 -> l1)，使全體點皆位於左側 cross2D >= 0
+  let lower2d : Array[Int32] = []
+  for idx in 0..<m {
+    let p = pts[idx]
+    while lower2d.length() >= 2 {
+      let a = pts[lower2d[lower2d.length() - 2]]
+      let b = pts[lower2d[lower2d.length() - 1]]
+      let cr = (b.i - a.i).to_int64() * (p.j - a.j).to_int64() -
+        (b.j - a.j).to_int64() * (p.i - a.i).to_int64()
+      if cr <= 0L {
+        let _ = lower2d.pop()
+      } else {
+        break
+      }
+    }
+    lower2d.push(idx)
+  }
+  if lower2d.length() < 2 {
+    return []
+  }
+  let h0 = pts[lower2d[0]]
+  let h1 = pts[lower2d[1]]
+  let edx = (h1.i - h0.i).to_int64()
+  let edy = (h1.j - h0.j).to_int64()
+  // 檢查是否全體點共線
+  let mut has_noncollinear = false
+  let line_pts : Array[Int32] = []
+  for idx in 0..<m {
+    let p = pts[idx]
+    let cr = edx * (p.j - h0.j).to_int64() - edy * (p.i - h0.i).to_int64()
+    if cr == 0L {
+      line_pts.push(idx)
+    } else {
+      has_noncollinear = true
+    }
+  }
+  if !has_noncollinear || line_pts.length() < 2 {
+    return []
+  }
+  // 沿 2D 極值邊界直線（已按 (i, j) 單調排序）取 1D 下凸包首段 (u0, v0)
+  let u0 = line_pts[0]
+  let mut v0 = line_pts[1]
+  for q in 2..<line_pts.length() {
+    let cand = line_pts[q]
+    let pu = pts[u0]
+    let pv = pts[v0]
+    let pc = pts[cand]
+    let t_v = if edx != 0L {
+      (pv.i - pu.i).to_int64()
+    } else {
+      (pv.j - pu.j).to_int64()
+    }
+    let t_c = if edx != 0L {
+      (pc.i - pu.i).to_int64()
+    } else {
+      (pc.j - pu.j).to_int64()
+    }
+    // 比較斜率 (pc.c - pu.c)/t_c < (pv.c - pu.c)/t_v（t_v, t_c > 0）
+    if (pc.c - pu.c).to_int64() * t_v < (pv.c - pu.c).to_int64() * t_c {
+      v0 = cand
+    }
+  }
+
+  let build_face = fn(pl : Plane) -> Face {
     let members : Array[Int32] = []
     for i in 0..<n {
       let t = self.terms[i]
@@ -368,7 +461,6 @@ pub fn BPoly::subdivision(self : BPoly) -> Array[Face] {
         members.push(i)
       }
     }
-    // 面是凸的 ⇒ 邊界 = 成員點的凸包
     let polygon = self.hull_of(members)
     let boundary : Array[(Int32, Int32)] = []
     if polygon.length() >= 2 {
@@ -376,7 +468,60 @@ pub fn BPoly::subdivision(self : BPoly) -> Array[Face] {
         boundary.push((polygon[q], polygon[(q + 1) % polygon.length()]))
       }
     }
-    faces.push({ plane: pl, members, polygon, boundary, })
+    { plane: pl, members, polygon, boundary, }
+  }
+
+  let faces : Array[Face] = []
+  let seen_planes : Array[Plane] = []
+  let plane_exists = fn(pl : Plane) -> Bool {
+    for existing in seen_planes {
+      if existing == pl {
+        return true
+      }
+    }
+    false
+  }
+
+  // map original term index -> compressed `pts` index for ridge traversal
+  let term_to_pt = Array::make(n, 0)
+  let mut p_cursor = 0
+  for k in order {
+    let t = self.terms[k]
+    while p_cursor + 1 < m && (pts[p_cursor].i != t.i || pts[p_cursor].j != t.j) {
+      p_cursor = p_cursor + 1
+    }
+    term_to_pt[k] = p_cursor
+  }
+
+  match pivot_lower_plane_across_edge(pts, u0, v0) {
+    None => return []
+    Some(pl0) => {
+      seen_planes.push(pl0)
+      faces.push(build_face(pl0))
+    }
+  }
+
+  let mut head = 0
+  while head < faces.length() {
+    let f = faces[head]
+    head = head + 1
+    for edge in f.boundary {
+      let (ta, tb) = edge
+      let pa_idx = term_to_pt[ta]
+      let pb_idx = term_to_pt[tb]
+      if pa_idx == pb_idx {
+        continue
+      }
+      // f 的逆時針邊為 pa -> pb，跨過該脊邊的鄰面在 pb -> pa 的左半平面
+      match pivot_lower_plane_across_edge(pts, pb_idx, pa_idx) {
+        None => ()
+        Some(adj_pl) =>
+          if !plane_exists(adj_pl) {
+            seen_planes.push(adj_pl)
+            faces.push(build_face(adj_pl))
+          }
+      }
+    }
   }
   faces
 }

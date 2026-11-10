@@ -26,6 +26,7 @@ using @alg {
   check_idempotent,
   check_star_idem,
   check_group_element,
+  check_monoid,
 }
 
 ///|
@@ -65,6 +66,7 @@ using @graph {
 
 ///|
 using @spline {
+  affine_steps,
   cubic_pole,
   interp_cubic_dense,
   interp_cubic_periodic,

@@ -1,6 +1,14 @@
-## MoonBit 側 485 條定律標籤（逐條）
+## MoonBit 側 545 條定律標籤（逐條）
 
-原始 485 條；去重後 388 條互異。這份清單由 `tools/gen_labels.py` 讀 `cmd/metatheory` 的實際輸出產生，不是手抄。
+原始 545 條；去重後 448 條互異。這份清單由 `tools/gen_labels.py` 讀 `cmd/metatheory` 的實際輸出產生，不是手抄。
+
+## core / bareiss64 sylvester exactness #1 (7x7 high-minor exact division & full rank)  (1)
+
+- bareiss64 sylvester exactness #1 (7x7 high-minor exact division & full rank)
+
+## core / bareiss64 sylvester exactness #2 (K4 boundary rank=3, nullity=3, zero remainder)  (1)
+
+- bareiss64 sylvester exactness #2 (K4 boundary rank=3, nullity=3, zero remainder)
 
 ## core / exact rational rank  (5)
 
@@ -9,6 +17,22 @@
 - exact rational rank #3
 - exact rational rank #4
 - exact rational rank #5
+
+## core / burnside_marks_upper_triangular_pos_diag  (1)
+
+- burnside_marks_upper_triangular_pos_diag
+
+## core / burnside_mobius_81_gsets_unique_decomposition  (1)
+
+- burnside_mobius_81_gsets_unique_decomposition
+
+## core / cchm-cofib: endpoint faces satisfy (i=0) ^ (i=1) == bot and boundary (i=0) v (i=1) != top  (1)
+
+- cchm-cofib: endpoint faces satisfy (i=0) ^ (i=1) == bot and boundary (i=0) v (i=1) != top #1
+
+## core / cchm-cofib: 3-valued cofibration truth masks form a distributive lattice  (1)
+
+- cchm-cofib: 3-valued cofibration truth masks form a distributive lattice #2
 
 ## core / covers: gluing criterion via H1 of the nerve  (5)
 
@@ -37,6 +61,122 @@
 - simplicial complexes: Betti numbers and Euler–Poincaré #8
 - simplicial complexes: Betti numbers and Euler–Poincaré #8
 
+## core / covering-galois: S_3 has exactly 6 subgroups among 64 subsets  (1)
+
+- covering-galois: S_3 has exactly 6 subgroups among 64 subsets #1
+
+## core / covering-galois: S_3 splits into 3 regular Galois covers and 3 non-regular covers  (1)
+
+- covering-galois: S_3 splits into 3 regular Galois covers and 3 non-regular covers #2
+
+## core / covering-galois: pointed covering morphism E_{H1} -> E_{H2} exists iff H_1 <= H_2  (1)
+
+- covering-galois: pointed covering morphism E_{H1} -> E_{H2} exists iff H_1 <= H_2 #3
+
+## core / ez-cube: 3-cube degeneracy strata equal [2, 6, 30, 218] summing to 256  (1)
+
+- ez-cube: 3-cube degeneracy strata equal [2, 6, 30, 218] summing to 256 #1
+
+## core / ez-cube: 4-cube degeneracy strata equal [2, 8, 60, 872, 64594] summing to 65536  (1)
+
+- ez-cube: 4-cube degeneracy strata equal [2, 8, 60, 872, 64594] summing to 65536 #2
+
+## core / ez-cube: strata[k] == C(n,k)*nondeg(k) and Moebius nondeg(4) == 64594  (1)
+
+- ez-cube: strata[k] == C(n,k)*nondeg(k) and Moebius nondeg(4) == 64594 #3
+
+## core / kalman-demorgan: M_4 satisfies involution, De Morgan, absorption & distributivity  (1)
+
+- kalman-demorgan: M_4 satisfies involution, De Morgan, absorption & distributivity #1
+
+## core / kalman-demorgan: M_4 separates x ^ ~x from 0 and x v ~x from 1 while fixing booleans  (1)
+
+- kalman-demorgan: M_4 separates x ^ ~x from 0 and x v ~x from 1 while fixing booleans #2
+
+## core / karp_minmax_matches_all_simple_cycles  (1)
+
+- karp_minmax_matches_all_simple_cycles
+
+## core / absorbing-zero: {0,1} has 4 Mal'cev ternary operations out of 256  (1)
+
+- absorbing-zero: {0,1} has 4 Mal'cev ternary operations out of 256 #1
+
+## core / absorbing-zero: 0 Mal'cev ops commute with absorbing AND (interval non-fibrancy)  (1)
+
+- absorbing-zero: 0 Mal'cev ops commute with absorbing AND (interval non-fibrancy) #2
+
+## core / absorbing-zero: unique Mal'cev op x^y^z commutes with pointed XOR  (1)
+
+- absorbing-zero: unique Mal'cev op x^y^z commutes with pointed XOR #3
+
+## core / absorbing-zero: collapsed singleton |A|=1 vacuously admits absorbing Mal'cev  (1)
+
+- absorbing-zero: collapsed singleton |A|=1 vacuously admits absorbing Mal'cev #4
+
+## core / malcev: Z/6Z affine p(x,y,z)=x-y+z is Mal'cev  (1)
+
+- malcev: Z/6Z affine p(x,y,z)=x-y+z is Mal'cev #1
+
+## core / malcev: mod 2 and mod 3 are ternary congruences on Z/6Z  (1)
+
+- malcev: mod 2 and mod 3 are ternary congruences on Z/6Z #2
+
+## core / malcev: congruences permute theta o psi == psi o theta  (1)
+
+- malcev: congruences permute theta o psi == psi o theta #3
+
+## core / malcev: 1-step composition equals transitive-closure join  (1)
+
+- malcev: 1-step composition equals transitive-closure join #4
+
+## core / malcev: non-Mal'cev chain lattice refutes congruence permutability  (1)
+
+- malcev: non-Mal'cev chain lattice refutes congruence permutability #5
+
+## core / pol-inv: Galois adjunction R <= Inv(F) <=> F <= Pol(R)  (1)
+
+- pol-inv: Galois adjunction R <= Inv(F) <=> F <= Pol(R) #1
+
+## core / pol-inv: inflationary F <= Pol(Inv(F)) and R <= Inv(Pol(R))  (1)
+
+- pol-inv: inflationary F <= Pol(Inv(F)) and R <= Inv(Pol(R)) #2
+
+## core / pol-inv: triple closure Pol(Inv(Pol(R))) == Pol(R)  (1)
+
+- pol-inv: triple closure Pol(Inv(Pol(R))) == Pol(R) #3
+
+## core / pol-inv: antitone R1 <= R2 => Pol(R2) <= Pol(R1)  (1)
+
+- pol-inv: antitone R1 <= R2 => Pol(R2) <= Pol(R1) #4
+
+## core / quotient: |Z/6Z / ker(mod 3)| == |im(f)| == 3  (1)
+
+- quotient: |Z/6Z / ker(mod 3)| == |im(f)| == 3 #1
+
+## core / quotient: quotient inherits Mal'cev axioms  (1)
+
+- quotient: quotient inherits Mal'cev axioms #2
+
+## core / quotient: first isomorphism A/ker(f) ≅ im(f) preserves ops  (1)
+
+- quotient: first isomorphism A/ker(f) ≅ im(f) preserves ops #3
+
+## core / quotient: non-congruence equivalence rejected by ternary congruence test  (1)
+
+- quotient: non-congruence equivalence rejected by ternary congruence test #4
+
+## core / malcev-groupoid: reflexive graph in Mal'cev algebra forms internal groupoid  (1)
+
+- malcev-groupoid: reflexive graph in Mal'cev algebra forms internal groupoid #1
+
+## core / malcev-matroid: affine Mal'cev closure AG(2,2) satisfies matroid rank & exchange  (1)
+
+- malcev-matroid: affine Mal'cev closure AG(2,2) satisfies matroid rank & exchange #2
+
+## core / malcev-ramsey: congruence 2-coloring on Z/6Z K_6 yields monochromatic K_3s  (1)
+
+- malcev-ramsey: congruence 2-coloring on Z/6Z K_6 yields monochromatic K_3s #3
+
 ## core / matroid: duality is an involution  (4)
 
 - matroid: duality is an involution #1
@@ -58,6 +198,14 @@
 - matroid: linear matroid over Q #3
 - matroid: linear matroid over Q #4
 - matroid: linear matroid over Q #5
+
+## core / myhill_nerode_pairwise_distinguishable_2_pow_k  (1)
+
+- myhill_nerode_pairwise_distinguishable_2_pow_k
+
+## core / nobeling_fiber_basis_exact_integer_inversion  (1)
+
+- nobeling_fiber_basis_exact_integer_inversion
 
 ## core / ordinal: ord_max is the lattice join  (16)
 
@@ -82,6 +230,26 @@
 
 - ordinal CNF laws #1
 - ordinal CNF laws #2
+
+## core / polar-focus: shift operators form exact Galois adjunction up(p) <= n iff p <= down(n)  (1)
+
+- polar-focus: shift operators form exact Galois adjunction up(p) <= n iff p <= down(n) #1
+
+## core / polar-focus: negative asynchronous decomposition is strictly invertible  (1)
+
+- polar-focus: negative asynchronous decomposition is strictly invertible #2
+
+## core / polar-focus: eager negative phase collapses 3! = 6 unfocused unboxings into 1 canonical state  (1)
+
+- polar-focus: eager negative phase collapses 3! = 6 unfocused unboxings into 1 canonical state #3
+
+## core / poly-yoneda: among all 16 maps Bool^2 -> Bool, exactly 2 satisfy naturality (Yoneda Nat(X^2, X) ~= 2)  (1)
+
+- poly-yoneda: among all 16 maps Bool^2 -> Bool, exactly 2 satisfy naturality (Yoneda Nat(X^2, X) ~= 2) #1
+
+## core / poly-yoneda: polymorphic swap preserves all 16 binary relations while non-parametric XOR map is rejected  (1)
+
+- poly-yoneda: polymorphic swap preserves all 16 binary relations while non-parametric XOR map is rejected #2
 
 ## core / ramsey: Paley graph gives R(4,4) ≥ 18  (9)
 
@@ -151,12 +319,36 @@
 - ramsey numbers computed by search #6
 - ramsey numbers computed by search #7
 
+## core / swan-id: constant-extent Swan J strictly returns d0 on refl and agrees with Kan transport on all valid witnesses  (1)
+
+- swan-id: constant-extent Swan J strictly returns d0 on refl and agrees with Kan transport on all valid witnesses #1
+
+## core / swar-mono64: 0x8080808080808080UL branchless divisibility matches coordinatewise <= on 1296 pairs  (1)
+
+- swar-mono64: 0x8080808080808080UL branchless divisibility matches coordinatewise <= on 1296 pairs #1
+
+## core / swar-mono64: single-UInt64 GRevLex key order matches lexicographic GRevLex definition on 1296 pairs  (1)
+
+- swar-mono64: single-UInt64 GRevLex key order matches lexicographic GRevLex definition on 1296 pairs #2
+
 ## core / anti-unification = join (dual of mgu)  (4)
 
 - anti-unification = join (dual of mgu) #1
 - anti-unification = join (dual of mgu) #2
 - anti-unification = join (dual of mgu) #4
 - anti-unification = join (dual of mgu) #6
+
+## core / dag unification: α-equivalent mgu with Robinson  (1)
+
+- dag unification: α-equivalent mgu with Robinson #1
+
+## core / dag unification: 3-color DFS rejects indirect occurs cycle  (1)
+
+- dag unification: 3-color DFS rejects indirect occurs cycle #2
+
+## core / dag unification: depth-16 Paterson-Wegman shared ladder & cycle  (1)
+
+- dag unification: depth-16 Paterson-Wegman shared ladder & cycle #3
 
 ## core / unification: correctness + generality + uniqueness  (7)
 
@@ -167,6 +359,14 @@
 - unification: correctness + generality + uniqueness #6
 - unification: correctness + generality + uniqueness #7
 - unification: correctness + generality + uniqueness #8
+
+## core / zhegalkin-anf: binary Moebius transform is an exact involution on all 256 3-var boolean functions  (1)
+
+- zhegalkin-anf: binary Moebius transform is an exact involution on all 256 3-var boolean functions #1
+
+## core / zhegalkin-anf: ANF polynomial evaluation agrees bitwise with truth tables on all 256 x 8 inputs  (1)
+
+- zhegalkin-anf: ANF polynomial evaluation agrees bitwise with truth tables on all 256 x 8 inputs #2
 
 ## instances / instances: axiomatic fragment is a partition matroid  (8)
 
@@ -371,6 +571,18 @@
 ## instances / instances: completion uses a termination order #6 (agrees with priority-only repair)  (1)
 
 - instances: completion uses a termination order #6 (agrees with priority-only repair)
+
+## instances / instances: orientable characterizes structural decrease and survives completion  (1)
+
+- instances: orientable characterizes structural decrease and survives completion #1
+
+## instances / instances: first-symbol index prunes non-matching constructors  (1)
+
+- instances: first-symbol index prunes non-matching constructors #2
+
+## instances / instances: SLG tabling matches SLD evidence and hits subgoal cache on diamond  (1)
+
+- instances: SLG tabling matches SLD evidence and hits subgoal cache on diamond #3
 
 ## instances / instances: overlapping instances, priority, coherence  (6)
 
@@ -578,6 +790,14 @@
 - iit: STLC — Tm indexed by (Ctx, Ty) really needs cons in the index #8
 - iit: STLC — Tm indexed by (Ctx, Ty) really needs cons in the index #9
 
+## iit / iit egraph: ialgebra_respects_eqs separates coherent mod-2 algebra from raw counter  (1)
+
+- iit egraph: ialgebra_respects_eqs separates coherent mod-2 algebra from raw counter #1
+
+## iit / iit egraph: commutative + unit equations saturate without looping to unique normal form  (1)
+
+- iit egraph: commutative + unit equations saturate without looping to unique normal form #2
+
 ## iit / iit: qiit equations live in the schema #1 (schema carries the equation)  (1)
 
 - iit: qiit equations live in the schema #1 (schema carries the equation)
@@ -771,6 +991,26 @@
 - reflection: decide fast, check independently #11
 - reflection: decide fast, check independently #11
 - reflection: decide fast, check independently #11
+
+## reflect / universe ackermann: pairing axiom holds on multi-element V_3 sets  (1)
+
+- universe ackermann: pairing axiom holds on multi-element V_3 sets #1
+
+## reflect / universe ackermann: exact 256-pair membership isomorphism on V_4  (1)
+
+- universe ackermann: exact 256-pair membership isomorphism on V_4 #2
+
+## reflect / universe ackermann: f_or and f_top boolean laws agree on HFSet and HF64  (1)
+
+- universe ackermann: f_or and f_top boolean laws agree on HFSet and HF64 #3
+
+## reflect / universe ackermann: exact V_5 (65,536 sets) von Neumann rank spectrum  (1)
+
+- universe ackermann: exact V_5 (65,536 sets) von Neumann rank spectrum #4
+
+## reflect / universe ackermann: 4-edge membership chain separates V_5 from V_4  (1)
+
+- universe ackermann: 4-edge membership chain separates V_5 from V_4 #5
 
 ## reflect / universe reflection: clubs intersect by diagonal iteration #1 (normal functions are strictly increasing)  (1)
 

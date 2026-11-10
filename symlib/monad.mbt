@@ -66,16 +66,6 @@ pub fn[A] ListM::filter(self : ListM[A], f : (A) -> Bool) -> ListM[A] {
 }
 
 ///|
-/// 守衛（失敗 = 空列表）。`guard` 為保留字，故命名為 nd_guard。
-pub fn nd_guard(cond : Bool) -> ListM[Unit] {
-  if cond {
-    ListM::pure(())
-  } else {
-    { arr: [], }
-  }
-}
-
-///|
 /// 由陣列入單子。
 pub fn[A] ListM::from_array(a : Array[A]) -> ListM[A] {
   { arr: a.copy(), }
@@ -164,21 +154,6 @@ pub fn[S, A] StateM::eval(self : StateM[S, A], init : S) -> A {
 pub fn[S, A] StateM::exec(self : StateM[S, A], init : S) -> S {
   let (_, s) = (self.run)(init)
   s
-}
-
-///|
-/// Option 單子單位。
-pub fn[A] opt_pure(x : A) -> A? {
-  Some(x)
-}
-
-///|
-/// Option 單子連結。
-pub fn[A, B] opt_bind(m : A?, f : (A) -> B?) -> B? {
-  match m {
-    Some(x) => f(x)
-    None => None
-  }
 }
 
 ///|

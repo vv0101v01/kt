@@ -6,11 +6,12 @@ package "vv0101v01/cubical-hermitian/semiring/ratelimit"
 // Errors
 
 // Types and methods
+#derive(Eq)
 pub(all) enum Decision {
   Allowed
   Throttled(Int64)
   Shedded
-} derive(Eq)
+}
 pub fn Decision::equal(Self, Self) -> Bool
 pub fn Decision::not_equal(Self, Self) -> Bool
 pub fn Decision::output(Self, &Logger) -> Unit

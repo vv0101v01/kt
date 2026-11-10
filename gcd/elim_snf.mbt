@@ -206,15 +206,59 @@ pub fn fp_mat_transpose(m : FpMat) -> FpMat {
 
 ///|
 pub fn fp_mat_mul(a : FpMat, b : FpMat) -> FpMat {
-  let out = fp_mat_make(a.rows, b.cols, a.p, 0)
-  for i in 0..<a.rows {
-    for k in 0..<a.cols {
-      let aik = fp_mat_get(a, i, k)
-      if aik != 0 {
-        for j in 0..<b.cols {
-          let cur = fp_mat_get(out, i, j)
-          let prod = fp_mul(aik, fp_mat_get(b, k, j), a.p)
-          fp_mat_set(out, i, j, fp_add(cur, prod, a.p))
+  let rows = a.rows
+  let mid = a.cols
+  let cols = b.cols
+  let p = a.p
+  let out = fp_mat_make(rows, cols, p, 0)
+  if p <= 0 || rows == 0 || mid == 0 || cols == 0 {
+    return out
+  }
+  let pm = p.to_int64()
+  let ad = a.data
+  let bd = b.data
+  let od = out.data
+  if p <= 46340 {
+    // Delayed-modulus 64-bit accumulation: 16 products <= 16 * 46340^2 < 3.44e10 << 2^63 - 1
+    let bt = fp_mat_transpose(b)
+    let btd = bt.data
+    for i in 0..<rows {
+      let a_off = i * mid
+      let o_off = i * cols
+      for j in 0..<cols {
+        let b_off = j * mid
+        let mut acc = 0L
+        let mut k = 0
+        while k + 16 <= mid {
+          let mut s = 0L
+          for t in 0..<16 {
+            s = s + ad[a_off + k + t].to_int64() * btd[b_off + k + t].to_int64()
+          }
+          acc = (acc + s) % pm
+          k = k + 16
+        }
+        let mut tail = 0L
+        while k < mid {
+          tail = tail + ad[a_off + k].to_int64() * btd[b_off + k].to_int64()
+          k = k + 1
+        }
+        od[o_off + j] = ((acc + tail) % pm).to_int()
+      }
+    }
+    return out
+  }
+  for i in 0..<rows {
+    let a_off = i * mid
+    let o_off = i * cols
+    for k in 0..<mid {
+      let aik = ad[a_off + k].to_int64()
+      if aik != 0L {
+        let b_off = k * cols
+        for j in 0..<cols {
+          od[o_off + j] = ((
+            od[o_off + j].to_int64() + aik * bd[b_off + j].to_int64()
+          ) %
+          pm).to_int()
         }
       }
     }
@@ -223,18 +267,27 @@ pub fn fp_mat_mul(a : FpMat, b : FpMat) -> FpMat {
 }
 
 ///|
-/// `[D-Gauss]` Gauss-Jordan elimination over `F_p` producing canonical RREF.
+/// `[D-Gauss]` Gauss-Jordan elimination over `F_p` producing canonical RREF
+/// with single-division 64-bit row-update inner loops.
 pub fn fp_rref(m : FpMat) -> FpRrefResult {
-  let a = FpMat::{ rows: m.rows, cols: m.cols, p: m.p, data: m.data.copy(), }
+  let rows = m.rows
+  let cols = m.cols
+  let p = m.p
+  let ad = m.data.copy()
+  let a = FpMat::{ rows, cols, p, data: ad, }
   let pivots : Array[Int32] = []
+  if p <= 1 || rows == 0 || cols == 0 {
+    return FpRrefResult::{ rref: a, rank: 0, pivots, }
+  }
+  let pm = p.to_int64()
   let mut r = 0
-  for c in 0..<a.cols {
-    if r >= a.rows {
+  for c in 0..<cols {
+    if r >= rows {
       break
     }
     let mut piv = -1
-    for i in r..<a.rows {
-      if fp_mat_get(a, i, c) != 0 {
+    for i in r..<rows {
+      if ad[i * cols + c] != 0 {
         piv = i
         break
       }
@@ -243,23 +296,36 @@ pub fn fp_rref(m : FpMat) -> FpRrefResult {
       continue
     }
     if piv != r {
-      for j in 0..<a.cols {
-        let tmp = fp_mat_get(a, r, j)
-        fp_mat_set(a, r, j, fp_mat_get(a, piv, j))
-        fp_mat_set(a, piv, j, tmp)
+      let r_off = r * cols
+      let p_off = piv * cols
+      for j in 0..<cols {
+        let tmp = ad[r_off + j]
+        ad[r_off + j] = ad[p_off + j]
+        ad[p_off + j] = tmp
       }
     }
-    let inv_p = fp_inv(fp_mat_get(a, r, c), a.p)
-    for j in c..<a.cols {
-      fp_mat_set(a, r, j, fp_mul(fp_mat_get(a, r, j), inv_p, a.p))
+    let r_off = r * cols
+    let inv_p = fp_inv(ad[r_off + c], p).to_int64()
+    ad[r_off + c] = 1
+    for j in (c + 1)..<cols {
+      let v = ad[r_off + j]
+      if v != 0 {
+        ad[r_off + j] = (v.to_int64() * inv_p % pm).to_int()
+      }
     }
-    for i in 0..<a.rows {
+    for i in 0..<rows {
       if i != r {
-        let factor = fp_mat_get(a, i, c)
+        let i_off = i * cols
+        let factor = ad[i_off + c]
         if factor != 0 {
-          for j in c..<a.cols {
-            let sub = fp_mul(factor, fp_mat_get(a, r, j), a.p)
-            fp_mat_set(a, i, j, fp_sub(fp_mat_get(a, i, j), sub, a.p))
+          let fac64 = factor.to_int64()
+          ad[i_off + c] = 0
+          for j in (c + 1)..<cols {
+            let rj = ad[r_off + j]
+            if rj != 0 {
+              let d = (ad[i_off + j].to_int64() - fac64 * rj.to_int64()) % pm
+              ad[i_off + j] = (if d < 0L { d + pm } else { d }).to_int()
+            }
           }
         }
       }
@@ -549,17 +615,51 @@ pub fn zmat_snf(m : ZMat) -> ZSnfResult {
   let limit = if m.rows < m.cols { m.rows } else { m.cols }
   let mut p = 0
   while p < limit {
-    // Find minimum non-zero |a[i, j]| in submatrix [p.., p..]
-    let mut best_i = -1
-    let mut best_j = -1
-    let mut best_abs = 0N
+    // Havas–Majewski–Matthews norm-guided pivot selection in submatrix `[p.., p..]`:
+    // choose `(i, j)` minimizing `(|a[i,j]|, row_nnz[i] * col_nnz[j], row_l1[i] + col_l1[j])`
+    // so sparse small-norm rows/columns eliminate first without spraying large coefficients!
+    let row_nnz : Array[Int32] = Array::make(a.rows, 0)
+    let col_nnz : Array[Int32] = Array::make(a.cols, 0)
+    let row_l1 : Array[BigInt] = Array::make(a.rows, 0N)
+    let col_l1 : Array[BigInt] = Array::make(a.cols, 0N)
     for i in p..<a.rows {
       for j in p..<a.cols {
         let av = ugcd_bigint_abs(zmat_get(a, i, j))
-        if av != 0N && (best_i < 0 || av < best_abs) {
-          best_i = i
-          best_j = j
-          best_abs = av
+        if av != 0N {
+          row_nnz[i] = row_nnz[i] + 1
+          col_nnz[j] = col_nnz[j] + 1
+          row_l1[i] = row_l1[i] + av
+          col_l1[j] = col_l1[j] + av
+        }
+      }
+    }
+    let mut best_i = -1
+    let mut best_j = -1
+    let mut best_abs = 0N
+    let mut best_fill = 0
+    let mut best_l1 = 0N
+    for i in p..<a.rows {
+      for j in p..<a.cols {
+        let av = ugcd_bigint_abs(zmat_get(a, i, j))
+        if av != 0N {
+          let fill = row_nnz[i] * col_nnz[j]
+          let l1 = row_l1[i] + col_l1[j]
+          let better = if best_i < 0 {
+            true
+          } else if av != best_abs {
+            av < best_abs
+          } else if fill != best_fill {
+            fill < best_fill
+          } else {
+            l1 < best_l1
+          }
+          if better {
+            best_i = i
+            best_j = j
+            best_abs = av
+            best_fill = fill
+            best_l1 = l1
+          }
         }
       }
     }
@@ -734,6 +834,172 @@ pub fn zmat_hnf(m : ZMat) -> ZMat {
     }
   }
   h
+}
+
+///|
+/// Exact fraction-free Sylvester–Bareiss determinant `det(m)` over `Z` in `O(n^3)`
+/// exact `BigInt` divisions (zero rational fractions, zero intermediate GCDs).
+pub fn zmat_det_bareiss(m : ZMat) -> BigInt {
+  if m.rows != m.cols {
+    return 0N
+  }
+  let n = m.rows
+  if n == 0 {
+    return 1N
+  }
+  let a = m.data.copy()
+  let mut sign = 1N
+  let mut prev_piv = 1N
+  for k in 0..<(n - 1) {
+    let mut piv_r = -1
+    for i in k..<n {
+      if a[i * n + k] != 0N {
+        piv_r = i
+        break
+      }
+    }
+    if piv_r < 0 {
+      return 0N
+    }
+    if piv_r != k {
+      for j in k..<n {
+        let tmp = a[k * n + j]
+        a[k * n + j] = a[piv_r * n + j]
+        a[piv_r * n + j] = tmp
+      }
+      sign = -sign
+    }
+    let akk = a[k * n + k]
+    for i in (k + 1)..<n {
+      let aik = a[i * n + k]
+      for j in (k + 1)..<n {
+        a[i * n + j] = (akk * a[i * n + j] - aik * a[k * n + j]) / prev_piv
+      }
+      a[i * n + k] = 0N
+    }
+    prev_piv = akk
+  }
+  sign * a[(n - 1) * n + (n - 1)]
+}
+
+///|
+/// **Domich–Kannan–Trotter Determinant-Bounded Modular Row Hermite Normal Form** (`[T-HNF-Mod]`):
+/// When `m` (`rows >= cols`) contains a full-rank `cols × cols` sublattice of determinant `D > 0`
+/// (computed in `O(cols^3)` via `zmat_det_bareiss`), `D · Z^{cols}` is contained in `rowspace_Z(m)`
+/// by Cramer's adjugate identity `adj(B) · B = det(B) · I`. Eliminating `(m ; D · I)` modulo `D`
+/// keeps every intermediate `BigInt` strictly bounded by `O(D^2)` and produces the exact canonical
+/// row HNF (`zmat_hnf_modular(m) == zmat_hnf(m)`). Falls back seamlessly to `zmat_hnf` when rank < cols.
+pub fn zmat_hnf_modular(m : ZMat) -> ZMat {
+  let rows = m.rows
+  let cols = m.cols
+  if rows == 0 || cols == 0 || rows < cols {
+    return zmat_hnf(m)
+  }
+  // Pick `cols` linearly independent rows over F_65521 to form a nonsingular square block `B`
+  let p_probe = 65521
+  let fp_probe = fp_mat_make(rows, cols, p_probe, 0)
+  for i in 0..<rows {
+    for j in 0..<cols {
+      let (_, rem) = ugcd_euclid_div(
+        zmat_get(m, i, j),
+        BigInt::from_int(p_probe),
+      )
+      fp_mat_set(fp_probe, i, j, rem.to_int())
+    }
+  }
+  // Transpose so columns of `fp_probe^T` are the rows of `m`, and pivot columns give independent row indices!
+  let rref_t = fp_rref(fp_mat_transpose(fp_probe))
+  if rref_t.rank < cols {
+    return zmat_hnf(m)
+  }
+  let sub_b = zmat_make(cols, cols, 0N)
+  for r_idx in 0..<cols {
+    let src_i = rref_t.pivots[r_idx]
+    for j in 0..<cols {
+      zmat_set(sub_b, r_idx, j, zmat_get(m, src_i, j))
+    }
+  }
+  let det_d = ugcd_bigint_abs(zmat_det_bareiss(sub_b))
+  if det_d == 0N {
+    return zmat_hnf(m)
+  }
+  if det_d == 1N {
+    let out = zmat_make(rows, cols, 0N)
+    for c in 0..<cols {
+      zmat_set(out, c, c, 1N)
+    }
+    return out
+  }
+  // Build `(rows + cols) × cols` working table reduced mod `det_d`, augmented by `det_d * I_{cols}`
+  let work = zmat_make(rows + cols, cols, 0N)
+  for i in 0..<rows {
+    for j in 0..<cols {
+      let (_, rem) = ugcd_euclid_div(zmat_get(m, i, j), det_d)
+      zmat_set(work, i, j, rem)
+    }
+  }
+  for c in 0..<cols {
+    zmat_set(work, rows + c, c, det_d)
+  }
+  let mut r = 0
+  let cur_mod = det_d
+  for c in 0..<cols {
+    // Combine all rows >= r in col c via extended GCD while reducing trailing columns mod `cur_mod`!
+    let mut piv_row = -1
+    for i in r..<work.rows {
+      if zmat_get(work, i, c) != 0N {
+        piv_row = i
+        break
+      }
+    }
+    if piv_row < 0 {
+      continue
+    }
+    zmat_swap_rows(work, r, piv_row)
+    if zmat_get(work, r, c) < 0N {
+      for j in c..<cols {
+        zmat_set(work, r, j, -zmat_get(work, r, j))
+      }
+    }
+    for i in (r + 1)..<work.rows {
+      let b_val = zmat_get(work, i, c)
+      if b_val != 0N {
+        let a_val = zmat_get(work, r, c)
+        let (g, x, y) = ugcd_bigint_ext_gcd(a_val, b_val)
+        let u_mul = -(b_val / g)
+        let v_mul = a_val / g
+        zmat_set(work, r, c, g)
+        zmat_set(work, i, c, 0N)
+        for j in (c + 1)..<cols {
+          let rj = zmat_get(work, r, j)
+          let ij = zmat_get(work, i, j)
+          let (_, nr) = ugcd_euclid_div(x * rj + y * ij, cur_mod)
+          let (_, ni) = ugcd_euclid_div(u_mul * rj + v_mul * ij, cur_mod)
+          zmat_set(work, r, j, nr)
+          zmat_set(work, i, j, ni)
+        }
+      }
+    }
+    let piv = zmat_get(work, r, c)
+    // Reduce rows above `r` into `[0, piv)`
+    for i in 0..<r {
+      let v = zmat_get(work, i, c)
+      if v != 0N {
+        let (q, _) = ugcd_euclid_div(v, piv)
+        for j in c..<cols {
+          zmat_set(work, i, j, zmat_get(work, i, j) - q * zmat_get(work, r, j))
+        }
+      }
+    }
+    r = r + 1
+  }
+  let out = zmat_make(rows, cols, 0N)
+  for i in 0..<cols {
+    for j in 0..<cols {
+      zmat_set(out, i, j, zmat_get(work, i, j))
+    }
+  }
+  out
 }
 
 ///|

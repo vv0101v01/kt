@@ -858,6 +858,178 @@ pub fn run_all_checks() -> Array[CheckResult] {
       name: "第二十一期 §4.6/§4.7/§4.3 任意 n 階路徑單例收縮、六維 Stasheff K₆ 相干胞、變端點 HIT（命題截斷與懸掛）、高階內層 λ 匹配、Goldfarb 二階合一丟番圖乘法編譯、RFC 8032 Ed25519 拜占庭法定人數 WAL 與 Tarjan 強連通分量 MVCC 原子熱替換",
       ok: check_phase21_homotopy_hou_and_bft_mvcc(),
     },
+    CheckResult::{
+      name: "構造性泛代數自主類型論：同餘閉包、商代數第一同構、瑪爾切夫一步可換（θ∘ψ=ψ∘θ=θ∨ψ）、德摩根區間吸收零塌縮 vs 點化零 Eckmann–Hilton 可換群、Zappa–Szép 中國剩餘分解與 Chu 同餘對偶",
+      ok: {
+        let rep = verify_absorbing_pointed_malcev_dichotomy()
+        rep.interval_compatible_malcev_count == 0 &&
+        rep.singleton_absorbing_malcev_ok &&
+        rep.pointed_z6_eckmann_hilton_abelian_ok &&
+        rep.z6_chinese_remainder_zappa_szep_ok &&
+        rep.chu_congruence_duality_ok &&
+        rep.lawvere_product_projections_ok
+      },
+    },
+    CheckResult::{
+      name: "仿射與雙德摩根立方體系、變長 Moore 自由路徑嚴格結合律、單值覆蓋瑪爾切夫繞數公式 w(p_Kan(a,b,c))=a-b+c 與 ∞-群胚四重內部公理刻畫",
+      ok: {
+        let aff = verify_affine_cubical_system()
+        let bdm = verify_bide_morgan_cubical_duality()
+        let fp = verify_free_path_associativity_and_kernel_bridge()
+        let ig = verify_internal_infinity_groupoid_axioms()
+        aff.affine_open_box_kan_fills_without_connections &&
+        aff.ua_not_affine_coercion_flips_bool &&
+        bdm.topos_coheyting_sieve_agreement_ok &&
+        fp.strict_moore_associative_len &&
+        fp.kan_associator_lhs_endpoint_conv &&
+        fp.kan_associator_rhs_endpoint_conv &&
+        ig.uniform_kan_open_box_1d_2d_3d_ok &&
+        ig.kan_malcev_winding_formula_ok
+      },
+    },
+    CheckResult::{
+      name: "立方退化樹 SWAR 對帳（65,536 個 4-立方體）、5 維交錯面微分 ∂²=0 與 I³ Betti 譜 [1,0,0,0]、立方範式雙向修剪、Kripke–亞歷山德羅夫類型有效性結構、雙重否定核 j(x)=¬¬x 預層層化模板與 14 類範疇組合管線",
+      ok: check_cubical_autonomy_all(),
+    },
+    CheckResult::{
+      name: "Swan 常數範圍相等類型嚴格開放變數 J 歸約、自由路徑 Kan 纖維化、全體 65,536 個 4-立方體 Eilenberg–Zilber 分裂 [2,8,60,872,64594]、純 Kan 逆 3D 同倫、仿射雙向類型檢查與極性聚焦證明搜尋（5 -> 1）",
+      ok: {
+        let m = verify_work4_all_54_structures_and_interactions()
+        m.swan_free_ez.ez_4cube_stratum_counts == [2, 8, 60, 872, 64594] &&
+        m.swan_free_ez.ez_all_65536_unique_roundtrip_ok &&
+        m.affine_bidir_focus.unfocused_interleavings_count == 5 &&
+        m.affine_bidir_focus.focused_canonical_derivations_count == 1 &&
+        m.all_54_structures_and_interactions_ok
+      },
+    },
+    CheckResult::{
+      name: "函子多項式容器米田雙射（9 居留元）、關係參數性自由定理、立方結構恆等原則 SIP（⊕ ↦ ↔）、S₃ 覆蓋空間伽羅瓦基本定理（[6,2,1] vs [1,1,1]）、T² vs S¹∨S¹ 交換子升騰與 RP² 整係數 2-撓率 [2]",
+      ok: {
+        let p = verify_functorial_polymorphism_and_sip_suite()
+        let c = verify_covering_pushout_and_torus_suite()
+        p.yoneda_vec3_to_vec2_inhabitant_count == 9 &&
+        p.wadler_free_theorem_naturality_holds &&
+        p.sip_bool_xor_to_xnor_ua_transport_ok &&
+        c.s3_galois_normal_deck_orders == [6, 2, 1] &&
+        c.s3_nonnormal_deck_orders == [1, 1, 1] &&
+        c.rp2_h1_two_torsion_factors == [2]
+      },
+    },
+    CheckResult::{
+      name: "依賴類型高階合一動機重構、異質端點 coe 與開盒擬陣基底自動修補（繞數 +3）、自由群胚內部計算反射及全體 54 項高階立方結構 × 26 運算動詞 × 14 範疇組合交互圖譜",
+      ok: {
+        let r = verify_reconstruction_repair_and_reflection_suite()
+        let m = verify_work4_all_54_structures_and_interactions()
+        r.hou_implicit_motive_reconstructed &&
+        r.open_box_missing_lid_repaired_winding == 3 &&
+        m.verified_structure_count == 54 &&
+        m.distinct_verbs_covered == 26 &&
+        m.distinct_patterns_covered == 14 &&
+        m.interaction_theorems_count == 14 &&
+        check_work4_54_structures_26_verbs_14_patterns()
+      },
+    },
+    CheckResult::{
+      name: "Kalman 雙軌自由 De Morgan 區間（loop(i∧¬i) ≠ base）、CCHM 上纖維化格（∂I ≠ ⊤_F）、64-bit SWAR 面真值快徑、algebra/core Bareiss 與 Ozaki-II CRT 矩陣乘及閉合 Peano λ 項 NbE 正規化",
+      ok: {
+        let di = dim_var(0)
+        let dj = dim_var(1)
+        let tent = Dim::DAnd(di, Dim::DNeg(di))
+        let cap = Dim::DOr(di, Dim::DNeg(di))
+        let dm_ok = !dim_eq_demorgan(tent, Dim::DZero) &&
+          !dim_eq_demorgan(cap, Dim::DOne) &&
+          !dim_is_zero_demorgan(tent) &&
+          !dim_is_one_demorgan(cap) &&
+          dim_eq_demorgan(
+            Dim::DNeg(Dim::DAnd(di, dj)),
+            Dim::DOr(Dim::DNeg(di), Dim::DNeg(dj)),
+          ) &&
+          dim_eq_demorgan(Dim::DOr(di, Dim::DAnd(di, dj)), di) &&
+          !@kernel.conv_at(
+            0,
+            1,
+            @kernel.DValue::DVCircleTy,
+            @kernel.circle_point(tent),
+            @kernel.DValue::DVCirclePoint(Dim::DZero),
+          )
+        let f_bdry = face_or(face_var0(0), face_var1(0))
+        let cchm_ok = cchm_face_is_bot(face_and(face_var0(0), face_var1(0))) &&
+          !cchm_face_is_top(f_bdry) &&
+          cchm_face_le(f_bdry, Face::FTop) &&
+          !cchm_face_le(Face::FTop, f_bdry) &&
+          cchm_face_eq(face_eq0(tent), f_bdry) &&
+          face_bdd_canon_key(face_or(face_var0(0), face_var0(0))) ==
+          face_bdd_canon_key(face_var0(0))
+        let qm1 = @algebra.QMat::{
+          n: 3,
+          rows: [
+            [@algebra.rat_int(2), @algebra.rat_int(-1), @algebra.rat_int(3)],
+            [@algebra.rat_int(5), @algebra.rat_int(4), @algebra.rat_int(-2)],
+            [@algebra.rat_int(1), @algebra.rat_int(3), @algebra.rat_int(7)],
+          ],
+        }
+        let qm2 = @algebra.QMat::{
+          n: 3,
+          rows: [
+            [@algebra.rat_make(1, 2), @algebra.rat_int(3), @algebra.rat_int(-1)],
+            [@algebra.rat_int(2), @algebra.rat_make(-3, 4), @algebra.rat_int(5)],
+            [@algebra.rat_int(-4), @algebra.rat_int(1), @algebra.rat_make(2, 3)],
+          ],
+        }
+        let expected_det = @algebra.rat_int(
+          2 * (28 + 6) + 1 * (35 + 2) + 3 * (15 - 4),
+        )
+        let qmat_ok = @algebra.rat_eq(@algebra.qmat_det(qm1), expected_det) &&
+          @algebra.qmat_eq(
+            @algebra.qmat_mul_ozaki2_crt(qm1, qm2),
+            @algebra.qmat_mul(qm1, qm2),
+          )
+        let d_id_succ2 = DTerm::DApp(
+          DTerm::DLam(
+            DTerm::DNatTy,
+            DTerm::DSucc(DTerm::DSucc(DTerm::DTVar(0))),
+          ),
+          DTerm::DSucc(DTerm::DNatZero),
+        )
+        dm_ok &&
+        cchm_ok &&
+        qmat_ok &&
+        kernel_eval_closed_peano(d_id_succ2) == Some(3)
+      },
+    },
+    CheckResult::{
+      name: "T1–T4 泛消元／凝聚核心升級：Domich–Kannan–Trotter 模行列式有界 HNF、Bareiss 無分數行列式、構造性 Nöbeling 單模整數基底（C(S,ℤ) 自由性与 Z[S]^■ 對偶積）、Roos–Milnor R¹lim 自同態撓因子與 64-bit @swar Steenrod–Adams 極小分解（h₀,h₁,h₂,h₃ 八元數 Hopf 類與 η³=4ν 代數恆等式 Ext_A^{3,6}=1）",
+      ok: {
+        let mh = @gcd.zmat_from_int_rows([
+          [4, 6, 10],
+          [6, 15, 21],
+          [2, 9, 13],
+          [8, 12, 23],
+        ])
+        let hnf_ok = @gcd.zmat_hnf_modular(mh) == @gcd.zmat_hnf(mh) &&
+          @gcd.zmat_det_bareiss(@gcd.zmat_from_int_rows([[2, 1], [0, 3]])) == 6N
+        let nob_ok = @condensed.verify_nobeling_free_solid_duality(
+            @condensed.compact_tower_cantor(4),
+          ) &&
+          @condensed.verify_nobeling_free_solid_duality(
+            @condensed.compact_tower_padic(3, 3),
+          )
+        let (r0, rtor) = @condensed.rlim_zmat_endomorphism(
+          @gcd.zmat_from_int_rows([[3]]),
+        )
+        let ad = @condensed.adams_ext_swar_frontier_report()
+        hnf_ok &&
+        nob_ok &&
+        r0 == 0 &&
+        rtor == [2N] &&
+        ad.hopf_h0_ext11 == 1 &&
+        ad.hopf_h1_ext12 == 1 &&
+        ad.hopf_h2_ext14 == 1 &&
+        ad.hopf_h3_ext18 == 1 &&
+        ad.adem_non_pow2_vanish &&
+        ad.eta_cubed_eq_4nu_ext36 == 1
+      },
+    },
   ]
 }
 

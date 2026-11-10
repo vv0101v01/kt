@@ -360,11 +360,12 @@ pub fn shared_dag_bundle_to_binary(SharedDagBundle) -> Array[Int32]
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug)
 pub(all) struct ArtifactAuthKey {
   key_id : String
   secret_a : Int32
   secret_b : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactAuthKey::equal(Self, Self) -> Bool
 pub fn ArtifactAuthKey::not_equal(Self, Self) -> Bool
 pub fn ArtifactAuthKey::to_repr(Self) -> @debug.Repr
@@ -376,16 +377,18 @@ pub struct ArtifactByteStore {
   list : () -> Array[String]
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum ArtifactCasStatus {
   ArtifactCasCommitted
   ArtifactCasConflict
   ArtifactCasAuthFailed
   ArtifactCasIoError
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactCasStatus::equal(Self, Self) -> Bool
 pub fn ArtifactCasStatus::not_equal(Self, Self) -> Bool
 pub fn ArtifactCasStatus::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct ArtifactChainEntry {
   sequence : Int32
   removed : Bool
@@ -394,11 +397,12 @@ pub(all) struct ArtifactChainEntry {
   previous_b : Int32
   entry_a : Int32
   entry_b : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactChainEntry::equal(Self, Self) -> Bool
 pub fn ArtifactChainEntry::not_equal(Self, Self) -> Bool
 pub fn ArtifactChainEntry::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ArtifactChainReport {
   valid : Bool
   entries : Int32
@@ -406,31 +410,34 @@ pub struct ArtifactChainReport {
   head_a : Int32
   head_b : Int32
   covers_index : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactChainReport::equal(Self, Self) -> Bool
 pub fn ArtifactChainReport::not_equal(Self, Self) -> Bool
 pub fn ArtifactChainReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ArtifactMergeConflict {
   kind : String
   name : String
   base_blob_key : String?
   left_blob_key : String?
   right_blob_key : String?
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactMergeConflict::equal(Self, Self) -> Bool
 pub fn ArtifactMergeConflict::not_equal(Self, Self) -> Bool
 pub fn ArtifactMergeConflict::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub enum ArtifactMergePolicy {
   ArtifactMergeAbortOnConflict
   ArtifactMergePreferLeft
   ArtifactMergePreferRight
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactMergePolicy::equal(Self, Self) -> Bool
 pub fn ArtifactMergePolicy::not_equal(Self, Self) -> Bool
 pub fn ArtifactMergePolicy::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct ArtifactRecord {
   kind : String
   name : String
@@ -439,7 +446,7 @@ pub(all) struct ArtifactRecord {
   hash_a : Int32
   hash_b : Int32
   format_version : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactRecord::equal(Self, Self) -> Bool
 pub fn ArtifactRecord::not_equal(Self, Self) -> Bool
 pub fn ArtifactRecord::to_repr(Self) -> @debug.Repr
@@ -451,16 +458,18 @@ pub struct ArtifactRepository {
   mut recoveries : Int32
 }
 
+#derive(Eq, @debug.Debug)
 pub struct ArtifactRepositoryStats {
   records : Int32
   total_bytes : Int32
   puts : Int32
   recoveries : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactRepositoryStats::equal(Self, Self) -> Bool
 pub fn ArtifactRepositoryStats::not_equal(Self, Self) -> Bool
 pub fn ArtifactRepositoryStats::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct ArtifactSyncReport {
   ok : Bool
   transferred_blobs : Int32
@@ -468,11 +477,12 @@ pub(all) struct ArtifactSyncReport {
   tombstones_applied : Int32
   final_head_a : Int32
   final_head_b : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactSyncReport::equal(Self, Self) -> Bool
 pub fn ArtifactSyncReport::not_equal(Self, Self) -> Bool
 pub fn ArtifactSyncReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ArtifactThreeWayMergeReport {
   ok : Bool
   lca_entries : Int32
@@ -484,16 +494,17 @@ pub struct ArtifactThreeWayMergeReport {
   conflicts : Array[ArtifactMergeConflict]
   final_head_a : Int32
   final_head_b : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactThreeWayMergeReport::equal(Self, Self) -> Bool
 pub fn ArtifactThreeWayMergeReport::not_equal(Self, Self) -> Bool
 pub fn ArtifactThreeWayMergeReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ArtifactWalRecoveryReport {
   replayed_transactions : Int32
   discarded_torn_bytes : Int32
   active_tx_rolled_back : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn ArtifactWalRecoveryReport::equal(Self, Self) -> Bool
 pub fn ArtifactWalRecoveryReport::not_equal(Self, Self) -> Bool
 pub fn ArtifactWalRecoveryReport::to_repr(Self) -> @debug.Repr
@@ -506,6 +517,7 @@ pub struct ArtifactWalStore {
   staged : Array[WalOp]
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct BftEd25519WalReport {
   n_validators : Int32
   quorum_required : Int32
@@ -513,20 +525,22 @@ pub(all) struct BftEd25519WalReport {
   forged_signature_rejected : Bool
   wal_committed_and_recovered : Bool
   condensed_ledger_verified : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn BftEd25519WalReport::equal(Self, Self) -> Bool
 pub fn BftEd25519WalReport::not_equal(Self, Self) -> Bool
 pub fn BftEd25519WalReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct BinaryVersionPolicy {
   current : Int32
   supported : Array[Int32]
   oldest_writable : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn BinaryVersionPolicy::equal(Self, Self) -> Bool
 pub fn BinaryVersionPolicy::not_equal(Self, Self) -> Bool
 pub fn BinaryVersionPolicy::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct CompiledModule {
   format_version : Int32
   module_path : String
@@ -538,24 +552,26 @@ pub struct CompiledModule {
   implementation_hash : Int32
   interface_encoding : String
   producer : String
-} derive(Eq, @debug.Debug)
+}
 pub fn CompiledModule::equal(Self, Self) -> Bool
 pub fn CompiledModule::not_equal(Self, Self) -> Bool
 pub fn CompiledModule::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct CompiledModuleEnv {
   modules : Array[CompiledModule]
-} derive(Eq, @debug.Debug)
+}
 pub fn CompiledModuleEnv::equal(Self, Self) -> Bool
 pub fn CompiledModuleEnv::not_equal(Self, Self) -> Bool
 pub fn CompiledModuleEnv::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct CompiledModuleEnvelopeLoad {
   status : ModuleBinaryStatus
   module_ : CompiledModule?
   recognized_sections : Array[ModuleTlvSection]
   skipped_noncritical_tags : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn CompiledModuleEnvelopeLoad::equal(Self, Self) -> Bool
 pub fn CompiledModuleEnvelopeLoad::not_equal(Self, Self) -> Bool
 pub fn CompiledModuleEnvelopeLoad::to_repr(Self) -> @debug.Repr
@@ -566,12 +582,13 @@ pub struct CompiledModuleStore {
   mut misses : Int32
 }
 
+#derive(Eq, @debug.Debug)
 pub struct CompiledModuleStoreStats {
   entries : Int32
   total_bytes : Int32
   hits : Int32
   misses : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn CompiledModuleStoreStats::equal(Self, Self) -> Bool
 pub fn CompiledModuleStoreStats::not_equal(Self, Self) -> Bool
 pub fn CompiledModuleStoreStats::to_repr(Self) -> @debug.Repr
@@ -581,90 +598,101 @@ pub struct DSchemaRegistryBinaryLoad {
   snapshot : @kernel.DSchemaRegistrySnapshot?
 }
 
+#derive(Eq, @debug.Debug)
 pub struct DTermDagBinaryLoad {
   status : ModuleBinaryStatus
   snapshot : @kernel.DTermDagSnapshot?
-} derive(Eq, @debug.Debug)
+}
 pub fn DTermDagBinaryLoad::equal(Self, Self) -> Bool
 pub fn DTermDagBinaryLoad::not_equal(Self, Self) -> Bool
 pub fn DTermDagBinaryLoad::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DTermDagDelta {
   base_node_count : Int32
   base_digest_a : Int32
   base_digest_b : Int32
   delta_nodes : Array[@kernel.DTermDagNode]
   roots : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn DTermDagDelta::equal(Self, Self) -> Bool
 pub fn DTermDagDelta::not_equal(Self, Self) -> Bool
 pub fn DTermDagDelta::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DTermDagDeltaBinaryLoad {
   status : ModuleBinaryStatus
   delta : DTermDagDelta?
-} derive(Eq, @debug.Debug)
+}
 pub fn DTermDagDeltaBinaryLoad::equal(Self, Self) -> Bool
 pub fn DTermDagDeltaBinaryLoad::not_equal(Self, Self) -> Bool
 pub fn DTermDagDeltaBinaryLoad::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct Ed25519Keypair {
   seed : Array[Int32]
   public_key : Ed25519PublicKey
-} derive(Eq, @debug.Debug)
+}
 pub fn Ed25519Keypair::equal(Self, Self) -> Bool
 pub fn Ed25519Keypair::not_equal(Self, Self) -> Bool
 pub fn Ed25519Keypair::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct Ed25519PublicKey {
   bytes : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn Ed25519PublicKey::equal(Self, Self) -> Bool
 pub fn Ed25519PublicKey::not_equal(Self, Self) -> Bool
 pub fn Ed25519PublicKey::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct Ed25519Signature {
   bytes : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn Ed25519Signature::equal(Self, Self) -> Bool
 pub fn Ed25519Signature::not_equal(Self, Self) -> Bool
 pub fn Ed25519Signature::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum HotLoadDecision {
   HotAdd
   HotOpaqueSwap
   HotRelink(Array[String])
   HotReject(String)
-} derive(Eq, @debug.Debug)
+}
 pub fn HotLoadDecision::equal(Self, Self) -> Bool
 pub fn HotLoadDecision::not_equal(Self, Self) -> Bool
 pub fn HotLoadDecision::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct HotLoadEnv {
   mut modules : Array[CompiledModule]
   mut epoch : Int32
   mut history : Array[HotLoadRecord]
-} derive(Eq, @debug.Debug)
+}
 pub fn HotLoadEnv::equal(Self, Self) -> Bool
 pub fn HotLoadEnv::not_equal(Self, Self) -> Bool
 pub fn HotLoadEnv::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct HotLoadMvccSnapshot {
   epoch : Int32
   modules : Array[(String, Int32)]
   scc_groups : Array[Array[String]]
-} derive(Eq, @debug.Debug)
+}
 pub fn HotLoadMvccSnapshot::equal(Self, Self) -> Bool
 pub fn HotLoadMvccSnapshot::not_equal(Self, Self) -> Bool
 pub fn HotLoadMvccSnapshot::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct HotLoadMvccStore {
   snapshots : Array[HotLoadMvccSnapshot]
-} derive(Eq, @debug.Debug)
+}
 pub fn HotLoadMvccStore::equal(Self, Self) -> Bool
 pub fn HotLoadMvccStore::not_equal(Self, Self) -> Bool
 pub fn HotLoadMvccStore::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct HotLoadRecord {
   path : String
   epoch : Int32
@@ -672,11 +700,12 @@ pub struct HotLoadRecord {
   replacements : Int32
   rolled_back : Bool
   reason : String
-} derive(Eq, @debug.Debug)
+}
 pub fn HotLoadRecord::equal(Self, Self) -> Bool
 pub fn HotLoadRecord::not_equal(Self, Self) -> Bool
 pub fn HotLoadRecord::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct HotLoadReport {
   accepted : Bool
   epoch_before : Int32
@@ -686,19 +715,21 @@ pub struct HotLoadReport {
   replacements : Int32
   rolled_back : Bool
   reason : String
-} derive(Eq, @debug.Debug)
+}
 pub fn HotLoadReport::equal(Self, Self) -> Bool
 pub fn HotLoadReport::not_equal(Self, Self) -> Bool
 pub fn HotLoadReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleBinaryLoad {
   status : ModuleBinaryStatus
   module_ : CompiledModule?
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleBinaryLoad::equal(Self, Self) -> Bool
 pub fn ModuleBinaryLoad::not_equal(Self, Self) -> Bool
 pub fn ModuleBinaryLoad::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum ModuleBinaryStatus {
   ModuleBinaryOk
   ModuleBinaryBadMagic
@@ -708,56 +739,62 @@ pub(all) enum ModuleBinaryStatus {
   ModuleBinaryMalformed
   ModuleBinaryTrailingBytes
   ModuleBinaryValidationFailed
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleBinaryStatus::equal(Self, Self) -> Bool
 pub fn ModuleBinaryStatus::not_equal(Self, Self) -> Bool
 pub fn ModuleBinaryStatus::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleBinding {
   name : String
   ordinal : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleBinding::equal(Self, Self) -> Bool
 pub fn ModuleBinding::not_equal(Self, Self) -> Bool
 pub fn ModuleBinding::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleBuildPlanReport {
   ok : Bool
   topological_order : Array[String]
   cycle_detected : Bool
   missing_dependency : String?
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleBuildPlanReport::equal(Self, Self) -> Bool
 pub fn ModuleBuildPlanReport::not_equal(Self, Self) -> Bool
 pub fn ModuleBuildPlanReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleCompileCache {
   entries : Array[ModuleCompileCacheEntry]
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleCompileCache::equal(Self, Self) -> Bool
 pub fn ModuleCompileCache::not_equal(Self, Self) -> Bool
 pub fn ModuleCompileCache::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleCompileCacheEntry {
   module_path : String
   fingerprint : String
   compiled : CompiledModule
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleCompileCacheEntry::equal(Self, Self) -> Bool
 pub fn ModuleCompileCacheEntry::not_equal(Self, Self) -> Bool
 pub fn ModuleCompileCacheEntry::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleDecl {
   name : String
   ty : @kernel.DTerm
   body : @kernel.DTerm?
   exported : Bool
   transparent : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleDecl::equal(Self, Self) -> Bool
 pub fn ModuleDecl::not_equal(Self, Self) -> Bool
 pub fn ModuleDecl::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleDef {
   path : String
   params : Array[@kernel.DTelescopeEntry]
@@ -765,19 +802,21 @@ pub struct ModuleDef {
   opens : Array[String]
   decls : Array[ModuleDecl]
   items : Array[ModuleItem]
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleDef::equal(Self, Self) -> Bool
 pub fn ModuleDef::not_equal(Self, Self) -> Bool
 pub fn ModuleDef::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleDependencyFingerprint {
   path : String
   interface_hash : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleDependencyFingerprint::equal(Self, Self) -> Bool
 pub fn ModuleDependencyFingerprint::not_equal(Self, Self) -> Bool
 pub fn ModuleDependencyFingerprint::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleEntry {
   canonical_name : String
   local_name : String
@@ -786,27 +825,30 @@ pub struct ModuleEntry {
   body : @kernel.DTerm?
   exported : Bool
   transparent : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleEntry::equal(Self, Self) -> Bool
 pub fn ModuleEntry::not_equal(Self, Self) -> Bool
 pub fn ModuleEntry::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleEnv {
   modules : Array[ModuleDef]
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleEnv::equal(Self, Self) -> Bool
 pub fn ModuleEnv::not_equal(Self, Self) -> Bool
 pub fn ModuleEnv::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleExport {
   name : String
   ordinal : Int32
   transparent : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleExport::equal(Self, Self) -> Bool
 pub fn ModuleExport::not_equal(Self, Self) -> Bool
 pub fn ModuleExport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleImport {
   module_path : String
   alias_name : String
@@ -815,31 +857,34 @@ pub struct ModuleImport {
   hiding : Array[String]
   opened : Bool
   renames : Array[ModuleRename]
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleImport::equal(Self, Self) -> Bool
 pub fn ModuleImport::not_equal(Self, Self) -> Bool
 pub fn ModuleImport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleIncrementalBuildReport {
   ok : Bool
   compiled_env : CompiledModuleEnv
   recompiled_paths : Array[String]
   cache_hit_paths : Array[String]
   relinked_instance : ModuleInstance?
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleIncrementalBuildReport::equal(Self, Self) -> Bool
 pub fn ModuleIncrementalBuildReport::not_equal(Self, Self) -> Bool
 pub fn ModuleIncrementalBuildReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleInstance {
   module_path : String
   decls : Array[ModuleInstanceDecl]
   bindings : Array[ModuleBinding]
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleInstance::equal(Self, Self) -> Bool
 pub fn ModuleInstance::not_equal(Self, Self) -> Bool
 pub fn ModuleInstance::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleInstanceDecl {
   name : String
   canonical_name : String
@@ -847,42 +892,46 @@ pub struct ModuleInstanceDecl {
   body : @kernel.DTerm
   exported : Bool
   transparent : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleInstanceDecl::equal(Self, Self) -> Bool
 pub fn ModuleInstanceDecl::not_equal(Self, Self) -> Bool
 pub fn ModuleInstanceDecl::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub enum ModuleItem {
   ModuleItemImport(Int32)
   ModuleItemDecl(Int32)
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleItem::equal(Self, Self) -> Bool
 pub fn ModuleItem::not_equal(Self, Self) -> Bool
 pub fn ModuleItem::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleRename {
   from_name : String
   to_name : String
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleRename::equal(Self, Self) -> Bool
 pub fn ModuleRename::not_equal(Self, Self) -> Bool
 pub fn ModuleRename::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct ModuleSignature {
   module_path : String
   entries : Array[ModuleEntry]
   bindings : Array[ModuleBinding]
   exports : Array[ModuleExport]
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleSignature::equal(Self, Self) -> Bool
 pub fn ModuleSignature::not_equal(Self, Self) -> Bool
 pub fn ModuleSignature::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct ModuleTlvSection {
   tag : Int32
   critical : Bool
   payload : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn ModuleTlvSection::equal(Self, Self) -> Bool
 pub fn ModuleTlvSection::not_equal(Self, Self) -> Bool
 pub fn ModuleTlvSection::to_repr(Self) -> @debug.Repr

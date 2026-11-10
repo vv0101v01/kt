@@ -720,7 +720,9 @@ pub fn pairs_joinable(e : Env, depth : Int32) -> Bool {
 
 ///|
 /// 修補定律：能偵測 → 能修 → 修完仍然可解，且不刪任何規則。
-pub fn law_engine_completion_repairs_an_incoherent_env() -> Array[(String, Bool)] {
+pub fn law_engine_completion_repairs_an_incoherent_env() -> Array[
+  (String, Bool),
+] {
   let out : Array[(String, Bool)] = []
   let e = env_clash()
   let goal = cls_show(ty_int())
@@ -745,7 +747,9 @@ pub fn law_engine_completion_repairs_an_incoherent_env() -> Array[(String, Bool)
       kept = false
     }
   }
-  @core.chk(out, "instances: completion repairs an incoherent env #3 (rules kept)", kept)
+  @core.chk(
+    out, "instances: completion repairs an incoherent env #3 (rules kept)", kept,
+  )
   // 4. 可解性不被破壞：修補前可解的目標，修補後仍可解
   @core.chk(
     out,
@@ -905,8 +909,7 @@ pub fn law_engine_completion_uses_a_termination_order() -> Array[(String, Bool)]
     }
   }
   @core.chk(
-    out,
-    "instances: completion uses a termination order #3 (every new rule is oriented)",
+    out, "instances: completion uses a termination order #3 (every new rule is oriented)",
     all_oriented,
   )
   // #4 原有規則的定向性沒被動到
@@ -917,8 +920,7 @@ pub fn law_engine_completion_uses_a_termination_order() -> Array[(String, Bool)]
     }
   }
   @core.chk(
-    out,
-    "instances: completion uses a termination order #4 (old rules untouched)",
+    out, "instances: completion uses a termination order #4 (old rules untouched)",
     old_ok,
   )
   // #5 沒有硬塞：真的定向不了就回報（env_clash 上應該全部可以定向）
@@ -990,7 +992,7 @@ fn enum_args_into(
   if budget <= 0 {
     return
   }
-  for sub in 1..=budget {
+  for sub in 1..<=budget {
     for t in enum_uterms(sig, sub) {
       let acc2 : Array[@core.UTerm] = []
       for a in acc {
@@ -1005,11 +1007,7 @@ fn enum_args_into(
 ///|
 /// 暴力可解性：深度受限的純 DFS（無環路偵測、無記憶）。
 /// `d` 的意義與 `resolve_all` 相同（可用的規則嵌套層數）。
-pub fn derivable_bruteforce(
-  e : Env,
-  goal : @core.UTerm,
-  depth : Int32,
-) -> Bool {
+pub fn derivable_bruteforce(e : Env, goal : @core.UTerm, depth : Int32) -> Bool {
   if depth <= 0 {
     return false
   }
@@ -1104,18 +1102,13 @@ pub fn law_engine_sld_resolution_is_complete_within_depth() -> Array[
     }
   }
   @core.chk(
-    out,
-    "instances: sld resolution is complete within depth #1 (sound)",
-    sound,
+    out, "instances: sld resolution is complete within depth #1 (sound)", sound,
   )
   @core.chk(
-    out,
-    "instances: sld resolution is complete within depth #2 (complete)",
-    complete,
+    out, "instances: sld resolution is complete within depth #2 (complete)", complete,
   )
   @core.chk(
-    out,
-    "instances: sld resolution is complete within depth #3 (depth monotone)",
+    out, "instances: sld resolution is complete within depth #3 (depth monotone)",
     mono,
   )
   // #4 環：含環保與無環保上，兩邊都不發散且答案一致（上面已含 env_loop；
@@ -1127,7 +1120,8 @@ pub fn law_engine_sld_resolution_is_complete_within_depth() -> Array[
   @core.chk(
     out,
     "instances: sld resolution is complete within depth #4 (cycles terminate, no false solutions)",
-    !solvable(loop_env, loop_goal, 6) && !derivable_bruteforce(loop_env, loop_goal, 6),
+    !solvable(loop_env, loop_goal, 6) &&
+    !derivable_bruteforce(loop_env, loop_goal, 6),
   )
   // #5 深度會咬人：Array[Pair[Int, Int]] 需要 3 層
   let deep = cls_show(ty_array(ty_pair(ty_int(), ty_int())))
@@ -1141,6 +1135,308 @@ pub fn law_engine_sld_resolution_is_complete_within_depth() -> Array[
     out,
     "instances: sld resolution is complete within depth #6 (no missed and no fake solutions over \{checked} goal/depth pairs)",
     same && checked > 500,
+  )
+  out
+}
+
+// ---------------------------------------------------------------------------
+// 二級首符號判別索引（First-Symbol Discrimination Index）+ SLG 子目標記憶化表（Tabling）
+// ---------------------------------------------------------------------------
+
+///|
+/// 預編譯之規則索引環境：以 `(head_tag, arg0_tag)` 雜湊分桶取代全表線性掃描，
+/// 並對基礎子目標（ground subgoals）啟用深度分層 SLG 記憶化以避免鑽石階層指數重算。
+pub(all) struct IndexedEnv {
+  base : Env
+  exact_buckets : Map[Int64, Array[Int32]]
+  wild_arg_buckets : Map[Int32, Array[Int32]]
+  var_head_rules : Array[Int32]
+}
+
+///|
+fn ienv_pair_key(head_tag : Int32, arg0_tag : Int32) -> Int64 {
+  (head_tag.to_int64() << 32) | (arg0_tag.to_int64() & 0xFFFFFFFFL)
+}
+
+///|
+/// 將 `Env` 編譯為二級首符號索引表。
+pub fn index_env(e : Env) -> IndexedEnv {
+  let exact_buckets : Map[Int64, Array[Int32]] = Map([])
+  let wild_arg_buckets : Map[Int32, Array[Int32]] = Map([])
+  let var_head_rules : Array[Int32] = []
+  for idx in 0..<e.rules.length() {
+    match e.rules[idx].head {
+      @core.UVar(_) => var_head_rules.push(idx)
+      @core.UFfn(htag, args) =>
+        if args.length() == 0 {
+          let key = ienv_pair_key(htag, -1)
+          match exact_buckets.get(key) {
+            Some(arr) => arr.push(idx)
+            None => exact_buckets[key] = [idx]
+          }
+        } else {
+          match args[0] {
+            @core.UVar(_) =>
+              match wild_arg_buckets.get(htag) {
+                Some(arr) => arr.push(idx)
+                None => wild_arg_buckets[htag] = [idx]
+              }
+            @core.UFfn(atag, _) => {
+              let key = ienv_pair_key(htag, atag)
+              match exact_buckets.get(key) {
+                Some(arr) => arr.push(idx)
+                None => exact_buckets[key] = [idx]
+              }
+            }
+          }
+        }
+    }
+  }
+  IndexedEnv::{ base: e, exact_buckets, wild_arg_buckets, var_head_rules, }
+}
+
+///|
+fn merge_sorted_rule_ids(a : Array[Int32], b : Array[Int32]) -> Array[Int32] {
+  let out : Array[Int32] = []
+  let mut i = 0
+  let mut j = 0
+  while i < a.length() && j < b.length() {
+    if a[i] < b[j] {
+      out.push(a[i])
+      i = i + 1
+    } else if b[j] < a[i] {
+      out.push(b[j])
+      j = j + 1
+    } else {
+      out.push(a[i])
+      i = i + 1
+      j = j + 1
+    }
+  }
+  while i < a.length() {
+    out.push(a[i])
+    i = i + 1
+  }
+  while j < b.length() {
+    out.push(b[j])
+    j = j + 1
+  }
+  out
+}
+
+///|
+/// 依目標首符號與首參數型別構造子，O(1) 取出有序候選規則索引集合。
+pub fn candidate_rules_indexed(
+  ie : IndexedEnv,
+  goal : @core.UTerm,
+) -> Array[Int32] {
+  match goal {
+    @core.UVar(_) => Array::makei(ie.base.rules.length(), i => i)
+    @core.UFfn(htag, args) => {
+      let mut cands = ie.var_head_rules
+      match ie.wild_arg_buckets.get(htag) {
+        Some(w) => cands = merge_sorted_rule_ids(cands, w)
+        None => ()
+      }
+      if args.length() == 0 {
+        match ie.exact_buckets.get(ienv_pair_key(htag, -1)) {
+          Some(ex) => cands = merge_sorted_rule_ids(cands, ex)
+          None => ()
+        }
+      } else {
+        match args[0] {
+          @core.UVar(_) =>
+            for idx in 0..<ie.base.rules.length() {
+              match ie.base.rules[idx].head {
+                @core.UFfn(f, _) =>
+                  if f == htag {
+                    cands = merge_sorted_rule_ids(cands, [idx])
+                  }
+                _ => ()
+              }
+            }
+          @core.UFfn(atag, _) =>
+            match ie.exact_buckets.get(ienv_pair_key(htag, atag)) {
+              Some(ex) => cands = merge_sorted_rule_ids(cands, ex)
+              None => ()
+            }
+        }
+      }
+      cands
+    }
+  }
+}
+
+///|
+fn resolve_tabled_go(
+  ie : IndexedEnv,
+  goal : @core.UTerm,
+  depth : Int32,
+  seen : Array[@core.UTerm],
+  memo : Map[String, Array[Deriv]],
+  memo_hits : Array[Int32],
+) -> Array[Deriv] {
+  if depth <= 0 || key_in(seen, goal) {
+    return []
+  }
+  let is_ground = @core.u_vars(goal).length() == 0
+  let mkey = if is_ground && seen.length() == 0 {
+    "\{depth}:\{@core.u_to_string(goal)}"
+  } else {
+    ""
+  }
+  if mkey != "" {
+    match memo.get(mkey) {
+      Some(cached) => {
+        memo_hits[0] = memo_hits[0] + 1
+        return clone_derivs(cached)
+      }
+      None => ()
+    }
+  }
+  let seen2 : Array[@core.UTerm] = []
+  for s in seen {
+    seen2.push(s)
+  }
+  seen2.push(goal)
+  let acc : Array[Deriv] = []
+  let cands = candidate_rules_indexed(ie, goal)
+  let base = 1000 * (depth + 1)
+  for rule_idx in cands {
+    let r = ie.base.rules[rule_idx]
+    let head = renumber(r.head, base)
+    let sub : Array[@core.UTerm?] = []
+    if @core.u_unify(sub, head, goal) {
+      let body : Array[@core.UTerm] = []
+      for b in r.body {
+        body.push(@core.u_apply(sub, renumber(b, base)))
+      }
+      solve_body_tabled(
+        ie,
+        body,
+        0,
+        depth - 1,
+        seen2,
+        rule_idx,
+        goal,
+        [],
+        acc,
+        memo,
+        memo_hits,
+      )
+    }
+  }
+  if mkey != "" {
+    memo[mkey] = clone_derivs(acc)
+  }
+  acc
+}
+
+///|
+fn solve_body_tabled(
+  ie : IndexedEnv,
+  body : Array[@core.UTerm],
+  idx : Int32,
+  depth : Int32,
+  seen : Array[@core.UTerm],
+  rule_idx : Int32,
+  goal : @core.UTerm,
+  kids : Array[Deriv],
+  acc : Array[Deriv],
+  memo : Map[String, Array[Deriv]],
+  memo_hits : Array[Int32],
+) -> Unit {
+  if idx >= body.length() {
+    acc.push(Deriv::{ rule: rule_idx, kids: clone_derivs(kids), goal, })
+    return
+  }
+  let next_seen : Array[@core.UTerm] = if @core.u_vars(body[idx]).length() == 0 &&
+    !key_in(seen, body[idx]) {
+    []
+  } else {
+    seen
+  }
+  let sub_ds = resolve_tabled_go(
+    ie,
+    body[idx],
+    depth,
+    next_seen,
+    memo,
+    memo_hits,
+  )
+  for d in sub_ds {
+    let kids2 = clone_derivs(kids)
+    kids2.push(d)
+    solve_body_tabled(
+      ie,
+      body,
+      idx + 1,
+      depth,
+      seen,
+      rule_idx,
+      goal,
+      kids2,
+      acc,
+      memo,
+      memo_hits,
+    )
+  }
+}
+
+///|
+/// 以二級首符號索引與 SLG Tabling 解析目標，回傳 `(derivations, cache_hits)`。
+pub fn resolve_indexed_tabled(
+  ie : IndexedEnv,
+  goal : @core.UTerm,
+  depth : Int32,
+) -> (Array[Deriv], Int32) {
+  let memo : Map[String, Array[Deriv]] = Map([])
+  let hits : Array[Int32] = [0]
+  let ds = resolve_tabled_go(ie, goal, depth, [], memo, hits)
+  (ds, hits[0])
+}
+
+///|
+/// 二級索引 + SLG Tabling 等價性與 `orientable` 定向終止整合定律。
+pub fn law_engine_indexed_tabling_and_orientable_coherence() -> Array[
+  (String, Bool),
+] {
+  let out : Array[(String, Bool)] = []
+  let e_show = env_show()
+  let ie_show = index_env(e_show)
+  // #1 `orientable` 在結構遞減實例庫（Show Int / Show Bool / Show Array / Show Pair）上嚴格為真，
+  //    在膨脹迴圈實例庫上嚴格為假，且經 Knuth-Bendix `complete_oriented` 修補後仍保持定向！
+  let bad = env([
+    rule("loop", 0, cls_show(@core.uvar(0)), [cls_show(ty_array(@core.uvar(0)))]),
+  ])
+  let (repaired, _stuck) = complete_oriented(env_clash(), 6, 6)
+  @core.chk(
+    out,
+    "instances: orientable characterizes structural decrease and survives completion #1",
+    orientable(e_show) && !orientable(bad) && orientable(repaired),
+  )
+  // #2 首符號索引大幅縮小候選規則數（Show(Int) 不會掃描 Show(Bool)/Show(Array)/Show(Pair)）
+  let cands_int = candidate_rules_indexed(ie_show, cls_show(ty_int()))
+  @core.chk(
+    out,
+    "instances: first-symbol index prunes non-matching constructors #2",
+    cands_int.length() == 1 && cands_int[0] == 0,
+  )
+  // #3 鑽石型重複子目標 Show(Pair(Pair(Int, Bool), Pair(Int, Bool)))：
+  //    `resolve_indexed_tabled` 給出與 `resolve_all` 完全一致的見證項，且觸發 SLG 快取命中！
+  let sub_pair = ty_pair(ty_int(), ty_bool())
+  let diamond = cls_show(
+    ty_pair(ty_pair(sub_pair, sub_pair), ty_pair(sub_pair, sub_pair)),
+  )
+  let ref_ds = resolve_all(e_show, diamond, 6)
+  let (tab_ds, hits) = resolve_indexed_tabled(ie_show, diamond, 6)
+  let same_ev = ref_ds.length() == tab_ds.length() &&
+    ref_ds.length() == 1 &&
+    @core.u_eq(evidence(e_show, ref_ds[0]), evidence(e_show, tab_ds[0]))
+  @core.chk(
+    out,
+    "instances: SLG tabling matches SLD evidence and hits subgoal cache on diamond #3",
+    same_ev && hits == 2,
   )
   out
 }

@@ -476,11 +476,6 @@ pub fn affine_fiber_product(
 }
 
 ///|
-/// Construct the **Associated Reduced Scheme** `X_red` and canonical closed
-/// immersion `ι : X_red ↪ X` by reducing every chart AND every overlap ideal
-/// (`√I` commutes with localization `(√I)_f = √(I_f)`!)!
-
-///|
 /// **Grothendieck's Diagonal Criterion for Separatedness** (EGA I, 5.5.6):
 /// A scheme `X = ∪_i U_i` glued from affine opens `U_i = Spec(A_i)` is **Separated**
 /// iff for all `i, j` with `U_{ij} != ∅`, the multiplication homomorphism

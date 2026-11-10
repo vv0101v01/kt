@@ -397,37 +397,29 @@ pub fn CyclicSet::one_of(m : Int32) -> CyclicSet {
 
 ///|
 pub fn CyclicSet::singleton(m : Int32, x : Int32) -> CyclicSet {
-  { m, bits: 1UL << (x % m), }
+  let r = (x % m + m) % m
+  { m, bits: 1UL << r, }
 }
 
 ///|
 pub fn CyclicSet::of_range(m : Int32, elements : Array[Int32]) -> CyclicSet {
   let mut bits = 0UL
   for x in elements {
-    bits = bits | (1UL << (x % m))
+    let r = (x % m + m) % m
+    bits = bits | (1UL << r)
   }
   { m, bits, }
 }
 
 ///|
 pub fn CyclicSet::contains(self : CyclicSet, x : Int32) -> Bool {
-  ((self.bits >> (x % self.m)) & 1UL) == 1UL
+  let r = (x % self.m + self.m) % self.m
+  ((self.bits >> r) & 1UL) == 1UL
 }
 
 ///|
 pub fn CyclicSet::cardinality(self : CyclicSet) -> Int32 {
-  popcount64(self.bits)
-}
-
-///|
-fn popcount64(x : UInt64) -> Int32 {
-  let mut v = x
-  let mut c = 0
-  while v != 0UL {
-    v = v & (v - 1UL)
-    c = c + 1
-  }
-  c
+  self.bits.popcnt()
 }
 
 ///|

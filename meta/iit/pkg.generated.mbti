@@ -1,0 +1,212 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/meta/iit"
+
+import {
+  "vv0101v01/cubical-hermitian/meta/core",
+}
+
+// Values
+pub fn all_laws() -> Array[(String, Bool)]
+
+pub fn i_equation(IVal, IVal) -> IEquation
+
+pub fn ialgebra_respects_eqs(ISchema, (Int32, Array[IVal]) -> IVal, Array[IVal]) -> Bool
+
+pub fn iarg_rec(Int32, String, Array[ITerm]) -> IArg
+
+pub fn iarg_val(Int32, String) -> IArg
+
+pub fn icheck(ISchema, IVal) -> Bool
+
+pub fn icheck_at(ISchema, IVal, Int32, Array[ITerm]) -> Bool
+
+pub fn icheck_q(ISchema, IVal) -> Bool
+
+pub fn ictor(String, Int32, Array[ITerm], Array[IArg]) -> ICtor
+
+pub fn ictor_ix(Int32, Array[ITerm]) -> ITerm
+
+pub fn ieq_ok(ISchema, IEquation) -> String?
+
+pub fn iholed() -> ITerm
+
+pub fn iindex_of(ISchema, IVal) -> Array[ITerm]
+
+pub fn iit_enumerate(ISchema, Int32, Int32) -> (Array[Array[IVal]], Bool)
+
+pub fn iit_fold(ISchema, (Int32, Array[IVal]) -> IVal, IVal) -> IVal
+
+pub fn iit_fold_q(ISchema, (Int32, Array[IVal]) -> IVal, IVal) -> IVal
+
+pub fn iit_index_dependency(ISchema) -> Array[(Int32, Int32)]
+
+pub fn iit_measure(IVal) -> @core.Ordinal
+
+pub fn iit_ok(String?) -> Bool
+
+pub fn iit_rebuild(Int32, Array[IVal]) -> IVal
+
+pub fn iit_sort_dependency(ISchema) -> Array[(Int32, Int32)]
+
+pub fn iit_stage(ISchema, Array[Array[IVal]], Int32) -> IIStage
+
+pub fn iit_subterm_decrease(ISchema, IVal) -> Bool
+
+pub fn ipat_var(Int32) -> IVal
+
+pub fn iquot(Array[IEquation], IVal, Int32) -> IVal
+
+pub fn iquot_egraph(ISchema, IVal, Int32) -> IVal
+
+pub fn iquot_schema(ISchema, IVal) -> IVal
+
+pub fn ischema(Array[String], Array[Int32], Array[ICtor], eqs? : Array[IEquation]) -> ISchema
+
+pub fn ischema_ok(ISchema) -> String?
+
+pub fn isort_of(ISchema, IVal) -> Int32
+
+pub fn iterm_eq(ITerm, ITerm) -> Bool
+
+pub fn iterm_of_val(IVal) -> ITerm
+
+pub fn iterm_to_string(ITerm) -> String
+
+pub fn ival(Int32, Array[IVal]) -> IVal
+
+pub fn ival_eq(IVal, IVal) -> Bool
+
+pub fn ival_size(IVal) -> Int32
+
+pub fn ival_to_string(ISchema, IVal) -> String
+
+pub fn ivar(Int32) -> ITerm
+
+pub fn law_examples_iit_a_finite_mutual_schema_does_stabilize() -> Array[(String, Bool)]
+
+pub fn law_examples_iit_even_odd_is_plain_mutual_induction_infinite_no_stabilization() -> Array[(String, Bool)]
+
+pub fn law_examples_iit_index_dependency_graph_is_acyclic_for_all_three_schemas() -> Array[(String, Bool)]
+
+pub fn law_examples_iit_kleene_chain_is_monotone_and_every_inhabitant_is_well_typed() -> Array[(String, Bool)]
+
+pub fn law_examples_iit_mutual_eliminator_satisfies_the_iota_law_and_termination_is_certified() -> Array[(String, Bool)]
+
+pub fn law_examples_iit_nat_fin_index_checking_and_the_one_stage_phase_lag() -> Array[(String, Bool)]
+
+pub fn law_examples_iit_stlc_tm_indexed_by_ctx_ty_really_needs_cons_in_the_index() -> Array[(String, Bool)]
+
+pub fn law_iit_egraph_bidirectional_congruence_and_algebra_coherence() -> Array[(String, Bool)]
+
+pub fn law_iit_quotient_equations_hold_and_iota_survives() -> Array[(String, Bool)]
+
+pub fn law_iit_quotient_is_well_defined_on_all_stage_inhabitants() -> Array[(String, Bool)]
+
+pub fn law_iit_schema_placeholders_are_rejected() -> Array[(String, Bool)]
+
+pub fn law_stlc_normalization_reaches_a_stuck_value() -> Array[(String, Bool)]
+
+pub fn law_stlc_stlc_beta_is_index_preserving() -> Array[(String, Bool)]
+
+pub fn law_stlc_subject_reduction_on_a_battery() -> Array[(String, Bool)]
+
+pub fn law_stlc_weakening_and_context_insert_are_consistent() -> Array[(String, Bool)]
+
+pub fn nat_of_int(ISchema, Int32) -> IVal
+
+pub fn nat_s(ISchema, IVal) -> IVal
+
+pub fn nat_z(ISchema) -> IVal
+
+pub fn quot_fuel() -> Int32
+
+pub fn quotient_class_of(ISchema, IVal) -> IVal
+
+pub fn schema_even_odd() -> ISchema
+
+pub fn schema_nat_fin() -> ISchema
+
+pub fn schema_stlc() -> ISchema
+
+pub fn stlc_app(IVal, IVal, IVal, IVal, IVal) -> IVal
+
+pub fn stlc_beta(IVal) -> IVal?
+
+pub fn stlc_cons(IVal, IVal) -> IVal
+
+pub fn stlc_ex_app1() -> IVal
+
+pub fn stlc_ex_app2() -> IVal
+
+pub fn stlc_ex_arg() -> IVal
+
+pub fn stlc_ex_id() -> IVal
+
+pub fn stlc_ex_var() -> IVal
+
+pub fn stlc_lam(IVal, IVal, IVal, IVal) -> IVal
+
+pub fn stlc_nil() -> IVal
+
+pub fn stlc_norm(IVal, Int32) -> IVal
+
+pub fn stlc_same_index(ISchema, IVal, IVal) -> Bool
+
+pub fn stlc_ty_arr(IVal, IVal) -> IVal
+
+pub fn stlc_ty_nat() -> IVal
+
+pub fn stlc_vs(IVal, IVal, IVal, IVal) -> IVal
+
+pub fn stlc_vz(IVal, IVal) -> IVal
+
+pub fn stlc_weaken(IVal, IVal) -> IVal
+
+pub fn subst_insert(IVal, IVal, Int32) -> IVal
+
+// Errors
+
+// Types and methods
+pub(all) enum IArg {
+  IVal(Int32, String)
+  IRec(Int32, String, Array[ITerm])
+}
+
+pub(all) struct ICtor {
+  name : String
+  sort : Int32
+  index : Array[ITerm]
+  args : Array[IArg]
+}
+
+pub(all) struct IEquation {
+  lhs : IVal
+  rhs : IVal
+}
+
+pub struct IIStage {
+  inhabitants : Array[Array[IVal]]
+  truncated : Bool
+}
+
+pub(all) struct ISchema {
+  sort_names : Array[String]
+  sort_arities : Array[Int32]
+  ctors : Array[ICtor]
+  eqs : Array[IEquation]
+}
+
+pub(all) enum ITerm {
+  IVar(Int32)
+  ICtor(Int32, Array[ITerm])
+  IHole
+}
+
+pub(all) struct IVal {
+  ctor : Int32
+  args : Array[IVal]
+}
+
+// Type aliases
+
+// Traits

@@ -87,38 +87,44 @@ fn integer_succ_nat_value(n : DValue) -> DValue {
 
 ///|
 /// Internal inductive successor on `IntegerS`: computes canonically on
-/// `zero` / `posSucc` / `negSucc` and produces a genuine `DNInductiveElim`
-/// neutral on open/neutral integer variables (natural under substitution).
-pub fn integer_succ_value(value : DValue) -> DValue {
+fn integer_step_value(value : DValue, is_succ : Bool) -> DValue {
   let z_spec = integer_schema()
   let z_ty = integer_type_value()
   let n_spec = nat_schema()
-  eval_inductive_elim(
-    z_spec,
-    (_, _) => z_ty,
-    [
-      integer_value(1),
-      DVLam(k => DVIntro(z_spec, 1, [], [integer_succ_nat_value(k)])),
-      DVLam(k => {
-        eval_inductive_elim(
-          n_spec,
-          (_, _) => z_ty,
-          [
-            integer_value(0),
-            DVLam(m => DVLam(_ih => DVIntro(z_spec, 2, [], [m]))),
-          ],
-          [],
-          [],
-          k,
-          0,
-        )
-      }),
-    ],
-    [],
-    [],
-    value,
-    0,
-  )
+  let grow_ctor = if is_succ { 1 } else { 2 }
+  let shrink_ctor = if is_succ { 2 } else { 1 }
+  let grow_branch : DValue = DValue::DVLam(k => {
+    DValue::DVIntro(z_spec, grow_ctor, [], [integer_succ_nat_value(k)])
+  })
+  let shrink_branch : DValue = DValue::DVLam(k => {
+    eval_inductive_elim(
+      n_spec,
+      (_, _) => z_ty,
+      [
+        integer_value(0),
+        DValue::DVLam(m => {
+          DValue::DVLam(_ih => DValue::DVIntro(z_spec, shrink_ctor, [], [m]))
+        }),
+      ],
+      [],
+      [],
+      k,
+      0,
+    )
+  })
+  let branches = if is_succ {
+    [integer_value(1), grow_branch, shrink_branch]
+  } else {
+    [integer_value(-1), shrink_branch, grow_branch]
+  }
+  eval_inductive_elim(z_spec, (_, _) => z_ty, branches, [], [], value, 0)
+}
+
+///|
+/// `zero` / `posSucc` / `negSucc` and produces a genuine `DNInductiveElim`
+/// neutral on open/neutral integer variables (natural under substitution).
+pub fn integer_succ_value(value : DValue) -> DValue {
+  integer_step_value(value, true)
 }
 
 ///|
@@ -126,35 +132,7 @@ pub fn integer_succ_value(value : DValue) -> DValue {
 /// `zero` / `posSucc` / `negSucc` and produces a genuine `DNInductiveElim`
 /// neutral on open/neutral integer variables.
 pub fn integer_pred_value(value : DValue) -> DValue {
-  let z_spec = integer_schema()
-  let z_ty = integer_type_value()
-  let n_spec = nat_schema()
-  eval_inductive_elim(
-    z_spec,
-    (_, _) => z_ty,
-    [
-      integer_value(-1),
-      DVLam(k => {
-        eval_inductive_elim(
-          n_spec,
-          (_, _) => z_ty,
-          [
-            integer_value(0),
-            DVLam(m => DVLam(_ih => DVIntro(z_spec, 1, [], [m]))),
-          ],
-          [],
-          [],
-          k,
-          0,
-        )
-      }),
-      DVLam(k => DVIntro(z_spec, 2, [], [integer_succ_nat_value(k)])),
-    ],
-    [],
-    [],
-    value,
-    0,
-  )
+  integer_step_value(value, false)
 }
 
 // ---------------------------------------------------------------------------

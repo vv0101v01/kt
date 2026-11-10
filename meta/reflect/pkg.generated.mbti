@@ -1,0 +1,212 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/meta/reflect"
+
+import {
+  "vv0101v01/cubical-hermitian/meta/core",
+  "vv0101v01/cubical-hermitian/meta/instances",
+}
+
+// Values
+pub fn absolute_at(Int32, F) -> Bool
+
+pub fn all_laws() -> Array[(String, Bool)]
+
+pub fn apply_ord(OrdFun, @core.Ordinal) -> @core.Ordinal
+
+pub fn beta_once(Term) -> Term?
+
+pub fn cert_size(Cert) -> Int32
+
+pub fn cert_to_string(Cert) -> String
+
+pub fn check(Array[Ty], Term, Ty) -> Bool
+
+pub fn check_cert(Term, Term, Cert) -> Bool
+
+pub fn check_instance_proof(@instances.Env, ProofNode) -> Bool
+
+pub fn closed_upward_in_window(Array[Int32], Int32) -> Bool
+
+pub fn conv_step(Term, Term) -> Bool
+
+pub fn decide_eq(Ty, Term, Term) -> Bool
+
+pub fn diagonal(OrdFun, OrdFun, Int32) -> @core.Ordinal
+
+pub fn eta_once(Term) -> Term?
+
+pub fn eval(Array[Val], Term) -> Val
+
+pub fn f_and(F, F) -> F
+
+pub fn f_ex(F) -> F
+
+pub fn f_not(F) -> F
+
+pub fn f_or(F, F) -> F
+
+pub fn f_top() -> F
+
+pub fn fun_omega_omega_pow() -> OrdFun
+
+pub fn fun_omega_pow() -> OrdFun
+
+pub fn hf64_mem(UInt64, UInt64) -> Bool
+
+pub fn hf64_of_hfset(HFSet) -> UInt64
+
+pub fn hf_empty() -> HFSet
+
+pub fn hf_mem(HFSet, HFSet) -> Bool
+
+pub fn hf_of(Array[HFSet]) -> HFSet
+
+pub fn hf_power(Array[HFSet]) -> Array[HFSet]
+
+pub fn hf_top_level_codes(String) -> Array[String]
+
+pub fn hfset_of_hf64(UInt64) -> HFSet
+
+pub fn in_range(OrdFun, @core.Ordinal, Array[@core.Ordinal]) -> Bool
+
+pub fn infer(Array[Ty], Term) -> Ty?
+
+pub fn is_beta_normal(Term) -> Bool
+
+pub fn law_link_link_instance_proofs_are_checkable_without_search() -> Array[(String, Bool)]
+
+pub fn law_nbe_general_beta_over_all_terms() -> Array[(String, Bool)]
+
+pub fn law_nbe_nbe_beta_eta_idempotence_type_preservation() -> Array[(String, Bool)]
+
+pub fn law_nbe_nf_reaches_a_normal_form() -> Array[(String, Bool)]
+
+pub fn law_proof_certificates_are_printable_and_still_check() -> Array[(String, Bool)]
+
+pub fn law_proof_reflection_decide_fast_check_independently() -> Array[(String, Bool)]
+
+pub fn law_universe_ackermann_bit_isomorphism_and_v5_reflection() -> Array[(String, Bool)]
+
+pub fn law_universe_clubs_intersect_by_diagonal_iteration() -> Array[(String, Bool)]
+
+pub fn law_universe_finitely_many_formulas_reflect_together() -> Array[(String, Bool)]
+
+pub fn law_universe_reflection_levels_form_a_club() -> Array[(String, Bool)]
+
+pub fn nf(Ty, Term) -> Term
+
+pub fn nf_in(Array[Ty], Ty, Term) -> Term
+
+pub fn nf_is_fixpoint(Ty, Term) -> Bool
+
+pub fn preimage(OrdFun, @core.Ordinal, Array[@core.Ordinal]) -> @core.Ordinal?
+
+pub fn probes() -> Array[@core.Ordinal]
+
+pub fn proof_depth(ProofNode) -> Int32
+
+pub fn proof_to_string(@instances.Env, ProofNode) -> String
+
+pub fn prove_eq(Ty, Term, Term) -> Cert?
+
+pub fn prove_instance(@instances.Env, @core.UTerm, Int32) -> ProofNode?
+
+pub fn range_subset(OrdFun, OrdFun, @core.Ordinal, Array[@core.Ordinal]) -> Bool
+
+pub fn reflect(Ty, Int32, Val) -> Val
+
+pub fn reflecting_levels(F, Int32) -> Array[Int32]
+
+pub fn reflects(Int32, F) -> Bool
+
+pub fn reify(Ty, Int32, Val) -> Term
+
+pub fn same_levels(Array[Int32], Array[Int32]) -> Bool
+
+pub fn sat(Array[HFSet], Array[HFSet], F) -> Bool
+
+pub fn sat64(Array[UInt64], Array[UInt64], F) -> Bool
+
+pub fn sat_v64_membership_chain(Int32, Int32) -> Bool
+
+pub fn sentence_p1() -> F
+
+pub fn sentence_p2() -> F
+
+pub fn sentence_p3() -> F
+
+pub fn step_trace(Term) -> Array[Term]
+
+pub fn term_eq(Term, Term) -> Bool
+
+pub fn term_to_string(Term) -> String
+
+pub fn ty_eq(Ty, Ty) -> Bool
+
+pub fn ty_to_string(Ty) -> String
+
+pub fn unbounded_in_window(Array[Int32], Int32) -> Bool
+
+pub fn v5_ackermann_rank_spectrum() -> (Int32, Array[Int32])
+
+pub fn v64_cardinality(Int32) -> Int32
+
+pub fn v_level(Int32) -> Array[HFSet]
+
+pub fn v_top() -> Int32
+
+pub fn v_universe() -> Array[HFSet]
+
+// Errors
+
+// Types and methods
+pub(all) struct Cert {
+  chain : Array[Term]
+}
+
+pub(all) enum F {
+  FMem(Int32, Int32)
+  FEq(Int32, Int32)
+  FBot
+  FImp(F, F)
+  FAll(F)
+}
+
+pub(all) struct HFSet {
+  code : String
+}
+
+pub(all) struct OrdFun {
+  name : String
+  apply : (@core.Ordinal) -> @core.Ordinal
+}
+
+pub(all) struct ProofNode {
+  goal : @core.UTerm
+  rule : Int32
+  kids : Array[ProofNode]
+}
+
+pub(all) enum Term {
+  TVar(Int32)
+  TLam(Ty, Term)
+  TApp(Term, Term)
+  TStar
+}
+
+pub(all) enum Ty {
+  TBase(Int32)
+  TArr(Ty, Ty)
+  TOne
+}
+
+pub(all) enum Val {
+  VNeutral(Int32)
+  VApp(Val, Val, Ty)
+  VClosure((Val) -> Val)
+  VStar
+}
+
+// Type aliases
+
+// Traits

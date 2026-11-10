@@ -1,8 +1,8 @@
-# `cubical/` — 依賴立方可信核心（7 個子套件、65 檔、71,077 行）
+# `cubical/` — 依賴立方可信核心（9 個子套件、76 檔、78,232 行）
 
-> **架構位置**：`architecture.json` 中 `cubical/*` 共 **7 個 MoonBit 套件**（Layer 0–5，合計 65 個 `.mbt`、71,077 行），與根套件 `root`（Layer 6）、`algebra/`、`hostfs/` 同屬 **F1 第一聯邦**（該聯邦 108 檔、103,095 行）。本目錄本身**不含 `moon.pkg`**，是純粹的實體分層容器。
+> **架構位置**：`architecture.json` 中 `cubical/*` 共 **9 個 MoonBit 套件**（Layer 0–6，合計 76 個 `.mbt`、78,232 行），與根套件 `root`（Layer 7）、`algebra/`、`hostfs/` 同屬 **F1 第一聯邦**（該聯邦 119 檔、110,545 行）。本目錄本身**不含 `moon.pkg`**，是純粹的實體分層容器。
 > 上游：`gcd`（Layer 0）；同聯邦另有 `algebra/`、`hostfs/`。
-> 執行入口：`cmd/main`（129/129 定理總表）。
+> 執行入口：`cmd/main`（135/135 定理總表）。
 
 ---
 
@@ -51,6 +51,8 @@
 | `elaborator` | 3 | 4 | 5,514 | kernel | 雙向表面精緻化、擴展 pattern 高階合一、Huet 延遲 flex-flex 串流、可判定高階匹配、Goldfarb 丟番圖 |
 | `homotopy` | 3 | 14 | 12,281 | gcd, algebra, face_bdd, finite, kernel | 球面 `S¹/S²/S³`、伴隨等價、截斷、Stasheff `Kₙ`、Blakers–Massey、Brunerie `π₄(S³)=ℤ/2ℤ`、通用 HIT |
 | `store` | 5 | 9 | 11,147 | condensed, face_bdd, kernel | 分離模組編譯、二進位編解碼、認證 WAL 工件庫、Ed25519 BFT 法定人數、Tarjan SCC MVCC 熱載入 |
+| `autonomy` | 5 | 5 | 2,645 | gcd, face_bdd, kernel, elaborator, homotopy, symlib, topos, accel | 構造性泛代數自主類型論（Mal'cev 同餘／商代數／零元二分）、仿射與雙德摩根立方、Moore 自由路徑、退化樹與 5D 交錯邊界、雙向範式修剪、Kripke–亞歷山德羅夫有效性與雙重否定核預層黏合 |
+| `structures` | 6 | 6 | 4,374 | gcd, face_bdd, kernel, elaborator, homotopy, autonomy, symlib, topos, accel | 全體 54 項高階立方結構（Swan 嚴格 `Id`、自由路徑纖維化、65,536 立方體 Eilenberg–Zilber 分裂、仿射雙向與 `LJF` 聚焦、多項式米田與 SIP、`S₃` 覆蓋伽羅瓦對應、`RP²` 二階撓率、動機重構、擬陣修補、內部反射）及 26×14 交互圖譜 |
 
 ---
 

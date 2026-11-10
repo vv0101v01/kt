@@ -28,6 +28,9 @@ pub fn all_laws() -> Array[(String, Bool)] {
   for (l, b) in law_examples_iit_stlc_tm_indexed_by_ctx_ty_really_needs_cons_in_the_index() {
     out.push((l, b))
   }
+  for (l, b) in law_iit_egraph_bidirectional_congruence_and_algebra_coherence() {
+    out.push((l, b))
+  }
   for (l, b) in law_iit_quotient_equations_hold_and_iota_survives() {
     out.push((l, b))
   }

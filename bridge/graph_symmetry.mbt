@@ -329,7 +329,7 @@ pub fn check_graph_symmetry_bridges() -> Bool {
   let report = weighted_graph_report(g, 32)
   if report.weighted_symmetry_count != 4 ||
     !@cub.is_projector(report.symmetry_projector) ||
-    (@cub.mat_trace_re(report.symmetry_projector) - 1.0).abs() >= 0.000001 ||
+    !((@cub.mat_trace_re(report.symmetry_projector) - 1.0).abs() < 0.000001) ||
     report.reachable_pairs != 16 ||
     report.finite_distance_sum != 24L {
     return false

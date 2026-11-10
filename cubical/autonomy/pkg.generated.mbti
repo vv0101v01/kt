@@ -1,0 +1,325 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/cubical/autonomy"
+
+import {
+  "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/cubical/face_bdd",
+  "vv0101v01/cubical-hermitian/cubical/kernel",
+  "vv0101v01/cubical-hermitian/symlib",
+}
+
+// Values
+pub fn bidirectional_prune_cubical_dterm(@kernel.DTerm, @face_bdd.Face, Int32) -> @kernel.DTerm
+
+pub fn check_cubical_autonomy_all() -> Bool
+
+pub fn check_kripke_validity_section(TypeValidityStructure, Array[@kernel.DValue], (Int32, @kernel.DValue, @kernel.DValue) -> Bool) -> Bool
+
+pub fn classify_dim_substitution(Array[@face_bdd.Dim]) -> (CubicalSubstructuralRegime, Int32)
+
+pub fn classify_dterm_dim_regime(@kernel.DTerm) -> CubicalSubstructuralRegime
+
+pub fn congruence_from_flat_matrix(Int32, Array[Bool]) -> CongruenceRelation
+
+pub fn dtree_degeneracy(CubicalDegeneracyTree, Int32) -> CubicalDegeneracyTree
+
+pub fn dtree_degeneracy_mask(Int32, CubicalDegeneracyTree) -> Int32
+
+pub fn dtree_face(CubicalDegeneracyTree, Int32, Int32) -> CubicalDegeneracyTree
+
+pub fn dtree_from_cube64(Int32, UInt64) -> CubicalDegeneracyTree
+
+pub fn dtree_node_count(CubicalDegeneracyTree) -> Int32
+
+pub fn dtree_to_cube64(Int32, CubicalDegeneracyTree) -> UInt64
+
+pub fn eval_alg_op(Int32, AlgOpSpec, Array[Int32]) -> Int32
+
+pub fn find_absorbing_elements(Int32, AlgOpSpec) -> Array[Int32]
+
+pub fn find_neutral_zero_elements(Int32, AlgOpSpec) -> Array[Int32]
+
+pub fn generate_congruence(UniversalAlgebra, Array[(Int32, Int32)]) -> CongruenceRelation
+
+pub fn is_compatible_polymorphism3(UniversalAlgebra, AlgOpSpec) -> Bool
+
+pub fn is_malcev_op_spec(Int32, AlgOpSpec) -> Bool
+
+pub fn is_valid_congruence(UniversalAlgebra, CongruenceRelation) -> Bool
+
+pub fn kan_path_malcev_op(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn malcev_relational_compose_one_step(CongruenceRelation, CongruenceRelation) -> CongruenceRelation
+
+pub fn mk_dtree_node(Int32, CubicalDegeneracyTree, CubicalDegeneracyTree) -> CubicalDegeneracyTree
+
+pub fn mk_op0(String, Int32) -> AlgOpSpec
+
+pub fn mk_op1(String, Int32, (Int32) -> Int32) -> AlgOpSpec
+
+pub fn mk_op2(String, Int32, (Int32, Int32) -> Int32) -> AlgOpSpec
+
+pub fn mk_op3(String, Int32, (Int32, Int32, Int32) -> Int32) -> AlgOpSpec
+
+pub fn moore_atom(@kernel.DValue, @kernel.DValue) -> FreeMoorePath
+
+pub fn moore_concat(FreeMoorePath, FreeMoorePath) -> FreeMoorePath
+
+pub fn moore_refl(@kernel.DValue, @kernel.DValue) -> FreeMoorePath
+
+pub fn moore_reparametrize_left(FreeMoorePath, Int32) -> @kernel.DValue
+
+pub fn moore_reparametrize_right(FreeMoorePath, Int32) -> @kernel.DValue
+
+pub fn quotient_universal_algebra(UniversalAlgebra, CongruenceRelation) -> QuotientAlgebraCert
+
+pub fn square_face_poset() -> (@symlib.FinCat, Array[(Int32, Int32)])
+
+pub fn univalent_circle_winding(@kernel.DValue) -> Int32?
+
+pub fn validity_path(TypeValidityStructure, @kernel.DValue, @kernel.DValue) -> TypeValidityStructure
+
+pub fn validity_pi_nondep(TypeValidityStructure, TypeValidityStructure, Array[@kernel.DValue]) -> TypeValidityStructure
+
+pub fn validity_sigma_nondep(TypeValidityStructure, TypeValidityStructure) -> TypeValidityStructure
+
+pub fn verify_absorbing_pointed_malcev_dichotomy() -> AbsorbingPointedZeroReport
+
+pub fn verify_affine_cubical_system() -> AffineCubicalAudit
+
+pub fn verify_bide_morgan_cubical_duality() -> BiDeMorganCubicalReport
+
+pub fn verify_bidirectional_cubical_nf_pruning() -> BidirectionalNfPruneReport
+
+pub fn verify_categorical_14_composition_patterns() -> Bool
+
+pub fn verify_cubical_autonomy_master_suite() -> CubicalAutonomyMasterReport
+
+pub fn verify_free_path_associativity_and_kernel_bridge() -> FreePathAssociativityReport
+
+pub fn verify_high_dim_alternating_cube_and_dtree() -> HighDimAlternatingCubeReport
+
+pub fn verify_internal_infinity_groupoid_axioms() -> InfinityGroupoidInternalCert
+
+pub fn verify_validity_and_presheaf_template() -> ValidityPresheafTemplateReport
+
+// Errors
+
+// Types and methods
+#derive(Eq, @debug.Debug)
+pub(all) struct AbsorbingPointedZeroReport {
+  interval_absorbing_elements : Array[Int32]
+  interval_compatible_malcev_count : Int32
+  singleton_absorbing_malcev_ok : Bool
+  pointed_z6_neutral_zeros : Array[Int32]
+  pointed_z6_eckmann_hilton_abelian_ok : Bool
+  z6_chinese_remainder_zappa_szep_ok : Bool
+  chu_congruence_duality_ok : Bool
+  lawvere_product_projections_ok : Bool
+}
+pub fn AbsorbingPointedZeroReport::equal(Self, Self) -> Bool
+pub fn AbsorbingPointedZeroReport::not_equal(Self, Self) -> Bool
+pub fn AbsorbingPointedZeroReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct AffineCubicalAudit {
+  pure_coe_regime : CubicalSubstructuralRegime
+  sym_loop_regime : CubicalSubstructuralRegime
+  connection_singleton_regime : CubicalSubstructuralRegime
+  diagonal_contraction_regime : CubicalSubstructuralRegime
+  max_multiplicity_pure_coe : Int32
+  max_multiplicity_diagonal : Int32
+  affine_open_box_kan_fills_without_connections : Bool
+  ua_not_affine_coercion_flips_bool : Bool
+}
+pub fn AffineCubicalAudit::equal(Self, Self) -> Bool
+pub fn AffineCubicalAudit::not_equal(Self, Self) -> Bool
+pub fn AffineCubicalAudit::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct AlgOpSpec {
+  name : String
+  arity : Int32
+  table : Array[Int32]
+}
+pub fn AlgOpSpec::equal(Self, Self) -> Bool
+pub fn AlgOpSpec::not_equal(Self, Self) -> Bool
+pub fn AlgOpSpec::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct BiDeMorganCubicalReport {
+  bi_heyting_chain_holds : Bool
+  de_morgan_involution_holds : Bool
+  boundary_idempotent_complement_ok : Bool
+  leibniz_boundary_product_ok : Bool
+  topos_coheyting_sieve_agreement_ok : Bool
+  bdd_boundary_vertices_count : Int32
+}
+pub fn BiDeMorganCubicalReport::equal(Self, Self) -> Bool
+pub fn BiDeMorganCubicalReport::not_equal(Self, Self) -> Bool
+pub fn BiDeMorganCubicalReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct BidirectionalNfPruneReport {
+  raw_tree_nodes : Int32
+  pruned_tree_nodes : Int32
+  pruned_dag_unique_nodes : Int32
+  raw_tube_branches : Int32
+  pruned_tube_branches : Int32
+  swar_face_prune_agreed : Bool
+  kernel_conv_under_face_ok : Bool
+  negative_wrong_branch_rejected : Bool
+}
+pub fn BidirectionalNfPruneReport::equal(Self, Self) -> Bool
+pub fn BidirectionalNfPruneReport::not_equal(Self, Self) -> Bool
+pub fn BidirectionalNfPruneReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct CongruenceRelation {
+  carrier_size : Int32
+  flat_rel : Array[Bool]
+  representatives : Array[Int32]
+  projection : Array[Int32]
+}
+pub fn CongruenceRelation::equal(Self, Self) -> Bool
+pub fn CongruenceRelation::not_equal(Self, Self) -> Bool
+pub fn CongruenceRelation::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct CubicalAutonomyMasterReport {
+  universal_algebra_ok : Bool
+  malcev_one_step_permutability_ok : Bool
+  absorbing_vs_pointed_zero_ok : Bool
+  affine_cubical_regime_ok : Bool
+  bide_morgan_cubical_duality_ok : Bool
+  free_moore_path_associativity_ok : Bool
+  infinity_groupoid_internal_ok : Bool
+  degeneracy_tree_and_d5_boundary_ok : Bool
+  bidirectional_nf_pruning_ok : Bool
+  validity_structure_and_alexandrov_ok : Bool
+  double_negation_presheaf_template_ok : Bool
+  swar_wgsl_acceleration_ok : Bool
+  categorical_14_composition_pipeline_ok : Bool
+  all_theorems_verified : Bool
+}
+pub fn CubicalAutonomyMasterReport::equal(Self, Self) -> Bool
+pub fn CubicalAutonomyMasterReport::not_equal(Self, Self) -> Bool
+pub fn CubicalAutonomyMasterReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum CubicalDegeneracyTree {
+  DTLeaf(Bool)
+  DTDegenerate(Int32, CubicalDegeneracyTree)
+  DTSplit(Int32, CubicalDegeneracyTree, CubicalDegeneracyTree)
+}
+pub fn CubicalDegeneracyTree::equal(Self, Self) -> Bool
+pub fn CubicalDegeneracyTree::not_equal(Self, Self) -> Bool
+pub fn CubicalDegeneracyTree::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum CubicalSubstructuralRegime {
+  PureBchAffine
+  InvolutiveAffine
+  DeMorganCartesian
+}
+pub fn CubicalSubstructuralRegime::equal(Self, Self) -> Bool
+pub fn CubicalSubstructuralRegime::not_equal(Self, Self) -> Bool
+pub fn CubicalSubstructuralRegime::to_repr(Self) -> @debug.Repr
+
+pub struct FreeMoorePath {
+  space_ty : @kernel.DValue
+  start_pt : @kernel.DValue
+  end_pt : @kernel.DValue
+  length : Int32
+  segments : Array[@kernel.DValue]
+}
+
+#derive(Eq, @debug.Debug)
+pub(all) struct FreePathAssociativityReport {
+  strict_moore_associative_len : Bool
+  strict_moore_left_right_unit : Bool
+  reparam_lhs_winding : Int32
+  reparam_rhs_winding : Int32
+  kan_associator_lhs_endpoint_conv : Bool
+  kan_associator_rhs_endpoint_conv : Bool
+  kan_pentagon_k4_endpoints_conv : Bool
+}
+pub fn FreePathAssociativityReport::equal(Self, Self) -> Bool
+pub fn FreePathAssociativityReport::not_equal(Self, Self) -> Bool
+pub fn FreePathAssociativityReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct HighDimAlternatingCubeReport {
+  dtree_swar_mask_bijection_ok : Bool
+  dtree_cubical_identities_ok : Bool
+  d5_alternating_d_squared_zero_ok : Bool
+  moore_degenerate_quotient_closed_ok : Bool
+  cube3_betti_numbers : Array[Int32]
+  cube3_higher_laplacian_nonsingular_ok : Bool
+}
+pub fn HighDimAlternatingCubeReport::equal(Self, Self) -> Bool
+pub fn HighDimAlternatingCubeReport::not_equal(Self, Self) -> Bool
+pub fn HighDimAlternatingCubeReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct InfinityGroupoidInternalCert {
+  uniform_kan_open_box_1d_2d_3d_ok : Bool
+  kan_malcev_left_cancel_conv_ok : Bool
+  kan_malcev_right_cancel_conv_ok : Bool
+  kan_malcev_winding_formula_ok : Bool
+  left_right_unit_inverse_cells_ok : Bool
+  directed_interval_non_groupoid_refuted : Bool
+}
+pub fn InfinityGroupoidInternalCert::equal(Self, Self) -> Bool
+pub fn InfinityGroupoidInternalCert::not_equal(Self, Self) -> Bool
+pub fn InfinityGroupoidInternalCert::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct QuotientAlgebraCert {
+  well_defined : Bool
+  quotient : UniversalAlgebra
+  projection : Array[Int32]
+  class_count : Int32
+  inherits_malcev : Bool
+  first_isomorphism_bijection_ok : Bool
+}
+pub fn QuotientAlgebraCert::equal(Self, Self) -> Bool
+pub fn QuotientAlgebraCert::not_equal(Self, Self) -> Bool
+pub fn QuotientAlgebraCert::to_repr(Self) -> @debug.Repr
+
+pub struct TypeValidityStructure {
+  name : String
+  site_cat : @symlib.FinCat
+  classifier_ty : @kernel.DValue
+  valid_at : (Int32, @kernel.DValue) -> Bool
+}
+
+#derive(Eq, @debug.Debug)
+pub(all) struct UniversalAlgebra {
+  name : String
+  carrier_size : Int32
+  ops : Array[AlgOpSpec]
+}
+pub fn UniversalAlgebra::equal(Self, Self) -> Bool
+pub fn UniversalAlgebra::not_equal(Self, Self) -> Bool
+pub fn UniversalAlgebra::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct ValidityPresheafTemplateReport {
+  base_bool_validity_monotonic_ok : Bool
+  pi_validity_closure_ok : Bool
+  sigma_validity_closure_ok : Bool
+  path_and_ua_glue_validity_ok : Bool
+  non_monotonic_counterexample_rejected : Bool
+  square_face_alexandrov_open_sets_ok : Bool
+  square_vertices_double_negation_dense : Bool
+  presheaf_template_nn_boolean_subtopos_ok : Bool
+  hou_elaborated_section_valid_ok : Bool
+}
+pub fn ValidityPresheafTemplateReport::equal(Self, Self) -> Bool
+pub fn ValidityPresheafTemplateReport::not_equal(Self, Self) -> Bool
+pub fn ValidityPresheafTemplateReport::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

@@ -47,17 +47,19 @@ pub fn unacknowledged_write_protocol(String, Int32) -> Array[StoreOp]
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug)
 pub(all) struct BftDurableCluster {
   n_replicas : Int32
   f_max : Int32
   byzantine_ids : Array[Int32]
   disks : Array[DiskState]
   committed_log : Array[BftQuorumCommit]
-} derive(Eq, @debug.Debug)
+}
 pub fn BftDurableCluster::equal(Self, Self) -> Bool
 pub fn BftDurableCluster::not_equal(Self, Self) -> Bool
 pub fn BftDurableCluster::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct BftQuorumCommit {
   n_replicas : Int32
   f_byzantine_max : Int32
@@ -68,11 +70,12 @@ pub(all) struct BftQuorumCommit {
   value : Int32
   signer_ids : Array[Int32]
   quorum_met : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn BftQuorumCommit::equal(Self, Self) -> Bool
 pub fn BftQuorumCommit::not_equal(Self, Self) -> Bool
 pub fn BftQuorumCommit::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct BftReplicaVote {
   replica_id : Int32
   view : Int32
@@ -80,31 +83,34 @@ pub(all) struct BftReplicaVote {
   key : String
   value : Int32
   mac_tag : UInt64
-} derive(Eq, @debug.Debug)
+}
 pub fn BftReplicaVote::equal(Self, Self) -> Bool
 pub fn BftReplicaVote::not_equal(Self, Self) -> Bool
 pub fn BftReplicaVote::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct DiskState {
   mut inode_at : Array[(String, Int32)]
   mut inode_content : Array[(Int32, Int32)]
   durable_inode : Array[Int32]
   mut durable_dirent : Array[(String, Int32)]
   mut next_inode : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn DiskState::equal(Self, Self) -> Bool
 pub fn DiskState::not_equal(Self, Self) -> Bool
 pub fn DiskState::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub enum Recovery {
   RecoveredAbsent
   RecoveredValue(Int32)
   RecoveredTorn
-} derive(Eq, @debug.Debug)
+}
 pub fn Recovery::equal(Self, Self) -> Bool
 pub fn Recovery::not_equal(Self, Self) -> Bool
 pub fn Recovery::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub enum StoreOp {
   OpWrite(String, Int32)
   OpFsync(String)
@@ -113,7 +119,7 @@ pub enum StoreOp {
   OpUnlink(String)
   OpLock(String)
   OpUnlock(String)
-} derive(Eq, @debug.Debug)
+}
 pub fn StoreOp::equal(Self, Self) -> Bool
 pub fn StoreOp::not_equal(Self, Self) -> Bool
 pub fn StoreOp::to_repr(Self) -> @debug.Repr

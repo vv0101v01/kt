@@ -69,37 +69,16 @@ pub extend CanonMorphism with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend CanonMorphism with Eq::{not_equal, equal}
 
 ///|
-/// Immutable entry in the Persistent Invariant-Deriving Ledger (`kind`: 0=obs, 1=derived_law, 2=theorem).
-#derive(Debug, Eq)
-pub(all) struct CondLedgerEntry {
-  seq : Int32
-  kind : Int32
-  values : Array[Int32]
-  parents : Array[Int32]
-  prev_hash : UInt64
-  hash : UInt64
+/// Re-export Layer-0 FNV-1a Digest-Chain & `Z`-Nullspace Invariant Ledger from `@gcd`.
+pub using @gcd {
+  type CondLedgerEntry,
+  type CondInvariantLedger,
+  cond_ledger_new,
+  cond_ledger_append,
+  cond_ledger_verify,
+  cond_ledger_derive_invariants,
+  cond_ledger_audit_laws,
 }
-
-///|
-pub extend CondLedgerEntry with @moonbitlang/core/debug.Debug::{to_repr}
-
-///|
-pub extend CondLedgerEntry with Eq::{not_equal, equal}
-
-///|
-/// Hash-chained persistent ledger capable of automatically deriving exact `Z`-linear
-/// conservation laws (`ker_Z(observation_rows)`) and auditing them against provenance.
-#derive(Debug, Eq)
-pub(all) struct CondInvariantLedger {
-  entries : Array[CondLedgerEntry]
-  tip : UInt64
-}
-
-///|
-pub extend CondInvariantLedger with @moonbitlang/core/debug.Debug::{to_repr}
-
-///|
-pub extend CondInvariantLedger with Eq::{not_equal, equal}
 
 ///|
 /// Epistemic status of a conjecture in the Conjecture Laboratory (`新猜想`).
@@ -312,149 +291,7 @@ pub fn canon_cat_comp(g : CanonMorphism, f : CanonMorphism) -> CanonMorphism? {
   Some(CanonMorphism::{ dom: f.dom, cod: g.cod, map, })
 }
 
-// ---------------------------------------------------------------------------
-// Persistent Hash-Chained Invariant-Deriving Ledger (`notebook/ledger` + `@gcd`)
-// ---------------------------------------------------------------------------
-
-///|
-fn fnv1a_mix(h : UInt64, v : UInt64) -> UInt64 {
-  (h ^ v) * 1099511628211UL
-}
-
-///|
-fn hash_ledger_entry(
-  seq : Int32,
-  kind : Int32,
-  values : Array[Int32],
-  parents : Array[Int32],
-  prev : UInt64,
-) -> UInt64 {
-  let mut h = 14695981039346656037UL
-  h = fnv1a_mix(h, seq.to_uint64())
-  h = fnv1a_mix(h, kind.to_uint64())
-  h = fnv1a_mix(h, 0xFF00UL)
-  for v in values {
-    h = fnv1a_mix(h, v.to_uint64())
-  }
-  h = fnv1a_mix(h, 0xFF01UL)
-  for p in parents {
-    h = fnv1a_mix(h, p.to_uint64())
-  }
-  h = fnv1a_mix(h, prev)
-  h
-}
-
-///|
-pub fn cond_ledger_new() -> CondInvariantLedger {
-  CondInvariantLedger::{ entries: [], tip: 0UL, }
-}
-
-///|
-pub fn cond_ledger_append(
-  l : CondInvariantLedger,
-  kind : Int32,
-  values : Array[Int32],
-  parents : Array[Int32],
-) -> CondInvariantLedger {
-  let seq = l.entries.length()
-  let h = hash_ledger_entry(seq, kind, values, parents, l.tip)
-  let next_entries = l.entries.copy()
-  next_entries.push(CondLedgerEntry::{
-    seq,
-    kind,
-    values: values.copy(),
-    parents: parents.copy(),
-    prev_hash: l.tip,
-    hash: h,
-  })
-  CondInvariantLedger::{ entries: next_entries, tip: h, }
-}
-
-///|
-pub fn cond_ledger_verify(l : CondInvariantLedger) -> Bool {
-  let mut expected_prev = 0UL
-  for i in 0..<l.entries.length() {
-    let e = l.entries[i]
-    if e.seq != i || e.prev_hash != expected_prev {
-      return false
-    }
-    let h = hash_ledger_entry(e.seq, e.kind, e.values, e.parents, e.prev_hash)
-    if e.hash != h {
-      return false
-    }
-    expected_prev = h
-  }
-  expected_prev == l.tip
-}
-
-///|
-/// Automatically derive exact `Z`-nullspace conservation laws from all `kind == 0`
-/// observation rows in `l` (`sum_j coeff_j * obs_j == 0`) and append them as `kind == 1` entries!
-pub fn cond_ledger_derive_invariants(
-  l : CondInvariantLedger,
-) -> CondInvariantLedger {
-  let obs_rows : Array[Array[Int32]] = []
-  let parent_ids : Array[Int32] = []
-  for e in l.entries {
-    if e.kind == 0 {
-      obs_rows.push(e.values)
-      parent_ids.push(e.seq)
-    }
-  }
-  if obs_rows.length() == 0 {
-    return l
-  }
-  let zmat = @gcd.zmat_from_int_rows(obs_rows)
-  let null_vecs = @gcd.ugcd_z_nullspace_basis(zmat)
-  let mut cur = l
-  for nv in null_vecs {
-    let coeff_ints : Array[Int32] = []
-    for c in nv {
-      coeff_ints.push(c.to_int())
-    }
-    cur = cond_ledger_append(cur, 1, coeff_ints, parent_ids)
-  }
-  cur
-}
-
-///|
-/// Audit every `kind == 1` derived conservation law against ALL of its parent `kind == 0` rows!
-pub fn cond_ledger_audit_laws(l : CondInvariantLedger) -> (Int32, Int32) {
-  if !cond_ledger_verify(l) {
-    return (0, 1)
-  }
-  let mut passed = 0
-  let mut failed = 0
-  for e in l.entries {
-    if e.kind == 1 {
-      let mut ok = e.parents.length() > 0
-      for pid in e.parents {
-        if pid < 0 || pid >= l.entries.length() {
-          ok = false
-        } else {
-          let row = l.entries[pid].values
-          if row.length() != e.values.length() {
-            ok = false
-          } else {
-            let mut dot = 0
-            for j in 0..<row.length() {
-              dot = dot + row[j] * e.values[j]
-            }
-            if dot != 0 {
-              ok = false
-            }
-          }
-        }
-      }
-      if ok {
-        passed = passed + 1
-      } else {
-        failed = failed + 1
-      }
-    }
-  }
-  (passed, failed)
-}
+// Persistent Hash-Chained Invariant-Deriving Ledger lives in `@gcd` (`L0`) and is re-exported above.
 
 // ---------------------------------------------------------------------------
 // New Conjectures Laboratory (`新猜想`: `[Conj-1]` .. `[Conj-4]`)

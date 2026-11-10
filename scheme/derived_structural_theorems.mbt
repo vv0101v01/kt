@@ -38,8 +38,77 @@ pub(all) struct PlaneCurveBlowupReport {
 // =============================================================================
 
 ///|
-/// Exact determinant of a square `k × k` matrix over `MPoly` (`nvars` variables)
-/// computed by Laplace cofactor recursion (used for Jacobian / Fitting minors).
+/// Division-free `O(k^4)` Samuelson–Berkowitz determinant over `MPoly` (`k > 10` fallback).
+fn mpoly_square_det_berkowitz(
+  nvars : Int32,
+  mat : Array[Array[MPoly]],
+) -> MPoly {
+  let k = mat.length()
+  // `vec` holds coefficients `[c_0, c_1, ..., c_m]` of characteristic polynomial of top-left `m × m` submatrix
+  let mut vec : Array[MPoly] = [mpoly_int(nvars, 1), mpoly_neg(mat[0][0])]
+  for m in 1..<k {
+    // Partition `(m+1) × (m+1)` leading block into `[M, C; R, a_{m,m}]`
+    // Compute `R * M^t * C` for `t = 0 .. m - 1`
+    let r_vec : Array[MPoly] = Array::makei(m, j => mat[m][j])
+    let mut cur_col : Array[MPoly] = Array::makei(m, i => mat[i][m])
+    let rmc : Array[MPoly] = []
+    for t in 0..<m {
+      let mut dot = mpoly_zero(nvars)
+      for j in 0..<m {
+        if !mpoly_is_zero(r_vec[j]) && !mpoly_is_zero(cur_col[j]) {
+          dot = mpoly_add(dot, mpoly_mul(r_vec[j], cur_col[j]))
+        }
+      }
+      rmc.push(dot)
+      if t + 1 < m {
+        let next_col : Array[MPoly] = Array::make(m, mpoly_zero(nvars))
+        for i in 0..<m {
+          let mut s = mpoly_zero(nvars)
+          for j in 0..<m {
+            if !mpoly_is_zero(mat[i][j]) && !mpoly_is_zero(cur_col[j]) {
+              s = mpoly_add(s, mpoly_mul(mat[i][j], cur_col[j]))
+            }
+          }
+          next_col[i] = s
+        }
+        cur_col = next_col
+      }
+    }
+    // Toeplitz vector multiplication `T_m * vec` -> length `m + 2`
+    let next_vec : Array[MPoly] = Array::make(m + 2, mpoly_zero(nvars))
+    let neg_amm = mpoly_neg(mat[m][m])
+    for col_j in 0..<=m {
+      let vj = vec[col_j]
+      if mpoly_is_zero(vj) {
+        continue
+      }
+      next_vec[col_j] = mpoly_add(next_vec[col_j], vj)
+      next_vec[col_j + 1] = mpoly_add(
+        next_vec[col_j + 1],
+        mpoly_mul(neg_amm, vj),
+      )
+      for t in 0..<m {
+        let row_i = col_j + 2 + t
+        if row_i <= m + 1 && !mpoly_is_zero(rmc[t]) {
+          next_vec[row_i] = mpoly_sub(next_vec[row_i], mpoly_mul(rmc[t], vj))
+        }
+      }
+    }
+    vec = next_vec
+  }
+  let constant_term = vec[k]
+  if k % 2 == 1 {
+    mpoly_neg(constant_term)
+  } else {
+    constant_term
+  }
+}
+
+///|
+/// Exact division-free determinant of a square `k × k` matrix over `MPoly` (`nvars` variables):
+/// uses **Grassmann–Plücker exterior wedge DP** (`O(k · 2^k)` sparse subset transitions with
+/// hardware `.popcnt()` sign parity) for `k <= 10`, and **Samuelson–Berkowitz division-free
+/// Toeplitz `O(k^4)`** for `k > 10` (eliminating `O(k!)` Laplace cofactor recursion).
 fn mpoly_square_det(nvars : Int32, mat : Array[Array[MPoly]]) -> MPoly {
   let k = mat.length()
   if k == 0 {
@@ -54,26 +123,66 @@ fn mpoly_square_det(nvars : Int32, mat : Array[Array[MPoly]]) -> MPoly {
       mpoly_mul(mat[0][1], mat[1][0]),
     )
   }
-  let mut acc = mpoly_zero(nvars)
-  for col in 0..<k {
-    let entry = mat[0][col]
-    if mpoly_is_zero(entry) {
-      continue
-    }
-    let sub : Array[Array[MPoly]] = []
-    for r in 1..<k {
-      let row : Array[MPoly] = []
+  if k > 10 {
+    return mpoly_square_det_berkowitz(nvars, mat)
+  }
+  let total_masks = 1 << k
+  let zero_p = mpoly_zero(nvars)
+  let mut active : Array[(Int32, MPoly)] = [(0, mpoly_int(nvars, 1))]
+  let slot_idx = Array::make(total_masks, -1)
+  for r in 0..<k {
+    let next_active : Array[(Int32, MPoly)] = []
+    let touched : Array[Int32] = []
+    for pair in active {
+      let (mask, coeff_p) = pair
+      if mpoly_is_zero(coeff_p) {
+        continue
+      }
       for c in 0..<k {
-        if c != col {
-          row.push(mat[r][c])
+        if (mask & (1 << c)) == 0 {
+          let entry = mat[r][c]
+          if !mpoly_is_zero(entry) {
+            let nmask = mask | (1 << c)
+            let higher_bits = (mask >> (c + 1)).reinterpret_as_uint()
+            let inv_parity = higher_bits.popcnt() & 1
+            let prod = mpoly_mul(coeff_p, entry)
+            let pos = slot_idx[nmask]
+            if pos < 0 {
+              let signed_p = if inv_parity == 1 {
+                mpoly_neg(prod)
+              } else {
+                prod
+              }
+              slot_idx[nmask] = next_active.length()
+              touched.push(nmask)
+              next_active.push((nmask, signed_p))
+            } else {
+              let (_, prev_p) = next_active[pos]
+              let updated = if inv_parity == 1 {
+                mpoly_sub(prev_p, prod)
+              } else {
+                mpoly_add(prev_p, prod)
+              }
+              next_active[pos] = (nmask, updated)
+            }
+          }
         }
       }
-      sub.push(row)
     }
-    let term = mpoly_mul(entry, mpoly_square_det(nvars, sub))
-    acc = if col % 2 == 0 { mpoly_add(acc, term) } else { mpoly_sub(acc, term) }
+    for tm in touched {
+      slot_idx[tm] = -1
+    }
+    active = next_active
+    if active.length() == 0 {
+      return zero_p
+    }
   }
-  acc
+  for pair in active {
+    if pair.0 == total_masks - 1 {
+      return pair.1
+    }
+  }
+  zero_p
 }
 
 ///|

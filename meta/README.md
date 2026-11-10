@@ -1,19 +1,19 @@
 # meta — 反射 × 全域實例 × 歸納-歸納：從數學結構長出來的三個型別論機制
 
-> MoonBit `moonc v0.10.14` · `moon 0.1.20261102` · 第九聯邦（`meta-core` / `meta-instances` / `meta-iit` / `meta-reflect` / `cmd-metatheory`）
-> `moon run cmd/metatheory --target wasm-gc` → **485/485 定律** · `python3 tools/arch_check.py` → `architecture ok`
+> MoonBit `moonc v0.10.20` · `moon 0.1.20261104` · 第九聯邦（`meta-core` / `meta-instances` / `meta-iit` / `meta-reflect` / `cmd-metatheory`）
+> `moon run cmd/metatheory --target wasm-gc` → **545/545 定律** · `python3 tools/arch_check.py` → `architecture ok`
 
 ---
 
 ## 0. 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                          # 9 聯邦 / 44 套件 / 53 元件 / 248 .mbt / 164,345 行
+python3 tools/arch_check.py                          # 9 聯邦 / 52 套件 / 61 元件 / 282 .mbt / 182,929 行
 moon check --deny-warn --target wasm-gc              # 0 warnings, 0 errors
-moon run --release cmd/metatheory --target wasm-gc   # 485/485 定律（逐條重算，不是引用）
-moon run --release cmd/main       --target wasm-gc   # 129/129 定理（舊聯邦未回歸）
-moon run --release cmd/showcase   --target wasm-gc   # 47/47 大一統證書（未受健檢影響）
-python3 tools/health_scan.py > tools/health_report.md # 死碼 / 重複 / 債務報告（非閘門）
+moon run cmd/metatheory --target wasm-gc             # 545/545 定律（逐條重算，不是引用）
+moon run cmd/main       --target wasm-gc             # 137/137 定理（舊聯邦未回歸）
+moon run cmd/showcase   --target wasm-gc             # 47/47 大一統證書 + K_9=36/36（未受健檢影響）
+python3 tools/health_scan.py > tools/health_report.md # 5,745 函式／方法：0 死碼 / 0 無引用型別 / 0 重複
 ```
 
 `cmd/metatheory` 印出的不是「測試通過」四個字，而是**每一條被機器重算的命題**，例如：
@@ -60,6 +60,7 @@ STLC：β 約簡 (λx.λy.x) arg ↝ 仍良構 = true，索引（上下文, 型�
 | **一階合一（mgu）／反合一（lgg）** | 「兩個解什麼時候是同一個解」＝ meet；「兩個目標的共性」＝ join。這對伴隨就是「併攏／相容／共性」的可執行版本 | `meta/core/unify.mbt` |
 | **擬陣（秩、貪心、對偶）** | 「哪一組實例是不可省的」＝ 基；「反轉系統」＝ 對偶（對合）。但**交換公理不保證成立**，所以要做成可量測的 | `meta/core/matroid.mbt` |
 | **有限複形＋神經（Betti 數、Čech 上同調）** | 「局部解能不能併成全域解」的障礙住在 H¹；障礙必須是**可列舉的三元組**，不是一句「可能失敗」 | `meta/core/complex.mbt` |
+| **構造性泛代數與瑪爾切夫多態（同餘格、商代數、Pol–Inv 伽羅瓦）** | 同餘一步可換 `θ∘ψ=ψ∘θ=θ∨ψ`、吸收零 vs 點化零二分、自反圖內蘊群胚提升與三類核擬陣／Ramsey 見證 | `meta/core/malcev_chu.mbt` |
 
 再加上兩個組合工具：`Ramsey`（搜尋深度的有限上界）與 `精確有理數矩陣秩`（上同調與擬陣共用的引擎）。
 所有後續的定理都在這六個檔案的函式上被**算出**，而不是被引用。
@@ -421,5 +422,4 @@ tools/health_report.md    最近一次健檢結果
 | 同一套件的第二份 `ramsey_window` | **合併**：轉發 `@core.ramsey_upper`，並刪掉「R(4,4) 不可算」的過時說明 | 1 |
 | 過時的說明文字 | 更新 `ramsey.mbt` 檔頭、`compose.mbt` 邊界註解、`meta/README` 誠實邊界表裡的「未實作 STLC β」標記 | 3 |
 
-死碼候選：14 → 4（剩下的 4 個都是其他聯邦在 `.md`／`.html` 裡有引用的公開 API）。
-完全相同函式體：0。結構極相近：0。`moon fmt` 全倉跑過一次。
+死碼候選：14 → 4 → **0**（全倉健檢升級後，掃描 `5,745` 個函式／方法達成 **0 死碼、0 無引用型別、0 空殼 `enum`、0 完全相同函式體**，`cmd/metatheory` 達 **545/545 定律**）。

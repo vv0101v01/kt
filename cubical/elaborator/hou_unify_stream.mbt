@@ -39,6 +39,76 @@ pub extend HouSearchReport with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend HouSearchReport with Eq::{not_equal, equal}
 
 ///|
+struct HouTrailMark {
+  trail_len : Int32
+  metas_len : Int32
+  solved_count : Int32
+}
+
+///|
+fn hou_trail_mark(unifier : Unifier) -> HouTrailMark {
+  HouTrailMark::{
+    trail_len: unifier.trail.length(),
+    metas_len: unifier.metas.length(),
+    solved_count: unifier.solved_count,
+  }
+}
+
+///|
+fn hou_trail_rollback(unifier : Unifier, mark : HouTrailMark) -> Unit {
+  while unifier.trail.length() > mark.trail_len {
+    match unifier.trail.pop() {
+      Some(id) =>
+        if id >= 0 && id < unifier.metas.length() {
+          unifier.metas[id].solution = None
+        }
+      None => ()
+    }
+  }
+  while unifier.metas.length() > mark.metas_len {
+    ignore(unifier.metas.pop())
+  }
+  unifier.solved_count = mark.solved_count
+}
+
+///|
+fn hou_substitution_since_mark(
+  mark : HouTrailMark,
+  unifier : Unifier,
+) -> Array[(Int32, UTerm)] {
+  let ids : Array[Int32] = []
+  for k in mark.trail_len..<unifier.trail.length() {
+    let id = unifier.trail[k]
+    if id >= 0 && id < unifier.metas.length() {
+      ids.push(id)
+    }
+  }
+  // Sort ascending by metavariable id to match deterministic `0..<metas.length()` order
+  for i in 1..<ids.length() {
+    let key = ids[i]
+    let mut j = i - 1
+    while j >= 0 && ids[j] > key {
+      ids[j + 1] = ids[j]
+      j = j - 1
+    }
+    ids[j + 1] = key
+  }
+  let substitution : Array[(Int32, UTerm)] = []
+  for k in 0..<ids.length() {
+    let id = ids[k]
+    if k > 0 && ids[k - 1] == id {
+      continue
+    }
+    match unifier.metas[id].solution {
+      Some(solution) =>
+        substitution.push((id, hou_semantic_optimize(solution, unifier)))
+      None => ()
+    }
+  }
+  substitution
+}
+
+///|
 fn hou_clone_unifier(unifier : Unifier) -> Unifier {
   let metas : Array[UMetaInfo] = []
   for i in 0..<unifier.metas.length() {
@@ -47,7 +117,8 @@ fn hou_clone_unifier(unifier : Unifier) -> Unifier {
       solution: unifier.metas[i].solution,
     })
   }
-  Unifier::{ metas, solved_count: unifier.solved_count, }
+  let trail = unifier.trail.copy()
+  Unifier::{ metas, trail, solved_count: unifier.solved_count, }
 }
 
 ///|
@@ -60,6 +131,12 @@ fn hou_restore_unifier(unifier : Unifier, snapshot : Unifier) -> Unit {
       context_depth: snapshot.metas[i].context_depth,
       solution: snapshot.metas[i].solution,
     })
+  }
+  while unifier.trail.length() > 0 {
+    ignore(unifier.trail.pop())
+  }
+  for id in snapshot.trail {
+    unifier.trail.push(id)
   }
   unifier.solved_count = snapshot.solved_count
 }
@@ -352,7 +429,7 @@ fn hou_search_try_flex(
   let arity = args.length()
   // Imitation.
   {
-    let snapshot = hou_clone_unifier(unifier)
+    let snapshot = hou_trail_mark(unifier)
     match huet_imitation_template(unifier, rhs, arity, 0) {
       Some(body) => {
         let result = hou_search_try_body(
@@ -365,12 +442,12 @@ fn hou_search_try_flex(
       }
       None => ()
     }
-    hou_restore_unifier(unifier, snapshot)
+    hou_trail_rollback(unifier, snapshot)
   }
   // Deep imitation (Phase 11): a more specific imitation guess
   // that copies rigid structure into arguments and under binders.
   {
-    let snapshot = hou_clone_unifier(unifier)
+    let snapshot = hou_trail_mark(unifier)
     match huet_imitation_template_deep(unifier, rhs, arity, 0) {
       Some(body) => {
         let result = hou_search_try_body(
@@ -383,7 +460,7 @@ fn hou_search_try_flex(
       }
       None => ()
     }
-    hou_restore_unifier(unifier, snapshot)
+    hou_trail_rollback(unifier, snapshot)
   }
   // Projections, first exact projections and then projections
   // applied to fresh subgoals.  The number of applied fresh
@@ -392,7 +469,7 @@ fn hou_search_try_flex(
   let proj_limit = state[3] + 1
   for applied_args in 0..<proj_limit {
     for position in 0..<arity {
-      let snapshot = hou_clone_unifier(unifier)
+      let snapshot = hou_trail_mark(unifier)
       let body = huet_projection_template(
         unifier, arity, position, applied_args,
       )
@@ -403,12 +480,12 @@ fn hou_search_try_flex(
       if result == 1 || result == -1 {
         return result
       }
-      hou_restore_unifier(unifier, snapshot)
+      hou_trail_rollback(unifier, snapshot)
     }
   }
   // Eta generation: guess one more lambda and solve under it.
   {
-    let snapshot = hou_clone_unifier(unifier)
+    let snapshot = hou_trail_mark(unifier)
     let body = ULam(UConst("PatternDomain"), huet_fresh_over(unifier, arity, 1))
     let result = hou_search_try_body(
       a, b, depth, unifier, state, max_nodes, search_depth, max_depth, meta_id, arity,
@@ -417,18 +494,18 @@ fn hou_search_try_flex(
     if result == 1 || result == -1 {
       return result
     }
-    hou_restore_unifier(unifier, snapshot)
+    hou_trail_rollback(unifier, snapshot)
   }
   // A constant guess.  This is a sound specific unifier whenever
   // the recursive equation can solve the fresh constant.
-  let snapshot = hou_clone_unifier(unifier)
+  let snapshot = hou_trail_mark(unifier)
   let body = UMeta(hou_fresh_meta_id(unifier), [])
   let result = hou_search_try_body(
     a, b, depth, unifier, state, max_nodes, search_depth, max_depth, meta_id, arity,
     body,
   )
   if result != 1 {
-    hou_restore_unifier(unifier, snapshot)
+    hou_trail_rollback(unifier, snapshot)
   }
   result
 }
@@ -458,14 +535,14 @@ fn hou_search_same_head_prune(
   // not a claimed most general one.
   let fixed : Array[Int32] = []
   for i in 0..<args_a.length() {
-    let before_pair = hou_clone_unifier(unifier)
+    let before_pair = hou_trail_mark(unifier)
     if hou_unify(args_a[i], args_b[i], depth, unifier) {
       if hou_semantic_optimize(args_a[i], unifier) ==
         hou_semantic_optimize(args_b[i], unifier) {
         fixed.push(i)
       }
     } else {
-      hou_restore_unifier(unifier, before_pair)
+      hou_trail_rollback(unifier, before_pair)
     }
   }
   // Pairwise assignments can make additional positions equal.
@@ -568,7 +645,7 @@ fn hou_search_identification(
       if used_b[j] {
         continue
       }
-      let before_pair = hou_clone_unifier(unifier)
+      let before_pair = hou_trail_mark(unifier)
       if hou_unify(args_a[i], args_b[j], depth, unifier) &&
         hou_semantic_optimize(args_a[i], unifier) ==
         hou_semantic_optimize(args_b[j], unifier) {
@@ -577,7 +654,7 @@ fn hou_search_identification(
         used_b[j] = true
         break
       }
-      hou_restore_unifier(unifier, before_pair)
+      hou_trail_rollback(unifier, before_pair)
     }
   }
   if positions_a.length() == 0 {
@@ -748,11 +825,11 @@ fn hou_search_go(
   if !hou_search_note_node(state, max_nodes, search_depth) {
     return -1
   }
-  let snapshot = hou_clone_unifier(unifier)
+  let snapshot = hou_trail_mark(unifier)
   if hou_unify(a, b, depth, unifier) {
     return 1
   }
-  hou_restore_unifier(unifier, snapshot)
+  hou_trail_rollback(unifier, snapshot)
   if !uterm_contains_unsolved_meta(a, unifier) &&
     !uterm_contains_unsolved_meta(b, unifier) {
     return 0
@@ -765,7 +842,7 @@ fn hou_search_go(
   match (a_head, b_head) {
     (Some((id_a, args_a)), Some((id_b, args_b))) => {
       if id_a == id_b {
-        let before = hou_clone_unifier(unifier)
+        let before = hou_trail_mark(unifier)
         let pruned = hou_search_same_head_prune(
           a, b, depth, unifier, state, max_nodes, search_depth, max_depth, id_a,
           args_a, args_b,
@@ -773,7 +850,7 @@ fn hou_search_go(
         if pruned == 1 || pruned == -1 {
           return pruned
         }
-        hou_restore_unifier(unifier, before)
+        hou_trail_rollback(unifier, before)
         return hou_search_try_flex(
           a, b, depth, unifier, state, max_nodes, search_depth, max_depth, id_a,
           args_a, b,
@@ -793,7 +870,7 @@ fn hou_search_go(
       if second == 1 || second == -1 {
         return second
       }
-      let before_id = hou_clone_unifier(unifier)
+      let before_id = hou_trail_mark(unifier)
       let identified = hou_search_identification(
         a, b, depth, unifier, state, max_nodes, search_depth, max_depth, id_a, args_a,
         id_b, args_b,
@@ -801,14 +878,14 @@ fn hou_search_go(
       if identified == 1 || identified == -1 {
         return identified
       }
-      hou_restore_unifier(unifier, before_id)
-      let before = hou_clone_unifier(unifier)
+      hou_trail_rollback(unifier, before_id)
+      let before = hou_trail_mark(unifier)
       let common = hou_search_common_constant(
         a, b, depth, unifier, state, max_nodes, search_depth, max_depth, id_a, args_a,
         id_b, args_b,
       )
       if common != 1 {
-        hou_restore_unifier(unifier, before)
+        hou_trail_rollback(unifier, before)
       }
       common
     }
@@ -1403,7 +1480,7 @@ pub fn hou_solve_constraints(
       }
     }
     attempts = attempts + 1
-    let before_search = hou_clone_unifier(unifier)
+    let before_search = hou_trail_mark(unifier)
     let target = residual[0]
     let search = hou_search_unify_iterative(
       target.lhs,
@@ -1429,7 +1506,7 @@ pub fn hou_solve_constraints(
         if code == -1 {
           // The specific guess is incompatible with another
           // constraint; another unifier of `target` might work.
-          hou_restore_unifier(unifier, before_search)
+          hou_trail_rollback(unifier, before_search)
           return HouResidualSolveReport::{
             status: HouResidual,
             substitution: hou_substitution_since(initial, unifier),
@@ -1472,7 +1549,7 @@ pub fn hou_solve_constraints(
         }
       }
       HouBudgetExceeded => {
-        hou_restore_unifier(unifier, before_search)
+        hou_trail_rollback(unifier, before_search)
         return HouResidualSolveReport::{
           status: HouBudgetExceeded,
           substitution: hou_substitution_since(initial, unifier),
@@ -1486,7 +1563,7 @@ pub fn hou_solve_constraints(
         }
       }
       HouResidual => {
-        hou_restore_unifier(unifier, before_search)
+        hou_trail_rollback(unifier, before_search)
         return HouResidualSolveReport::{
           status: HouResidual,
           substitution: hou_substitution_since(initial, unifier),
@@ -1629,8 +1706,9 @@ fn hou_flex_step_candidates(
     }
   })
   steps.push(u => {
-    let probe_u = hou_clone_unifier(u)
-    let shallow = huet_imitation_template(probe_u, other_side, arity, 0)
+    let pmark = hou_trail_mark(u)
+    let shallow = huet_imitation_template(u, other_side, arity, 0)
+    hou_trail_rollback(u, pmark)
     match huet_imitation_template_deep(u, other_side, arity, 0) {
       Some(body) =>
         if Some(body) != shallow {
@@ -1742,7 +1820,7 @@ fn hou_multi_backtrack_dfs(
     if counters[4] != 0 {
       return
     }
-    let snap = hou_clone_unifier(unifier)
+    let snap = hou_trail_mark(unifier)
     counters[1] = counters[1] + 1
     if step(unifier) {
       hou_multi_backtrack_dfs(
@@ -1760,7 +1838,7 @@ fn hou_multi_backtrack_dfs(
         counters,
       )
     }
-    hou_restore_unifier(unifier, snap)
+    hou_trail_rollback(unifier, snap)
   }
 
   match (a_head, b_head) {
@@ -1779,13 +1857,13 @@ fn hou_multi_backtrack_dfs(
         run_step(u => {
           let fixed : Array[Int32] = []
           for i in 0..<args_a.length() {
-            let bp = hou_clone_unifier(u)
+            let bp = hou_trail_mark(u)
             if hou_unify(args_a[i], args_b[i], eq.depth, u) &&
               hou_semantic_optimize(args_a[i], u) ==
               hou_semantic_optimize(args_b[i], u) {
               fixed.push(i)
             } else {
-              hou_restore_unifier(u, bp)
+              hou_trail_rollback(u, bp)
             }
           }
           let cid = hou_fresh_meta_id(u)
@@ -2163,7 +2241,7 @@ fn hou_delayed_dfs(
       ]
   }
   for step in steps {
-    let snap = hou_clone_unifier(unifier)
+    let snap = hou_trail_mark(unifier)
     stats[1] = stats[1] + 1
     if step(unifier) {
       if hou_delayed_dfs(
@@ -2182,7 +2260,7 @@ fn hou_delayed_dfs(
         return true
       }
     }
-    hou_restore_unifier(unifier, snap)
+    hou_trail_rollback(unifier, snap)
   }
   false
 }
@@ -2286,7 +2364,7 @@ pub fn hou_solve_with_delayed_flex_flex(
 
 ///|
 struct HouStreamFrame {
-  snapshot : Unifier
+  trail_mark : HouTrailMark
   depth : Int32
   steps : Array[(Unifier) -> Bool]
   mut step_idx : Int32
@@ -2294,11 +2372,13 @@ struct HouStreamFrame {
 
 ///|
 /// Pull-based lazy stream iterator over normal-form higher-order unifiers:
-/// maintains an explicit resumable DFS stack so each `hou_unifier_stream_next`
-/// expands only the search prefix needed to yield the next solution.
+/// maintains an explicit resumable DFS stack with an `O(Δ)` trail-rollback
+/// working `Unifier` so each `hou_unifier_stream_next` expands only the search
+/// prefix needed to yield the next solution with zero per-branch cloning.
 pub struct HouLazyUnifierStream {
   constraints : Array[HouConstraint]
-  initial : Unifier
+  initial_mark : HouTrailMark
+  work : Unifier
   stack : Array[HouStreamFrame]
   emitted : Array[Array[(Int32, UTerm)]]
   max_nodes : Int32
@@ -2321,9 +2401,11 @@ pub fn hou_unifier_stream_new(
   round_budget~ : Int32 = 64,
   reify_flex_flex~ : Bool = true,
 ) -> HouLazyUnifierStream {
+  let work = hou_clone_unifier(unifier)
   HouLazyUnifierStream::{
     constraints,
-    initial: hou_clone_unifier(unifier),
+    initial_mark: hou_trail_mark(work),
+    work,
     stack: [],
     emitted: [],
     max_nodes,
@@ -2366,13 +2448,13 @@ fn hou_stream_candidate_steps(
         out.push(u => {
           let fixed : Array[Int32] = []
           for i in 0..<args_a.length() {
-            let bp = hou_clone_unifier(u)
+            let bp = hou_trail_mark(u)
             if hou_unify(args_a[i], args_b[i], eq.depth, u) &&
               hou_semantic_optimize(args_a[i], u) ==
               hou_semantic_optimize(args_b[i], u) {
               fixed.push(i)
             } else {
-              hou_restore_unifier(u, bp)
+              hou_trail_rollback(u, bp)
             }
           }
           let cid = hou_fresh_meta_id(u)
@@ -2431,7 +2513,7 @@ fn hou_stream_visit_node(
   }
   if residual.length() == 0 {
     if hou_constraints_all_solved(stream.constraints, u) {
-      let sub = hou_substitution_since(stream.initial, u)
+      let sub = hou_substitution_since_mark(stream.initial_mark, u)
       if !hou_contains_solution(stream.emitted, sub) {
         stream.emitted.push(sub)
         return Some(sub)
@@ -2441,14 +2523,17 @@ fn hou_stream_visit_node(
   }
   let (active_rigid, flex_edges) = hou_partition_flex_flex_graph(residual, u)
   if active_rigid.length() == 0 && stream.reify_flex_flex {
-    let reified = hou_clone_unifier(u)
-    if hou_reify_delayed_flex_flex(reified, flex_edges) &&
-      hou_constraints_all_solved(stream.constraints, reified) {
-      let sub = hou_substitution_since(stream.initial, reified)
+    let rmark = hou_trail_mark(u)
+    if hou_reify_delayed_flex_flex(u, flex_edges) &&
+      hou_constraints_all_solved(stream.constraints, u) {
+      let sub = hou_substitution_since_mark(stream.initial_mark, u)
+      hou_trail_rollback(u, rmark)
       if !hou_contains_solution(stream.emitted, sub) {
         stream.emitted.push(sub)
         return Some(sub)
       }
+    } else {
+      hou_trail_rollback(u, rmark)
     }
     return None
   }
@@ -2461,7 +2546,7 @@ fn hou_stream_visit_node(
     )
     if steps.length() > 0 {
       stream.stack.push(HouStreamFrame::{
-        snapshot: hou_clone_unifier(u),
+        trail_mark: hou_trail_mark(u),
         depth,
         steps,
         step_idx: 0,
@@ -2482,8 +2567,7 @@ pub fn hou_unifier_stream_next(
   }
   if !stream.root_started {
     stream.root_started = true
-    let root_u = hou_clone_unifier(stream.initial)
-    match hou_stream_visit_node(stream, root_u, 0) {
+    match hou_stream_visit_node(stream, stream.work, 0) {
       Some(sol) => {
         if stream.stack.length() == 0 {
           stream.exhausted = true
@@ -2498,15 +2582,16 @@ pub fn hou_unifier_stream_next(
     let frame = stream.stack[top_idx]
     if frame.step_idx >= frame.steps.length() {
       ignore(stream.stack.pop())
+      hou_trail_rollback(stream.work, frame.trail_mark)
       continue
     }
     let s_idx = frame.step_idx
     frame.step_idx = s_idx + 1
     let step = frame.steps[s_idx]
-    let child_u = hou_clone_unifier(frame.snapshot)
+    hou_trail_rollback(stream.work, frame.trail_mark)
     let next_depth = frame.depth + 1
-    if step(child_u) {
-      match hou_stream_visit_node(stream, child_u, next_depth) {
+    if step(stream.work) {
+      match hou_stream_visit_node(stream, stream.work, next_depth) {
         Some(sol) => {
           if stream.stack.length() == 0 {
             stream.exhausted = true

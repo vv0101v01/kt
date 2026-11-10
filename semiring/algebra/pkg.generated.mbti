@@ -18,15 +18,11 @@ pub fn[S : StarSemiring + Show] check_star(String, () -> S, samples? : Int32) ->
 
 pub fn[S : StarSemiring + IdempotentSemiring + Show] check_star_idem(String, () -> S, samples? : Int32) -> LawReport
 
-pub fn[E : Semiring] geom_sum(E, Int32) -> E
-
 pub fn[E : GroupElement] geom_sum_group(E, Int32) -> E
 
 pub fn[E : Semiring] pow_squaring(E, Int32) -> E
 
 pub fn[E : GroupElement] star_by_doubling(E) -> E
-
-pub fn[E : GroupElement] star_by_iteration(E) -> E
 
 pub let trop_inf : Int32
 
@@ -35,9 +31,10 @@ pub let trop_neg_inf : Int32
 // Errors
 
 // Types and methods
+#derive(Eq)
 pub(all) struct BoolSr {
   b : Bool
-} derive(Eq)
+}
 pub fn BoolSr::equal(Self, Self) -> Bool
 pub fn BoolSr::group_id(Self) -> Self
 pub fn BoolSr::group_inv(Self) -> Self
@@ -60,9 +57,10 @@ pub impl IdempotentSemiring for BoolSr
 pub impl Semiring for BoolSr
 pub impl StarSemiring for BoolSr
 
+#derive(Eq)
 pub(all) struct Bottleneck {
   w : Int32
-} derive(Eq)
+}
 pub fn Bottleneck::bottom() -> Self
 pub fn Bottleneck::equal(Self, Self) -> Bool
 pub fn Bottleneck::is_one(Self) -> Bool
@@ -87,9 +85,10 @@ pub impl OrderedSemiring for Bottleneck
 pub impl Semiring for Bottleneck
 pub impl StarSemiring for Bottleneck
 
+#derive(Eq)
 pub(all) struct Counting {
   n : Int64
-} derive(Eq)
+}
 pub fn Counting::equal(Self, Self) -> Bool
 pub fn Counting::is_one(Self) -> Bool
 pub fn Counting::is_zero(Self) -> Bool
@@ -189,9 +188,10 @@ pub impl IdempotentSemiring for ParetoSet
 pub impl OrderedSemiring for ParetoSet
 pub impl Semiring for ParetoSet
 
+#derive(Eq)
 pub(all) struct Prob {
   p : Double
-} derive(Eq)
+}
 pub fn Prob::equal(Self, Self) -> Bool
 pub fn Prob::is_one(Self) -> Bool
 pub fn Prob::is_zero(Self) -> Bool
@@ -218,9 +218,10 @@ pub fn Rng::next_int(Self, Int32) -> Int32
 pub fn Rng::next_u64(Self) -> UInt64
 pub fn Rng::range(Self, Int32, Int32) -> Int32
 
+#derive(Eq)
 pub(all) struct Trop {
   v : Int32
-} derive(Eq)
+}
 pub fn Trop::closer(Self, Self) -> Bool
 pub fn Trop::equal(Self, Self) -> Bool
 pub fn Trop::group_id(Self) -> Self
@@ -277,9 +278,10 @@ pub impl Semiring for TropF
 pub impl StarSemiring for TropF
 pub impl TropicalSemiring for TropF
 
+#derive(Eq)
 pub(all) struct TropMax {
   v : Int32
-} derive(Eq)
+}
 pub fn TropMax::equal(Self, Self) -> Bool
 pub fn TropMax::is_neg_inf(Self) -> Bool
 pub fn TropMax::is_one(Self) -> Bool

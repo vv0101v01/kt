@@ -1545,63 +1545,62 @@ fn br_dims(r : ModuleBinReader, depth : Int32) -> Array[Dim]? {
 }
 
 ///|
-fn bw_tube_terms(w : ModuleBinWriter, values : Array[DTubeTerm]) -> Unit {
+fn[T] bw_faced_terms(
+  w : ModuleBinWriter,
+  values : Array[T],
+  face_of : (T) -> Face,
+  body_of : (T) -> DTerm,
+) -> Unit {
   bw_i32(w, values.length())
   for i in 0..<values.length() {
-    bw_face(w, values[i].face)
-    bw_term(w, values[i].body)
+    bw_face(w, face_of(values[i]))
+    bw_term(w, body_of(values[i]))
   }
+}
+
+///|
+fn[T] br_faced_terms(
+  r : ModuleBinReader,
+  depth : Int32,
+  mk : (Face, DTerm) -> T,
+) -> Array[T]? {
+  let count = br_count(r)
+  if !br_require_ok(r) {
+    return None
+  }
+  let values : Array[T] = []
+  for _i in 0..<count {
+    let face = match br_face(r, depth + 1) {
+      Some(v) => v
+      None => return None
+    }
+    let body = match br_term(r, depth + 1) {
+      Some(v) => v
+      None => return None
+    }
+    values.push(mk(face, body))
+  }
+  Some(values)
+}
+
+///|
+fn bw_tube_terms(w : ModuleBinWriter, values : Array[DTubeTerm]) -> Unit {
+  bw_faced_terms(w, values, v => v.face, v => v.body)
 }
 
 ///|
 fn br_tube_terms(r : ModuleBinReader, depth : Int32) -> Array[DTubeTerm]? {
-  let count = br_count(r)
-  if !br_require_ok(r) {
-    return None
-  }
-  let values : Array[DTubeTerm] = []
-  for _i in 0..<count {
-    let face = match br_face(r, depth + 1) {
-      Some(v) => v
-      None => return None
-    }
-    let body = match br_term(r, depth + 1) {
-      Some(v) => v
-      None => return None
-    }
-    values.push(DTubeTerm::{ face, body, })
-  }
-  Some(values)
+  br_faced_terms(r, depth, (face, body) => DTubeTerm::{ face, body, })
 }
 
 ///|
 fn bw_face_terms(w : ModuleBinWriter, values : Array[DFaceTerm]) -> Unit {
-  bw_i32(w, values.length())
-  for i in 0..<values.length() {
-    bw_face(w, values[i].face)
-    bw_term(w, values[i].body)
-  }
+  bw_faced_terms(w, values, v => v.face, v => v.body)
 }
 
 ///|
 fn br_face_terms(r : ModuleBinReader, depth : Int32) -> Array[DFaceTerm]? {
-  let count = br_count(r)
-  if !br_require_ok(r) {
-    return None
-  }
-  let values : Array[DFaceTerm] = []
-  for _i in 0..<count {
-    let face = match br_face(r, depth + 1) {
-      Some(v) => v
-      None => return None
-    }
-    let body = match br_term(r, depth + 1) {
-      Some(v) => v
-      None => return None
-    }
-    values.push(DFaceTerm::{ face, body, })
-  }
-  Some(values)
+  br_faced_terms(r, depth, (face, body) => DFaceTerm::{ face, body, })
 }
 
 ///|

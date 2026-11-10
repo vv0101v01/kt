@@ -1,0 +1,239 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/accel/swar"
+
+import {
+  "moonbitlang/core/bigint",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn centered_smod_bigint(@bigint.BigInt, Int32) -> Int32
+
+pub fn cube64_active_mask(Int32) -> UInt64
+
+pub fn cube64_alternating_boundary_zchain(UInt64, Int32) -> Array[(UInt64, Int32)]
+
+pub fn cube64_chain_boundary(Array[(UInt64, Int32)], Int32) -> Array[(UInt64, Int32)]
+
+pub fn cube64_degeneracy_mask(UInt64, Int32) -> UInt64
+
+pub fn cube64_extract_face_ref(UInt64, Int32, Int32, Int32) -> UInt64
+
+pub fn cube64_extract_face_swar(UInt64, Int32, Int32, Int32) -> UInt64
+
+pub fn cube64_insert_degeneracy_swar(UInt64, Int32, Int32) -> UInt64
+
+pub fn cube64_pair_degeneracy_o1(UInt64, UInt64, UInt64, UInt64, Int32) -> (UInt64, UInt64)
+
+pub fn cube64_zchain_normalize(Array[(UInt64, Int32)]) -> Array[(UInt64, Int32)]
+
+pub fn dot4_i8_packed(UInt32, UInt32) -> Int32
+
+pub fn garner_symmetric_crt_bigint(Array[Int32], Array[Int32]) -> @bigint.BigInt
+
+pub fn gf2_bit_matrix_from_ints(Int32, Int32, Array[Int32]) -> Gf2BitMatrix
+
+pub fn gf2_bit_matrix_get(Gf2BitMatrix, Int32, Int32) -> Int32
+
+pub fn gf2_bit_matrix_set(Gf2BitMatrix, Int32, Int32, Int32) -> Unit
+
+pub fn gf2_bit_matrix_zero(Int32, Int32) -> Gf2BitMatrix
+
+pub fn gf2_matmul_m4ri(Gf2BitMatrix, Gf2BitMatrix) -> Gf2BitMatrix
+
+pub fn gf2_rref_eliminate_u64(Gf2BitMatrix) -> (Gf2BitMatrix, Array[Int32])
+
+pub fn gf2_rref_rank_u64(Gf2BitMatrix) -> Int32
+
+pub fn gf3_add64(Gf3Slice64, Gf3Slice64) -> Gf3Slice64
+
+pub fn gf3_hyperdet222_chunk64(Int32, Int32) -> Gf3Slice64
+
+pub fn gf3_mul64(Gf3Slice64, Gf3Slice64) -> Gf3Slice64
+
+pub fn gf3_neg64(Gf3Slice64) -> Gf3Slice64
+
+pub fn gf3_slice64_get(Gf3Slice64, Int32) -> Int32
+
+pub fn gf3_sub64(Gf3Slice64, Gf3Slice64) -> Gf3Slice64
+
+pub fn gf3_sweep_all_6561_hyperdets() -> Array[Int32]
+
+pub fn inet_alloc_node(INetArena, Int32, Int32) -> Int32
+
+pub fn inet_build_church_mul_net(Int32, Int32) -> (INetArena, Int32)
+
+pub fn inet_collect_active_wave(INetArena) -> Array[(Int32, Int32)]
+
+pub fn inet_encode_church_nat(INetArena, Int32, Int32) -> Int32
+
+pub fn inet_eval_closed_peano_lam(InetClosedLam, schedule? : INetWaveSchedule) -> (Int32, Int32)
+
+pub fn inet_link(INetArena, Int32, Int32) -> Unit
+
+pub fn inet_new() -> INetArena
+
+pub fn inet_normalize_waves(INetArena, schedule? : INetWaveSchedule, max_waves? : Int32) -> Int32
+
+pub fn inet_port(Int32, Int32) -> Int32
+
+pub fn inet_readback_church_nat(INetArena, Int32) -> Int32
+
+pub fn inet_verify_church_mul_confluence(Int32, Int32) -> INetConfluenceCertificate
+
+pub fn mont30_from_mont(Mont30Prime, UInt64) -> Int32
+
+pub fn mont30_mul(Mont30Prime, UInt64, UInt64) -> UInt64
+
+pub fn mont30_ntt_998244353() -> Mont30Prime
+
+pub fn mont30_redc(Mont30Prime, UInt64) -> UInt64
+
+pub fn mont30_to_mont(Mont30Prime, Int32) -> UInt64
+
+pub fn morton_decode_2d(UInt32) -> (Int32, Int32)
+
+pub fn morton_encode_2d(Int32, Int32) -> UInt32
+
+pub fn ozaki2_byte_moduli() -> Array[Int32]
+
+pub fn ozaki2_emulate_fp64_gemm(Int32, Int32, Int32, Array[Double], Array[Double], mantissa_bits? : Int32) -> Array[Double]
+
+pub fn ozaki2_int_gemm_dp4a(Int32, Int32, Int32, Array[@bigint.BigInt], Array[@bigint.BigInt], moduli? : Array[Int32]) -> Array[@bigint.BigInt]
+
+pub fn pack4_i8_to_u32(Int32, Int32, Int32, Int32) -> UInt32
+
+pub fn rns_stockham_poly_mul_exact(Array[Int32], Array[Int32]) -> Array[@bigint.BigInt]
+
+pub fn scanbox_decoupled_scan(Array[Int32], Int32, (Int32, Int32) -> Int32, tile_size? : Int32, subgroup_size? : Int32) -> ScanboxScanResult
+
+pub fn stockham_ntt_u32(Array[Int32], Int32, Int32, Bool) -> Array[Int32]
+
+pub fn swar_axis0_mask(Int32) -> UInt64
+
+pub fn swar_bitplane_implication_cex(Array[UInt64], Array[UInt64], Int32) -> Int32
+
+pub fn swar_coheyting_sub64(UInt64, UInt64, Array[UInt64]) -> UInt64
+
+pub fn swar_downset_closure64(UInt64, Array[UInt64]) -> UInt64
+
+pub fn swar_heyting_impl64(UInt64, UInt64, UInt64, Array[UInt64]) -> UInt64
+
+pub fn swar_pack_bitplane(Int32, (Int32) -> Bool) -> Array[UInt64]
+
+pub fn swar_popcount64(UInt64) -> Int32
+
+pub let trop_inf_i32 : Int32
+
+pub fn tropical_blocked_kleene_closure(Int32, Array[Int32], block_size? : Int32) -> Array[Int32]
+
+pub fn webgpu_rns_ntt_primes() -> Array[(Int32, Int32)]
+
+// Errors
+
+// Types and methods
+#derive(Eq, @debug.Debug)
+pub struct Gf2BitMatrix {
+  rows : Int32
+  cols : Int32
+  words_per_row : Int32
+  data : Array[UInt64]
+}
+pub fn Gf2BitMatrix::equal(Self, Self) -> Bool
+pub fn Gf2BitMatrix::not_equal(Self, Self) -> Bool
+pub fn Gf2BitMatrix::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct Gf3Slice64 {
+  lo : UInt64
+  hi : UInt64
+}
+pub fn Gf3Slice64::equal(Self, Self) -> Bool
+pub fn Gf3Slice64::not_equal(Self, Self) -> Bool
+pub fn Gf3Slice64::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub struct INetArena {
+  kinds : Array[Int32]
+  labels : Array[Int32]
+  peers : Array[Int32]
+  mut anni_steps : Int32
+  mut comm_steps : Int32
+  mut eras_steps : Int32
+  mut waves_executed : Int32
+}
+pub fn INetArena::equal(Self, Self) -> Bool
+pub fn INetArena::not_equal(Self, Self) -> Bool
+pub fn INetArena::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct INetConfluenceCertificate {
+  a : Int32
+  b : Int32
+  decoded_value : Int32
+  anni_steps : Int32
+  comm_steps : Int32
+  eras_steps : Int32
+  schedules_confluent : Bool
+}
+pub fn INetConfluenceCertificate::equal(Self, Self) -> Bool
+pub fn INetConfluenceCertificate::not_equal(Self, Self) -> Bool
+pub fn INetConfluenceCertificate::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum INetWaveSchedule {
+  ScheduleForward
+  ScheduleReverse
+  ScheduleOddEven
+}
+pub fn INetWaveSchedule::equal(Self, Self) -> Bool
+pub fn INetWaveSchedule::not_equal(Self, Self) -> Bool
+pub fn INetWaveSchedule::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum InetClosedLam {
+  ILVar(Int32)
+  ILLam(InetClosedLam)
+  ILApp(InetClosedLam, InetClosedLam)
+  ILZero
+  ILSucc(InetClosedLam)
+}
+pub fn InetClosedLam::equal(Self, Self) -> Bool
+pub fn InetClosedLam::not_equal(Self, Self) -> Bool
+pub fn InetClosedLam::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub struct Mont30Prime {
+  p : UInt64
+  neg_p_inv_u32 : UInt64
+  r2_mod_p : UInt64
+}
+pub fn Mont30Prime::equal(Self, Self) -> Bool
+pub fn Mont30Prime::not_equal(Self, Self) -> Bool
+pub fn Mont30Prime::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct ScanboxScanResult {
+  inclusive : Array[Int32]
+  exclusive : Array[Int32]
+  num_tiles : Int32
+  subgroup_size : Int32
+  lookback_steps : Int32
+}
+pub fn ScanboxScanResult::equal(Self, Self) -> Bool
+pub fn ScanboxScanResult::not_equal(Self, Self) -> Bool
+pub fn ScanboxScanResult::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub struct ScanboxTileDescriptor {
+  mut status : Int32
+  mut aggregate : Int32
+  mut inclusive_prefix : Int32
+}
+pub fn ScanboxTileDescriptor::equal(Self, Self) -> Bool
+pub fn ScanboxTileDescriptor::not_equal(Self, Self) -> Bool
+pub fn ScanboxTileDescriptor::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

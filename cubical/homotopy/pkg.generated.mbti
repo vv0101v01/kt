@@ -3,7 +3,7 @@ package "vv0101v01/cubical-hermitian/cubical/homotopy"
 
 import {
   "moonbitlang/core/debug",
-  "vv0101v01/cubical-hermitian/algebra",
+  "vv0101v01/cubical-hermitian/algebra/core",
   "vv0101v01/cubical-hermitian/cubical/face_bdd",
   "vv0101v01/cubical-hermitian/cubical/finite",
   "vv0101v01/cubical-hermitian/cubical/kernel",
@@ -53,8 +53,6 @@ pub fn check_blakers_massey() -> Bool
 pub fn check_brunerie_pi4_s3() -> Bool
 
 pub fn check_circle_encode_decode() -> Bool
-
-pub fn check_coherence_angle_elimination() -> Bool
 
 pub fn check_cubical_algorithms() -> Bool
 
@@ -340,7 +338,7 @@ pub fn hopf_les_surjective(Int32) -> Bool
 
 pub fn hopf_linking_number_numeric(Int32) -> Double
 
-pub fn hopf_map_rat(Array[@algebra.Rat]) -> Array[@algebra.Rat]
+pub fn hopf_map_rat(Array[@core.Rat]) -> Array[@core.Rat]
 
 pub fn hopf_map_s3_to_s2(Array[Double]) -> Array[Double]
 
@@ -348,7 +346,7 @@ pub fn hopf_north_fiber(Double) -> Array[Double]
 
 pub fn hopf_phase_rotate(Array[Double], Double) -> Array[Double]
 
-pub fn hopf_rotate_rat(Array[@algebra.Rat], @algebra.Rat, @algebra.Rat) -> Array[@algebra.Rat]
+pub fn hopf_rotate_rat(Array[@core.Rat], @core.Rat, @core.Rat) -> Array[@core.Rat]
 
 pub fn hopf_south_fiber(Double) -> Array[Double]
 
@@ -777,24 +775,27 @@ pub fn whitehead_degree(Int32, Int32) -> Int32
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug)
 pub(all) enum BrunerieNorm {
   NormalisesTo(Int32)
   DoesNotNormalise
   NeverNormalised
-} derive(Eq, @debug.Debug)
+}
 pub fn BrunerieNorm::equal(Self, Self) -> Bool
 pub fn BrunerieNorm::not_equal(Self, Self) -> Bool
 pub fn BrunerieNorm::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct BrunerieNumber {
   name : String
   complexity : Int32
   norm : BrunerieNorm
-} derive(Eq, @debug.Debug)
+}
 pub fn BrunerieNumber::equal(Self, Self) -> Bool
 pub fn BrunerieNumber::not_equal(Self, Self) -> Bool
 pub fn BrunerieNumber::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct CoherenceAngleEliminationReport {
   local_cells : Int32
   filler_variants : Int32
@@ -812,11 +813,12 @@ pub(all) struct CoherenceAngleEliminationReport {
   kan_filler_ok : Bool
   associahedron_ok : Bool
   holds : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn CoherenceAngleEliminationReport::equal(Self, Self) -> Bool
 pub fn CoherenceAngleEliminationReport::not_equal(Self, Self) -> Bool
 pub fn CoherenceAngleEliminationReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct CoherenceQuotientSummary {
   local_cells : Int32
   filler_variants : Int32
@@ -825,7 +827,7 @@ pub(all) struct CoherenceQuotientSummary {
   unordered_classes : Int32
   conserved_incidence_count : Int32
   holds : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn CoherenceQuotientSummary::equal(Self, Self) -> Bool
 pub fn CoherenceQuotientSummary::not_equal(Self, Self) -> Bool
 pub fn CoherenceQuotientSummary::to_repr(Self) -> @debug.Repr
@@ -835,19 +837,21 @@ pub struct DAdjointEquivParts {
   triangle : @kernel.DValue
 }
 
+#derive(Eq, @debug.Debug)
 pub struct FgAb {
   rank : Int32
   torsion : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn FgAb::equal(Self, Self) -> Bool
 pub fn FgAb::not_equal(Self, Self) -> Bool
 pub fn FgAb::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub enum FreuStatus {
   FreuEquiv
   FreuSurj
   FreuNone
-} derive(Eq, @debug.Debug)
+}
 pub fn FreuStatus::equal(Self, Self) -> Bool
 pub fn FreuStatus::not_equal(Self, Self) -> Bool
 pub fn FreuStatus::to_repr(Self) -> @debug.Repr
@@ -859,37 +863,41 @@ pub struct KanBox {
   dlevel : Int32
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum Origin {
   Proved(String)
   Prior(String)
   Imported(String)
-} derive(Eq, @debug.Debug)
+}
 pub fn Origin::equal(Self, Self) -> Bool
 pub fn Origin::not_equal(Self, Self) -> Bool
 pub fn Origin::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub enum Paren {
   PLeaf(Int32)
   PNode(Paren, Paren)
-} derive(Eq, @debug.Debug)
+}
 pub fn Paren::equal(Self, Self) -> Bool
 pub fn Paren::not_equal(Self, Self) -> Bool
 pub fn Paren::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum SphereLoopExpr {
   SphereLoopRefl
   SphereLoopGenerator
   SphereLoopInverse(SphereLoopExpr)
   SphereLoopCompose(SphereLoopExpr, SphereLoopExpr)
-} derive(Eq, @debug.Debug)
+}
 pub fn SphereLoopExpr::equal(Self, Self) -> Bool
 pub fn SphereLoopExpr::not_equal(Self, Self) -> Bool
 pub fn SphereLoopExpr::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub enum Stree {
   SLeaf
   SNode(Array[Stree])
-} derive(Eq, @debug.Debug)
+}
 pub fn Stree::equal(Self, Self) -> Bool
 pub fn Stree::not_equal(Self, Self) -> Bool
 pub fn Stree::to_repr(Self) -> @debug.Repr
@@ -901,13 +909,14 @@ pub struct UniversePath {
   level : Int32
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct WedgeSquareFillerReport {
   abelian_winding_a : Int32
   abelian_winding_b : Int32
   reduced_f2_boundary_word : Array[Int32]
   fills_in_wedge_s1_s1 : Bool
   fills_in_abelianized_torus : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn WedgeSquareFillerReport::equal(Self, Self) -> Bool
 pub fn WedgeSquareFillerReport::not_equal(Self, Self) -> Bool
 pub fn WedgeSquareFillerReport::to_repr(Self) -> @debug.Repr

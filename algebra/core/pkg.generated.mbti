@@ -1,0 +1,444 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/algebra/core"
+
+import {
+  "moonbitlang/core/bigint",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn bigint_abs(@bigint.BigInt) -> @bigint.BigInt
+
+pub fn bigint_divisors(@bigint.BigInt) -> Array[@bigint.BigInt]
+
+pub fn bigint_gcd(@bigint.BigInt, @bigint.BigInt) -> @bigint.BigInt
+
+pub fn bigint_lcm(@bigint.BigInt, @bigint.BigInt) -> @bigint.BigInt
+
+pub fn bigint_prime_factorization(@bigint.BigInt) -> Array[(@bigint.BigInt, Int32)]
+
+pub fn bigint_sqrt_exact(@bigint.BigInt) -> @bigint.BigInt?
+
+pub fn bigint_sqrt_floor(@bigint.BigInt) -> @bigint.BigInt?
+
+pub fn bigint_to_double(@bigint.BigInt) -> Double
+
+pub fn charpoly_sym(SymMat) -> UPoly
+
+pub fn check_qpoly_fast_arithmetic() -> Bool
+
+pub fn frac_add(SymFrac, SymFrac) -> SymFrac
+
+pub fn frac_div(SymFrac, SymFrac) -> SymFrac
+
+pub fn frac_eq(SymFrac, SymFrac) -> Bool
+
+pub fn frac_int(Int32) -> SymFrac
+
+pub fn frac_is_zero(SymFrac) -> Bool
+
+pub fn frac_make(Poly, Poly) -> SymFrac
+
+pub fn frac_mul(SymFrac, SymFrac) -> SymFrac
+
+pub fn frac_neg(SymFrac) -> SymFrac
+
+pub fn frac_one() -> SymFrac
+
+pub fn frac_poly(Poly) -> SymFrac
+
+pub fn frac_rat(Rat) -> SymFrac
+
+pub fn frac_sub(SymFrac, SymFrac) -> SymFrac
+
+pub fn frac_var(Int32) -> SymFrac
+
+pub fn frac_zero() -> SymFrac
+
+pub fn poly_add(Poly, Poly) -> Poly
+
+pub fn poly_const(Rat) -> Poly
+
+pub fn poly_eq(Poly, Poly) -> Bool
+
+pub fn poly_int(Int32) -> Poly
+
+pub fn poly_is_zero(Poly) -> Bool
+
+pub fn poly_mul(Poly, Poly) -> Poly
+
+pub fn poly_neg(Poly) -> Poly
+
+pub fn poly_normalize(Array[PolyTerm]) -> Poly
+
+pub fn poly_one() -> Poly
+
+pub fn poly_sub(Poly, Poly) -> Poly
+
+pub fn poly_var(Int32) -> Poly
+
+pub fn poly_zero() -> Poly
+
+pub fn qmat_add(QMat, QMat) -> QMat
+
+pub fn qmat_charpoly(QMat) -> QPoly
+
+pub fn qmat_det(QMat) -> Rat
+
+pub fn qmat_eq(QMat, QMat) -> Bool
+
+pub fn qmat_from_columns(Array[Array[Rat]]) -> QMat
+
+pub fn qmat_from_int_rows(Array[Array[Int32]]) -> QMat
+
+pub fn qmat_from_rows(Array[Array[Rat]]) -> QMat
+
+pub fn qmat_identity(Int32) -> QMat
+
+pub fn qmat_inverse(QMat) -> QMat?
+
+pub fn qmat_is_zero(QMat) -> Bool
+
+pub fn qmat_minimal_polynomial(QMat) -> QPoly
+
+pub fn qmat_mul(QMat, QMat) -> QMat
+
+pub fn qmat_mul_ozaki2_crt(QMat, QMat) -> QMat
+
+pub fn qmat_nullity(QMat) -> Int32
+
+pub fn qmat_nullspace(QMat) -> Array[Array[Rat]]
+
+pub fn qmat_poly_eval(QPoly, QMat) -> QMat
+
+pub fn qmat_pow(QMat, Int32) -> QMat
+
+pub fn qmat_rank(QMat) -> Int32
+
+pub fn qmat_scalar(Rat, Int32) -> QMat
+
+pub fn qmat_scale(Rat, QMat) -> QMat
+
+pub fn qmat_sub(QMat, QMat) -> QMat
+
+pub fn qmat_trace(QMat) -> Rat
+
+pub fn qmat_vec(QMat, Array[Rat]) -> Array[Rat]
+
+pub fn qmat_vector_annihilator(QMat, Array[Rat]) -> QPoly
+
+pub fn qmat_zero(Int32) -> QMat
+
+pub fn qpoly_add(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_coeff(QPoly, Int32) -> Rat
+
+pub fn qpoly_const(Rat) -> QPoly
+
+pub fn qpoly_degree(QPoly) -> Int32
+
+pub fn qpoly_derivative(QPoly) -> QPoly
+
+pub fn qpoly_div_exact(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_divmod(QPoly, QPoly) -> QPolyDiv
+
+pub fn qpoly_eq(QPoly, QPoly) -> Bool
+
+pub fn qpoly_eval(QPoly, Rat) -> Rat
+
+pub fn qpoly_extgcd(QPoly, QPoly) -> QPolyExtGcd
+
+pub fn qpoly_factor(QPoly, Int32) -> QPolyFactor
+
+pub fn qpoly_factor_rational_roots(QPoly) -> QPolyRationalFactorization
+
+pub fn qpoly_gcd(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_int(Int32) -> QPoly
+
+pub fn qpoly_integer_coeffs_big(QPoly) -> Array[@bigint.BigInt]
+
+pub fn qpoly_irreducible_upto3(QPoly) -> Bool
+
+pub fn qpoly_is_one(QPoly) -> Bool
+
+pub fn qpoly_is_squarefree(QPoly) -> Bool
+
+pub fn qpoly_is_zero(QPoly) -> Bool
+
+pub fn qpoly_leading(QPoly) -> Rat
+
+pub fn qpoly_mod(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_monic(QPoly) -> QPoly
+
+pub fn qpoly_mul(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_neg(QPoly) -> QPoly
+
+pub fn qpoly_normalize(Array[Rat]) -> QPoly
+
+pub fn qpoly_one() -> QPoly
+
+pub fn qpoly_pow(QPoly, Int32) -> QPoly
+
+pub fn qpoly_primitive_part(QPoly) -> QPoly
+
+pub fn qpoly_pseudo_remainder(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_rational_roots(QPoly) -> Array[Rat]
+
+pub fn qpoly_root_factor(Rat) -> QPoly
+
+pub fn qpoly_root_multiplicity(QPoly, Rat) -> Int32
+
+pub fn qpoly_scale(Rat, QPoly) -> QPoly
+
+pub fn qpoly_squarefree_factorization(QPoly) -> Array[QPolyFactor]
+
+pub fn qpoly_squarefree_part(QPoly) -> QPoly
+
+pub fn qpoly_sub(QPoly, QPoly) -> QPoly
+
+pub fn qpoly_x() -> QPoly
+
+pub fn qpoly_zero() -> QPoly
+
+pub fn qrows_nullspace(Array[Array[Rat]], Int32) -> Array[Array[Rat]]
+
+pub fn qrows_rank(Array[Array[Rat]], Int32) -> Int32
+
+pub fn qrows_rref(Array[Array[Rat]], Int32) -> QRref
+
+pub fn qvec_add(Array[Rat], Array[Rat]) -> Array[Rat]
+
+pub fn qvec_eq(Array[Rat], Array[Rat]) -> Bool
+
+pub fn qvec_in_span(Array[Array[Rat]], Array[Rat]) -> Bool
+
+pub fn qvec_independent_subset(Array[Array[Rat]]) -> Array[Array[Rat]]
+
+pub fn qvec_is_zero(Array[Rat]) -> Bool
+
+pub fn qvec_rank(Array[Array[Rat]]) -> Int32
+
+pub fn qvec_scale(Rat, Array[Rat]) -> Array[Rat]
+
+pub fn qvec_sub(Array[Rat], Array[Rat]) -> Array[Rat]
+
+pub fn qvec_zero(Int32) -> Array[Rat]
+
+pub fn rat_add(Rat, Rat) -> Rat
+
+pub fn rat_big_int(@bigint.BigInt) -> Rat
+
+pub fn rat_div(Rat, Rat) -> Rat
+
+pub fn rat_eq(Rat, Rat) -> Bool
+
+pub fn rat_int(Int32) -> Rat
+
+pub fn rat_inv(Rat) -> Rat
+
+pub fn rat_is_one(Rat) -> Bool
+
+pub fn rat_is_zero(Rat) -> Bool
+
+pub fn rat_make(Int32, Int32) -> Rat
+
+pub fn rat_make_big(@bigint.BigInt, @bigint.BigInt) -> Rat
+
+pub fn rat_mul(Rat, Rat) -> Rat
+
+pub fn rat_neg(Rat) -> Rat
+
+pub fn rat_one() -> Rat
+
+pub fn rat_sign(Rat) -> Int32
+
+pub fn rat_sub(Rat, Rat) -> Rat
+
+pub fn rat_to_double(Rat) -> Double
+
+pub fn rat_zero() -> Rat
+
+pub fn sc_add(SymC, SymC) -> SymC
+
+pub fn sc_conj(SymC) -> SymC
+
+pub fn sc_eq(SymC, SymC) -> Bool
+
+pub fn sc_int(Int32) -> SymC
+
+pub fn sc_is_zero(SymC) -> Bool
+
+pub fn sc_make(SymFrac, SymFrac) -> SymC
+
+pub fn sc_mul(SymC, SymC) -> SymC
+
+pub fn sc_neg(SymC) -> SymC
+
+pub fn sc_one() -> SymC
+
+pub fn sc_rat(Rat) -> SymC
+
+pub fn sc_real_frac(SymFrac) -> SymC
+
+pub fn sc_scale_frac(SymFrac, SymC) -> SymC
+
+pub fn sc_sub(SymC, SymC) -> SymC
+
+pub fn sc_var(Int32) -> SymC
+
+pub fn sc_zero() -> SymC
+
+pub fn sym_det(SymMat) -> SymC
+
+pub fn sym_inner(Array[SymC], Array[SymC]) -> SymC
+
+pub fn sym_is_hermitian(SymMat) -> Bool
+
+pub fn sym_is_idempotent(SymMat) -> Bool
+
+pub fn sym_mat_add(SymMat, SymMat) -> SymMat
+
+pub fn sym_mat_adjoint(SymMat) -> SymMat
+
+pub fn sym_mat_eq(SymMat, SymMat) -> Bool
+
+pub fn sym_mat_from_rows(Array[Array[SymC]]) -> SymMat
+
+pub fn sym_mat_identity(Int32) -> SymMat
+
+pub fn sym_mat_mul(SymMat, SymMat) -> SymMat
+
+pub fn sym_mat_scale(SymFrac, SymMat) -> SymMat
+
+pub fn sym_mat_sub(SymMat, SymMat) -> SymMat
+
+pub fn sym_mat_vec(SymMat, Array[SymC]) -> Array[SymC]
+
+pub fn sym_mat_zero(Int32) -> SymMat
+
+pub fn sym_outer(Array[SymC]) -> SymMat
+
+pub fn sym_projector_rank_one(Array[SymC]) -> SymMat
+
+pub fn sym_vec_add(Array[SymC], Array[SymC]) -> Array[SymC]
+
+pub fn sym_vec_eq(Array[SymC], Array[SymC]) -> Bool
+
+pub fn sym_vec_scale(SymFrac, Array[SymC]) -> Array[SymC]
+
+pub fn sym_vec_sub(Array[SymC], Array[SymC]) -> Array[SymC]
+
+pub fn upoly_add(UPoly, UPoly) -> UPoly
+
+pub fn upoly_const(SymC) -> UPoly
+
+pub fn upoly_eq(UPoly, UPoly) -> Bool
+
+pub fn upoly_mul(UPoly, UPoly) -> UPoly
+
+pub fn upoly_neg(UPoly) -> UPoly
+
+pub fn upoly_normalize(Array[SymC]) -> UPoly
+
+pub fn upoly_sub(UPoly, UPoly) -> UPoly
+
+pub fn upoly_x() -> UPoly
+
+pub fn upoly_zero() -> UPoly
+
+// Errors
+
+// Types and methods
+pub(all) struct Poly {
+  terms : Array[PolyTerm]
+}
+
+pub(all) struct PolyTerm {
+  mut coeff : Rat
+  exps : Array[Int32]
+}
+
+#derive(Eq, @debug.Debug)
+pub(all) struct QMat {
+  n : Int32
+  rows : Array[Array[Rat]]
+}
+pub fn QMat::equal(Self, Self) -> Bool
+pub fn QMat::not_equal(Self, Self) -> Bool
+pub fn QMat::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct QPoly {
+  coeffs : Array[Rat]
+}
+pub fn QPoly::equal(Self, Self) -> Bool
+pub fn QPoly::not_equal(Self, Self) -> Bool
+pub fn QPoly::to_repr(Self) -> @debug.Repr
+
+pub(all) struct QPolyDiv {
+  quotient : QPoly
+  remainder : QPoly
+}
+
+pub(all) struct QPolyExtGcd {
+  g : QPoly
+  s : QPoly
+  t : QPoly
+}
+
+pub(all) struct QPolyFactor {
+  factor : QPoly
+  multiplicity : Int32
+}
+
+pub(all) struct QPolyRationalFactorization {
+  roots : Array[Rat]
+  multiplicities : Array[Int32]
+  residual : QPoly
+}
+
+pub(all) struct QRref {
+  rows : Array[Array[Rat]]
+  pivots : Array[Int32]
+  rank : Int32
+}
+
+#derive(Eq, @debug.Debug)
+pub(all) struct Rat {
+  num : @bigint.BigInt
+  den : @bigint.BigInt
+}
+pub fn Rat::equal(Self, Self) -> Bool
+pub fn Rat::not_equal(Self, Self) -> Bool
+pub fn Rat::to_repr(Self) -> @debug.Repr
+
+pub(all) struct SymC {
+  re : SymFrac
+  im : SymFrac
+}
+
+pub(all) struct SymFrac {
+  num : Poly
+  den : Poly
+}
+
+pub(all) struct SymMat {
+  n : Int32
+  rows : Array[Array[SymC]]
+}
+
+pub(all) struct UPoly {
+  coeffs : Array[SymC]
+}
+
+// Type aliases
+pub type QVec = Array[Rat]
+
+pub type SymVec = Array[SymC]
+
+// Traits

@@ -92,15 +92,10 @@ pub fn bft_ed25519_quorum_commit_to_wal() -> BftEd25519WalReport {
     }
   }
 
-  // Anchor quorum vote vector in `@condensed.CondInvariantLedger`
-  let mut led = @condensed.cond_ledger_new()
-  led = @condensed.cond_ledger_append(
-    led,
-    2,
-    [4, 3, valid_sigs, commit_msg[0]],
-    [],
-  )
-  let led_ok = @condensed.cond_ledger_verify(led)
+  // Anchor quorum vote vector in `@gcd.CondInvariantLedger` (Layer-0 digest-chain ledger)
+  let mut led = @gcd.cond_ledger_new()
+  led = @gcd.cond_ledger_append(led, 2, [4, 3, valid_sigs, commit_msg[0]], [])
+  let led_ok = @gcd.cond_ledger_verify(led)
 
   BftEd25519WalReport::{
     n_validators: 4,

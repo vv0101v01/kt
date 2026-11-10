@@ -2742,7 +2742,7 @@ pub fn conv_hit_cell_at(
         dims1.length() == dims2.length() &&
         conv_telescope_values(level, dlevel, spec.params, [], [], p1, p2)
       for i in 0..<dims1.length() {
-        if i >= dims2.length() || !dim_eq_sem(dims1[i], dims2[i]) {
+        if i >= dims2.length() || !dim_eq_demorgan(dims1[i], dims2[i]) {
           ok = false
         }
       }
@@ -4393,7 +4393,7 @@ fn hit_dims_eq(a : Array[Dim], b : Array[Dim]) -> Bool {
     return false
   }
   for i in 0..<a.length() {
-    if !dim_eq_sem(a[i], b[i]) {
+    if !dim_eq_demorgan(a[i], b[i]) {
       return false
     }
   }

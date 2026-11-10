@@ -18,6 +18,12 @@ pub(all) struct FinSet {
 }
 
 ///|
+/// 有限集上之恆等態射 `id_X : X → X`。
+pub fn FinSet::id(self : FinSet) -> FinMap {
+  FinMap::id(self.size)
+}
+
+///|
 /// 有限集之間的態射（全函數）：img[x] 為 x 的像。
 pub(all) struct FinMap {
   dom : Int32
@@ -252,12 +258,6 @@ pub fn GSet::hom(self : GSet, x : Int32, y : Int32, cap : Int32) -> Array[Perm] 
     }
   }
   out
-}
-
-///|
-/// 迷向群（isotropy / stabilizer）G_x = hom(x,x)。
-pub fn GSet::isotropy(self : GSet, x : Int32) -> PermGroup {
-  self.group.stabilizer(x)
 }
 
 ///|

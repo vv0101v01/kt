@@ -320,3 +320,85 @@ pub fn[E : Semiring] mat_equal(a : Mat[E], b : Mat[E]) -> Bool {
   }
   true
 }
+
+// ---------------------------------------------------------------------------
+// 64-bit SWAR 布林傳遞閉包與快取分塊熱帶 Kleene 星（串接 `@swar`）
+// ---------------------------------------------------------------------------
+
+///|
+/// 64-bit 字組並聯 Warshall 布林傳遞閉包 `I ∨ E ∨ E² ∨ …`：
+/// 每次以單一 `UInt64` OR 更新 64 個目標點（複雜度 `O(n³/64)`），並以 `@swar.swar_popcount64` 回傳可達對總數。
+pub fn closure_bool_swar(edges : Mat[@alg.BoolSr]) -> (Mat[@alg.BoolSr], Int32) {
+  if !edges.is_square() {
+    abort("closure_bool_swar: matrix must be square")
+  }
+  let n = edges.rows
+  let words = (n + 63) / 64
+  let rows = Array::make(n * words, 0UL)
+  for i in 0..<n {
+    rows[i * words + i / 64] = rows[i * words + i / 64] | (1UL << (i % 64))
+    for j in 0..<n {
+      if edges.d[i * n + j].b {
+        rows[i * words + j / 64] = rows[i * words + j / 64] | (1UL << (j % 64))
+      }
+    }
+  }
+  for k in 0..<n {
+    let kw = k / 64
+    let kmask = 1UL << (k % 64)
+    let kbase = k * words
+    for i in 0..<n {
+      let ibase = i * words
+      if (rows[ibase + kw] & kmask) != 0UL {
+        for w in 0..<words {
+          rows[ibase + w] = rows[ibase + w] | rows[kbase + w]
+        }
+      }
+    }
+  }
+  let out = Mat::new(n, n, @alg.BoolSr::of(false))
+  let mut reach_pairs = 0
+  for w_idx in 0..<rows.length() {
+    reach_pairs = reach_pairs + @swar.swar_popcount64(rows[w_idx])
+  }
+  for i in 0..<n {
+    let ibase = i * words
+    for j in 0..<n {
+      if ((rows[ibase + j / 64] >> (j % 64)) & 1UL) != 0UL {
+        out.d[i * n + j] = @alg.BoolSr::of(true)
+      }
+    }
+  }
+  (out, reach_pairs)
+}
+
+///|
+/// 串接 `@swar.tropical_blocked_kleene_closure` 之 L1 快取分塊熱帶 Kleene 星閉包 `A*`。
+pub fn closure_trop_swar(
+  edges : Mat[@alg.Trop],
+  tile_size~ : Int32 = 16,
+) -> Mat[@alg.Trop] {
+  if !edges.is_square() {
+    abort("closure_trop_swar: matrix must be square")
+  }
+  let n = edges.rows
+  let adj : Array[Int32] = Array::make(n * n, @swar.trop_inf_i32)
+  for i in 0..<(n * n) {
+    let x = edges.d[i]
+    if !x.is_inf() {
+      adj[i] = x.value()
+    }
+  }
+  let closed = @swar.tropical_blocked_kleene_closure(
+    n,
+    adj,
+    block_size=tile_size,
+  )
+  let out = Mat::new(n, n, @alg.Trop::inf())
+  for i in 0..<(n * n) {
+    if closed[i] < @swar.trop_inf_i32 {
+      out.d[i] = @alg.Trop::new(closed[i])
+    }
+  }
+  out
+}

@@ -196,42 +196,9 @@ fn exps_coprime(a : Array[Int32], b : Array[Int32]) -> Bool {
 
 ///|
 /// Normalize a raw list of terms into canonical `MPoly` form (descending `GRevLex`,
-/// like-monomials combined, zero coefficients dropped).
+/// like-monomials combined, zero coefficients dropped) via `O(m log m)` `Mono64` SWAR merge-sort.
 pub fn mpoly_from_terms(nvars : Int32, raw : Array[MTerm]) -> MPoly {
-  let filtered : Array[MTerm] = []
-  for t in raw {
-    guard t.exps.length() == nvars else {
-      abort("mpoly_from_terms: exponent length mismatch")
-    }
-    if !@exactalg.rat_is_zero(t.coeff) {
-      filtered.push({ coeff: t.coeff, exps: t.exps.copy(), })
-    }
-  }
-  let m = filtered.length()
-  for i in 0..<m {
-    for j in (i + 1)..<m {
-      if monomial_cmp(GRevLex, filtered[j].exps, filtered[i].exps) > 0 {
-        let tmp = filtered[i]
-        filtered[i] = filtered[j]
-        filtered[j] = tmp
-      }
-    }
-  }
-  let merged : Array[MTerm] = []
-  for t in filtered {
-    if merged.length() > 0 && merged[merged.length() - 1].exps == t.exps {
-      guard merged.pop() is Some(last) else {
-        abort("mpoly_normalize: empty merge stack")
-      }
-      let sum_c = @exactalg.rat_add(last.coeff, t.coeff)
-      if !@exactalg.rat_is_zero(sum_c) {
-        merged.push({ coeff: sum_c, exps: last.exps, })
-      }
-    } else {
-      merged.push(t)
-    }
-  }
-  { nvars, terms: merged, }
+  mpoly_normalize_terms_fast(nvars, raw)
 }
 
 ///|
@@ -282,14 +249,9 @@ pub fn mpoly_total_degree(f : MPoly) -> Int32 {
 }
 
 ///|
-/// Addition `f + g`.
+/// Addition `f + g` via `O(|f| + |g|)` sorted GRevLex linear merge.
 pub fn mpoly_add(f : MPoly, g : MPoly) -> MPoly {
-  guard f.nvars == g.nvars else { abort("mpoly_add: nvars mismatch") }
-  let raw = f.terms.copy()
-  for t in g.terms {
-    raw.push(t)
-  }
-  mpoly_from_terms(f.nvars, raw)
+  mpoly_linear_add_signed(f, g, false)
 }
 
 ///|
@@ -303,9 +265,9 @@ pub fn mpoly_neg(f : MPoly) -> MPoly {
 }
 
 ///|
-/// Subtraction `f - g`.
+/// Subtraction `f - g` via `O(|f| + |g|)` sorted GRevLex linear merge.
 pub fn mpoly_sub(f : MPoly, g : MPoly) -> MPoly {
-  mpoly_add(f, mpoly_neg(g))
+  mpoly_linear_add_signed(f, g, true)
 }
 
 ///|
@@ -501,40 +463,15 @@ fn mpoly_mul_monomial(
 
 ///|
 /// Multivariate division remainder (Canonical Normal Form `nf_G(f)`) of `f`
-/// modulo `divisors` with respect to `order`: NO term of the returned remainder
-/// is divisible by `LM_order(g)` for any nonzero `g ∈ divisors`!
+/// modulo `divisors` with respect to `order` via Yan Geobucket Priority Reduction
+/// + `Mono64` SWAR divisibility: NO term of the returned remainder is divisible
+/// by `LM_order(g)` for any nonzero `g ∈ divisors`!
 pub fn mpoly_reduce(
   f : MPoly,
   divisors : Array[MPoly],
   order : MonomialOrder,
 ) -> MPoly {
-  let active : Array[(MPoly, MTerm)] = []
-  for g in divisors {
-    if !mpoly_is_zero(g) {
-      active.push((g, mpoly_leading_term(g, order)))
-    }
-  }
-  let mut p = f
-  let rem_terms : Array[MTerm] = []
-  while !mpoly_is_zero(p) {
-    let lt_p = mpoly_leading_term(p, order)
-    let mut reduced = false
-    for pair in active {
-      let (g, lt_g) = pair
-      if exps_divides(lt_g.exps, lt_p.exps) {
-        let q_coeff = @exactalg.rat_div(lt_p.coeff, lt_g.coeff)
-        let q_exps = exps_quot(lt_p.exps, lt_g.exps)
-        p = mpoly_sub(p, mpoly_mul_monomial(q_coeff, q_exps, g))
-        reduced = true
-        break
-      }
-    }
-    if !reduced {
-      rem_terms.push(lt_p)
-      p = mpoly_sub(p, mpoly_from_terms(f.nvars, [lt_p]))
-    }
-  }
-  mpoly_from_terms(f.nvars, rem_terms)
+  mpoly_reduce_geobucket(f, divisors, order)
 }
 
 ///|
@@ -559,48 +496,48 @@ pub fn s_polynomial(f : MPoly, g : MPoly, order : MonomialOrder) -> MPoly {
 ///|
 /// Compute the unique **Canonical Reduced Gröbner Basis** of `<gens>` in
 /// `Q[x_0, ..., x_{nvars-1}]` with respect to `order` via Buchberger's algorithm
-/// with coprime-LM pruning, minimal-LM filtering, full tail interreduction, and
-/// ascending LM canonical sort!
+/// upgraded with **Gebauer–Möller Criteria (`M`, `F`, `B`)**, Normal `lcm` Selection,
+/// **Yan Geobucket Priority Reduction**, `Mono64` SWAR divisibility, minimal-LM
+/// filtering, full tail interreduction, and ascending LM canonical sort!
 pub fn reduced_groebner_basis(
   nvars : Int32,
   gens : Array[MPoly],
   order : MonomialOrder,
 ) -> ReducedGroebnerBasis {
   let basis : Array[MPoly] = []
+  let lms : Array[Array[Int32]] = []
+  let pairs : Array[CritPair] = []
   for g in gens {
     let m = mpoly_monic(g, order)
     if !mpoly_is_zero(m) {
-      basis.push(m)
-    }
-  }
-  let pairs : Array[(Int32, Int32)] = []
-  for i in 0..<basis.length() {
-    for j in (i + 1)..<basis.length() {
-      pairs.push((i, j))
-    }
-  }
-  let mut head = 0
-  while head < pairs.length() {
-    let (i, j) = pairs[head]
-    head = head + 1
-    let lti = mpoly_leading_term(basis[i], order)
-    let ltj = mpoly_leading_term(basis[j], order)
-    // Buchberger's First Criterion: coprime leading monomials reduce to 0 automatically!
-    if exps_coprime(lti.exps, ltj.exps) {
-      continue
-    }
-    let sp = s_polynomial(basis[i], basis[j], order)
-    let rem = mpoly_reduce(sp, basis, order)
-    if !mpoly_is_zero(rem) {
-      let monic_rem = mpoly_monic(rem, order)
-      if mpoly_total_degree(monic_rem) == 0 {
-        // Unit ideal <1>: immediately collapses to `[1]`!
+      if mpoly_total_degree(m) == 0 {
         return { nvars, order, gens: [mpoly_int(nvars, 1)], }
       }
-      let new_idx = basis.length()
-      basis.push(monic_rem)
-      for k in 0..<new_idx {
-        pairs.push((k, new_idx))
+      let idx = basis.length()
+      basis.push(m)
+      lms.push(mpoly_leading_term(m, order).exps)
+      if idx > 0 {
+        gebauer_moller_update_pairs(pairs, lms, idx)
+      }
+    }
+  }
+  while true {
+    match pop_normal_strategy_pair(pairs, order) {
+      None => break
+      Some(cp) => {
+        let sp = s_polynomial(basis[cp.i], basis[cp.j], order)
+        let rem = mpoly_reduce(sp, basis, order)
+        if !mpoly_is_zero(rem) {
+          let monic_rem = mpoly_monic(rem, order)
+          if mpoly_total_degree(monic_rem) == 0 {
+            // Unit ideal <1>: immediately collapses to `[1]`!
+            return { nvars, order, gens: [mpoly_int(nvars, 1)], }
+          }
+          let new_idx = basis.length()
+          basis.push(monic_rem)
+          lms.push(mpoly_leading_term(monic_rem, order).exps)
+          gebauer_moller_update_pairs(pairs, lms, new_idx)
+        }
       }
     }
   }

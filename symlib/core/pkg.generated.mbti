@@ -1,0 +1,293 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/symlib/core"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn aut_generators(Graph) -> Array[Perm]
+
+pub fn aut_order(Graph) -> Int64
+
+pub fn automorphism_group(Graph) -> PermGroup
+
+pub fn automorphism_group_colored(Graph, Array[Int32]) -> PermGroup
+
+pub fn cmp_arr(Array[Int32], Array[Int32]) -> Int32
+
+pub fn compose_key64(Array[Int32], Array[Int32]) -> Int64
+
+pub fn edge_orbits(Graph) -> (Array[(Int32, Int32)], Array[Int32])
+
+pub fn elem_lut_fast(Array[Perm]) -> KeyLut
+
+pub fn enc_index(Int32, Int32) -> Int32
+
+pub fn fold_candidates(PermGroup, Array[Int32]) -> (Array[Int32], Double)
+
+pub fn fold_edges(Graph, PermGroup) -> (Array[(Int32, Int32)], Array[Int32])
+
+pub fn fold_graph(Graph, PermGroup) -> FoldedGraph
+
+pub fn fold_graph_by_orbits(Graph, Array[Array[Int32]], Array[Int32]) -> FoldedGraph
+
+pub fn fundamental_domain(PermGroup, Array[Int32]) -> Array[Int32]
+
+pub fn graph_invariant(Graph) -> Array[Int32]
+
+pub fn key_lut(Array[Int64]) -> KeyLut
+
+pub fn lcg_step(Int32) -> Int32
+
+pub fn perm_key64(Perm) -> Int64
+
+pub fn recolor(Array[Int32]) -> Array[Int32]
+
+pub fn refine_colors(Graph) -> Array[Int32]
+
+pub fn search_graph(Graph, Bool) -> SearchResult
+
+pub fn search_graph_colored(Graph, Array[Int32], Bool) -> SearchResult
+
+pub fn search_graph_flags(Graph, Int32, Bool) -> SearchResult
+
+pub fn search_graph_mode(Graph, Int32) -> SearchResult
+
+pub fn vertex_orbits(Graph) -> Array[Array[Int32]]
+
+// Errors
+
+// Types and methods
+pub(all) enum ActionDerive {
+  Points
+  Pairs(Int32)
+  Edges(Array[(Int32, Int32)], Map[Int32, Int32])
+}
+
+pub(all) struct BitVec {
+  n : Int32
+  mut words : Array[Int64]
+}
+pub fn BitVec::and_in_place(Self, Self) -> Unit
+pub fn BitVec::and_not_in_place(Self, Self) -> Unit
+pub fn BitVec::and_popcount(Self, Self) -> Int32
+pub fn BitVec::contains(Self, Self) -> Bool
+pub fn BitVec::copy(Self) -> Self
+pub fn BitVec::count_ones(Self) -> Int32
+pub fn BitVec::each(Self, (Int32) -> Unit) -> Unit
+pub fn BitVec::equal(Self, Self) -> Bool
+pub fn BitVec::get(Self, Int32) -> Bool
+pub fn BitVec::hash(Self) -> Int32
+pub fn BitVec::is_empty(Self) -> Bool
+pub fn BitVec::length(Self) -> Int32
+pub fn BitVec::make(Int32) -> Self
+pub fn BitVec::make_full(Int32) -> Self
+pub fn BitVec::or_in_place(Self, Self) -> Unit
+pub fn BitVec::output(Self, &Logger) -> Unit
+pub fn BitVec::set(Self, Int32) -> Unit
+pub fn BitVec::to_array(Self) -> Array[Int32]
+pub fn BitVec::to_repr(Self) -> @debug.Repr
+pub fn BitVec::to_string(Self) -> String
+pub fn BitVec::unset(Self, Int32) -> Unit
+pub impl Show for BitVec
+pub impl @debug.Debug for BitVec
+
+pub(all) struct FinAction {
+  size : Int32
+  base : Int32
+  via : ActionDerive
+  gens : Array[Array[Int32]]
+}
+pub fn FinAction::burnside_orbit_count(Self, PermGroup, Int32) -> Int32
+pub fn FinAction::card(Self) -> Int32
+pub fn FinAction::fixed_points(Self, Array[Int32]) -> Int32
+pub fn FinAction::fundamental_domain(Self) -> Array[Int32]
+pub fn FinAction::is_transitive(Self) -> Bool
+pub fn FinAction::lift(Self, Perm) -> Array[Int32]
+pub fn FinAction::new(Int32, Array[Array[Int32]]) -> Self
+pub fn FinAction::of_group(PermGroup) -> Self
+pub fn FinAction::on_edges(PermGroup, Graph) -> Self
+pub fn FinAction::on_pairs(PermGroup) -> Self
+pub fn FinAction::orbit(Self, Int32) -> Array[Int32]
+pub fn FinAction::orbit_count(Self) -> Int32
+pub fn FinAction::orbit_of(Self) -> Array[Int32]
+pub fn FinAction::orbits(Self) -> Array[Array[Int32]]
+pub fn FinAction::output(Self, &Logger) -> Unit
+pub fn FinAction::to_repr(Self) -> @debug.Repr
+pub fn FinAction::to_string(Self) -> String
+pub fn FinAction::with_derive(Int32, Int32, ActionDerive, Array[Array[Int32]]) -> Self
+pub impl Show for FinAction
+pub impl @debug.Debug for FinAction
+
+pub(all) struct FoldedGraph {
+  n : Int32
+  m : Int32
+  k : Int32
+  rep : Array[Int32]
+  orbit_of : Array[Int32]
+  orbit_size : Array[Int32]
+  mul : Array[Array[Int32]]
+  edge_total : Int32
+}
+pub fn FoldedGraph::multiplicity(Self, Int32, Int32) -> Int32
+pub fn FoldedGraph::orbit_count(Self) -> Int32
+pub fn FoldedGraph::output(Self, &Logger) -> Unit
+pub fn FoldedGraph::ratio(Self) -> Double
+pub fn FoldedGraph::summary(Self) -> String
+pub fn FoldedGraph::to_repr(Self) -> @debug.Repr
+pub fn FoldedGraph::to_string(Self) -> String
+pub impl Show for FoldedGraph
+pub impl @debug.Debug for FoldedGraph
+
+pub(all) struct Graph {
+  n : Int32
+  m : Int32
+  adj : Array[Array[Int32]]
+  rows : Array[BitVec]
+}
+pub fn Graph::build(Int32, Int32, Array[Array[Int32]]) -> Self
+pub fn Graph::complement(Self) -> Self
+pub fn Graph::complete(Int32) -> Self
+pub fn Graph::complete_bipartite(Int32, Int32) -> Self
+pub fn Graph::components(Self) -> Array[Array[Int32]]
+pub fn Graph::cycle(Int32) -> Self
+pub fn Graph::degree(Self, Int32) -> Int32
+pub fn Graph::degree_seq(Self) -> Array[Int32]
+pub fn Graph::disjoint_union(Array[Self]) -> Self
+pub fn Graph::edge_list(Self) -> Array[(Int32, Int32)]
+pub fn Graph::empty(Int32) -> Self
+pub fn Graph::equal(Self, Self) -> Bool
+pub fn Graph::from_edges(Int32, Array[(Int32, Int32)]) -> Self
+pub fn Graph::has_edge(Self, Int32, Int32) -> Bool
+pub fn Graph::hypercube(Int32) -> Self
+pub fn Graph::induced_subgraph(Self, Array[Int32]) -> Self
+pub fn Graph::is_regular(Self) -> Bool
+pub fn Graph::neighbors(Self, Int32) -> Array[Int32]
+pub fn Graph::not_equal(Self, Self) -> Bool
+pub fn Graph::order(Self) -> Int32
+pub fn Graph::output(Self, &Logger) -> Unit
+pub fn Graph::path(Int32) -> Self
+pub fn Graph::petersen() -> Self
+pub fn Graph::random(Int32, Int32, Int32) -> (Self, Int32)
+pub fn Graph::relabel(Self, Perm) -> Self
+pub fn Graph::size(Self) -> Int32
+pub fn Graph::star(Int32) -> Self
+pub fn Graph::to_repr(Self) -> @debug.Repr
+pub fn Graph::to_string(Self) -> String
+pub impl Eq for Graph
+pub impl Show for Graph
+pub impl @debug.Debug for Graph
+
+pub(all) struct KeyLut {
+  keys : Array[Int64]
+  vals : Array[Int32]
+  mask : Int64
+}
+pub fn KeyLut::at(Self, Int64) -> Int32
+pub fn KeyLut::find(Self, Int64) -> Int32
+
+pub(all) struct Part {
+  n : Int32
+  mut lab : Array[Int32]
+  mut ptn : Array[Int32]
+  mut cell_of : Array[Int32]
+}
+pub fn Part::cell_count(Self) -> Int32
+pub fn Part::cell_sizes(Self) -> Array[Int32]
+pub fn Part::cells(Self) -> Array[Array[Int32]]
+pub fn Part::copy(Self) -> Self
+pub fn Part::discrete(Array[Int32]) -> Self
+pub fn Part::is_discrete(Self) -> Bool
+pub fn Part::trivial(Int32) -> Self
+
+pub(all) struct Perm {
+  n : Int32
+  img : Array[Int32]
+}
+pub fn Perm::apply(Self, Int32) -> Int32
+pub fn Perm::compose(Self, Self) -> Self
+pub fn Perm::conjugate_by(Self, Self) -> Self
+pub fn Perm::cycles(Self) -> Array[Array[Int32]]
+pub fn Perm::equal(Self, Self) -> Bool
+pub fn Perm::fixed_point_count(Self) -> Int32
+pub fn Perm::from_cycles(Int32, Array[Array[Int32]]) -> Self
+pub fn Perm::from_img(Array[Int32]) -> Self
+pub fn Perm::identity(Int32) -> Self
+pub fn Perm::inverse(Self) -> Self
+pub fn Perm::is_identity(Self) -> Bool
+pub fn Perm::moved_points(Self) -> Array[Int32]
+pub fn Perm::nontrivial_cycles(Self) -> Array[Array[Int32]]
+pub fn Perm::not_equal(Self, Self) -> Bool
+pub fn Perm::orbit_of(Self, Int32) -> Array[Int32]
+pub fn Perm::order(Self) -> Int32
+pub fn Perm::output(Self, &Logger) -> Unit
+pub fn Perm::pow(Self, Int32) -> Self
+pub fn Perm::random(Int32, Int32) -> (Self, Int32)
+pub fn Perm::sign(Self) -> Int32
+pub fn Perm::size(Self) -> Int32
+pub fn Perm::to_repr(Self) -> @debug.Repr
+pub fn Perm::to_string(Self) -> String
+pub impl Eq for Perm
+pub impl Show for Perm
+pub impl @debug.Debug for Perm
+
+pub(all) struct PermGroup {
+  n : Int32
+  gens : Array[Perm]
+  base : Array[Int32]
+  orbits : Array[Array[Int32]]
+  trans : Array[Array[Perm?]]
+  orbit_size : Array[Int32]
+}
+pub fn PermGroup::alternating(Int32) -> Self
+pub fn PermGroup::conjugate_by(Self, Perm) -> Self
+pub fn PermGroup::contains(Self, Perm) -> Bool
+pub fn PermGroup::cyclic(Int32) -> Self
+pub fn PermGroup::dihedral(Int32) -> Self
+pub fn PermGroup::elements(Self, Int32) -> Array[Perm]
+pub fn PermGroup::fixed_point_count(Self, Int32, Int32) -> Int32
+pub fn PermGroup::generators(Self) -> Array[Perm]
+pub fn PermGroup::hyperoctahedral(Int32) -> Self
+pub fn PermGroup::is_transitive(Self) -> Bool
+pub fn PermGroup::new(Int32, Array[Perm]) -> Self
+pub fn PermGroup::orbit(Self, Int32) -> Array[Int32]
+pub fn PermGroup::orbit_partition(Self) -> Array[Array[Int32]]
+pub fn PermGroup::orbit_rep(Self, Int32) -> Int32
+pub fn PermGroup::order(Self) -> Int64
+pub fn PermGroup::output(Self, &Logger) -> Unit
+pub fn PermGroup::pointwise_stabilizer(Self, Array[Int32]) -> Self
+pub fn PermGroup::size(Self) -> Int32
+pub fn PermGroup::stabilizer(Self, Int32) -> Self
+pub fn PermGroup::symmetric(Int32) -> Self
+pub fn PermGroup::to_repr(Self) -> @debug.Repr
+pub fn PermGroup::to_string(Self) -> String
+pub fn PermGroup::trivial(Int32) -> Self
+pub impl Show for PermGroup
+pub impl @debug.Debug for PermGroup
+
+pub(all) struct PermLut {
+  n : Int32
+  imgs : Array[Array[Int32]]
+  hashes : Array[UInt64]
+  slots : Array[Int32]
+  mask : Int32
+}
+pub fn PermLut::at_composed(Self, Array[Int32], Array[Int32]) -> Int32
+pub fn PermLut::at_perm(Self, Perm) -> Int32
+pub fn PermLut::find_img(Self, Array[Int32]) -> Int32
+pub fn PermLut::of_elems(Array[Perm]) -> Self
+
+pub(all) struct SearchResult {
+  n : Int32
+  canon_lab : Array[Int32]
+  canon_enc : Array[Int32]
+  aut_gens : Array[Perm]
+  nodes : Int32
+  leaves : Int32
+  ties : Int32
+}
+
+// Type aliases
+
+// Traits

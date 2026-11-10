@@ -25,6 +25,9 @@ pub fn all_laws() -> Array[(String, Bool)] {
   for (l, b) in law_proof_reflection_decide_fast_check_independently() {
     out.push((l, b))
   }
+  for (l, b) in law_universe_ackermann_bit_isomorphism_and_v5_reflection() {
+    out.push((l, b))
+  }
   for (l, b) in law_universe_clubs_intersect_by_diagonal_iteration() {
     out.push((l, b))
   }

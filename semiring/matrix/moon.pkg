@@ -1,4 +1,5 @@
 import {
   "vv0101v01/cubical-hermitian/semiring/algebra" @alg,
   "vv0101v01/cubical-hermitian/semiring/par",
+  "vv0101v01/cubical-hermitian/accel/swar",
 }

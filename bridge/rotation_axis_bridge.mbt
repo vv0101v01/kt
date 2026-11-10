@@ -77,12 +77,12 @@ fn rotation_array_close(
   b : Array[Double],
   tolerance : Double,
 ) -> Bool {
-  if a.length() != b.length() {
+  if a.length() != b.length() || !(tolerance >= 0.0) || tolerance.is_inf() {
     return false
   }
   for i in 0..<a.length() {
     let d = a[i] - b[i]
-    if d.is_nan() || d.is_inf() || d * d > tolerance * tolerance {
+    if d.is_nan() || d.is_inf() || !(d * d <= tolerance * tolerance) {
       return false
     }
   }
@@ -457,12 +457,22 @@ pub fn verify_rotation_axis_bridge() -> RotationAxisBridgeReport {
 ///|
 /// Standalone certificate; it is intentionally separate from the historical
 /// 47-certificate ledger so existing milestone counts remain unchanged.
-pub fn rotation_axis_certificate() -> BridgeCertificate {
-  let report = verify_rotation_axis_bridge()
+pub fn rotation_axis_certificate(
+  precomputed~ : RotationAxisBridgeReport? = None,
+) -> BridgeCertificate {
+  let report = match precomputed {
+    Some(r) => r
+    None => verify_rotation_axis_bridge()
+  }
+  let axis_flag = if precomputed is Some(_) {
+    report.axis.conserved
+  } else {
+    @condensed.cond_quaternion_axis_conserved()
+  }
   bridge_certificate(
     "condensed/quaternion-axis",
     "Conjugate Quaternion × CanonElimCategory × Jacobi/Jordan/Hopf/Tamari Rotation Relations",
-    report.holds,
+    report.holds && axis_flag,
     detail="families=\{report.families_passed}/4, numeric comparisons=\{report.comparisons_passed}/4 + axis=\{report.axis_comparison.holds}, coherence 11040→552→0 (276 canonical classes), integral residual=\{report.axis.integral.residual}, RK4 order=\{report.axis.ode.observed_order}, Richardson error=\{report.axis.ode.richardson_limit_error}, exact conservation laws=\{report.axis.conservation_laws_passed}/3, ledger entries=\{report.axis.ledger_entries}",
   )
 }

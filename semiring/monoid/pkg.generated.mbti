@@ -38,9 +38,10 @@ pub fn[M : @algebra.GroupMonoid] Fenwick::build(Array[M]) -> Self[M]
 pub fn[M : @algebra.GroupMonoid] Fenwick::prefix(Self[M], Int32) -> M
 pub fn[M : @algebra.GroupMonoid] Fenwick::range(Self[M], Int32, Int32) -> M
 
+#derive(Eq)
 pub(all) struct MaxI64 {
   v : Int64
-} derive(Eq)
+}
 pub fn MaxI64::combine(Self, Self) -> Self
 pub fn MaxI64::empty() -> Self
 pub fn MaxI64::equal(Self, Self) -> Bool
@@ -52,9 +53,10 @@ pub impl @algebra.CommutativeMonoid for MaxI64
 pub impl @algebra.IdempotentMonoid for MaxI64
 pub impl @algebra.Monoid for MaxI64
 
+#derive(Eq)
 pub(all) struct MinI64 {
   v : Int64
-} derive(Eq)
+}
 pub fn MinI64::combine(Self, Self) -> Self
 pub fn MinI64::empty() -> Self
 pub fn MinI64::equal(Self, Self) -> Bool
@@ -96,9 +98,10 @@ pub(all) struct SparseTable[M] {
 pub fn[M : @algebra.IdempotentMonoid] SparseTable::build(Array[M]) -> Self[M]
 pub fn[M : @algebra.IdempotentMonoid] SparseTable::query(Self[M], Int32, Int32) -> M
 
+#derive(Eq)
 pub(all) struct SumI64 {
   v : Int64
-} derive(Eq)
+}
 pub fn SumI64::combine(Self, Self) -> Self
 pub fn SumI64::empty() -> Self
 pub fn SumI64::equal(Self, Self) -> Bool

@@ -498,6 +498,16 @@ pub fn webgpu_frontier_kernel_suite() -> Array[WgslComputeKernel] {
 }
 
 ///|
+/// Return the complete Single-Source-of-Truth (`SSOT`) registry of all **8** Browser Free
+/// WebGPU WGSL Compute Kernels across `@accel` (the 7 frontier kernels plus the 64-vertex
+/// cubical degeneracy & face pruning kernel `wgsl_kernel_cubical_degeneracy_prune`).
+pub fn webgpu_all_registered_kernels() -> Array[WgslComputeKernel] {
+  let out = webgpu_frontier_kernel_suite()
+  out.push(wgsl_kernel_cubical_degeneracy_prune())
+  out
+}
+
+///|
 /// Statically audit a `WgslComputeKernel` against W3C WebGPU baseline browser constraints:
 /// zero `f64`/`u64`/`i64` scalars, `<= 256` threads/workgroup, `<= 16,384` B shared memory,
 /// `@compute @workgroup_size(...)` entrypoint, and balanced `{}` / `()` delimiters.
@@ -741,7 +751,18 @@ pub fn verify_accel_federation() -> AccelFederationReport {
   for k in 0..<tn {
     for i in 0..<tn {
       for j in 0..<tn {
-        let cand = trop_add_edge(t_ref[i * tn + k], t_ref[k * tn + j])
+        let a_ik = t_ref[i * tn + k]
+        let a_kj = t_ref[k * tn + j]
+        let cand = if a_ik >= trop_inf_i32 || a_kj >= trop_inf_i32 {
+          trop_inf_i32
+        } else {
+          let s = @trop.sat_add_i32(a_ik, a_kj)
+          if s >= trop_inf_i32 {
+            trop_inf_i32
+          } else {
+            s
+          }
+        }
         if cand < t_ref[i * tn + j] {
           t_ref[i * tn + j] = cand
         }
@@ -750,10 +771,36 @@ pub fn verify_accel_federation() -> AccelFederationReport {
   }
   let trop_ok = t_blocked == t_ref
 
-  // 7. HVM2 Flat-Arena Interaction Combinator Strong Confluence + WGSL Portability Audits
+  // 7. HVM2 Flat-Arena Interaction Combinator Strong Confluence + Closed-Lam Compiler + WGSL Audits
   let c0 = inet_verify_church_mul_confluence(0, 5)
   let c12 = inet_verify_church_mul_confluence(3, 4)
   let c20 = inet_verify_church_mul_confluence(4, 5)
+  let ch3 = InetClosedLam::ILLam(
+    InetClosedLam::ILLam(
+      InetClosedLam::ILApp(
+        InetClosedLam::ILVar(1),
+        InetClosedLam::ILApp(
+          InetClosedLam::ILVar(1),
+          InetClosedLam::ILApp(InetClosedLam::ILVar(1), InetClosedLam::ILVar(0)),
+        ),
+      ),
+    ),
+  )
+  let step_plus2 = InetClosedLam::ILLam(
+    InetClosedLam::ILSucc(InetClosedLam::ILSucc(InetClosedLam::ILVar(0))),
+  )
+  let closed_six = InetClosedLam::ILApp(
+    InetClosedLam::ILApp(ch3, step_plus2),
+    InetClosedLam::ILZero,
+  )
+  let (lam6_f, _) = inet_eval_closed_peano_lam(
+    closed_six,
+    schedule=INetWaveSchedule::ScheduleForward,
+  )
+  let (lam6_r, _) = inet_eval_closed_peano_lam(
+    closed_six,
+    schedule=INetWaveSchedule::ScheduleReverse,
+  )
   let inet_ok = c0.schedules_confluent &&
     c0.decoded_value == 0 &&
     c0.eras_steps > 0 &&
@@ -761,9 +808,12 @@ pub fn verify_accel_federation() -> AccelFederationReport {
     c12.decoded_value == 12 &&
     c12.comm_steps > 0 &&
     c20.schedules_confluent &&
-    c20.decoded_value == 20
+    c20.decoded_value == 20 &&
+    lam6_f == 6 &&
+    lam6_r == 6
 
   let kernels = webgpu_frontier_kernel_suite()
+  let all_8_kernels = webgpu_all_registered_kernels()
   let mut audited_ok = 0
   for k in kernels {
     let aud = audit_wgsl_browser_portability(k)
@@ -771,7 +821,13 @@ pub fn verify_accel_federation() -> AccelFederationReport {
       audited_ok = audited_ok + 1
     }
   }
-  let wgsl_ok = audited_ok == kernels.length()
+  let mut all_8_ok = all_8_kernels.length() == 8
+  for k in all_8_kernels {
+    if !audit_wgsl_browser_portability(k).browser_portable {
+      all_8_ok = false
+    }
+  }
+  let wgsl_ok = audited_ok == kernels.length() && all_8_ok
   let all_ok = m4ri_match &&
     f3_ok &&
     face_ok &&

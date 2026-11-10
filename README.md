@@ -1,8 +1,8 @@
 # cubical-hermitian — 一部可執行的數學工程史
 
 > MoonBit · `vv0101v01/cubical-hermitian` v2.0.0 · `preferred_target = "wasm"`
-> **9 聯邦 + 統一頂點 · 44 套件 · 53 元件 · 245 個 `.mbt` · 162,396 行**
-> `python3 tools/arch_check.py` → `architecture ok` · `cmd/main` → **129/129 定理** · `cmd/metatheory` → **485/485 定律** · `cmd/showcase` → **47/47 證書**
+> **9 聯邦 + 統一頂點 · 52 套件 · 61 元件 · 282 個 `.mbt` · 182,929 行**
+> `python3 tools/arch_check.py` → `architecture ok` · `cmd/main` → **137/137 定理** · `cmd/metatheory` → **545/545 定律** · `cmd/showcase` → **9/9 聯邦 + K_9=36/36 全配對橋 + 47/47 證書 + 54/54 高階立方結構**
 
 這個倉庫把「依賴立方型別論 × 精確代數 × 有限對稱 × 拓撲斯 × 概形 × 凝聚數學 × 張量幾何」寫成
 一份**可編譯、可判定、可複驗**的程式。它不是論文附錄，而是一條**有年月、有瓶頸、有突破**的工程線。
@@ -15,12 +15,12 @@
 ## 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                       # 245 .mbt / 162,396 行、44 套件、53 元件
-moon check --deny-warn --target wasm-gc           # 0 warnings, 0 errors
-moon run --release cmd/main        --target wasm-gc  # 129/129 定理總表
-moon run --release cmd/metatheory  --target wasm-gc  # 485/485 定律（反射 × 全域實例 × 歸納-歸納）
-python3 tools/health_scan.py > tools/health_report.md # 死碼／重複／債務盤點（報告，非閘門）
-moon run --release cmd/showcase --target wasm-gc  # 47/47 大一統證書
+python3 tools/arch_check.py                       # 282 .mbt / 182,929 行、52 套件、61 元件
+moon check --deny-warn --target wasm-gc           # 0 warnings, 0 errors（wasm-gc / wasm / js / native 全目標零警告）
+moon run cmd/main        --target wasm-gc         # 137/137 定理總表
+moon run cmd/metatheory  --target wasm-gc         # 545/545 定律（Bareiss 秩 × DAG MGU × SLG × Burnside Möbius × Nöbeling × V_5 宇宙）
+python3 tools/health_scan.py > tools/health_report.md # 全倉 5,745 函式／方法：0 死碼、0 無引用型別、0 空殼 enum、0 完全重複
+moon run cmd/showcase    --target wasm-gc         # 9/9 聯邦 · K_9=36/36 全配對橋 · F7->F9->F4->F1 · F8×F5×F1 · F2×F3×F6 · 47/47 證書
 moon run cmd/semiringreport --target native       # 19 節量測報告（含限制的量化邊界）
 ```
 
@@ -51,6 +51,7 @@ moon run cmd/semiringreport --target native       # 19 節量測報告（含限�
 | **第二十二期** | 型別論機制的三根軸（＋四項續作） | 反射＝NbE `decide_eq` ＋可重放憑證 `check_cert` ＋宇宙保守性／Mahlo 反射；全域實例＝Horn/SLD ＋序數終止 ＋臨界對一致性 ＋黏合與鏡像對偶；歸納-歸納＝切片塔 Kleene 鏈（Fin 落後 Nat 一階）＋索引檢查 ＋互遞迴消除器。續作：**STLC 的 β 與索引傳輸**、**一致性判準的完備化**（可達目標宇宙＋區域實例＋擴充穩定性＋Newman）、**可導性擬陣判準**（交換公理太弱，次模性反例）、**R(4,4)=18 與 R(3,5)=14 用 Paley 見證夾死** | 第九聯邦 `meta/`、`cmd/metatheory`（485/485 定律）、[`meta/README.md`](meta/README.md) |
 | **第二十一期** | 七大邊界總帳 + 重構 | 七項能力邊界全部以「突破／變化／推遠／剔除」四重處置收乾；重構成**雙 V 形 + X 形交疊**；新增 `@gcd` 與 `@condensed`；四項猜想進實驗室 | 見下兩節、`architecture.json`、`bridge/` |
 | **v2 Wave 1–4** | 拆包與收斂 | 編年史檔名清零；`cubical` 拆成 7 個無環子套件；`root` 收斂為門面＋定理總表 | `root` 單包微測試 **11.05s → 0.63s**、`pkg.generated.mbti` 精簡 **90%** |
+| **自主泛代數與雙重否定預層** | 構造性泛代數 × `¬¬` 預層 × 全譜立方結構 | 同餘閉包與商代數、瑪爾切夫一步可換 `θ∘ψ=ψ∘θ=θ∨ψ`、吸收零 vs 點化零二分、雙重否定核 `j(x)=¬¬x` 布林反射子 Topos、仿射與雙德摩根立方集、Moore 自由路徑嚴格結合、立方退化樹與 64-bit SWAR 對帳（`64594+942=65536`）、5 維交錯微分 `∂²=0`、雙向範式修剪、Kripke–亞歷山德羅夫有效性與 14 類範疇組合管線 | `cubical/autonomy`、`topos/double_negation_alexandrov.mbt`、`accel/cubical_degeneracy_swar.mbt`、`meta/core/malcev_chu.mbt`、`bridge/malcev_presheaf_autonomy_bridge.mbt` |
 
 > Wave 2–4 的單包微測試實測：`finite 0.22s` · `face_bdd 0.38s` · `homotopy 0.38s` · `elaborator 0.35s` ·
 > `hermitian 0.57s` · `store 0.58s` · `kernel 0.95s`。**拆包的收益是秒級的，不是美學的。**
@@ -144,11 +145,11 @@ minimal 多項式餘式、`Trop` 的根與重數）。
 | 直覺猜想與反例攻擊 | **5 條**：1 條有界倖存、4 條反例後修正 | [`bridge/INTUITIVE_CONJECTURES.md`](bridge/INTUITIVE_CONJECTURES.md) |
 | 上同調 | `h¹(ℙ¹, O(−2)) = 1`；`T²` 杯秩 1 vs `S¹∨S¹∨S²` 秩 0 | `@scheme`、`@topos` |
 | 量化工程的極限 | 26 變量鏈 51 節點、`#SAT=66,791,053`；`n=24` 方塊 1 次求值 | `@face_bdd`、`cubical/kernel` |
-| **型別論機制定律** | **485 / 485** | `cmd/metatheory`（第九聯邦，逐條重算） |
+| **型別論與九聯邦元理論定律** | **545 / 545**（`86` 個 `law_*`、`448` 互異、`179` 族） | `cmd/metatheory`（第九聯邦，逐條重算） |
 | Ramsey 的更大值 | **R(4,4)=18**、**R(3,5)=14**（Paley P₁₇ 下界 ＋ 遞迴上界夾死） | `meta/core/ramsey_ex.mbt` |
 | STLC 的 β | 每一步約簡都 `icheck` 通過且索引不變（含走入 binder 的索引傳輸） | `meta/iit/stlc.mbt` |
 | 可導性擬陣性 | 判準（無合成規則落在目標集上 ＋ 每規則最多覆蓋一目標），12 樣本與嚴格秩公理逐一對帳 | `meta/instances/characterize.mbt` |
-| 全代碼健檢 | 死碼候選 **14 → 4**、完全相同函式體 **0**、結構極相近 **0** | [`tools/health_report.md`](tools/health_report.md) |
+| 全代碼健檢 | `5,745` 函式／方法：**死碼候選 0、無引用型別 0、空殼 `enum` 0、完全相同函式體 0** | [`tools/health_report.md`](tools/health_report.md) |
 | 形式化（**數學筆記，非 kt 的形式化**） | **492** 條定理已在 Lean 4.35.0 中證明並登記。**與 kt 之間沒有人讀以外的橋**：實測 580 條宣告中只有 **137 條是全稱／歸納**（真正算不出來的那批），403 條是 `decide`/`native_decide` 的具體計算（kt 跑一次就知道），40 條其他。437 個舊標籤是**人讀的族對應**，不是同一命題；本輪新增 48 條能力定律的全稱版本尚未寫（六條證明義務見 [`lean/WHY.md`](lean/WHY.md) §3）（含 **R(3,4) = 9、R(4,4) = 18、R(3,5) = 14 的精確值**、R(3,3) ≤ 6、R(3,4) ≤ 10、擬陣的秩公理／交換公理／**貪心最優**／對偶 `r** = r`／Q 上線性擬陣、**Euler–Poincaré 全稱版與覆蓋神經的 H¹ 黏合判準**、字典序遞移與 ord_max 是 lattice join／結合的全稱版本、10 條 CNF 恆等式、**歸納-歸納型別的 ι 律與終止性（對所有項）**、**STLC 的 β 索引傳輸與主體約簡**、**擬陣判準／Möbius 併攏障礙／Newman 引理／完備一致性**、**宇宙反射的保守性與 Mahlo 式反射**（極限層成立、臨界後繼失效）、**NbE 的 β/η/冪等/保型，且「先 reflect 再 reify 等於直接 reify」對所有型別成立**、**快判定與逐步憑證兩條路徑一致且篡改被拒**、**實例憑證不靠搜尋即可獨立複驗**） | [`lean/`](lean/README.md) |
 | 反射的兩條判斷路徑 | NbE `decide_eq` 與逐步憑證 `check_cert` 在所有樣本上一致 | `meta/reflect/proof.mbt` |
 | 歸納-歸納的相位差 | `Fin` 的擴張永遠落後 `Nat` 一階（第 1 階段 `Fin = ∅`、第 2 階段才出現） | `meta/iit/schema.mbt` |
@@ -188,7 +189,7 @@ minimal 多項式餘式、`Trop` 的根與重數）。
 | 型別論機制（反射／實例／歸納-歸納） | [`meta/README.md`](meta/README.md) → `meta/reflect/nbe.mbt` → `meta/instances/engine.mbt` → `meta/iit/schema.mbt` |
 | 程式碼健檢／債務盤點 | `python3 tools/health_scan.py` → [`tools/health_report.md`](tools/health_report.md) |
 | 三個能力的能力對帳 | [`meta/CAPABILITIES.md`](meta/CAPABILITIES.md)（能不能用／能不能自己檢查／邊界在哪） |
-| 定律的 Lean 4 形式化 | [`lean/README.md`](lean/README.md)（`lake build`；目前 492 條定理、437 個舊標籤（340 個互異）全覆蓋；MoonBit 側現有 485 條） |
+| 定律的 Lean 4 形式化 | [`lean/README.md`](lean/README.md)（`lake build`；目前 492 條定理、437 個舊標籤（340 個互異）全覆蓋；MoonBit 側現有 545 條） |
 | 為什麼不用 Why3 + Z3 | [`meta/prove_feasibility.md`](meta/prove_feasibility.md)（`moon prove` 實測報告） |
 | 型別論／證明助理 | [`cubical/finite/`](cubical/finite/README.md) → [`cubical/kernel/`](cubical/kernel/README.md) → [`cubical/homotopy/`](cubical/homotopy/README.md) |
 | 演算法／效能 | [`semiring/matrix/`](semiring/matrix/README.md) → [`semiring/sim/`](semiring/sim/README.md) → [`accel/`](accel/README.md) → [`cmd/semiringreport/`](cmd/semiringreport/README.md) |
@@ -217,6 +218,6 @@ minimal 多項式餘式、`Trop` 的根與重數）。
 
 ## 授權與狀態
 
-授權見 [`LICENSE`](LICENSE)。本倉庫為研究級工程：`129/129` 與 `47/47` 是**這次執行算出來的**，
+授權見 [`LICENSE`](LICENSE)。本倉庫為研究級工程：`137/137`、`545/545` 與 `47/47` 是**這次執行算出來的**，
 不是宣稱；每一條限制在哪一個數字開始咬人，寫在 `cmd/semiringreport` §19 與各資料夾 README 的
 「限制」段落裡。

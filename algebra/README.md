@@ -151,15 +151,17 @@ let fac = @exactalg.qpoly_factor_complete(f)
 
 ## 6. 依賴與被依賴
 
-* **依賴**：`gcd`（`BigInt` 矩陣、SNF、CRT）、`moonbitlang/core/debug`。
-* **被依賴**：`cubical-hermitian`（`certified_algebraic.mbt`、`certified_numeric.mbt`）、`cubical-homotopy`（`gcd`+`algebra` 用於係數計算）、`topos`（`@exactalg` 的 `qrows_nullspace` 算上同調）、`scheme`（Gröbner、Kähler、Fitting、Serre、Laurent 級數）、`condensed`、`conjecture`、`accel`、`bridge`、`root`。
+* **分層拆分（`L1 algebra/core` ＋ `L2 algebra`）**：
+  * `algebra/core`（`pkgL=L1`，依賴 `gcd` 與 `accel-swar`）：承載 `Rat`、`Poly`、`QPoly`、`QMat`（含 `Int64` 快徑、Ozaki-II `INT8 DP4A` 多素數 CRT 矩陣乘 `qmat_mul_ozaki2_crt` 與無分數 Bareiss `O(n^3)` 行列式 `qmat_det`）及 `bigint_sqrt_{floor,exact}`。
+  * `algebra`（`pkgL=L2`，依賴 `gcd` 與 `algebra-core`）：透過 `reexport_core.mbt`（`pub using @acore`）100% 向後相容重導出全體核心 API，並實作代數數擴張、Jordan 標準形、Rouché 複根隔離、LLL／Van Hoeij 因式分解與 Liouville／Berkowitz–CRT 超越認證。
+* **被依賴**：`topos`、`condensed`、`conjecture`、`accel`、`cubical-homotopy` 直接依賴輕量 `algebra/core`；`cubical-hermitian`、`scheme`、`bridge`、`root` 依賴完整 `algebra`。
 
 ---
 
 ## 7. 驗證
 
 ```bash
-moon test algebra --target wasm-gc     # 單包即時微測試
+moon check --deny-warn --target wasm-gc
 ```
-三個總開關（正式模組的一等函式，非測試檔）：
+四個總開關（正式模組的一等函式，非測試檔）：
 `check_algebraic_extensions_and_Jordan()`、`check_lll_lattice_and_van_hoeij_factor()`、`check_complex_algebraic_closure_rouche()`、`check_phase21_transcendence_and_crt_charpoly()`。

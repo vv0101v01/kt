@@ -470,10 +470,8 @@ pub fn metric_diameter(ms : FiniteMetricSpace) -> Int32 {
 }
 
 ///|
-/// Exact twice Gromov–Hausdorff distance `2 * d_GH(X, Y)` via Kalton–Ostrovskii
-/// correspondence distortion `min_R dis(R)` over all left-total, right-total relations
-/// `R subseteq X x Y` (exact for `|X| * |Y| <= 12`).
-pub fn metric_gh_twice_exact(
+/// Reference brute-force Kalton–Ostrovskii distortion oracle for small spaces (`|X| * |Y| <= 12`).
+pub fn metric_gh_twice_bruteforce12(
   x : FiniteMetricSpace,
   y : FiniteMetricSpace,
 ) -> Int32 {
@@ -484,7 +482,6 @@ pub fn metric_gh_twice_exact(
   let total = 1 << pairs
   let mut best = 1_000_000_000
   for mask in 1..<total {
-    // Check left-total and right-total
     let mut left_ok = true
     for i in 0..<x.n {
       let mut has_y = false
@@ -542,6 +539,321 @@ pub fn metric_gh_twice_exact(
     }
   }
   best
+}
+
+///|
+fn gh_complete_cols_64(
+  uncovered_cols : UInt64,
+  allowed : UInt64,
+  compat : Array[UInt64],
+  col_masks : Array[UInt64],
+) -> Bool {
+  if uncovered_cols == 0UL {
+    return true
+  }
+  // Fail-first (MRV): pick uncovered column `j` with fewest compatible pairs in `allowed`
+  let mut rem_cols = uncovered_cols
+  let mut best_j = -1
+  let mut best_cnt = 100
+  while rem_cols != 0UL {
+    let j = rem_cols.ctz()
+    let avail = allowed & col_masks[j]
+    let cnt = avail.popcnt()
+    if cnt == 0 {
+      return false
+    }
+    if cnt < best_cnt {
+      best_cnt = cnt
+      best_j = j
+    }
+    rem_cols = rem_cols & (rem_cols - 1UL)
+  }
+  let next_uncovered = uncovered_cols & (1UL << best_j).lnot()
+  let mut choices = allowed & col_masks[best_j]
+  while choices != 0UL {
+    let p = choices.ctz()
+    let next_allowed = allowed & compat[p]
+    // Forward-check remaining uncovered columns
+    let mut fc_ok = true
+    let mut check_c = next_uncovered
+    while check_c != 0UL {
+      let cj = check_c.ctz()
+      if (next_allowed & col_masks[cj]) == 0UL {
+        fc_ok = false
+        break
+      }
+      check_c = check_c & (check_c - 1UL)
+    }
+    if fc_ok &&
+      gh_complete_cols_64(next_uncovered, next_allowed, compat, col_masks) {
+      return true
+    }
+    choices = choices & (choices - 1UL)
+  }
+  false
+}
+
+///|
+fn gh_match_rows_64(
+  unmatched_rows : UInt64,
+  uncovered_cols : UInt64,
+  allowed : UInt64,
+  ny : Int32,
+  compat : Array[UInt64],
+  row_masks : Array[UInt64],
+  col_masks : Array[UInt64],
+) -> Bool {
+  if unmatched_rows == 0UL {
+    return gh_complete_cols_64(uncovered_cols, allowed, compat, col_masks)
+  }
+  // Fail-first (MRV): pick unmatched row `i` with minimum surviving candidates in `allowed`
+  let mut rem_r = unmatched_rows
+  let mut best_i = -1
+  let mut best_cnt = 100
+  while rem_r != 0UL {
+    let i = rem_r.ctz()
+    let avail = allowed & row_masks[i]
+    let cnt = avail.popcnt()
+    if cnt == 0 {
+      return false
+    }
+    if cnt < best_cnt {
+      best_cnt = cnt
+      best_i = i
+    }
+    rem_r = rem_r & (rem_r - 1UL)
+  }
+  let next_rows = unmatched_rows & (1UL << best_i).lnot()
+  let mut choices = allowed & row_masks[best_i]
+  while choices != 0UL {
+    let p = choices.ctz()
+    let j = p % ny
+    let next_allowed = allowed & compat[p]
+    let next_uncovered = uncovered_cols & (1UL << j).lnot()
+    // Register-level MAC forward check on remaining rows AND uncovered columns
+    let mut fc_ok = true
+    let mut cr = next_rows
+    while cr != 0UL {
+      let ri = cr.ctz()
+      if (next_allowed & row_masks[ri]) == 0UL {
+        fc_ok = false
+        break
+      }
+      cr = cr & (cr - 1UL)
+    }
+    if fc_ok {
+      let mut cc = next_uncovered
+      while cc != 0UL {
+        let cj = cc.ctz()
+        if (next_allowed & col_masks[cj]) == 0UL {
+          fc_ok = false
+          break
+        }
+        cc = cc & (cc - 1UL)
+      }
+    }
+    if fc_ok &&
+      gh_match_rows_64(
+        next_rows, next_uncovered, next_allowed, ny, compat, row_masks, col_masks,
+      ) {
+      return true
+    }
+    choices = choices & (choices - 1UL)
+  }
+  false
+}
+
+///|
+fn gh_feasible_at_threshold64(
+  x : FiniteMetricSpace,
+  y : FiniteMetricSpace,
+  delta : Int32,
+  row_masks : Array[UInt64],
+  col_masks : Array[UInt64],
+) -> Bool {
+  let nx = x.n
+  let ny = y.n
+  let pairs = nx * ny
+  let full_mask = if pairs == 64 {
+    0xFFFFFFFFFFFFFFFFUL
+  } else {
+    (1UL << pairs) - 1UL
+  }
+  let compat = Array::make(pairs, 0UL)
+  for i1 in 0..<nx {
+    for j1 in 0..<ny {
+      let p1 = i1 * ny + j1
+      let mut mask = 0UL
+      for i2 in 0..<nx {
+        let dx = x.dist[i1][i2]
+        for j2 in 0..<ny {
+          let diff = dx - y.dist[j1][j2]
+          let ad = if diff < 0 { -diff } else { diff }
+          if ad <= delta {
+            mask = mask | (1UL << (i2 * ny + j2))
+          }
+        }
+      }
+      compat[p1] = mask
+    }
+  }
+  let all_rows = (1UL << nx) - 1UL
+  let all_cols = (1UL << ny) - 1UL
+  gh_match_rows_64(
+    all_rows, all_cols, full_mask, ny, compat, row_masks, col_masks,
+  )
+}
+
+///|
+/// Exact twice Gromov–Hausdorff distance `2 * d_GH(X, Y)` via Kalton–Ostrovskii
+/// correspondence distortion theorem + binary search over sorted distortion thresholds
+/// + 64-bit MRV/MAC forward-checking compatibility bitmasks (exact for `|X| * |Y| <= 64`,
+/// scaling from `3x4` up to `8x8` metric spaces with zero heuristic approximation!).
+pub fn metric_gh_twice_exact(
+  x : FiniteMetricSpace,
+  y : FiniteMetricSpace,
+) -> Int32 {
+  let pairs = x.n * y.n
+  if x.n <= 0 || y.n <= 0 || pairs <= 0 || pairs > 64 {
+    return -1
+  }
+  let dx_diam = metric_diameter(x)
+  let dy_diam = metric_diameter(y)
+  let diam_lb = {
+    let d = dx_diam - dy_diam
+    if d < 0 {
+      -d
+    } else {
+      d
+    }
+  }
+  // Collect sorted unique candidate distortions `>= diam_lb`
+  let raw : Array[Int32] = [diam_lb]
+  for i1 in 0..<x.n {
+    for i2 in i1..<x.n {
+      let dx = x.dist[i1][i2]
+      for j1 in 0..<y.n {
+        for j2 in j1..<y.n {
+          let diff = dx - y.dist[j1][j2]
+          let ad = if diff < 0 { -diff } else { diff }
+          if ad >= diam_lb {
+            raw.push(ad)
+          }
+        }
+      }
+    }
+  }
+  for i in 1..<raw.length() {
+    let key = raw[i]
+    let mut j = i - 1
+    while j >= 0 && raw[j] > key {
+      raw[j + 1] = raw[j]
+      j = j - 1
+    }
+    raw[j + 1] = key
+  }
+  let cands : Array[Int32] = []
+  for v in raw {
+    if cands.length() == 0 || cands[cands.length() - 1] != v {
+      cands.push(v)
+    }
+  }
+  let row_masks = Array::make(x.n, 0UL)
+  for i in 0..<x.n {
+    let mut rm = 0UL
+    for j in 0..<y.n {
+      rm = rm | (1UL << (i * y.n + j))
+    }
+    row_masks[i] = rm
+  }
+  let col_masks = Array::make(y.n, 0UL)
+  for j in 0..<y.n {
+    let mut cm = 0UL
+    for i in 0..<x.n {
+      cm = cm | (1UL << (i * y.n + j))
+    }
+    col_masks[j] = cm
+  }
+  let mut lo = 0
+  let mut hi = cands.length() - 1
+  let mut ans = cands[hi]
+  while lo <= hi {
+    let mid = (lo + hi) / 2
+    if gh_feasible_at_threshold64(x, y, cands[mid], row_masks, col_masks) {
+      ans = cands[mid]
+      hi = mid - 1
+    } else {
+      lo = mid + 1
+    }
+  }
+  ans
+}
+
+///|
+/// Homotopy-preserving Flag-Complex Vertex Domination Collapse for Vietoris–Rips complexes
+/// (Matoušek / Barmak–Minian Theorem):
+/// In `VR(ms, scale_r)`, if closed threshold neighborhoods satisfy `N[u] ⊆ N[w]` (`u != w`),
+/// then `Lk(u)` is a cone with apex `w` (contractible), so deleting `u` is an elementary
+/// strong collapse preserving all homology `H_k` and cohomology `H^k`!
+/// Uses `UInt64` neighborhood bitmasks (`n <= 64`) and returns `(surviving_n, reduced_vr_report)`.
+pub fn metric_vr_dominated_collapse_report(
+  ms : FiniteMetricSpace,
+  scale_r : Int32,
+  p : Int32,
+) -> (Int32, VrHomologyReport) {
+  let n = ms.n
+  if n <= 1 || n > 64 {
+    return (n, metric_vr_homology_report(ms, scale_r, p))
+  }
+  let mut active = if n == 64 { 0xFFFFFFFFFFFFFFFFUL } else { (1UL << n) - 1UL }
+  let nbhd = Array::make(n, 0UL)
+  for i in 0..<n {
+    let mut m = 0UL
+    for j in 0..<n {
+      if ms.dist[i][j] <= scale_r {
+        m = m | (1UL << j)
+      }
+    }
+    nbhd[i] = m
+  }
+  let mut changed = true
+  while changed && active.popcnt() > 1 {
+    changed = false
+    let mut rem_u = active
+    while rem_u != 0UL {
+      let u = rem_u.ctz()
+      rem_u = rem_u & (rem_u - 1UL)
+      let nu = nbhd[u] & active
+      let mut rem_w = active & (1UL << u).lnot()
+      let mut dominated = false
+      while rem_w != 0UL {
+        let w = rem_w.ctz()
+        rem_w = rem_w & (rem_w - 1UL)
+        let nw = nbhd[w] & active
+        if (nu & nw) == nu {
+          dominated = true
+          break
+        }
+      }
+      if dominated {
+        active = active & (1UL << u).lnot()
+        changed = true
+        break
+      }
+    }
+  }
+  let kept : Array[Int32] = []
+  let mut m = active
+  while m != 0UL {
+    kept.push(m.ctz())
+    m = m & (m - 1UL)
+  }
+  let kn = kept.length()
+  let sub_dist : Array[Array[Int32]] = Array::makei(kn, i => {
+    Array::makei(kn, j => ms.dist[kept[i]][kept[j]])
+  })
+  let sub_ms = FiniteMetricSpace::{ n: kn, dist: sub_dist, }
+  (kn, metric_vr_homology_report(sub_ms, scale_r, p))
 }
 
 ///|
@@ -851,7 +1163,72 @@ pub fn tensor_check_federation_laws() -> Bool {
   if !metric_check_axioms(tri2) ||
     !metric_check_axioms(seg2) ||
     metric_diameter(tri2) != metric_diameter(seg2) ||
-    metric_gh_twice_exact(tri2, seg2) != 2 {
+    metric_gh_twice_exact(tri2, seg2) != 2 ||
+    metric_gh_twice_exact(tri2, seg2) !=
+    metric_gh_twice_bruteforce12(tri2, seg2) {
+    return false
+  }
+  // 6x6 & 5x5 Gromov-Hausdorff exact computation (30 and 36 pairs > 12!) & triangle inequality
+  let c5_ms = FiniteMetricSpace::{
+    n: 5,
+    dist: [
+      [0, 1, 2, 2, 1],
+      [1, 0, 1, 2, 2],
+      [2, 1, 0, 1, 2],
+      [2, 2, 1, 0, 1],
+      [1, 2, 2, 1, 0],
+    ],
+  }
+  let c6_ms = FiniteMetricSpace::{
+    n: 6,
+    dist: [
+      [0, 1, 2, 3, 2, 1],
+      [1, 0, 1, 2, 3, 2],
+      [2, 1, 0, 1, 2, 3],
+      [3, 2, 1, 0, 1, 2],
+      [2, 3, 2, 1, 0, 1],
+      [1, 2, 3, 2, 1, 0],
+    ],
+  }
+  let k5_ms = FiniteMetricSpace::{
+    n: 5,
+    dist: [
+      [0, 1, 1, 1, 1],
+      [1, 0, 1, 1, 1],
+      [1, 1, 0, 1, 1],
+      [1, 1, 1, 0, 1],
+      [1, 1, 1, 1, 0],
+    ],
+  }
+  let gh_c5_c6 = metric_gh_twice_exact(c5_ms, c6_ms)
+  let gh_c6_k5 = metric_gh_twice_exact(c6_ms, k5_ms)
+  let gh_c5_k5 = metric_gh_twice_exact(c5_ms, k5_ms)
+  if gh_c5_c6 != 1 ||
+    gh_c6_k5 != 2 ||
+    gh_c5_k5 != 1 ||
+    gh_c6_k5 > gh_c5_c6 + gh_c5_k5 ||
+    metric_gh_twice_exact(c6_ms, c6_ms) != 0 {
+    return false
+  }
+  // VR flag-complex vertex domination collapse: 6-vertex thickened cycle (C_4 + 2 dominated satellites)
+  // collapses to 4 vertices while strictly preserving H_0 = 1, H_1 = 1!
+  let c4_sat6 = FiniteMetricSpace::{
+    n: 6,
+    dist: [
+      [0, 1, 2, 1, 1, 2],
+      [1, 0, 1, 2, 1, 1],
+      [2, 1, 0, 1, 2, 1],
+      [1, 2, 1, 0, 2, 2],
+      [1, 1, 2, 2, 0, 2],
+      [2, 1, 1, 2, 2, 0],
+    ],
+  }
+  let vr_full6 = metric_vr_homology_report(c4_sat6, 1, 7)
+  let (kept_n, vr_col6) = metric_vr_dominated_collapse_report(c4_sat6, 1, 7)
+  if kept_n != 4 ||
+    vr_col6.betti_homology[0] != vr_full6.betti_homology[0] ||
+    vr_col6.betti_homology[1] != vr_full6.betti_homology[1] ||
+    vr_col6.betti_homology[1] != 1 {
     return false
   }
   // Cycle C_4 at scale 1 has H_0 = 1, H_1 = 1 (`S^1`); at scale 2 fills to contractible `H_0 = 1, H_1 = 0`!

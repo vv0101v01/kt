@@ -61,6 +61,9 @@ pub fn all_laws() -> Array[(String, Bool)] {
   for (l, b) in law_engine_completion_uses_a_termination_order() {
     out.push((l, b))
   }
+  for (l, b) in law_engine_indexed_tabling_and_orientable_coherence() {
+    out.push((l, b))
+  }
   for (l, b) in law_engine_instances_overlapping_instances_priority_coherence() {
     out.push((l, b))
   }

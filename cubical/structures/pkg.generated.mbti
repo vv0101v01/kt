@@ -1,0 +1,507 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/cubical/structures"
+
+import {
+  "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/cubical/autonomy",
+  "vv0101v01/cubical-hermitian/cubical/face_bdd",
+  "vv0101v01/cubical-hermitian/cubical/kernel",
+  "vv0101v01/cubical-hermitian/symlib/core",
+}
+
+// Values
+pub fn amalgamate_signatures_pushout(String, DepSignature, DepSignature, DepSignature) -> DepSignature
+
+pub fn bidir_eval_subst_dim(CubicalBidirTerm, Int32, @face_bdd.Dim) -> CubicalBidirTerm
+
+pub fn build_work4_54_certificates_and_interactions() -> (Array[Work4ItemCertificate], Array[VerbPatternInteractionTheorem], SwanIdFreePathEzReport, AffineBidirFocusingReport, FunctorialPolySipReport, CoveringPushoutTorusReport, ReconstructRepairReflectReport, @autonomy.CubicalAutonomyMasterReport)
+
+pub fn check_cubical_bidir(Array[(Bool, CubicalBidirType)], Int32, @face_bdd.Face, CubicalBidirTerm, CubicalBidirType, BidirSubstructuralMode) -> BidirCheckOutcome
+
+pub fn check_relational_parametricity_pair(PolyFunctor, PolyFunctor, Int32, Int32, Array[Int32], Array[Int32], Array[Bool]) -> Bool
+
+pub fn check_work4_54_structures_26_verbs_14_patterns() -> Bool
+
+pub fn classify_pi_quantifier_role(CubicalBidirType) -> (Bool, Bool)
+
+pub fn compute_integral_cellular_homology(IntegralCellularComplex) -> IntegralHomologyReport
+
+pub fn covering_2cell_homotopy_invariant(DiscreteCoveringSpace) -> Bool
+
+pub fn covering_deck_automorphisms(DiscreteCoveringSpace) -> Array[@core.Perm]
+
+pub fn covering_is_connected(DiscreteCoveringSpace) -> Bool
+
+pub fn covering_lift_word(DiscreteCoveringSpace, Int32, Array[Int32]) -> Int32
+
+pub fn diagnose_and_repair_square_boundary(@kernel.DValue, Array[(Int32, Bool, @kernel.DCubeFunction)]) -> (BoundaryRepairStatus, Int32, @kernel.DValue?)
+
+pub fn ez_canonical_cube64_factor(UInt64, Int32) -> EilenbergZilberCubeFactor
+
+pub fn ez_reconstruct_cube64(EilenbergZilberCubeFactor) -> UInt64
+
+pub fn focused_ljf_cubical_prove(Array[PolarCubicalFormula], Array[Int32], Array[PolarCubicalFormula], PolarCubicalFormula, Int32) -> (Bool, Int32)
+
+pub fn infer_cubical_bidir(Array[(Bool, CubicalBidirType)], Int32, @face_bdd.Face, CubicalBidirTerm, BidirSubstructuralMode) -> BidirCheckOutcome
+
+pub fn is_dep_structure_hom(DepStructure, DepStructure, Array[Int32]) -> Bool
+
+pub fn is_dep_structure_iso(DepStructure, DepStructure, Array[Int32], Array[Int32]) -> Bool
+
+pub fn is_positive_polar_formula(PolarCubicalFormula) -> Bool
+
+pub fn path_kan_j_elim((@kernel.DValue) -> @kernel.DValue, @kernel.DValue, @kernel.DValue, Int32) -> @kernel.DValue
+
+pub fn poly_fmap(PolyFunctor, Int32, Int32, Array[Int32]) -> Array[Int32]
+
+pub fn poly_functor_card(PolyFunctor, Int32) -> Int32
+
+pub fn poly_rel_lift(PolyFunctor, Int32, Int32, Array[Bool]) -> Array[Bool]
+
+pub fn refl_denote_s1_kan_path(ReflLoopExpr) -> @kernel.DValue
+
+pub fn refl_loop_normalize_abelian_t2(ReflLoopExpr) -> (Int32, Int32)
+
+pub fn refl_loop_normalize_free(ReflLoopExpr) -> Array[Int32]
+
+pub fn solve_universe_level_constraints(Int32, Array[LevelConstraint]) -> (Bool, Array[Int32])
+
+pub fn swan_id_j_elim((@kernel.DValue, SwanIdValue) -> @kernel.DValue, @kernel.DValue, SwanIdValue, Int32) -> @kernel.DValue
+
+pub fn swan_id_of_path(@kernel.DValue, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> SwanIdValue
+
+pub fn swan_id_refl(@kernel.DValue, @kernel.DValue) -> SwanIdValue
+
+pub fn swan_id_to_path(SwanIdValue) -> @kernel.DValue
+
+pub fn swan_id_well_formed(SwanIdValue, Int32) -> Bool
+
+pub fn swan_id_well_formed_at(Int32, SwanIdValue, Int32) -> Bool
+
+pub fn unfocused_cubical_sequent_count(Array[PolarCubicalFormula], PolarCubicalFormula, Int32) -> (Bool, Int32)
+
+pub fn usage_branch_join(UsageMult, UsageMult) -> UsageMult
+
+pub fn usage_seq_add(UsageMult, UsageMult) -> UsageMult
+
+pub fn verify_affine_bidirectional_and_focusing_suite() -> AffineBidirFocusingReport
+
+pub fn verify_covering_pushout_and_torus_suite() -> CoveringPushoutTorusReport
+
+pub fn verify_functorial_polymorphism_and_sip_suite() -> FunctorialPolySipReport
+
+pub fn verify_reconstruction_repair_and_reflection_suite() -> ReconstructRepairReflectReport
+
+pub fn verify_swan_id_free_path_and_ez_suite() -> SwanIdFreePathEzReport
+
+pub fn verify_work4_all_54_structures_and_interactions() -> Work4Complete54Report
+
+// Errors
+
+// Types and methods
+#derive(Eq, @debug.Debug)
+pub(all) struct AffineBidirFocusingReport {
+  universe_poly_consistent_ok : Bool
+  girard_cycle_rejected : Bool
+  implication_vs_forall_separated : Bool
+  affine_path_accepted : Bool
+  diagonal_path_rejected_in_affine_accepted_in_demorgan : Bool
+  wrong_path_endpoint_rejected : Bool
+  glue_top_strict_reduction_ok : Bool
+  hcomp_incompatible_overlap_rejected : Bool
+  focusing_sound_and_complete_batch : Bool
+  unfocused_interleavings_count : Int32
+  focused_canonical_derivations_count : Int32
+}
+pub fn AffineBidirFocusingReport::equal(Self, Self) -> Bool
+pub fn AffineBidirFocusingReport::not_equal(Self, Self) -> Bool
+pub fn AffineBidirFocusingReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct BidirCheckOutcome {
+  ok : Bool
+  inferred_ty : CubicalBidirType?
+  var_usage : Array[UsageMult]
+  dim_usage : Array[UsageMult]
+}
+pub fn BidirCheckOutcome::equal(Self, Self) -> Bool
+pub fn BidirCheckOutcome::not_equal(Self, Self) -> Bool
+pub fn BidirCheckOutcome::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum BidirSubstructuralMode {
+  AffineCubicalMode
+  DeMorganCartesianMode
+}
+pub fn BidirSubstructuralMode::equal(Self, Self) -> Bool
+pub fn BidirSubstructuralMode::not_equal(Self, Self) -> Bool
+pub fn BidirSubstructuralMode::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum BoundaryRepairStatus {
+  AlreadyCompleteAndCompatible
+  RepairedViaCoercionAdapter
+  RepairedViaOpenBoxCapSynthesis
+  UnsolvableConflictPair(Int32, Int32)
+}
+pub fn BoundaryRepairStatus::equal(Self, Self) -> Bool
+pub fn BoundaryRepairStatus::not_equal(Self, Self) -> Bool
+pub fn BoundaryRepairStatus::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, Hash, @debug.Debug)
+pub(all) enum CompositionPattern14 {
+  C01_KanExtension
+  C02_SheafStackGluing
+  C03_PullbackFiberProduct
+  C04_MonadDistributiveLaw
+  C05_TensorAdditiveDuality
+  C06_GrothendieckFibration
+  C07_AmalgamatedPushout
+  C08_SemidirectZappaSzep
+  C09_OperadSlotInsert
+  C10_ChuSpaceDuality
+  C11_MoritaEquivalence
+  C12_CategoryLocalization
+  C13_ExtShortExactSeq
+  C14_GameTensorPipeline
+}
+pub fn CompositionPattern14::equal(Self, Self) -> Bool
+pub fn CompositionPattern14::hash(Self) -> Int32
+pub fn CompositionPattern14::hash_combine(Self, Hasher) -> Unit
+pub fn CompositionPattern14::not_equal(Self, Self) -> Bool
+pub fn CompositionPattern14::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct CoveringPushoutTorusReport {
+  s3_pointed_coverings_count : Int32
+  s3_galois_normal_deck_orders : Array[Int32]
+  s3_nonnormal_deck_orders : Array[Int32]
+  galois_covering_theorem_holds : Bool
+  torus_commutator_lifts_closed_vs_wedge_open : Bool
+  torus_s1_product_winding_pair : (Int32, Int32)
+  susp_s1_gives_s2_betti : Array[Int32]
+  torus_betti_kunneth : Array[Int32]
+  rp2_h1_two_torsion_factors : Array[Int32]
+}
+pub fn CoveringPushoutTorusReport::equal(Self, Self) -> Bool
+pub fn CoveringPushoutTorusReport::not_equal(Self, Self) -> Bool
+pub fn CoveringPushoutTorusReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum CubicalBidirTerm {
+  BVar(Int32)
+  BBool(Bool)
+  BCircleBase
+  BCircleLoop(@face_bdd.Dim)
+  BLam(CubicalBidirTerm)
+  BApp(CubicalBidirTerm, CubicalBidirTerm)
+  BPair(CubicalBidirTerm, CubicalBidirTerm)
+  BFst(CubicalBidirTerm)
+  BSnd(CubicalBidirTerm)
+  BPathLam(CubicalBidirTerm)
+  BPathApp(CubicalBidirTerm, @face_bdd.Dim)
+  BGlueIntro(@face_bdd.Face, CubicalBidirTerm, CubicalBidirTerm)
+  BUnglue(@face_bdd.Face, CubicalBidirTerm)
+  BHComp(CubicalBidirType, Array[(@face_bdd.Face, CubicalBidirTerm)], CubicalBidirTerm)
+  BAnn(CubicalBidirTerm, CubicalBidirType)
+}
+pub fn CubicalBidirTerm::equal(Self, Self) -> Bool
+pub fn CubicalBidirTerm::not_equal(Self, Self) -> Bool
+pub fn CubicalBidirTerm::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum CubicalBidirType {
+  BTUniv(Int32)
+  BTBool
+  BTCircle
+  BTPi(Bool, CubicalBidirType, CubicalBidirType)
+  BTSigma(CubicalBidirType, CubicalBidirType)
+  BTPath(CubicalBidirType, CubicalBidirTerm, CubicalBidirTerm)
+  BTGlue(CubicalBidirType, @face_bdd.Face, CubicalBidirType)
+}
+pub fn CubicalBidirType::equal(Self, Self) -> Bool
+pub fn CubicalBidirType::not_equal(Self, Self) -> Bool
+pub fn CubicalBidirType::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct DepSignature {
+  sig_name : String
+  ops : Array[SigOpField]
+  axiom_tags : Array[String]
+}
+pub fn DepSignature::equal(Self, Self) -> Bool
+pub fn DepSignature::not_equal(Self, Self) -> Bool
+pub fn DepSignature::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct DepStructure {
+  sig : DepSignature
+  carrier_size : Int32
+  op_tables : Array[Array[Int32]]
+}
+pub fn DepStructure::equal(Self, Self) -> Bool
+pub fn DepStructure::not_equal(Self, Self) -> Bool
+pub fn DepStructure::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct DiscreteCoveringSpace {
+  name : String
+  n_sheets : Int32
+  base_sheet : Int32
+  gen_perms : Array[@core.Perm]
+  relators : Array[Array[Int32]]
+}
+pub fn DiscreteCoveringSpace::equal(Self, Self) -> Bool
+pub fn DiscreteCoveringSpace::not_equal(Self, Self) -> Bool
+pub fn DiscreteCoveringSpace::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct EilenbergZilberCubeFactor {
+  ambient_dim : Int32
+  core_dim : Int32
+  core_word : UInt64
+  degen_axes : Array[Int32]
+}
+pub fn EilenbergZilberCubeFactor::equal(Self, Self) -> Bool
+pub fn EilenbergZilberCubeFactor::not_equal(Self, Self) -> Bool
+pub fn EilenbergZilberCubeFactor::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct FunctorialPolySipReport {
+  poly_functor_id_and_comp_laws : Bool
+  yoneda_vec3_to_vec2_inhabitant_count : Int32
+  wadler_free_theorem_naturality_holds : Bool
+  non_parametric_ad_hoc_rejected : Bool
+  diamond_pushout_monoid_malcev_ops_count : Int32
+  sip_bool_xor_to_xnor_ua_transport_ok : Bool
+  universe_lift_roundtrip_ok : Bool
+}
+pub fn FunctorialPolySipReport::equal(Self, Self) -> Bool
+pub fn FunctorialPolySipReport::not_equal(Self, Self) -> Bool
+pub fn FunctorialPolySipReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct IntegralCellularComplex {
+  name : String
+  cell_ranks : Array[Int32]
+  boundaries : Array[Array[Array[Int32]]]
+}
+pub fn IntegralCellularComplex::equal(Self, Self) -> Bool
+pub fn IntegralCellularComplex::not_equal(Self, Self) -> Bool
+pub fn IntegralCellularComplex::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct IntegralHomologyReport {
+  chain_boundary_sq_zero : Bool
+  euler_characteristic : Int32
+  betti_free : Array[Int32]
+  torsion_factors : Array[Array[Int32]]
+}
+pub fn IntegralHomologyReport::equal(Self, Self) -> Bool
+pub fn IntegralHomologyReport::not_equal(Self, Self) -> Bool
+pub fn IntegralHomologyReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct LevelConstraint {
+  lhs_var : Int32
+  delta : Int32
+  rhs_var : Int32
+}
+pub fn LevelConstraint::equal(Self, Self) -> Bool
+pub fn LevelConstraint::not_equal(Self, Self) -> Bool
+pub fn LevelConstraint::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum LevelExpr {
+  LConst(Int32)
+  LVar(Int32, Int32)
+  LMax(LevelExpr, LevelExpr)
+}
+pub fn LevelExpr::equal(Self, Self) -> Bool
+pub fn LevelExpr::not_equal(Self, Self) -> Bool
+pub fn LevelExpr::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, Hash, @debug.Debug)
+pub(all) enum OperationalVerb26 {
+  V01_Derive
+  V02_ComputerAbstract
+  V03_AssociateCombine
+  V04_CoalescePatch
+  V05_Embed
+  V06_LinkCouple
+  V07_Compute
+  V08_InferDeduce
+  V09_CommonalityGeneralize
+  V10_MirrorSymmetry
+  V11_Ramsey
+  V12_Matroid
+  V13_Complex
+  V14_LogicalReasoning
+  V15_Evolution
+  V16_BorrowTransfer
+  V17_ManyInOne
+  V18_Fuse
+  V19_Merge
+  V20_Compatible
+  V21_ComposeCombinatorial
+  V22_Prove
+  V23_StatisticsEnumerate
+  V24_CrossCompare
+  V25_AssertGuard
+  V26_PropTransform
+}
+pub fn OperationalVerb26::equal(Self, Self) -> Bool
+pub fn OperationalVerb26::hash(Self) -> Int32
+pub fn OperationalVerb26::hash_combine(Self, Hasher) -> Unit
+pub fn OperationalVerb26::not_equal(Self, Self) -> Bool
+pub fn OperationalVerb26::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum PolarCubicalFormula {
+  PPosAtom(Int32)
+  PTensor(PolarCubicalFormula, PolarCubicalFormula)
+  PPlus(PolarCubicalFormula, PolarCubicalFormula)
+  PUnitPos
+  PZeroPos
+  PDown(PolarCubicalFormula)
+  PNegAtom(Int32)
+  PArrow(PolarCubicalFormula, PolarCubicalFormula)
+  PPathNeg(Int32, PolarCubicalFormula)
+  PWith(PolarCubicalFormula, PolarCubicalFormula)
+  PTopNeg
+  PUp(PolarCubicalFormula)
+}
+pub fn PolarCubicalFormula::equal(Self, Self) -> Bool
+pub fn PolarCubicalFormula::not_equal(Self, Self) -> Bool
+pub fn PolarCubicalFormula::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum PolyFunctor {
+  PFConst(Int32)
+  PFId
+  PFProd(PolyFunctor, PolyFunctor)
+  PFSum(PolyFunctor, PolyFunctor)
+  PFVec(Int32)
+}
+pub fn PolyFunctor::equal(Self, Self) -> Bool
+pub fn PolyFunctor::not_equal(Self, Self) -> Bool
+pub fn PolyFunctor::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct ReconstructRepairReflectReport {
+  hou_implicit_motive_reconstructed : Bool
+  heterogeneous_endpoint_coe_repaired : Bool
+  redundant_open_box_matroid_basis_size : Int32
+  open_box_missing_lid_repaired_winding : Int32
+  incompatible_corner_obstruction_caught : BoundaryRepairStatus
+  reflection_s1_free_word_reduced_len : Int32
+  reflection_s1_denotation_winding_matches : Bool
+  reflection_t2_abelian_commutator_trivial : Bool
+}
+pub fn ReconstructRepairReflectReport::equal(Self, Self) -> Bool
+pub fn ReconstructRepairReflectReport::not_equal(Self, Self) -> Bool
+pub fn ReconstructRepairReflectReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) enum ReflLoopExpr {
+  RLId
+  RLGen(Int32)
+  RLInv(ReflLoopExpr)
+  RLComp(ReflLoopExpr, ReflLoopExpr)
+  RLConj(ReflLoopExpr, ReflLoopExpr)
+}
+pub fn ReflLoopExpr::equal(Self, Self) -> Bool
+pub fn ReflLoopExpr::not_equal(Self, Self) -> Bool
+pub fn ReflLoopExpr::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct SigOpField {
+  op_name : String
+  arity : Int32
+}
+pub fn SigOpField::equal(Self, Self) -> Bool
+pub fn SigOpField::not_equal(Self, Self) -> Bool
+pub fn SigOpField::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct SwanIdFreePathEzReport {
+  swan_refl_strict_definitional_j : Bool
+  swan_nontrivial_s1_winding_transport : Bool
+  swan_id_path_roundtrip_equiv : Bool
+  heterogeneous_pathp_coe_bridge_ok : Bool
+  heterogeneous_comp_equals_coe_hcomp : Bool
+  involutive_vs_pure_kan_sym_agree : Bool
+  free_path_diagonal_hae_retraction_ok : Bool
+  ez_4cube_stratum_counts : Array[Int32]
+  ez_all_65536_unique_roundtrip_ok : Bool
+}
+pub fn SwanIdFreePathEzReport::equal(Self, Self) -> Bool
+pub fn SwanIdFreePathEzReport::not_equal(Self, Self) -> Bool
+pub fn SwanIdFreePathEzReport::to_repr(Self) -> @debug.Repr
+
+pub struct SwanIdValue {
+  carrier_ty : @kernel.DValue
+  left_pt : @kernel.DValue
+  right_pt : @kernel.DValue
+  path_val : @kernel.DValue
+  extent : @face_bdd.Face
+}
+
+#derive(Eq, @debug.Debug)
+pub(all) enum UsageMult {
+  UZero
+  UOne
+  UMany
+}
+pub fn UsageMult::equal(Self, Self) -> Bool
+pub fn UsageMult::not_equal(Self, Self) -> Bool
+pub fn UsageMult::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct VerbPatternInteractionTheorem {
+  theorem_id : String
+  verbs : Array[OperationalVerb26]
+  patterns : Array[CompositionPattern14]
+  quantitative_witness : String
+  holds : Bool
+}
+pub fn VerbPatternInteractionTheorem::equal(Self, Self) -> Bool
+pub fn VerbPatternInteractionTheorem::not_equal(Self, Self) -> Bool
+pub fn VerbPatternInteractionTheorem::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct Work4Complete54Report {
+  swan_free_ez : SwanIdFreePathEzReport
+  affine_bidir_focus : AffineBidirFocusingReport
+  functorial_sip : FunctorialPolySipReport
+  covering_pushout_torus : CoveringPushoutTorusReport
+  reconstruct_repair_reflect : ReconstructRepairReflectReport
+  autonomy_master : @autonomy.CubicalAutonomyMasterReport
+  verified_structure_count : Int32
+  distinct_verbs_covered : Int32
+  distinct_patterns_covered : Int32
+  interaction_theorems_count : Int32
+  universal_spectral_resonance_ok : Bool
+  all_54_structures_and_interactions_ok : Bool
+}
+pub fn Work4Complete54Report::equal(Self, Self) -> Bool
+pub fn Work4Complete54Report::not_equal(Self, Self) -> Bool
+pub fn Work4Complete54Report::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct Work4ItemCertificate {
+  index : Int32
+  zh_title : String
+  primary_verb : OperationalVerb26
+  secondary_verb : OperationalVerb26
+  pattern : CompositionPattern14
+  spectral_eigen_witness : Array[Int32]
+  holds : Bool
+}
+pub fn Work4ItemCertificate::equal(Self, Self) -> Bool
+pub fn Work4ItemCertificate::not_equal(Self, Self) -> Bool
+pub fn Work4ItemCertificate::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

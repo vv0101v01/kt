@@ -78,36 +78,26 @@ fn sub_lookup(
 }
 
 ///|
-/// 子群共軛類（以 ≤2 個元素生成之子群窮舉 + 共軛併類）。
+/// 子群共軛類（Holt 陪集剪枝逐層擴張 + 共軛軌道併類，對任意生成元秩完整）。
 ///
-/// **衍生演算法加速**（三項）：
-/// 1. 候選子群之元素表以「乘法閉包 BFS」直接求得（O(|H|·2) 次合成），
-///    而非對每個生成對建一次 Schreier–Sims（O(n²|H|) 量級）；
-///    SGS 只為**倖存的共軛類代表**建構一次。
-/// 2. 熱迴圈以 `compose_key64` 由像陣列直接算鍵 ⇒ 零 Perm 配置。
-/// 3. 若 b ∈ ⟨a⟩（或 a ∈ ⟨b⟩）則 ⟨a,b⟩ 已於 (a,a)/(b,b) 記錄 ⇒ 跳過該對；
-///    去重與共軛併類以 Map（位向量鍵）取代 O(ns·ng) 之線性掃描。
-///
-/// ng ≤ 24 時窮舉全部生成對（n ≤ 5 之對稱群：全部子群皆 ≤2 生成 ⇒ 完整）；
-/// ng > 24 時只取循環子群（標記向量退化為**部分**不變量，此為已知限制）。///
-/// **結構**：本函數只是三步之組合，細節拆入下方私有輔助（去債：原為 204 行單體 + 3 個巢狀閉包）：
-/// `sub_table`（元素表）→ `sub_candidates`（候選枚舉 + 去重）→ `merge_conjugate_classes`（共軛併類 + 建 SGS）。
-/// 另：循環子群 ⟨a⟩ 之閉包**只算一次**並由 `cyc` 快取重用（原實作在快取與主迴圈各算一次）。
+/// **演算法與完備性定理**：
+/// 1. 任意非平凡子群 `L ≤ G` 必含極大真子群 `M < L`，對任意 `y ∈ L \ M` 有 `⟨M, y⟩ = L`；
+///    由歸納假設 `M = g H g⁻¹` 共軛於前沿代表 `H`，故 `⟨H, g⁻¹ y g⟩ = g⁻¹ L g` 必於擴張 `H` 時命中 `L` 之共軛類（包括如 `B_3(48)` 中需 3 生成元的初等阿貝爾子群 `(C_2)^3`）。
+/// 2. 陪集剪枝：對任意 `h ∈ H`，`⟨H, h·x⟩ = ⟨H, x⟩ = ⟨H, x·h⟩`，每次嘗試 `x` 即一次標記整個左/右陪集 `H·x ∪ x·H`，候選數壓縮 `|H|` 倍。
+/// 3. 採用無度數上限 `PermLut`（`n ≤ 15` 為 4-bit Nibble 無乘法 SWAR，`n > 15` 為 SplitMix64 + 原像核對），解除舊版 `n ≤ 12` 與 `|G| ≤ 24` 限制。
 pub fn subgroup_classes(group : PermGroup, cap : Int32) -> Array[Sub] {
   let t = sub_table(group, cap)
-  let c = sub_candidates(t, cap)
-  // 依 |H| 升冪（標記矩陣之三角性需要此序）
-  merge_conjugate_classes(t, c, group)
+  sub_holt_lattice(t, group, cap)
 }
 
 ///|
-/// 元素表：`elems[i]` 為第 i 個群元素、`imgs[i]` 為其像表、`lut` 提供 O(1) 元素→索引。
+/// 元素表：`elems[i]` 為第 i 個群元素、`imgs[i]` 為其像表、`lut` 提供任意度數 O(1) 元素→索引。
 priv struct SubTable {
   n : Int32
   ng : Int32
   elems : Array[Perm]
   imgs : Array[Array[Int32]]
-  lut : KeyLut
+  lut : PermLut
   id_idx : Int32
 }
 
@@ -117,45 +107,59 @@ fn sub_table(group : PermGroup, cap : Int32) -> SubTable {
   let elems = group.elements(cap)
   let n = group.size()
   let ng = elems.length()
-  let lut = elem_lut_fast(elems)
+  let lut = PermLut::of_elems(elems)
   let imgs : Array[Array[Int32]] = []
   for e in elems {
     imgs.push(e.img)
   }
-  let id_img = Array::make(n, 0)
-  for i in 0..<n {
-    id_img[i] = i
-  }
-  let id_idx = lut.at(perm_key64(Perm::from_img(id_img)))
+  let id_idx = lut.at_perm(Perm::identity(n))
   { n, ng, elems, imgs, lut, id_idx, }
 }
 
 ///|
-/// ⟨elems[a], elems[b]⟩ 之乘法閉包（BFS + 元素表查索引）；超過 cap 回 None。
-fn sub_closure(t : SubTable, a : Int32, b : Int32, cap : Int32) -> BitVec? {
-  let mem = BitVec::make(t.ng)
-  let queue : Array[Int32] = [t.id_idx]
-  mem.set(t.id_idx)
-  let ia = t.imgs[a]
-  let ib = t.imgs[b]
-  let mut head = 0
-  while head < queue.length() {
-    let x = t.imgs[queue[head]]
-    head = head + 1
-    let y1 = t.lut.at(compose_key64(x, ia))
-    if !mem.get(y1) {
-      mem.set(y1)
-      queue.push(y1)
-      if queue.length() > cap {
+/// 已知閉子群 `H`（成員 `h_mem`、元素索引 `h_idxs`、生成元 `h_gens`）添加 `x` 後之閉包 `⟨H, x⟩`。
+/// 利用 `H` 已對 `h_gens` 封閉之性質，初始層僅需右乘 `x`，新元素再對 `h_gens ∪ {x}` 閉包。
+fn sub_extend_closure(
+  t : SubTable,
+  h_mem : BitVec,
+  h_idxs : Array[Int32],
+  h_gens : Array[Int32],
+  x : Int32,
+  cap : Int32,
+) -> BitVec? {
+  let mem = h_mem.copy()
+  let queue : Array[Int32] = []
+  let ix = t.imgs[x]
+  for h in h_idxs {
+    let y = t.lut.at_composed(t.imgs[h], ix)
+    if !mem.get(y) {
+      mem.set(y)
+      queue.push(y)
+      if h_idxs.length() + queue.length() > cap {
         return None
       }
     }
-    let y2 = t.lut.at(compose_key64(x, ib))
-    if !mem.get(y2) {
-      mem.set(y2)
-      queue.push(y2)
-      if queue.length() > cap {
+  }
+  let mut head = 0
+  while head < queue.length() {
+    let u_img = t.imgs[queue[head]]
+    head = head + 1
+    let yx = t.lut.at_composed(u_img, ix)
+    if !mem.get(yx) {
+      mem.set(yx)
+      queue.push(yx)
+      if h_idxs.length() + queue.length() > cap {
         return None
+      }
+    }
+    for g in h_gens {
+      let yg = t.lut.at_composed(u_img, t.imgs[g])
+      if !mem.get(yg) {
+        mem.set(yg)
+        queue.push(yg)
+        if h_idxs.length() + queue.length() > cap {
+          return None
+        }
       }
     }
   }
@@ -163,96 +167,14 @@ fn sub_closure(t : SubTable, a : Int32, b : Int32, cap : Int32) -> BitVec? {
 }
 
 ///|
-/// ≤2 生成元之子群候選（去重後之成員位向量、其生成元對、雜湊桶索引）。
-priv struct SubCands {
-  mems : Array[BitVec]
-  gens2 : Array[(Int32, Int32)]
-  buckets : Map[Int32, Array[Int32]]
-}
+/// Holt 陪集剪枝逐層擴張求全體子群共軛類代表（支援 `B_3(48)`、`A_5(60)`、`S_5(120)` 等任意生成元秩有限群）。
+fn sub_holt_lattice(t : SubTable, group : PermGroup, cap : Int32) -> Array[Sub] {
+  let all_mems : Array[BitVec] = []
+  let all_buckets : Map[Int32, Array[Int32]] = Map([])
+  let rep_mems : Array[BitVec] = []
+  let rep_arrs : Array[Array[Int32]] = []
+  let rep_gens : Array[Array[Int32]] = []
 
-///|
-/// 記錄一個候選子群（以雜湊桶 + `sub_lookup` 去重）。
-fn sub_record(c : SubCands, a : Int32, b : Int32, mem : BitVec) -> Unit {
-  if sub_lookup(c.buckets, c.mems, mem) < 0 {
-    let h = mem.hash()
-    match c.buckets.get(h) {
-      Some(list) => list.push(c.mems.length())
-      None => c.buckets.set(h, [c.mems.length()])
-    }
-    c.mems.push(mem)
-    c.gens2.push((a, b))
-  }
-}
-
-///|
-/// 候選子群枚舉：ng ≤ 24 時全部生成對，否則只列循環子群（見 `subgroup_classes` 文件）。
-fn sub_candidates(t : SubTable, cap : Int32) -> SubCands {
-  let c : SubCands = { mems: [], gens2: [], buckets: Map([]), }
-  // 循環子群快取：cyc[a] = ⟨a⟩（失敗時為空位向量 ⇒ 成員測試自然為 false）
-  let cyc : Array[BitVec] = []
-  let cyc_ok : Array[Bool] = []
-  for a in 0..<t.ng {
-    match sub_closure(t, a, a, cap) {
-      Some(mem) => {
-        cyc.push(mem)
-        cyc_ok.push(true)
-      }
-      None => {
-        cyc.push(BitVec::make(t.ng))
-        cyc_ok.push(false)
-      }
-    }
-  }
-  let pairs = t.ng <= 24
-  for a in 0..<t.ng {
-    if cyc_ok[a] {
-      sub_record(c, a, a, cyc[a])
-    }
-    if pairs {
-      for b in (a + 1)..<t.ng {
-        // b ∈ ⟨a⟩ 或 a ∈ ⟨b⟩ ⇒ ⟨a,b⟩ 已於 (a,a)/(b,b) 記錄
-        if cyc[a].get(b) || cyc[b].get(a) {
-          continue
-        }
-        match sub_closure(t, a, b, cap) {
-          Some(mem) => sub_record(c, a, b, mem)
-          None => ()
-        }
-      }
-    }
-  }
-  c
-}
-
-///|
-/// union-find 之代表元（ns 小 ⇒ 不需路徑壓縮）。
-fn uf_find(parent : Array[Int32], a : Int32) -> Int32 {
-  let mut r = a
-  while parent[r] != r {
-    r = parent[r]
-  }
-  r
-}
-
-///|
-/// 共軛併類 → 取代表 → 只為代表建 SGS。
-///
-/// **共軛類 = 共軛作用之軌道** ⇒ 只需以群之生成元做 BFS 閉包：
-/// O(Σ軌道長·|gens|·|H|·n)，而原逐元素共軛為 O(ng·ns·|H|·n)，|gens| ≪ ng。
-fn merge_conjugate_classes(
-  t : SubTable,
-  c : SubCands,
-  group : PermGroup,
-) -> Array[Sub] {
-  let ns = c.mems.length()
-  let parent = Array::make(ns, 0)
-  for i in 0..<ns {
-    parent[i] = i
-  }
-  let members : Array[Array[Int32]] = []
-  for m in c.mems {
-    members.push(m.to_array())
-  }
   let gimgs : Array[Array[Int32]] = []
   let ginvs : Array[Array[Int32]] = []
   for p in group.generators() {
@@ -264,50 +186,107 @@ fn merge_conjugate_classes(
     ginvs.push(inv)
   }
   let tmp = Array::make(t.n, 0)
-  let visited = Array::make(ns, false)
-  for i in 0..<ns {
-    if visited[i] {
-      continue
+
+  fn record_all(bv : BitVec) -> Unit {
+    let h = bv.hash()
+    let idx = all_mems.length()
+    match all_buckets.get(h) {
+      Some(list) => list.push(idx)
+      None => all_buckets.set(h, [idx])
     }
-    visited[i] = true
-    let queue : Array[Int32] = [i]
+    all_mems.push(bv)
+  }
+
+  fn register_orbit(k_mem : BitVec, k_gens : Array[Int32]) -> Unit {
+    if sub_lookup(all_buckets, all_mems, k_mem) >= 0 {
+      return
+    }
+    record_all(k_mem)
+    let orbit_mems : Array[BitVec] = [k_mem]
+    let orbit_gens : Array[Array[Int32]] = [k_gens]
+    let mut best_i = 0
+    let mut best_arr = k_mem.to_array()
     let mut head = 0
-    while head < queue.length() {
-      let cur = queue[head]
+    while head < orbit_mems.length() {
+      let cur_mem = orbit_mems[head]
+      let cur_arr = cur_mem.to_array()
+      let cur_gens = orbit_gens[head]
       head = head + 1
-      let mcur = members[cur]
       for gi in 0..<gimgs.length() {
+        let gimg = gimgs[gi]
+        let ginv = ginvs[gi]
         let conj = BitVec::make(t.ng)
-        for idx in mcur {
+        for idx in cur_arr {
           let eimg = t.imgs[idx]
-          let ginv = ginvs[gi]
           for v in 0..<t.n {
             tmp[v] = eimg[ginv[v]]
           }
-          conj.set(t.lut.at(compose_key64(gimgs[gi], tmp)))
+          conj.set(t.lut.at_composed(gimg, tmp))
         }
-        let j = sub_lookup(c.buckets, c.mems, conj)
-        // j < 0：共軛像不在 ≤2 生成候選中（一般情形之部分不變量）
-        if j >= 0 {
-          let ra = uf_find(parent, cur)
-          let rb = uf_find(parent, j)
-          if ra != rb {
-            parent[rb] = ra
+        if sub_lookup(all_buckets, all_mems, conj) < 0 {
+          record_all(conj)
+          let cgens : Array[Int32] = []
+          for g_idx in cur_gens {
+            let eimg = t.imgs[g_idx]
+            for v in 0..<t.n {
+              tmp[v] = eimg[ginv[v]]
+            }
+            cgens.push(t.lut.at_composed(gimg, tmp))
           }
-          if !visited[j] {
-            visited[j] = true
-            queue.push(j)
+          let carr = conj.to_array()
+          if cmp_arr(carr, best_arr) < 0 {
+            best_i = orbit_mems.length()
+            best_arr = carr
           }
+          orbit_mems.push(conj)
+          orbit_gens.push(cgens)
         }
       }
     }
+    rep_mems.push(orbit_mems[best_i])
+    rep_arrs.push(best_arr)
+    rep_gens.push(orbit_gens[best_i])
   }
-  // 每類取代表（依 (階, 成員表) 排序 ⇒ 決定性）
+
+  let triv = BitVec::make(t.ng)
+  triv.set(t.id_idx)
+  register_orbit(triv, [])
+
+  let mut f_head = 0
+  while f_head < rep_mems.length() {
+    let h_mem = rep_mems[f_head]
+    let h_idxs = rep_arrs[f_head]
+    let h_gens = rep_gens[f_head]
+    f_head = f_head + 1
+    if h_idxs.length() >= t.ng {
+      continue
+    }
+    let skip = h_mem.copy()
+    for x in 0..<t.ng {
+      if skip.get(x) {
+        continue
+      }
+      let ix = t.imgs[x]
+      for h in h_idxs {
+        let ih = t.imgs[h]
+        skip.set(t.lut.at_composed(ih, ix))
+        skip.set(t.lut.at_composed(ix, ih))
+      }
+      match sub_extend_closure(t, h_mem, h_idxs, h_gens, x, cap) {
+        Some(k_mem) => {
+          let next_gens = h_gens.copy()
+          next_gens.push(x)
+          register_orbit(k_mem, next_gens)
+        }
+        None => ()
+      }
+    }
+  }
+
+  let ns = rep_mems.length()
   let cand : Array[(Int64, Array[Int32], Int32)] = []
   for i in 0..<ns {
-    if uf_find(parent, i) == i {
-      cand.push((c.mems[i].count_ones().to_int64(), members[i], i))
-    }
+    cand.push((rep_arrs[i].length().to_int64(), rep_arrs[i], i))
   }
   cand.sort_by(fn(
     x : (Int64, Array[Int32], Int32),
@@ -326,11 +305,14 @@ fn merge_conjugate_classes(
   let out : Array[Sub] = []
   for trip in cand {
     let r = trip.2
-    let (a, b) = c.gens2[r]
+    let perms : Array[Perm] = []
+    for gi in rep_gens[r] {
+      perms.push(t.elems[gi])
+    }
     out.push({
-      order: c.mems[r].count_ones().to_int64(),
-      members: c.mems[r],
-      group: PermGroup::new(t.n, [t.elems[a], t.elems[b]]),
+      order: trip.0,
+      members: rep_mems[r],
+      group: PermGroup::new(t.n, perms),
     })
   }
   out
@@ -372,17 +354,15 @@ pub fn table_of_marks_formula(
   let elems = group.elements(cap)
   let ng = elems.length()
   let n = group.size()
-  let lut = elem_lut_fast(elems)
+  let lut = PermLut::of_elems(elems)
   let imgs : Array[Array[Int32]] = []
   for e in elems {
     imgs.push(e.img)
   }
-  // 陪集代表只需算一次（原實作於雙重迴圈內重算 ns 次）
   let reps_all : Array[Array[Int32]] = []
   for k in subs {
     reps_all.push(coset_reps(elems, k, lut, ng))
   }
-  // 零配置熱路徑：r⁻¹hr 之鍵直接由像陣列算出（免 Perm 配置）
   let hmem : Array[Array[Int32]] = []
   for h in subs {
     hmem.push(h.members.to_array())
@@ -393,7 +373,6 @@ pub fn table_of_marks_formula(
     let row : Array[Int32] = []
     let hidx = hmem[hi]
     for kj, k in subs {
-      // 三角性剪枝：|H| > |K| ⇒ 無陪集被 H 固定
       if h.order > k.order {
         row.push(0)
         continue
@@ -402,7 +381,6 @@ pub fn table_of_marks_formula(
       let mut c = 0
       for r in reps {
         let rimg = imgs[r]
-        // r⁻¹ 之像
         let rinv = Array::make(n, 0)
         for v in 0..<n {
           rinv[rimg[v]] = v
@@ -413,7 +391,7 @@ pub fn table_of_marks_formula(
           for v in 0..<n {
             tmp[v] = eimg[rimg[v]]
           }
-          let ci = lut.at(compose_key64(rinv, tmp))
+          let ci = lut.at_composed(rinv, tmp)
           if !k.members.get(ci) {
             ok = false
             break
@@ -435,7 +413,7 @@ pub fn table_of_marks_formula(
 fn coset_reps(
   elems : Array[Perm],
   h : Sub,
-  lut : KeyLut,
+  lut : PermLut,
   ng : Int32,
 ) -> Array[Int32] {
   let seen = Array::make(ng, false)
@@ -446,7 +424,7 @@ fn coset_reps(
       reps.push(g)
       let gimg = elems[g].img
       for k in hidx {
-        seen[lut.at(compose_key64(gimg, elems[k].img))] = true
+        seen[lut.at_composed(gimg, elems[k].img)] = true
       }
     }
   }
@@ -458,20 +436,18 @@ fn coset_reps(
 pub fn coset_gset(group : PermGroup, h : Sub, cap : Int32) -> GSetOf {
   let elems = group.elements(cap)
   let ng = elems.length()
-  let lut = elem_lut_fast(elems)
-  // 零配置熱路徑：compose_key64 直接由像陣列算鍵 + KeyLut 開放定址查找
+  let lut = PermLut::of_elems(elems)
   let imgs0 : Array[Array[Int32]] = []
   for e in elems {
     imgs0.push(e.img)
   }
-  // 元素索引 → 陪集編號
   let coset_of = Array::make(ng, -1)
   let reps = coset_reps(elems, h, lut, ng)
   let hidx = h.members.to_array()
   for ci, r in reps {
     let rimg = imgs0[r]
     for k in hidx {
-      coset_of[lut.at(compose_key64(rimg, imgs0[k]))] = ci
+      coset_of[lut.at_composed(rimg, imgs0[k])] = ci
     }
   }
   let nc = reps.length()
@@ -480,11 +456,41 @@ pub fn coset_gset(group : PermGroup, h : Sub, cap : Int32) -> GSetOf {
     let eimg = imgs0[ei]
     let img = Array::make(nc, 0)
     for ci, r in reps {
-      img[ci] = coset_of[lut.at(compose_key64(eimg, imgs0[r]))]
+      img[ci] = coset_of[lut.at_composed(eimg, imgs0[r])]
     }
     imgs.push(img)
   }
   { x: nc, imgs, }
+}
+
+///|
+/// Burnside 環 Möbius / 三角標記反演求解器：
+/// 由上三角標記矩陣 `M[i][j] = m_{H_i}(G/H_j)`（`i > j => M[i][j] = 0`，`M[i][i] = [N_G(H_i):H_i] ≥ 1`）
+/// 與標記向量 `marks[i] = |X^{H_i}|`，透過精確整數回代唯一解出傳遞軌道分解重數
+/// `c = [c_0, ..., c_{ns-1}]`，使得 `[X] = Σ_j c_j [G/H_j] ∈ Ω(G)`；若標記向量非有效 G-集則回傳 `None`。
+pub fn burnside_mobius_solve(
+  m : Array[Array[Int32]],
+  marks : Array[Int32],
+) -> Array[Int32]? {
+  let ns = m.length()
+  guard marks.length() == ns else { return None }
+  let c = Array::make(ns, 0)
+  for step in 0..<ns {
+    let i = ns - 1 - step
+    let diag = m[i][i]
+    if diag <= 0 {
+      return None
+    }
+    let mut rem = marks[i].to_int64()
+    for j in (i + 1)..<ns {
+      rem = rem - m[i][j].to_int64() * c[j].to_int64()
+    }
+    if rem < 0L || rem % diag.to_int64() != 0L {
+      return None
+    }
+    c[i] = (rem / diag.to_int64()).to_int()
+  }
+  Some(c)
 }
 
 ///|
@@ -531,21 +537,6 @@ pub fn marks_cert(
 pub fn gset_isomorphic(gs1 : GSetOf, gs2 : GSetOf, subs : Array[Sub]) -> Bool {
   guard gs1.x == gs2.x else { return false }
   cmp_arr(mark_vector(gs1, subs), mark_vector(gs2, subs)) == 0
-}
-
-///|
-/// G-集之規範形式（= 標記向量 + 軌道大小譜），以陣列表示供比較/指紋。
-pub fn gset_canon_key(gs : GSetOf, subs : Array[Sub]) -> Array[Int32] {
-  let marks = mark_vector(gs, subs)
-  let sizes = gset_orbit_sizes(gs)
-  let out : Array[Int32] = [gs.x, marks.length(), sizes.length()]
-  for v in marks {
-    out.push(v)
-  }
-  for v in sizes {
-    out.push(v)
-  }
-  out
 }
 
 ///|

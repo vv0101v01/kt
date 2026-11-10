@@ -12,7 +12,9 @@
 
 ///|
 /// QIIT 的能力檢查。
-pub fn law_iit_quotient_equations_hold_and_iota_survives() -> Array[(String, Bool)] {
+pub fn law_iit_quotient_equations_hold_and_iota_survives() -> Array[
+  (String, Bool),
+] {
   let out : Array[(String, Bool)] = []
   // Nat：z : Nat，s : Nat → Nat
   let ctors : Array[ICtor] = [
@@ -20,7 +22,9 @@ pub fn law_iit_quotient_equations_hold_and_iota_survives() -> Array[(String, Boo
     ictor("s", 0, [], [iarg_rec(0, "n", [])]),
   ]
   // 等式建構子：s (s x) = x
-  let eqs : Array[IEquation] = [i_equation(ival(1, [ival(1, [ipat_var(0)])]), ipat_var(0))]
+  let eqs : Array[IEquation] = [
+    i_equation(ival(1, [ival(1, [ipat_var(0)])]), ipat_var(0)),
+  ]
   let schema = ischema(["Nat"], [0], ctors, eqs~)
   let plain = ischema(["Nat"], [0], ctors)
   let z = ival(0, [])
@@ -46,12 +50,11 @@ pub fn law_iit_quotient_equations_hold_and_iota_survives() -> Array[(String, Boo
     "iit: qiit equations live in the schema #2 (four successors collapse)",
     ival_eq(iquot_schema(schema, ssssz), z),
   )
-  // #3 等式兩端給出相同的摺疊結果（QIIT 消除器尊重等式）
+  // #3 等式兩端給出相同的摺疊結果（QIIT 消除器尊重等式，移除恆真析取旁路）
   @core.chk(
     out,
     "iit: qiit equations live in the schema #3 (eliminator respects the equation)",
-    ival_eq(iit_fold_q(schema, count, ssz), iit_fold_q(schema, count, z)) ||
-    ival_eq(iit_fold_q(schema, count, z), iit_fold(schema, count, z)),
+    ival_eq(iit_fold_q(schema, count, ssz), iit_fold_q(schema, count, z)),
   )
   // #4 對照組：純 II 的消除器不尊重等式（所以 #3 有內容）
   @core.chk(
@@ -112,13 +115,16 @@ pub fn law_iit_quotient_is_well_defined_on_all_stage_inhabitants() -> Array[
     }
   }
   // #1 / #2
-  let bad_sort = ischema(["Nat", "Other"], [0, 0], [
-    ictor("z", 0, [], []),
-    ictor("s", 0, [], [iarg_rec(0, "n", [])]),
-    ictor("o", 1, [], []),
-  ], eqs = [
-    i_equation(ival(1, [ival(1, [ipat_var(0)])]), ival(2, [])),
-  ])
+  let bad_sort = ischema(
+    ["Nat", "Other"],
+    [0, 0],
+    [
+      ictor("z", 0, [], []),
+      ictor("s", 0, [], [iarg_rec(0, "n", [])]),
+      ictor("o", 1, [], []),
+    ],
+    eqs=[i_equation(ival(1, [ival(1, [ipat_var(0)])]), ival(2, []))],
+  )
   @core.chk(
     out,
     "iit: quotient is well defined on all stage inhabitants #1 (ischema_ok accepts equations)",
@@ -203,4 +209,76 @@ pub fn law_iit_quotient_is_well_defined_on_all_stage_inhabitants() -> Array[
 /// 商的等價類代表：偶數 `s^{2n} z ↦ z`、奇數 `s^{2n+1} z ↦ s z`。
 pub fn quotient_class_of(s : ISchema, v : IVal) -> IVal {
   iquot_schema(s, v)
+}
+
+///|
+/// **QIIT 第三階段：代數模型相容性檢驗與 Hash-Consed E-Graph 雙向同餘飽和定律**
+/// #1 `ialgebra_respects_eqs` 精確區分尊重 `s(s(x)) = x` 之模 2 翻轉代數與不尊重等式之自由計數代數；
+/// #2 非定向交換律 `op(x, y) = op(y, x)` + 單位元 `op(x, e) = x` 在 `iquot_egraph` 下不發散，
+///    且將 `op(b, a)` 與 `op(a, op(b, e))` 正規化為完全相同的最小字典序代表元 `op(a, b)`！
+pub fn law_iit_egraph_bidirectional_congruence_and_algebra_coherence() -> Array[
+  (String, Bool),
+] {
+  let out : Array[(String, Bool)] = []
+  let ctors_mod2 : Array[ICtor] = [
+    ictor("z", 0, [], []),
+    ictor("s", 0, [], [iarg_rec(0, "n", [])]),
+  ]
+  let eqs_mod2 : Array[IEquation] = [
+    i_equation(ival(1, [ival(1, [ipat_var(0)])]), ipat_var(0)),
+  ]
+  let sch_mod2 = ischema(["Nat"], [0], ctors_mod2, eqs=eqs_mod2)
+  let z = ival(0, [])
+  let s = fn(x : IVal) -> IVal { ival(1, [x]) }
+  let mod2_alg = fn(_c : Int32, kids : Array[IVal]) -> IVal {
+    if kids.length() == 0 {
+      z
+    } else if ival_eq(kids[0], z) {
+      s(z)
+    } else {
+      z
+    }
+  }
+  let raw_count = fn(_c : Int32, kids : Array[IVal]) -> IVal {
+    if kids.length() == 0 {
+      z
+    } else {
+      s(kids[0])
+    }
+  }
+  let pool = [z, s(z), s(s(z))]
+  @core.chk(
+    out,
+    "iit egraph: ialgebra_respects_eqs separates coherent mod-2 algebra from raw counter #1",
+    ialgebra_respects_eqs(sch_mod2, mod2_alg, pool) &&
+    !ialgebra_respects_eqs(sch_mod2, raw_count, pool),
+  )
+  // 交換么半群樣本：0:e, 1:a, 2:b, 3:op(x, y)
+  let ctors_cm : Array[ICtor] = [
+    ictor("a", 0, [], []),
+    ictor("b", 0, [], []),
+    ictor("e", 0, [], []),
+    ictor("op", 0, [], [iarg_rec(0, "x", []), iarg_rec(0, "y", [])]),
+  ]
+  let eqs_cm : Array[IEquation] = [
+    i_equation(
+      ival(3, [ipat_var(0), ipat_var(1)]),
+      ival(3, [ipat_var(1), ipat_var(0)]),
+    ),
+    i_equation(ival(3, [ipat_var(0), ival(2, [])]), ipat_var(0)),
+  ]
+  let sch_cm = ischema(["M"], [0], ctors_cm, eqs=eqs_cm)
+  let va = ival(0, [])
+  let vb = ival(1, [])
+  let ve = ival(2, [])
+  let op = fn(x : IVal, y : IVal) -> IVal { ival(3, [x, y]) }
+  let nf1 = iquot_egraph(sch_cm, op(vb, va), 4)
+  let nf2 = iquot_egraph(sch_cm, op(op(ve, vb), op(va, ve)), 4)
+  let nf3 = iquot_egraph(sch_cm, op(va, vb), 4)
+  @core.chk(
+    out,
+    "iit egraph: commutative + unit equations saturate without looping to unique normal form #2",
+    ival_eq(nf1, op(va, vb)) && ival_eq(nf2, nf3) && ival_eq(nf1, nf2),
+  )
+  out
 }

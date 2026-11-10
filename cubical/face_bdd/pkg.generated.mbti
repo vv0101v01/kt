@@ -93,6 +93,14 @@ pub fn bdd_var_order_candidates(Face, Int32) -> Array[Array[Int32]]
 
 pub fn bdd_worst_case_nodes(Int32) -> Int32
 
+pub fn cchm_face_eq(Face, Face) -> Bool
+
+pub fn cchm_face_is_bot(Face) -> Bool
+
+pub fn cchm_face_is_top(Face) -> Bool
+
+pub fn cchm_face_le(Face, Face) -> Bool
+
 pub fn cdcl_Luby(Int32) -> Int32
 
 pub fn check_bdd_canonical() -> Bool
@@ -103,13 +111,21 @@ pub fn check_bdd_dag_native_operations() -> Bool
 
 pub fn contains_int(Array[Int32], Int32) -> Bool
 
+pub fn dim_eq_demorgan(Dim, Dim) -> Bool
+
 pub fn dim_eq_sem(Dim, Dim) -> Bool
+
+pub fn dim_is_one_demorgan(Dim) -> Bool
+
+pub fn dim_is_zero_demorgan(Dim) -> Bool
 
 pub fn dim_nvars_sem(Dim) -> Int32
 
 pub fn dim_simplify(Dim) -> Dim
 
 pub fn dim_subst(Dim, Int32, Bool) -> Dim
+
+pub fn dim_truth_u64(Dim, Int32) -> UInt64
 
 pub fn dim_var(Int32) -> Dim
 
@@ -128,6 +144,8 @@ pub fn eval_dim(Dim, Array[Double]) -> Double
 pub fn eval_dim_bool(Dim, Array[Bool]) -> Bool
 
 pub fn face_and(Face, Face) -> Face
+
+pub fn face_bdd_canon_key(Face) -> String
 
 pub fn face_bot() -> Face
 
@@ -205,6 +223,8 @@ pub fn face_subst(Face, Int32, Bool) -> Face
 
 pub fn face_top() -> Face
 
+pub fn face_truth_u64(Face, Int32) -> UInt64
+
 pub fn face_unsat(Face, Int32) -> Bool
 
 pub fn face_var0(Int32) -> Face
@@ -226,11 +246,12 @@ pub fn sort_ints(Array[Int32]) -> Array[Int32]
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug)
 pub(all) enum Bdd {
   BddZero
   BddOne
   BddNode(Int32, Bdd, Bdd)
-} derive(Eq, @debug.Debug)
+}
 pub fn Bdd::equal(Self, Self) -> Bool
 pub fn Bdd::not_equal(Self, Self) -> Bool
 pub fn Bdd::to_repr(Self) -> @debug.Repr
@@ -325,6 +346,7 @@ pub struct BddPrunedOptimalBuild {
   exact : Bool
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum Dim {
   DZero
   DOne
@@ -332,11 +354,12 @@ pub(all) enum Dim {
   DNeg(Dim)
   DAnd(Dim, Dim)
   DOr(Dim, Dim)
-} derive(Eq, @debug.Debug)
+}
 pub fn Dim::equal(Self, Self) -> Bool
 pub fn Dim::not_equal(Self, Self) -> Bool
 pub fn Dim::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum Face {
   FTop
   FBot
@@ -344,7 +367,7 @@ pub(all) enum Face {
   FEq1(Dim)
   FAnd(Face, Face)
   FOr(Face, Face)
-} derive(Eq, @debug.Debug)
+}
 pub fn Face::equal(Self, Self) -> Bool
 pub fn Face::not_equal(Self, Self) -> Bool
 pub fn Face::to_repr(Self) -> @debug.Repr
@@ -357,10 +380,11 @@ pub struct FaceCdclProofResult {
   proof_steps : Array[FaceCdclProofStep]
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum FaceCdclProofStep {
   CdclProofAdd(Array[Int32])
   CdclProofDelete(Array[Int32])
-} derive(Eq, @debug.Debug)
+}
 pub fn FaceCdclProofStep::equal(Self, Self) -> Bool
 pub fn FaceCdclProofStep::not_equal(Self, Self) -> Bool
 pub fn FaceCdclProofStep::to_repr(Self) -> @debug.Repr
@@ -370,6 +394,7 @@ pub struct FaceCdclResult {
   stats : FaceCdclStats
 }
 
+#derive(Eq, @debug.Debug)
 pub struct FaceCdclStats {
   decisions : Int32
   conflicts : Int32
@@ -377,25 +402,27 @@ pub struct FaceCdclStats {
   learned : Int32
   deleted : Int32
   restarts : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn FaceCdclStats::equal(Self, Self) -> Bool
 pub fn FaceCdclStats::not_equal(Self, Self) -> Bool
 pub fn FaceCdclStats::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct FaceCnfStats {
   variables : Int32
   auxiliary_variables : Int32
   clauses : Int32
   literals : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn FaceCnfStats::equal(Self, Self) -> Bool
 pub fn FaceCnfStats::not_equal(Self, Self) -> Bool
 pub fn FaceCnfStats::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum FaceDecision {
   FaceDecided(Bool)
   FaceBudgetExceeded
-} derive(Eq, @debug.Debug)
+}
 pub fn FaceDecision::equal(Self, Self) -> Bool
 pub fn FaceDecision::not_equal(Self, Self) -> Bool
 pub fn FaceDecision::to_repr(Self) -> @debug.Repr
@@ -407,6 +434,7 @@ pub struct FaceDrupTrimReport {
   steps : Array[FaceCdclProofStep]
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct FaceLratElaborateReport {
   valid : Bool
   original_clauses : Int32
@@ -415,24 +443,26 @@ pub(all) struct FaceLratElaborateReport {
   lrat_deletes : Int32
   total_hints : Int32
   steps : Array[FaceLratStep]
-} derive(Eq, @debug.Debug)
+}
 pub fn FaceLratElaborateReport::equal(Self, Self) -> Bool
 pub fn FaceLratElaborateReport::not_equal(Self, Self) -> Bool
 pub fn FaceLratElaborateReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum FaceLratStep {
   LratAdd(Int32, Array[Int32], Array[Int32], Array[(Int32, Array[Int32])])
   LratDelete(Int32, Array[Int32])
-} derive(Eq, @debug.Debug)
+}
 pub fn FaceLratStep::equal(Self, Self) -> Bool
 pub fn FaceLratStep::not_equal(Self, Self) -> Bool
 pub fn FaceLratStep::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum FaceSatDecision {
   FaceSat(Array[Bool])
   FaceUnsat
   FaceSearchBudgetExceeded
-} derive(Eq, @debug.Debug)
+}
 pub fn FaceSatDecision::equal(Self, Self) -> Bool
 pub fn FaceSatDecision::not_equal(Self, Self) -> Bool
 pub fn FaceSatDecision::to_repr(Self) -> @debug.Repr

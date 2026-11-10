@@ -118,8 +118,9 @@ git diff '*.mbti'
 
 `.mbti` snapshots are the diff that catches accidental public-API changes: a refactor that is meant to be
 internal must leave the generated interfaces untouched. For cross-federation work, finish with an
-end-to-end run — `moon run --release cmd/main --target wasm-gc` (`129/129` theorems) and
-`moon run --release cmd/showcase --target wasm-gc` (`47/47` certificates).
+end-to-end run — `moon run cmd/main --target wasm-gc` (`137/137` theorems),
+`moon run cmd/metatheory --target wasm-gc` (`545/545` laws), and
+`moon run cmd/showcase --target wasm-gc` (`47/47` certificates + `K_9 = 36/36` bridges).
 
 ### 1.3 The one-sentence version
 
@@ -171,9 +172,10 @@ recorded. Submit through it:
   replacing, a limit worth measuring. State the motivation, the invariant at stake, the estimated blast
   radius (which packages, which federations, which `.mbti` surfaces), and the verification plan.
 * **Project-content changes** — anything that alters what the repository *is*: the federation map or
-  `architecture.json` components, the theorem registry counts (`129/129`), the certificate ledger
-  (`47/47`), the `K₆ = 15` / `K₇ = 21` bridge counts, `ATLAS-01..18`, `CONJ-01..12`, the `agent.v2.md`
-  rules themselves, and the per-folder `README.md` set mapped in Part II of this file.
+  `architecture.json` components, the theorem registry counts (`137/137`), the metatheory law counts
+  (`545/545`), the certificate ledger (`47/47`), the `K₉ = 36` bridge counts, `ATLAS-01..18`,
+  `CONJ-01..12`, the `agent.v2.md` rules themselves, and the per-folder `README.md` set mapped in Part II
+  of this file.
 * **Boundary changes** — a new `moon.pkg` import edge, a new `supported_targets` restriction, a new
   `publish`/`test` mode. These are project content, not implementation detail: `tools/arch_check.py`
   will reject them until the governance text agrees.
@@ -195,8 +197,8 @@ defect.
 | [`agent.v2.md`](agent.v2.md) | Governance: architecture rules, 7-way `cubical` split, MoonBit style, WGSL portability, refactor records, **all work reports and proposals** | Chinese |
 | [`readme.v2.md`](readme.v2.md) | Root overview: the 8-federation double-V architecture, package→federation table, quick commands | Chinese |
 | **`<folder>/README.md`** × 16 | One per top-level folder: file-by-file reading of every `.mbt` in it | Chinese |
-| **`<folder>/<sub>/README.md`** × 27 | One per nested sub-package inside `cubical/`, `semiring/`, `cmd/` | Chinese |
-| `architecture.json` | Machine-readable source of truth: 8 federations, 39 packages, 48 components | JSON |
+| **`<folder>/<sub>/README.md`** × 28 | One per nested sub-package inside `cubical/`, `semiring/`, `cmd/` | Chinese |
+| `architecture.json` | Machine-readable source of truth: 9 federations + apex, 46 packages, 55 components | JSON |
 | `tools/arch_check.py` | Enforces the above and prints the totals quoted everywhere | Python |
 
 **Total documentation written for this map: 16 + 27 = 43 per-folder READMEs, 5,474 lines**
@@ -219,16 +221,16 @@ folder's `README.md` in lines.
 |---:|---|---|---:|---:|---:|---|
 | 1 | [`gcd/`](gcd/README.md) | F6 · L0 (lower-V apex `V₁`) | 2 | 1,196 | 136 | Five-domain generic elimination GCD: `F_p` RREF, `ℤ` HNF/SNF, CRT, Grassmann duality, free-group reduction, six-domain certificates |
 | 2 | [`algebra/`](algebra/README.md) | F1 · L1 | 22 | 18,797 | 165 | Exact rational/algebraic tower: complete polynomial factorization, number fields, Jordan theory, certified intervals, transcendence certificates |
-| 3 | [`cubical/`](cubical/README.md) | F1 · L0–L5 (**7 sub-packages**) | 65 | 71,077 | 238 | The trusted dependent-cubical core: NbE, Kan, Glue, univalence, HITs, ROBDD/CDCL, elaborator, persistence |
+| 3 | [`cubical/`](cubical/README.md) | F1 · L0–L5 (**8 sub-packages**) | 70 | 73,858 | 239 | The trusted dependent-cubical core: NbE, Kan, Glue, univalence, HITs, ROBDD/CDCL, elaborator, persistence, and constructive universal algebra autonomy |
 | 4 | [`symlib/`](symlib/README.md) | F2 · L1 | 26 | 8,768 | 159 | Finite symmetry: individualisation–refinement, Schreier–Sims, canonical forms, `G`-sets & Burnside, categorification, Yoneda/Kan |
 | 5 | [`semiring/`](semiring/README.md) | F3 · L1–L4 (**15 sub-packages**) | 38 | 9,778 | 161 | Idempotent/star/tropical semirings and a "types are theorems" algorithm library, plus the 19-section measurement report |
-| 6 | [`topos/`](topos/README.md) | F4 · L2 | 6 | 6,767 | 140 | Grothendieck/elementary toposes: sites, sheaves, `Ω_J`, geometric morphisms, Diaconescu points, descent, cohomology, nerve homotopy |
+| 6 | [`topos/`](topos/README.md) | F4 · L2 | 7 | 7,530 | 142 | Grothendieck/elementary toposes: sites, sheaves, `Ω_J`, `¬¬` sheafification template, bi-Heyting/Alexandrov/Chu dualities, geometric morphisms, cohomology |
 | 7 | [`scheme/`](scheme/README.md) | F5 · L2 | 5 | 4,982 | 142 | Algebraic geometry: Gröbner bases, glued schemes, Kähler/Fitting, Serre duality, valuative truth test, Chow motives |
 | 8 | [`condensed/`](condensed/README.md) | F6 · L3 (X-overlap hub) | 4 | 3,249 | 189 | Condensed mathematics: profinite towers, solid/liquid modules, Steenrod–Adams, persistent-invariant ledger, quaternion rotation axis, four conjectures |
 | 9 | [`tensor/`](tensor/README.md) | F7 · L2 | 2 | 1,769 | 165 | Multilinear tensor geometry: the 6,561-tensor `𝔽₃` atlas, discrete Radon, Clifford spinors, non-crossing forests, VR homology |
 | 10 | [`conjecture/`](conjecture/README.md) | F7 · L5 | 2 | 1,291 | 169 | Lakatos conjecture-evolution engine: automatic conservation-law discovery, out-of-sample transfer, five epistemic lenses, 12 cross-federation conjectures |
-| 11 | [`bridge/`](bridge/README.md) | apex · L7 (upper-V apex `V₂`) | 15 | 5,428 | 211 | `K₇` 21/21 bridges, four-family rotation axis, five intuition-driven conjectures with counterexample attacks, geometry–logic atlas, 47/47 certificates |
-| 12 | [`accel/`](accel/README.md) | F8 · L4 | 5 | 2,722 | 184 | CPU 64-bit SWAR (M4RI / GF(3) / Face) + Ozaki II / RNS NTT / Scanbox / HVM2 + 7 WGSL shaders |
+| 11 | [`bridge/`](bridge/README.md) | apex · L7 (upper-V apex `V₂`) | 16 | 5,496 | 213 | `K₇` 21/21 bridges, four-family rotation axis, Mal'cev/¬¬-presheaf/autonomy bridge, five intuition-driven conjectures, geometry–logic atlas, 47/47 certificates |
+| 12 | [`accel/`](accel/README.md) | F8 · L4 | 6 | 3,181 | 186 | CPU 64-bit SWAR (M4RI / GF(3) / Face / Cubical Degeneracy) + Ozaki II / RNS NTT / Scanbox / HVM2 + WGSL shaders |
 | 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 822 | 149 | Executable crash-consistency model (content `fsync` before the directory entry) + BFT `3f+1` quorum durable replicas |
 | 14 | [`cmd/`](cmd/README.md) | 5 executables · L2–L8 | 10 | 3,844 | 136 | Theorem ledger (`129`), unification showcase (`47`) plus rotation-axis report, symmetry demo/bench, semiring measurement report (`§1–§19`) |
 | 15 | [`tools/`](tools/README.md) | infrastructure (not a MoonBit package) | 0 | 0 | 96 | `arch_check.py`: federation partition, file ownership, `moon.pkg` imports, source reference graph, statistics |
@@ -258,7 +260,7 @@ folder's `README.md` in lines.
 with its own `README.md`. The three groups hold **113 `.mbt` files / 84,699 lines**; their READMEs total
 **2,941 lines**.
 
-### 6.1 `cubical/` — 7 sub-packages (65 files, 71,077 lines)
+### 6.1 `cubical/` — 8 sub-packages (70 files, 73,858 lines)
 
 | # | Sub-package | Layer | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
@@ -269,6 +271,8 @@ with its own `README.md`. The three groups hold **113 `.mbt` files / 84,699 line
 | 5 | [`cubical/elaborator/`](cubical/elaborator/README.md) | L3 | 4 | 5,514 | 143 | Bidirectional elaboration; higher-order **matching** (decidable) / bounded Huet search / Goldfarb undecidability certificate |
 | 6 | [`cubical/homotopy/`](cubical/homotopy/README.md) | L3 | 14 | 12,281 | 189 | Computational homotopy: `π₁(S¹)≃ℤ`, `π₂(S²)≃ℤ`, `π₄(S³)≅ℤ/2ℤ`, Blakers–Massey, `Kₙ` coherence |
 | 7 | [`cubical/store/`](cubical/store/README.md) | L5 | 9 | 11,147 | 184 | `CHMODBIN` / `CHDAGBIN` / `CHREGBIN`, version negotiation, Ed25519 WAL, SCC-atomic hot reload |
+| 8 | [`cubical/autonomy/`](cubical/autonomy/README.md) | L5 | 5 | 2,645 | 85 | Constructive universal algebra autonomy, Mal'cev congruences/quotients, affine & bi-De Morgan cubical duality, Moore free paths, degeneracy trees, 5D alternating boundaries, bidirectional NF pruning, Kripke–Alexandrov validity & `¬¬` presheaf gluing |
+| 9 | [`cubical/structures/`](cubical/structures/README.md) | L6 | 6 | 4,374 | 88 | All 54 higher cubical structures (Swan strict constant-extent `Id`, free path fibration, 65,536-cube Eilenberg–Zilber split, affine bidirectional & `LJF` focusing, polynomial container Yoneda & SIP, Galois covering correspondence, torus/`RP²` torsion, HOU motive reconstruction, matroid boundary repair, computational reflection) + 26-verb × 14-composition atlas |
 
 ### 6.2 `semiring/` — 15 sub-packages (38 files, 9,778 lines)
 
@@ -319,8 +323,9 @@ with its own `README.md`. The three groups hold **113 `.mbt` files / 84,699 line
 **Changing the architecture** — `agent.v2.md` (governance) → §1–§3 of this file (verification and
 reporting) → `tools/` → `architecture.json`.
 
-**Just need to run something** — `moon run --release cmd/main --target wasm-gc` (129/129 theorems),
-`moon run --release cmd/showcase --target wasm-gc` (47/47 certificates),
+**Just need to run something** — `moon run cmd/main --target wasm-gc` (137/137 theorems),
+`moon run cmd/metatheory --target wasm-gc` (545/545 laws),
+`moon run cmd/showcase --target wasm-gc` (47/47 certificates + K_9=36/36),
 `moon run cmd/semiringreport --target native` (the measurement report).
 
 ---
@@ -351,10 +356,10 @@ against real signatures** — if a function name or arity changes, the README ch
 
 ## 9. Onboarding checklist (first hour)
 
-1. `python3 tools/arch_check.py` → confirm `222 .mbt files, 152883 .mbt lines` on your machine. This is
+1. `python3 tools/arch_check.py` → confirm `52 packages, 61 components, 282 .mbt files, 182929 .mbt lines` on your machine. This is
    your baseline; every later claim of "unchanged architecture" is measured against it.
 2. `moon check --deny-warn --target wasm-gc` → must be silent.
-3. `moon run --release cmd/main --target wasm-gc` → must end at `129/129`.
+3. `moon run cmd/main --target wasm-gc` → must end at `137/137` (`cmd/metatheory` → `545 / 545`).
 4. Read `cubical/finite/README.md`, then `semiring/algebra/README.md` — they are the two smallest
    self-contained views of what this repository is about.
 5. Read §1.2 Tier B of this file once more, then make a one-line change to some file and walk the loop

@@ -44,13 +44,13 @@ jobs:
           python3 tools/gen_laws.py
           git diff --exit-code -- 'meta/*/laws.mbt'
 
-      - name: 第九聯邦定律總表（485 / 485）
+      - name: 第九聯邦定律總表（545 / 545）
         run: moon run cmd/metatheory --target wasm-gc
 
-      - name: Cubical 定理總表（129 / 129）
+      - name: Cubical 定理總表（137 / 137）
         run: moon run cmd/main --target wasm-gc
 
-      - name: 大一統證書（47 / 47 ＋ 硬體加速）
+      - name: 大一統證書（47 / 47 ＋ K_9 全配對橋 ＋ 硬體加速）
         run: moon run cmd/showcase --target wasm-gc
 
       - name: 架構閘（聯邦白名單、分層、零殘留測試）

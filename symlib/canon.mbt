@@ -29,12 +29,6 @@ pub fn labeling_perm(lab : Array[Int32]) -> Perm {
 }
 
 ///|
-/// 規範編碼（0/1 序列，列主序 idx(i,j)=j(j-1)/2+i）。
-pub fn canon_encoding(g : Graph) -> Array[Int32] {
-  search_graph(g, true).canon_enc
-}
-
-///|
 /// 規範形式圖：以規範標號重排頂點後的圖。
 pub fn canonical_form(g : Graph) -> Graph {
   let res = search_graph(g, true)

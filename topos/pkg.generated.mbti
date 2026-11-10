@@ -3,20 +3,24 @@ package "vv0101v01/cubical-hermitian/topos"
 
 import {
   "moonbitlang/core/debug",
-  "vv0101v01/cubical-hermitian/algebra",
   "vv0101v01/cubical-hermitian/symlib",
+  "vv0101v01/cubical-hermitian/topos/site",
 }
 
 // Values
-pub fn all_sieves_on(@symlib.FinCat, Int32) -> Array[Sieve]
+pub fn alexandrov_from_preorder(Int32, Array[Array[Bool]]) -> AlexandrovSpace
 
-pub fn analyze_atomic_topos(Site) -> AtomicToposReport
+pub fn alexandrov_specialization_preorder(AlexandrovSpace) -> Array[Array[Bool]]
 
-pub fn analyze_compact_coherent_topos(Site) -> CompactCoherentReport
+pub fn all_sieves_on(@symlib.FinCat, Int32) -> Array[@site.Sieve]
 
-pub fn analyze_connected_topos(Site) -> ConnectedToposReport
+pub fn analyze_atomic_topos(@site.Site) -> @site.AtomicToposReport
 
-pub fn analyze_local_topos(Site) -> LocalToposReport
+pub fn analyze_compact_coherent_topos(@site.Site) -> @site.CompactCoherentReport
+
+pub fn analyze_connected_topos(@site.Site) -> @site.ConnectedToposReport
+
+pub fn analyze_local_topos(@site.Site) -> @site.LocalToposReport
 
 pub fn boundary_simplex_nerve(Int32) -> SimplicialNerve
 
@@ -24,7 +28,7 @@ pub fn build_circle_z2_torsor_stack(Bool) -> (GroupoidFibration, CoverDescentDia
 
 pub fn build_mobius_internal_z2_torsor() -> InternalGroupTorsor
 
-pub fn build_propositional_classifying_topos(PropGeoTheory) -> ClassifyingToposData
+pub fn build_propositional_classifying_topos(@site.PropGeoTheory) -> @site.ClassifyingToposData
 
 pub fn canonical_descent_datum(GroupoidFibration, CoverDescentDiagram, Int32) -> DescentDatum
 
@@ -36,11 +40,27 @@ pub fn cat_opposite(@symlib.FinCat) -> @symlib.FinCat
 
 pub fn cat_satisfies_right_ore(@symlib.FinCat) -> Bool
 
-pub fn cat_slice(@symlib.FinCat, Int32) -> SliceCategoryData
+pub fn cat_slice(@symlib.FinCat, Int32) -> @site.SliceCategoryData
 
 pub fn category_of_elements(@symlib.Presheaf) -> (@symlib.FinCat, @symlib.FinFunctor)
 
-pub fn characteristic_morphism(Site, @symlib.Presheaf, PresheafHom, SubobjectClassifierData) -> PresheafHom
+pub fn characteristic_morphism(@site.Site, @symlib.Presheaf, @site.PresheafHom, @site.SubobjectClassifierData) -> @site.PresheafHom
+
+pub fn chu_biextensional_collapse(ChuSpace) -> ChuSpace
+
+pub fn chu_from_alexandrov(AlexandrovSpace) -> ChuSpace
+
+pub fn chu_from_f3_plane() -> ChuSpace
+
+pub fn chu_from_finset(Int32) -> ChuSpace
+
+pub fn chu_from_transition_system(Int32, Array[(Int32, Int32)]) -> ChuSpace
+
+pub fn chu_morphism_is_valid(ChuSpace, ChuSpace, ChuMorphism) -> Bool
+
+pub fn chu_morphism_transpose(ChuMorphism) -> ChuMorphism
+
+pub fn chu_transpose(ChuSpace) -> ChuSpace
 
 pub fn circle_mobius_double_cover_sheaf() -> @symlib.Presheaf
 
@@ -48,123 +68,141 @@ pub fn classify_group_torsor_cohomology(@symlib.FinCat, SimplicialNerve) -> (Int
 
 pub fn classifying_nerve_of_poset(@symlib.FinCat) -> SimplicialNerve
 
-pub fn closed_subtopos_lt_operator(@symlib.Presheaf) -> (SubobjectClassifierData, PresheafHom)
+pub fn closed_subtopos_lt_operator(@symlib.Presheaf) -> (@site.SubobjectClassifierData, @site.PresheafHom)
 
 pub fn cochain_complex_is_valid(CochainComplexQ) -> Bool
 
 pub fn cohomology_dimensions(CochainComplexQ) -> Array[Int32]
 
+pub fn cohomology_dimensions_unchecked(CochainComplexQ) -> Array[Int32]
+
 pub fn compute_nerve_homotopy_type(SimplicialNerve) -> HomotopyTypeSummary
 
-pub fn covariant_representable_point(@symlib.FinCat, Int32) -> FlatPointFunctor
+pub fn covariant_representable_point(@symlib.FinCat, Int32) -> @site.FlatPointFunctor
 
 pub fn descent_data_isomorphic(GroupoidFibration, CoverDescentDiagram, DescentDatum, DescentDatum) -> Bool
 
 pub fn direct_image_presheaf(@symlib.FinFunctor, @symlib.Presheaf) -> @symlib.Presheaf
 
-pub fn enumerate_canonical_points(Site) -> Array[FlatPointFunctor]
+pub fn double_negation_lt_operator(@symlib.FinCat) -> (@site.SubobjectClassifierData, @site.PresheafHom)
 
-pub fn enumerate_matching_families(@symlib.Presheaf, Sieve, cap? : Int32) -> Array[MatchingFamily]
+pub fn double_negation_sheaf_site(@symlib.FinCat) -> @site.Site
 
-pub fn enumerate_set_models_prop(PropGeoTheory) -> Array[Array[Bool]]
+pub fn enumerate_canonical_points(@site.Site) -> Array[@site.FlatPointFunctor]
 
-pub fn exponential_curry(@symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf, ExponentialData, PresheafHom) -> PresheafHom
+pub fn enumerate_matching_families(@symlib.Presheaf, @site.Sieve, cap? : Int32) -> Array[@site.MatchingFamily]
 
-pub fn exponential_uncurry(@symlib.Presheaf, @symlib.Presheaf, ExponentialData, PresheafHom) -> PresheafHom
+pub fn enumerate_matching_families_mac64(@symlib.Presheaf, @site.Sieve, cap? : Int32) -> Array[@site.MatchingFamily]
 
-pub fn geo_normal_form_to_formula(GeoNormalForm) -> GeoFormula
+pub fn enumerate_set_models_prop(@site.PropGeoTheory) -> Array[Array[Bool]]
 
-pub fn geometric_normal_form(Int32, GeoFormula) -> GeoNormalForm
+pub fn enumerate_sieves64_on_obj(@site.SitePrecomp64, Int32) -> Array[@site.Sieve64]
 
-pub fn global_sections_count(Site, @symlib.Presheaf) -> Int32
+pub fn exponential_curry(@symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf, @site.ExponentialData, @site.PresheafHom) -> @site.PresheafHom
+
+pub fn exponential_uncurry(@symlib.Presheaf, @symlib.Presheaf, @site.ExponentialData, @site.PresheafHom) -> @site.PresheafHom
+
+pub fn geo_normal_form_to_formula(@site.GeoNormalForm) -> @site.GeoFormula
+
+pub fn geometric_normal_form(Int32, @site.GeoFormula) -> @site.GeoNormalForm
+
+pub fn global_sections_count(@site.Site, @symlib.Presheaf) -> Int32
 
 pub fn groupoid_of_fincat(@symlib.FinCat) -> FiniteGroupoid?
 
-pub fn induced_dense_subsite_topology(@symlib.FinFunctor, Site) -> GrothendieckTopology?
+pub fn induced_dense_subsite_topology(@symlib.FinFunctor, @site.Site) -> @site.GrothendieckTopology?
 
 pub fn inverse_image_presheaf(@symlib.FinFunctor, @symlib.Presheaf) -> @symlib.Presheaf
 
-pub fn inverse_image_sheaf(Site, @symlib.FinFunctor, @symlib.Presheaf) -> @symlib.Presheaf
+pub fn inverse_image_sheaf(@site.Site, @symlib.FinFunctor, @symlib.Presheaf) -> @symlib.Presheaf
 
-pub fn is_atom_sheaf(Site, @symlib.Presheaf) -> Bool
+pub fn is_alexandrov_open(Int32, Array[Array[Bool]], Array[Bool]) -> Bool
 
-pub fn is_boolean_topos(Site) -> Bool
+pub fn is_atom_sheaf(@site.Site, @symlib.Presheaf) -> Bool
+
+pub fn is_boolean_topos(@site.Site) -> Bool
 
 pub fn is_connected_essential_functor(@symlib.FinFunctor) -> Bool
 
-pub fn is_covariant_point_functor(FlatPointFunctor) -> Bool
+pub fn is_covariant_point_functor(@site.FlatPointFunctor) -> Bool
 
-pub fn is_de_morgan_topos(Site) -> Bool
+pub fn is_de_morgan_topos(@site.Site) -> Bool
 
-pub fn is_diaconescu_point(Site, FlatPointFunctor) -> Bool
+pub fn is_diaconescu_point(@site.Site, @site.FlatPointFunctor) -> Bool
 
-pub fn is_flat_point_functor(FlatPointFunctor) -> Bool
+pub fn is_flat_point_functor(@site.FlatPointFunctor) -> Bool
 
 pub fn is_internal_group_torsor_sheaf(InternalGroupTorsor) -> Bool
 
-pub fn is_lawvere_tierney_operator(SubobjectClassifierData, PresheafHom) -> Bool
+pub fn is_lawvere_tierney_operator(@site.SubobjectClassifierData, @site.PresheafHom) -> Bool
 
-pub fn is_separated_presheaf(Site, @symlib.Presheaf) -> Bool
+pub fn is_separated_presheaf(@site.Site, @symlib.Presheaf) -> Bool
 
-pub fn is_sheaf(Site, @symlib.Presheaf) -> Bool
+pub fn is_sheaf(@site.Site, @symlib.Presheaf) -> Bool
 
-pub fn is_valid_subpresheaf(Subpresheaf) -> Bool
+pub fn is_valid_subpresheaf(@site.Subpresheaf) -> Bool
 
-pub fn kripke_joyal_forces(Site, SheafStructure, Int32, Array[Int32], GeoFormula) -> Bool
+pub fn kripke_joyal_forces(@site.Site, @site.SheafStructure, Int32, Array[Int32], @site.GeoFormula) -> Bool
 
-pub fn lawvere_tierney_of_site(Site) -> (SubobjectClassifierData, PresheafHom)
+pub fn lawvere_tierney_of_site(@site.Site) -> (@site.SubobjectClassifierData, @site.PresheafHom)
 
-pub fn model_satisfies_sequent(Site, SheafStructure, GeoSequent) -> Bool
+pub fn model_satisfies_sequent(@site.Site, @site.SheafStructure, @site.GeoSequent) -> Bool
+
+pub fn model_satisfies_theory(@site.Site, @site.SheafStructure, @site.GeometricTheory) -> Bool
+
+pub fn nerve_cohomology_dimensions_fp(SimplicialNerve, Int32) -> Array[Int32]
 
 pub fn nerve_constant_cochain_complex_q(SimplicialNerve) -> CochainComplexQ
 
-pub fn omega_j_join(Site, Sieve, Sieve) -> Sieve
+pub fn omega_j_join(@site.Site, @site.Sieve, @site.Sieve) -> @site.Sieve
 
-pub fn omega_j_neg(Site, Sieve) -> Sieve
+pub fn omega_j_neg(@site.Site, @site.Sieve) -> @site.Sieve
 
-pub fn open_subtopos_lt_operator(@symlib.Presheaf) -> (SubobjectClassifierData, PresheafHom)
+pub fn open_subtopos_lt_operator(@symlib.Presheaf) -> (@site.SubobjectClassifierData, @site.PresheafHom)
 
-pub fn plus_construction(Site, @symlib.Presheaf) -> (@symlib.Presheaf, PresheafHom)
+pub fn operator_singular_spectrum_fp(Int32, (Int32) -> Int32, Int32) -> (Array[Int32], Int32, Int32)
 
-pub fn point_skyscraper_sheaf(FlatPointFunctor, Int32) -> @symlib.Presheaf
+pub fn plus_construction(@site.Site, @symlib.Presheaf) -> (@symlib.Presheaf, @site.PresheafHom)
 
-pub fn point_stalk_cardinality(FlatPointFunctor, @symlib.Presheaf) -> Int32
+pub fn point_skyscraper_sheaf(@site.FlatPointFunctor, Int32) -> @symlib.Presheaf
+
+pub fn point_stalk_cardinality(@site.FlatPointFunctor, @symlib.Presheaf) -> Int32
 
 pub fn presheaf_are_isomorphic(@symlib.Presheaf, @symlib.Presheaf) -> Bool
 
-pub fn presheaf_coequalizer(@symlib.Presheaf, @symlib.Presheaf, PresheafHom, PresheafHom) -> (@symlib.Presheaf, PresheafHom)
+pub fn presheaf_coequalizer(@symlib.Presheaf, @symlib.Presheaf, @site.PresheafHom, @site.PresheafHom) -> (@symlib.Presheaf, @site.PresheafHom)
 
 pub fn presheaf_constant_raw(@symlib.FinCat, Int32) -> @symlib.Presheaf
 
-pub fn presheaf_coproduct(@symlib.Presheaf, @symlib.Presheaf) -> (@symlib.Presheaf, PresheafHom, PresheafHom)
+pub fn presheaf_coproduct(@symlib.Presheaf, @symlib.Presheaf) -> (@symlib.Presheaf, @site.PresheafHom, @site.PresheafHom)
 
-pub fn presheaf_equalizer(@symlib.Presheaf, PresheafHom, PresheafHom) -> (@symlib.Presheaf, PresheafHom)
+pub fn presheaf_equalizer(@symlib.Presheaf, @site.PresheafHom, @site.PresheafHom) -> (@symlib.Presheaf, @site.PresheafHom)
 
-pub fn presheaf_exponential(@symlib.Presheaf, @symlib.Presheaf) -> ExponentialData
+pub fn presheaf_exponential(@symlib.Presheaf, @symlib.Presheaf) -> @site.ExponentialData
 
-pub fn presheaf_hom_compose(PresheafHom, PresheafHom) -> PresheafHom
+pub fn presheaf_hom_compose(@site.PresheafHom, @site.PresheafHom) -> @site.PresheafHom
 
-pub fn presheaf_hom_enumerate(@symlib.Presheaf, @symlib.Presheaf, cap? : Int32) -> Array[PresheafHom]
+pub fn presheaf_hom_enumerate(@symlib.Presheaf, @symlib.Presheaf, cap? : Int32) -> Array[@site.PresheafHom]
 
-pub fn presheaf_hom_eq(PresheafHom, PresheafHom) -> Bool
+pub fn presheaf_hom_eq(@site.PresheafHom, @site.PresheafHom) -> Bool
 
-pub fn presheaf_hom_id(@symlib.Presheaf) -> PresheafHom
+pub fn presheaf_hom_id(@symlib.Presheaf) -> @site.PresheafHom
 
-pub fn presheaf_hom_is_iso(PresheafHom) -> Bool
+pub fn presheaf_hom_is_iso(@site.PresheafHom) -> Bool
 
-pub fn presheaf_hom_is_mono(PresheafHom) -> Bool
+pub fn presheaf_hom_is_mono(@site.PresheafHom) -> Bool
 
-pub fn presheaf_hom_is_natural(@symlib.Presheaf, @symlib.Presheaf, PresheafHom) -> Bool
+pub fn presheaf_hom_is_natural(@symlib.Presheaf, @symlib.Presheaf, @site.PresheafHom) -> Bool
 
 pub fn presheaf_initial(@symlib.FinCat) -> @symlib.Presheaf
 
-pub fn presheaf_of_sieve(@symlib.FinCat, Sieve) -> (@symlib.Presheaf, PresheafHom)
+pub fn presheaf_of_sieve(@symlib.FinCat, @site.Sieve) -> (@symlib.Presheaf, @site.PresheafHom)
 
-pub fn presheaf_product(@symlib.Presheaf, @symlib.Presheaf) -> (@symlib.Presheaf, PresheafHom, PresheafHom)
+pub fn presheaf_product(@symlib.Presheaf, @symlib.Presheaf) -> (@symlib.Presheaf, @site.PresheafHom, @site.PresheafHom)
 
-pub fn presheaf_product_hom(@symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf, PresheafHom, PresheafHom) -> PresheafHom
+pub fn presheaf_product_hom(@symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf, @site.PresheafHom, @site.PresheafHom) -> @site.PresheafHom
 
-pub fn presheaf_pullback(@symlib.Presheaf, @symlib.Presheaf, PresheafHom, PresheafHom) -> (@symlib.Presheaf, PresheafHom, PresheafHom)
+pub fn presheaf_pullback(@symlib.Presheaf, @symlib.Presheaf, @site.PresheafHom, @site.PresheafHom) -> (@symlib.Presheaf, @site.PresheafHom, @site.PresheafHom)
 
 pub fn presheaf_representable(@symlib.FinCat, Int32) -> @symlib.Presheaf
 
@@ -180,83 +218,137 @@ pub fn right_kan_presheaf(@symlib.FinFunctor, @symlib.Presheaf, cap? : Int32) ->
 
 pub fn rp2_minimal_nerve() -> SimplicialNerve
 
-pub fn section_to_matching_family(@symlib.Presheaf, Sieve, Int32) -> MatchingFamily
+pub fn section_to_matching_family(@symlib.Presheaf, @site.Sieve, Int32) -> @site.MatchingFamily
 
-pub fn sheafify(Site, @symlib.Presheaf) -> SheafificationResult
+pub fn sheafify(@site.Site, @symlib.Presheaf) -> @site.SheafificationResult
 
-pub fn sieve_contains(Sieve, Int32) -> Bool
+pub fn sieve64_coheyting_boundary(@site.SitePrecomp64, @site.Sieve64) -> @site.Sieve64
 
-pub fn sieve_empty(Int32) -> Sieve
+pub fn sieve64_coheyting_neg(@site.SitePrecomp64, @site.Sieve64) -> @site.Sieve64
 
-pub fn sieve_generate(@symlib.FinCat, Int32, Array[Int32]) -> Sieve
+pub fn sieve64_coheyting_sub(@site.SitePrecomp64, @site.Sieve64, @site.Sieve64) -> @site.Sieve64
 
-pub fn sieve_heyting_implies(@symlib.FinCat, Sieve, Sieve) -> Sieve
+pub fn sieve64_double_negation(@site.SitePrecomp64, @site.Sieve64) -> @site.Sieve64
 
-pub fn sieve_inter(Sieve, Sieve) -> Sieve
+pub fn sieve64_empty(Int32) -> @site.Sieve64
 
-pub fn sieve_is_j_closed(Site, Sieve) -> Bool
+pub fn sieve64_generate(@site.SitePrecomp64, Int32, UInt64) -> @site.Sieve64
 
-pub fn sieve_is_valid(@symlib.FinCat, Sieve) -> Bool
+pub fn sieve64_heyting_implies(@site.SitePrecomp64, @site.Sieve64, @site.Sieve64) -> @site.Sieve64
 
-pub fn sieve_j_closure(Site, Sieve) -> Sieve
+pub fn sieve64_heyting_neg(@site.SitePrecomp64, @site.Sieve64) -> @site.Sieve64
 
-pub fn sieve_maximal(@symlib.FinCat, Int32) -> Sieve
+pub fn sieve64_inter(@site.Sieve64, @site.Sieve64) -> @site.Sieve64
 
-pub fn sieve_pullback(@symlib.FinCat, Sieve, Int32) -> Sieve
+pub fn sieve64_maximal(@site.SitePrecomp64, Int32) -> @site.Sieve64
 
-pub fn sieve_subset(Sieve, Sieve) -> Bool
+pub fn sieve64_of_sieve(@site.Sieve) -> @site.Sieve64
 
-pub fn sieve_union(Sieve, Sieve) -> Sieve
+pub fn sieve64_pullback(@site.SitePrecomp64, @site.Sieve64, Int32) -> @site.Sieve64
 
-pub fn simplicial_cup_1_1(SimplicialNerve, Array[@algebra.Rat], Array[@algebra.Rat]) -> Array[@algebra.Rat]
+pub fn sieve64_subset(@site.Sieve64, @site.Sieve64) -> Bool
+
+pub fn sieve64_union(@site.Sieve64, @site.Sieve64) -> @site.Sieve64
+
+pub fn sieve_coheyting_boundary(@symlib.FinCat, @site.Sieve) -> @site.Sieve
+
+pub fn sieve_coheyting_neg(@symlib.FinCat, @site.Sieve) -> @site.Sieve
+
+pub fn sieve_coheyting_sub(@symlib.FinCat, @site.Sieve, @site.Sieve) -> @site.Sieve
+
+pub fn sieve_contains(@site.Sieve, Int32) -> Bool
+
+pub fn sieve_double_negation(@symlib.FinCat, @site.Sieve) -> @site.Sieve
+
+pub fn sieve_empty(Int32) -> @site.Sieve
+
+pub fn sieve_generate(@symlib.FinCat, Int32, Array[Int32]) -> @site.Sieve
+
+pub fn sieve_heyting_implies(@symlib.FinCat, @site.Sieve, @site.Sieve) -> @site.Sieve
+
+pub fn sieve_heyting_neg(@symlib.FinCat, @site.Sieve) -> @site.Sieve
+
+pub fn sieve_inter(@site.Sieve, @site.Sieve) -> @site.Sieve
+
+pub fn sieve_is_j_closed(@site.Site, @site.Sieve) -> Bool
+
+pub fn sieve_is_valid(@symlib.FinCat, @site.Sieve) -> Bool
+
+pub fn sieve_j_closure(@site.Site, @site.Sieve) -> @site.Sieve
+
+pub fn sieve_maximal(@symlib.FinCat, Int32) -> @site.Sieve
+
+pub fn sieve_of_sieve64(@site.Sieve64) -> @site.Sieve
+
+pub fn sieve_pullback(@symlib.FinCat, @site.Sieve, Int32) -> @site.Sieve
+
+pub fn sieve_subset(@site.Sieve, @site.Sieve) -> Bool
+
+pub fn sieve_union(@site.Sieve, @site.Sieve) -> @site.Sieve
+
+pub fn simplicial_cup_1_1(SimplicialNerve, Array[@vv0101v01/cubical-hermitian/algebra/core.Rat], Array[@vv0101v01/cubical-hermitian/algebra/core.Rat]) -> Array[@vv0101v01/cubical-hermitian/algebra/core.Rat]
 
 pub fn simplicial_cup_h1_h1_rank(SimplicialNerve) -> Int32
 
-pub fn site_circle_good_cover() -> Site
+pub fn site_circle_good_cover() -> @site.Site
 
-pub fn site_is_valid(Site) -> Bool
+pub fn site_is_valid(@site.Site) -> Bool
 
-pub fn site_new(@symlib.FinCat, GrothendieckTopology) -> Site
+pub fn site_new(@symlib.FinCat, @site.GrothendieckTopology) -> @site.Site
 
-pub fn subobject_classifier_presheaf(@symlib.FinCat) -> SubobjectClassifierData
+pub fn site_precomp64_build(@symlib.FinCat) -> @site.SitePrecomp64
 
-pub fn subobject_classifier_sheaf(Site) -> SubobjectClassifierData
+pub fn site_uf_find(Array[Int32], Int32) -> Int32
 
-pub fn subpresheaf_exists(@symlib.Presheaf, PresheafHom, Subpresheaf) -> Subpresheaf
+pub fn site_uf_new(Int32) -> Array[Int32]
 
-pub fn subpresheaf_forall(@symlib.Presheaf, @symlib.Presheaf, PresheafHom, Subpresheaf) -> Subpresheaf
+pub fn site_uf_union(Array[Int32], Int32, Int32) -> Unit
 
-pub fn subpresheaf_pullback(@symlib.Presheaf, PresheafHom, Subpresheaf) -> Subpresheaf
+pub fn subobject_classifier_presheaf(@symlib.FinCat) -> @site.SubobjectClassifierData
 
-pub fn topology_atomic(@symlib.FinCat) -> GrothendieckTopology?
+pub fn subobject_classifier_sheaf(@site.Site) -> @site.SubobjectClassifierData
 
-pub fn topology_covers(GrothendieckTopology, Sieve) -> Bool
+pub fn subpresheaf_exists(@symlib.Presheaf, @site.PresheafHom, @site.Subpresheaf) -> @site.Subpresheaf
 
-pub fn topology_dense(@symlib.FinCat) -> GrothendieckTopology
+pub fn subpresheaf_forall(@symlib.Presheaf, @symlib.Presheaf, @site.PresheafHom, @site.Subpresheaf) -> @site.Subpresheaf
 
-pub fn topology_from_coverage(@symlib.FinCat, Array[(Int32, Array[Int32])]) -> GrothendieckTopology
+pub fn subpresheaf_pullback(@symlib.Presheaf, @site.PresheafHom, @site.Subpresheaf) -> @site.Subpresheaf
 
-pub fn topology_is_valid(@symlib.FinCat, GrothendieckTopology) -> Bool
+pub fn topology_atomic(@symlib.FinCat) -> @site.GrothendieckTopology?
 
-pub fn topology_lattice_join(@symlib.FinCat, GrothendieckTopology, GrothendieckTopology) -> GrothendieckTopology
+pub fn topology_covers(@site.GrothendieckTopology, @site.Sieve) -> Bool
 
-pub fn topology_lattice_meet(@symlib.FinCat, GrothendieckTopology, GrothendieckTopology) -> GrothendieckTopology
+pub fn topology_dense(@symlib.FinCat) -> @site.GrothendieckTopology
 
-pub fn topology_of_lawvere_tierney(SubobjectClassifierData, PresheafHom) -> GrothendieckTopology
+pub fn topology_from_coverage(@symlib.FinCat, Array[(Int32, Array[Int32])]) -> @site.GrothendieckTopology
 
-pub fn topology_trivial(@symlib.FinCat) -> GrothendieckTopology
+pub fn topology_is_valid(@symlib.FinCat, @site.GrothendieckTopology) -> Bool
+
+pub fn topology_lattice_join(@symlib.FinCat, @site.GrothendieckTopology, @site.GrothendieckTopology) -> @site.GrothendieckTopology
+
+pub fn topology_lattice_meet(@symlib.FinCat, @site.GrothendieckTopology, @site.GrothendieckTopology) -> @site.GrothendieckTopology
+
+pub fn topology_of_lawvere_tierney(@site.SubobjectClassifierData, @site.PresheafHom) -> @site.GrothendieckTopology
+
+pub fn topology_trivial(@symlib.FinCat) -> @site.GrothendieckTopology
 
 pub fn torus_t2_minimal_nerve() -> SimplicialNerve
 
-pub fn verify_alexander_whitney_leibniz(SimplicialNerve, Array[@algebra.Rat], Array[@algebra.Rat]) -> Bool
+pub fn verify_alexander_whitney_leibniz(SimplicialNerve, Array[@vv0101v01/cubical-hermitian/algebra/core.Rat], Array[@vv0101v01/cubical-hermitian/algebra/core.Rat]) -> Bool
 
-pub fn verify_beck_chevalley_quantifiers(@symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf, PresheafHom, PresheafHom, Subpresheaf, Subpresheaf) -> Bool
+pub fn verify_alexandrov_grothendieck_duality() -> Bool
 
-pub fn verify_classifying_topos_universal_property(ClassifyingToposData) -> Bool
+pub fn verify_beck_chevalley_quantifiers(@symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf, @site.PresheafHom, @site.PresheafHom, @site.Subpresheaf, @site.Subpresheaf) -> Bool
+
+pub fn verify_chu_space_universal_duality() -> Bool
+
+pub fn verify_classifying_topos_universal_property(@site.ClassifyingToposData) -> Bool
 
 pub fn verify_descent_cocycle(GroupoidFibration, CoverDescentDiagram, DescentDatum) -> Bool
 
-pub fn verify_elementary_and_giraud_topos(Site) -> Bool
+pub fn verify_double_negation_presheaf_template() -> DoubleNegationTemplateReport
+
+pub fn verify_elementary_and_giraud_topos(@site.Site) -> Bool
 
 pub fn verify_elements_slice_categorification(@symlib.Presheaf) -> Bool
 
@@ -266,71 +358,66 @@ pub fn verify_euler_poincare(CochainComplexQ) -> Bool
 
 pub fn verify_general_yoneda_lemma(@symlib.Presheaf) -> Bool
 
-pub fn verify_geometric_morphism(Site, Site, @symlib.FinFunctor, @symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf) -> Bool
+pub fn verify_geometric_morphism(@site.Site, @site.Site, @symlib.FinFunctor, @symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf) -> Bool
 
-pub fn verify_geometric_normal_form_soundness(Site, SheafStructure, Int32, GeoFormula) -> Bool
+pub fn verify_geometric_normal_form_soundness(@site.Site, @site.SheafStructure, Int32, @site.GeoFormula) -> Bool
 
-pub fn verify_grothendieck_comparison_lemma(@symlib.FinFunctor, Site, @symlib.Presheaf) -> Bool
+pub fn verify_grothendieck_comparison_lemma(@symlib.FinFunctor, @site.Site, @symlib.Presheaf) -> Bool
 
 pub fn verify_open_closed_subtopos_complementarity(@symlib.Presheaf) -> SubtoposComplementReport
 
-pub fn verify_sheaf_cartesian_closed(Site, @symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf) -> Bool
+pub fn verify_sheaf_cartesian_closed(@site.Site, @symlib.Presheaf, @symlib.Presheaf, @symlib.Presheaf) -> Bool
 
-pub fn verify_sheafification_universal_property(Site, @symlib.Presheaf, @symlib.Presheaf) -> Bool
+pub fn verify_sheafification_universal_property(@site.Site, @symlib.Presheaf, @symlib.Presheaf) -> Bool
+
+pub fn verify_sieve64_sip_biheyting_and_mac_equivalence() -> Bool
 
 pub fn verify_snake_lemma_cohomology_les(CochainComplexQ, CochainComplexQ, CochainComplexQ, Array[RectQMat], Array[RectQMat]) -> Bool
 
 pub fn verify_stack_effective_descent(GroupoidFibration, CoverDescentDiagram, cap? : Int32) -> Bool
 
-pub fn verify_subobject_classifier_pullback(Site, @symlib.Presheaf, @symlib.Presheaf, PresheafHom) -> Bool
+pub fn verify_subobject_classifier_pullback(@site.Site, @symlib.Presheaf, @symlib.Presheaf, @site.PresheafHom) -> Bool
 
 pub fn wedge_s1_s1_s2_nerve() -> SimplicialNerve
 
-pub fn yoneda_elem_to_hom(@symlib.Presheaf, Int32, Int32) -> PresheafHom
+pub fn yoneda_elem_to_hom(@symlib.Presheaf, Int32, Int32) -> @site.PresheafHom
 
 // Errors
 
 // Types and methods
-pub(all) struct AbelianPresheafQ {
-  cat : @symlib.FinCat
-  dims : Array[Int32]
-  res_mats : Array[RectQMat]
+#derive(Eq, @debug.Debug)
+pub(all) struct AlexandrovSpace {
+  n : Int32
+  leq : Array[Array[Bool]]
+  opens : Array[Array[Bool]]
 }
+pub fn AlexandrovSpace::equal(Self, Self) -> Bool
+pub fn AlexandrovSpace::not_equal(Self, Self) -> Bool
+pub fn AlexandrovSpace::to_repr(Self) -> @debug.Repr
 
-pub(all) struct AtomicToposReport {
-  is_atomic : Bool
-  is_boolean : Bool
-  site_right_ore : Bool
-  representable_atom_count : Int32
+#derive(Eq, @debug.Debug)
+pub(all) struct ChuMorphism {
+  forward : Array[Int32]
+  backward : Array[Int32]
 }
+pub fn ChuMorphism::equal(Self, Self) -> Bool
+pub fn ChuMorphism::not_equal(Self, Self) -> Bool
+pub fn ChuMorphism::to_repr(Self) -> @debug.Repr
 
-pub(all) struct ClassifyingToposData {
-  theory : PropGeoTheory
-  site : Site
-  obj_theories : Array[Array[Int32]]
-  generic_prop_sheaves : Array[@symlib.Presheaf]
+#derive(Eq, @debug.Debug)
+pub(all) struct ChuSpace {
+  n_obj : Int32
+  n_state : Int32
+  k_alphabet : Int32
+  matrix : Array[Array[Int32]]
 }
+pub fn ChuSpace::equal(Self, Self) -> Bool
+pub fn ChuSpace::not_equal(Self, Self) -> Bool
+pub fn ChuSpace::to_repr(Self) -> @debug.Repr
 
 pub(all) struct CochainComplexQ {
   dims : Array[Int32]
   differentials : Array[RectQMat]
-}
-
-pub(all) struct CompactCoherentReport {
-  is_compact : Bool
-  is_coherent : Bool
-  site_has_pullbacks : Bool
-  terminal_irredundant_cover_degree : Int32
-  max_minimal_cover_arity : Int32
-  point_count : Int32
-  has_enough_points : Bool
-}
-
-pub(all) struct ConnectedToposReport {
-  is_connected : Bool
-  clopen_subobjects_of_one : Int32
-  connected_components : Int32
-  delta_two_global_sections : Int32
 }
 
 pub(all) struct CoverDescentDiagram {
@@ -346,92 +433,42 @@ pub(all) struct CoverDescentDiagram {
   cleavage_transitions : Array[Array[Int32]]
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DescentDatum {
   local_objs : Array[Int32]
   transitions : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn DescentDatum::equal(Self, Self) -> Bool
 pub fn DescentDatum::not_equal(Self, Self) -> Bool
 pub fn DescentDatum::to_repr(Self) -> @debug.Repr
 
-pub(all) struct ExponentialData {
-  exp : @symlib.Presheaf
-  prod_exp_dom : @symlib.Presheaf
-  eval_hom : PresheafHom
-  thetas_by_obj : Array[Array[PresheafHom]]
+#derive(Eq, @debug.Debug)
+pub(all) struct DoubleNegationTemplateReport {
+  lt_nucleus_valid : Bool
+  idempotent_all_sieves : Bool
+  inflationary_all_sieves : Bool
+  triple_negation_holds : Bool
+  matches_dense_topology : Bool
+  ambient_sierpinski_non_boolean : Bool
+  sheaf_subtopos_boolean : Bool
+  glivenko_holds_all_sieves : Bool
+  left_adjoint_bijection_holds : Bool
+  left_exact_terminal_and_product : Bool
+  biheyting_adjunctions_hold : Bool
+  supplement_sandwich_holds : Bool
+  spectral_projector_eigenvalues : Array[Int32]
+  omega_total_sieves : Int32
+  omega_nn_stable_sieves : Int32
+  eliminated_intermediate_sieves : Int32
 }
+pub fn DoubleNegationTemplateReport::equal(Self, Self) -> Bool
+pub fn DoubleNegationTemplateReport::not_equal(Self, Self) -> Bool
+pub fn DoubleNegationTemplateReport::to_repr(Self) -> @debug.Repr
 
 pub(all) struct FiniteGroupoid {
   cat : @symlib.FinCat
   inv : Array[Int32]
 }
-
-pub(all) struct FlatPointFunctor {
-  cat : @symlib.FinCat
-  size : Array[Int32]
-  map : Array[Array[Int32]]
-}
-
-pub(all) enum GeoAtom {
-  AtomPred(Int32, Array[Int32])
-  AtomEq(Int32, Int32)
-} derive(Eq, @debug.Debug)
-pub fn GeoAtom::equal(Self, Self) -> Bool
-pub fn GeoAtom::not_equal(Self, Self) -> Bool
-pub fn GeoAtom::to_repr(Self) -> @debug.Repr
-
-pub(all) struct GeoConjClause {
-  num_exists : Int32
-  atoms : Array[GeoAtom]
-} derive(Eq, @debug.Debug)
-pub fn GeoConjClause::equal(Self, Self) -> Bool
-pub fn GeoConjClause::not_equal(Self, Self) -> Bool
-pub fn GeoConjClause::to_repr(Self) -> @debug.Repr
-
-pub(all) enum GeoFormula {
-  GTrue
-  GFalse
-  GPred(Int32, Array[Int32])
-  GEq(Int32, Int32)
-  GAnd(GeoFormula, GeoFormula)
-  GOr(Array[GeoFormula])
-  GExists(GeoFormula)
-  GImplies(GeoFormula, GeoFormula)
-  GForall(GeoFormula)
-} derive(Eq, @debug.Debug)
-pub fn GeoFormula::equal(Self, Self) -> Bool
-pub fn GeoFormula::not_equal(Self, Self) -> Bool
-pub fn GeoFormula::to_repr(Self) -> @debug.Repr
-
-pub(all) struct GeoNormalForm {
-  free_arity : Int32
-  clauses : Array[GeoConjClause]
-} derive(Eq, @debug.Debug)
-pub fn GeoNormalForm::equal(Self, Self) -> Bool
-pub fn GeoNormalForm::not_equal(Self, Self) -> Bool
-pub fn GeoNormalForm::to_repr(Self) -> @debug.Repr
-
-pub(all) struct GeoSequent {
-  arity : Int32
-  premise : GeoFormula
-  conclusion : GeoFormula
-} derive(Eq, @debug.Debug)
-pub fn GeoSequent::equal(Self, Self) -> Bool
-pub fn GeoSequent::not_equal(Self, Self) -> Bool
-pub fn GeoSequent::to_repr(Self) -> @debug.Repr
-
-pub(all) struct GeometricTheory {
-  pred_arities : Array[Int32]
-  axioms : Array[GeoSequent]
-}
-
-pub(all) struct GrothendieckTopology {
-  nobj : Int32
-  covers : Array[Array[Sieve]]
-} derive(Eq, @debug.Debug)
-pub fn GrothendieckTopology::equal(Self, Self) -> Bool
-pub fn GrothendieckTopology::not_equal(Self, Self) -> Bool
-pub fn GrothendieckTopology::to_repr(Self) -> @debug.Repr
 
 pub(all) struct GroupoidFibration {
   base : @symlib.FinCat
@@ -439,90 +476,34 @@ pub(all) struct GroupoidFibration {
   pullbacks : Array[@symlib.FinFunctor]
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct HomotopyTypeSummary {
   pi0_components : Int32
   pi1_free_rank : Int32
   pi1_torsion_invariants : Array[Int32]
   betti_numbers : Array[Int32]
   euler_characteristic : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn HomotopyTypeSummary::equal(Self, Self) -> Bool
 pub fn HomotopyTypeSummary::not_equal(Self, Self) -> Bool
 pub fn HomotopyTypeSummary::to_repr(Self) -> @debug.Repr
 
 pub(all) struct InternalGroupTorsor {
-  site : Site
+  site : @site.Site
   carrier : @symlib.Presheaf
-  group_elems : Array[@symlib.Perm]
-  action : Array[PresheafHom]
+  group_elems : Array[@vv0101v01/cubical-hermitian/symlib/core.Perm]
+  action : Array[@site.PresheafHom]
 }
 
-pub(all) struct LocalToposReport {
-  is_local : Bool
-  global_terminal_sections : Int32
-  global_initial_sections : Int32
-  preserves_coproducts : Bool
-  preserves_coequalizers : Bool
-  focal_point : FlatPointFunctor?
-  triple_adjunction_holds : Bool
-}
-
-pub(all) struct MatchingFamily {
-  sieve : Sieve
-  values : Array[Int32]
-} derive(Eq, @debug.Debug)
-pub fn MatchingFamily::equal(Self, Self) -> Bool
-pub fn MatchingFamily::not_equal(Self, Self) -> Bool
-pub fn MatchingFamily::to_repr(Self) -> @debug.Repr
-
-pub(all) struct PresheafHom {
-  cat : @symlib.FinCat
-  dom_size : Array[Int32]
-  cod_size : Array[Int32]
-  components : Array[Array[Int32]]
-}
-
-pub(all) struct PropGeoAxiom {
-  premise_atoms : Array[Int32]
-  branches : Array[Array[Int32]]
-} derive(Eq, @debug.Debug)
-pub fn PropGeoAxiom::equal(Self, Self) -> Bool
-pub fn PropGeoAxiom::not_equal(Self, Self) -> Bool
-pub fn PropGeoAxiom::to_repr(Self) -> @debug.Repr
-
-pub(all) struct PropGeoTheory {
-  num_props : Int32
-  axioms : Array[PropGeoAxiom]
-}
-
+#derive(Eq, @debug.Debug)
 pub(all) struct RectQMat {
   nrows : Int32
   ncols : Int32
-  rows : Array[Array[@algebra.Rat]]
-} derive(Eq, @debug.Debug)
+  rows : Array[Array[@vv0101v01/cubical-hermitian/algebra/core.Rat]]
+}
 pub fn RectQMat::equal(Self, Self) -> Bool
 pub fn RectQMat::not_equal(Self, Self) -> Bool
 pub fn RectQMat::to_repr(Self) -> @debug.Repr
-
-pub(all) struct SheafStructure {
-  carrier : @symlib.Presheaf
-  pred_arities : Array[Int32]
-  relations : Array[Array[Array[Array[Int32]]]]
-}
-
-pub(all) struct SheafificationResult {
-  plus_once : @symlib.Presheaf
-  sheaf : @symlib.Presheaf
-  unit : PresheafHom
-}
-
-pub(all) struct Sieve {
-  target : Int32
-  arrows : Array[Int32]
-} derive(Eq, @debug.Debug)
-pub fn Sieve::equal(Self, Self) -> Bool
-pub fn Sieve::not_equal(Self, Self) -> Bool
-pub fn Sieve::to_repr(Self) -> @debug.Repr
 
 pub(all) struct SimplicialNerve {
   num_vertices : Int32
@@ -531,30 +512,7 @@ pub(all) struct SimplicialNerve {
   tetrahedra : Array[(Int32, Int32, Int32, Int32)]
 }
 
-pub(all) struct Site {
-  cat : @symlib.FinCat
-  topology : GrothendieckTopology
-}
-
-pub(all) struct SliceCategoryData {
-  slice_cat : @symlib.FinCat
-  obj_arrow : Array[Int32]
-  proj_obj : Array[Int32]
-  proj_mor : Array[Int32]
-}
-
-pub(all) struct SubobjectClassifierData {
-  omega : @symlib.Presheaf
-  terminal : @symlib.Presheaf
-  true_hom : PresheafHom
-  closed_sieves : Array[Array[Sieve]]
-}
-
-pub(all) struct Subpresheaf {
-  ambient : @symlib.Presheaf
-  members : Array[Array[Int32]]
-}
-
+#derive(Eq, @debug.Debug)
 pub(all) struct SubtoposComplementReport {
   open_lt_valid : Bool
   closed_lt_valid : Bool
@@ -562,11 +520,64 @@ pub(all) struct SubtoposComplementReport {
   join_is_inconsistent : Bool
   internal_lem_holds : Bool
   subtopos_boolean_complement_holds : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn SubtoposComplementReport::equal(Self, Self) -> Bool
 pub fn SubtoposComplementReport::not_equal(Self, Self) -> Bool
 pub fn SubtoposComplementReport::to_repr(Self) -> @debug.Repr
 
 // Type aliases
+pub using @site {type AtomicToposReport}
+
+pub using @site {type ClassifyingToposData}
+
+pub using @site {type CompactCoherentReport}
+
+pub using @site {type ConnectedToposReport}
+
+pub using @site {type ExponentialData}
+
+pub using @site {type FlatPointFunctor}
+
+pub using @site {type GeoAtom}
+
+pub using @site {type GeoConjClause}
+
+pub using @site {type GeoFormula}
+
+pub using @site {type GeoNormalForm}
+
+pub using @site {type GeoSequent}
+
+pub using @site {type GeometricTheory}
+
+pub using @site {type GrothendieckTopology}
+
+pub using @site {type LocalToposReport}
+
+pub using @site {type MatchingFamily}
+
+pub using @site {type PresheafHom}
+
+pub using @site {type PropGeoAxiom}
+
+pub using @site {type PropGeoTheory}
+
+pub using @site {type SheafStructure}
+
+pub using @site {type SheafificationResult}
+
+pub using @site {type Sieve}
+
+pub using @site {type Sieve64}
+
+pub using @site {type Site}
+
+pub using @site {type SitePrecomp64}
+
+pub using @site {type SliceCategoryData}
+
+pub using @site {type SubobjectClassifierData}
+
+pub using @site {type Subpresheaf}
 
 // Traits

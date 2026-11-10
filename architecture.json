@@ -7,19 +7,27 @@
       "packages": [
         "cubical-face-bdd",
         "cubical-finite",
+        "algebra-core",
         "algebra",
         "cubical-hermitian",
         "cubical-kernel",
         "cubical-elaborator",
         "cubical-homotopy",
         "cubical-store",
+        "cubical-autonomy",
+        "cubical-structures",
         "hostfs",
         "root",
         "cmd-main"
       ],
       "allowed_external_packages": [
         "condensed:gcd",
-        "condensed:condensed"
+        "condensed:condensed",
+        "symlib:symlib",
+        "topos:topos",
+        "accel:accel",
+        "accel:accel-swar",
+        "topos:topos-site"
       ],
       "summary_en": "Federation 1 — Cubical dependent type theory, computational univalence, ROBDD face lattices, Hermitian spectral projectors, exact algebraic towers, and BFT/MVCC durable execution.",
       "summary_zh": "第一聯邦 — 立方依賴型別論、計算性單值性、ROBDD 面格、Hermitian 譜投影、精確代數塔與 BFT／MVCC 持久執行。"
@@ -27,6 +35,7 @@
     {
       "id": "symlib",
       "packages": [
+        "symlib-core",
         "symlib",
         "cmd-symdemo",
         "cmd-symbench"
@@ -55,19 +64,23 @@
         "semiring-par-host",
         "cmd-semiringreport"
       ],
-      "allowed_external_packages": [],
+      "allowed_external_packages": [
+        "accel:accel-swar"
+      ],
       "summary_en": "Federation 3 — Idempotent/star/tropical semiring algebra, blocked/Lehmann matrix closures, weighted CSR graphs, and Brzozowski DFA normal forms.",
       "summary_zh": "第三聯邦 — 冪等／星閉／熱帶半環代數、分塊／Lehmann 矩陣閉包、加權 CSR 圖與 Brzozowski DFA 正規形。"
     },
     {
       "id": "topos",
       "packages": [
+        "topos-site",
         "topos"
       ],
       "allowed_external_packages": [
         "condensed:gcd",
-        "cubical:algebra",
-        "symlib:symlib"
+        "cubical:algebra-core",
+        "symlib:symlib",
+        "accel:accel-swar"
       ],
       "summary_en": "Federation 4 — Grothendieck and elementary toposes, subtopos Lawvere–Tierney nuclei, Kripke–Joyal forcing, groupoid stacks, and nerve cohomology.",
       "summary_zh": "第四聯邦 — Grothendieck 與初等 Topos、子 Topos Lawvere–Tierney 核、Kripke–Joyal 力迫、群胚疊與神經上同調。"
@@ -78,7 +91,9 @@
         "scheme"
       ],
       "allowed_external_packages": [
-        "cubical:algebra"
+        "cubical:algebra",
+        "condensed:gcd",
+        "accel:accel-swar"
       ],
       "summary_en": "Federation 5 — Multivariate Gröbner ideals, Zariski/glued schemes, Kähler differentials & Eisenbud Fitting smoothness, Serre duality, blow-ups, and Chow motives.",
       "summary_zh": "第五聯邦 — 多變量 Gröbner 理想、Zariski 黏合概形、Kähler 微分與 Eisenbud Fitting 平滑性、Serre 對偶、吹脹與 Chow 動機。"
@@ -87,14 +102,18 @@
       "id": "condensed",
       "packages": [
         "gcd",
+        "condensed-core",
         "condensed"
       ],
       "allowed_external_packages": [
-        "cubical:algebra",
+        "cubical:algebra-core",
         "symlib:symlib",
         "semiring:semiring-trop",
         "topos:topos",
-        "scheme:scheme"
+        "scheme:scheme",
+        "topos:topos-site",
+        "accel:accel-swar",
+        "symlib:symlib-core"
       ],
       "summary_en": "Federation 6 (Lower-V GCD Base + X-Overlap Condensed Pivot) — Universal Elimination-GCD (`@gcd`), 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 4 Conjectures.",
       "summary_zh": "第六聯邦（下V新最大公因數基底＋X形交疊凝聚樞紐） — 泛消元新最大公因數（`@gcd`）、凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與新猜想×4。"
@@ -103,16 +122,19 @@
       "id": "discovery",
       "packages": [
         "tensor",
+        "discovery-kernel",
         "conjecture"
       ],
       "allowed_external_packages": [
         "condensed:gcd",
-        "cubical:algebra",
+        "cubical:algebra-core",
         "symlib:symlib",
         "semiring:semiring-trop",
         "topos:topos",
         "scheme:scheme",
-        "condensed:condensed"
+        "condensed:condensed",
+        "accel:accel-swar",
+        "topos:topos-site"
       ],
       "summary_en": "Federation 7 (Multilinear Tensor Geometry & Lakatosian Conjecture Discovery Loop) — F_3 6,561-tensor Cayley hyperdeterminant & rank atlas, discrete Radon inversion, Clifford Ramond spinors & T^2 gauge moduli, non-crossing sheaves, Vietoris–Rips homology, 6 evolutionary transfer laws, 5 epistemic lenses, and 12 updated conjectures.",
       "summary_zh": "第七聯邦（多線性張量場論與 Lakatos 猜想演化創造聯邦） — F_3 全體 6,561 張量超行列式與秩圖譜、有限平面離散 Radon 反演、Clifford 拉蒙旋量與 T² 規範模空間、非交叉森林層景、VR 持續同調、6 大演化轉移定律、5 大認識論透鏡與 12 項更新猜想。"
@@ -120,17 +142,18 @@
     {
       "id": "accel",
       "packages": [
+        "accel-swar",
         "accel"
       ],
       "allowed_external_packages": [
         "condensed:gcd",
         "cubical:cubical-face-bdd",
-        "cubical:algebra",
+        "cubical:algebra-core",
         "semiring:semiring-trop",
         "discovery:tensor"
       ],
-      "summary_en": "Federation 8 (CPU SWAR & Browser Free WebGPU Frontier Acceleration) — M4RI GF(2) Gray-code GEMM, dual-rail 64-trit GF(3) bitslicing across all 6,561 2x2x2 Cayley hyperdeterminants, 64-way Face SWAR #SAT, Ozaki Scheme II INT8 DP4A CRT exact/FP64 GEMM, 32-bit RNS Stockham Auto-Sort NTT & 30-bit Montgomery REDC, Scanbox decoupled look-back prefix scan, 3-phase padded Tropical Kleene closure, HVM2 flat-arena parallel Interaction Combinators, and 7 audited W3C Browser WebGPU WGSL compute shaders.",
-      "summary_zh": "第八聯邦（CPU SWAR 與瀏覽器免費 WebGPU 前沿硬體加速聯邦） — M4RI GF(2) 格雷碼矩陣乘、雙軌 64-trit GF(3) 位切片全體 6,561 張量超行列式掃描、64 路 Face 超立方體 #SAT、Ozaki Scheme II INT8 DP4A 中國剩餘定理精確／FP64 矩陣乘、32 位 RNS Stockham 免位反轉 NTT 與 30 位 Montgomery 規約、Scanbox 解耦回看前綴掃描、三相無衝突共享記憶體熱帶 Kleene 閉包、HVM2 扁平競技場並行交互組合子，以及 7 個經靜態可移植性審計之 W3C 瀏覽器 WebGPU WGSL 計算著色器。"
+      "summary_en": "Federation 8 (CPU SWAR & Browser Free WebGPU Frontier Acceleration) — L0 zero-dependency SWAR substrate (`accel/swar`), M4RI GF(2) Gray-code GEMM & RREF, dual-rail 64-trit GF(3) bitslicing across all 6,561 2x2x2 Cayley hyperdeterminants, 64-way Face SWAR #SAT, Ozaki Scheme II INT8 DP4A CRT exact/FP64 GEMM, 32-bit RNS Stockham Auto-Sort NTT & 30-bit Montgomery REDC, Scanbox decoupled look-back prefix scan, 3-phase padded Tropical Kleene closure, HVM2 flat-arena parallel Interaction Combinators + closed Peano lambda evaluator, and 8 audited W3C Browser WebGPU WGSL compute shaders.",
+      "summary_zh": "第八聯邦（CPU SWAR 與瀏覽器免費 WebGPU 前沿硬體加速聯邦） — L0 零依賴 SWAR 硬體底層（`accel/swar`）、M4RI GF(2) 格雷碼矩陣乘與行最簡消元、雙軌 64-trit GF(3) 位切片全體 6,561 張量超行列式掃描、64 路 Face 超立方體 #SAT、Ozaki Scheme II INT8 DP4A 中國剩餘定理精確／FP64 矩陣乘、32 位 RNS Stockham 免位反轉 NTT 與 30 位 Montgomery 規約、Scanbox 解耦回看前綴掃描、三相無衝突共享記憶體熱帶 Kleene 閉包、HVM2 扁平競技場並行交互組合子與閉合 Peano λ 求值器，以及 8 個經靜態可移植性審計之 W3C 瀏覽器 WebGPU WGSL 計算著色器。"
     },
     {
       "id": "meta",
@@ -153,8 +176,8 @@
       "cmd-showcase"
     ],
     "observer": true,
-    "summary_en": "Upper-V & Star-Prism Grand Unification Apex — Seven-federation Double-V, X-Overlap & Lakatosian synthesis, complete K_7 (21/21) pairwise cross-federation bridges, Five-Federation Pentagon theorem, and 18-entry Geometry–Logic Atlas.",
-    "summary_zh": "上V與星稜柱大一統匯流頂點 — 七聯邦雙V形、X形交疊與 Lakatos 猜想演化匯流、K_7（21/21）全配對跨聯邦橋、五聯邦五角大一統定理與 18 項幾何—邏輯精細圖譜。"
+    "summary_en": "Upper-V & Nine-Federation Star-Prism Grand Unification Apex — Nine-federation Double-V, X-Overlap, Lakatosian & Metatheoretic synthesis, complete K_9 (36/36) pairwise cross-federation bridges, F7->F9->F4->F1 automated theorem promotion, Five-Federation Pentagon theorem, and 18-entry Geometry-Logic Atlas.",
+    "summary_zh": "上V與九聯邦星稜柱大一統匯流頂點 — 九聯邦雙V形、X形交疊、Lakatos 猜想演化與元理論匯流、K_9（36/36）全配對跨聯邦橋、F7→F9→F4→F1 定理自動晉升管線、五聯邦五角大一統定理與 18 項幾何—邏輯精細圖譜。"
   },
   "packages": [
     {
@@ -167,12 +190,34 @@
       "summary_zh": "下V頂點 V_1：整數、F_p[x] 多項式、F_p 子空間、ℤ-格（Hermite／Smith 範式）與多生成元 Bézout 主理想之泛消元新最大公因數。"
     },
     {
+      "id": "symlib-core",
+      "path": "symlib/core",
+      "moon": "vv0101v01/cubical-hermitian/symlib/core",
+      "layer": 0,
+      "depends_on": [],
+      "summary_en": "Layer-0 zero-dependency symmetry core: 64-bit SWAR BitVec, unbounded PermLut, Schreier–Sims PermGroup, individualization-refinement McKay search, and graph automorphisms.",
+      "summary_zh": "L0 零依賴對稱核心：64-bit SWAR 位向量、無度數上限 PermLut、Schreier–Sims 置換群、個體化精煉搜索引擎與圖自同構群。"
+    },
+    {
+      "id": "algebra-core",
+      "path": "algebra/core",
+      "moon": "vv0101v01/cubical-hermitian/algebra/core",
+      "layer": 1,
+      "depends_on": [
+        "gcd",
+        "accel-swar"
+      ],
+      "summary_en": "L1 Core Exact Algebra: arbitrary-precision BigInt rationals (Rat), univariate/symbolic polynomials (Poly, QPoly), and QMat linear algebra with Int64 SWAR, Ozaki-II INT8 DP4A multi-prime CRT GEMM, and fraction-free Bareiss determinants.",
+      "summary_zh": "L1 精確代數核心層：任意精度有理數（Rat）、單變量／符號多項式（Poly、QPoly），以及具備 Int64 快徑、Ozaki-II INT8 DP4A 多素數 CRT 矩陣乘與無分數 Bareiss 行列式之 QMat 線性代數。"
+    },
+    {
       "id": "algebra",
       "path": "algebra",
       "moon": "vv0101v01/cubical-hermitian/algebra",
-      "layer": 1,
+      "layer": 2,
       "depends_on": [
-        "gcd"
+        "gcd",
+        "algebra-core"
       ],
       "summary_en": "Exact rational/algebraic computation: symbolic polynomials, Q-linear algebra, algebraic numbers, Jordan theory, spectral identities, certified Jacobi intervals, Liouville transcendence certificates, and division-free Berkowitz-CRT charpoly.",
       "summary_zh": "精確有理／代數計算：符號多項式、Q 線性代數、代數數、Jordan 理論、譜恆等、認證 Jacobi 區間、Liouville 超越否證證書與無除法 Berkowitz–CRT 特徵多項式。"
@@ -183,8 +228,8 @@
       "moon": "vv0101v01/cubical-hermitian/cubical/face_bdd",
       "layer": 0,
       "depends_on": [],
-      "summary_en": "De Morgan interval dimensions, face formulas, canonical/DAG ROBDDs, watched-literal CDCL with DRUP/DRAT/LRAT proofs, and frontier-cutwidth #SAT.",
-      "summary_zh": "De Morgan 區間維度、面公式、規範／DAG ROBDD、雙監視字元 CDCL（DRUP／DRAT／LRAT 證書）與前沿割寬 #SAT。"
+      "summary_en": "Kalman dual-rail free De Morgan interval I_DM, free CCHM cofibration lattice Cofib(n), 64-bit UInt64 SWAR truth-word fast-path, canonical/DAG ROBDDs, watched-literal CDCL with DRUP/DRAT/LRAT proofs, and frontier-cutwidth #SAT.",
+      "summary_zh": "Kalman 雙軌自由 De Morgan 區間 I_DM、自由 CCHM 上纖維化格 Cofib(n)、64 位 UInt64 SWAR 真值快徑、規範／DAG ROBDD、雙監視字元 CDCL（DRUP／DRAT／LRAT 證書）與前沿割寬 #SAT。"
     },
     {
       "id": "cubical-finite",
@@ -201,7 +246,7 @@
       "id": "cubical-hermitian",
       "path": "cubical/hermitian",
       "moon": "vv0101v01/cubical-hermitian/cubical/hermitian",
-      "layer": 2,
+      "layer": 3,
       "depends_on": [
         "cubical-face-bdd",
         "cubical-finite",
@@ -240,7 +285,7 @@
       "layer": 3,
       "depends_on": [
         "gcd",
-        "algebra",
+        "algebra-core",
         "cubical-face-bdd",
         "cubical-finite",
         "cubical-kernel"
@@ -252,9 +297,9 @@
       "id": "cubical-store",
       "path": "cubical/store",
       "moon": "vv0101v01/cubical-hermitian/cubical/store",
-      "layer": 5,
+      "layer": 3,
       "depends_on": [
-        "condensed",
+        "gcd",
         "cubical-face-bdd",
         "cubical-kernel"
       ],
@@ -262,10 +307,47 @@
       "summary_zh": "分離模組編譯、intern-DAG 與 Schema 二進位編解碼、認證 WAL 工件儲存庫、Ed25519 拜占庭法定人數持久層與 Tarjan 強連通分量 MVCC 原子熱替換。"
     },
     {
+      "id": "cubical-autonomy",
+      "path": "cubical/autonomy",
+      "moon": "vv0101v01/cubical-hermitian/cubical/autonomy",
+      "layer": 5,
+      "depends_on": [
+        "gcd",
+        "cubical-face-bdd",
+        "cubical-kernel",
+        "cubical-elaborator",
+        "cubical-homotopy",
+        "symlib",
+        "topos",
+        "accel"
+      ],
+      "summary_en": "Constructive universal algebra autonomy (Mal'cev one-step congruence permutability, quotient algebras, absorbing vs pointed zero dichotomy), affine & bi-De Morgan cubical sets, Kripke-Alexandrov validity, degeneracy trees, free Moore paths, 5D alternating boundaries, bidirectional NF pruning, and double-negation presheaf gluing.",
+      "summary_zh": "構造性泛代數自主類型論（瑪爾切夫一步同餘可換、商代數、吸收零與點化零二分）、仿射與雙德摩根立方集、Kripke–亞歷山德羅夫類型有效性、退化樹、變長 Moore 自由路徑、5 維交錯面微分、雙向範式修剪與雙重否定核預層黏合。"
+    },
+    {
+      "id": "cubical-structures",
+      "path": "cubical/structures",
+      "moon": "vv0101v01/cubical-hermitian/cubical/structures",
+      "layer": 6,
+      "depends_on": [
+        "gcd",
+        "cubical-face-bdd",
+        "cubical-kernel",
+        "cubical-elaborator",
+        "cubical-homotopy",
+        "cubical-autonomy",
+        "symlib",
+        "topos",
+        "accel"
+      ],
+      "summary_en": "All 54 higher cubical structures (Swan strict constant-extent Id, free path fibration, 65,536-cube Eilenberg-Zilber split, affine bidirectional & LJF focusing, polynomial container Yoneda & SIP, Galois covering correspondence, torus/RP^2 torsion, HOU motive reconstruction, matroid boundary repair, computational reflection) coupled with the 26-verb x 14-composition interaction atlas.",
+      "summary_zh": "全體 54 項高階立方結構（Swan 常數範圍嚴格相等類型、自由路徑纖維化、65,536 個 4-立方體 Eilenberg–Zilber 分裂、仿射雙向與極性聚焦搜尋、多項式容器米田與結構恆等原則 SIP、覆蓋空間伽羅瓦對應、環面與實射影平面撓率、高階合一動機重構、擬陣邊界修補、內部計算反射）及 26 運算動詞 × 14 範疇組合交互圖譜。"
+    },
+    {
       "id": "root",
       "path": ".",
       "moon": "vv0101v01/cubical-hermitian",
-      "layer": 6,
+      "layer": 7,
       "depends_on": [
         "gcd",
         "algebra",
@@ -277,7 +359,9 @@
         "cubical-kernel",
         "cubical-elaborator",
         "cubical-homotopy",
-        "cubical-store"
+        "cubical-store",
+        "cubical-autonomy",
+        "cubical-structures"
       ],
       "summary_en": "Thin compatibility facade re-exporting curated @cub entry points plus executable theorem/law verification registry.",
       "summary_zh": "極薄相容門面（重導出精選跨聯邦 @cub 入口）與可執行定理／定律登記總表。"
@@ -286,7 +370,7 @@
       "id": "cmd-main",
       "path": "cmd/main",
       "moon": "vv0101v01/cubical-hermitian/cmd/main",
-      "layer": 7,
+      "layer": 8,
       "depends_on": [
         "root"
       ],
@@ -298,7 +382,9 @@
       "path": "symlib",
       "moon": "vv0101v01/cubical-hermitian/symlib",
       "layer": 1,
-      "depends_on": [],
+      "depends_on": [
+        "symlib-core"
+      ],
       "summary_en": "Finite symmetry: graph canonical forms, automorphism groups, finite categories, presheaves, G-sets and executable certificates.",
       "summary_zh": "有限對稱：圖規範形、自同構群、有限範疇、預層、G-集與可執行證書。"
     },
@@ -340,7 +426,8 @@
       "layer": 2,
       "depends_on": [
         "semiring-algebra",
-        "semiring-par"
+        "semiring-par",
+        "accel-swar"
       ],
       "summary_en": "Generic dense/CSR matrices over semiring carriers, blocked kernels and Kleene-star closures.",
       "summary_zh": "半環係數泛型稠密／CSR 矩陣、分塊核與 Kleene 星閉包。"
@@ -415,11 +502,15 @@
       "id": "semiring-app",
       "path": "semiring/app",
       "moon": "vv0101v01/cubical-hermitian/semiring/app",
-      "layer": 3,
+      "layer": 4,
       "depends_on": [
         "semiring-algebra",
         "semiring-matrix",
-        "semiring-sim"
+        "semiring-sim",
+        "semiring-trop",
+        "semiring-graph",
+        "semiring-bp",
+        "semiring-nf"
       ],
       "summary_en": "Algebraic path problems with independent implementation arbitration.",
       "summary_zh": "代數路徑問題與多實作仲裁。"
@@ -477,11 +568,12 @@
       "id": "topos",
       "path": "topos",
       "moon": "vv0101v01/cubical-hermitian/topos",
-      "layer": 2,
+      "layer": 3,
       "depends_on": [
         "gcd",
-        "algebra",
-        "symlib"
+        "algebra-core",
+        "symlib",
+        "topos-site"
       ],
       "summary_en": "Grothendieck and elementary toposes: sites, sieves, sheafification, Cartesian closedness, subobject classifiers, Lawvere–Tierney & open/closed subtopos nuclei, essential geometric morphisms (Lan ⊣ u* ⊣ Ran), dense Comparison Lemma, Diaconescu points & internal G-torsors, local/connected/atomic/coherent invariants, geometric logic & classifying toposes, groupoid stacks, sheaf cohomology, Alexander–Whitney cup-product rings and simplicial nerve homotopy types.",
       "summary_zh": "Grothendieck 與一般拓撲斯：景、篩、層化、笛卡兒閉性、子物件分類子、Lawvere–Tierney 與開閉子拓撲斯核、本徵幾何態射（Lan⊣u*⊣Ran）、稠密比較引理、Diaconescu 點與內蘊 G-主叢、局部／連通／原子／緊緻相干性質、幾何邏輯與分類 Topos、廣群棧、層上同調、Alexander–Whitney 杯積環與單純神經同倫類型。"
@@ -490,21 +582,24 @@
       "id": "scheme",
       "path": "scheme",
       "moon": "vv0101v01/cubical-hermitian/scheme",
-      "layer": 2,
+      "layer": 3,
       "depends_on": [
+        "gcd",
+        "accel-swar",
         "algebra"
       ],
-      "summary_en": "Algebraic schemes and motives: Buchberger reduced Gröbner bases, elimination/saturation/radical ideals, Zariski partition-of-unity sheafification, reduced schemes, Kähler differentials Ω^1_{B/A}, Fitting/Jacobian ideals, Tjurina numbers & étale criteria, glued schemes and morphisms, affine morphisms, diagonal separatedness, DVR Laurent properness, Macaulay–Taylor Hilbert polynomials, Rees blow-up desingularization, rational equivalence & Bézout, Serre dualizing complexes, functor of points, F_{p^2} Frobenius descent and Chow correspondences.",
-      "summary_zh": "代數概形與動機：Buchberger 約化 Gröbner 基、消元／飽和／根理想、Zariski 單位分解層化、既約概形、Kähler 微分模 Ω^1_{B/A}、Fitting／Jacobi 理想、Tjurina 數與平展判準、黏合概形與態射、仿射態射、對角分離性、DVR Laurent 真概形判定、Macaulay–Taylor Hilbert 多項式、Rees 爆炸奇點解消、有理等價與 Bézout、Serre 對偶複形、點函子法、F_{p^2} Frobenius 下降與 Chow 對應。"
+      "summary_en": "Algebraic schemes and motives: 64-bit SWAR Mono64 monomials, Yan geobuckets, Gebauer–Möller criteria, M4RI GF(2) & multi-prime CRT F4 Gröbner bases, Grassmann–Plücker O(k·2^k) / Samuelson–Berkowitz O(k^4) polynomial determinants, Zariski sheafification, Kähler differentials Ω^1_{B/A}, Fitting smoothness, glued schemes, Hilbert polynomials, blow-up desingularization, Serre duality, and Chow correspondences.",
+      "summary_zh": "代數概形與動機：64 位 SWAR Mono64 單項式、Yan 地理桶、Gebauer–Möller 判準、M4RI GF(2) 與多素數 CRT F4 Gröbner 基、Grassmann–Plücker O(k·2^k)／Samuelson–Berkowitz O(k^4) 多項式行列式、Zariski 層化、Kähler 微分模 Ω^1_{B/A}、Fitting 平滑性、黏合概形、Hilbert 多項式、爆炸奇點解消、Serre 對偶與 Chow 對應。"
     },
     {
       "id": "condensed",
       "path": "condensed",
       "moon": "vv0101v01/cubical-hermitian/condensed",
-      "layer": 3,
+      "layer": 4,
       "depends_on": [
+        "condensed-core",
         "gcd",
-        "algebra",
+        "algebra-core",
         "symlib",
         "semiring-trop",
         "topos",
@@ -519,7 +614,8 @@
       "moon": "vv0101v01/cubical-hermitian/tensor",
       "layer": 2,
       "depends_on": [
-        "gcd"
+        "gcd",
+        "accel-swar"
       ],
       "summary_en": "Federation 7 Multilinear Tensor, Discrete Radon, Clifford Spinor/Gauge, Non-Crossing Forest, Vietoris–Rips Homology & Krasner Hyper-Structure engine.",
       "summary_zh": "第七聯邦多線性張量超行列式、離散 Radon 變換、Clifford 拉蒙旋量與規範場、非交叉森林、Vietoris–Rips 持續同調與 Krasner 超結構引擎。"
@@ -531,13 +627,14 @@
       "layer": 5,
       "depends_on": [
         "gcd",
-        "algebra",
+        "algebra-core",
         "symlib",
         "semiring-trop",
         "topos",
         "scheme",
         "condensed",
-        "tensor"
+        "tensor",
+        "discovery-kernel"
       ],
       "summary_en": "Federation 7 Lakatosian Conjecture & Theorem-Creation Engine: [E-Derive]+[P-Transfer] evolutionary discovery across 6 trajectories, 5 epistemic relational lenses with CondInvariantLedger sealing, and 12 updated cross-federation conjectures.",
       "summary_zh": "第七聯邦 Lakatos 猜想演化與定理創造引擎：6 大軌跡 [E-Derive]+[P-Transfer] 守恆律自動發現、寫入持久賬本之 5 大認識論關係透鏡與 12 項跨聯邦更新猜想。"
@@ -546,7 +643,7 @@
       "id": "bridge",
       "path": "bridge",
       "moon": "vv0101v01/cubical-hermitian/bridge",
-      "layer": 7,
+      "layer": 8,
       "depends_on": [
         "gcd",
         "root",
@@ -563,24 +660,34 @@
         "condensed",
         "tensor",
         "conjecture",
-        "accel"
+        "accel",
+        "cubical-autonomy",
+        "cubical-structures",
+        "accel-swar",
+        "topos-site",
+        "discovery-kernel",
+        "meta-core",
+        "meta-instances",
+        "meta-iit",
+        "meta-reflect",
+        "semiring-app"
       ],
-      "summary_en": "Upper-V & Star-Prism Apex V_2: Double-V, X-Overlap & Lakatosian synthesis, complete K_7 (21/21) cross-federation bridges across 7 federations, logical theory translations, and 18-entry geometry-logic correspondence atlas.",
-      "summary_zh": "上V與星稜柱頂點 V_2：雙V形、X形交疊與 Lakatos 猜想演化匯流、七聯邦 K_7（21/21）全配對跨聯邦橋、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜。"
+      "summary_en": "Upper-V & Nine-Federation Star-Prism Apex V_2: complete K_9 (36/36) cross-federation bridges across all 9 federations, F7->F9->F4->F1 automated theorem promotion, logical theory translations, and 18-entry geometry-logic correspondence atlas.",
+      "summary_zh": "上V與九聯邦星稜柱頂點 V_2：九聯邦 K_9（36/36）全配對跨聯邦橋、F7→F9→F4→F1 定理自動晉升管線、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜。"
     },
     {
       "id": "cmd-showcase",
       "path": "cmd/showcase",
       "moon": "vv0101v01/cubical-hermitian/cmd/showcase",
-      "layer": 8,
+      "layer": 9,
       "depends_on": [
         "bridge",
         "semiring-graph",
         "symlib",
         "root"
       ],
-      "summary_en": "Executable six-federation Double-V & X-Overlap showcase.",
-      "summary_zh": "六聯邦雙V形與X形交疊大一統展示執行入口。"
+      "summary_en": "Executable nine-federation K_9 Star-Prism & F7->F9->F4->F1 theorem-promotion showcase.",
+      "summary_zh": "九聯邦 K_9 星稜柱與 F7→F9→F4→F1 定理自動晉升大一統展示執行入口。"
     },
     {
       "id": "semiring-par-host",
@@ -633,9 +740,10 @@
       "moon": "vv0101v01/cubical-hermitian/accel",
       "layer": 4,
       "depends_on": [
+        "accel-swar",
         "gcd",
         "cubical-face-bdd",
-        "algebra",
+        "algebra-core",
         "semiring-trop",
         "tensor"
       ],
@@ -698,6 +806,52 @@
       ],
       "summary_en": "Executable law table for the meta federation: every claimed proposition is recomputed and printed.",
       "summary_zh": "meta 聯邦的可執行定律總表：每一條宣稱的命題都被重新計算並印出。"
+    },
+    {
+      "id": "accel-swar",
+      "path": "accel/swar",
+      "moon": "vv0101v01/cubical-hermitian/accel/swar",
+      "layer": 0,
+      "depends_on": [],
+      "summary_en": "L0 Zero-Dependency 64-Bit SWAR & Hardware Substrate: M4RI GF(2) GEMM/RREF, dual-rail GF(3) 64-trit hyperdeterminant sweep, 64-way Face #SAT, Ozaki-II INT8 DP4A CRT GEMM, 32-bit RNS Stockham NTT & Montgomery REDC, Scanbox/Morton prefix scan, HVM2 flat-arena INet + Peano evaluator, and bi-Heyting sieves.",
+      "summary_zh": "L0 零依賴 64 位 SWAR 與硬體底層：M4RI GF(2) 矩陣乘／RREF、雙軌 GF(3) 64-trit 超行列式掃描、64 路 Face #SAT、Ozaki-II INT8 DP4A CRT 矩陣乘、32 位 RNS Stockham NTT 與 Montgomery 規約、Scanbox／Morton 前綴掃描、HVM2 扁平競技場交互網路與 Peano 求值器，以及雙 Heyting 篩。"
+    },
+    {
+      "id": "topos-site",
+      "path": "topos/site",
+      "moon": "vv0101v01/cubical-hermitian/topos/site",
+      "layer": 2,
+      "depends_on": [
+        "symlib",
+        "accel-swar"
+      ],
+      "summary_en": "L2 Linear-Algebra-Free Grothendieck Site & Sheaf Engine: Sieve64 64-bit SWAR bi-Heyting subobject classifier & LT nuclei, MAC forward-checking matching families, CCC exponentials, Kan extensions, Diaconescu G-torsors, and Kripke-Joyal geometric logic.",
+      "summary_zh": "L2 無線性代數依賴 Grothendieck 景與層引擎：Sieve64 64 位 SWAR 雙 Heyting 子物件分類子與 LT 核、MAC 前向檢查相容族、笛卡兒閉指數、Kan 擴張、Diaconescu G-主叢與 Kripke–Joyal 幾何邏輯。"
+    },
+    {
+      "id": "discovery-kernel",
+      "path": "conjecture/kernel",
+      "moon": "vv0101v01/cubical-hermitian/conjecture/kernel",
+      "layer": 3,
+      "depends_on": [
+        "gcd",
+        "accel-swar",
+        "tensor"
+      ],
+      "summary_en": "L3 Federation-Neutral Lakatosian Discovery Kernel: Half-GCD certified modular rational reconstruction, multi-prime F_p nullspace relation synthesis [E-Derive], and 64-bit SWAR bitplane implication lattice with ctz minimal counterexamples.",
+      "summary_zh": "L3 聯邦中立 Lakatos 定律發現核心：Half-GCD 認證模有理重構、多素數 F_p 核空間守恆律推導 [E-Derive] 與 64 位 SWAR 位平面蘊含格及 ctz 極小反例。"
+    },
+    {
+      "id": "condensed-core",
+      "path": "condensed/core",
+      "moon": "vv0101v01/cubical-hermitian/condensed/core",
+      "layer": 1,
+      "depends_on": [
+        "gcd",
+        "accel-swar"
+      ],
+      "summary_en": "Layer-1 Condensed & Homotopy core: profinite/compact towers, constructive Nöbeling unimodular basis, Solid/p-Liquid modules, Roos–Milnor R^1 lim, and 64-bit @swar Steenrod–Adams minimal resolutions.",
+      "summary_zh": "L1 凝聚與同倫核心：有限／緊緻射影極限塔、構造性 Nöbeling 單模基底、固態與 p-液態模、Roos–Milnor R¹lim 與 64-bit @swar Steenrod–Adams 極小分解。"
     }
   ],
   "components": [
@@ -711,6 +865,17 @@
       "depends_on": [],
       "summary_en": "De Morgan dimensions, face formulas, ROBDDs and DAG BDD decisions.",
       "summary_zh": "De Morgan 維度、面公式、ROBDD 與 DAG BDD 判定。"
+    },
+    {
+      "id": "symlib-base",
+      "package": "symlib-core",
+      "layer": 0,
+      "files": [
+        "symlib/core/*.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Layer-0 zero-dependency symmetry & graph canonicalization engine.",
+      "summary_zh": "L0 零依賴置換群與圖規範形搜索引擎。"
     },
     {
       "id": "numeric-hermitian",
@@ -730,13 +895,24 @@
       "summary_zh": "浮點複線性代數、Hermitian 投影、向量偏系統與剪枝仿射立方體。"
     },
     {
-      "id": "exact-algebra",
-      "package": "algebra",
+      "id": "algebra-core",
+      "package": "algebra-core",
       "layer": 1,
       "files": [
-        "algebra/symalg.mbt",
-        "algebra/qpoly.mbt",
-        "algebra/qmat.mbt",
+        "algebra/core/*.mbt"
+      ],
+      "depends_on": [
+        "gcd-core",
+        "accel-swar"
+      ],
+      "summary_en": "L1 physically split core exact algebra component: Rat, Poly, QPoly, QMat (Int64 fast-path, Ozaki-II DP4A CRT GEMM, Bareiss det), and Newton BigInt square roots.",
+      "summary_zh": "L1 實體分離精確代數核心組件：Rat、Poly、QPoly、QMat（Int64 快徑、Ozaki-II DP4A CRT 矩陣乘、Bareiss 行列式）與 BigInt 牛頓整數平方根。"
+    },
+    {
+      "id": "exact-algebra",
+      "package": "algebra",
+      "layer": 2,
+      "files": [
         "algebra/algnum.mbt",
         "algebra/Jordan.mbt",
         "algebra/spectral_symbolic.mbt",
@@ -751,9 +927,13 @@
         "algebra/tower_fields.mbt",
         "algebra/multiquad_tower.mbt",
         "algebra/hensel_multiquad_deflation.mbt",
-        "algebra/lll_van_hoeij_rouche.mbt"
+        "algebra/lll_van_hoeij_rouche.mbt",
+        "algebra/reexport_core.mbt"
       ],
-      "depends_on": [],
+      "depends_on": [
+        "gcd-core",
+        "algebra-core"
+      ],
       "summary_en": "A physically separate exact-algebra MoonBit package: BigInt rationals, complete Q-factorization, real/complex root isolation, splitting fields, radical denesting, multiquadratic tower fields and arbitrary-precision Jacobi intervals.",
       "summary_zh": "已實體拆出的精確代數 MoonBit 套件：BigInt 有理數、Q 上完整因式分解、實／複根隔離、分裂域、根式去巢、多二次塔體與任意精度 Jacobi 區間。"
     },
@@ -814,7 +994,8 @@
         "foundation",
         "numeric-hermitian",
         "finite-cubical",
-        "exact-algebra"
+        "exact-algebra",
+        "algebra-core"
       ],
       "summary_en": "Cross-domain categorical/Hermitian models: syntactic categories, general finite/subspace Glue composition, exact numeric shadows and certified algebra over general algebraic extensions.",
       "summary_zh": "跨域範疇／Hermitian 模型：句法範疇、有限／子空間 Glue comp、精確數值影子與一般代數擴張上的認證代數。"
@@ -871,7 +1052,7 @@
         "foundation",
         "finite-cubical",
         "dependent-kernel",
-        "exact-algebra",
+        "algebra-core",
         "dependent-kan-lines"
       ],
       "summary_en": "High-level cubical constructions and algorithms: spheres and homotopy representatives, propositional truncation, adjoint-equivalence data, transport/path algebra, path-to-equivalence and computational univalence certificates.",
@@ -894,7 +1075,7 @@
     {
       "id": "registry",
       "package": "root",
-      "layer": 10,
+      "layer": 11,
       "files": [
         "facade.mbt",
         "spec.mbt",
@@ -909,7 +1090,7 @@
     {
       "id": "app",
       "package": "cmd-main",
-      "layer": 11,
+      "layer": 12,
       "files": [
         "cmd/main/main.mbt"
       ],
@@ -926,7 +1107,9 @@
       "files": [
         "symlib/*.mbt"
       ],
-      "depends_on": [],
+      "depends_on": [
+        "symlib-base"
+      ],
       "summary_en": "Imported algorithm03 core. It remains independent of the cubical and semiring pillars; all cross-pillar use is in bridge/showcase layers.",
       "summary_zh": "搬入的 algorithm03 核心，保持不依賴 cubical 與 semiring 支柱；跨支柱使用只放在 bridge／showcase 層。"
     },
@@ -965,7 +1148,8 @@
       ],
       "depends_on": [
         "semiring-algebra",
-        "semiring-par"
+        "semiring-par",
+        "accel-swar"
       ],
       "summary_en": "Generic dense/CSR matrices over semiring carriers, blocked kernels and Kleene-star closures.",
       "summary_zh": "半環係數泛型稠密／CSR 矩陣、分塊核與 Kleene 星閉包。"
@@ -1051,14 +1235,18 @@
     {
       "id": "semiring-app",
       "package": "semiring-app",
-      "layer": 3,
+      "layer": 4,
       "files": [
         "semiring/app/*.mbt"
       ],
       "depends_on": [
         "semiring-algebra",
         "semiring-matrix",
-        "semiring-sim"
+        "semiring-sim",
+        "semiring-trop",
+        "semiring-graph",
+        "semiring-bp",
+        "semiring-nf"
       ],
       "summary_en": "Algebraic path problems with independent implementation arbitration.",
       "summary_zh": "代數路徑問題與多實作仲裁。"
@@ -1125,14 +1313,17 @@
     {
       "id": "topos-core",
       "package": "topos",
-      "layer": 3,
+      "layer": 4,
       "files": [
         "topos/*.mbt"
       ],
       "depends_on": [
         "gcd-core",
-        "exact-algebra",
-        "symlib-core"
+        "algebra-core",
+        "symlib-core",
+        "topos-site",
+        "accel-swar",
+        "symlib-base"
       ],
       "summary_en": "Grothendieck and elementary topos engine: sites, sheaves, CCC, subobject classifiers, open/closed subtopos nuclei, essential geometric morphisms (Lan ⊣ u* ⊣ Ran), dense Comparison Lemma, internal G-torsors, local/connected/atomic/coherent invariants, geometric logic & classifying toposes, stacks, sheaf cohomology, cup-product rings and homotopy types.",
       "summary_zh": "Grothendieck 與一般拓撲斯核心引擎：景、層、笛卡兒閉性、子物件分類子、開閉子拓撲斯核、本徵幾何態射（Lan⊣u*⊣Ran）、稠密比較引理、內蘊 G-主叢、局部／連通／原子／相干性質、幾何邏輯與分類 Topos、棧、層上同調、杯積環與同倫類型。"
@@ -1140,11 +1331,14 @@
     {
       "id": "scheme-core",
       "package": "scheme",
-      "layer": 3,
+      "layer": 4,
       "files": [
         "scheme/*.mbt"
       ],
       "depends_on": [
+        "gcd-core",
+        "accel-swar",
+        "algebra-core",
         "exact-algebra"
       ],
       "summary_en": "Algebraic scheme and motive engine: reduced Gröbner bases, Zariski sheafification, reduced schemes, Kähler differentials & étale criteria, Tjurina numbers, glued schemes & morphisms, affine morphisms, separatedness & DVR properness, Hilbert polynomials, blow-up desingularization, rational equivalence, dualizing complexes, functor of points, F_{p^2} Frobenius descent and Chow correspondences.",
@@ -1153,7 +1347,7 @@
     {
       "id": "bridge",
       "package": "bridge",
-      "layer": 12,
+      "layer": 13,
       "files": [
         "bridge/*.mbt"
       ],
@@ -1161,13 +1355,13 @@
         "*"
       ],
       "observer": true,
-      "summary_en": "Five-federation grand unification, K_5 cross-federation bridges, logical theory translation, and 18-entry geometry-logic correspondence atlas. No federation may depend back on this component.",
-      "summary_zh": "五聯邦大一統、K_5 全配對跨聯邦橋、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜；下層聯邦不得反向依賴此元件。"
+      "summary_en": "Nine-federation K_9 (36/36) grand unification, F7->F9->F4->F1 theorem promotion, logical theory translation, and 18-entry geometry-logic correspondence atlas. No federation may depend back on this component.",
+      "summary_zh": "九聯邦 K_9（36/36）大一統、F7→F9→F4→F1 定理自動晉升、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜；下層聯邦不得反向依賴此元件。"
     },
     {
       "id": "showcase-app",
       "package": "cmd-showcase",
-      "layer": 13,
+      "layer": 14,
       "files": [
         "cmd/showcase/*.mbt"
       ],
@@ -1175,8 +1369,8 @@
         "*"
       ],
       "observer": true,
-      "summary_en": "Five-federation grand unification executable showcase.",
-      "summary_zh": "五聯邦大一統展示執行入口。"
+      "summary_en": "Nine-federation K_9 Star-Prism & F7->F9->F4->F1 theorem-promotion executable showcase.",
+      "summary_zh": "九聯邦 K_9 星稜柱與 F7→F9→F4→F1 定理晉升大一統展示執行入口。"
     },
     {
       "id": "semiring-par-host",
@@ -1208,13 +1402,14 @@
     {
       "id": "transcendental",
       "package": "algebra",
-      "layer": 2,
+      "layer": 3,
       "files": [
         "algebra/transcendental.mbt",
         "algebra/liouville_schanuel_berkowitz.mbt"
       ],
       "depends_on": [
         "gcd-core",
+        "algebra-core",
         "exact-algebra"
       ],
       "summary_en": "Certified transcendental & division-free determinant layer: rigorous rational enclosures for e and pi, arbitrary-degree Liouville transcendence refutation certificates, Schanuel Q-rank witnesses, and Berkowitz-CRT division-free charpoly.",
@@ -1232,7 +1427,7 @@
         "dependent-kernel",
         "module-store",
         "foundation",
-        "condensed-core"
+        "gcd-core"
       ],
       "summary_en": "Runtime hot loading for the compiled module environment: interface-hash gating, transactional swaps with consistency verification and rollback, and an audit log of every attempt.",
       "summary_zh": "已編譯模組環境的執行期熱載入：介面雜湊閘控、帶一致性驗證與回滾的交易式替換，以及每次嘗試的稽核日誌。"
@@ -1316,7 +1511,7 @@
         "foundation",
         "finite-cubical",
         "dependent-kernel",
-        "exact-algebra",
+        "algebra-core",
         "cubical",
         "gcd-core",
         "associahedron"
@@ -1338,17 +1533,20 @@
     {
       "id": "condensed-core",
       "package": "condensed",
-      "layer": 4,
+      "layer": 5,
       "files": [
         "condensed/*.mbt"
       ],
       "depends_on": [
         "gcd-core",
-        "exact-algebra",
+        "algebra-core",
         "symlib-core",
         "semiring-trop",
         "topos-core",
-        "scheme-core"
+        "scheme-core",
+        "topos-site",
+        "condensed-base",
+        "symlib-base"
       ],
       "summary_en": "X-Overlap Condensed Mathematics core: 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 4 Conjectures.",
       "summary_zh": "X形交疊凝聚數學核心：凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與新猜想×4。"
@@ -1361,7 +1559,8 @@
         "tensor/*.mbt"
       ],
       "depends_on": [
-        "gcd-core"
+        "gcd-core",
+        "accel-swar"
       ],
       "summary_en": "Multilinear 2x2x2 hyperdeterminants & F_3 6561-tensor rank atlas, discrete Radon transform & inversion, Clifford Ramond spinors & torus gauge moduli, non-crossing chord sheaves, Vietoris–Rips persistent homology, and Krasner hyper-structures.",
       "summary_zh": "多線性 2×2×2 超行列式與 F_3 6561 張量秩圖譜、離散 Radon 變換與反演、Clifford 拉蒙旋量與環面規範場模空間、非交叉弦層景、Vietoris–Rips 持續同調與 Krasner 超結構。"
@@ -1375,13 +1574,18 @@
       ],
       "depends_on": [
         "gcd-core",
-        "exact-algebra",
+        "algebra-core",
         "symlib-core",
         "semiring-trop",
         "topos-core",
         "scheme-core",
         "condensed-core",
-        "tensor-core"
+        "tensor-core",
+        "discovery-kernel",
+        "topos-site",
+        "accel-swar",
+        "symlib-base",
+        "condensed-base"
       ],
       "summary_en": "Lakatosian Conjecture & Theorem-Creation Engine: [E-Derive]+[P-Transfer] evolutionary discovery across 6 trajectories, 5 epistemic relational lenses, and 12 updated cross-federation conjectures.",
       "summary_zh": "Lakatos 猜想演化與定理創造引擎：6 大軌跡 [E-Derive]+[P-Transfer] 守恆律自動發現、5 大認識論關係透鏡與 12 項跨聯邦更新猜想。"
@@ -1394,14 +1598,70 @@
         "accel/*.mbt"
       ],
       "depends_on": [
+        "accel-swar",
         "gcd-core",
         "foundation",
-        "exact-algebra",
+        "algebra-core",
         "semiring-trop",
         "tensor-core"
       ],
       "summary_en": "Frontier CPU SWAR & Browser Free WebGPU (WGSL) hardware-acceleration algorithms cross-verified bit-for-bit against Federations 1, 3, 6, and 7.",
       "summary_zh": "前沿 CPU SWAR 與瀏覽器免費 WebGPU（WGSL）硬體加速算法核心，與第 1、3、6、7 聯邦逐位對齊驗證。"
+    },
+    {
+      "id": "cubical-autonomy",
+      "package": "cubical-autonomy",
+      "layer": 9,
+      "files": [
+        "cubical/autonomy/*.mbt"
+      ],
+      "depends_on": [
+        "gcd-core",
+        "foundation",
+        "dependent-kernel",
+        "dependent-kan-lines",
+        "elaborator-core",
+        "hou-match",
+        "cubical",
+        "associahedron",
+        "homotopy-universal",
+        "symlib-core",
+        "topos-core",
+        "accel-core",
+        "topos-site",
+        "accel-swar",
+        "symlib-base"
+      ],
+      "summary_en": "Constructive universal algebra autonomy, Mal'cev congruence/quotient theory, affine & bi-De Morgan cubical structures, degeneracy trees, free Moore paths, 5D alternating boundaries, bidirectional NF pruning, Kripke-Alexandrov validity, and double-negation presheaf gluing.",
+      "summary_zh": "構造性泛代數自主類型論、瑪爾切夫同餘與商代數、仿射與雙德摩根立方結構、退化樹、變長 Moore 自由路徑、5 維交錯面微分、雙向範式修剪、Kripke–亞歷山德羅夫有效性與雙重否定核預層黏合。"
+    },
+    {
+      "id": "cubical-structures",
+      "package": "cubical-structures",
+      "layer": 10,
+      "files": [
+        "cubical/structures/*.mbt"
+      ],
+      "depends_on": [
+        "gcd-core",
+        "foundation",
+        "dependent-kernel",
+        "dependent-kan-lines",
+        "elaborator-core",
+        "hou-match",
+        "cubical",
+        "associahedron",
+        "homotopy-universal",
+        "cubical-autonomy",
+        "symlib-core",
+        "topos-core",
+        "accel-core",
+        "topos-site",
+        "accel-swar",
+        "symlib-base"
+      ],
+      "summary_en": "All 54 higher cubical structures (Swan strict constant-extent Id, free path fibration, 65,536-cube Eilenberg-Zilber split, affine bidirectional & LJF focusing, polynomial container Yoneda & SIP, Galois covering correspondence, torus/RP^2 torsion, HOU motive reconstruction, matroid boundary repair, computational reflection) and the 26-verb x 14-composition interaction atlas.",
+      "summary_zh": "全體 54 項高階立方結構（Swan 常數範圍嚴格相等類型、自由路徑纖維化、65,536 個 4-立方體 Eilenberg–Zilber 分裂、仿射雙向與極性聚焦搜尋、多項式容器米田與結構恆等原則 SIP、覆蓋空間伽羅瓦對應、環面與實射影平面撓率、高階合一動機重構、擬陣邊界修補、內部計算反射）及 26 運算動詞 × 14 範疇組合交互圖譜。"
     },
     {
       "id": "meta-core",
@@ -1469,6 +1729,61 @@
       ],
       "summary_en": "Law table runner.",
       "summary_zh": "定律總表執行器。"
+    },
+    {
+      "id": "accel-swar",
+      "package": "accel-swar",
+      "layer": 0,
+      "files": [
+        "accel/swar/*.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Zero-dependency 64-bit SWAR primitives for GF(3) dual-rail hyperdeterminants, bi-Heyting sieves, and bitplane implication lattices.",
+      "summary_zh": "零依賴 64 位 SWAR 原語：GF(3) 雙軌超行列式、雙 Heyting 篩與位平面蘊含格。"
+    },
+    {
+      "id": "topos-site",
+      "package": "topos-site",
+      "layer": 3,
+      "files": [
+        "topos/site/*.mbt"
+      ],
+      "depends_on": [
+        "symlib-core",
+        "accel-swar",
+        "symlib-base"
+      ],
+      "summary_en": "Grothendieck sites, Sieve64 SWAR bi-Heyting nuclei, MAC matching-family sheaves, CCC, geometric morphisms, Diaconescu torsors, and Kripke-Joyal forcing.",
+      "summary_zh": "Grothendieck 景、Sieve64 SWAR 雙 Heyting 核、MAC 相容族層化、笛卡兒閉性、幾何態射、Diaconescu 主叢與 Kripke–Joyal 力迫。"
+    },
+    {
+      "id": "discovery-kernel",
+      "package": "discovery-kernel",
+      "layer": 4,
+      "files": [
+        "conjecture/kernel/*.mbt"
+      ],
+      "depends_on": [
+        "gcd-core",
+        "accel-swar",
+        "tensor-core"
+      ],
+      "summary_en": "Half-GCD rational reconstruction, multi-prime F_p relation discovery, and 64-bit SWAR bitplane implication lattice.",
+      "summary_zh": "Half-GCD 有理重構、多素數 F_p 守恆律推導與 64 位 SWAR 位平面蘊含格。"
+    },
+    {
+      "id": "condensed-base",
+      "package": "condensed-core",
+      "layer": 2,
+      "files": [
+        "condensed/core/*.mbt"
+      ],
+      "depends_on": [
+        "gcd-core",
+        "accel-swar"
+      ],
+      "summary_en": "Layer-1 Condensed profinite/solid & @swar Steenrod–Adams homotopy core.",
+      "summary_zh": "L1 凝聚射影塔／固態模與 @swar Steenrod–Adams 同倫核心。"
     }
   ],
   "exceptions": []

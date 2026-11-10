@@ -175,10 +175,10 @@ let scc   = @store.hot_load_tarjan_scc(store)
 
 ## 10. 依賴邊界與驗證
 
-* **依賴**：`cubical-kernel`（`CompiledModule`、`DTerm`、`SchemaRegistry`）、`condensed`（熱載入／賬本語義）、`cubical-face-bdd`。
-* **被依賴**：`root`。**只有 `root`／`bridge` 可匯入本套件**；`kernel` 不得反向依賴。
+* **依賴**：`gcd`（`L0` FNV-1a 64-bit 摘要鏈與 `ℤ`-零空間不變量賬本 `gcd/digest_chain_ledger.mbt`，已完全解除對 `condensed` 的跨聯邦依賴，套件層級由 `L5` 下沉至 `L3`）、`cubical-kernel`（`CompiledModule`、`DTerm`、`SchemaRegistry`）、`cubical-face-bdd`。
+* **被依賴**：`root`、`bridge`。**只有 `root`／`bridge` 可匯入本套件**；`kernel` 不得反向依賴。
 * 不可匯入 `hostfs`（`architecture.json` 未列此邊）：崩潰一致語義在此以 WAL 形式**自足**實作，兩者的對應關係由文件與 `bridge` 保證。
 
 ```bash
-moon test cubical/store --target wasm-gc      # 單包微測試實測 0.58s
+moon check --deny-warn --target wasm-gc
 ```

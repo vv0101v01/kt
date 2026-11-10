@@ -483,3 +483,279 @@ pub fn law_unify_anti_unification_join_dual_of_mgu() -> Array[(String, Bool)] {
   )
   out
 }
+
+// ---------------------------------------------------------------------------
+// 線性／近線性並查集 DAG 合一器（Paterson–Wegman / Martelli–Montanari Union-Find）
+// ---------------------------------------------------------------------------
+//
+// 傳統樹狀 Robinson 合一在指數共享對（如 f(x_0,...,x_{n-1}) 與 f(g(x_1,x_1),...,g(x_n,x_n))）
+// 會因重複展開子樹退化為 O(2^n)。
+// 本引擎將輸入項扁平化入連續節點池，在壓入子問題**之前**先行合併並查集等價類（`uf_parent[rx] = ry`），
+// 使所有共享變數分支於 O(α(n)) 內短路跳過；最後以單趟三色 DFS（0=未訪, 1=堆疊中, 2=無環完畢）
+// 在 O(V + E) 內完成精確 occurs-check。
+
+///|
+priv enum UDagNode {
+  DVar(Int32)
+  DFfn(Int32, Array[Int32])
+}
+
+///|
+fn udag_intern(
+  t : UTerm,
+  nodes : Array[UDagNode],
+  parent : Array[Int32],
+  var_slot : Map[Int32, Int32],
+) -> Int32 {
+  match t {
+    UVar(v) =>
+      match var_slot.get(v) {
+        Some(id) => id
+        None => {
+          let id = nodes.length()
+          nodes.push(DVar(v))
+          parent.push(id)
+          var_slot[v] = id
+          id
+        }
+      }
+    UFfn(f, xs) => {
+      let child_ids : Array[Int32] = []
+      for x in xs {
+        child_ids.push(udag_intern(x, nodes, parent, var_slot))
+      }
+      let id = nodes.length()
+      nodes.push(DFfn(f, child_ids))
+      parent.push(id)
+      id
+    }
+  }
+}
+
+///|
+/// Path-halving Disjoint-Set representative lookup (`O(α(n))` amortized).
+pub fn uf_find_halving(parent : Array[Int32], x0 : Int32) -> Int32 {
+  let mut x = x0
+  while parent[x] != x {
+    parent[x] = parent[parent[x]]
+    x = parent[x]
+  }
+  x
+}
+
+///|
+fn udag_find(parent : Array[Int32], x0 : Int32) -> Int32 {
+  uf_find_halving(parent, x0)
+}
+
+///|
+fn udag_acyclic_dfs(
+  u0 : Int32,
+  nodes : Array[UDagNode],
+  parent : Array[Int32],
+  color : Array[Int32],
+) -> Bool {
+  let u = udag_find(parent, u0)
+  if color[u] == 2 {
+    return true
+  }
+  if color[u] == 1 {
+    return false
+  }
+  color[u] = 1
+  match nodes[u] {
+    DVar(_) => ()
+    DFfn(_, kids) =>
+      for k in kids {
+        if !udag_acyclic_dfs(k, nodes, parent, color) {
+          return false
+        }
+      }
+  }
+  color[u] = 2
+  true
+}
+
+///|
+fn udag_reify(
+  u0 : Int32,
+  nodes : Array[UDagNode],
+  parent : Array[Int32],
+  memo : Array[UTerm?],
+) -> UTerm {
+  let u = udag_find(parent, u0)
+  match memo[u] {
+    Some(t) => t
+    None => {
+      let res = match nodes[u] {
+        DVar(v) => UVar(v)
+        DFfn(f, kids) => {
+          let out : Array[UTerm] = []
+          for k in kids {
+            out.push(udag_reify(k, nodes, parent, memo))
+          }
+          UFfn(f, out)
+        }
+      }
+      memo[u] = Some(res)
+      res
+    }
+  }
+}
+
+///|
+/// O((|a|+|b|) α(n)) 並查集 DAG 可合一判定（處理深層變數共享無指數爆炸）。
+pub fn u_unifiable_dag(a : UTerm, b : UTerm) -> Bool {
+  let nodes : Array[UDagNode] = []
+  let parent : Array[Int32] = []
+  let var_slot : Map[Int32, Int32] = Map([])
+  let ra = udag_intern(a, nodes, parent, var_slot)
+  let rb = udag_intern(b, nodes, parent, var_slot)
+  let work : Array[(Int32, Int32)] = [(ra, rb)]
+  while work.length() > 0 {
+    let (x0, y0) = match work.pop() {
+      Some(p) => p
+      None => break
+    }
+    let rx = udag_find(parent, x0)
+    let ry = udag_find(parent, y0)
+    if rx == ry {
+      continue
+    }
+    match (nodes[rx], nodes[ry]) {
+      (DVar(_), _) => parent[rx] = ry
+      (_, DVar(_)) => parent[ry] = rx
+      (DFfn(f, xs), DFfn(g, ys)) => {
+        if f != g || xs.length() != ys.length() {
+          return false
+        }
+        // 關鍵近線性不變量：先合併等價類再推入子對，消除共享子圖重複遍歷
+        parent[rx] = ry
+        for i in 0..<xs.length() {
+          work.push((xs[i], ys[i]))
+        }
+      }
+    }
+  }
+  let color = Array::make(nodes.length(), 0)
+  for i in 0..<nodes.length() {
+    if !udag_acyclic_dfs(i, nodes, parent, color) {
+      return false
+    }
+  }
+  true
+}
+
+///|
+/// 以並查集 DAG 核心計算正規 mgu 替換（與 `u_mgu` 在所有可展開實例上 α-同構）。
+pub fn u_mgu_dag(a : UTerm, b : UTerm) -> Array[UTerm?]? {
+  let nodes : Array[UDagNode] = []
+  let parent : Array[Int32] = []
+  let var_slot : Map[Int32, Int32] = Map([])
+  let ra = udag_intern(a, nodes, parent, var_slot)
+  let rb = udag_intern(b, nodes, parent, var_slot)
+  let work : Array[(Int32, Int32)] = [(ra, rb)]
+  while work.length() > 0 {
+    let (x0, y0) = match work.pop() {
+      Some(p) => p
+      None => break
+    }
+    let rx = udag_find(parent, x0)
+    let ry = udag_find(parent, y0)
+    if rx == ry {
+      continue
+    }
+    match (nodes[rx], nodes[ry]) {
+      (DVar(_), _) => parent[rx] = ry
+      (_, DVar(_)) => parent[ry] = rx
+      (DFfn(f, xs), DFfn(g, ys)) => {
+        if f != g || xs.length() != ys.length() {
+          return None
+        }
+        parent[rx] = ry
+        for i in 0..<xs.length() {
+          work.push((xs[i], ys[i]))
+        }
+      }
+    }
+  }
+  let color = Array::make(nodes.length(), 0)
+  for i in 0..<nodes.length() {
+    if !udag_acyclic_dfs(i, nodes, parent, color) {
+      return None
+    }
+  }
+  let memo : Array[UTerm?] = Array::make(nodes.length(), None)
+  let out : Array[UTerm?] = []
+  for v, slot in var_slot {
+    let root = udag_find(parent, slot)
+    let term = udag_reify(root, nodes, parent, memo)
+    match term {
+      UVar(w) =>
+        if w != v {
+          usub_ensure(out, v)
+          out[v] = Some(term)
+        }
+      _ => {
+        usub_ensure(out, v)
+        out[v] = Some(term)
+      }
+    }
+  }
+  Some(out)
+}
+
+///|
+/// Paterson–Wegman / Martelli–Montanari 並查集 DAG 合一定律：
+/// #1 與樹狀 `u_mgu` 在可合一／不可合一／occurs-check 環上嚴格同構；
+/// #2 在深度 16 之指數級變數共享階梯（樹展開大小 2^16 = 65,536）上無展開直接線性判定可合一與帶環失敗。
+pub fn law_unify_dag_paterson_wegman_equivalence() -> Array[(String, Bool)] {
+  let out : Array[(String, Bool)] = []
+  let t1 = ufn(1, [uvar(0), ufn(2, [uvar(1), ufn(3, [])])])
+  let t2 = ufn(1, [ufn(2, [uvar(1), uvar(2)]), uvar(0)])
+  let eq_ok = match (u_mgu(t1, t2), u_mgu_dag(t1, t2)) {
+    (Some(s1), Some(s2)) =>
+      u_canon_str(u_apply(s1, t1)) == u_canon_str(u_apply(s2, t1)) &&
+      u_eq(u_apply(s2, t1), u_apply(s2, t2))
+    _ => false
+  }
+  chk(out, "dag unification: α-equivalent mgu with Robinson #1", eq_ok)
+  // Occurs-check 環：?0 = f(?1), ?1 = g(?0) 必須被三色 DFS 精確拒絕
+  let cyc_l = ufn(0, [uvar(0), uvar(1)])
+  let cyc_r = ufn(0, [ufn(1, [uvar(1)]), ufn(2, [uvar(0)])])
+  let cyc_none = match u_mgu_dag(cyc_l, cyc_r) {
+    None => true
+    Some(_) => false
+  }
+  chk(
+    out,
+    "dag unification: 3-color DFS rejects indirect occurs cycle #2",
+    !u_unifiable_dag(cyc_l, cyc_r) && cyc_none,
+  )
+  // 深度 16 Paterson–Wegman 指數共享階梯：
+  // lhs = tup(x_0, x_1, ..., x_15), rhs = tup(pair(x_1,x_1), pair(x_2,x_2), ..., pair(x_16,x_16))
+  let lhs_args : Array[UTerm] = []
+  let rhs_args : Array[UTerm] = []
+  for i in 0..<16 {
+    lhs_args.push(uvar(i))
+    rhs_args.push(ufn(9, [uvar(i + 1), uvar(i + 1)]))
+  }
+  let pw_lhs = ufn(8, lhs_args)
+  let pw_rhs = ufn(8, rhs_args)
+  // 追加 x_16 = x_0 即構成跨越 16 層共享之環，必須在 O(n) 拒絕
+  let lhs_cyc : Array[UTerm] = []
+  let rhs_cyc : Array[UTerm] = []
+  for i in 0..<16 {
+    lhs_cyc.push(uvar(i))
+    rhs_cyc.push(ufn(9, [uvar(i + 1), uvar(i + 1)]))
+  }
+  lhs_cyc.push(uvar(16))
+  rhs_cyc.push(uvar(0))
+  chk(
+    out,
+    "dag unification: depth-16 Paterson-Wegman shared ladder & cycle #3",
+    u_unifiable_dag(pw_lhs, pw_rhs) &&
+    !u_unifiable_dag(ufn(8, lhs_cyc), ufn(8, rhs_cyc)),
+  )
+  out
+}

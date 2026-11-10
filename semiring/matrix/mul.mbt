@@ -295,3 +295,124 @@ pub fn[E] copy_region_out(
     }
   }
 }
+
+// ---------------------------------------------------------------------------
+// 64-bit SWAR / Four-Russians 布林與 GF(2) 矩陣內核（串接 `@swar` L0 硬體原語）
+// ---------------------------------------------------------------------------
+
+///|
+/// 布林半環 `(∨, ∧)` 之 Four-Russians (`k = 8` 位元組查表 × 64-bit 字組並聯 OR) 矩陣乘法：
+/// 每條 `8 × 64` 條帶僅需建立 `256` 格 `UInt64` 並列合取表，內部每列每次查表完成 `8 × 64 = 512` 次標量 `(∨, ∧)`。
+pub fn mul_bool_swar(
+  a : Mat[@alg.BoolSr],
+  b : Mat[@alg.BoolSr],
+) -> Mat[@alg.BoolSr] {
+  if a.cols != b.rows {
+    abort("mul_bool_swar: shape mismatch")
+  }
+  let n = a.rows
+  let k_len = a.cols
+  let m = b.cols
+  let words_m = (m + 63) / 64
+  if n == 0 || m == 0 || k_len == 0 {
+    return Mat::new(n, m, @alg.BoolSr::of(false))
+  }
+  let b_words = Array::make(k_len * words_m, 0UL)
+  for r in 0..<k_len {
+    let base_b = r * m
+    let base_w = r * words_m
+    for c in 0..<m {
+      if b.d[base_b + c].b {
+        b_words[base_w + c / 64] = b_words[base_w + c / 64] | (1UL << (c % 64))
+      }
+    }
+  }
+  let c_words = Array::make(n * words_m, 0UL)
+  let tab = Array::make(256, 0UL)
+  let mut k0 = 0
+  while k0 < k_len {
+    let span = if k_len - k0 < 8 { k_len - k0 } else { 8 }
+    let lim = 1 << span
+    // 預抽出每列 i 在 k0..<k0+span 的 8-bit 遮罩
+    let a_bytes = Array::make(n, 0)
+    for i in 0..<n {
+      let mut mask = 0
+      let arow = i * k_len + k0
+      for t in 0..<span {
+        if a.d[arow + t].b {
+          mask = mask | (1 << t)
+        }
+      }
+      a_bytes[i] = mask
+    }
+    for w in 0..<words_m {
+      tab[0] = 0UL
+      for bit in 0..<span {
+        let row_w = b_words[(k0 + bit) * words_m + w]
+        let p = 1 << bit
+        for prev in 0..<p {
+          tab[p | prev] = tab[prev] | row_w
+        }
+      }
+      for i in 0..<n {
+        let byte = a_bytes[i]
+        if byte != 0 && byte < lim {
+          c_words[i * words_m + w] = c_words[i * words_m + w] | tab[byte]
+        }
+      }
+    }
+    k0 = k0 + 8
+  }
+  let out = Mat::new(n, m, @alg.BoolSr::of(false))
+  for i in 0..<n {
+    let base_w = i * words_m
+    let base_o = i * m
+    for j in 0..<m {
+      let bit = (c_words[base_w + j / 64] >> (j % 64)) & 1UL
+      if bit != 0UL {
+        out.d[base_o + j] = @alg.BoolSr::of(true)
+      }
+    }
+  }
+  out
+}
+
+///|
+/// 委派 `@swar.gf2_matmul_m4ri` 執行 `GF(2)` `(⊕, ∧)` M4RI 64-bit Gray-code 矩陣乘法（將 `BoolSr` 視作 `F_2` 奇偶路徑計數）。
+pub fn mul_gf2_m4ri_swar(
+  a : Mat[@alg.BoolSr],
+  b : Mat[@alg.BoolSr],
+) -> Mat[@alg.BoolSr] {
+  if a.cols != b.rows {
+    abort("mul_gf2_m4ri_swar: shape mismatch")
+  }
+  let n = a.rows
+  let k_len = a.cols
+  let m = b.cols
+  let ga = @swar.gf2_bit_matrix_zero(n, k_len)
+  for i in 0..<n {
+    for k in 0..<k_len {
+      if a.d[i * k_len + k].b {
+        @swar.gf2_bit_matrix_set(ga, i, k, 1)
+      }
+    }
+  }
+  let gb = @swar.gf2_bit_matrix_zero(k_len, m)
+  for k in 0..<k_len {
+    for j in 0..<m {
+      if b.d[k * m + j].b {
+        @swar.gf2_bit_matrix_set(gb, k, j, 1)
+      }
+    }
+  }
+  let gc = @swar.gf2_matmul_m4ri(ga, gb)
+  let out = Mat::new(n, m, @alg.BoolSr::of(false))
+  for i in 0..<n {
+    for j in 0..<m {
+      if @swar.gf2_bit_matrix_get(gc, i, j) != 0 {
+        out.d[i * m + j] = @alg.BoolSr::of(true)
+      }
+    }
+  }
+  out
+}

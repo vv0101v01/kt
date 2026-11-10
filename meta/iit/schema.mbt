@@ -105,7 +105,7 @@ pub fn ipat_var(k : Int32) -> IVal {
 ///|
 /// 建一條等式建構子。
 pub fn i_equation(lhs : IVal, rhs : IVal) -> IEquation {
-  { lhs, rhs }
+  { lhs, rhs, }
 }
 
 ///|
@@ -209,7 +209,7 @@ pub fn ischema(
   names : Array[String],
   arities : Array[Int32],
   ctors : Array[ICtor],
-  eqs? : Array[IEquation] = [],
+  eqs~ : Array[IEquation] = [],
 ) -> ISchema {
   ISchema::{ sort_names: names, sort_arities: arities, ctors, eqs, }
 }
@@ -910,6 +910,353 @@ pub fn icheck_q(s : ISchema, v : IVal) -> Bool {
 ///|
 /// **QIIT 的消除器**：折在商之後的值上，所以等式的兩端會得到同一個結果。
 /// （純 II 的 `iit_fold` 是結構遞迴，對等式一無所知，這正是差別所在。）
-pub fn iit_fold_q(s : ISchema, h : (Int32, Array[IVal]) -> IVal, v : IVal) -> IVal {
+pub fn iit_fold_q(
+  s : ISchema,
+  h : (Int32, Array[IVal]) -> IVal,
+  v : IVal,
+) -> IVal {
   iit_fold(s, h, iquot_schema(s, v))
+}
+
+// ---------------------------------------------------------------------------
+// QIIT 代數相容性檢驗與 Hash-Consed E-Graph 雙向同餘閉包引擎
+// ---------------------------------------------------------------------------
+
+///|
+fn i_max_pat_var(p : IVal) -> Int32 {
+  if p.ctor < 0 {
+    return -p.ctor - 1
+  }
+  let mut best = -1
+  for a in p.args {
+    let sub = i_max_pat_var(a)
+    if sub > best {
+      best = sub
+    }
+  }
+  best
+}
+
+///|
+/// 檢驗消除目標代數 `h` 是否在有限環境樣本池 `pool` 上嚴格尊重 `s.eqs` 之所有等式建構子
+/// （即 `fold(h, σ(lhs)) == fold(h, σ(rhs))`）。這是 QIIT 消除器良定義性的充分必要代數條件。
+pub fn ialgebra_respects_eqs(
+  s : ISchema,
+  h : (Int32, Array[IVal]) -> IVal,
+  pool : Array[IVal],
+) -> Bool {
+  if pool.length() == 0 {
+    return true
+  }
+  for eq in s.eqs {
+    let vmax = {
+      let a = i_max_pat_var(eq.lhs)
+      let b = i_max_pat_var(eq.rhs)
+      if a > b {
+        a
+      } else {
+        b
+      }
+    }
+    let nvars = vmax + 1
+    if nvars <= 0 {
+      let l = i_inst(eq.lhs, [])
+      let r = i_inst(eq.rhs, [])
+      if !ival_eq(iit_fold(s, h, l), iit_fold(s, h, r)) {
+        return false
+      }
+    } else if nvars == 1 {
+      for x in pool {
+        let binds = [x]
+        let l = i_inst(eq.lhs, binds)
+        let r = i_inst(eq.rhs, binds)
+        if !ival_eq(iit_fold(s, h, l), iit_fold(s, h, r)) {
+          return false
+        }
+      }
+    } else {
+      for x in pool {
+        for y in pool {
+          let binds = Array::makei(nvars, idx => if idx == 0 { x } else { y })
+          let l = i_inst(eq.lhs, binds)
+          let r = i_inst(eq.rhs, binds)
+          if !ival_eq(iit_fold(s, h, l), iit_fold(s, h, r)) {
+            return false
+          }
+        }
+      }
+    }
+  }
+  true
+}
+
+///|
+priv struct IENode {
+  ctor : Int32
+  kids : Array[Int32]
+}
+
+///|
+fn ie_find(parent : Array[Int32], x0 : Int32) -> Int32 {
+  @core.uf_find_halving(parent, x0)
+}
+
+///|
+fn ie_union(parent : Array[Int32], a : Int32, b : Int32) -> Bool {
+  let ra = ie_find(parent, a)
+  let rb = ie_find(parent, b)
+  if ra == rb {
+    false
+  } else if ra < rb {
+    parent[rb] = ra
+    true
+  } else {
+    parent[ra] = rb
+    true
+  }
+}
+
+///|
+fn ie_node_key(
+  ctor : Int32,
+  kids : Array[Int32],
+  parent : Array[Int32],
+) -> String {
+  let parts : Array[String] = [ctor.to_string()]
+  for k in kids {
+    parts.push(ie_find(parent, k).to_string())
+  }
+  parts.join(":")
+}
+
+///|
+fn ie_add_node(
+  ctor : Int32,
+  kids : Array[Int32],
+  nodes : Array[IENode],
+  parent : Array[Int32],
+  hashcons : Map[String, Int32],
+) -> Int32 {
+  let canon_kids : Array[Int32] = []
+  for k in kids {
+    canon_kids.push(ie_find(parent, k))
+  }
+  let key = ie_node_key(ctor, canon_kids, parent)
+  match hashcons.get(key) {
+    Some(id) => ie_find(parent, id)
+    None => {
+      let id = nodes.length()
+      nodes.push(IENode::{ ctor, kids: canon_kids, })
+      parent.push(id)
+      hashcons[key] = id
+      id
+    }
+  }
+}
+
+///|
+fn ie_intern_val(
+  v : IVal,
+  nodes : Array[IENode],
+  parent : Array[Int32],
+  hashcons : Map[String, Int32],
+) -> Int32 {
+  let kids : Array[Int32] = []
+  for a in v.args {
+    kids.push(ie_intern_val(a, nodes, parent, hashcons))
+  }
+  ie_add_node(v.ctor, kids, nodes, parent, hashcons)
+}
+
+///|
+fn ie_rebuild(
+  nodes : Array[IENode],
+  parent : Array[Int32],
+  hashcons : Map[String, Int32],
+) -> Unit {
+  let mut changed = true
+  while changed {
+    changed = false
+    hashcons.clear()
+    for i in 0..<nodes.length() {
+      let key = ie_node_key(nodes[i].ctor, nodes[i].kids, parent)
+      match hashcons.get(key) {
+        Some(prev) => if ie_union(parent, i, prev) { changed = true }
+        None => hashcons[key] = ie_find(parent, i)
+      }
+    }
+  }
+}
+
+///|
+fn ie_match_class(
+  pat : IVal,
+  eclass0 : Int32,
+  nodes : Array[IENode],
+  parent : Array[Int32],
+  binds : Map[Int32, Int32],
+) -> Array[Map[Int32, Int32]] {
+  let ec = ie_find(parent, eclass0)
+  if pat.ctor < 0 {
+    let vid = -pat.ctor - 1
+    match binds.get(vid) {
+      Some(bound) => if ie_find(parent, bound) == ec { [binds] } else { [] }
+      None => {
+        let next : Map[Int32, Int32] = Map([])
+        for k, v in binds {
+          next[k] = v
+        }
+        next[vid] = ec
+        [next]
+      }
+    }
+  } else {
+    let out : Array[Map[Int32, Int32]] = []
+    for i in 0..<nodes.length() {
+      if ie_find(parent, i) == ec &&
+        nodes[i].ctor == pat.ctor &&
+        nodes[i].kids.length() == pat.args.length() {
+        let mut cur_envs : Array[Map[Int32, Int32]] = [binds]
+        for k in 0..<pat.args.length() {
+          let next_envs : Array[Map[Int32, Int32]] = []
+          for env in cur_envs {
+            for
+              ext in ie_match_class(
+                pat.args[k],
+                nodes[i].kids[k],
+                nodes,
+                parent,
+                env,
+              ) {
+              next_envs.push(ext)
+            }
+          }
+          cur_envs = next_envs
+        }
+        for env in cur_envs {
+          out.push(env)
+        }
+      }
+    }
+    out
+  }
+}
+
+///|
+fn ie_inst_pat(
+  pat : IVal,
+  binds : Map[Int32, Int32],
+  nodes : Array[IENode],
+  parent : Array[Int32],
+  hashcons : Map[String, Int32],
+) -> Int32? {
+  if pat.ctor < 0 {
+    let vid = -pat.ctor - 1
+    binds.get(vid)
+  } else {
+    let kids : Array[Int32] = []
+    for a in pat.args {
+      match ie_inst_pat(a, binds, nodes, parent, hashcons) {
+        Some(cid) => kids.push(cid)
+        None => return None
+      }
+    }
+    Some(ie_add_node(pat.ctor, kids, nodes, parent, hashcons))
+  }
+}
+
+///|
+/// Hash-Consed E-Graph 雙向同餘飽和正規化器：
+/// 將 `s.eqs` 視為雙向等式同餘（`lhs ≡ rhs` 與 `rhs ≡ lhs`），在 `rounds` 輪內做相等飽和，
+/// 並以動態規劃自根等價類提取 `(最小節點大小, 字典序最小建構子字串)` 之唯一典範代表元！
+/// 即使面對交換律 `op(x, y) = op(y, x)` 等非定向等式亦絕不死迴圈。
+pub fn iquot_egraph(s : ISchema, v : IVal, rounds : Int32) -> IVal {
+  if s.eqs.length() == 0 {
+    return v
+  }
+  let nodes : Array[IENode] = []
+  let parent : Array[Int32] = []
+  let hashcons : Map[String, Int32] = Map([])
+  let root = ie_intern_val(v, nodes, parent, hashcons)
+  for _ in 0..<rounds {
+    if nodes.length() > 256 {
+      break
+    }
+    let snapshot_len = nodes.length()
+    let merges : Array[(Int32, Int32)] = []
+    for eq in s.eqs {
+      for dir in 0..<2 {
+        let src = if dir == 0 { eq.lhs } else { eq.rhs }
+        let dst = if dir == 0 { eq.rhs } else { eq.lhs }
+        if src.ctor >= 0 {
+          for cid in 0..<snapshot_len {
+            if ie_find(parent, cid) == cid {
+              let empty_binds : Map[Int32, Int32] = Map([])
+              for sub in ie_match_class(src, cid, nodes, parent, empty_binds) {
+                match ie_inst_pat(dst, sub, nodes, parent, hashcons) {
+                  Some(rhs_id) => merges.push((cid, rhs_id))
+                  None => ()
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    let mut any_merged = false
+    for (a, b) in merges {
+      if ie_union(parent, a, b) {
+        any_merged = true
+      }
+    }
+    ie_rebuild(nodes, parent, hashcons)
+    if !any_merged {
+      break
+    }
+  }
+  // 最小成本典範提取（Bellman-Ford on E-Classes）
+  let best_cost = Array::make(nodes.length(), 1_000_000_000)
+  let best_val : Array[IVal?] = Array::make(nodes.length(), None)
+  let mut updated = true
+  while updated {
+    updated = false
+    for i in 0..<nodes.length() {
+      let cls = ie_find(parent, i)
+      let mut all_ready = true
+      let mut cost = 1
+      let kid_vals : Array[IVal] = []
+      for k in nodes[i].kids {
+        let kc = ie_find(parent, k)
+        match best_val[kc] {
+          Some(kv) => {
+            cost = cost + best_cost[kc]
+            kid_vals.push(kv)
+          }
+          None => all_ready = false
+        }
+      }
+      if all_ready {
+        let cand = ival(nodes[i].ctor, kid_vals)
+        let better = if cost < best_cost[cls] {
+          true
+        } else if cost == best_cost[cls] {
+          match best_val[cls] {
+            Some(cur) => ival_to_string(s, cand) < ival_to_string(s, cur)
+            None => true
+          }
+        } else {
+          false
+        }
+        if better {
+          best_cost[cls] = cost
+          best_val[cls] = Some(cand)
+          updated = true
+        }
+      }
+    }
+  }
+  match best_val[ie_find(parent, root)] {
+    Some(res) => res
+    None => iquot_schema(s, v)
+  }
 }

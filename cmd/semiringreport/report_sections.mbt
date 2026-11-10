@@ -442,6 +442,9 @@ fn sec6_spline() -> Unit {
   )
   line("")
   let z = cubic_pole()
+  guard affine_steps(z, [1.0, 2.0, 3.0]).length() == 3 else {
+    abort("sec6_spline: affine_steps length mismatch")
+  }
   line(
     "三次均勻配點矩陣 (z⁻¹+4+z)/6 的極點 ζ = \{z}（滿足 ζ²+4ζ+1=0，|ζ|=0.268 < 1 ⇒ 遞推穩定）。",
   )
@@ -649,6 +652,13 @@ fn sec9_monoid() -> Unit {
   )
   line("")
   let rng = Rng::new(0x5EED_9UL)
+  guard check_monoid(
+    "SumI64",
+    fn() { SumI64::of(rng.next_int(100).to_int64()) },
+    samples=4,
+  ).ok() else {
+    abort("sec9_monoid: SumI64 monoid law check failed")
+  }
   let n = 131072
   let q = 20000
   let q_lin = 4000

@@ -150,12 +150,7 @@ pub fn hot_load_env_modules(env : HotLoadEnv) -> Array[CompiledModule] {
 
 ///|
 fn hot_load_find(env : HotLoadEnv, path : String) -> CompiledModule? {
-  for i in 0..<env.modules.length() {
-    if env.modules[i].module_path == path {
-      return Some(env.modules[i])
-    }
-  }
-  None
+  compiled_modules_find_by_path(env.modules, path)
 }
 
 ///|

@@ -158,15 +158,9 @@ pub fn trop_det_dp(a : Array[Array[Int64]]) -> Int64 {
 }
 
 ///|
-/// 位元計數。
+/// 位元計數（硬體 `popcnt` 指令）。
 fn popcount32(x : Int32) -> Int32 {
-  let mut v = x
-  let mut c = 0
-  while v != 0 {
-    v = v & (v - 1)
-    c = c + 1
-  }
-  c
+  x.reinterpret_as_uint().popcnt()
 }
 
 ///|
@@ -254,4 +248,186 @@ pub fn trop_det_tie_count(a : Array[Array[Int64]]) -> Int32 {
     mask = mask + 1
   }
   cnt[size - 1]
+}
+
+// ---------------------------------------------------------------------------
+// 熱帶譜理論：Karp 最小環平均特徵值 `λ(A)` 與臨界特徵向量（Baccelli et al.）
+// ---------------------------------------------------------------------------
+
+///|
+/// Karp 最小環平均定理（`O(n³)` 精確最簡有理數 `(num, den)`）：
+/// 對 `n × n` min-plus 矩陣 `A`（不可達邊以 `>= tla_inf() / 4` 表示），
+/// 計算步長動態規劃 `D[k][v] = min_u (D[k-1][u] + A[u][v])`（`D[0][v] = 0`），
+/// 則全體有向環之最小平均權重（即熱帶主特徵值）精確等於
+/// `λ(A) = min_{v : D[n][v] < ∞} max_{0 ≤ k < n} (D[n][v] - D[k][v]) / (n - k)`。
+/// 若圖無有向環則回傳 `(tla_inf(), 0L)`。
+pub fn trop_eigenvalue_karp(a : Array[Array[Int64]]) -> (Int64, Int64) {
+  let n = a.length()
+  if n == 0 {
+    return (tla_inf(), 0L)
+  }
+  let inf_cut = tla_inf() / 4L
+  let inf = tla_inf()
+  let d : Array[Array[Int64]] = Array::makei(n + 1, k => {
+    if k == 0 {
+      Array::make(n, 0L)
+    } else {
+      Array::make(n, inf)
+    }
+  })
+  for k in 1..<=n {
+    for u in 0..<n {
+      let du = d[k - 1][u]
+      if du >= inf_cut {
+        continue
+      }
+      for v in 0..<n {
+        let w = a[u][v]
+        if w < inf_cut {
+          let cand = du + w
+          if cand < d[k][v] {
+            d[k][v] = cand
+          }
+        }
+      }
+    }
+  }
+  let mut has_best = false
+  let mut best_num = 0L
+  let mut best_den = 1L
+  for v in 0..<n {
+    let dnv = d[n][v]
+    if dnv >= inf_cut {
+      continue
+    }
+    let mut v_has = false
+    let mut v_num = 0L
+    let mut v_den = 1L
+    for k in 0..<n {
+      let dkv = d[k][v]
+      if dkv >= inf_cut {
+        continue
+      }
+      let num = dnv - dkv
+      let den = (n - k).to_int64()
+      if !v_has || num * v_den > v_num * den {
+        v_has = true
+        v_num = num
+        v_den = den
+      }
+    }
+    if v_has {
+      if !has_best || v_num * best_den < best_num * v_den {
+        has_best = true
+        best_num = v_num
+        best_den = v_den
+      }
+    }
+  }
+  if !has_best {
+    return (inf, 0L)
+  }
+  let g = gcd64(best_num, best_den)
+  let gg = if g == 0L { 1L } else { g }
+  (best_num / gg, best_den / gg)
+}
+
+///|
+/// 求精確整數尺度化熱帶特徵對 `(num, den, x)`：
+/// 構造正規化矩陣 `A'[i][j] = den · A[i][j] - num`（最小環權重恰為 `0`、無負環），
+/// 以 Kleene 正閉包 `(A')⁺` 定位臨界環頂點 `v*`（`(A')⁺[v*][v*] == 0`），
+/// 取星矩陣列 `x[i] = (A')*[i][v*]`，對強連通圖滿足精確特徵方程
+/// `min_j (den · A[i][j] + x[j]) == num + x[i]`。
+pub fn trop_critical_eigenvector(
+  a : Array[Array[Int64]],
+) -> (Int64, Int64, Array[Int64])? {
+  let n = a.length()
+  let (num, den) = trop_eigenvalue_karp(a)
+  if den <= 0L {
+    return None
+  }
+  let inf_cut = tla_inf() / 4L
+  let inf = tla_inf()
+  let plus : Array[Array[Int64]] = Array::makei(n, i => {
+    Array::makei(n, j => {
+      if a[i][j] >= inf_cut {
+        inf
+      } else {
+        den * a[i][j] - num
+      }
+    })
+  })
+  for k in 0..<n {
+    for i in 0..<n {
+      if plus[i][k] >= inf_cut {
+        continue
+      }
+      for j in 0..<n {
+        if plus[k][j] >= inf_cut {
+          continue
+        }
+        let cand = plus[i][k] + plus[k][j]
+        if cand < plus[i][j] {
+          plus[i][j] = cand
+        }
+      }
+    }
+  }
+  let mut crit = -1
+  for v in 0..<n {
+    if plus[v][v] == 0L {
+      crit = v
+      break
+    }
+  }
+  if crit < 0 {
+    return None
+  }
+  let x = Array::makei(n, i => {
+    if i == crit {
+      if plus[i][crit] < 0L {
+        plus[i][crit]
+      } else {
+        0L
+      }
+    } else {
+      plus[i][crit]
+    }
+  })
+  Some((num, den, x))
+}
+
+///|
+/// 驗證整數尺度化熱帶特徵方程 `∀i (x[i] < ∞) : min_j (den·A[i][j] + x[j]) == num + x[i]`。
+pub fn verify_trop_eigenpair(
+  a : Array[Array[Int64]],
+  num : Int64,
+  den : Int64,
+  x : Array[Int64],
+) -> Bool {
+  let n = a.length()
+  if den <= 0L || x.length() != n {
+    return false
+  }
+  let inf_cut = tla_inf() / 4L
+  let mut finite_count = 0
+  for i in 0..<n {
+    if x[i] >= inf_cut {
+      continue
+    }
+    finite_count = finite_count + 1
+    let mut best = tla_inf()
+    for j in 0..<n {
+      if a[i][j] < inf_cut && x[j] < inf_cut {
+        let cand = den * a[i][j] + x[j]
+        if cand < best {
+          best = cand
+        }
+      }
+    }
+    if best != num + x[i] {
+      return false
+    }
+  }
+  finite_count > 0
 }

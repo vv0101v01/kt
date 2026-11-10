@@ -155,8 +155,10 @@ let summary = @conjecture.synthesize_and_verify_conjecture_engine()
 
 ## 7. 依賴與被依賴
 
-* **依賴（最多上游）**：`gcd`、`algebra`、`symlib`、`semiring-trop`、`topos`、`scheme`、`condensed`、`tensor`。
-* **被依賴**：`bridge`（`seven_federation_star_prism` 的 `conjectures_evaluated / 12` 與 `lakatos_refinements_verified`）、`root`。
+* **雙層拆分**：
+  * `conjecture/kernel`（`discovery-kernel`，`L3`）：僅依賴 `gcd`、`accel/swar`、`tensor`，提供 Half-GCD 模有理重構、`[E-Derive]` 多素數零空間守恆律推導與 64-bit SWAR 位平面蘊含格（`ctz` 極小反例）。
+  * `conjecture`（`L5`）：重導出 `conjecture/kernel` 並匯流 `gcd`、`algebra`、`symlib`、`semiring-trop`、`topos`、`scheme`、`condensed`、`tensor` 執行 6 大演化轉移定律、5 大認識論透鏡與 12 項跨聯邦猜想。
+* **被依賴**：`bridge`（`seven_federation_star_prism`、`K8-28`、`K9-35` 與 `F7→F9→F4→F1` 晉升管線）。
 * **禁止**：本套件不得被 `condensed`／`tensor` 反向匯入（否則破壞 DAG）；兩者的關係是「`conjecture` 讀取它們的實驗台並寫入 `condensed` 的賬本」。
 
 ---
@@ -164,6 +166,5 @@ let summary = @conjecture.synthesize_and_verify_conjecture_engine()
 ## 8. 驗證
 
 ```bash
-moon test conjecture --target wasm-gc
-moon run --release cmd/showcase --target wasm-gc    # Star-Prism 段落：conjectures=12/12, evolve=6/6
+moon run cmd/showcase --target wasm-gc               # Star-Prism & K_9 段落：conjectures=12/12, evolve=6/6, K9=36/36
 ```

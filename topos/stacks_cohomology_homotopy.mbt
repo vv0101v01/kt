@@ -76,15 +76,6 @@ pub(all) struct CochainComplexQ {
 }
 
 ///|
-/// Presheaf of finite-dimensional Q-vector spaces on `cat`:
-/// `res_mats[f]` has shape `dims[dom(f)] × dims[cod(f)]`.
-pub(all) struct AbelianPresheafQ {
-  cat : @sym.FinCat
-  dims : Array[Int32]
-  res_mats : Array[RectQMat]
-}
-
-///|
 /// Abstract simplicial nerve up to dimension 3 (`vertices` = `0 ..< num_vertices`).
 pub(all) struct SimplicialNerve {
   num_vertices : Int32
@@ -109,9 +100,6 @@ pub extend HomotopyTypeSummary with @moonbitlang/core/debug.Debug::{to_repr}
 
 ///|
 pub extend HomotopyTypeSummary with Eq::{not_equal, equal}
-
-///|
-/// Verify groupoid laws on `g`.
 
 ///|
 /// Convert any groupoid-shaped `FinCat` into a `FiniteGroupoid` by locating
@@ -809,11 +797,6 @@ fn rect_qmat_rank(a : RectQMat) -> Int32 {
 }
 
 ///|
-fn rect_qmat_nullity(a : RectQMat) -> Int32 {
-  a.ncols - rect_qmat_rank(a)
-}
-
-///|
 fn rect_qmat_solve(
   a : RectQMat,
   rhs : Array[@exactalg.Rat],
@@ -870,34 +853,44 @@ pub fn cochain_complex_is_valid(cc : CochainComplexQ) -> Bool {
 }
 
 ///|
-/// Compute exact cohomology dimensions `[dim H^0, dim H^1, ..., dim H^m]` of a
-/// valid rational cochain complex `cc`.
-pub fn cohomology_dimensions(cc : CochainComplexQ) -> Array[Int32] {
-  guard cochain_complex_is_valid(cc) else {
-    abort("cohomology_dimensions: d^{k+1} ∘ d^k != 0")
-  }
+/// Compute cohomology Betti numbers `[dim H^0, ..., dim H^m]` assuming `d^{k+1} ∘ d^k == 0`
+/// has already been verified, computing each differential rank `rank(d^k)` **once** instead of twice.
+pub fn cohomology_dimensions_unchecked(cc : CochainComplexQ) -> Array[Int32] {
   let m = cc.dims.length()
+  let diff_ranks : Array[Int32] = Array::makei(cc.differentials.length(), k => {
+    rect_qmat_rank(cc.differentials[k])
+  })
   let out = Array::make(m, 0)
   for k in 0..<m {
-    let z_dim = if k < cc.differentials.length() {
-      rect_qmat_nullity(cc.differentials[k])
+    let z_dim = if k < diff_ranks.length() {
+      cc.differentials[k].ncols - diff_ranks[k]
     } else {
       cc.dims[k]
     }
-    let b_dim = if k > 0 { rect_qmat_rank(cc.differentials[k - 1]) } else { 0 }
+    let b_dim = if k > 0 { diff_ranks[k - 1] } else { 0 }
     out[k] = z_dim - b_dim
   }
   out
 }
 
 ///|
+/// Compute exact cohomology dimensions `[dim H^0, dim H^1, ..., dim H^m]` of a
+/// valid rational cochain complex `cc` (caching each `rank(d^k)` once).
+pub fn cohomology_dimensions(cc : CochainComplexQ) -> Array[Int32] {
+  guard cochain_complex_is_valid(cc) else {
+    abort("cohomology_dimensions: d^{k+1} ∘ d^k != 0")
+  }
+  cohomology_dimensions_unchecked(cc)
+}
+
+///|
 /// Verify the **Euler–Poincaré Theorem**:
-/// `Σ (-1)^k dim C^k == Σ (-1)^k dim H^k(C)`.
+/// `Σ (-1)^k dim C^k == Σ (-1)^k dim H^k(C)` without redundant double exactness checks.
 pub fn verify_euler_poincare(cc : CochainComplexQ) -> Bool {
   if !cochain_complex_is_valid(cc) {
     return false
   }
-  let betti = cohomology_dimensions(cc)
+  let betti = cohomology_dimensions_unchecked(cc)
   let mut lhs = 0
   let mut rhs = 0
   for k in 0..<cc.dims.length() {
@@ -906,6 +899,46 @@ pub fn verify_euler_poincare(cc : CochainComplexQ) -> Bool {
     rhs = rhs + sign * betti[k]
   }
   lhs == rhs
+}
+
+///|
+/// Fast flat-buffer modular `F_p` Čech / simplicial cohomology `[dim H^0, ..., dim H^3]`
+/// via `@gcd.fp_rank` (zero `BigInt` rational allocations; agrees with `Q`-Betti numbers
+/// for all primes `p` coprime to torsion invariant factors, and detects `p`-torsion jumps!).
+pub fn nerve_cohomology_dimensions_fp(
+  nerve : SimplicialNerve,
+  p : Int32,
+) -> Array[Int32] {
+  let n0 = nerve.num_vertices
+  let n1 = nerve.edges.length()
+  let n2 = nerve.triangles.length()
+  let n3 = nerve.tetrahedra.length()
+  let minus1 = p - 1
+  let d0 = @gcd.fp_mat_make(n1, n0, p, 0)
+  for e in 0..<n1 {
+    let (v0, v1) = nerve.edges[e]
+    @gcd.fp_mat_set(d0, e, v1, 1)
+    @gcd.fp_mat_set(d0, e, v0, minus1)
+  }
+  let d1 = @gcd.fp_mat_make(n2, n1, p, 0)
+  for t in 0..<n2 {
+    let (v0, v1, v2) = nerve.triangles[t]
+    @gcd.fp_mat_set(d1, t, nerve_edge_index(nerve, v1, v2), 1)
+    @gcd.fp_mat_set(d1, t, nerve_edge_index(nerve, v0, v2), minus1)
+    @gcd.fp_mat_set(d1, t, nerve_edge_index(nerve, v0, v1), 1)
+  }
+  let d2 = @gcd.fp_mat_make(n3, n2, p, 0)
+  for tet in 0..<n3 {
+    let (v0, v1, v2, v3) = nerve.tetrahedra[tet]
+    @gcd.fp_mat_set(d2, tet, nerve_tri_index(nerve, v1, v2, v3), 1)
+    @gcd.fp_mat_set(d2, tet, nerve_tri_index(nerve, v0, v2, v3), minus1)
+    @gcd.fp_mat_set(d2, tet, nerve_tri_index(nerve, v0, v1, v3), 1)
+    @gcd.fp_mat_set(d2, tet, nerve_tri_index(nerve, v0, v1, v2), minus1)
+  }
+  let r0 = if n1 > 0 && n0 > 0 { @gcd.fp_rank(d0) } else { 0 }
+  let r1 = if n2 > 0 && n1 > 0 { @gcd.fp_rank(d1) } else { 0 }
+  let r2 = if n3 > 0 && n2 > 0 { @gcd.fp_rank(d2) } else { 0 }
+  [n0 - r0, n1 - r1 - r0, n2 - r2 - r1, n3 - r2]
 }
 
 ///|
@@ -1245,17 +1278,17 @@ pub fn compute_nerve_homotopy_type(
   nerve : SimplicialNerve,
 ) -> HomotopyTypeSummary {
   let cc = nerve_constant_cochain_complex_q(nerve)
-  let betti = cohomology_dimensions(cc)
+  let betti = cohomology_dimensions_unchecked(cc)
   // Connected components via shared Union-Find on edges.
   let n0 = nerve.num_vertices
-  let parent = uf_new(n0)
+  let parent = site_uf_new(n0)
   for e in nerve.edges {
     let (u, v) = e
-    uf_union(parent, u, v)
+    site_uf_union(parent, u, v)
   }
   let mut pi0 = 0
   for i in 0..<n0 {
-    if uf_find(parent, i) == i {
+    if site_uf_find(parent, i) == i {
       pi0 = pi0 + 1
     }
   }

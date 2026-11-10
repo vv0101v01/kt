@@ -148,12 +148,14 @@ let lan = @sym.lan(k, f, cap)                   // 左 Kan 擴張（k : FinFunct
 
 ---
 
-## 7. 執行與驗證
+## 7. `T1` 雙層架構（`L0 symlib/core` + `L1 symlib`）與驗證
+
+- **`symlib/core`（`pkgL0` 零外部依賴）**：硬體 `popcnt`／`and_popcount` `BitVec`、無度數上限 `PermLut`（`n ≤ 15` 4-bit Nibble SWAR、`n > 15` SplitMix64 + 原像核對）、零配置 Schreier 篩選 `PermGroup`（含 `alternating`、`hyperoctahedral`）、位向量 1-WL `refine_colors` 與 McKay 搜索引擎；`symlib/reexport_core.mbt` 100% 向後相容重導出。
+- **`symlib`（`pkgL1`）**：Holt 陪集剪枝任意生成元秩子群共軛類格 `subgroup_classes`（支援 `A₅(60):9`、`B₃(48):33`）、Burnside Möbius 精確軌道分解 `burnside_mobius_solve`，以及非薄／群胚一般米田雙射 `verify_general_yoneda_bijection`。
 
 ```bash
-moon run cmd/symdemo  --target native --release   # 全功能演示（自同構群/作用/折疊/單子/範疇化）
-moon run cmd/symbench --target native --release   # 7 個衍生演算法 vs 暴力/全搜索的對照
-moon test symlib --target wasm-gc                 # 局部微測試（測完即刪）
+moon run cmd/symdemo --target wasm-gc     # 全功能演示（自同構群/作用/折疊/單子/範疇化）
+moon check --deny-warn --target wasm-gc   # 零警告檢查
 ```
 
 公共健康檢查（正式模組函式）：`@sym.prove_all(cap)` 回傳 20 張 `Cert`，用 `cert_report` 印表。

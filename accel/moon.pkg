@@ -1,7 +1,8 @@
 import {
   "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/accel/swar",
   "vv0101v01/cubical-hermitian/gcd",
-  "vv0101v01/cubical-hermitian/algebra",
+  "vv0101v01/cubical-hermitian/algebra/core" @algebra,
   "vv0101v01/cubical-hermitian/cubical/face_bdd",
   "vv0101v01/cubical-hermitian/semiring/trop",
   "vv0101v01/cubical-hermitian/tensor",

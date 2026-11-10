@@ -1,0 +1,303 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/meta/core"
+
+// Values
+pub fn all_laws() -> Array[(String, Bool)]
+
+pub fn binom(Int32, Int32) -> Int32
+
+pub fn chk(Array[(String, Bool)], String, Bool) -> Unit
+
+pub fn complex_of_maximal(Int32, Array[Array[Int32]]) -> Complex
+
+pub fn cover_glues(Array[Array[Int32]]) -> Bool
+
+pub fn cover_obstruction(Array[Array[Int32]]) -> (Int32, Int32, Int32)?
+
+pub fn cx_betti(Complex, Int32) -> Int32
+
+pub fn cx_betti_vector(Complex) -> Array[Int32]
+
+pub fn cx_boundary(Complex, Int32) -> Array[Array[Int32]]
+
+pub fn cx_euler(Complex) -> Int32
+
+pub fn cx_f_vector(Complex) -> Array[Int32]
+
+pub fn cx_is_chain_complex(Complex) -> Bool
+
+pub fn erdos_szekeres(Int32, Int32) -> Int32
+
+pub fn integer_nullity(Array[Array[Int32]]) -> Int32
+
+pub fn law_algebra_bareiss64_sylvester_exactness() -> Array[(String, Bool)]
+
+pub fn law_algebra_exact_rational_rank() -> Array[(String, Bool)]
+
+pub fn law_burnside_table_of_marks_mobius() -> Array[(String, Bool)]
+
+pub fn law_cchm_cofibration_three_valued() -> Array[(String, Bool)]
+
+pub fn law_complex_covers_gluing_criterion_via_h1_of_the_nerve() -> Array[(String, Bool)]
+
+pub fn law_complex_f_vector_alternating_sum_is_the_euler_characteristic() -> Array[(String, Bool)]
+
+pub fn law_complex_simplicial_complexes_betti_numbers_and_euler_poincar() -> Array[(String, Bool)]
+
+pub fn law_covering_galois_correspondence() -> Array[(String, Bool)]
+
+pub fn law_ez_degeneracy_partition_stirling() -> Array[(String, Bool)]
+
+pub fn law_kalman_demorgan_diamond() -> Array[(String, Bool)]
+
+pub fn law_karp_tropical_eigenvalue_duality() -> Array[(String, Bool)]
+
+pub fn law_malcev_absorbing_zero_collapse_vs_pointed_additivity() -> Array[(String, Bool)]
+
+pub fn law_malcev_congruence_permutability_and_one_step_join() -> Array[(String, Bool)]
+
+pub fn law_malcev_pol_inv_galois_correspondence() -> Array[(String, Bool)]
+
+pub fn law_malcev_quotient_algebra_and_first_isomorphism() -> Array[(String, Bool)]
+
+pub fn law_malcev_reflexive_graph_internal_groupoid_and_matroid_ramsey() -> Array[(String, Bool)]
+
+pub fn law_matroid_matroid_duality_is_an_involution() -> Array[(String, Bool)]
+
+pub fn law_matroid_matroid_greedy_is_optimal_on_a_graphic_matroid() -> Array[(String, Bool)]
+
+pub fn law_matroid_matroid_linear_matroid_over_q() -> Array[(String, Bool)]
+
+pub fn law_myhill_nerode_hopcroft_minimality() -> Array[(String, Bool)]
+
+pub fn law_nobeling_profinite_free_basis() -> Array[(String, Bool)]
+
+pub fn law_ordinal_ord_max_is_the_lattice_join() -> Array[(String, Bool)]
+
+pub fn law_ordinal_ordinal_cnf_laws() -> Array[(String, Bool)]
+
+pub fn law_polarized_focusing_adjunction() -> Array[(String, Bool)]
+
+pub fn law_polynomial_yoneda_and_parametricity() -> Array[(String, Bool)]
+
+pub fn law_ramsey_ex_paley_graph_gives_r44_ge_18() -> Array[(String, Bool)]
+
+pub fn law_ramsey_ex_r44_and_r35_are_pinned_exactly() -> Array[(String, Bool)]
+
+pub fn law_ramsey_ex_ramsey_recursion_bound_beats_erdos_szekeres() -> Array[(String, Bool)]
+
+pub fn law_ramsey_ex_ramsey_window_is_now_usable_up_to_d3() -> Array[(String, Bool)]
+
+pub fn law_ramsey_explicit_3_4_free_coloring_of_k8_is_verified() -> Array[(String, Bool)]
+
+pub fn law_ramsey_ramsey_numbers_computed_by_search() -> Array[(String, Bool)]
+
+pub fn law_swan_constant_extent_j_strictness() -> Array[(String, Bool)]
+
+pub fn law_swar_mono64_divisibility_and_order() -> Array[(String, Bool)]
+
+pub fn law_unify_anti_unification_join_dual_of_mgu() -> Array[(String, Bool)]
+
+pub fn law_unify_dag_paterson_wegman_equivalence() -> Array[(String, Bool)]
+
+pub fn law_unify_unification_correctness_generality_uniqueness() -> Array[(String, Bool)]
+
+pub fn law_zhegalkin_anf_mobius_involution() -> Array[(String, Bool)]
+
+pub fn mat_closure(Matroid, Array[Int32]) -> Array[Int32]
+
+pub fn mat_dual(Matroid) -> Matroid
+
+pub fn mat_exchange_ok(Matroid) -> Bool
+
+pub fn mat_from_rank(Int32, (Array[Int32]) -> Int32) -> Matroid
+
+pub fn mat_graphic(Int32, Array[(Int32, Int32)]) -> Matroid
+
+pub fn mat_greedy(Matroid, Array[Int32]) -> Array[Int32]
+
+pub fn mat_identity(Int32) -> Array[Array[Int32]]
+
+pub fn mat_indep(Matroid, Array[Int32]) -> Bool
+
+pub fn mat_is_basis(Matroid, Array[Int32]) -> Bool
+
+pub fn mat_linear(Array[Array[Int32]], Int32) -> Matroid
+
+pub fn mat_mul(Array[Array[Int32]], Array[Array[Int32]]) -> Array[Array[Int32]]
+
+pub fn mat_rank(Matroid, Array[Int32]) -> Int32
+
+pub fn mat_rank_axioms_ok(Matroid) -> String?
+
+pub fn mat_transpose(Array[Array[Int32]]) -> Array[Array[Int32]]
+
+pub fn matrix_rank(Array[Array[Int32]]) -> Int32
+
+pub fn matrix_rank_bareiss64_with_cert(Array[Array[Int32]]) -> (Int32, Bool)
+
+pub fn matrix_rank_qrat64(Array[Array[Int32]]) -> Int32
+
+pub fn nerve_of_cover(Array[Array[Int32]]) -> Complex
+
+pub fn ord_add(Ordinal, Ordinal) -> Ordinal
+
+pub fn ord_cmp(Ordinal, Ordinal) -> Int32
+
+pub fn ord_int(Int32) -> Ordinal
+
+pub fn ord_is_normal(Ordinal) -> Bool
+
+pub fn ord_is_zero(Ordinal) -> Bool
+
+pub fn ord_lt(Ordinal, Ordinal) -> Bool
+
+pub fn ord_max(Ordinal, Ordinal) -> Ordinal
+
+pub fn ord_mul_int(Ordinal, Int32) -> Ordinal
+
+pub fn ord_mul_omega(Ordinal) -> Ordinal
+
+pub fn ord_omega_pow(Ordinal) -> Ordinal
+
+pub fn ord_one() -> Ordinal
+
+pub fn ord_probe_laws() -> Int32
+
+pub fn ord_succ(Ordinal) -> Ordinal
+
+pub fn ord_term(Int32, Ordinal) -> Ordinal
+
+pub fn ord_to_string(Ordinal) -> String
+
+pub fn ord_zero() -> Ordinal
+
+pub fn paley_edges(Int32) -> Array[(Int32, Int32)]
+
+pub fn paley_is_self_complementary(Int32) -> Bool
+
+pub fn paley_qr(Int32) -> Array[Int32]
+
+pub fn ramsey(Int32, Int32) -> Int32
+
+pub fn ramsey_3_4_free_k8() -> Array[(Int32, Int32)]
+
+pub fn ramsey_check_coloring(Int32, Int32, Int32, Array[(Int32, Int32)]) -> Bool
+
+pub fn ramsey_exact(Int32, Int32) -> Int32?
+
+pub fn ramsey_find_witness(Int32, Int32, Int32) -> Array[(Int32, Int32)]?
+
+pub fn ramsey_free_exists(Int32, Int32, Int32) -> Bool
+
+pub fn ramsey_local_search(Int32, Int32, Int32, Int32, Int32, Int32) -> Array[(Int32, Int32)]?
+
+pub fn ramsey_pin(Int32, Int32) -> RamseyPin
+
+pub fn ramsey_rec_bound(Int32, Int32) -> Int32
+
+pub fn ramsey_upper(Int32, Int32) -> Int32
+
+pub fn ramsey_window(Int32) -> Int32
+
+pub fn rank_int(Array[Array[Int32]]) -> Int32
+
+pub fn set_diff(Array[Int32], Array[Int32]) -> Array[Int32]
+
+pub fn set_full(Int32) -> Array[Int32]
+
+pub fn set_inter(Array[Int32], Array[Int32]) -> Array[Int32]
+
+pub fn set_norm(Array[Int32]) -> Array[Int32]
+
+pub fn set_subset(Array[Int32], Array[Int32]) -> Bool
+
+pub fn set_union(Array[Int32], Array[Int32]) -> Array[Int32]
+
+pub fn u_apply(Array[UTerm?], UTerm) -> UTerm
+
+pub fn u_canon_str(UTerm) -> String
+
+pub fn u_eq(UTerm, UTerm) -> Bool
+
+pub fn u_is_instance(UTerm, UTerm) -> Bool
+
+pub fn u_lgg(UTerm, UTerm, Array[Int32]) -> UTerm
+
+pub fn u_mgu(UTerm, UTerm) -> Array[UTerm?]?
+
+pub fn u_mgu_dag(UTerm, UTerm) -> Array[UTerm?]?
+
+pub fn u_size(UTerm) -> Int32
+
+pub fn u_to_string(UTerm) -> String
+
+pub fn u_unifiable(UTerm, UTerm) -> Bool
+
+pub fn u_unifiable_dag(UTerm, UTerm) -> Bool
+
+pub fn u_unify(Array[UTerm?], UTerm, UTerm) -> Bool
+
+pub fn u_variant_eq(UTerm, UTerm) -> Bool
+
+pub fn u_vars(UTerm) -> Array[Int32]
+
+pub fn u_walk(Array[UTerm?], UTerm) -> UTerm
+
+pub fn ua_equiv_join_closure(Int32, Array[Array[Bool]], Array[Array[Bool]]) -> Array[Array[Bool]]
+
+pub fn ua_is_equiv(Int32, Array[Array[Bool]]) -> Bool
+
+pub fn ua_is_malcev_op(Int32, (Int32, Int32, Int32) -> Int32) -> Bool
+
+pub fn ua_is_ternary_congruence(Int32, Array[Array[Bool]], (Int32, Int32, Int32) -> Int32) -> Bool
+
+pub fn ua_kernel_congruence(Int32, (Int32) -> Int32) -> Array[Array[Bool]]
+
+pub fn ua_quotient_classes(Int32, Array[Array[Bool]]) -> (Array[Int32], Array[Int32])
+
+pub fn ua_rel_comp(Int32, Array[Array[Bool]], Array[Array[Bool]]) -> Array[Array[Bool]]
+
+pub fn uf_find_halving(Array[Int32], Int32) -> Int32
+
+pub fn ufn(Int32, Array[UTerm]) -> UTerm
+
+pub fn uvar(Int32) -> UTerm
+
+// Errors
+
+// Types and methods
+pub(all) struct Complex {
+  verts : Int32
+  faces : Array[Array[Array[Int32]]]
+}
+
+pub(all) struct Matroid {
+  ground : Int32
+  rankf : (Array[Int32]) -> Int32
+}
+
+pub(all) struct OrdTerm {
+  coef : Int32
+  exp : Ordinal
+}
+
+pub(all) struct Ordinal {
+  terms : Array[OrdTerm]
+}
+
+pub struct RamseyPin {
+  lower : Int32
+  upper : Int32
+  witness : Array[(Int32, Int32)]
+  pinned : Bool
+}
+
+pub(all) enum UTerm {
+  UVar(Int32)
+  UFfn(Int32, Array[UTerm])
+}
+
+// Type aliases
+
+// Traits

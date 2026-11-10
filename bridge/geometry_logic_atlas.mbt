@@ -531,15 +531,30 @@ pub fn build_fine_grained_geometry_logic_atlas() -> Array[
   // ---------------------------------------------------------------------------
   // 13. Affine Morphisms, Separatedness & DVR Valuative Properness
   // ---------------------------------------------------------------------------
-  let hopf_aff = @scheme.is_affine_morphism(
-    @scheme.morphism_hopf_punctured_plane_to_p1(),
-  )
+  let hopf_mor = @scheme.morphism_hopf_punctured_plane_to_p1()
+  let hopf_aff = @scheme.is_affine_morphism(hopf_mor)
   let punc_to_a2_aff = @scheme.is_affine_morphism(
     @scheme.morphism_punctured_plane_to_a2(),
   )
-  let p1_to_pt_aff = @scheme.is_affine_morphism(
-    @scheme.morphism_to_spec_q(@scheme.scheme_projective_space(1)),
+  let p1_to_pt_mor = @scheme.morphism_to_spec_q(
+    @scheme.scheme_projective_space(1),
   )
+  let p1_to_pt_aff = @scheme.is_affine_morphism(p1_to_pt_mor)
+  let comp_mor = @scheme.scheme_morphism_compose(hopf_mor, p1_to_pt_mor)
+  let comp_ok = @scheme.scheme_morphism_is_valid(comp_mor)
+  let base_q = @scheme.coord_ring_new(0, [])
+  let rx = @scheme.coord_ring_new(1, [])
+  let to_rx : @scheme.RingHom = { src: base_q, dst: rx, var_images: [], }
+  let (fib_a2, proj_1, proj_2) = @scheme.affine_fiber_product(to_rx, to_rx)
+  let fib_ok = fib_a2.ring.nvars == 2 &&
+    @scheme.ring_hom_is_valid(proj_1) &&
+    @scheme.ring_hom_is_valid(proj_2) &&
+    @exactalg.rat_is_zero(
+      @scheme.mpoly_eval(
+        @scheme.mpoly_sub(@scheme.mpoly_var(2, 0), @scheme.mpoly_var(2, 1)),
+        [@exactalg.rat_int(3), @exactalg.rat_int(3)],
+      ),
+    )
   let prop_p1 = @scheme.analyze_scheme_properness(
     @scheme.scheme_projective_space(1),
   )
@@ -562,7 +577,12 @@ pub fn build_fine_grained_geometry_logic_atlas() -> Array[
     geometric_structure: "Affine Morphisms, Diagonal Closed Immersion & DVR Valuative Properness",
     logical_counterpart: "Modal Equality Separation (Uniqueness) & Valuative Limit Completeness (Existence)",
     correspondence_theorem: "A^2\\{0}->P^1 affine while A^2\\{0}->A^2 non-affine; P^1,P^2 proper vs A^1,A^2\\{0},DoubledLine",
-    witness_holds: hopf_aff && prop_p1.is_proper && prop_p2.is_proper && kap_ok,
+    witness_holds: hopf_aff &&
+    comp_ok &&
+    fib_ok &&
+    prop_p1.is_proper &&
+    prop_p2.is_proper &&
+    kap_ok,
     contrast_holds: !punc_to_a2_aff &&
     !p1_to_pt_aff &&
     !prop_a1.existence_holds &&

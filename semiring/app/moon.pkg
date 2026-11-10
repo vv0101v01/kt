@@ -2,4 +2,8 @@ import {
   "vv0101v01/cubical-hermitian/semiring/algebra" @alg,
   "vv0101v01/cubical-hermitian/semiring/matrix" @mat,
   "vv0101v01/cubical-hermitian/semiring/sim",
+  "vv0101v01/cubical-hermitian/semiring/trop",
+  "vv0101v01/cubical-hermitian/semiring/graph",
+  "vv0101v01/cubical-hermitian/semiring/bp",
+  "vv0101v01/cubical-hermitian/semiring/nf",
 }

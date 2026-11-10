@@ -14,12 +14,16 @@ using @face_bdd {
   bdd_or,
   bdd_tree_cofactor,
   contains_int,
+  dim_eq_demorgan,
   dim_eq_sem,
+  dim_is_one_demorgan,
+  dim_is_zero_demorgan,
   dim_nvars_sem,
   dim_simplify,
   dim_subst,
   dim_vars_into,
   eval_dim,
+  face_bdd_canon_key,
   face_eq_mod,
   face_holds,
   face_is_bot_sem,
@@ -457,6 +461,27 @@ pub fn denv_len(env : DEnv) -> Int32 {
     DEnvNil => 0
     DEnvCons(_, _, n) => n
   }
+}
+
+///|
+/// Normalize a closed Peano `DTerm` via dependent NbE (`deval_dim`) and decode
+/// `DVZeroNat` / `DVSucc(...)` to `Some(n)` (`None` if stuck or non-Nat).
+pub fn kernel_eval_closed_peano(t : DTerm) -> Int32? {
+  let mut cur = force_value(deval_dim(t, DEnvNil, DDimEnvNil))
+  let mut acc = 0
+  let mut fuel = 100000
+  while fuel > 0 {
+    fuel = fuel - 1
+    match cur {
+      DVZeroNat => return Some(acc)
+      DVSucc(inner) => {
+        acc = acc + 1
+        cur = force_value(inner)
+      }
+      _ => return None
+    }
+  }
+  None
 }
 
 ///|
@@ -1742,9 +1767,9 @@ fn dterm_conv_plausible(a : DTerm, b : DTerm) -> Bool {
 
 ///|
 fn dsystem_face_key(br : DTubeBranch) -> String {
-  // Use the BDD, not face syntax, so semantically equal faces have the
-  // same tie-breaking key.
-  Repr(bdd_of_face(face_simplify(br.face), face_nvars_sem(br.face))).to_string()
+  // Zero-reflection canonical ROBDD / 64-bit SWAR truth-word key so
+  // semantically equal faces share the exact same tie-breaking key.
+  face_bdd_canon_key(br.face)
 }
 
 ///|
@@ -3746,7 +3771,7 @@ pub fn conv_at(
         (DVCirclePoint(r), DVCirclePoint(s)) => {
           let rr = circle_dim_of(circle_point(r))
           let ss = circle_dim_of(circle_point(s))
-          dim_eq_sem(rr, ss)
+          dim_eq_demorgan(rr, ss)
         }
         (DVNeutral(x), DVNeutral(y)) => conv_neutral(level, dlevel, x, y)
         _ => false
@@ -3756,7 +3781,7 @@ pub fn conv_at(
         (DVTorusPoint(r1, r2), DVTorusPoint(s1, s2)) => {
           let (ra, rb) = torus_dims_of(torus_point(r1, r2))
           let (sa, sb) = torus_dims_of(torus_point(s1, s2))
-          dim_eq_sem(ra, sa) && dim_eq_sem(rb, sb)
+          dim_eq_demorgan(ra, sa) && dim_eq_demorgan(rb, sb)
         }
         (DVNeutral(x), DVNeutral(y)) => conv_neutral(level, dlevel, x, y)
         _ => false

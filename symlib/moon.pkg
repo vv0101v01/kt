@@ -1,1 +1,3 @@
-
+import {
+  "vv0101v01/cubical-hermitian/symlib/core" @symcore,
+}

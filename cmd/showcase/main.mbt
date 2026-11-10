@@ -127,10 +127,40 @@ fn main {
   }
   println("Perm → cubical Equiv → Perm round trip: \{wiring_ok}")
   let accel_rep = @bridge.verify_accel_hardware_bridge()
+  let triad_rep = @bridge.verify_f8_f5_f1_triad_bridge()
+  let triad_f236 = @bridge.verify_f2_f3_f6_triad_bridge()
   println(
-    "CPU SWAR + Browser Free WebGPU (WGSL) acceleration: all_ok=\{accel_rep.all_ok}, wgsl_portable=\{accel_rep.wgsl_browser_kernels_audited}/7",
+    "CPU SWAR + Browser Free WebGPU (WGSL) acceleration: all_ok=\{accel_rep.all_ok}, triad(GF2_F4_ROBDD=\{triad_rep.gf2_f4_robdd_isomorphism_ok}, CCHM_Zariski=\{triad_rep.cchm_zariski_cofibration_duality_ok}, ModF4=\{triad_rep.modular_f4_matches_buchberger_ok}, INet_NbE=\{triad_rep.inet_nbe_peano_confluence_ok})=\{triad_rep.all_holds}, wgsl_portable=\{accel_rep.wgsl_browser_kernels_audited}/7(SSOT=8/8)",
   )
-  guard all_certs_ok && wiring_ok && unif_ok && accel_rep.all_ok else {
+  println(
+    "F2×F3×F6 Symmetry-Semiring-Condensed Triad: A5_classes=\{triad_f236.a5_subgroup_classes}, B3_classes=\{triad_f236.b3_subgroup_classes}, Burnside_Mobius=\{triad_f236.burnside_mobius_exact_ok}, Groupoid_Yoneda=\{triad_f236.nonthin_groupoid_yoneda_ok}, Semiring_Wasm=\{triad_f236.semiring_wasm_suite_ok}, ModHNF=\{triad_f236.modular_hnf_snf_ok}, Nobeling=\{triad_f236.nobeling_solid_duality_ok}, Adams_h3_eta3=\{triad_f236.adams_h3_sigma_and_eta3_ok}, all_holds=\{triad_f236.all_holds}",
+  )
+  let autonomy_rep = @bridge.verify_malcev_presheaf_autonomy_bridge()
+  println(
+    "Constructive Universal Algebra + ¬¬ Presheaf + Cubical Autonomy: holds=\{autonomy_rep.holds}, 4cubes=\{autonomy_rep.swar_cube.nondegenerate_4cubes_count}+\{autonomy_rep.swar_cube.degenerate_4cubes_count}=\{autonomy_rep.nondeg_plus_deg_4cubes}, nn_sieves=\{autonomy_rep.presheaf_dn.omega_nn_stable_sieves}/\{autonomy_rep.presheaf_dn.omega_total_sieves}",
+  )
+  let w4 = autonomy_rep.work4_atlas
+  println(
+    "Full-Spectrum Cubical Structures × 26 Verbs × 14 Compositions: structures=\{w4.verified_structure_count}/54, verbs=\{w4.distinct_verbs_covered}/26, patterns=\{w4.distinct_patterns_covered}/14, interactions=\{w4.interaction_theorems_count}/14, focus=\{w4.affine_bidir_focus.unfocused_interleavings_count}->\{w4.affine_bidir_focus.focused_canonical_derivations_count}, ok=\{w4.all_54_structures_and_interactions_ok}",
+  )
+  let k9_rep = @bridge.verify_k9_meta_discovery_topos_unification(
+    k7_precomputed=Some(k7_edges),
+    accel_precomputed=Some(accel_rep),
+    rotation_precomputed=Some(rotation_axis),
+    k5_preverified_ok=Some(unif_ok),
+  )
+  let pp = k9_rep.promotion_pipeline
+  println(
+    "Nine-Federation K_9 Star-Prism & F7->F9->F4->F1 Promotion: federations=\{k9_rep.nine_federations_verified}/9, K9_bridges=\{k9_rep.k9_bridges_verified}/36, V5_HF64=\{k9_rep.v5_ackermann_65536_sets_verified}, promote(F7_edges=\{pp.f7_bitplane_implications_found}, ctz_cex=\{pp.f7_hardware_ctz_counterexample}, F9_hits=\{pp.f9_slg_tabling_cache_hits}, H1_zero=\{pp.f9_bareiss_gluing_h1_zero}, F4_Sieve64=\{pp.f4_sieve64_global_truth_holds}, F1_LJF=\{pp.f1_ljf_focused_unique_proof})=\{k9_rep.all_holds}",
+  )
+  guard all_certs_ok &&
+    wiring_ok &&
+    unif_ok &&
+    accel_rep.all_ok &&
+    triad_rep.all_holds &&
+    triad_f236.all_holds &&
+    autonomy_rep.holds &&
+    k9_rep.all_holds else {
     abort("showcase failed")
   }
 }

@@ -302,20 +302,33 @@ pub fn bdd_tree_cofactor(b : Bdd, variable : Int32, value : Bool) -> Bdd {
 }
 
 ///|
-/// Symbolic satisfiability.
+/// Symbolic satisfiability (zero-allocation 64-bit SWAR fast-path for `n <= 6`).
 pub fn bdd_sat_face(f : Face, n : Int32) -> Bool {
+  if n >= 0 && n <= 6 {
+    return (face_truth_u64(f, n) & swar6_domain_mask(n)) != 0UL
+  }
   bdd_dag_sat_face(f, n)
 }
 
 ///|
-/// Symbolic entailment: f ≤ g iff f ∧ ¬g is unsatisfiable.
+/// Symbolic entailment: f ≤ g iff f ∧ ¬g is unsatisfiable (`UInt64` SWAR fast-path for `n <= 6`).
 pub fn bdd_face_le(f : Face, g : Face, n : Int32) -> Bool {
+  if n >= 0 && n <= 6 {
+    let m = swar6_domain_mask(n)
+    let wf = face_truth_u64(f, n) & m
+    let wg = face_truth_u64(g, n) & m
+    return (wf & (wg ^ m)) == 0UL
+  }
   bdd_dag_face_le(f, g, n)
 }
 
 ///|
-/// Symbolic quotient equality: identical canonical forms.
+/// Symbolic quotient equality: identical canonical forms (`UInt64` SWAR fast-path for `n <= 6`).
 pub fn bdd_face_eq(f : Face, g : Face, n : Int32) -> Bool {
+  if n >= 0 && n <= 6 {
+    let m = swar6_domain_mask(n)
+    return (face_truth_u64(f, n) & m) == (face_truth_u64(g, n) & m)
+  }
   bdd_dag_face_eq(f, g, n)
 }
 

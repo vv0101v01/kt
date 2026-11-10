@@ -799,7 +799,20 @@ pub struct DLevelTermDecl {
 }
 
 ///|
-pub enum DLevelDecl {}
+pub(all) enum DLevelDecl {
+  DLevelDeclInductive(DLevelInductiveDecl)
+  DLevelDeclHit(DLevelHitDecl)
+  DLevelDeclTerm(DLevelTermDecl)
+}
+
+///|
+pub fn level_decl_validate(decl : DLevelDecl) -> Bool {
+  match decl {
+    DLevelDeclInductive(d) => level_inductive_decl_validate(d)
+    DLevelDeclHit(d) => level_hit_decl_validate(d)
+    DLevelDeclTerm(d) => level_term_decl_validate(d)
+  }
+}
 
 ///|
 pub struct DLevelTermInstance {
@@ -1000,20 +1013,16 @@ pub fn check_level_polymorphic_declarations() -> Bool {
     Some(instance) => dep_check_closed(instance.body, instance.ty)
     None => false
   }
+  let sum_decl_ok = level_decl_validate(DLevelDeclInductive(list_level_decl())) &&
+    level_decl_validate(DLevelDeclHit(circle_level_decl())) &&
+    level_decl_validate(DLevelDeclTerm(level_identity_decl()))
   list_ok &&
   circle_ok &&
   identity_ok &&
+  sum_decl_ok &&
   instantiate_level_inductive_decl(list_level_decl(), []) == None &&
   !dterm_levels_in_scope(DUnivLevel(DLevelVar(1)), 1)
 }
-
-///|
-
-///|
-
-///|
-
-///|
 
 ///|
 /// A transparent one-argument type operator declaration.  `head` is

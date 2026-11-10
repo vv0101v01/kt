@@ -152,10 +152,13 @@ println(rep.ok(), rep.summary())                   // LawReport::ok / summary
 
 ---
 
-## 7. 驗證
+## 7. `T2` 硬體 `@swar` 與多項式時間升級與驗證
+
+- `semiring/matrix`：`mul_bool_swar`（Four-Russians `k=8` 64-bit OR）、`mul_gf2_m4ri_swar`、`closure_bool_swar`、`closure_trop_swar`（串接 `L0 @swar`）。
+- `semiring/trop`：`BPoly::subdivision` 3D 脊邊禮品包裝 BFS `O(n log n + n·#Faces)`、`trop_eigenvalue_karp`＋`trop_critical_eigenvector`。
+- `semiring/graph`：`bellman_ford_potentials`＋`apsp_johnson`（支援負權邊 `O(nm log n)`）；`semiring/bp`：有環精確變數消去 `bp_exact_all_marginals_ve`；`semiring/nf`：64-bit 結構雜湊 `dfa_of_regex` 與 Valmari–Hopcroft `O(|Σ||Q|log|Q|)` `dfa_minimize`；`semiring/app`：`verify_semiring_wasm_suite()`。
 
 ```bash
 moon check --deny-warn --target wasm-gc
-moon test semiring/matrix --target wasm-gc      # 單包即時微測試（測完即刪）
 python3 tools/arch_check.py                     # 分層與匯入白名單
 ```

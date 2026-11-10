@@ -16,6 +16,8 @@ pub fn[E : @algebra.IdempotentSemiring] closure_blocked(Mat[E], threshold? : Int
 
 pub fn[E : @algebra.IdempotentSemiring] closure_blocked_auto(Mat[E], l1_bytes? : Int32, l2_bytes? : Int32, elem_bytes? : Int32, ops? : @algebra.Ops) -> Mat[E]
 
+pub fn closure_bool_swar(Mat[@algebra.BoolSr]) -> (Mat[@algebra.BoolSr], Int32)
+
 pub fn[E : @algebra.IdempotentSemiring] closure_fw_inplace(Mat[E], ops? : @algebra.Ops) -> Mat[E]
 
 pub fn[E : @algebra.IdempotentSemiring] closure_fw_par(Mat[E], Int32, ops? : @algebra.Ops) -> Mat[E]
@@ -23,6 +25,8 @@ pub fn[E : @algebra.IdempotentSemiring] closure_fw_par(Mat[E], Int32, ops? : @al
 pub fn[E : @algebra.StarSemiring] closure_lehmann(Mat[E], ops? : @algebra.Ops) -> Mat[E]
 
 pub fn[E : @algebra.Semiring] closure_series(Mat[E], k? : Int32, is_small? : (E) -> Bool) -> (Mat[E], Bool)
+
+pub fn closure_trop_swar(Mat[@algebra.Trop], tile_size? : Int32) -> Mat[@algebra.Trop]
 
 pub fn[E] copy_region_in(Mat[E], Int32, Int32, FixedArray[E], Int32, Int32) -> Unit
 
@@ -55,6 +59,10 @@ pub fn[E : @algebra.Semiring] mat_plus(Mat[E], Mat[E]) -> Mat[E]
 pub fn[E : @algebra.Semiring] mul_blocked(Mat[E], Mat[E], block~ : Int32, ops? : @algebra.Ops, probe? : (Int32, Int32, Int32, Bool) -> Unit) -> Mat[E]
 
 pub fn[E : @algebra.Semiring] mul_blocked_auto(Mat[E], Mat[E], l1_bytes? : Int32, elem_bytes? : Int32, ops? : @algebra.Ops, probe? : (Int32, Int32, Int32, Bool) -> Unit) -> Mat[E]
+
+pub fn mul_bool_swar(Mat[@algebra.BoolSr], Mat[@algebra.BoolSr]) -> Mat[@algebra.BoolSr]
+
+pub fn mul_gf2_m4ri_swar(Mat[@algebra.BoolSr], Mat[@algebra.BoolSr]) -> Mat[@algebra.BoolSr]
 
 pub fn[E : @algebra.Semiring] mul_ikj(Mat[E], Mat[E], ops? : @algebra.Ops, probe? : (Int32, Int32, Int32, Bool) -> Unit) -> Mat[E]
 

@@ -385,7 +385,9 @@ pub fn law_engine_module_imports_resolve_modulesly() -> Array[(String, Bool)] {
   @core.chk(
     out,
     "instances: module imports resolve canonically #3 (cycle rejected with a real witness)",
-    !c.ok && witness_is_cycle(graph_cycle(), c.witness) && c.witness.length() >= 3,
+    !c.ok &&
+    witness_is_cycle(graph_cycle(), c.witness) &&
+    c.witness.length() >= 3,
   )
   // #4
   let s = resolve_modules(graph_self())

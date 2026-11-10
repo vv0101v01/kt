@@ -4,6 +4,7 @@ package "vv0101v01/cubical-hermitian/cubical/hermitian"
 import {
   "moonbitlang/core/debug",
   "vv0101v01/cubical-hermitian/algebra",
+  "vv0101v01/cubical-hermitian/algebra/core",
   "vv0101v01/cubical-hermitian/cubical/face_bdd",
   "vv0101v01/cubical-hermitian/cubical/finite",
 }
@@ -11,7 +12,7 @@ import {
 // Values
 pub fn alg_cert_in_image(AlgCertMat, Array[AlgC]) -> Bool
 
-pub fn alg_cert_inner(@algebra.QPoly, Array[AlgC], Array[AlgC]) -> AlgC
+pub fn alg_cert_inner(@core.QPoly, Array[AlgC], Array[AlgC]) -> AlgC
 
 pub fn alg_cert_is_projector(AlgCertMat) -> Bool
 
@@ -25,11 +26,11 @@ pub fn alg_cert_mat_vec(AlgCertMat, Array[AlgC]) -> Array[AlgC]
 
 pub fn alg_cert_outer(Array[AlgC]) -> AlgCertMat
 
-pub fn alg_cert_path_eval(@algebra.QPoly, AlgCertPath, @algebra.AlgNum) -> Array[AlgC]
+pub fn alg_cert_path_eval(@core.QPoly, AlgCertPath, @algebra.AlgNum) -> Array[AlgC]
 
 pub fn alg_cert_path_in_image(AlgCertMat, AlgCertPath) -> Bool
 
-pub fn alg_cert_square_eval(@algebra.QPoly, AlgCertSquare, @algebra.AlgNum, @algebra.AlgNum) -> Array[AlgC]
+pub fn alg_cert_square_eval(@core.QPoly, AlgCertSquare, @algebra.AlgNum, @algebra.AlgNum) -> Array[AlgC]
 
 pub fn alg_cert_square_in_image(AlgCertMat, AlgCertSquare) -> Bool
 
@@ -43,17 +44,17 @@ pub fn algc_conj(AlgC) -> AlgC
 
 pub fn algc_eq(AlgC, AlgC) -> Bool
 
-pub fn algc_i(@algebra.QPoly) -> AlgC
+pub fn algc_i(@core.QPoly) -> AlgC
 
 pub fn algc_mul(AlgC, AlgC) -> AlgC
 
-pub fn algc_one(@algebra.QPoly) -> AlgC
+pub fn algc_one(@core.QPoly) -> AlgC
 
 pub fn algc_real(@algebra.AlgNum) -> AlgC
 
 pub fn algc_scale_alg(@algebra.AlgNum, AlgC) -> AlgC
 
-pub fn algc_zero(@algebra.QPoly) -> AlgC
+pub fn algc_zero(@core.QPoly) -> AlgC
 
 pub fn branch(@face_bdd.Face, Array[Complex]) -> VecBranch
 
@@ -187,9 +188,9 @@ pub fn cube_in_eigenspace(CMat, Cube, Array[Double]) -> Bool
 
 pub fn cube_in_subline(SubLine, Cube, Int32, Array[Double]) -> Bool
 
-pub fn cube_root_two_modulus() -> @algebra.QPoly
+pub fn cube_root_two_modulus() -> @core.QPoly
 
-pub fn cube_root_unit_vector(@algebra.QPoly) -> Array[AlgC]?
+pub fn cube_root_unit_vector(@core.QPoly) -> Array[AlgC]?
 
 pub fn cx(Double, Double) -> Complex
 
@@ -213,7 +214,7 @@ pub fn decompose(CMat, Array[Complex]) -> (Array[Complex], Array[Complex])
 
 pub fn degenerate_cube(Cube, Int32) -> Cube
 
-pub fn double_dyadic_interval(Double, Int32) -> (@algebra.Rat, @algebra.Rat)?
+pub fn double_dyadic_interval(Double, Int32) -> (@core.Rat, @core.Rat)?
 
 pub fn eigen_equations_hold(CMat, Array[Complex]) -> Bool
 
@@ -371,7 +372,7 @@ pub fn qcc_neg(QuadC) -> QuadC
 
 pub fn qcc_one() -> QuadC
 
-pub fn qcc_rat(@algebra.Rat, @algebra.Rat) -> QuadC
+pub fn qcc_rat(@core.Rat, @core.Rat) -> QuadC
 
 pub fn qcc_real(@algebra.QuadNum) -> QuadC
 
@@ -472,10 +473,11 @@ pub struct CertSquare {
   coeffs : Array[Array[Array[QuadC]]]
 }
 
+#derive(Eq, @debug.Debug)
 pub struct Complex {
   re : Double
   im : Double
-} derive(Eq, @debug.Debug)
+}
 pub fn Complex::equal(Self, Self) -> Bool
 pub fn Complex::not_equal(Self, Self) -> Bool
 pub fn Complex::to_repr(Self) -> @debug.Repr
@@ -532,10 +534,11 @@ pub struct ProjectorCertificate {
   trace : QuadC
 }
 
+#derive(Eq, @debug.Debug)
 pub struct QuadC {
   re : @algebra.QuadNum
   im : @algebra.QuadNum
-} derive(Eq, @debug.Debug)
+}
 pub fn QuadC::equal(Self, Self) -> Bool
 pub fn QuadC::not_equal(Self, Self) -> Bool
 pub fn QuadC::to_repr(Self) -> @debug.Repr

@@ -11,4 +11,6 @@ import {
   "vv0101v01/cubical-hermitian/cubical/elaborator",
   "vv0101v01/cubical-hermitian/cubical/store",
   "vv0101v01/cubical-hermitian/cubical/homotopy",
+  "vv0101v01/cubical-hermitian/cubical/autonomy",
+  "vv0101v01/cubical-hermitian/cubical/structures",
 }

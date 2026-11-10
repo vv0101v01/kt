@@ -366,16 +366,24 @@ pub fn compiled_module_env_new() -> CompiledModuleEnv {
 }
 
 ///|
+fn compiled_modules_find_by_path(
+  modules : Array[CompiledModule],
+  path : String,
+) -> CompiledModule? {
+  for i in 0..<modules.length() {
+    if modules[i].module_path == path {
+      return Some(modules[i])
+    }
+  }
+  None
+}
+
+///|
 pub fn compiled_module_env_find(
   env : CompiledModuleEnv,
   path : String,
 ) -> CompiledModule? {
-  for i in 0..<env.modules.length() {
-    if env.modules[i].module_path == path {
-      return Some(env.modules[i])
-    }
-  }
-  None
+  compiled_modules_find_by_path(env.modules, path)
 }
 
 ///|

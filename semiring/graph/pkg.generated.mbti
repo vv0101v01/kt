@@ -9,7 +9,11 @@ import {
 // Values
 pub fn apsp_dijkstra(Graph) -> @matrix.Mat[@algebra.Trop]
 
+pub fn apsp_johnson(Graph) -> @matrix.Mat[@algebra.Trop]?
+
 pub fn apsp_kleene(Graph) -> (Array[Array[Int32]], Bool)
+
+pub fn bellman_ford_potentials(Graph) -> Array[Int32]?
 
 pub fn closure_bitset(Graph, row_ops? : @algebra.Ops) -> BitClosure
 

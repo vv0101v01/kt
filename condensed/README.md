@@ -181,9 +181,11 @@ assert_true(@condensed.cond_ledger_verify(l2))      // 逐筆重算雜湊鏈
 
 ---
 
-## 7. 驗證
+## 7. `T3` 輕核分離（`L1 condensed/core`）與 64× `@swar` 同倫前沿驗證
+
+- **`condensed/core`（`pkgL1`，僅依賴 `gcd` + `accel-swar`）**：`CompactProfiniteTower`、構造性 Nöbeling 自由整數基底 `nobeling_unimodular_basis_zmat` / `verify_nobeling_free_solid_duality`（Bareiss `|det(B_ℤ)|=1`）、`rlim_zmat_endomorphism`，以及齊次分塊 `@swar` 64-bit Steenrod–Adams 極小分解 `adams_ext_swar_frontier_report()`（直抵八元數 Hopf `h₃=σ` 與 `h₁³=h₀²h₂` / `η³=4ν`）；`condensed/reexport_core.mbt` 完整重導出。
 
 ```bash
-moon test condensed --target wasm-gc
-moon run --release cmd/showcase --target wasm-gc   # 印出 47/47 證書中的 condensed 部分
+moon check --deny-warn --target wasm-gc
+moon run cmd/showcase --target wasm-gc    # 印出 47/47 證書與 F2×F3×F6 三元橋中的 condensed 證書
 ```

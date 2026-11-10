@@ -1,6 +1,6 @@
 # `bridge/` — 上 V 頂點 `V₂`：星稜柱、K₇ 全橋、幾何—邏輯圖譜與 47/47 大一統證書
 
-> **架構位置**：`architecture.json` 中的 `bridge`，**Layer 7**（倒數第二層），依賴 **16 個上游套件**（`gcd`、`root`、`algebra`、`symlib`、`semiring-{algebra,graph,matrix,trop,cat,nf}`、`topos`、`scheme`、`condensed`、`tensor`、`conjecture`、`accel`）。
+> **架構位置**：`architecture.json` 中的 `bridge`，**Layer 8**（倒數第二層），依賴 **18 個上游套件**（`gcd`、`root`、`algebra`、`symlib`、`semiring-{algebra,graph,matrix,trop,cat,nf}`、`topos`、`scheme`、`condensed`、`tensor`、`conjecture`、`accel`、`cubical-autonomy`、`cubical-structures`）。
 > 角色：**雙 V 形的上頂點 `V₂`**，也是**唯一**被允許同時匯入全部聯邦的整合層。
 > MoonBit 套件名：`vv0101v01/cubical-hermitian/bridge`。執行入口：`cmd/showcase`。
 
@@ -18,7 +18,7 @@
 
 ---
 
-## 2. 檔案清單（15 檔，約 5.4k 行）
+## 2. 檔案清單（16 檔，約 5.5k 行）
 
 | 檔案 | 行數 | 內容 |
 |---|---:|---|
@@ -37,6 +37,7 @@
 | `free_category.mbt` | 95 | DAG 的自由範疇 → `@sym.FinCat` 的內部建構器（`free_category_to_fincat`） |
 | `rotation_axis_bridge.mbt` | 465 | 共軛四元數凝聚中軸 ↔ Jacobi／Jordan／Hopf／Tamari 四族旋轉；逐族關係對齊、消元前後 `previous/current/deltas` 數值比較，以及 `11040→552→0` 相干角消元總報告 |
 | `intuitive_conjecture_lab.mbt` | 415 | 五條由實際結構直覺提出的猜想與反例攻擊：1 條有界倖存、4 條反例後修正；完整人讀報告見 [`INTUITIVE_CONJECTURES.md`](INTUITIVE_CONJECTURES.md) |
+| `malcev_presheaf_autonomy_bridge.mbt` | 58 | 構造性泛代數自主類型論 × 雙重否定核 `j(x)=¬¬x` 預層層化模板 × 64-bit SWAR 立方退化樹（`64594 + 942 = 65536`）跨聯邦驗證橋 |
 
 ---
 
@@ -191,6 +192,10 @@ assert_true(rotations.holds)             // 4/4，含 3/3 精確守恆律
 // 5) 證書總表（歷史 47 條；旋轉中軸證書獨立輸出）
 let certs = @bridge.bridge_certificates()
 assert_true(@bridge.certificates_all_ok(certs))
+
+// 6) 九聯邦 K_9 (36/36) 全配對橋與 F7 -> F9 -> F4 -> F1 定理自動晉升管線
+let k9 = @bridge.verify_k9_meta_discovery_topos_unification()
+assert_true(k9.all_holds)                // 9/9 聯邦 · K9=36/36 · 四聯邦晉升=true
 ```
 
 ---
@@ -198,14 +203,13 @@ assert_true(@bridge.certificates_all_ok(certs))
 ## 10. 依賴規則（硬性）
 
 * **本套件可匯入任何下層套件**，下層**一律禁止**匯入 `bridge`（`agent.v2.md` §二、`tools/arch_check.py` 會攔截）。
-* `bridge` 只做「比較與彙整」，不重新實作演算法：任何見證都必須呼叫上游套件的公開函式（例如 `K7-17` 必須用 `@sym.aut_order`，不能自己寫自同構計算）。
+* `bridge` 只做「比較與彙整」，不重新實作演算法：任何見證都必須呼叫上游套件的公開函式（例如 `K7-17` 必須用 `@sym.aut_order`，`verify_f8_f5_f1_triad_bridge()` 直接聯動 `@swar`、`@scheme`、`@algebra` 與 `@cub` 交叉核驗 M4RI 布林 F4 ↔ ROBDD、CCHM 上纖維化 ↔ Zariski 根理想、多素數模 F4 ↔ Buchberger、以及 HVM2 `INetArena` 強合流 ↔ 依賴型 NbE；`verify_f2_f3_f6_triad_bridge()` 直接聯動 `@sym`、`@sapp`、`@gcd` 與 `@condensed` 交叉核驗 Holt 子群格／Burnside Möbius／非薄群胚米田、半環全目標 `wasm-gc` 套件、模有界 HNF／Nöbeling 自由對偶與 `h₃=σ, η³=4ν`）。
 
 ---
 
 ## 11. 驗證
 
 ```bash
-moon run --release cmd/showcase --target wasm-gc     # 7/7 聯邦 · K7=21/21 · 47/47 證書
-moon test bridge --target wasm-gc
+moon run cmd/showcase --target wasm-gc               # 9/9 聯邦 · K9=36/36 · F8↔F5↔F1 + F2↔F3↔F6 雙三元橋 · F7->F9->F4->F1 晉升 · 47/47 證書
 python3 tools/arch_check.py                          # 確認沒有任何下層反向匯入 bridge
 ```

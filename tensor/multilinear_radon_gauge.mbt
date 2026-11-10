@@ -292,7 +292,6 @@ pub fn f3_tensor222_atlas_build() -> F3Tensor222Atlas {
   let total = 6561
   let ranks = Array::make(total, 3)
   let decomp2 = Array::make(total, 0)
-  let dets = Array::make(total, 0)
   ranks[0] = 0
 
   // Canonical P^1(F_3) lines: [1,0], [0,1], [1,1], [1,2]
@@ -324,6 +323,7 @@ pub fn f3_tensor222_atlas_build() -> F3Tensor222Atlas {
   }
 
   let rank_counts = [0, 0, 0, 0]
+  let dets = @swar.gf3_sweep_all_6561_hyperdets()
   let mut det_zero = 0
   let mut det_nz = 0
   let mut r2_d0 = 0
@@ -331,9 +331,7 @@ pub fn f3_tensor222_atlas_build() -> F3Tensor222Atlas {
   let mut r3_d0 = 0
   let mut r3_dnz = 0
   for code in 0..<total {
-    let t = f3_tensor_of_code(code)
-    let d = t3_hyperdet222(t)
-    dets[code] = d
+    let d = dets[code]
     let rk = ranks[code]
     rank_counts[rk] = rank_counts[rk] + 1
     if d == 0 {

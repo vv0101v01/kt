@@ -282,9 +282,3 @@ pub fn coherence_angle_elimination_report() -> CoherenceAngleEliminationReport {
     holds,
   }
 }
-
-///|
-/// Boolean law-runner entry point for the finite coherence-angle certificate.
-pub fn check_coherence_angle_elimination() -> Bool {
-  coherence_angle_elimination_report().holds
-}

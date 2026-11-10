@@ -420,6 +420,7 @@ pub fn synthesize_and_verify_conjecture_engine() -> ConjectureSynthesisSummary {
   }
 
   let new_theorems_ok = @tensor.tensor_check_federation_laws() &&
+    check_discovery_kernel_laws() &&
     evo_ok == 6 &&
     lenses_ok
   ConjectureSynthesisSummary::{

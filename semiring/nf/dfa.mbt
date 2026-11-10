@@ -35,12 +35,41 @@ pub fn Dfa::nstates(self : Dfa) -> Int32 {
 }
 
 ///|
+/// 正規表示式語法樹之 64-bit SplitMix64 結構雜湊（零字串配置，搭配 `regex_cmp` 碰撞核對）。
+fn regex_hash64(r : Regex) -> UInt64 {
+  match r {
+    RZero => 0x9E3779B97F4A7C15UL
+    ROne => 0xBF58476D1CE4E5B9UL
+    RChar(c) =>
+      (0x94D049BB133111EBUL ^ (c.to_uint64() + 1UL)) * 0xBF58476D1CE4E5B9UL
+    RStar(x) => {
+      let h = regex_hash64(x) ^ 0x517CC1B727220A95UL
+      (h ^ (h >> 30)) * 0xBF58476D1CE4E5B9UL
+    }
+    RSum(a, b) => {
+      let ha = regex_hash64(a)
+      let hb = regex_hash64(b)
+      let h = (ha * 0x9E3779B97F4A7C15UL) ^ hb ^ 0x2545F4914F6CDD1DUL
+      h ^ (h >> 27)
+    }
+    RProd(a, b) => {
+      let ha = regex_hash64(a)
+      let hb = regex_hash64(b)
+      let h = (ha * 0xBF58476D1CE4E5B9UL) ^ hb ^ 0xD6E8FEB86659FD93UL
+      h ^ (h >> 29)
+    }
+  }
+}
+
+///|
 /// 由正規表示式建 DFA：狀態就是導數（的 ACI 正規形）。
 ///
-/// 探索過程是 BFS：每次對一個狀態與每個符號算導數，若沒見過就加入。
-/// 因為 ACI 正規形讓可能的導數有限，這個迴圈保證終止。
+/// 以 `regex_hash64` 雜湊桶 + `regex_cmp` 精確核對取代舊版 `O(|Q|²)` 線性掃描，
+/// 使 Brzozowski 導數子集建構降至期望 `O(|Q|·|Σ|)`。
 pub fn dfa_of_regex(r : Regex, alphabet : Array[Int32]) -> Dfa {
   let states : Array[Regex] = [r]
+  let buckets : Map[UInt64, Array[Int32]] = Map([])
+  buckets.set(regex_hash64(r), [0])
   let trans : Array[Int32] = []
   let mut head = 0
   let nsym = alphabet.length()
@@ -48,16 +77,25 @@ pub fn dfa_of_regex(r : Regex, alphabet : Array[Int32]) -> Dfa {
     let cur = states[head]
     for k in 0..<nsym {
       let d = deriv(cur, alphabet[k])
+      let h = regex_hash64(d)
       let mut idx = -1
-      for q in 0..<states.length() {
-        if regex_cmp(states[q], d) == 0 {
-          idx = q
-          break
-        }
+      match buckets.get(h) {
+        Some(list) =>
+          for q in list {
+            if regex_cmp(states[q], d) == 0 {
+              idx = q
+              break
+            }
+          }
+        None => ()
       }
       if idx < 0 {
         idx = states.length()
         states.push(d)
+        match buckets.get(h) {
+          Some(list) => list.push(idx)
+          None => buckets.set(h, [idx])
+        }
       }
       trans.push(idx)
     }
@@ -92,55 +130,215 @@ pub fn Dfa::accepts(self : Dfa, w : Array[Int32]) -> Bool {
 }
 
 ///|
-/// Moore 分割細化：反覆把「接受性相同、且每個符號的轉移落在同一區塊」的狀態併為一類。
-///
-/// 收斂時，每個區塊就是 Myhill–Nerode 的一個等價類 ⇒ 最小 DFA。
-/// 複雜度 O(n²·|Σ|·輪數)，狀態數在數百以內足夠；正確性比常數重要。
+/// Hopcroft–Valmari 分割細化演算法（`O(|Σ|·|Q| log |Q|)` 最小完整 DFA）：
+/// 1. 先從 `start` 做可達 BFS 裁剪不可達狀態；
+/// 2. 預建扁平反向轉移 CSR `inv_off` / `inv_src`（零巢狀陣列配置）；
+/// 3. 採用扁平可細化分割（Refinable Partition：`elems`/`pos`/`blk_of`/`b_start`/`b_end`/`b_split`）
+///    與 Hopcroft 較小半塊工作列不變量（每個狀態最多落入較小分裂塊 `log₂|Q|` 次），
+///    再按可達區塊之 BFS 順序重新編號，產出唯一 Myhill–Nerode 正規形最小 DFA。
 pub fn dfa_minimize(d : Dfa) -> Dfa {
-  let n = d.nstates()
+  let n_orig = d.nstates()
   let nsym = d.nsym
-  // 初始分割：接受 / 不接受
-  let block : Array[Int32] = Array::make(n, 0)
-  let mut nblocks = 2
-  for i in 0..<n {
-    block[i] = if d.accept[i] { 1 } else { 0 }
+  if n_orig == 0 {
+    return d
   }
-  let mut changed = true
-  while changed {
-    changed = false
-    // 以 (block, 各符號目的區塊) 當簽名重新分類
-    let sigs : Array[Array[Int32]] = []
-    let newblock : Array[Int32] = Array::make(n, -1)
-    let mut nb = 0
-    for i in 0..<n {
-      let sig : Array[Int32] = [block[i]]
-      for k in 0..<nsym {
-        sig.push(block[d.trans[i * nsym + k]])
+  if nsym == 0 {
+    return {
+      nsym: 0,
+      alphabet: d.alphabet,
+      start: 0,
+      accept: [d.accept[d.start]],
+      trans: [],
+    }
+  }
+  // 1. 可達狀態 BFS 裁剪
+  let reach : Array[Int32] = [d.start]
+  let reach_map : Array[Int32] = Array::make(n_orig, -1)
+  reach_map[d.start] = 0
+  let mut r_head = 0
+  while r_head < reach.length() {
+    let s = reach[r_head]
+    r_head = r_head + 1
+    for k in 0..<nsym {
+      let t = d.trans[s * nsym + k]
+      if reach_map[t] < 0 {
+        reach_map[t] = reach.length()
+        reach.push(t)
       }
-      let mut idx = -1
-      for q in 0..<sigs.length() {
-        if sigs[q] == sig {
-          idx = q
-          break
+    }
+  }
+  let n = reach.length()
+  let r_accept = Array::make(n, false)
+  let r_trans = Array::make(n * nsym, 0)
+  for i in 0..<n {
+    let orig = reach[i]
+    r_accept[i] = d.accept[orig]
+    for k in 0..<nsym {
+      r_trans[i * nsym + k] = reach_map[d.trans[orig * nsym + k]]
+    }
+  }
+
+  // 2. 初始分割 {Rej, Acc}
+  let rej_list : Array[Int32] = []
+  let acc_list : Array[Int32] = []
+  for i in 0..<n {
+    if r_accept[i] {
+      acc_list.push(i)
+    } else {
+      rej_list.push(i)
+    }
+  }
+  if rej_list.length() == 0 || acc_list.length() == 0 {
+    return {
+      nsym,
+      alphabet: d.alphabet,
+      start: 0,
+      accept: [r_accept[0]],
+      trans: Array::make(nsym, 0),
+    }
+  }
+
+  // 3. 扁平反向轉移 CSR：桶編號 = target * nsym + k
+  let nbuckets = n * nsym
+  let inv_deg = Array::make(nbuckets + 1, 0)
+  for s in 0..<n {
+    for k in 0..<nsym {
+      let t = r_trans[s * nsym + k]
+      inv_deg[t * nsym + k + 1] = inv_deg[t * nsym + k + 1] + 1
+    }
+  }
+  for i in 0..<nbuckets {
+    inv_deg[i + 1] = inv_deg[i + 1] + inv_deg[i]
+  }
+  let inv_off = inv_deg.copy()
+  let inv_cur = inv_deg.copy()
+  let inv_src = Array::make(n * nsym, 0)
+  for s in 0..<n {
+    for k in 0..<nsym {
+      let bkt = r_trans[s * nsym + k] * nsym + k
+      let p = inv_cur[bkt]
+      inv_src[p] = s
+      inv_cur[bkt] = p + 1
+    }
+  }
+
+  // 4. Valmari–Hopcroft 可細化分割結構
+  let elems = Array::make(n, 0)
+  let pos = Array::make(n, 0)
+  let blk_of = Array::make(n, 0)
+  let b_start = Array::make(n + 1, 0)
+  let b_end = Array::make(n + 1, 0)
+  let b_split = Array::make(n + 1, 0)
+  let mut cursor = 0
+  b_start[0] = 0
+  for s in rej_list {
+    elems[cursor] = s
+    pos[s] = cursor
+    blk_of[s] = 0
+    cursor = cursor + 1
+  }
+  b_end[0] = cursor
+  b_split[0] = 0
+  b_start[1] = cursor
+  for s in acc_list {
+    elems[cursor] = s
+    pos[s] = cursor
+    blk_of[s] = 1
+    cursor = cursor + 1
+  }
+  b_end[1] = cursor
+  b_split[1] = b_start[1]
+  let mut nblocks = 2
+
+  let in_wl = Array::make((n + 1) * nsym, false)
+  let wl_blk : Array[Int32] = []
+  let wl_sym : Array[Int32] = []
+  let init_sp = if rej_list.length() <= acc_list.length() { 0 } else { 1 }
+  for k in 0..<nsym {
+    in_wl[init_sp * nsym + k] = true
+    wl_blk.push(init_sp)
+    wl_sym.push(k)
+  }
+
+  let sp_buf = Array::make(n, 0)
+  let touched : Array[Int32] = []
+  let mut wl_head = 0
+  while wl_head < wl_blk.length() {
+    let sp_b = wl_blk[wl_head]
+    let sym = wl_sym[wl_head]
+    wl_head = wl_head + 1
+    in_wl[sp_b * nsym + sym] = false
+
+    let sp_st = b_start[sp_b]
+    let sp_en = b_end[sp_b]
+    let sp_len = sp_en - sp_st
+    for i in 0..<sp_len {
+      sp_buf[i] = elems[sp_st + i]
+    }
+    for i in 0..<sp_len {
+      let t = sp_buf[i]
+      let bkt = t * nsym + sym
+      for p in inv_off[bkt]..<inv_off[bkt + 1] {
+        let s = inv_src[p]
+        let b = blk_of[s]
+        let sp = b_split[b]
+        if sp == b_start[b] {
+          touched.push(b)
+        }
+        let ps = pos[s]
+        if ps != sp {
+          let u = elems[sp]
+          elems[sp] = s
+          elems[ps] = u
+          pos[s] = sp
+          pos[u] = ps
+        }
+        b_split[b] = sp + 1
+      }
+    }
+
+    for b in touched {
+      let st = b_start[b]
+      let mid = b_split[b]
+      let en = b_end[b]
+      b_split[b] = st
+      if mid < en {
+        let b_new = nblocks
+        nblocks = nblocks + 1
+        let left_len = mid - st
+        let right_len = en - mid
+        if left_len <= right_len {
+          // 較小左半 [st..<mid] 成為新塊 b_new，原塊 b 保留右半 [mid..<en]
+          b_start[b_new] = st
+          b_end[b_new] = mid
+          b_split[b_new] = st
+          b_start[b] = mid
+          b_end[b] = en
+          b_split[b] = mid
+        } else {
+          // 較小右半 [mid..<en] 成為新塊 b_new，原塊 b 保留左半 [st..<mid]
+          b_start[b_new] = mid
+          b_end[b_new] = en
+          b_split[b_new] = mid
+          b_start[b] = st
+          b_end[b] = mid
+          b_split[b] = st
+        }
+        for q in b_start[b_new]..<b_end[b_new] {
+          blk_of[elems[q]] = b_new
+        }
+        for c in 0..<nsym {
+          in_wl[b_new * nsym + c] = true
+          wl_blk.push(b_new)
+          wl_sym.push(c)
         }
       }
-      if idx < 0 {
-        sigs.push(sig)
-        idx = sigs.length() - 1
-        nb = nb + 1
-      }
-      newblock[i] = idx
     }
-    if nb != nblocks {
-      changed = true
-    }
-    for i in 0..<n {
-      block[i] = newblock[i]
-    }
-    nblocks = nb
+    touched.clear()
   }
-  // 以區塊為狀態重建（只保留可達區塊，並以 BFS 順序編號）
-  let start_block = block[d.start]
+
+  // 5. 以起點所在區塊開始按 BFS 規範編號
+  let start_block = blk_of[0]
   let order : Array[Int32] = [start_block]
   let mapping : Array[Int32] = Array::make(nblocks + 1, -1)
   mapping[start_block] = 0
@@ -149,17 +347,10 @@ pub fn dfa_minimize(d : Dfa) -> Dfa {
   let mut head = 0
   while head < order.length() {
     let b = order[head]
-    // 代表狀態
-    let mut rep = -1
-    for i in 0..<n {
-      if block[i] == b {
-        rep = i
-        break
-      }
-    }
-    new_accept.push(d.accept[rep])
+    let rep = elems[b_start[b]]
+    new_accept.push(r_accept[rep])
     for k in 0..<nsym {
-      let t = block[d.trans[rep * nsym + k]]
+      let t = blk_of[r_trans[rep * nsym + k]]
       if mapping[t] < 0 {
         mapping[t] = order.length()
         order.push(t)

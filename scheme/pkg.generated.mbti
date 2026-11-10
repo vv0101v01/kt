@@ -3,7 +3,7 @@ package "vv0101v01/cubical-hermitian/scheme"
 
 import {
   "moonbitlang/core/debug",
-  "vv0101v01/cubical-hermitian/algebra",
+  "vv0101v01/cubical-hermitian/algebra/core",
 }
 
 // Values
@@ -31,6 +31,12 @@ pub fn bezout_intersection_number_p2(MPoly, MPoly) -> Int32?
 
 pub fn blowup_plane_curve_at_origin(MPoly) -> PlaneCurveBlowupReport
 
+pub fn bool_anf_eval(BoolAnfPoly, UInt64) -> Bool
+
+pub fn bool_anf_from_masks(Int32, Array[UInt64]) -> BoolAnfPoly
+
+pub fn bool_mono_cmp_grevlex(Int32, UInt64, UInt64) -> Int32
+
 pub fn cech_cohomology_p1_line_bundle(Int32) -> P1LineBundleCohomology
 
 pub fn cech_cohomology_p2_line_bundle(Int32) -> P2LineBundleCohomology
@@ -46,6 +52,10 @@ pub fn coord_ring_nf(CoordRing, MPoly) -> MPoly
 pub fn eval_affine_functor_of_points(AffineScheme, FiniteCommRing) -> Array[Array[Int32]]
 
 pub fn eval_scheme_functor_of_points(Scheme, FiniteCommRing) -> Array[(Int32, Array[Int32])]
+
+pub fn f4_boolean_groebner_gf2(Int32, Array[BoolAnfPoly]) -> Array[BoolAnfPoly]
+
+pub fn f4_groebner_rat_modular(Int32, Array[MPoly], MonomialOrder) -> ReducedGroebnerBasis
 
 pub fn fcomm_dual_numbers(Int32) -> (FiniteCommRing, FiniteRingHom)
 
@@ -105,7 +115,7 @@ pub fn kahler_differentials_module(RingHom) -> QuasiCoherentModule
 
 pub fn laurent_add(LaurentSeries, LaurentSeries) -> LaurentSeries
 
-pub fn laurent_const(@algebra.Rat, prec? : Int32) -> LaurentSeries
+pub fn laurent_const(@core.Rat, prec? : Int32) -> LaurentSeries
 
 pub fn laurent_inv(LaurentSeries) -> LaurentSeries?
 
@@ -123,6 +133,16 @@ pub fn localize_quasicoherent_module(QuasiCoherentModule, MPoly) -> QuasiCoheren
 
 pub fn localized_section_eq(CoordRing, LocalizedSection, LocalizedSection) -> Bool
 
+pub fn mono64_coprime(UInt64, UInt64) -> Bool
+
+pub fn mono64_divides(UInt64, UInt64) -> Bool
+
+pub fn mono64_quot(UInt64, UInt64) -> UInt64
+
+pub fn mono64_try_grevlex_key(Array[Int32]) -> UInt64?
+
+pub fn mono64_try_pack(Array[Int32]) -> UInt64?
+
 pub fn monomial_cmp(MonomialOrder, Array[Int32], Array[Int32]) -> Int32
 
 pub fn morphism_hopf_punctured_plane_to_p1() -> SchemeMorphism
@@ -133,13 +153,13 @@ pub fn morphism_to_spec_q(Scheme) -> SchemeMorphism
 
 pub fn mpoly_add(MPoly, MPoly) -> MPoly
 
-pub fn mpoly_const(Int32, @algebra.Rat) -> MPoly
+pub fn mpoly_const(Int32, @core.Rat) -> MPoly
 
 pub fn mpoly_dehomogenize(MPoly, Int32) -> MPoly
 
 pub fn mpoly_div_exact(MPoly, MPoly) -> MPoly?
 
-pub fn mpoly_eval(MPoly, Array[@algebra.Rat]) -> @algebra.Rat
+pub fn mpoly_eval(MPoly, Array[@core.Rat]) -> @core.Rat
 
 pub fn mpoly_eval_finite_ring(MPoly, FiniteCommRing, Array[Int32]) -> Int32?
 
@@ -161,7 +181,7 @@ pub fn mpoly_mul(MPoly, MPoly) -> MPoly
 
 pub fn mpoly_neg(MPoly) -> MPoly
 
-pub fn mpoly_of_poly(Int32, @algebra.Poly) -> MPoly
+pub fn mpoly_of_poly(Int32, @core.Poly) -> MPoly
 
 pub fn mpoly_partial_deriv(MPoly, Int32) -> MPoly
 
@@ -169,15 +189,17 @@ pub fn mpoly_pow(MPoly, Int32) -> MPoly
 
 pub fn mpoly_reduce(MPoly, Array[MPoly], MonomialOrder) -> MPoly
 
-pub fn mpoly_scale(@algebra.Rat, MPoly) -> MPoly
+pub fn mpoly_reduce_geobucket(MPoly, Array[MPoly], MonomialOrder) -> MPoly
+
+pub fn mpoly_scale(@core.Rat, MPoly) -> MPoly
 
 pub fn mpoly_sub(MPoly, MPoly) -> MPoly
 
 pub fn mpoly_subst(MPoly, Int32, Array[MPoly]) -> MPoly
 
-pub fn mpoly_to_poly(MPoly) -> @algebra.Poly
+pub fn mpoly_to_poly(MPoly) -> @core.Poly
 
-pub fn mpoly_to_qpoly_univariate(MPoly, Int32) -> @algebra.QPoly
+pub fn mpoly_to_qpoly_univariate(MPoly, Int32) -> @core.QPoly
 
 pub fn mpoly_total_degree(MPoly) -> Int32
 
@@ -191,7 +213,7 @@ pub fn plane_curve_dualizing_complex(MPoly) -> PlaneCurveDualizingReport
 
 pub fn plane_curve_line_bundle_cohomology(MPoly, Int32) -> (Int32, Int32)
 
-pub fn principal_divisor_p1(@algebra.QPoly, @algebra.QPoly) -> WeilDivisorP1
+pub fn principal_divisor_p1(@core.QPoly, @core.QPoly) -> WeilDivisorP1
 
 pub fn principal_open_subset(CoordRing, MPoly, MPoly) -> Bool
 
@@ -201,7 +223,7 @@ pub fn projective_hilbert_report(Ideal) -> ProjectiveHilbertReport
 
 pub fn pushforward_affine_point(FiniteRingHom, Array[Int32]) -> Array[Int32]
 
-pub fn qpoly_to_mpoly_var(@algebra.QPoly, Int32, Int32) -> MPoly
+pub fn qpoly_to_mpoly_var(@core.QPoly, Int32, Int32) -> MPoly
 
 pub fn quasicoherent_fitting_ideal(QuasiCoherentModule, Int32) -> Ideal
 
@@ -209,7 +231,7 @@ pub fn quasicoherent_fitting_zero_ideal(QuasiCoherentModule) -> Ideal
 
 pub fn quasicoherent_module_is_zero(QuasiCoherentModule) -> Bool
 
-pub fn rational_equivalence_witness_p1(WeilDivisorP1, WeilDivisorP1) -> (@algebra.QPoly, @algebra.QPoly)?
+pub fn rational_equivalence_witness_p1(WeilDivisorP1, WeilDivisorP1) -> (@core.QPoly, @core.QPoly)?
 
 pub fn reduced_groebner_basis(Int32, Array[MPoly], MonomialOrder) -> ReducedGroebnerBasis
 
@@ -270,31 +292,44 @@ pub fn zariski_tangent_dimension_fp(AffineScheme, Int32, Array[Int32]) -> Int32
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug)
 pub(all) struct AffineScheme {
   ring : CoordRing
-} derive(Eq, @debug.Debug)
+}
 pub fn AffineScheme::equal(Self, Self) -> Bool
 pub fn AffineScheme::not_equal(Self, Self) -> Bool
 pub fn AffineScheme::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
+pub(all) struct BoolAnfPoly {
+  nvars : Int32
+  monomials : Array[UInt64]
+}
+pub fn BoolAnfPoly::equal(Self, Self) -> Bool
+pub fn BoolAnfPoly::not_equal(Self, Self) -> Bool
+pub fn BoolAnfPoly::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
 pub(all) struct ChartOverlap {
   is_empty : Bool
   ring : CoordRing
   from_i : RingHom
   from_j : RingHom
-} derive(Eq, @debug.Debug)
+}
 pub fn ChartOverlap::equal(Self, Self) -> Bool
 pub fn ChartOverlap::not_equal(Self, Self) -> Bool
 pub fn ChartOverlap::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct CoordRing {
   nvars : Int32
   ideal : Ideal
-} derive(Eq, @debug.Debug)
+}
 pub fn CoordRing::equal(Self, Self) -> Bool
 pub fn CoordRing::not_equal(Self, Self) -> Bool
 pub fn CoordRing::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct FiniteCommRing {
   size : Int32
   zero : Int32
@@ -302,88 +337,97 @@ pub(all) struct FiniteCommRing {
   neg_table : Array[Int32]
   add_table : Array[Int32]
   mul_table : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn FiniteCommRing::equal(Self, Self) -> Bool
 pub fn FiniteCommRing::not_equal(Self, Self) -> Bool
 pub fn FiniteCommRing::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct FiniteRingHom {
   src : FiniteCommRing
   dst : FiniteCommRing
   values : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn FiniteRingHom::equal(Self, Self) -> Bool
 pub fn FiniteRingHom::not_equal(Self, Self) -> Bool
 pub fn FiniteRingHom::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct Ideal {
   nvars : Int32
   rgb : ReducedGroebnerBasis
-} derive(Eq, @debug.Debug)
+}
 pub fn Ideal::equal(Self, Self) -> Bool
 pub fn Ideal::not_equal(Self, Self) -> Bool
 pub fn Ideal::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct LaurentSeries {
   val : Int32
   prec : Int32
-  coeffs : Array[@algebra.Rat]
-} derive(Eq, @debug.Debug)
+  coeffs : Array[@core.Rat]
+}
 pub fn LaurentSeries::equal(Self, Self) -> Bool
 pub fn LaurentSeries::not_equal(Self, Self) -> Bool
 pub fn LaurentSeries::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct LocalizedSection {
   num : MPoly
   den_base : MPoly
   exp : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn LocalizedSection::equal(Self, Self) -> Bool
 pub fn LocalizedSection::not_equal(Self, Self) -> Bool
 pub fn LocalizedSection::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct MPoly {
   nvars : Int32
   terms : Array[MTerm]
-} derive(Eq, @debug.Debug)
+}
 pub fn MPoly::equal(Self, Self) -> Bool
 pub fn MPoly::not_equal(Self, Self) -> Bool
 pub fn MPoly::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct MTerm {
-  coeff : @algebra.Rat
+  coeff : @core.Rat
   exps : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn MTerm::equal(Self, Self) -> Bool
 pub fn MTerm::not_equal(Self, Self) -> Bool
 pub fn MTerm::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum MonomialOrder {
   Lex
   GRevLex
   Elim(Int32)
-} derive(Eq, @debug.Debug)
+}
 pub fn MonomialOrder::equal(Self, Self) -> Bool
 pub fn MonomialOrder::not_equal(Self, Self) -> Bool
 pub fn MonomialOrder::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct P1LineBundleCohomology {
   twist : Int32
   h0 : Int32
   h1 : Int32
   chi : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn P1LineBundleCohomology::equal(Self, Self) -> Bool
 pub fn P1LineBundleCohomology::not_equal(Self, Self) -> Bool
 pub fn P1LineBundleCohomology::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct P2LineBundleCohomology {
   twist : Int32
   h0 : Int32
   h1 : Int32
   h2 : Int32
   chi : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn P2LineBundleCohomology::equal(Self, Self) -> Bool
 pub fn P2LineBundleCohomology::not_equal(Self, Self) -> Bool
 pub fn P2LineBundleCohomology::to_repr(Self) -> @debug.Repr
@@ -396,6 +440,7 @@ pub(all) struct PlaneCurveBlowupReport {
   exceptional_fiber_is_reduced : Bool
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct PlaneCurveDualizingReport {
   degree : Int32
   canonical_twist : Int32
@@ -405,15 +450,16 @@ pub(all) struct PlaneCurveDualizingReport {
   h0_omega : Int32
   h1_omega : Int32
   serre_duality_holds : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn PlaneCurveDualizingReport::equal(Self, Self) -> Bool
 pub fn PlaneCurveDualizingReport::not_equal(Self, Self) -> Bool
 pub fn PlaneCurveDualizingReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum PrimeDivisorP1 {
   PointAtInfinity
-  FiniteIrreducible(@algebra.QPoly)
-} derive(Eq, @debug.Debug)
+  FiniteIrreducible(@core.QPoly)
+}
 pub fn PrimeDivisorP1::equal(Self, Self) -> Bool
 pub fn PrimeDivisorP1::not_equal(Self, Self) -> Bool
 pub fn PrimeDivisorP1::to_repr(Self) -> @debug.Repr
@@ -423,16 +469,17 @@ pub(all) struct ProjectiveHilbertReport {
   projective_dim : Int32
   degree : Int32
   arithmetic_genus : Int32
-  hilbert_poly : @algebra.QPoly
+  hilbert_poly : @core.QPoly
   matches_hilbert_function : Bool
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct PropernessReport {
   is_separated : Bool
   existence_holds : Bool
   uniqueness_holds : Bool
   is_proper : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn PropernessReport::equal(Self, Self) -> Bool
 pub fn PropernessReport::not_equal(Self, Self) -> Bool
 pub fn PropernessReport::to_repr(Self) -> @debug.Repr
@@ -444,45 +491,50 @@ pub(all) struct QuasiCoherentModule {
   rel_matrix : Array[Array[MPoly]]
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct ReducedGroebnerBasis {
   nvars : Int32
   order : MonomialOrder
   gens : Array[MPoly]
-} derive(Eq, @debug.Debug)
+}
 pub fn ReducedGroebnerBasis::equal(Self, Self) -> Bool
 pub fn ReducedGroebnerBasis::not_equal(Self, Self) -> Bool
 pub fn ReducedGroebnerBasis::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct RingHom {
   src : CoordRing
   dst : CoordRing
   var_images : Array[MPoly]
-} derive(Eq, @debug.Debug)
+}
 pub fn RingHom::equal(Self, Self) -> Bool
 pub fn RingHom::not_equal(Self, Self) -> Bool
 pub fn RingHom::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct Scheme {
   charts : Array[AffineScheme]
   overlaps : Array[ChartOverlap]
-} derive(Eq, @debug.Debug)
+}
 pub fn Scheme::equal(Self, Self) -> Bool
 pub fn Scheme::not_equal(Self, Self) -> Bool
 pub fn Scheme::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct SchemeMorphism {
   src : Scheme
   dst : Scheme
   chart_map : Array[Int32]
   ring_maps : Array[RingHom]
-} derive(Eq, @debug.Debug)
+}
 pub fn SchemeMorphism::equal(Self, Self) -> Bool
 pub fn SchemeMorphism::not_equal(Self, Self) -> Bool
 pub fn SchemeMorphism::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct WeilDivisorP1 {
   terms : Array[(PrimeDivisorP1, Int32)]
-} derive(Eq, @debug.Debug)
+}
 pub fn WeilDivisorP1::equal(Self, Self) -> Bool
 pub fn WeilDivisorP1::not_equal(Self, Self) -> Bool
 pub fn WeilDivisorP1::to_repr(Self) -> @debug.Repr

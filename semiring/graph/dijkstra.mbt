@@ -137,3 +137,77 @@ pub fn apsp_dijkstra(g : Graph) -> @mat.Mat[Trop] {
   }
   m
 }
+
+// ---------------------------------------------------------------------------
+// Bellman–Ford 勢函數與 Johnson 負權稀疏全源最短路 `O(n m log n)`
+// ---------------------------------------------------------------------------
+
+///|
+/// Bellman–Ford 虛擬超源點勢函數 `h[v]`（`O(n·m)` 含提前收斂與精確負環偵測）：
+/// 若圖存在負權有向環則回傳 `None`；否則回傳滿足三角不等式 `w(u, v) + h[u] - h[v] ≥ 0` 之整數勢陣列 `Some(h)`。
+pub fn bellman_ford_potentials(g : Graph) -> Array[Int32]? {
+  let n = g.n
+  let h = Array::make(n, 0)
+  for round in 0..<=n {
+    let mut updated = false
+    for u in 0..<n {
+      let hu = h[u]
+      for e in g.offsets[u]..<g.offsets[u + 1] {
+        let v = g.to[e]
+        let cand = hu + g.w[e]
+        if cand < h[v] {
+          if round == n {
+            return None
+          }
+          h[v] = cand
+          updated = true
+        }
+      }
+    }
+    if !updated {
+      break
+    }
+  }
+  Some(h)
+}
+
+///|
+/// Johnson 全源最短路演算法（支援負權邊、無負環時 `O(n m log n)`）：
+/// 1. 以 `bellman_ford_potentials` 求可行勢函數 `h`（含負環則回傳 `None`）；
+/// 2. 重加權每條邊 `w'(u, v) = w(u, v) + h[u] - h[v] ≥ 0`，使 Gondran–Minoux 非負選擇性前提恢復成立；
+/// 3. 對每個源點執行二元堆 `dijkstra`，再以 `d(u, v) = d'(u, v) - h[u] + h[v]` 還原精確熱帶最短路矩陣。
+pub fn apsp_johnson(g : Graph) -> @mat.Mat[Trop]? {
+  match bellman_ford_potentials(g) {
+    None => None
+    Some(h) => {
+      let n = g.n
+      let m_edges = g.edges()
+      let rw = Array::make(m_edges, 0)
+      for u in 0..<n {
+        let hu = h[u]
+        for e in g.offsets[u]..<g.offsets[u + 1] {
+          let v = g.to[e]
+          rw[e] = g.w[e] + hu - h[v]
+        }
+      }
+      let g_nonneg : Graph = {
+        n,
+        offsets: g.offsets,
+        to: g.to,
+        w: rw,
+        w2: g.w2,
+      }
+      let out = @mat.Mat::new(n, n, Trop::inf())
+      for s in 0..<n {
+        let (dist, _) = dijkstra(g_nonneg, s)
+        let hs = h[s]
+        for v in 0..<n {
+          if !dist[v].is_inf() {
+            out.d[s * n + v] = Trop::new(dist[v].value() - hs + h[v])
+          }
+        }
+      }
+      Some(out)
+    }
+  }
+}

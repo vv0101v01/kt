@@ -392,3 +392,13 @@ pub fn run_grand_unification_system() -> GrandUnificationReport {
     certs_passed == all_certs.length(),
   }
 }
+
+///|
+/// Guarded K_5 legacy system dispatcher: reuses pre-audited `k5_all_ok` when supplied,
+/// or executes `run_grand_unification_system()` on demand.
+pub fn verify_legacy_k5_system_dispatch(preverified_ok~ : Bool? = None) -> Bool {
+  match preverified_ok {
+    Some(ok) => ok
+    None => run_grand_unification_system().all_ok
+  }
+}

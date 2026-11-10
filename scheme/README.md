@@ -128,15 +128,19 @@ assert_true(@scheme.analyze_scheme_properness(@scheme.scheme_projective_space(1)
 
 ## 6. 依賴與被依賴
 
-* **依賴**：`algebra`（`Rat`/`Poly`/`QMat`/`qpoly_factor_complete`）、`gcd`（BigInt 與 SNF，經 `algebra`）。
-* **被依賴**：`condensed`（`@scheme.projective_space(2)` 與 `P¹` 真性用於 `K6-15`）、`conjecture`、`bridge`、`root`。
-* `architecture.json` 只允許 `scheme → algebra` 這一條上游邊；本套件**不**匯入 `topos`（幾何—邏輯的交會在 `bridge/logic_theory_translation.mbt`）。
+* **依賴**：`gcd`（`@gcd.FpMat` 模消元、CRT 與 `ugcd_rat_recon_bigint` 有理數重構）、`accel-swar`（`@swar.Gf2BitMatrix` 與 `gf2_rref_eliminate_u64` 字元並行 M4RI 消元）、`algebra`（`Rat`/`Poly`/`QMat`/`qpoly_factor_complete`）。
+* **核心硬體加速與演算法（`f4_macaulay_swar.mbt` + `derived_structural_theorems.mbt`）**：
+  * `Mono64` 64-bit 打包指數向量（`nvars <= 7, deg <= 127`）：3 指令無分支單項式整除 `(((t | 0x80..80) - d) & 0x80..80) == 0x80..80`、單 `UInt64` `GRevLex` 比較與 `mono64_coprime` 互素判定；
+  * `O(m log m)` 歸併正規化、有序線性合併加減法、Yan Geobuckets（`O(|f| log |f|)` 多項式約化）與 Gebauer–Möller 臨界對判準（Criteria M, F, B）；
+  * `f4_boolean_groebner_gf2`（Lazard–Macaulay 不動點 M4RI `GF(2)` 布林約化 Gröbner 基）與 `f4_groebner_rat_modular`（多素數 `(65521, 65519, 65497)` Macaulay 矩陣消元＋CRT＋Wang 有理重構＋Buchberger 驗證）；
+  * `mpoly_square_det`：Grassmann–Plücker 外代數楔積動態規劃 `O(k · 2^k)`（`k <= 10`）與無除法 Samuelson–Berkowitz `O(k^4)`（`k > 10`），取代指數／階乘級 Laplace 餘子式遞迴。
+* **被依賴**：`condensed`（`@scheme.projective_space(2)` 與 `P¹` 真性用於 `K6-15`）、`conjecture`、`bridge`、`root`。本套件**不**匯入 `topos`（幾何—邏輯的交會在 `bridge/`）。
 
 ---
 
 ## 7. 驗證
 
 ```bash
-moon test scheme --target wasm-gc
+moon check --deny-warn --target wasm-gc
 ```
-主要檢核入口：`verify_affine_reduction_universal_property`、`verify_bezout_theorem_p2`、`verify_serre_duality_and_riemann_roch_p1`、`verify_serre_duality_p2`、`analyze_scheme_properness`、`verify_motivic_p1_categorification`。
+主要檢核入口：`verify_affine_reduction_universal_property`、`verify_bezout_theorem_p2`、`verify_serre_duality_and_riemann_roch_p1`、`verify_serre_duality_p2`、`analyze_scheme_properness`、`verify_motivic_p1_categorification`、`f4_boolean_groebner_gf2`、`f4_groebner_rat_modular`。

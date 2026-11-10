@@ -143,17 +143,6 @@ pub fn gset_orbits(gs : GSetOf) -> Array[Array[Int32]] {
 }
 
 ///|
-/// 軌道大小（升冪）。
-pub fn gset_orbit_sizes(gs : GSetOf) -> Array[Int32] {
-  let s : Array[Int32] = []
-  for o in gset_orbits(gs) {
-    s.push(o.length())
-  }
-  s.sort()
-  s
-}
-
-///|
 /// 單一元素之不動點數。
 pub fn gset_fixed_points(gs : GSetOf, i : Int32) -> Int32 {
   let mut c = 0
@@ -221,17 +210,17 @@ pub fn symmetric_gen_set(group : PermGroup) -> Array[Perm] {
 }
 
 ///|
-/// Cayley 圖 Cay(G,S)：頂點 = 群元素（依 elements 之序），邊 = {g, g∘s}。
+/// Cayley 圖 Cay(G,S)：頂點 = 群元素（依 elements 之序），邊 = {g, g∘s}（`PermLut` 支援任意度數 n）。
 pub fn cayley_graph(group : PermGroup, cap : Int32) -> Graph {
   let elems = group.elements(cap)
   let ng = elems.length()
-  let lut = elem_lut_fast(elems)
+  let lut = PermLut::of_elems(elems)
   let s = symmetric_gen_set(group)
   let edges : Array[(Int32, Int32)] = []
   for gi in 0..<ng {
+    let gimg = elems[gi].img
     for t in s {
-      let prod = elems[gi].compose(t)
-      let hi = lut.at(perm_key64(prod))
+      let hi = lut.at_composed(gimg, t.img)
       edges.push((gi, hi))
     }
   }
@@ -243,11 +232,10 @@ pub fn cayley_graph(group : PermGroup, cap : Int32) -> Graph {
 pub fn regular_perm(group : PermGroup, cap : Int32, h : Perm) -> Perm {
   let elems = group.elements(cap)
   let ng = elems.length()
-  let lut = elem_lut_fast(elems)
+  let lut = PermLut::of_elems(elems)
   let img = Array::make(ng, 0)
   for gi in 0..<ng {
-    let prod = h.compose(elems[gi])
-    img[gi] = lut.at(perm_key64(prod))
+    img[gi] = lut.at_composed(h.img, elems[gi].img)
   }
   Perm::from_img(img)
 }

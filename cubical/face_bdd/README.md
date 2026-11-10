@@ -132,9 +132,17 @@ assert_true(@face_bdd.face_cdcl_lrat_check(lrat))
 
 ---
 
-## 9. 驗證
+## 9. Kalman 雙軌自由 De Morgan 區間、CCHM 上纖維化格與 64-Bit SWAR 真值快徑（`demorgan_cchm_swar.mbt`）
+
+* **自由 De Morgan 區間 `I_DM`（Kalman 1958 嵌入定理）**：`dim_is_zero_demorgan`、`dim_is_one_demorgan`（Kleene 三值雙軌 `O(|r|)` 零配置端點判定，嚴格保持 `i ∧ ¬i ≠ 0`、`i ∨ ¬i ≠ 1`）與 `dim_eq_demorgan`（`2n` 單調生成元 `UInt64` SWAR／`bdd_dag` 自由分配格嵌入）。
+* **自由 CCHM 上纖維化格 `Cofib(n)`**：`cchm_face_eq`、`cchm_face_is_top`、`cchm_face_is_bot`、`cchm_face_le`（嚴格保持邊界 `(i=0) ∨ (i=1) = ∂I ≠ ⊤_F` 與端點互斥 `(i=0) ∧ (i=1) = ⊥_F`）。
+* **64-bit `UInt64` SWAR 6 變量真值快徑與規範面鍵**：`swar_face_truth_u64` 將 `n ≤ 6` 之 `bdd_face_eq`、`bdd_face_is_bot`、`bdd_face_is_top`、`bdd_face_entails` 加速為 `O(|f|)` 單暫存器位運算；`face_bdd_canon_key` 為依賴核心 `DSystem` 分支去重提供語義等價規範鍵。
+
+---
+
+## 10. 驗證
 
 ```bash
-moon test cubical/face_bdd --target wasm-gc     # 單包微測試實測 0.38s（Wave 2 基準）
+moon check --deny-warn --target wasm-gc
 ```
 一等檢核函式：`interval_laws_hold()`、`check_bdd_canonical()`、`check_bdd_dag_native_operations()`、`check_bdd_cost_optimizations()`。

@@ -133,46 +133,6 @@ pub fn SymmetryReport::summary(self : SymmetryReport) -> String {
 }
 
 ///|
-/// 完整報告（多行）。
-pub fn SymmetryReport::to_report_string(self : SymmetryReport) -> String {
-  let mut s = self.summary() + "\n"
-  s = s + "  canon_lab = ["
-  for i, v in self.canon_lab {
-    if i > 0 {
-      s = s + ","
-    }
-    s = s + v.to_string()
-  }
-  s = s + "]\n"
-  s = s + "  digest    = \{self.digest}\n"
-  s = s + "  aut_gens  = ["
-  for i, g in self.aut_gens {
-    if i > 0 {
-      s = s + ", "
-    }
-    s = s + g.to_string()
-  }
-  s = s + "]\n"
-  s = s + "  orbits    = ["
-  for i, o in self.vertex_orbits {
-    if i > 0 {
-      s = s + ", "
-    }
-    s = s + "{"
-    for j, v in o {
-      if j > 0 {
-        s = s + ","
-      }
-      s = s + v.to_string()
-    }
-    s = s + "}"
-  }
-  s = s + "]\n"
-  s = s + "  folded    = \{self.folded.summary()}"
-  s
-}
-
-///|
 pub impl Show for SymmetryReport with fn to_string(self) {
   self.summary()
 }
@@ -188,20 +148,6 @@ pub impl Debug for SymmetryReport with fn to_repr(self) {
 
 ///|
 pub extend SymmetryReport with Debug::{to_repr}
-
-///|
-/// 整數陣列之緊湊字串 `"[1,2,3]"`。
-/// 去債：報告、證書 detail、測試斷言訊息原先各自手寫拼接迴圈（≥4 份）。
-pub fn ints_to_string(a : Array[Int32]) -> String {
-  let mut s = "["
-  for i, v in a {
-    if i > 0 {
-      s = s + ","
-    }
-    s = s + v.to_string()
-  }
-  s + "]"
-}
 
 ///|
 /// 整數矩陣之緊湊字串（逐列 `ints_to_string` 串接）——標記矩陣等之展示/斷言用。

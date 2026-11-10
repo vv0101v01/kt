@@ -24,7 +24,7 @@ Layer 1  @gcd / @algebra / @symlib          精確秩、有理消元、FinCat/�
 
 ---
 
-## 2. 檔案清單（6 檔，約 6.8k 行）
+## 2. 檔案清單（7 檔，約 7.5k 行）
 
 | 檔案 | 行數 | 主題 |
 |---|---:|---|
@@ -34,6 +34,7 @@ Layer 1  @gcd / @algebra / @symlib          精確秩、有理消元、FinCat/�
 | `derived_structural_theorems.mbt` | 841 | 右 Kan 擴張 `Ran_{φ^op}`、本徵幾何態射三伴隨 `Lan ⊣ φ* ⊣ Ran`、開／閉子拓撲斯互補、比較引理、內蘊 `G`-主叢、Alexander–Whitney 杯積 |
 | `stacks_cohomology_homotopy.mbt` | 1365 | 群胚纖維化與有效下降、`ℚ`-上同調（層／Čech／Roos group）、Snake Lemma 長正合、單純神經同倫型（`π₀`、`π₁` 自由秩與撓、Betti、`χ`） |
 | `logic_classifying_categorify.mbt` | 1141 | 幾何公式與幾何邏輯、分類 topos、Sierpiński/圓周等具體景、範疇化摘要 |
+| `double_negation_alexandrov.mbt` | 750 | 雙重否定核 `j(x) = ¬¬x` 預層層化模板、篩格雙 Heyting（co-Heyting 差 `⇐`、餘否定 `~`、邊界 `∂A`）、亞歷山德羅夫下閉開集對偶與 `Chu(Set, K)` 萬有自對偶 |
 
 ---
 
@@ -84,7 +85,7 @@ b = [1, 2, 1, 0], χ = 0        vs.        b = [1, 2, 1, 0], χ = 0
 * `verify_descent_cocycle`（`φ_ii = id`、三重疊相干）與 `verify_stack_effective_descent`（每個全域物件都有典範下降資料；每個有效餘圈都來自全域物件 ⇒ **棧的有效下降公理**）。
 * `build_circle_z2_torsor_stack()` + `circle_mobius_double_cover_sheaf()`：`S¹` 上的 Möbius `ℤ/2ℤ`-主叢 —— 局部同構於大小 2 的常數層，但 `S¹` 上有 **0 個全域截面**。
 * `classify_group_torsor_cohomology`：任意神經 + 任意有限群（含非交換 `S₃`）的**非阿貝爾 Čech `H¹`** 分類。
-* `RectQMat`/`CochainComplexQ`/`AbelianPresheafQ`：精確有理上鏈複形；`cohomology_dimensions`、`verify_euler_poincare`（`Σ(-1)^k dim C^k = Σ(-1)^k dim H^k`）、`verify_snake_lemma_cohomology_les`（短正合列 ⇒ 長正合列）。
+* `RectQMat`/`CochainComplexQ`：精確有理上鏈複形；`cohomology_dimensions`、`verify_euler_poincare`（`Σ(-1)^k dim C^k = Σ(-1)^k dim H^k`）、`verify_snake_lemma_cohomology_les`（短正合列 ⇒ 長正合列）。
 * `compute_nerve_homotopy_type`：抽出 `π₀`、`π₁` 自由秩與撓不變因子（用 `@gcd.zmat_snf` 抽 `∂₂` 的不變因子）、有理 Betti `[b₀,b₁,b₂,b₃]`、`χ`。測試物件：`boundary_simplex_nerve(d)`（`S^{d-1}` 的好覆蓋 Čech 神經）、`rp2_minimal_nerve()`（`H₁ = ℤ/2ℤ` 撓 `[2]` 而 `H^*(RP²;ℚ) ≅ ℚ[0]`）。
 
 ### 3.6 `logic_classifying_categorify.mbt` — 邏輯與分類 topos
@@ -125,8 +126,10 @@ println(ht.betti_numbers, ht.euler_characteristic)               // [1, 2, 1, 0]
 
 ## 6. 依賴與被依賴
 
-* **依賴**：`gcd`（`FpMat`、`zmat_snf`）、`algebra`（`@exactalg.qrows_nullspace`/`qmat_rank` 做精確上同調）、`symlib`（`FinCat`、`Presheaf`、`lan`/`ran`、`FinFunctor`）。
-* **被依賴**：`condensed`（`CondSpectralSheaf` 的 Čech 扭曲黏合障礙）、`conjecture`、`bridge`（`K6-14`、`K7-19`、邏輯轉譯引擎）、`root`。
+* **兩層架構拆分**：
+  * `topos/site`（`L2`）：僅依賴 `symlib` 與 `accel/swar`（零線性代數依賴），承載景、篩、`Sieve64` 64-bit SWAR 雙 Heyting 核、MAC 前向檢查相容族、層化、CCC 指數、Kan 擴張、Diaconescu G-主叢與 Kripke–Joyal 幾何邏輯。
+  * `topos`（`L3`）：透過 `pub using @site` 完整重導出 `topos/site` 全體 `27` 型別與 `126` 函式，並結合 `gcd`（`FpMat`、`fp_rank`、`zmat_snf`）與 `algebra`（`@exactalg.qrows_nullspace`/`qmat_rank`）提供廣群棧、單趟秩快取層上同調、模 `F_p` 撓率躍遷上同調、杯積環與神經同倫型。
+* **被依賴**：`condensed`、`conjecture`、`cubical/autonomy`、`cubical/structures`、`bridge`（含 `K8-25`、`K9-32` 與 `F7→F9→F4→F1` 晉升管線）。
 * **注意**：`topos` 不依賴 `scheme`；兩者在 `bridge/logic_theory_translation.mbt` 交會（Stone–Zariski–CCHM 面 → 理想轉譯）。
 
 ---

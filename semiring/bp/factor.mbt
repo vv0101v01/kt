@@ -352,3 +352,184 @@ fn union(parent : Array[Int32], a : Int32, b : Int32) -> Unit {
     parent[rb] = ra
   }
 }
+
+// ---------------------------------------------------------------------------
+// 有環因子圖之精確半環變數消去（Min-Fill Exact Variable Elimination）
+// ---------------------------------------------------------------------------
+
+///|
+fn[E : Semiring] combine_and_eliminate_var(
+  bucket : Array[Factor[E]],
+  elim_var : Int32,
+  card : Array[Int32],
+) -> (Factor[E], Int64) {
+  let scope_set : Array[Int32] = []
+  for f in bucket {
+    for v in f.vars {
+      if v != elim_var {
+        let mut seen = false
+        for u in scope_set {
+          if u == v {
+            seen = true
+            break
+          }
+        }
+        if !seen {
+          scope_set.push(v)
+        }
+      }
+    }
+  }
+  scope_set.sort()
+  let mut out_size = 1
+  for v in scope_set {
+    out_size = out_size * card[v]
+  }
+  let out_table : Array[E] = Array::make(out_size, Semiring::zero())
+  let full_assign = Array::make(card.length(), 0)
+  let q_elim = card[elim_var]
+  let mut ops = 0L
+  for code in 0..<out_size {
+    let sub_assign = decode_assign(code, card, scope_set)
+    for i in 0..<scope_set.length() {
+      full_assign[scope_set[i]] = sub_assign[i]
+    }
+    let mut sum_val = Semiring::zero()
+    for xv in 0..<q_elim {
+      full_assign[elim_var] = xv
+      let mut prod = Semiring::one()
+      for f in bucket {
+        let mut f_idx = 0
+        for u in f.vars {
+          f_idx = f_idx * card[u] + full_assign[u]
+        }
+        prod = Semiring::times(prod, f.table[f_idx])
+        ops = ops + 1L
+      }
+      sum_val = Semiring::plus(sum_val, prod)
+    }
+    out_table[code] = sum_val
+  }
+  ({ vars: scope_set, table: out_table, }, ops)
+}
+
+///|
+/// Min-Fill 精確半環變數消去（適用於任意有環因子圖與任意半環 `E`）：
+/// 每次挑選當前互動圖中引發最少新增填補邊（fill-in edges，平手時取最小聯合狀態數）的非目標變數 `v*`，
+/// 局部合併所有含 `v*` 的因子並以廣義分配律邊緣化消去 `v*`，複雜度 `O(n · q^{tw+1})`。
+pub fn[E : Semiring] bp_exact_marginal_ve(
+  g : FactorGraph[E],
+  target : Int32,
+) -> (Array[E], Int64) {
+  guard target >= 0 && target < g.nvar else {
+    abort("bp_exact_marginal_ve: target out of range")
+  }
+  let pool : Array[Factor[E]] = []
+  for f in g.factors {
+    pool.push(f)
+  }
+  let eliminated = Array::make(g.nvar, false)
+  let mut total_ops = 0L
+  let mut remaining = g.nvar - 1
+  while remaining > 0 {
+    // 建立當前互動鄰接表
+    let adj = Array::make(g.nvar * g.nvar, false)
+    for f in pool {
+      let fv = f.vars
+      for i in 0..<fv.length() {
+        for j in (i + 1)..<fv.length() {
+          let a = fv[i]
+          let b = fv[j]
+          adj[a * g.nvar + b] = true
+          adj[b * g.nvar + a] = true
+        }
+      }
+    }
+    let mut best_v = -1
+    let mut best_fill = 0x3FFF_FFFF
+    let mut best_dom = 0x3FFF_FFFF_FFFF_FFFFL
+    for v in 0..<g.nvar {
+      if v == target || eliminated[v] {
+        continue
+      }
+      let nbrs : Array[Int32] = []
+      let mut dom = g.card[v].to_int64()
+      for u in 0..<g.nvar {
+        if u != v && !eliminated[u] && adj[v * g.nvar + u] {
+          nbrs.push(u)
+          dom = dom * g.card[u].to_int64()
+        }
+      }
+      let mut fill = 0
+      for i in 0..<nbrs.length() {
+        for j in (i + 1)..<nbrs.length() {
+          if !adj[nbrs[i] * g.nvar + nbrs[j]] {
+            fill = fill + 1
+          }
+        }
+      }
+      if best_v < 0 || fill < best_fill || (fill == best_fill && dom < best_dom) {
+        best_v = v
+        best_fill = fill
+        best_dom = dom
+      }
+    }
+    eliminated[best_v] = true
+    remaining = remaining - 1
+    let bucket : Array[Factor[E]] = []
+    let kept : Array[Factor[E]] = []
+    for f in pool {
+      let mut has_v = false
+      for u in f.vars {
+        if u == best_v {
+          has_v = true
+          break
+        }
+      }
+      if has_v {
+        bucket.push(f)
+      } else {
+        kept.push(f)
+      }
+    }
+    pool.clear()
+    for f in kept {
+      pool.push(f)
+    }
+    if bucket.length() > 0 {
+      let (nf, ops) = combine_and_eliminate_var(bucket, best_v, g.card)
+      total_ops = total_ops + ops
+      pool.push(nf)
+    }
+  }
+  let q_t = g.card[target]
+  let out : Array[E] = Array::make(q_t, Semiring::one())
+  for x in 0..<q_t {
+    let mut prod = Semiring::one()
+    for f in pool {
+      if f.vars.length() == 0 {
+        prod = Semiring::times(prod, f.table[0])
+      } else {
+        prod = Semiring::times(prod, f.table[x])
+      }
+      total_ops = total_ops + 1L
+    }
+    out[x] = prod
+  }
+  (out, total_ops)
+}
+
+///|
+/// 以 Min-Fill 變數消去精確計算全部變數之半環邊緣（樹與有環圖皆與 `q^n` 暴力解逐項全等）。
+pub fn[E : Semiring] bp_exact_all_marginals_ve(
+  g : FactorGraph[E],
+) -> BpResult[E] {
+  let marginal : Array[Array[E]] = []
+  let mut times_ops = 0L
+  for v in 0..<g.nvar {
+    let (m, ops) = bp_exact_marginal_ve(g, v)
+    marginal.push(m)
+    times_ops = times_ops + ops
+  }
+  { marginal, rounds: g.nvar, times_ops, }
+}

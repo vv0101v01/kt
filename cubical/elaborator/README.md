@@ -135,9 +135,11 @@ let core = @elab.elab_result_to_dterm(res)          // 交回 kernel 檢型
 
 ---
 
-## 8. 驗證
+## 8. `O(Δ)` Trail-Stack 增量回溯與驗證
+
+* `Unifier` 內建持久化變更軌跡棧 `trail : Array[(Int32, DTerm?)]` 與 `HouTrailMark`（`hou_trail_mark`、`hou_trail_rollback`、`hou_substitution_since_mark`），將 Huet DFS／MGU／`HouLazyUnifierStream` 惰性合一搜尋樹每個分支之狀態儲存與回滾自 `O(|subst|)` 全表複製降至 `O(Δ)` 增量原地復原。
 
 ```bash
-moon test cubical/elaborator --target wasm-gc    # 單包微測試實測 0.35s
+moon check --deny-warn --target wasm-gc
 ```
 一等檢核：`check_hou_elaborator()`、`check_hou_matching()`、`check_hou_bounded_search()`、`check_hou_search_extensions()`、`check_hou_phase9_extensions()`。

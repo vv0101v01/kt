@@ -96,6 +96,7 @@ pub extend UMetaInfo with Eq::{not_equal, equal}
 #derive(Debug, Eq)
 pub struct Unifier {
   metas : Array[UMetaInfo]
+  trail : Array[Int32]
   mut solved_count : Int32
 }
 
@@ -107,7 +108,7 @@ pub extend Unifier with Eq::{not_equal, equal}
 
 ///|
 pub fn unifier_new() -> Unifier {
-  Unifier::{ metas: [], solved_count: 0, }
+  Unifier::{ metas: [], trail: [], solved_count: 0, }
 }
 
 ///|
@@ -623,6 +624,7 @@ fn assign_meta_solution(
   solution : UTerm,
 ) -> Unit {
   unifier.metas[id].solution = Some(solution)
+  unifier.trail.push(id)
   unifier.solved_count = unifier.solved_count + 1
 }
 
@@ -1386,7 +1388,7 @@ pub fn hou_unify_mgu(
   depth : Int32,
   unifier : Unifier,
 ) -> HouMguReport {
-  let snapshot = hou_clone_unifier(unifier)
+  let mark = hou_trail_mark(unifier)
   let queue : Array[HouConstraint] = [HouConstraint::{ lhs: a, rhs: b, depth, }]
   let residual : Array[HouConstraint] = []
   let mut progress_mark = unifier.solved_count + unifier.metas.length()
@@ -1402,7 +1404,7 @@ pub fn hou_unify_mgu(
               depth: constraint.depth,
             })
           _ => {
-            hou_restore_unifier(unifier, snapshot)
+            hou_trail_rollback(unifier, mark)
             return HouMguReport::{
               status: HouMguNoUnifier,
               substitution: [],
@@ -1426,18 +1428,7 @@ pub fn hou_unify_mgu(
       }
     }
   }
-  let substitution : Array[(Int32, UTerm)] = []
-  for id in 0..<unifier.metas.length() {
-    let was_solved = id < snapshot.metas.length() &&
-      snapshot.metas[id].solution != None
-    match unifier.metas[id].solution {
-      Some(solution) =>
-        if !was_solved {
-          substitution.push((id, hou_semantic_optimize(solution, unifier)))
-        }
-      None => ()
-    }
-  }
+  let substitution = hou_substitution_since_mark(mark, unifier)
   if residual.length() == 0 {
     HouMguReport::{ status: HouMguPrincipal, substitution, residual: [], }
   } else {

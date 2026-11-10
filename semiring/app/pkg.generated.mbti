@@ -23,6 +23,8 @@ pub fn reach_bfs(Int32, Array[(Int32, Int32)]) -> Array[Array[Bool]]
 
 pub fn shortest_fw(Int32, Array[(Int32, Int32, Int32)]) -> Array[Array[Int32]]
 
+pub fn verify_semiring_wasm_suite() -> Bool
+
 pub fn widest_fw(Int32, Array[(Int32, Int32, Int32)]) -> Array[Array[Int32]]
 
 pub fn wrong_candidate(@matrix.Mat[@algebra.Trop]) -> @matrix.Mat[@algebra.Trop]

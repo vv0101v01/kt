@@ -6,6 +6,10 @@ import {
 }
 
 // Values
+pub fn[E : @algebra.Semiring] bp_exact_all_marginals_ve(FactorGraph[E]) -> BpResult[E]
+
+pub fn[E : @algebra.Semiring] bp_exact_marginal_ve(FactorGraph[E], Int32) -> (Array[E], Int64)
+
 pub fn[E : @algebra.Semiring] bp_marginals(FactorGraph[E], rounds? : Int32) -> BpResult[E]
 
 pub fn brute_force_sum_product(FactorGraph[@algebra.Prob]) -> (Array[Array[Double]], Int64)

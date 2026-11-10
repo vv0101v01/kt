@@ -127,10 +127,12 @@ println(cert.all_six_agree)           // true
 
 ---
 
-## 7. 驗證方式
+## 7. `T1` 延遲取模、HMM-SNF 與模行列式有界 HNF 升級與驗證
+
+- `fp_mat_mul`（`p ≤ 46,340` 啟用轉置 16-lane `Int64` 延遲取模點積）與 `fp_rref`（單次 `% pm` 消元）。
+- `zmat_snf`（Havas–Majewski–Matthews `(av, row_nnz·col_nnz, row_l1+col_l1)` 範數導引主元）、`zmat_det_bareiss`（無分數 Bareiss 行列式）與 `zmat_hnf_modular`（Domich–Kannan–Trotter 模 `|det(B)|` 有界 Hermite 標準形）。
 
 ```bash
 moon check --deny-warn --target wasm-gc
-moon test gcd --target wasm-gc            # 局部微測試（測完即刪，見 agent.v2.md）
 python3 tools/arch_check.py               # 確認無人繞過本套件重寫消元
 ```

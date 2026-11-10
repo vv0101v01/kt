@@ -71,19 +71,18 @@ pub fn is_category(c : FinCat) -> Bool {
 
 ///|
 /// 薄範疇（每個 (dom,cod) 至多一個態射）：偏序、箭頭、span/cospan、離散皆屬之。
+/// 對輸入箭頭集自動取自反傳遞閉包（自由薄範疇／預序閉包），並以平坦 O(1) 索引表取代雜湊映射。
 pub fn cat_thin(nobj : Int32, arrows : Array[(Int32, Int32)]) -> FinCat {
-  let idx = Map([])
+  guard nobj >= 0 else { abort("cat_thin: negative object count") }
+  let idx = Array::make(nobj * nobj, -1)
   let dom : Array[Int32] = []
   let cod : Array[Int32] = []
   fn add(a : Int32, b : Int32) -> Unit {
     let key = a * nobj + b
-    match idx.get(key) {
-      Some(_) => ()
-      None => {
-        idx.set(key, dom.length())
-        dom.push(a)
-        cod.push(b)
-      }
+    if idx[key] < 0 {
+      idx[key] = dom.length()
+      dom.push(a)
+      cod.push(b)
     }
   }
   for a in 0..<nobj {
@@ -96,16 +95,29 @@ pub fn cat_thin(nobj : Int32, arrows : Array[(Int32, Int32)]) -> FinCat {
     }
     add(a, b)
   }
+  // Roy–Warshall 傳遞閉包：已閉合之箭頭集保持完全相同的態射編號順序，
+  // 非閉合之生成關係自動補齊複合態射而不觸發執行期失敗。
+  for k in 0..<nobj {
+    for a in 0..<nobj {
+      if idx[a * nobj + k] >= 0 {
+        for b in 0..<nobj {
+          if idx[k * nobj + b] >= 0 {
+            add(a, b)
+          }
+        }
+      }
+    }
+  }
   let nmor = dom.length()
   let id = Array::make(nobj, 0)
   for a in 0..<nobj {
-    id[a] = idx.get(a * nobj + a).unwrap()
+    id[a] = idx[a * nobj + a]
   }
   let comp = Array::make(nmor * nmor, -1)
   for f in 0..<nmor {
     for g in 0..<nmor {
       if cod[g] == dom[f] {
-        comp[f * nmor + g] = idx.get(dom[g] * nobj + cod[f]).unwrap()
+        comp[f * nmor + g] = idx[dom[g] * nobj + cod[f]]
       }
     }
   }
@@ -201,25 +213,20 @@ pub fn cat_parallel() -> FinCat {
 }
 
 ///|
-/// 群之單對象範疇 BG：態射 = 群元素（列舉，上限 cap），複合 = 群乘法。
+/// 群之單對象範疇 BG：態射 = 群元素（列舉，上限 cap），複合 = 群乘法（任意度數 `PermLut` 零配置合成）。
 pub fn cat_group(group : PermGroup, cap : Int32) -> FinCat {
   let elems = group.elements(cap)
   let nmor = elems.length()
-  let lut = Map([])
-  for i, e in elems {
-    lut.set(perm_key64(e), i)
-  }
+  let lut = PermLut::of_elems(elems)
   let dom = Array::make(nmor, 0)
   let cod = Array::make(nmor, 0)
-  let id = [0]
-  let idp = Perm::identity(group.size())
-  let idi = lut.get(perm_key64(idp)).unwrap()
-  id[0] = idi
+  let idi = lut.at_perm(Perm::identity(group.size()))
+  let id = [idi]
   let comp = Array::make(nmor * nmor, -1)
   for f in 0..<nmor {
+    let fimg = elems[f].img
     for g in 0..<nmor {
-      let prod = elems[f].compose(elems[g])
-      comp[f * nmor + g] = lut.get(perm_key64(prod)).unwrap()
+      comp[f * nmor + g] = lut.at_composed(fimg, elems[g].img)
     }
   }
   { nobj: 1, nmor, dom, cod, id, comp, }

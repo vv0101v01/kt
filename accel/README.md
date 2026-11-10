@@ -16,7 +16,7 @@
 
 ---
 
-## 2. 檔案清單（5 檔，約 2.7k 行）
+## 2. 檔案清單（6 檔，約 3.2k 行）
 
 | 檔案 | 行數 | 加速族 |
 |---|---:|---|
@@ -25,6 +25,7 @@
 | `scanbox_tropical_tile.mbt` | 473 | ⑤ Scanbox 解耦回看單遍前綴掃描（含 `subgroups` 特化）、Morton Z-序、`16×17` 無衝突共享記憶體三相熱帶 Kleene 閉包 |
 | `hvm2_inet_arena.mbt` | 487 | ⑥ HVM2 扁平競技場並行交互組合子（`ANNI`/`COMM`/`ERAS`），機器驗證 Lafont 強合流定理 |
 | `webgpu_wgsl_kernels.mbt` | 794 | 7 個 WGSL 計算著色器 + W3C 瀏覽器可移植性靜態審計 + 跨聯邦等價總驗 |
+| `cubical_degeneracy_swar.mbt` | 464 | ⑦ 64 位元立方體蝴蝶面／退化 SWAR 萃取、`O(1)` 配對退化遮罩遞推（窮舉 `65,536` 個 4-立方體：`64,594 + 942`）、Moore 交錯邊界 `∂² = 0`、雙向面修剪與附加 WGSL 著色器審計 |
 
 ---
 
@@ -170,15 +171,16 @@ for k in @accel.webgpu_frontier_kernel_suite() {
 ## 7. 依賴與邊界
 
 * **依賴**：`gcd`、`cubical-face-bdd`、`algebra`、`semiring-trop`、`tensor`；**不依賴** `cubical/kernel`（加速層不需要可信核心，只需主定義）。
-* **被依賴**：`bridge`（`accel_bridge.mbt`）、`root`。
-* **設計準則**：任何新加速核心必須 (a) 提供等價證書入口，(b) 若上 GPU，必須通過 `audit_wgsl_browser_portability`，(c) 不得引入 `f64`/`u64`/`i64` 到 WGSL。
+* **依賴**：`accel-swar`（`L0` 零依賴硬體核心，透過 `reexport_swar.mbt` `pub using @swar` 無縫重導出）、`gcd`、`cubical-face-bdd`、`algebra-core`、`semiring-trop`、`tensor`。
+* **被依賴**：`cubical-autonomy`、`cubical-structures`、`bridge`（`accel_bridge.mbt`）、`root`。
+* **設計準則**：任何新加速核心必須 (a) 提供等價證書入口，(b) 若上 GPU，必須納入 `wgsl_all_registered_kernels()`（8/8 靜態單一真相源並與 `webgpu/index.html` 對齊）且通過 `audit_wgsl_browser_portability`，(c) 不得引入 `f64`/`u64`/`i64` 到 WGSL。
 
 ---
 
 ## 8. 驗證
 
 ```bash
-moon test accel --target wasm-gc        # 單包即時微測試約 0.24s
-moon run --release cmd/showcase --target wasm-gc
-# 瀏覽器直開：../webgpu/index.html（自動偵測 navigator.gpu，並回退到 CPU SWAR 對照）
+moon check --deny-warn --target wasm-gc
+moon run cmd/showcase --target wasm-gc
+# 瀏覽器直開：../webgpu/index.html（自動偵測 navigator.gpu，8 個 WGSL 管線全數對齊註冊表並回退至 CPU SWAR 對照）
 ```

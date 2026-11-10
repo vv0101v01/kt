@@ -1506,16 +1506,6 @@ fn jacobi_max_span(
 }
 
 ///|
-fn jacobi_eigen_max_width(intervals : Array[EigenInterval]) -> Rat {
-  jacobi_max_span(intervals.length(), i => intervals[i].lo, i => intervals[i].hi)
-}
-
-///|
-fn jacobi_separated_max_width(intervals : Array[SeparatedEigenInterval]) -> Rat {
-  jacobi_max_span(intervals.length(), i => intervals[i].lo, i => intervals[i].hi)
-}
-
-///|
 fn jacobi_singletons_meet_target(
   intervals : Array[EigenInterval],
   target_width : Rat,
@@ -1575,7 +1565,11 @@ pub fn jacobi_interval_eigen_adaptive(
       exact_fallback_used: false,
       exact_width_bits: 0,
       target_met: true,
-      max_interval_width: jacobi_eigen_max_width(certificate.eigenvalues),
+      max_interval_width: jacobi_max_span(
+        certificate.eigenvalues.length(),
+        i => certificate.eigenvalues[i].lo,
+        i => certificate.eigenvalues[i].hi,
+      ),
     })
   }
   let mut bits = 1
@@ -1592,7 +1586,11 @@ pub fn jacobi_interval_eigen_adaptive(
         chosen_bits = bits
         if separation.complete &&
           rat_cmp_exact(
-            jacobi_separated_max_width(separation.intervals),
+            jacobi_max_span(
+              separation.intervals.length(),
+              i => separation.intervals[i].lo,
+              i => separation.intervals[i].hi,
+            ),
             target_width,
           ) <=
           0 {
@@ -1612,7 +1610,11 @@ pub fn jacobi_interval_eigen_adaptive(
   }
   match chosen {
     Some(separation) => {
-      let max_width = jacobi_separated_max_width(separation.intervals)
+      let max_width = jacobi_max_span(
+        separation.intervals.length(),
+        i => separation.intervals[i].lo,
+        i => separation.intervals[i].hi,
+      )
       Some(JacobiAdaptiveReport::{
         cluster_aware,
         separation: Some(separation),
@@ -1630,7 +1632,11 @@ pub fn jacobi_interval_eigen_adaptive(
         exact_fallback_used: true,
         exact_width_bits: chosen_bits,
         target_met: false,
-        max_interval_width: jacobi_eigen_max_width(certificate.eigenvalues),
+        max_interval_width: jacobi_max_span(
+          certificate.eigenvalues.length(),
+          i => certificate.eigenvalues[i].lo,
+          i => certificate.eigenvalues[i].hi,
+        ),
       })
   }
 }

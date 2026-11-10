@@ -174,7 +174,6 @@ fn reify_neu(lvl : Int32, v : Val) -> Term {
   }
 }
 
-
 // ---------------------------------------------------------------------------
 // 型別檢查（保型性測試用）
 // ---------------------------------------------------------------------------
@@ -231,7 +230,12 @@ fn eval_typed(env : Array[Val], ctx : Array[Ty], t : Term) -> Val {
   match t {
     // 環境裝的是**綁定變數**；超出環境的是自由變數，要換回它在原始上下文裡的索引
     // （`x - env.length()`），否則在 binder 底下會被多移一次。
-    TVar(x) => if x >= 0 && x < env.length() { env[x] } else { VNeutral(x - env.length()) }
+    TVar(x) =>
+      if x >= 0 && x < env.length() {
+        env[x]
+      } else {
+        VNeutral(x - env.length())
+      }
     TLam(ty, body) => {
       let captured = clone_vals(env)
       let ctx2 : Array[Ty] = [ty]
@@ -460,6 +464,7 @@ pub fn nf_is_fixpoint(ty : Ty, t : Term) -> Bool {
   term_eq(nf(ty, t), nf(ty, nf(ty, t)))
 }
 
+///|
 pub fn law_nbe_nf_reaches_a_normal_form() -> Array[(String, Bool)] {
   let out : Array[(String, Bool)] = []
   let b0 = TBase(0)
@@ -500,7 +505,11 @@ pub fn law_nbe_nf_reaches_a_normal_form() -> Array[(String, Bool)] {
     },
   )
   // 反向對照：原始 redex 不是 β-正規形，否則前面的檢查沒有內容
-  @core.chk(out, "nbe: nf reaches a normal form #6 (redex is not beta-normal)", !is_beta_normal(t1))
+  @core.chk(
+    out,
+    "nbe: nf reaches a normal form #6 (redex is not beta-normal)",
+    !is_beta_normal(t1),
+  )
   out
 }
 
@@ -523,9 +532,7 @@ fn enum_terms(ctx : Array[Ty], ty : Ty, budget : Int32) -> Array[Term] {
     }
   }
   match ty {
-    TOne => if budget >= 1 {
-      out.push(TStar)
-    }
+    TOne => if budget >= 1 { out.push(TStar) }
     TBase(_) => ()
     TArr(a, b) => {
       // λ 抽象
@@ -572,23 +579,40 @@ pub fn law_nbe_general_beta_over_all_terms() -> Array[(String, Bool)] {
       total = total + 1
       let n = nf_in(ctx, ty, t)
       if !is_beta_normal(n) {
-        println("DBG1 " + ty_to_string(ty) + " t=" + term_to_string(t) + " nf=" + term_to_string(n))
+        println(
+          "DBG1 " +
+          ty_to_string(ty) +
+          " t=" +
+          term_to_string(t) +
+          " nf=" +
+          term_to_string(n),
+        )
         beta_normal = false
       }
       if !term_eq(nf_in(ctx, ty, n), n) {
         idempotent = false
       }
       match beta_once(t) {
-        Some(t2) => if !term_eq(nf_in(ctx, ty, t2), n) {
-          println("DBG3 " + ty_to_string(ty) + " t=" + term_to_string(t) + " t2=" + term_to_string(t2) + " nf(t)=" + term_to_string(n) + " nf(t2)=" + term_to_string(nf_in(ctx, ty, t2)))
-          beta_step = false
-        }
+        Some(t2) =>
+          if !term_eq(nf_in(ctx, ty, t2), n) {
+            println(
+              "DBG3 " +
+              ty_to_string(ty) +
+              " t=" +
+              term_to_string(t) +
+              " t2=" +
+              term_to_string(t2) +
+              " nf(t)=" +
+              term_to_string(n) +
+              " nf(t2)=" +
+              term_to_string(nf_in(ctx, ty, t2)),
+            )
+            beta_step = false
+          }
         None => ()
       }
       match eta_once(t) {
-        Some(t2) => if !term_eq(nf_in(ctx, ty, t2), n) {
-          eta_step = false
-        }
+        Some(t2) => if !term_eq(nf_in(ctx, ty, t2), n) { eta_step = false }
         None => ()
       }
       if !check(ctx, n, ty) {
@@ -597,10 +621,22 @@ pub fn law_nbe_general_beta_over_all_terms() -> Array[(String, Bool)] {
     }
   }
   let tag = "(over \{total} terms)"
-  @core.chk(out, "nbe: general beta #1 nf is beta-normal \{tag}", total > 200 && beta_normal)
+  @core.chk(
+    out,
+    "nbe: general beta #1 nf is beta-normal \{tag}",
+    total > 200 && beta_normal,
+  )
   @core.chk(out, "nbe: general beta #2 nf is idempotent \{tag}", idempotent)
-  @core.chk(out, "nbe: general beta #3 one-step beta preserves nf \{tag}", beta_step)
-  @core.chk(out, "nbe: general beta #4 eta contraction preserves nf \{tag}", eta_step)
+  @core.chk(
+    out,
+    "nbe: general beta #3 one-step beta preserves nf \{tag}",
+    beta_step,
+  )
+  @core.chk(
+    out,
+    "nbe: general beta #4 eta contraction preserves nf \{tag}",
+    eta_step,
+  )
   @core.chk(out, "nbe: general beta #5 nf preserves the type \{tag}", typed)
   out
 }

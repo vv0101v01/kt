@@ -118,13 +118,18 @@ pub fn biquad_sqrt_rat(r : Rat) -> BiquadNum? {
 }
 
 ///|
-fn biquad_is_zero(x : BiquadNum) -> Bool {
-  for i in 0..<x.coeffs.length() {
-    if !rat_is_zero(x.coeffs[i]) {
+fn rat_vec_all_zero(coeffs : Array[Rat]) -> Bool {
+  for i in 0..<coeffs.length() {
+    if !rat_is_zero(coeffs[i]) {
       return false
     }
   }
   true
+}
+
+///|
+fn biquad_is_zero(x : BiquadNum) -> Bool {
+  rat_vec_all_zero(x.coeffs)
 }
 
 ///|

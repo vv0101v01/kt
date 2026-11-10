@@ -609,7 +609,11 @@ fn monad_laws_cert() -> Bool {
   if cmp_arr(left, right) != 0 {
     return false
   }
-  // StateM：左/右單位 + 結合
+  // StateM：左/右單位 + 結合 + put/filter/fold
+  let even_sum = m.filter(x => x % 2 == 0).fold(0, (acc, x) => acc + x)
+  if even_sum != 2 || StateM::put(42).exec(0) != 42 {
+    return false
+  }
   let sf = fn(a : Int32) -> StateM[Int32, Int32] {
     { run: fn(s0 : Int32) { (a + s0, s0 + 1) }, }
   }

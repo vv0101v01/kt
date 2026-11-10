@@ -883,6 +883,8 @@ pub fn instantiate_level_inductive_decl(DLevelInductiveDecl, Array[Int32]) -> DI
 
 pub fn instantiate_level_term_decl(DLevelTermDecl, Array[Int32]) -> DLevelTermInstance?
 
+pub fn kernel_eval_closed_peano(DTerm) -> Int32?
+
 pub fn lazy_deval(DTerm, DEnv, DDimEnv) -> DValue
 
 pub fn lazy_force_count(DValue) -> Int32
@@ -890,6 +892,8 @@ pub fn lazy_force_count(DValue) -> Int32
 pub fn lazy_is_forced(DValue) -> Bool
 
 pub fn lazy_value(() -> DValue) -> DValue
+
+pub fn level_decl_validate(DLevelDecl) -> Bool
 
 pub fn level_hit_decl_validate(DLevelHitDecl) -> Bool
 
@@ -1164,10 +1168,11 @@ pub fn w_schema() -> DInductiveSpec
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug)
 pub enum CantorOrdinal {
   COZero
   COSum(Array[(CantorOrdinal, Int32)])
-} derive(Eq, @debug.Debug)
+}
 pub fn CantorOrdinal::equal(Self, Self) -> Bool
 pub fn CantorOrdinal::not_equal(Self, Self) -> Bool
 pub fn CantorOrdinal::to_repr(Self) -> @debug.Repr
@@ -1200,6 +1205,7 @@ pub struct CircleSquareWindingReport {
   used_hspace_glue : Bool
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum DArgKind {
   DArgExternal
   DArgRecursive
@@ -1207,7 +1213,7 @@ pub(all) enum DArgKind {
   DArgNested
   DArgDecoded
   DArgDecodedFunction
-} derive(Eq, @debug.Debug)
+}
 pub fn DArgKind::equal(Self, Self) -> Bool
 pub fn DArgKind::not_equal(Self, Self) -> Bool
 pub fn DArgKind::to_repr(Self) -> @debug.Repr
@@ -1222,6 +1228,7 @@ pub struct DCheckedTypeLine {
   line : (@face_bdd.Dim) -> DValue
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DConstructorArg {
   name : String
   kind : DArgKind
@@ -1229,26 +1236,28 @@ pub(all) struct DConstructorArg {
   index : Array[DTerm]
   nested : DPositiveFunctor
   target : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn DConstructorArg::equal(Self, Self) -> Bool
 pub fn DConstructorArg::not_equal(Self, Self) -> Bool
 pub fn DConstructorArg::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DConstructorConstraint {
   ty : DTerm
   lhs : DTerm
   rhs : DTerm
-} derive(Eq, @debug.Debug)
+}
 pub fn DConstructorConstraint::equal(Self, Self) -> Bool
 pub fn DConstructorConstraint::not_equal(Self, Self) -> Bool
 pub fn DConstructorConstraint::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DConstructorSpec {
   name : String
   args : Array[DConstructorArg]
   result_index : Array[DTerm]
   constraints : Array[DConstructorConstraint]
-} derive(Eq, @debug.Debug)
+}
 pub fn DConstructorSpec::equal(Self, Self) -> Bool
 pub fn DConstructorSpec::not_equal(Self, Self) -> Bool
 pub fn DConstructorSpec::to_repr(Self) -> @debug.Repr
@@ -1292,12 +1301,13 @@ pub struct DCubeStratifiedReport {
   complete : Bool
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DCubeYonedaReport {
   natural : Bool
   generic_reified_term : DTerm
   audited_substitutions : Int32
   failed_substitutions : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn DCubeYonedaReport::equal(Self, Self) -> Bool
 pub fn DCubeYonedaReport::not_equal(Self, Self) -> Bool
 pub fn DCubeYonedaReport::to_repr(Self) -> @debug.Repr
@@ -1312,11 +1322,12 @@ pub enum DEnv {
   DEnvCons(DValue, DEnv, Int32)
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DEquivBranch {
   face : @face_bdd.Face
   ty : DTerm
   equiv : DTerm
-} derive(Eq, @debug.Debug)
+}
 pub fn DEquivBranch::equal(Self, Self) -> Bool
 pub fn DEquivBranch::not_equal(Self, Self) -> Bool
 pub fn DEquivBranch::to_repr(Self) -> @debug.Repr
@@ -1349,10 +1360,11 @@ pub struct DFaceConvReport {
   leaf_checks : Int32
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DFaceTerm {
   face : @face_bdd.Face
   body : DTerm
-} derive(Eq, @debug.Debug)
+}
 pub fn DFaceTerm::equal(Self, Self) -> Bool
 pub fn DFaceTerm::not_equal(Self, Self) -> Bool
 pub fn DFaceTerm::to_repr(Self) -> @debug.Repr
@@ -1367,28 +1379,31 @@ pub struct DFamilyParts {
   fam : (DValue) -> DValue
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum DFunctorParamArg {
   DFunctorParamTerm(DTerm)
   DFunctorParamSelf(Array[DTerm])
-} derive(Eq, @debug.Debug)
+}
 pub fn DFunctorParamArg::equal(Self, Self) -> Bool
 pub fn DFunctorParamArg::not_equal(Self, Self) -> Bool
 pub fn DFunctorParamArg::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub enum DFunctorPositivityEvidence {
   DFunctorCovariantLaws(DTerm, DTerm, DTerm)
   DFunctorContainerIso(DTerm, DTerm, DTerm)
-} derive(Eq, @debug.Debug)
+}
 pub fn DFunctorPositivityEvidence::equal(Self, Self) -> Bool
 pub fn DFunctorPositivityEvidence::not_equal(Self, Self) -> Bool
 pub fn DFunctorPositivityEvidence::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct DFunctorialPositivityCert {
   level : Int32
   univ_level : Int32
   claim_strict : Bool
   evidence : DFunctorPositivityEvidence
-} derive(Eq, @debug.Debug)
+}
 pub fn DFunctorialPositivityCert::equal(Self, Self) -> Bool
 pub fn DFunctorialPositivityCert::not_equal(Self, Self) -> Bool
 pub fn DFunctorialPositivityCert::to_repr(Self) -> @debug.Repr
@@ -1408,6 +1423,7 @@ pub struct DGlueParts {
   level : Int32
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DHitCellSpec {
   name : String
   dim_count : Int32
@@ -1415,16 +1431,17 @@ pub(all) struct DHitCellSpec {
   result_index : Array[DTerm]
   faces : Array[DHitFaceExpr]
   constraints : Array[DConstructorConstraint]
-} derive(Eq, @debug.Debug)
+}
 pub fn DHitCellSpec::equal(Self, Self) -> Bool
 pub fn DHitCellSpec::not_equal(Self, Self) -> Bool
 pub fn DHitCellSpec::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DHitFaceExpr {
   cell : Int32
   args : Array[DTerm]
   dims : Array[@face_bdd.Dim]
-} derive(Eq, @debug.Debug)
+}
 pub fn DHitFaceExpr::equal(Self, Self) -> Bool
 pub fn DHitFaceExpr::not_equal(Self, Self) -> Bool
 pub fn DHitFaceExpr::to_repr(Self) -> @debug.Repr
@@ -1445,13 +1462,14 @@ pub struct DHitPlan {
   generic_index_types : Array[DValue]
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DHitSpec {
   name : String
   level : Int32
   params : Array[DTelescopeEntry]
   indices : Array[DTelescopeEntry]
   cells : Array[DHitCellSpec]
-} derive(Eq, @debug.Debug)
+}
 pub fn DHitSpec::equal(Self, Self) -> Bool
 pub fn DHitSpec::not_equal(Self, Self) -> Bool
 pub fn DHitSpec::to_repr(Self) -> @debug.Repr
@@ -1472,6 +1490,7 @@ pub struct DInductivePlan {
   generic_index_types : Array[DValue]
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DInductiveSpec {
   name : String
   level : Int32
@@ -1480,7 +1499,7 @@ pub(all) struct DInductiveSpec {
   constructors : Array[DConstructorSpec]
   decode_cases : Array[DTerm]
   decode_level : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn DInductiveSpec::equal(Self, Self) -> Bool
 pub fn DInductiveSpec::not_equal(Self, Self) -> Bool
 pub fn DInductiveSpec::to_repr(Self) -> @debug.Repr
@@ -1490,15 +1509,19 @@ pub struct DInfer {
   ty : DValue
 }
 
-pub enum DLevelDecl {
+pub(all) enum DLevelDecl {
+  DLevelDeclInductive(DLevelInductiveDecl)
+  DLevelDeclHit(DLevelHitDecl)
+  DLevelDeclTerm(DLevelTermDecl)
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum DLevelExpr {
   DLevelConst(Int32)
   DLevelVar(Int32)
   DLevelSucc(DLevelExpr)
   DLevelMax(DLevelExpr, DLevelExpr)
-} derive(Eq, @debug.Debug)
+}
 pub fn DLevelExpr::equal(Self, Self) -> Bool
 pub fn DLevelExpr::not_equal(Self, Self) -> Bool
 pub fn DLevelExpr::to_repr(Self) -> @debug.Repr
@@ -1601,20 +1624,22 @@ pub(all) enum DNeutral {
   DNHComp(DValue, DSystem, DValue)
 }
 
+#derive(Eq, @debug.Debug)
 pub struct DOpenIRArg {
   name : String
   kind : DOpenIRArgKind
-} derive(Eq, @debug.Debug)
+}
 pub fn DOpenIRArg::equal(Self, Self) -> Bool
 pub fn DOpenIRArg::not_equal(Self, Self) -> Bool
 pub fn DOpenIRArg::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub enum DOpenIRArgKind {
   DOpenArgExternal(DTerm)
   DOpenArgCode
   DOpenArgDecodedVal(Int32, Int32)
   DOpenArgDecodedCodeFn(Int32, Int32)
-} derive(Eq, @debug.Debug)
+}
 pub fn DOpenIRArgKind::equal(Self, Self) -> Bool
 pub fn DOpenIRArgKind::not_equal(Self, Self) -> Bool
 pub fn DOpenIRArgKind::to_repr(Self) -> @debug.Repr
@@ -1630,29 +1655,32 @@ pub struct DOpenIRCode {
   args : Array[DOpenIRArgVal]
 }
 
+#derive(Eq, @debug.Debug)
 pub struct DOpenIRConstructor {
   name : String
   args : Array[DOpenIRArg]
-} derive(Eq, @debug.Debug)
+}
 pub fn DOpenIRConstructor::equal(Self, Self) -> Bool
 pub fn DOpenIRConstructor::not_equal(Self, Self) -> Bool
 pub fn DOpenIRConstructor::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct DOpenIRDecoder {
   name : String
   decode_level : Int32
   cases : Array[DTerm]
-} derive(Eq, @debug.Debug)
+}
 pub fn DOpenIRDecoder::equal(Self, Self) -> Bool
 pub fn DOpenIRDecoder::not_equal(Self, Self) -> Bool
 pub fn DOpenIRDecoder::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct DOpenSimultaneousIRSpec {
   name : String
   level : Int32
   constructors : Array[DOpenIRConstructor]
   decoders : Array[DOpenIRDecoder]
-} derive(Eq, @debug.Debug)
+}
 pub fn DOpenSimultaneousIRSpec::equal(Self, Self) -> Bool
 pub fn DOpenSimultaneousIRSpec::not_equal(Self, Self) -> Bool
 pub fn DOpenSimultaneousIRSpec::to_repr(Self) -> @debug.Repr
@@ -1667,6 +1695,7 @@ pub struct DPathParts {
   right : DValue
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum DPositiveFunctor {
   DFunctorIdentity(Array[DTerm])
   DFunctorConst(DTerm)
@@ -1678,37 +1707,40 @@ pub(all) enum DPositiveFunctor {
   DFunctorSigma(DPositiveFunctor, DPositiveFunctor)
   DFunctorFamily(DInductiveSpec, Array[DFunctorParamArg], Array[DTerm])
   DFunctorSelfFamily(Array[DFunctorParamArg], Array[DTerm])
-} derive(Eq, @debug.Debug)
+}
 pub fn DPositiveFunctor::equal(Self, Self) -> Bool
 pub fn DPositiveFunctor::not_equal(Self, Self) -> Bool
 pub fn DPositiveFunctor::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct DPositivityDeclaration {
   head : DTerm
   arity : Int32
   strict_args : Array[Int32]
   positive_args : Array[Int32]
   scope : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn DPositivityDeclaration::equal(Self, Self) -> Bool
 pub fn DPositivityDeclaration::not_equal(Self, Self) -> Bool
 pub fn DPositivityDeclaration::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct DPositivityReport {
   occurs : Bool
   strictly_positive : Bool
   positive_polarity : Bool
   negative_polarity : Bool
   unknown : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn DPositivityReport::equal(Self, Self) -> Bool
 pub fn DPositivityReport::not_equal(Self, Self) -> Bool
 pub fn DPositivityReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct DPositivityWitness {
   declaration : DPositivityDeclaration
   definition : DTerm
-} derive(Eq, @debug.Debug)
+}
 pub fn DPositivityWitness::equal(Self, Self) -> Bool
 pub fn DPositivityWitness::not_equal(Self, Self) -> Bool
 pub fn DPositivityWitness::to_repr(Self) -> @debug.Repr
@@ -1752,12 +1784,13 @@ pub struct DSystemClass {
   value : DValue
 }
 
+#derive(Eq, @debug.Debug)
 pub struct DSystemCompatibility {
   compatible : Bool
   reason : DSystemIncompatibility
   branch : Int32
   other_branch : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn DSystemCompatibility::equal(Self, Self) -> Bool
 pub fn DSystemCompatibility::not_equal(Self, Self) -> Bool
 pub fn DSystemCompatibility::to_repr(Self) -> @debug.Repr
@@ -1770,11 +1803,12 @@ pub struct DSystemDsaturCliqueReport {
   uncolored_visited_nodes : Int32
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum DSystemIncompatibility {
   DSystemOk
   DSystemBaseIncompatible
   DSystemBranchesIncompatible
-} derive(Eq, @debug.Debug)
+}
 pub fn DSystemIncompatibility::equal(Self, Self) -> Bool
 pub fn DSystemIncompatibility::not_equal(Self, Self) -> Bool
 pub fn DSystemIncompatibility::to_repr(Self) -> @debug.Repr
@@ -1834,14 +1868,16 @@ pub struct DTelescopeCacheEntry {
   types : Array[DValue]
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DTelescopeEntry {
   name : String
   ty : DTerm
-} derive(Eq, @debug.Debug)
+}
 pub fn DTelescopeEntry::equal(Self, Self) -> Bool
 pub fn DTelescopeEntry::not_equal(Self, Self) -> Bool
 pub fn DTelescopeEntry::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum DTerm {
   DTVar(Int32)
   DUniv(Int32)
@@ -1902,33 +1938,36 @@ pub(all) enum DTerm {
   DGlueEquiv(DTerm, Array[DEquivBranch])
   DUnglueEquiv(DTerm, DTerm, Array[DEquivBranch])
   DUa(DTerm)
-} derive(Eq, @debug.Debug)
+}
 pub fn DTerm::equal(Self, Self) -> Bool
 pub fn DTerm::not_equal(Self, Self) -> Bool
 pub fn DTerm::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DTermDagImportReport {
   node_ids : Array[Int32]
   root_ids : Array[Int32]
   added_nodes : Int32
   reused_nodes : Int32
-} derive(Eq, @debug.Debug)
+}
 pub fn DTermDagImportReport::equal(Self, Self) -> Bool
 pub fn DTermDagImportReport::not_equal(Self, Self) -> Bool
 pub fn DTermDagImportReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DTermDagNode {
   shell : DTerm
   children : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn DTermDagNode::equal(Self, Self) -> Bool
 pub fn DTermDagNode::not_equal(Self, Self) -> Bool
 pub fn DTermDagNode::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DTermDagSnapshot {
   nodes : Array[DTermDagNode]
   roots : Array[Int32]
-} derive(Eq, @debug.Debug)
+}
 pub fn DTermDagSnapshot::equal(Self, Self) -> Bool
 pub fn DTermDagSnapshot::not_equal(Self, Self) -> Bool
 pub fn DTermDagSnapshot::to_repr(Self) -> @debug.Repr
@@ -1960,10 +1999,11 @@ pub struct DTubeNFClass {
   path : (@face_bdd.Dim) -> DValue
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct DTubeTerm {
   face : @face_bdd.Face
   body : DTerm
-} derive(Eq, @debug.Debug)
+}
 pub fn DTubeTerm::equal(Self, Self) -> Bool
 pub fn DTubeTerm::not_equal(Self, Self) -> Bool
 pub fn DTubeTerm::to_repr(Self) -> @debug.Repr
@@ -2014,6 +2054,7 @@ pub(all) enum DValue {
   DVNeutral(DNeutral)
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) struct IndexedContainerSpec {
   index_ty : DTerm
   shape_ty : DTerm
@@ -2021,11 +2062,12 @@ pub(all) struct IndexedContainerSpec {
   next_index : DTerm
   requested_index : DTerm
   constructor_out_index : DTerm
-} derive(Eq, @debug.Debug)
+}
 pub fn IndexedContainerSpec::equal(Self, Self) -> Bool
 pub fn IndexedContainerSpec::not_equal(Self, Self) -> Bool
 pub fn IndexedContainerSpec::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct KernelizedCliqueReport {
   original_vertices : Int32
   universal_extracted : Int32
@@ -2034,11 +2076,12 @@ pub(all) struct KernelizedCliqueReport {
   max_clique_size : Int32
   clique_vertices : Array[Int32]
   valid_clique : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn KernelizedCliqueReport::equal(Self, Self) -> Bool
 pub fn KernelizedCliqueReport::not_equal(Self, Self) -> Bool
 pub fn KernelizedCliqueReport::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct MahloReflectionCert {
   universe_level : Int32
   closed_under_pi_sigma_path_w : Bool
@@ -2046,18 +2089,19 @@ pub(all) struct MahloReflectionCert {
   mahlo_code_rank : CantorOrdinal
   super_universe_rank : CantorOrdinal
   strict_rank_descent : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn MahloReflectionCert::equal(Self, Self) -> Bool
 pub fn MahloReflectionCert::not_equal(Self, Self) -> Bool
 pub fn MahloReflectionCert::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct SheafPartitionConvReport {
   n_bool_vars : Int32
   stalk_count : Int32
   partition_covers_top : Bool
   all_stalks_convertible : Bool
   equivalent_brute_force_cases : @bigint.BigInt
-} derive(Eq, @debug.Debug)
+}
 pub fn SheafPartitionConvReport::equal(Self, Self) -> Bool
 pub fn SheafPartitionConvReport::not_equal(Self, Self) -> Bool
 pub fn SheafPartitionConvReport::to_repr(Self) -> @debug.Repr

@@ -21,6 +21,8 @@ pub(all) enum FederationId {
   Scheme
   Condensed
   Discovery
+  Accel
+  Meta
 }
 
 ///|

@@ -123,7 +123,7 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
 }`
   },
   {
-    slug: "ozaki2_crt_gemm",
+    slug: "ozaki2_dp4a_crt_gemm",
     title: "2. Ozaki Scheme II CRT 模數矩陣乘 (無需 FP64)",
     paper: "Ozaki, Uchino & Imamura (2025/2026) Byte-Modulus CRT GEMM",
     wg: [16, 16, 1],
@@ -159,7 +159,7 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>, @builtin(local_invocation
 }`
   },
   {
-    slug: "stockham_ntt_rns_u32",
+    slug: "stockham_ntt_u32",
     title: "3. 32 位 RNS Stockham 免位反轉自動排序 NTT",
     paper: "Cheddar / MoMA / ZKProphet (2025) 32-bit RNS Stockham NTT",
     wg: [256, 1, 1],
@@ -211,8 +211,8 @@ fn main(@builtin(local_invocation_id) lid: vec3<u32>) {
 }`
   },
   {
-    slug: "scanbox_decoupled_scan",
-    title: "4. Scanbox 解耦回看單遍前綴掃描",
+    slug: "scanbox_decoupled_scan_u32",
+    title: "4. Scanbox 解耦回看單遍前綴掃描 (可移植共享記憶體版)",
     paper: "Contini Scanbox (2025) + Khronos WebGPU Subgroups (2025/2026)",
     wg: [256, 1, 1],
     shmem: 1032,
@@ -300,6 +300,66 @@ fn main(@builtin(global_invocation_id) gid: vec3<u32>) {
     kinds[base + 3u] = ka; labels[base + 3u] = la;
     atomicAdd(&header.comm_cnt, 1u);
   }
+}`
+  },
+  {
+    slug: "scanbox_subgroups_scan_u32",
+    title: "7. Scanbox Khronos Subgroups 單遍前綴掃描特化版",
+    paper: "Contini Scanbox (2025) + Khronos WebGPU Subgroups (2025/2026)",
+    wg: [256, 1, 1],
+    shmem: 128,
+    uses_subgroups: true,
+    wgsl: `enable subgroups;
+@group(0) @binding(0) var<storage, read> input_data: array<u32>;
+@group(0) @binding(1) var<storage, read_write> output_data: array<u32>;
+var<workgroup> sg_spine: array<u32, 32>;
+@compute @workgroup_size(256, 1, 1)
+fn main(
+  @builtin(local_invocation_id) lid: vec3<u32>,
+  @builtin(subgroup_invocation_id) sg_lane: u32,
+  @builtin(subgroup_size) sg_size: u32
+) {
+  let tid = lid.x;
+  let val = select(0u, input_data[tid], tid < arrayLength(&input_data));
+  let intra = subgroupInclusiveAdd(val);
+  let sg_id = tid / sg_size;
+  if (sg_lane == sg_size - 1u) { sg_spine[sg_id] = intra; }
+  workgroupBarrier();
+  if (tid < 32u) { sg_spine[tid] = subgroupExclusiveAdd(sg_spine[tid]); }
+  workgroupBarrier();
+  if (tid < arrayLength(&output_data)) { output_data[tid] = sg_spine[sg_id] + intra; }
+}`
+  },
+  {
+    slug: "cubical_degeneracy_prune_u32x2",
+    title: "8. 64 頂點立方退化位板與雙向面修剪 (u32x2 零擴充版)",
+    paper: "SWAR Cubical Degeneracy Bitboard & Moore Boundary Pruning (arXiv:2410.09939 / arXiv:2207.12500)",
+    wg: [64, 1, 1],
+    shmem: 2176,
+    wgsl: `struct CubeWord64 { lo : u32, hi : u32 }
+@group(0) @binding(0) var<storage, read> cubes_in : array<CubeWord64>;
+@group(0) @binding(1) var<storage, read> ambient_mask : array<CubeWord64>;
+@group(0) @binding(2) var<storage, read_write> deg_flags_out : array<u32>;
+var<workgroup> tile_pad : array<vec2<u32>, 272>;
+@compute @workgroup_size(64, 1, 1)
+fn main(@builtin(global_invocation_id) gid : vec3<u32>, @builtin(local_invocation_id) lid : vec3<u32>) {
+  let idx : u32 = gid.x;
+  let row : u32 = lid.x >> 4u;
+  let col : u32 = lid.x & 15u;
+  let slot : u32 = row * 17u + col;
+  let c : CubeWord64 = cubes_in[idx];
+  let a : CubeWord64 = ambient_mask[idx];
+  tile_pad[slot] = vec2<u32>(c.lo & a.lo, c.hi & a.hi);
+  workgroupBarrier();
+  let v : vec2<u32> = tile_pad[slot];
+  var deg : u32 = 0u;
+  if (((v.x ^ (v.x >> 1u)) & 0x55555555u) == 0u && ((v.y ^ (v.y >> 1u)) & 0x55555555u) == 0u) { deg = deg | 1u; }
+  if (((v.x ^ (v.x >> 2u)) & 0x33333333u) == 0u && ((v.y ^ (v.y >> 2u)) & 0x33333333u) == 0u) { deg = deg | 2u; }
+  if (((v.x ^ (v.x >> 4u)) & 0x0F0F0F0Fu) == 0u && ((v.y ^ (v.y >> 4u)) & 0x0F0F0F0Fu) == 0u) { deg = deg | 4u; }
+  if (((v.x ^ (v.x >> 8u)) & 0x00FF00FFu) == 0u && ((v.y ^ (v.y >> 8u)) & 0x00FF00FFu) == 0u) { deg = deg | 8u; }
+  if (((v.x ^ (v.x >> 16u)) & 0x0000FFFFu) == 0u && ((v.y ^ (v.y >> 16u)) & 0x0000FFFFu) == 0u) { deg = deg | 16u; }
+  if (v.x == v.y) { deg = deg | 32u; }
+  deg_flags_out[idx] = deg;
 }`
   }
 ];

@@ -235,7 +235,9 @@ pub fn prove_all(cap : Int32) -> Array[Cert] {
     }
   }
   for i in 0..<=3 {
-    if !pow_naturality(FinMap::new(i, 3, Array::make(i, 0))) {
+    let id_i = FinSet::{ size: i, }.id()
+    if !pow_naturality(id_i) ||
+      !pow_naturality(FinMap::new(i, 3, Array::make(i, 0))) {
       ok9 = false
     }
   }
@@ -511,13 +513,50 @@ fn cert_decomp_vs_engine(out : Array[Cert]) -> Unit {
   let two_pet = Graph::from_edges(20, edges2)
   let dec = decompose(two_pet)
   let dgrp = dec.automorphism_group()
+  let bv1 = BitVec::make(70)
+  let bv2 = BitVec::make(70)
+  bv1.set(3)
+  bv1.set(65)
+  bv2.set(65)
+  bv2.set(68)
+  let bv_or = bv1.copy()
+  bv_or.or_in_place(bv2)
+  let bv_and = bv1.copy()
+  bv_and.and_in_place(bv2)
+  let bv_diff = bv1.copy()
+  bv_diff.and_not_in_place(bv2)
+  let disc3 = Part::discrete([0, 1, 2])
+  let fg1 = FinMap::new(2, 3, [0, 1])
+  let fg2 = FinMap::new(2, 3, [1, 2])
+  let dual_iso_ok = match isomorphism_dual(pet, canonical_form(pet)) {
+    Some(_) => true
+    None => false
+  }
+  let prim_laws_ok = bv_or.count_ones() == 3 &&
+    bv_and.count_ones() == 1 &&
+    bv_diff.count_ones() == 1 &&
+    disc3.is_discrete() &&
+    disc3.cell_count() == 3 &&
+    disc3.cell_sizes() == [1, 1, 1] &&
+    pet.is_regular() &&
+    canonical_labeling(pet).length() == 10 &&
+    automorphism_group_dual(pet).order() == 120L &&
+    dual_iso_ok &&
+    dec.labeling().length() == 20 &&
+    dec.aut_order_double() == 28800.0 &&
+    dgrp.orbit_rep(0) == 0 &&
+    dgrp.pointwise_stabilizer([0, 1]).order() >= 1L &&
+    coequalizer_card(fg1, fg2) == 1 &&
+    pushout_card(fg1, fg2) == 4 &&
+    coinduced_gset(PermGroup::cyclic(2), 2, 16).orbit_count() == 3
   out.push(
     cert(
       "decomp-vs-engine",
       dec.aut_order() == 28800L &&
       dgrp.order() == 28800L &&
       dec.class_count() == 1 &&
-      dec.block_count() == 2,
+      dec.block_count() == 2 &&
+      prim_laws_ok,
       "2×Petersen：Π 公式 = 派生群階 = 120²·2 = 28800",
     ),
   )

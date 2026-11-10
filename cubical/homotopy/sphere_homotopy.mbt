@@ -541,12 +541,12 @@ fn hopf_vector_close(
   b : Array[Double],
   tolerance : Double,
 ) -> Bool {
-  if a.length() != b.length() {
+  if a.length() != b.length() || !(tolerance >= 0.0) {
     return false
   }
   for i in 0..<a.length() {
     let difference = a[i] - b[i]
-    if difference * difference > tolerance * tolerance {
+    if !(difference * difference <= tolerance * tolerance) {
       return false
     }
   }
@@ -568,7 +568,7 @@ pub fn check_hopf_numeric() -> Bool {
     let image = hopf_map_s3_to_s2(samples[i])
     let norm2 = image[0] * image[0] + image[1] * image[1] + image[2] * image[2]
     let err = norm2 - 1.0
-    if err * err > 0.000000001 {
+    if !(err * err <= 0.000000001) {
       return false
     }
     let rotated_image = hopf_map_s3_to_s2(hopf_phase_rotate(samples[i], 0.7))

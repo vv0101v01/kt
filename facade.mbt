@@ -13,14 +13,25 @@ pub using @face_bdd {
   bdd_not,
   bdd_of_face,
   bdd_or,
+  cchm_face_eq,
+  cchm_face_is_bot,
+  cchm_face_is_top,
+  cchm_face_le,
   check_bdd_canonical,
+  dim_eq_demorgan,
+  dim_is_one_demorgan,
+  dim_is_zero_demorgan,
+  dim_truth_u64,
   dim_var,
   face_and,
+  face_bdd_canon_key,
   face_bot,
   face_eq0,
   face_eq1,
+  face_holds,
   face_or,
   face_top,
+  face_truth_u64,
   face_var0,
   face_var1,
 }
@@ -66,7 +77,7 @@ pub using @hermitian {
 }
 
 ///|
-pub using @kernel {type DTerm, conv_at}
+pub using @kernel {type DTerm, conv_at, kernel_eval_closed_peano}
 
 ///|
 pub using @homotopy {
@@ -76,7 +87,6 @@ pub using @homotopy {
   assoc_fvector,
   brunerie_new_family,
   check_adjoint_equivalence_and_fibers,
-  check_coherence_angle_elimination,
   coherence_angle_elimination_report,
   coherence_quotient_summary,
   circle_decode_value,
@@ -181,7 +191,6 @@ using @face_bdd {
   face_eq_dpll,
   face_eq_mod,
   face_eq_within_budget,
-  face_holds,
   face_is_top_sem,
   face_le,
   face_lrat_from_binary,
@@ -880,4 +889,58 @@ using @homotopy {
   wedge_connectivity_circle_left_coh_value,
   wedge_connectivity_circle_right_coh_value,
   wedge_connectivity_circle_set_ext_value,
+}
+
+///|
+pub using @autonomy {
+  type CubicalAutonomyMasterReport,
+  check_cubical_autonomy_all,
+  verify_absorbing_pointed_malcev_dichotomy,
+  verify_affine_cubical_system,
+  verify_bide_morgan_cubical_duality,
+  verify_bidirectional_cubical_nf_pruning,
+  verify_cubical_autonomy_master_suite,
+  verify_free_path_associativity_and_kernel_bridge,
+  verify_high_dim_alternating_cube_and_dtree,
+  verify_internal_infinity_groupoid_axioms,
+  verify_validity_and_presheaf_template,
+}
+
+///|
+pub using @structures {
+  type AffineBidirFocusingReport,
+  type BoundaryRepairStatus,
+  type CompositionPattern14,
+  type CoveringPushoutTorusReport,
+  type CubicalBidirTerm,
+  type CubicalBidirType,
+  type DepSignature,
+  type DepStructure,
+  type DiscreteCoveringSpace,
+  type EilenbergZilberCubeFactor,
+  type FunctorialPolySipReport,
+  type OperationalVerb26,
+  type PolarCubicalFormula,
+  type PolyFunctor,
+  type ReconstructRepairReflectReport,
+  type ReflLoopExpr,
+  type SwanIdFreePathEzReport,
+  type SwanIdValue,
+  type VerbPatternInteractionTheorem,
+  type Work4Complete54Report,
+  type Work4ItemCertificate,
+  amalgamate_signatures_pushout,
+  check_work4_54_structures_26_verbs_14_patterns,
+  compute_integral_cellular_homology,
+  diagnose_and_repair_square_boundary,
+  ez_canonical_cube64_factor,
+  focused_ljf_cubical_prove,
+  infer_cubical_bidir,
+  swan_id_j_elim,
+  verify_affine_bidirectional_and_focusing_suite,
+  verify_covering_pushout_and_torus_suite,
+  verify_functorial_polymorphism_and_sip_suite,
+  verify_reconstruction_repair_and_reflection_suite,
+  verify_swan_id_free_path_and_ez_suite,
+  verify_work4_all_54_structures_and_interactions,
 }

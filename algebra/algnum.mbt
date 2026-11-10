@@ -28,33 +28,6 @@
 /// Write `n = s²·d` with `d` squarefree; returns `(s, d)`.
 
 ///|
-/// Floor square root of a nonnegative BigInt by Newton iteration.
-pub fn bigint_sqrt_floor(n : BigInt) -> BigInt? {
-  if n < 0N {
-    return None
-  }
-  if n == 0N || n == 1N {
-    return Some(n)
-  }
-  let shift = (n.bit_length() + 1) / 2
-  let mut x = 1N << shift
-  let mut y = (x + n / x) / 2N
-  while y < x {
-    x = y
-    y = (x + n / x) / 2N
-  }
-  Some(x)
-}
-
-///|
-pub fn bigint_sqrt_exact(n : BigInt) -> BigInt? {
-  match bigint_sqrt_floor(n) {
-    Some(r) => if r * r == n { Some(r) } else { None }
-    None => None
-  }
-}
-
-///|
 /// Write a BigInt as `s^2*d` with `d` squarefree.  Perfect-square
 /// extraction is Newton-based; the residual square factor search is
 /// exact trial division (finite, but intentionally not a factoring

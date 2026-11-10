@@ -280,28 +280,31 @@ pub struct Iso {
   wiring : Wiring
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum LTy {
   LBool
   LUnit
   LProd(LTy, LTy)
   LFun(LTy, LTy)
-} derive(Eq, @debug.Debug)
+}
 pub fn LTy::equal(Self, Self) -> Bool
 pub fn LTy::not_equal(Self, Self) -> Bool
 pub fn LTy::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub enum LeafKind {
   LKBool
   LKUnit
-} derive(Eq, @debug.Debug)
+}
 pub fn LeafKind::equal(Self, Self) -> Bool
 pub fn LeafKind::not_equal(Self, Self) -> Bool
 pub fn LeafKind::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub struct LeafMap {
   src_index : Int32
   neg : Bool
-} derive(Eq, @debug.Debug)
+}
 pub fn LeafMap::equal(Self, Self) -> Bool
 pub fn LeafMap::not_equal(Self, Self) -> Bool
 pub fn LeafMap::to_repr(Self) -> @debug.Repr
@@ -313,11 +316,12 @@ pub enum Neutral {
   NeSnd(Neutral)
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum PVal {
   PVUnit
   PVBool(Bool)
   PVPair(PVal, PVal)
-} derive(Eq, @debug.Debug)
+}
 pub fn PVal::equal(Self, Self) -> Bool
 pub fn PVal::not_equal(Self, Self) -> Bool
 pub fn PVal::to_repr(Self) -> @debug.Repr
@@ -344,6 +348,7 @@ pub enum TValue {
   TVNeutral(TNeutral)
 }
 
+#derive(Eq, @debug.Debug)
 pub(all) enum Term {
   TmVar(Int32)
   TmLam(Term)
@@ -356,16 +361,17 @@ pub(all) enum Term {
   TmCoeRefl
   TmCoeUaSwap
   TmAnn(Term, LTy)
-} derive(Eq, @debug.Debug)
+}
 pub fn Term::equal(Self, Self) -> Bool
 pub fn Term::not_equal(Self, Self) -> Bool
 pub fn Term::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) enum Ty {
   TyBool
   TyUnit
   TyProd(Ty, Ty)
-} derive(Eq, @debug.Debug)
+}
 pub fn Ty::equal(Self, Self) -> Bool
 pub fn Ty::not_equal(Self, Self) -> Bool
 pub fn Ty::to_repr(Self) -> @debug.Repr

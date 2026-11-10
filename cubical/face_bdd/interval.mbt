@@ -53,7 +53,9 @@ pub let eps : Double = 0.000000001
 
 ///|
 pub fn dmin(a : Double, b : Double) -> Double {
-  if a < b {
+  if a.is_nan() || b.is_nan() {
+    a + b
+  } else if a < b {
     a
   } else {
     b
@@ -62,7 +64,9 @@ pub fn dmin(a : Double, b : Double) -> Double {
 
 ///|
 pub fn dmax(a : Double, b : Double) -> Double {
-  if a > b {
+  if a.is_nan() || b.is_nan() {
+    a + b
+  } else if a > b {
     a
   } else {
     b
@@ -105,20 +109,20 @@ pub fn interval_laws_hold(samples : Array[Double]) -> Bool {
     let x = samples[s]
     let env : Array[Double] = [x]
     let r = DVar(0)
-    if (eval_dim(DNeg(DNeg(r)), env) - x).abs() >= eps {
+    if !((eval_dim(DNeg(DNeg(r)), env) - x).abs() < eps) {
       return false
     }
     let meet_self = eval_dim(DAnd(r, DNeg(r)), env)
-    if (meet_self - dmin(x, 1.0 - x)).abs() >= eps {
+    if !((meet_self - dmin(x, 1.0 - x)).abs() < eps) {
       return false
     }
     let join_self = eval_dim(DOr(r, DNeg(r)), env)
-    if (join_self - dmax(x, 1.0 - x)).abs() >= eps {
+    if !((join_self - dmax(x, 1.0 - x)).abs() < eps) {
       return false
     }
     let lhs = eval_dim(DNeg(DAnd(r, DOne)), env)
     let rhs = eval_dim(DOr(DNeg(r), DNeg(DOne)), env)
-    if (lhs - rhs).abs() >= eps {
+    if !((lhs - rhs).abs() < eps) {
       return false
     }
   }

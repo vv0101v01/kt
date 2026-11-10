@@ -44,7 +44,11 @@ pub fn fun_omega_pow() -> OrdFun {
 pub fn fun_omega_omega_pow() -> OrdFun {
   OrdFun::{
     name: "ω^{ω·(1+α)}",
-    apply: fn(a) { @core.ord_omega_pow(@core.ord_add(@core.ord_omega_pow(@core.ord_one()), a)) },
+    apply: fn(a) {
+      @core.ord_omega_pow(
+        @core.ord_add(@core.ord_omega_pow(@core.ord_one()), a),
+      )
+    },
   }
 }
 
@@ -80,7 +84,11 @@ pub fn probes() -> Array[@core.Ordinal] {
 
 ///|
 /// `γ` 是否在 `f` 的像裡 —— 以探針裡的 `α` 作見證（存在性是真的在找見證）。
-pub fn in_range(f : OrdFun, gamma : @core.Ordinal, ps : Array[@core.Ordinal]) -> Bool {
+pub fn in_range(
+  f : OrdFun,
+  gamma : @core.Ordinal,
+  ps : Array[@core.Ordinal],
+) -> Bool {
   match preimage(f, gamma, ps) {
     Some(_) => true
     None => false
@@ -88,7 +96,11 @@ pub fn in_range(f : OrdFun, gamma : @core.Ordinal, ps : Array[@core.Ordinal]) ->
 }
 
 ///|
-pub fn preimage(f : OrdFun, gamma : @core.Ordinal, ps : Array[@core.Ordinal]) -> @core.Ordinal? {
+pub fn preimage(
+  f : OrdFun,
+  gamma : @core.Ordinal,
+  ps : Array[@core.Ordinal],
+) -> @core.Ordinal? {
   for a in ps {
     if @core.ord_cmp(apply_ord(f, a), gamma) == 0 {
       return Some(a)
@@ -100,7 +112,12 @@ pub fn preimage(f : OrdFun, gamma : @core.Ordinal, ps : Array[@core.Ordinal]) ->
 ///|
 /// 「像的包含」：`g` 的像是否落在 `f` 的像裡 —— 以恆等式 `ω^{ω+α} = ω^{1+(ω+α)}`
 /// 逐個探針驗證（這正是 12.3 對角迭代能同時落在兩個 club 裡的理由）。
-pub fn range_subset(f : OrdFun, g : OrdFun, w : @core.Ordinal, ps : Array[@core.Ordinal]) -> Bool {
+pub fn range_subset(
+  f : OrdFun,
+  g : OrdFun,
+  w : @core.Ordinal,
+  ps : Array[@core.Ordinal],
+) -> Bool {
   let mut ok = true
   for a in ps {
     let lhs = apply_ord(g, a)
@@ -154,8 +171,7 @@ pub fn law_universe_clubs_intersect_by_diagonal_iteration() -> Array[
     }
   }
   @core.chk(
-    out,
-    "universe reflection: clubs intersect by diagonal iteration #1 (normal functions are strictly increasing)",
+    out, "universe reflection: clubs intersect by diagonal iteration #1 (normal functions are strictly increasing)",
     incr,
   )
   // #2 無界
@@ -176,8 +192,7 @@ pub fn law_universe_clubs_intersect_by_diagonal_iteration() -> Array[
     }
   }
   @core.chk(
-    out,
-    "universe reflection: clubs intersect by diagonal iteration #2 (ranges are unbounded)",
+    out, "universe reflection: clubs intersect by diagonal iteration #2 (ranges are unbounded)",
     unbdd,
   )
   // #3 連續性

@@ -3,15 +3,19 @@ package "vv0101v01/cubical-hermitian"
 
 import {
   "moonbitlang/core/debug",
+  "vv0101v01/cubical-hermitian/cubical/autonomy",
   "vv0101v01/cubical-hermitian/cubical/face_bdd",
   "vv0101v01/cubical-hermitian/cubical/finite",
   "vv0101v01/cubical-hermitian/cubical/hermitian",
   "vv0101v01/cubical-hermitian/cubical/homotopy",
   "vv0101v01/cubical-hermitian/cubical/kernel",
+  "vv0101v01/cubical-hermitian/cubical/structures",
 }
 
 // Values
 pub fn all_checks_pass() -> Bool
+
+pub fn amalgamate_signatures_pushout(String, @structures.DepSignature, @structures.DepSignature, @structures.DepSignature) -> @structures.DepSignature
 
 pub fn assoc_euler_characteristic(Int32) -> Int32
 
@@ -28,6 +32,14 @@ pub fn bdd_of_face(@face_bdd.Face, Int32) -> @face_bdd.Bdd
 pub fn bdd_or(@face_bdd.Bdd, @face_bdd.Bdd) -> @face_bdd.Bdd
 
 pub fn brunerie_new_family() -> Array[@homotopy.BrunerieNumber]
+
+pub fn cchm_face_eq(@face_bdd.Face, @face_bdd.Face) -> Bool
+
+pub fn cchm_face_is_bot(@face_bdd.Face) -> Bool
+
+pub fn cchm_face_is_top(@face_bdd.Face) -> Bool
+
+pub fn cchm_face_le(@face_bdd.Face, @face_bdd.Face) -> Bool
 
 pub fn check_adjoint_equivalence_and_fibers() -> Bool
 
@@ -87,8 +99,6 @@ pub fn check_circle_torus_square_comp() -> Bool
 
 pub fn check_coe_definitional() -> Bool
 
-pub fn check_coherence_angle_elimination() -> Bool
-
 pub fn check_commuting() -> Bool
 
 pub fn check_constructor_constraints() -> Bool
@@ -100,6 +110,8 @@ pub fn check_conv_under_face_relevant_descent() -> Bool
 pub fn check_cube3_and_moving_hit_comp() -> Bool
 
 pub fn check_cube_comp() -> Bool
+
+pub fn check_cubical_autonomy_all() -> Bool
 
 pub fn check_dcube_open_box_filler() -> Bool
 
@@ -293,6 +305,8 @@ pub fn check_ua_coe() -> Bool
 
 pub fn check_universe_schemes() -> Bool
 
+pub fn check_work4_54_structures_26_verbs_14_patterns() -> Bool
+
 pub fn circle_decode_value(@kernel.DValue, Int32) -> @kernel.DValue
 
 pub fn circle_encode_value(@kernel.DValue, Int32) -> @kernel.DValue
@@ -300,6 +314,8 @@ pub fn circle_encode_value(@kernel.DValue, Int32) -> @kernel.DValue
 pub fn coherence_angle_elimination_report() -> @homotopy.CoherenceAngleEliminationReport
 
 pub fn coherence_quotient_summary(Int32, Int32) -> @homotopy.CoherenceQuotientSummary
+
+pub fn compute_integral_cellular_homology(@structures.IntegralCellularComplex) -> @structures.IntegralHomologyReport
 
 pub fn conv_at(Int32, Int32, @kernel.DValue, @kernel.DValue, @kernel.DValue) -> Bool
 
@@ -309,6 +325,16 @@ pub fn cx_real(Double) -> @hermitian.Complex
 
 pub fn cx_zero() -> @hermitian.Complex
 
+pub fn diagnose_and_repair_square_boundary(@kernel.DValue, Array[(Int32, Bool, @kernel.DCubeFunction)]) -> (@structures.BoundaryRepairStatus, Int32, @kernel.DValue?)
+
+pub fn dim_eq_demorgan(@face_bdd.Dim, @face_bdd.Dim) -> Bool
+
+pub fn dim_is_one_demorgan(@face_bdd.Dim) -> Bool
+
+pub fn dim_is_zero_demorgan(@face_bdd.Dim) -> Bool
+
+pub fn dim_truth_u64(@face_bdd.Dim, Int32) -> UInt64
+
 pub fn dim_var(Int32) -> @face_bdd.Dim
 
 pub fn elems_of(@finite.Ty) -> Array[@finite.PVal]
@@ -317,7 +343,11 @@ pub fn equiv_bidirectional_certified(@kernel.DValue) -> Bool
 
 pub fn equiv_of_wiring(@finite.Wiring) -> @finite.Equiv
 
+pub fn ez_canonical_cube64_factor(UInt64, Int32) -> @structures.EilenbergZilberCubeFactor
+
 pub fn face_and(@face_bdd.Face, @face_bdd.Face) -> @face_bdd.Face
+
+pub fn face_bdd_canon_key(@face_bdd.Face) -> String
 
 pub fn face_bot() -> @face_bdd.Face
 
@@ -325,9 +355,13 @@ pub fn face_eq0(@face_bdd.Dim) -> @face_bdd.Face
 
 pub fn face_eq1(@face_bdd.Dim) -> @face_bdd.Face
 
+pub fn face_holds(@face_bdd.Face, Array[Bool]) -> Bool
+
 pub fn face_or(@face_bdd.Face, @face_bdd.Face) -> @face_bdd.Face
 
 pub fn face_top() -> @face_bdd.Face
+
+pub fn face_truth_u64(@face_bdd.Face, Int32) -> UInt64
 
 pub fn face_var0(Int32) -> @face_bdd.Face
 
@@ -337,11 +371,15 @@ pub fn fg_zmod(Int32) -> @homotopy.FgAb
 
 pub fn flatten_pval(@finite.PVal) -> Array[@finite.PVal]
 
+pub fn focused_ljf_cubical_prove(Array[@structures.PolarCubicalFormula], Array[Int32], Array[@structures.PolarCubicalFormula], @structures.PolarCubicalFormula, Int32) -> (Bool, Int32)
+
 pub fn grid() -> Array[Double]
 
 pub fn hopf_map_s3_to_s2(Array[Double]) -> Array[Double]
 
 pub fn hopf_phase_rotate(Array[Double], Double) -> Array[Double]
+
+pub fn infer_cubical_bidir(Array[(Bool, @structures.CubicalBidirType)], Int32, @face_bdd.Face, @structures.CubicalBidirTerm, @structures.BidirSubstructuralMode) -> @structures.BidirCheckOutcome
 
 pub fn integer_type_term() -> @kernel.DTerm
 
@@ -352,6 +390,8 @@ pub fn integer_value(Int32) -> @kernel.DValue
 pub fn is_contr_type_term(@kernel.DTerm) -> @kernel.DTerm
 
 pub fn is_projector(@hermitian.CMat) -> Bool
+
+pub fn kernel_eval_closed_peano(@kernel.DTerm) -> Int32?
 
 pub fn leaf_count(@finite.Ty) -> Int32
 
@@ -405,9 +445,41 @@ pub fn spec_registry() -> Array[SpecEntry]
 
 pub fn spec_registry_sound() -> Bool
 
+pub fn swan_id_j_elim((@kernel.DValue, @structures.SwanIdValue) -> @kernel.DValue, @kernel.DValue, @structures.SwanIdValue, Int32) -> @kernel.DValue
+
 pub fn ty_bool() -> @finite.Ty
 
 pub fn ty_prod(@finite.Ty, @finite.Ty) -> @finite.Ty
+
+pub fn verify_absorbing_pointed_malcev_dichotomy() -> @autonomy.AbsorbingPointedZeroReport
+
+pub fn verify_affine_bidirectional_and_focusing_suite() -> @structures.AffineBidirFocusingReport
+
+pub fn verify_affine_cubical_system() -> @autonomy.AffineCubicalAudit
+
+pub fn verify_bide_morgan_cubical_duality() -> @autonomy.BiDeMorganCubicalReport
+
+pub fn verify_bidirectional_cubical_nf_pruning() -> @autonomy.BidirectionalNfPruneReport
+
+pub fn verify_covering_pushout_and_torus_suite() -> @structures.CoveringPushoutTorusReport
+
+pub fn verify_cubical_autonomy_master_suite() -> @autonomy.CubicalAutonomyMasterReport
+
+pub fn verify_free_path_associativity_and_kernel_bridge() -> @autonomy.FreePathAssociativityReport
+
+pub fn verify_functorial_polymorphism_and_sip_suite() -> @structures.FunctorialPolySipReport
+
+pub fn verify_high_dim_alternating_cube_and_dtree() -> @autonomy.HighDimAlternatingCubeReport
+
+pub fn verify_internal_infinity_groupoid_axioms() -> @autonomy.InfinityGroupoidInternalCert
+
+pub fn verify_reconstruction_repair_and_reflection_suite() -> @structures.ReconstructRepairReflectReport
+
+pub fn verify_swan_id_free_path_and_ez_suite() -> @structures.SwanIdFreePathEzReport
+
+pub fn verify_validity_and_presheaf_template() -> @autonomy.ValidityPresheafTemplateReport
+
+pub fn verify_work4_all_54_structures_and_interactions() -> @structures.Work4Complete54Report
 
 pub fn wedge_square_filler_report(Array[Int32], Array[Int32], Array[Int32], Array[Int32]) -> @homotopy.WedgeSquareFillerReport
 
@@ -448,18 +520,23 @@ pub struct SpecEntry {
   decision : String
 }
 
+#derive(Eq, @debug.Debug)
 pub enum SpecKind {
   SpecType
   SpecOperator
   SpecStructure
   SpecTheorem
-} derive(Eq, @debug.Debug)
+}
 pub fn SpecKind::equal(Self, Self) -> Bool
 pub fn SpecKind::not_equal(Self, Self) -> Bool
 pub fn SpecKind::to_repr(Self) -> @debug.Repr
 
 // Type aliases
+pub using @structures {type AffineBidirFocusingReport}
+
 pub using @face_bdd {type Bdd}
+
+pub using @structures {type BoundaryRepairStatus}
 
 pub using @hermitian {type CMat}
 
@@ -469,16 +546,56 @@ pub using @homotopy {type CoherenceQuotientSummary}
 
 pub using @hermitian {type Complex}
 
+pub using @structures {type CompositionPattern14}
+
+pub using @structures {type CoveringPushoutTorusReport}
+
+pub using @autonomy {type CubicalAutonomyMasterReport}
+
+pub using @structures {type CubicalBidirTerm}
+
+pub using @structures {type CubicalBidirType}
+
 pub using @kernel {type DTerm}
 
+pub using @structures {type DepSignature}
+
+pub using @structures {type DepStructure}
+
 pub using @face_bdd {type Dim}
+
+pub using @structures {type DiscreteCoveringSpace}
+
+pub using @structures {type EilenbergZilberCubeFactor}
 
 pub using @finite {type Equiv}
 
 pub using @face_bdd {type Face}
 
+pub using @structures {type FunctorialPolySipReport}
+
+pub using @structures {type OperationalVerb26}
+
+pub using @structures {type PolarCubicalFormula}
+
+pub using @structures {type PolyFunctor}
+
+pub using @structures {type ReconstructRepairReflectReport}
+
+pub using @structures {type ReflLoopExpr}
+
+pub using @structures {type SwanIdFreePathEzReport}
+
+pub using @structures {type SwanIdValue}
+
 pub using @finite {type Ty}
 
+pub using @structures {type VerbPatternInteractionTheorem}
+
 pub using @finite {type Wiring}
+
+pub using @structures {type Work4Complete54Report}
+
+pub using @structures {type Work4ItemCertificate}
 
 // Traits

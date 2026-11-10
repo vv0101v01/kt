@@ -183,12 +183,6 @@ pub fn yoneda_nats(p : Presheaf, a : Int32, cap : Int32) -> Array[Array[Int32]] 
 }
 
 ///|
-/// |Nat(h^a, F)|。
-pub fn yoneda_count(p : Presheaf, a : Int32, cap : Int32) -> Int32 {
-  yoneda_nats(p, a, cap).length()
-}
-
-///|
 /// **米田引理之機器證明**（有限情形）：
 /// (a) 每個 e ∈ F(a) 之延展出自然族，且在 a 處取回 e（正向 + 取值）；
 /// (b) 每個自然族都由 η_a 延展而來（滿射 + 單射 ⇒ 雙射）；
@@ -275,91 +269,16 @@ pub fn id_functor(c : FinCat) -> FinFunctor {
 }
 
 ///|
-/// comma 範疇 (K ↓ d)：對象 = (c, m : K(c) → d)，態射 f : c → c' 使 m' ∘ K(f) = m。
-pub fn comma_down(k : FinFunctor, d : Int32) -> FinCat {
+fn comma_cat_build(k : FinFunctor, d : Int32, is_down : Bool) -> FinCat {
   let objs : Array[(Int32, Int32)] = []
   for c in 0..<k.src.nobj {
     for m in 0..<k.dst.nmor {
-      if k.dst.dom[m] == k.obj[c] && k.dst.cod[m] == d {
-        objs.push((c, m))
+      let ok = if is_down {
+        k.dst.dom[m] == k.obj[c] && k.dst.cod[m] == d
+      } else {
+        k.dst.dom[m] == d && k.dst.cod[m] == k.obj[c]
       }
-    }
-  }
-  let nobj = objs.length()
-  let mors : Array[(Int32, Int32)] = [] // (來源對象, 目標對象)
-  let mlabel : Array[Int32] = []
-  for i, o in objs {
-    let (c, m) = o
-    for f in 0..<k.src.nmor {
-      if k.src.dom[f] != c {
-        continue
-      }
-      let c2 = k.src.cod[f]
-      // 條件：m' ∘ K(f) = m
-      let kf = k.mor[f]
-      for j, o2 in objs {
-        let (c3, m2) = o2
-        if c3 != c2 {
-          continue
-        }
-        if k.dst.comp[m2 * k.dst.nmor + kf] == m {
-          mors.push((i, j))
-          mlabel.push(f)
-        }
-      }
-    }
-  }
-  // 建構範疇（態射 = (i,j,f) 三元組；薄範疇不一定成立，故顯式建表）
-  let nmor = mors.length()
-  let dom = Array::make(nmor, 0)
-  let cod = Array::make(nmor, 0)
-  for t, e in mors {
-    let (i, j) = e
-    dom[t] = i
-    cod[t] = j
-  }
-  let id = Array::make(nobj, 0)
-  for a in 0..<nobj {
-    let mut found = -1
-    for t in 0..<nmor {
-      if dom[t] == a && cod[t] == a && mlabel[t] == k.src.id[objs[a].0] {
-        found = t
-        break
-      }
-    }
-    guard found >= 0 else { abort("comma_down: missing identity") }
-    id[a] = found
-  }
-  let comp = Array::make(nmor * nmor, -1)
-  for f in 0..<nmor {
-    for g in 0..<nmor {
-      if cod[g] != dom[f] {
-        continue
-      }
-      let prod = k.src.comp[mlabel[f] * k.src.nmor + mlabel[g]]
-      guard prod >= 0 else { abort("comma_down: composition missing") }
-      // 找出 (dom[g] → cod[f], prod) 之態射
-      let mut hit = -1
-      for t in 0..<nmor {
-        if dom[t] == dom[g] && cod[t] == cod[f] && mlabel[t] == prod {
-          hit = t
-          break
-        }
-      }
-      guard hit >= 0 else { abort("comma_down: composite arrow missing") }
-      comp[f * nmor + g] = hit
-    }
-  }
-  { nobj, nmor, dom, cod, id, comp, }
-}
-
-///|
-/// comma 範疇 (d ↓ K)：對象 = (c, m : d → K(c))，態射 f : c → c' 使 K(f) ∘ m = m'。
-pub fn comma_up(k : FinFunctor, d : Int32) -> FinCat {
-  let objs : Array[(Int32, Int32)] = []
-  for c in 0..<k.src.nobj {
-    for m in 0..<k.dst.nmor {
-      if k.dst.dom[m] == d && k.dst.cod[m] == k.obj[c] {
+      if ok {
         objs.push((c, m))
       }
     }
@@ -380,8 +299,12 @@ pub fn comma_up(k : FinFunctor, d : Int32) -> FinCat {
         if c3 != c2 {
           continue
         }
-        // 條件 K(f) ∘ m = m'
-        if k.dst.comp[kf * k.dst.nmor + m] == m2 {
+        let comm = if is_down {
+          k.dst.comp[m2 * k.dst.nmor + kf] == m
+        } else {
+          k.dst.comp[kf * k.dst.nmor + m] == m2
+        }
+        if comm {
           mors.push((i, j))
           mlabel.push(f)
         }
@@ -405,7 +328,7 @@ pub fn comma_up(k : FinFunctor, d : Int32) -> FinCat {
         break
       }
     }
-    guard found >= 0 else { abort("comma_up: missing identity") }
+    guard found >= 0 else { abort("comma_cat_build: missing identity") }
     id[a] = found
   }
   let comp = Array::make(nmor * nmor, -1)
@@ -415,7 +338,7 @@ pub fn comma_up(k : FinFunctor, d : Int32) -> FinCat {
         continue
       }
       let prod = k.src.comp[mlabel[f] * k.src.nmor + mlabel[g]]
-      guard prod >= 0 else { abort("comma_up: composition missing") }
+      guard prod >= 0 else { abort("comma_cat_build: composition missing") }
       let mut hit = -1
       for t in 0..<nmor {
         if dom[t] == dom[g] && cod[t] == cod[f] && mlabel[t] == prod {
@@ -423,11 +346,23 @@ pub fn comma_up(k : FinFunctor, d : Int32) -> FinCat {
           break
         }
       }
-      guard hit >= 0 else { abort("comma_up: composite arrow missing") }
+      guard hit >= 0 else { abort("comma_cat_build: composite arrow missing") }
       comp[f * nmor + g] = hit
     }
   }
   { nobj, nmor, dom, cod, id, comp, }
+}
+
+///|
+/// comma 範疇 (K ↓ d)：對象 = (c, m : K(c) → d)，態射 f : c → c' 使 m' ∘ K(f) = m。
+pub fn comma_down(k : FinFunctor, d : Int32) -> FinCat {
+  comma_cat_build(k, d, true)
+}
+
+///|
+/// comma 範疇 (d ↓ K)：對象 = (c, m : d → K(c))，態射 f : c → c' 使 K(f) ∘ m = m'。
+pub fn comma_up(k : FinFunctor, d : Int32) -> FinCat {
+  comma_cat_build(k, d, false)
 }
 
 ///|
@@ -772,10 +707,10 @@ pub fn induced_lift(
 ) -> Array[Int32] {
   let elems = group.elements(cap)
   let ng = elems.length()
-  let lut = elem_lut_fast(elems)
+  let lut = PermLut::of_elems(elems)
   let img = Array::make(ng * x, 0)
   for gi in 0..<ng {
-    let t = lut.at(compose_key64(h.img, elems[gi].img))
+    let t = lut.at_composed(h.img, elems[gi].img)
     for xv in 0..<x {
       img[gi * x + xv] = t * x + xv
     }
@@ -818,7 +753,7 @@ pub fn coinduced_lift(
 ) -> Array[Int32] {
   let elems = group.elements(cap)
   let ng = elems.length()
-  let lut = elem_lut_fast(elems)
+  let lut = PermLut::of_elems(elems)
   let tot = coinduced_card(group, x, cap)
   let pow = Array::make(ng, 1)
   for i in 1..<ng {
@@ -827,11 +762,10 @@ pub fn coinduced_lift(
   // j(i) = index(g_i ∘ h)
   let jmap = Array::make(ng, 0)
   for i in 0..<ng {
-    jmap[i] = lut.at(compose_key64(elems[i].img, h.img))
+    jmap[i] = lut.at_composed(elems[i].img, h.img)
   }
   let img = Array::make(tot, 0)
   for idx in 0..<tot {
-    // 新第 i 位 = 舊第 jmap[i] 位
     let mut out = 0
     for i in 0..<ng {
       let digit = idx / pow[jmap[i]] % x
@@ -840,4 +774,210 @@ pub fn coinduced_lift(
     img[idx] = out
   }
   img
+}
+
+// ---------------------------------------------------------------------------
+// 一般非薄範疇 / 群胚米田引理（General Non-Thin / Groupoid Yoneda Lemma）
+// ---------------------------------------------------------------------------
+
+///|
+/// 一般有限範疇 `C` 上對象 `a` 的可表預層 `y(a) = Hom_C(-, a) : C^op → FinSet`
+/// （不假設薄範疇：`BG = cat_group(G)` 上 `|Hom(0, 0)| = |G|` 為右正則 G-集）。
+pub fn representable_presheaf(cat : FinCat, a : Int32) -> Presheaf {
+  guard a >= 0 && a < cat.nobj else {
+    abort("representable_presheaf: object out of range")
+  }
+  let hom_lists : Array[Array[Int32]] = Array::makei(cat.nobj, _ => [])
+  let local_idx = Array::make(cat.nmor, -1)
+  for m in 0..<cat.nmor {
+    if cat.cod[m] == a {
+      let x = cat.dom[m]
+      local_idx[m] = hom_lists[x].length()
+      hom_lists[x].push(m)
+    }
+  }
+  let size = Array::makei(cat.nobj, x => hom_lists[x].length())
+  let res : Array[Array[Int32]] = []
+  for u in 0..<cat.nmor {
+    let src = hom_lists[cat.cod[u]]
+    let r = Array::make(src.length(), 0)
+    for i in 0..<src.length() {
+      let f = src[i]
+      let fu = cat.comp[f * cat.nmor + u]
+      r[i] = local_idx[fu]
+    }
+    res.push(r)
+  }
+  presheaf_new(cat, size, res)
+}
+
+///|
+/// 將右 G-集（或透過逆元轉為反變作用的左 `GSetOf`）嵌入單對象群胚 `BG = cat_group(G)` 上之預層：
+/// 對群元素 `g`（`BG` 之態射），限制映射 `F(g)(y) = g⁻¹ · y`，滿足 `F(f ∘ g) = F(g) ∘ F(f)`。
+pub fn presheaf_from_gset(
+  group : PermGroup,
+  gs : GSetOf,
+  cap : Int32,
+) -> Presheaf {
+  let cat = cat_group(group, cap)
+  let elems = group.elements(cap)
+  let lut = PermLut::of_elems(elems)
+  let res : Array[Array[Int32]] = []
+  for m in 0..<cat.nmor {
+    let inv_idx = lut.at_perm(elems[m].inverse())
+    res.push(gs.imgs[inv_idx].copy())
+  }
+  presheaf_new(cat, [gs.x], res)
+}
+
+///|
+/// 檢驗一般預層自然變換 `alpha : h ⇒ p`（對每個態射 `u : x' → x` 與截面 `s ∈ h(x)`，
+/// 驗證 `alpha[x'](h(u)(s)) == p(u)(alpha[x](s))`）。
+pub fn presheaf_nat_is_natural(
+  h : Presheaf,
+  p : Presheaf,
+  alpha : Array[Array[Int32]],
+) -> Bool {
+  let c = h.cat
+  guard alpha.length() == c.nobj else { return false }
+  for x in 0..<c.nobj {
+    guard alpha[x].length() == h.size[x] else { return false }
+    for v in alpha[x] {
+      if v < 0 || v >= p.size[x] {
+        return false
+      }
+    }
+  }
+  for u in 0..<c.nmor {
+    let dom_u = c.dom[u]
+    let cod_u = c.cod[u]
+    for s in 0..<h.size[cod_u] {
+      let lhs = alpha[dom_u][h.res[u][s]]
+      let rhs = p.res[u][alpha[cod_u][s]]
+      if lhs != rhs {
+        return false
+      }
+    }
+  }
+  true
+}
+
+///|
+/// 一般非薄米田延展：`e ∈ F(a)` ↦ 自然變換 `α^e : Hom_C(-, a) ⇒ F`，其中 `α^e_x(f : x → a) = F(f)(e)`。
+pub fn gen_yoneda_extend(
+  p : Presheaf,
+  a : Int32,
+  e : Int32,
+) -> Array[Array[Int32]] {
+  guard a >= 0 && a < p.cat.nobj else {
+    abort("gen_yoneda_extend: object out of range")
+  }
+  guard e >= 0 && e < p.size[a] else {
+    abort("gen_yoneda_extend: element out of range")
+  }
+  let alpha : Array[Array[Int32]] = Array::makei(p.cat.nobj, _ => [])
+  for m in 0..<p.cat.nmor {
+    if p.cat.cod[m] == a {
+      alpha[p.cat.dom[m]].push(p.res[m][e])
+    }
+  }
+  alpha
+}
+
+///|
+/// 一般非薄米田求值：自然變換 `α : Hom_C(-, a) ⇒ F` ↦ `α_a(id_a) ∈ F(a)`。
+pub fn gen_yoneda_eval(
+  p : Presheaf,
+  a : Int32,
+  alpha : Array[Array[Int32]],
+) -> Int32 {
+  let id_a = p.cat.id[a]
+  let mut k = 0
+  for m in 0..<p.cat.nmor {
+    if p.cat.dom[m] == a && p.cat.cod[m] == a {
+      if m == id_a {
+        return alpha[a][k]
+      }
+      k = k + 1
+    }
+  }
+  abort("gen_yoneda_eval: identity morphism not found")
+}
+
+///|
+/// 機器驗證一般非薄米田雙射定理 `Nat(Hom_C(-, a), F) ≅ F(a)`：
+/// (1) `y(a)` 與 `F` 皆通過反變函子性驗證 `is_presheaf`；
+/// (2) 對所有 `e ∈ F(a)`，`gen_yoneda_extend(F, a, e)` 滿足完整自然性且 `eval(extend(e)) == e`；
+/// (3) 當總函數空間 `∏_x |F(x)|^{|Hom(x,a)|} ≤ cap` 時，窮舉全體自然變換並驗證 `|Nat(y(a), F)| == |F(a)|` 且每一個自然變換皆滿足 `extend(eval(α)) == α`。
+pub fn verify_general_yoneda_bijection(
+  p : Presheaf,
+  a : Int32,
+  cap : Int32,
+) -> Bool {
+  if !is_presheaf(p) {
+    return false
+  }
+  let ya = representable_presheaf(p.cat, a)
+  if !is_presheaf(ya) {
+    return false
+  }
+  for e in 0..<p.size[a] {
+    let alpha = gen_yoneda_extend(p, a, e)
+    if !presheaf_nat_is_natural(ya, p, alpha) {
+      return false
+    }
+    if gen_yoneda_eval(p, a, alpha) != e {
+      return false
+    }
+  }
+  // 若函數空間在 cap 內，同時窮舉全體函數以獨立驗證無額外自然變換
+  let mut total_slots = 0
+  for x in 0..<p.cat.nobj {
+    total_slots = total_slots + ya.size[x]
+  }
+  let mut space = 1L
+  let mut can_enumerate = true
+  for x in 0..<p.cat.nobj {
+    for _ in 0..<ya.size[x] {
+      let b = p.size[x].to_int64()
+      if b == 0L {
+        space = 0L
+      } else if space > cap.to_int64() / b {
+        can_enumerate = false
+      } else {
+        space = space * b
+      }
+    }
+  }
+  if can_enumerate && total_slots >= 0 {
+    let mut nat_count = 0
+    let tot = space.to_int()
+    for code in 0..<tot {
+      let mut rem = code
+      let alpha : Array[Array[Int32]] = []
+      for x in 0..<p.cat.nobj {
+        let sx = p.size[x]
+        let comp_x = Array::make(ya.size[x], 0)
+        for i in 0..<ya.size[x] {
+          comp_x[i] = rem % sx
+          rem = rem / sx
+        }
+        alpha.push(comp_x)
+      }
+      if presheaf_nat_is_natural(ya, p, alpha) {
+        nat_count = nat_count + 1
+        let e = gen_yoneda_eval(p, a, alpha)
+        let recon = gen_yoneda_extend(p, a, e)
+        for x in 0..<p.cat.nobj {
+          if cmp_arr(alpha[x], recon[x]) != 0 {
+            return false
+          }
+        }
+      }
+    }
+    if nat_count != p.size[a] {
+      return false
+    }
+  }
+  true
 }

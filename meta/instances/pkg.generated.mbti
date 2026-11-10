@@ -1,0 +1,335 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/meta/instances"
+
+import {
+  "vv0101v01/cubical-hermitian/meta/core",
+}
+
+// Values
+pub fn all_laws() -> Array[(String, Bool)]
+
+pub fn ambiguous_goals(Env, Int32) -> Array[@core.UTerm]
+
+pub fn axiomatic_fragment(Env, Array[@core.UTerm], Int32) -> Bool
+
+pub fn basis_is_minimal(Env, Array[@core.UTerm], Array[Int32], Int32) -> Bool
+
+pub fn candidate_rules_indexed(IndexedEnv, @core.UTerm) -> Array[Int32]
+
+pub fn canonical(Array[Deriv], Env) -> Deriv?
+
+pub fn characterize(Env, Array[@core.UTerm], Int32) -> MatroidVerdict
+
+pub fn cls_eq(@core.UTerm) -> @core.UTerm
+
+pub fn cls_ord(@core.UTerm) -> @core.UTerm
+
+pub fn cls_show(@core.UTerm) -> @core.UTerm
+
+pub fn coherent(Env, Array[@core.UTerm], Int32) -> Bool
+
+pub fn coherent_complete(Env, Int32) -> Bool
+
+pub fn coherent_with_local(Env, Array[Rule], Int32) -> Bool
+
+pub fn complete(Env, Int32, Int32) -> Env
+
+pub fn complete_oriented(Env, Int32, Int32) -> (Env, Array[(Int32, Int32)])
+
+pub fn composite_rule_reaches_goal(Env, Array[@core.UTerm]) -> Bool
+
+pub fn coverage_disjoint(Env, Array[@core.UTerm], Int32) -> Bool
+
+pub fn critical_pairs(Env) -> Array[(Int32, Int32)]
+
+pub fn cycle_witness(ImportGraph, Array[Int32]) -> Array[Int32]
+
+pub fn cyclic_components(ImportGraph) -> Array[Array[Int32]]
+
+pub fn deriv_depth(Deriv) -> Int32
+
+pub fn deriv_size(Deriv) -> Int32
+
+pub fn derivability_is_matroidal(Env, Array[@core.UTerm], Int32) -> Bool
+
+pub fn derivability_matroid(Env, Array[@core.UTerm], Int32) -> @core.Matroid
+
+pub fn derivable_bruteforce(Env, @core.UTerm, Int32) -> Bool
+
+pub fn dual_derivable(Env, @core.UTerm, Int32) -> Bool
+
+pub fn enum_uterms(Array[Int32], Int32) -> Array[@core.UTerm]
+
+pub fn env(Array[Rule]) -> Env
+
+pub fn env_axiomatic() -> Env
+
+pub fn env_chain() -> Env
+
+pub fn env_clash() -> Env
+
+pub fn env_fingerprint(Env) -> String
+
+pub fn env_loop() -> Env
+
+pub fn env_min_vs_minimal() -> Env
+
+pub fn env_minimal() -> Env
+
+pub fn env_needs_composition() -> Env
+
+pub fn env_show() -> Env
+
+pub fn evidence(Env, Deriv) -> @core.UTerm
+
+pub fn glue(Array[Patch], Array[Transition]) -> GlueReport
+
+pub fn glues(Array[Patch], Array[Transition]) -> Bool
+
+pub fn goal_measure(@core.UTerm) -> @core.Ordinal
+
+pub fn goals_needing_composition(Env, Array[@core.UTerm], Int32) -> Array[@core.UTerm]
+
+pub fn graph_cycle() -> ImportGraph
+
+pub fn graph_dag() -> ImportGraph
+
+pub fn graph_dag_permuted() -> ImportGraph
+
+pub fn graph_self() -> ImportGraph
+
+pub fn greedy_basis_with_order(Env, Array[@core.UTerm], Array[Int32], Int32) -> Array[Int32]
+
+pub fn ground(@core.UTerm) -> @core.UTerm
+
+pub fn import_graph(Array[Module]) -> ImportGraph
+
+pub fn incoherence_report(Env, Int32) -> @core.UTerm?
+
+pub fn incoherence_witness(Env, Array[@core.UTerm], Int32) -> @core.UTerm?
+
+pub fn index_env(Env) -> IndexedEnv
+
+pub fn instability_witness(Env, Array[Rule], Int32) -> @core.UTerm?
+
+pub fn instantiate_pattern(@core.UTerm) -> Array[@core.UTerm]
+
+pub fn law_characterize_axiomatic_fragment_is_a_partition_matroid() -> Array[(String, Bool)]
+
+pub fn law_characterize_exchange_axiom_alone_is_too_weak() -> Array[(String, Bool)]
+
+pub fn law_characterize_greedy_gives_minimal_not_minimum() -> Array[(String, Bool)]
+
+pub fn law_characterize_matroidal_criterion_is_exact() -> Array[(String, Bool)]
+
+pub fn law_coherence_complete_checking_needs_no_user_battery() -> Array[(String, Bool)]
+
+pub fn law_coherence_extension_stability_is_decided() -> Array[(String, Bool)]
+
+pub fn law_coherence_local_instances_are_the_missing_half() -> Array[(String, Bool)]
+
+pub fn law_coherence_local_peaks_coincide_with_head_overlaps() -> Array[(String, Bool)]
+
+pub fn law_coherence_newman_lemma_measured_on_the_fragment() -> Array[(String, Bool)]
+
+pub fn law_compose_instances_derivability_closure_is_matroidal_in_the_flat_case_not_in_general() -> Array[(String, Bool)]
+
+pub fn law_compose_instances_gluing_local_sections_the_mobius_obstruction() -> Array[(String, Bool)]
+
+pub fn law_compose_instances_minimal_basis_is_minimal_and_greedy_deletion_is_sound() -> Array[(String, Bool)]
+
+pub fn law_compose_instances_mirror_is_an_involution_and_gives_dual_derivations() -> Array[(String, Bool)]
+
+pub fn law_compose_instances_nerve_cohomology_agrees_with_the_gluing_verdict() -> Array[(String, Bool)]
+
+pub fn law_compose_instances_ramsey_window_vs_pigeonhole_window_measured_not_assumed() -> Array[(String, Bool)]
+
+pub fn law_compose_mirror_involution_preserves_the_env_fingerprint() -> Array[(String, Bool)]
+
+pub fn law_engine_completion_repairs_an_incoherent_env() -> Array[(String, Bool)]
+
+pub fn law_engine_completion_uses_a_termination_order() -> Array[(String, Bool)]
+
+pub fn law_engine_indexed_tabling_and_orientable_coherence() -> Array[(String, Bool)]
+
+pub fn law_engine_instances_overlapping_instances_priority_coherence() -> Array[(String, Bool)]
+
+pub fn law_engine_instances_sld_resolution_finds_and_composites_instances() -> Array[(String, Bool)]
+
+pub fn law_engine_instances_termination_is_decided_by_ordinal_measure() -> Array[(String, Bool)]
+
+pub fn law_engine_module_imports_resolve_modulesly() -> Array[(String, Bool)]
+
+pub fn law_engine_sld_resolution_is_complete_within_depth() -> Array[(String, Bool)]
+
+pub fn local_instance(String, Int32, @core.UTerm) -> Rule
+
+pub fn matroidal_criterion(Env, Array[@core.UTerm], Int32) -> Bool
+
+pub fn matroidal_failure(Env, Array[@core.UTerm], Int32) -> String?
+
+pub fn matroidal_strict(Env, Array[@core.UTerm], Int32) -> Bool
+
+pub fn maximal_derivs(Env, Array[Deriv]) -> Array[Deriv]
+
+pub fn minimal_instance_basis(Env, Array[@core.UTerm], Int32) -> Array[Int32]
+
+pub fn mirror_env(Env) -> Env
+
+pub fn mirror_rule(Rule) -> Rule
+
+pub fn module_(String, Array[Int32], Array[Rule]) -> Module
+
+pub fn monodromy_witness(Array[Patch], Array[Transition]) -> (Int32, Int32)?
+
+pub fn newman(Env, Int32) -> NewmanReport
+
+pub fn open_seeds(Env) -> Array[@core.UTerm]
+
+pub fn orientable(Env) -> Bool
+
+pub fn overlapping_joinable(Env, Int32, Int32, Int32) -> Bool
+
+pub fn overlaps_among(Env, Array[@core.UTerm]) -> Array[(Int32, Int32)]
+
+pub fn pairs_joinable(Env, Int32) -> Bool
+
+pub fn patch(String, Array[Int32], Int32) -> Patch
+
+pub fn peak_overlap_agreement(Env, Int32) -> Bool
+
+pub fn pigeonhole_window(Int32) -> Int32
+
+pub fn ramsey_window(Int32) -> Int32
+
+pub fn reachable_closed_goals(Env, Int32) -> Array[@core.UTerm]
+
+pub fn renumber(@core.UTerm, Int32) -> @core.UTerm
+
+pub fn repair_step(Env, Int32) -> (Env, Int32)
+
+pub fn repair_step_oriented(Env, Int32) -> (Env, Int32, Array[(Int32, Int32)])
+
+pub fn resolve_all(Env, @core.UTerm, Int32) -> Array[Deriv]
+
+pub fn resolve_canonical(Env, @core.UTerm, Int32) -> Array[Deriv]
+
+pub fn resolve_indexed_tabled(IndexedEnv, @core.UTerm, Int32) -> (Array[Deriv], Int32)
+
+pub fn resolve_modules(ImportGraph) -> Resolved
+
+pub fn restrict(Env, Array[Int32]) -> Env
+
+pub fn rule(String, Int32, @core.UTerm, Array[@core.UTerm]) -> Rule
+
+pub fn rule_oriented(Rule) -> Bool
+
+pub fn scc(ImportGraph) -> Array[Array[Int32]]
+
+pub fn solvable(Env, @core.UTerm, Int32) -> Bool
+
+pub fn stable_under(Env, Array[Rule], Int32) -> Bool
+
+pub fn submodularity_witness(Env, Array[@core.UTerm], Int32) -> (Array[Int32], Array[Int32], Int32, Int32)?
+
+pub fn terminating(Env) -> String?
+
+pub fn top_goal() -> @core.UTerm
+
+pub fn transition(Int32, Int32, Int32) -> Transition
+
+pub fn ty_array(@core.UTerm) -> @core.UTerm
+
+pub fn ty_bool() -> @core.UTerm
+
+pub fn ty_int() -> @core.UTerm
+
+pub fn ty_pair(@core.UTerm, @core.UTerm) -> @core.UTerm
+
+pub fn unit_increment_witness(Env, Array[@core.UTerm], Int32) -> (Int32, Int32, Int32)?
+
+pub fn with_hypotheses(Env, Array[@core.UTerm]) -> Env
+
+pub fn witness_is_cycle(ImportGraph, Array[Int32]) -> Bool
+
+// Errors
+
+// Types and methods
+pub(all) struct Deriv {
+  rule : Int32
+  kids : Array[Deriv]
+  goal : @core.UTerm
+}
+
+pub(all) struct Env {
+  rules : Array[Rule]
+}
+
+pub struct GlueReport {
+  glued : Array[Int32]?
+  obstruction : (Int32, Int32)?
+  structurally_ok : Bool
+}
+
+pub(all) struct ImportGraph {
+  mods : Array[Module]
+}
+
+pub(all) struct IndexedEnv {
+  base : Env
+  exact_buckets : Map[Int64, Array[Int32]]
+  wild_arg_buckets : Map[Int32, Array[Int32]]
+  var_head_rules : Array[Int32]
+}
+
+pub struct MatroidVerdict {
+  matroidal : Bool
+  axiomatic : Bool
+  composite_reaches : Bool
+  coverage_disjoint : Bool
+  needs_composition : Array[@core.UTerm]
+  jump : (Int32, Int32, Int32)?
+}
+
+pub(all) struct Module {
+  name : String
+  imports : Array[Int32]
+  rules : Array[Rule]
+}
+
+pub struct NewmanReport {
+  terminating : Bool
+  locally_confluent : Bool
+  global : Bool
+}
+
+pub struct Patch {
+  name : String
+  covers : Array[Int32]
+  section : Int32
+}
+
+pub(all) struct Resolved {
+  ok : Bool
+  order : Array[Int32]
+  witness : Array[Int32]
+  message : String
+  env : Env
+}
+
+pub(all) struct Rule {
+  name : String
+  prio : Int32
+  head : @core.UTerm
+  body : Array[@core.UTerm]
+}
+
+pub struct Transition {
+  i : Int32
+  j : Int32
+  sign : Int32
+}
+
+// Type aliases
+
+// Traits

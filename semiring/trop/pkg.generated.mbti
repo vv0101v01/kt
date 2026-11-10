@@ -16,6 +16,8 @@ pub fn sort_rats(Array[Rat]) -> Array[Rat]
 
 pub fn trop_assignment(Array[Array[Int64]]) -> (Int64, Array[Int32])
 
+pub fn trop_critical_eigenvector(Array[Array[Int64]]) -> (Int64, Int64, Array[Int64])?
+
 pub fn trop_det(Array[Array[Int64]]) -> Int64
 
 pub fn trop_det_bruteforce(Array[Array[Int64]]) -> Int64
@@ -24,7 +26,11 @@ pub fn trop_det_dp(Array[Array[Int64]]) -> Int64
 
 pub fn trop_det_tie_count(Array[Array[Int64]]) -> Int32
 
+pub fn trop_eigenvalue_karp(Array[Array[Int64]]) -> (Int64, Int64)
+
 pub fn trop_poly_mul(UniPoly, UniPoly) -> UniPoly
+
+pub fn verify_trop_eigenpair(Array[Array[Int64]], Int64, Int64, Array[Int64]) -> Bool
 
 // Errors
 
@@ -68,19 +74,21 @@ pub(all) struct Face {
   boundary : Array[(Int32, Int32)]
 }
 
+#derive(Eq)
 pub(all) struct Plane {
   nx : Int64
   ny : Int64
   nz : Int64
   d : Int64
-} derive(Eq)
+}
 pub fn Plane::equal(Self, Self) -> Bool
 pub fn Plane::not_equal(Self, Self) -> Bool
 
+#derive(Eq)
 pub(all) struct Pt2 {
   x : Int32
   y : Int32
-} derive(Eq)
+}
 pub fn Pt2::cross(Self, Self) -> Int64
 pub fn Pt2::equal(Self, Self) -> Bool
 pub fn Pt2::lattice_len(Self) -> Int32
@@ -92,10 +100,11 @@ pub fn Pt2::rot90(Self) -> Self
 pub fn Pt2::to_string(Self) -> String
 pub impl Show for Pt2
 
+#derive(Eq)
 pub(all) struct Rat {
   n : Int64
   d : Int64
-} derive(Eq)
+}
 pub fn Rat::equal(Self, Self) -> Bool
 pub fn Rat::new(Int64, Int64) -> Self
 pub fn Rat::not_equal(Self, Self) -> Bool

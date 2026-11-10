@@ -755,9 +755,7 @@ fn glue_equiv_normalize(
         quote_at(level, dlevel, DVEquivTy(tys[i], base, 0), equivs[i]),
       ),
     )
-    face_keys.push(
-      Repr(bdd_of_face(faces[i], face_nvars_sem(faces[i]))).to_string(),
-    )
+    face_keys.push(face_bdd_canon_key(faces[i]))
   }
   for _pass in 0..<tys.length() {
     for j in 0..<(tys.length() - 1) {
