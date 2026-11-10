@@ -1,7 +1,7 @@
 # `symlib/` — 有限對稱：規範形、Schreier–Sims、群作用、範疇化與米田引理
 
-> **架構位置**：`architecture.json` 中的 `symlib`，**Layer 1**，零外部套件依賴（`depends_on: []`）。
-> 聯邦歸屬：**F2**（第二聯邦），執行入口 `cmd/symdemo`（演示）與 `cmd/symbench`（基準）。
+> **架構位置**：`architecture.json` 中的 `symlib`（**Layer 1**，依賴 `L0 symlib/core` 並透過 `reexport_core.mbt` 100% 重導出），零外部聯邦依賴（`allowed_external_packages: []`）。
+> 聯邦歸屬：**F2**（第二聯邦：`symlib/core` + `symlib` + `cmd/symdemo` + `cmd/symbench`，共 **4 套件、30 個 `.mbt`、9,964 行**）。
 > MoonBit 套件名：`vv0101v01/cubical-hermitian/symlib`。
 
 ---

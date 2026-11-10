@@ -1,216 +1,153 @@
 # cubical-hermitian — 一部可執行的數學工程史
 
 > MoonBit · `vv0101v01/cubical-hermitian` v2.0.0 · `preferred_target = "wasm"`
-> **9 聯邦 + 統一頂點 · 52 套件 · 61 元件 · 282 個 `.mbt` · 182,929 行**
-> `python3 tools/arch_check.py` → `architecture ok` · `cmd/main` → **137/137 定理** · `cmd/metatheory` → **545/545 定律** · `cmd/showcase` → **9/9 聯邦 + K_9=36/36 全配對橋 + 47/47 證書 + 54/54 高階立方結構**
+> **9 聯邦 + `unification` 大一統頂點 · 52 套件 · 61 元件 · 282 個 `.mbt` · 182,929 行 · 5,745 函式／方法（0 死碼 · 0 無引用型別 · 0 空殼 `enum` · 0 完全重複）**
+> `python3 tools/arch_check.py` → `architecture ok` · `cmd/main` → **137/137 定理** · `cmd/metatheory` → **545/545 定律** · `cmd/showcase` → **9/9 聯邦 + `K₉ = 36/36` 全配對橋 + 三大跨聯邦合流管線 + 47/47 證書 + 54/54 高階立方結構**
 
-這個倉庫把「依賴立方型別論 × 精確代數 × 有限對稱 × 拓撲斯 × 概形 × 凝聚數學 × 張量幾何」寫成
-一份**可編譯、可判定、可複驗**的程式。它不是論文附錄，而是一條**有年月、有瓶頸、有突破**的工程線。
+這個倉庫把「依賴立方型別論 × 精確代數 × 有限對稱 × 冪等／熱帶半環 × 格羅滕迪克拓撲斯 × 代數幾何概形 × 凝聚數學 × 多線性張量與猜想發現 × 64-bit SWAR／WebGPU 硬體加速 × 元理論三軸引擎」寫成一份**可編譯、可判定、可複驗**的程式。它不是論文附錄，而是一條**有年月、有瓶頸、有突破**的工程線。
 
-本 README 是規格書（SPEC）的**工程史濃縮版**：只保留「為什麼要這樣做、卡在哪、怎麼破、留下什麼」。
-逐條規格與逐符號登記看 `spec.mbt` 的 `spec_registry`；每個資料夾的逐檔精讀看各自 `README.md`。
+本 README 是全倉規格書（SPEC）的**工程史與架構全景濃縮版**：只保留「為什麼要這樣做、卡在哪、怎麼破、留下什麼」。
+逐條規格與逐符號登記（`1,598` 個唯一公開符號，`0` 幽靈條目）看根套件 `spec.mbt` 的 `spec_registry`；全倉 **52 個套件資料夾**皆配備獨立 `README.md` 供逐檔精讀。
 
 ---
 
 ## 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                       # 282 .mbt / 182,929 行、52 套件、61 元件
-moon check --deny-warn --target wasm-gc           # 0 warnings, 0 errors（wasm-gc / wasm / js / native 全目標零警告）
-moon run cmd/main        --target wasm-gc         # 137/137 定理總表
-moon run cmd/metatheory  --target wasm-gc         # 545/545 定律（Bareiss 秩 × DAG MGU × SLG × Burnside Möbius × Nöbeling × V_5 宇宙）
+python3 tools/arch_check.py                           # 9 聯邦 + 頂點、52 套件、61 元件、282 .mbt / 182,929 行
+moon check --deny-warn --target wasm-gc               # 0 warnings, 0 errors（wasm-gc / wasm / js / native 四目標零警告）
+moon run cmd/symdemo        --target wasm-gc          # F2 有限對稱、Schreier–Sims、衍生演算法與單子律快驗
+moon run cmd/metatheory     --target wasm-gc          # 545/545 定律（86 個 law_*、448 互異、179 族，逐條重算）
+moon run cmd/main           --target wasm-gc          # 137/137 立方與跨領域主定理總表
+moon run cmd/showcase       --target wasm-gc          # 9/9 聯邦 · K_9=36/36 全配對橋 · 三大三元／四元合流管線 · 47/47 證書
+moon run cmd/semiringreport --target native           # 19 節半環與圖演算法量測報告（含限制之精確量化邊界）
 python3 tools/health_scan.py > tools/health_report.md # 全倉 5,745 函式／方法：0 死碼、0 無引用型別、0 空殼 enum、0 完全重複
-moon run cmd/showcase    --target wasm-gc         # 9/9 聯邦 · K_9=36/36 全配對橋 · F7->F9->F4->F1 · F8×F5×F1 · F2×F3×F6 · 47/47 證書
-moon run cmd/semiringreport --target native       # 19 節量測報告（含限制的量化邊界）
 ```
 
 ---
 
 ## 一、工程發展史
 
-倉庫以「期」推進。每一期的驗收方式都一樣：**新增登記條目 + 可執行的 `check_*` 函式 + 白箱見證**；
-沒有做完的部分下一期明示，不以代表元或數值觀察冒充一般定理。
+倉庫以「期」與「輪」推進。每一階段的驗收方式都一樣：**新增登記條目 + 可執行的 `check_*` / `verify_*` / `law_*` 函式 + 雙路徑與負對照見證**；沒有做完的部分明示量化邊界，絕不以代表元抽樣或浮點觀察冒充一般定理。
 
-| 期 | 主題 | 關鍵突破 | 留下的東西 |
+| 階段 | 主題 | 關鍵突破 | 留下的核心模組 |
 |---|---|---|---|
-| 早期 §1.1–1.3 | 打地基 | η-long βπη 正規化；有限宇宙的端點 `comp`；符號判定（ROBDD、wiring、first-match 範形） | `cubical/finite`、`cubical/face_bdd` |
-| 早期 §1.4–1.5 | 依賴化 | NbE 擴到 Π／Σ／宇宙；Kan 結構推行至全專案型別 | `cubical/kernel/nbe_dep.mbt`、`kan_dep.mbt` |
-| 早期 §1.6–1.7 | 立方 AST | 特徵值／投影子／仿射填充的完全符號代數；Path、資料、HIT 與 `hcomp` 按型別化簡 | 符號線性代數層、`kan_ast.mbt`、`ast_laws.mbt` |
-| 早期 §1.8 | 生成而非手寫 | 語義系統重構；**通用 schema 生成器**（一個描述同時生成 checker／evaluator／conversion／quote／Kan） | `cubical/kernel/schema.mbt` |
-| **第六期** | 六大邊界收束 | 正性函子／互歸納／商／宇宙 scheme／高維 HIT；`DSystem` 相容與 first-match 範形；一等 `Equiv`／`ua`／`GlueEquiv`；受檢型別線＋schema registry；代數擴張＋Jordan；BDD DAG＋認證數值 | `schema_*`、`dsystem_compat.mbt`、`equiv_ast.mbt`、`algebra/` |
-| **第七期** | 宣告與模組 | 容器函子巢狀遞迴；`S³ = Susp(S²)`；認證 Jacobi 譜迭代；HOU + 雙向 semantic elaborator；參數化模組 | `sphere3.mbt`、`Jacobi_interval.mbt`、`cubical/elaborator`、`module_system.mbt` |
-| **第八期** | 從檔案到套件 | `architecture.json` + `arch_check.py`：依賴關係變成**可檢查的 DAG**；立方體演算法；計算性單值性 | 五聯邦分層、`cubical_algorithms.mbt`、`univalence.mbt` |
-| **第九期** | 精確代數完備 | `Rat` 全面改用 `BigInt`；Sturm 實根隔離、Rouché 圓盤認證、分裂域塔；一等宇宙多態宣告；分離編譯 | `algebra/qpoly_factor*`、`root_isolation.mbt`、`schema_universe_poly.mbt` |
-| **第十期** | 一般化與成本 | 一般 quasi-inverse 的 `lemIso`、可收縮纖維、自動 adjointification；核內 `IntegerS` 與 `π_n` 商型；有界 Huet；模組位元組格式 | `equivalence_phase10`→`adjoint_equivalence.mbt`、`sphere_classification.mbt`、`hou_unify_stream.mbt`、`module_binary.mbt` |
-| **第十一期** | 跨家族與持久化 | 跨家族宣告、精確修復、一般點收縮、位元組持久化、雙二次去巢、子句學習、圓的覆疊、交錯模組 | `schema_inductive_recursive.mbt`、`biquad_denest.mbt`、`circle_classify.mbt` |
-| **第十二期** | 編譯出來的一切 | 同規格遞迴與 eliminator 編譯、case-split 轉換與路徑值合成、DAG codec、DRUP、主合一子 | `conv_case_split.mbt`、`dterm_dag_binary.mbt`、`hou_unify` MGU |
-| **第十三期** | 收緊與證明 | 正性不動點與 foreign IH 映射、最大相容補入、intern 共圖、DRUP 與自適應譜、環路分類、殘差求解、完整性鏈 | `schema_positivity.mbt`、`dterm_intern.mbt`、`artifact_crypto_wal.mbt` |
-| **第十四期** | 規模化 | 同時 IR、全部最大完成、增量 DAG 與共用 bundle、Hensel／Van Hoeij、剪枝 BDD／DRAT、Eckmann–Hilton／五邊形 4-胞、TLV／認證 CAS／增量同步 | `hensel_multiquad_deflation.mbt`、`artifact_repository.mbt`、`associahedron.mbt` |
-| **第十五期** | 推核心到極限 | BDD／SAT／宿主立方極限推進；`π₁(S¹) ≃ ℤ`；基點環路—懸掛伴隨；Freudenthal 懸掛定理 | `bdd_cutwidth.mbt`、`circle_classify.mbt`、`sphere_homotopy.mbt` |
-| **第十六期** | 六大核心工程完備 | 大宇宙與開放同時 IR、容器正性；DSATUR 最大團與 0~1 黏合方塊；標準 SHA／Ed25519＋WAL；精確 LLL／Van Hoeij；Hopf–Freudenthal 收縮；Huet 延遲約束圖／惰性串流／三方倉庫合併 | `schema_open_ir.mbt`、`module_bft_mvcc.mbt`、`lll_van_hoeij_rouche.mbt`、`hou_unify_stream.mbt` |
-| **第二十二期** | 型別論機制的三根軸（＋四項續作） | 反射＝NbE `decide_eq` ＋可重放憑證 `check_cert` ＋宇宙保守性／Mahlo 反射；全域實例＝Horn/SLD ＋序數終止 ＋臨界對一致性 ＋黏合與鏡像對偶；歸納-歸納＝切片塔 Kleene 鏈（Fin 落後 Nat 一階）＋索引檢查 ＋互遞迴消除器。續作：**STLC 的 β 與索引傳輸**、**一致性判準的完備化**（可達目標宇宙＋區域實例＋擴充穩定性＋Newman）、**可導性擬陣判準**（交換公理太弱，次模性反例）、**R(4,4)=18 與 R(3,5)=14 用 Paley 見證夾死** | 第九聯邦 `meta/`、`cmd/metatheory`（485/485 定律）、[`meta/README.md`](meta/README.md) |
-| **第二十一期** | 七大邊界總帳 + 重構 | 七項能力邊界全部以「突破／變化／推遠／剔除」四重處置收乾；重構成**雙 V 形 + X 形交疊**；新增 `@gcd` 與 `@condensed`；四項猜想進實驗室 | 見下兩節、`architecture.json`、`bridge/` |
-| **v2 Wave 1–4** | 拆包與收斂 | 編年史檔名清零；`cubical` 拆成 7 個無環子套件；`root` 收斂為門面＋定理總表 | `root` 單包微測試 **11.05s → 0.63s**、`pkg.generated.mbti` 精簡 **90%** |
-| **自主泛代數與雙重否定預層** | 構造性泛代數 × `¬¬` 預層 × 全譜立方結構 | 同餘閉包與商代數、瑪爾切夫一步可換 `θ∘ψ=ψ∘θ=θ∨ψ`、吸收零 vs 點化零二分、雙重否定核 `j(x)=¬¬x` 布林反射子 Topos、仿射與雙德摩根立方集、Moore 自由路徑嚴格結合、立方退化樹與 64-bit SWAR 對帳（`64594+942=65536`）、5 維交錯微分 `∂²=0`、雙向範式修剪、Kripke–亞歷山德羅夫有效性與 14 類範疇組合管線 | `cubical/autonomy`、`topos/double_negation_alexandrov.mbt`、`accel/cubical_degeneracy_swar.mbt`、`meta/core/malcev_chu.mbt`、`bridge/malcev_presheaf_autonomy_bridge.mbt` |
-
-> Wave 2–4 的單包微測試實測：`finite 0.22s` · `face_bdd 0.38s` · `homotopy 0.38s` · `elaborator 0.35s` ·
-> `hermitian 0.57s` · `store 0.58s` · `kernel 0.95s`。**拆包的收益是秒級的，不是美學的。**
+| 早期 §1.1–1.5 | 地基與依賴化 | η-long βπη 正規化；有限宇宙端點 `comp`；ROBDD／wiring／first-match 範形；NbE 與 Kan 擴至 Π／Σ／宇宙 | `cubical/finite`、`cubical/face_bdd`、`cubical/kernel/{nbe_dep,kan_dep}.mbt` |
+| 早期 §1.6–1.8 | 立方 AST 與生成器 | 符號特徵值／投影子／仿射填充；Path、HIT 與 `hcomp` 按型別化簡；**通用 schema 生成器**（一份宣告同時生成 checker／eval／conv／quote／Kan） | `cubical/hermitian`、`cubical/kernel/{kan_ast,schema}.mbt` |
+| **第六～十期** | 代數完備、單值性與商同倫 | 正性函子／互歸納／商／高維 HIT；一等 `Equiv`/`ua`/`Glue`；計算性單值性；`BigInt` 有理數、Sturm 實根隔離、Rouché 認證、分裂域塔；一般準逆自動伴隨化（adjointification）；核內 `IntegerS` 與 `π_n` 商型；有界 Huet 與模組位元組格式 | `cubical/kernel/{dsystem_compat,equiv_ast,univalence,schema_universe_poly}.mbt`、`algebra/`、`cubical/homotopy/{adjoint_equivalence,sphere_classification}.mbt`、`cubical/elaborator`、`cubical/store` |
+| **第十一～十六期** | 開放同時 IR、同倫極限與 BFT 持久層 | 開放同時歸納—遞迴（Open IR）與容器正性；case-split 轉換、DAG 編解碼與主合一子 MGU；Hensel／LLL／Van Hoeij 多項式分解；Cuthill–McKee ROBDD 割寬與 CDCL DRUP/DRAT/LRAT；`π₁(S¹)≃ℤ`、`π₂(S²)≃ℤ`、Freudenthal 懸掛、Blakers–Massey、Brunerie `π₄(S³)≅ℤ/2ℤ` 與 `K₆` 相干胞；RFC 8032 Ed25519 + `3f+1` BFT 法定人數 WAL 與 Tarjan SCC 無鎖 MVCC 熱替換 | `cubical/kernel/schema_open_ir.mbt`、`algebra/lll_van_hoeij_rouche.mbt`、`cubical/face_bdd/bdd_cutwidth.mbt`、`cubical/homotopy/{associahedron,brunerie_pi4_s3}.mbt`、`cubical/store/module_bft_mvcc.mbt` |
+| **第二十一～二十二期 + v2 拆包** | 雙 V + X 形架構與第九聯邦三軸 | 七項能力邊界全數突破；建立下頂點 `@gcd`、X 樞紐 `@condensed` 與上頂點 `@bridge`；建立零外部依賴**第九聯邦 `meta/`**（反射 NbE `decide_eq` + `check_cert`、全域實例 Horn/SLD + 臨界對 + 擬陣判準、歸納—歸納 Kleene 切片塔 + STLC β 索引傳輸、Paley `R(4,4)=18` / `R(3,5)=14`）；`cubical` 拆分為無環子套件 | `gcd/`、`condensed/`、`meta/`、`bridge/`、`architecture.json` |
+| **自主泛代數 × 雙重否定預層 × 54 高階立方結構** | 構造性泛代數、`¬¬` 層化與全譜立方結構 | 瑪爾切夫一步同餘可換 `θ∘ψ=ψ∘θ=θ∨ψ`、吸收零塌縮 vs 點化零阿貝爾二分；雙重否定核 `j(x)=¬¬x` 布林反射子 Topos 與亞歷山德羅夫／雙 Heyting／Chu 對偶；**Swan/CCHM 嚴格計算 `J` 恆等型 `Id_A(x,y)`**、極化聚焦 `LJF_cub`、函子多項式米田與單值 SIP、`S₃` 非阿貝爾覆蓋伽羅瓦對應、全體 `65,536` 個 4-立方體 `O(1)` SWAR Eilenberg–Zilber 標準分解（`[2,8,60,872,64594]`）與 `26 動詞 × 14 組合` 交互圖譜 | `cubical/autonomy/`、`cubical/structures/`、`topos/double_negation_alexandrov.mbt`、`accel/cubical_degeneracy_swar.mbt`、`bridge/malcev_presheaf_autonomy_bridge.mbt` |
+| **縱向重構第一輪 `S1–S4`** | `F4 × F7 × F9 × accel/swar × K₉` | 修補 `meta` 巢狀集合剖析、升級 `Int64` Bareiss、雙向 E-graph QIIT、**Paterson–Wegman 線性 DAG MGU**、SLG 記憶化與 **`V₅ = 65,536` HF64 遺傳有限集宇宙**；提取零依賴 `L0 accel/swar`（64-trit `GF(3)`、MRV/MAC 精確 Gromov–Hausdorff、Half-GCD 有理重構）；拆出無線性代數 `topos/site` 與 `Sieve64` 雙 Heyting 核；打通 **`K₉ = 36/36` 九聯邦完全配對橋**與 `F7 → F9 → F4 → F1` 自動晉升鏈 | `accel/swar/`、`topos/site/`、`conjecture/kernel/`、`meta/{core,instances,iit,reflect}/`、`bridge/meta_k9_unification.mbt` |
+| **縱向重構第二輪 `R1–R4`** | `F1 × F5 × F8` 底層下沉與三元合流 | M4RI `GF(2)` RREF、Ozaki-II DP4A CRT、Stockham NTT、Scanbox 與 HVM2 `INetArena` 下沉至 `L0 accel/swar`（對齊 `8/8` WGSL 著色器）；拆出 `L1 algebra/core`（`Rat` `Int64` 快徑、Ozaki-II `QMat`）；**Kalman 正負雙軌自由 De Morgan 區間 `I_DM` 與自由 CCHM 上纖維化格 `Cofib(n)`** 修補布林坍縮；HOU `O(Δ)` Trail-Stack 增量回溯；`scheme` 實作 **64-bit `Mono64` SWAR、Yan Geobuckets、Lazard–Macaulay M4RI 布林 F4、三素數 CRT 模 F4 與 Grassmann–Plücker 行列式**；建立 `F8 ↔ F5 ↔ F1` 三元橋 | `accel/swar/{m4ri_gf2,ozaki2_ntt_rns,hvm2_inet_arena}.mbt`、`algebra/core/`、`cubical/face_bdd/demorgan_cchm_swar.mbt`、`scheme/f4_macaulay_swar.mbt`、`bridge/accel_bridge.mbt` |
+| **縱向重構第三輪 `T1–T4` ＋ 全倉健檢清零** | `F2 × F3 × F6` 收官與 `0` 死碼認證 | `gcd` 16-lane 延遲取模 `F_p`、HMM 範數導引 `ℤ`-SNF、Domich–Kannan–Trotter 模有界 `ℤ`-HNF；拆出第五 `L0` 基石 `symlib/core`（無度數上限 `PermLut`、**Holt 任意生成元秩子群共軛類格 `A₅:9, B₃:33`**、Burnside Möbius、群胚一般米田雙射）；`semiring` 串接 `@swar` Four-Russians/M4RI 矩陣乘、**3D 脊邊禮品包裝牛頓細分 `O(n log n + n·#Faces)`**、Karp 熱帶特徵對、Johnson 負權 APSP、Min-Fill 精確變數消去與 Valmari–Hopcroft `O(|Σ||Q|log|Q|)` 最小 DFA；拆出 `L1 condensed/core` 實作**構造性 Nöbeling 自由整數基底（`|det(B_ℤ)|=1`）**與 **64× `@swar` Steenrod–Adams 極小分解（直抵 `h₃=σ` 與 `Ext_A^{3,6}=1` `η³=4ν`）**；升級 `health_scan.py` v2 並修復 `cat_thin`、`CyclicSet` 與 `NaN` 比較漏洞，達成 **`5,745` 函式 `0` 死碼／`0` 無引用型別／`0` 空殼列舉／`0` 完全重複** | `symlib/core/`、`symlib/{marks,yoneda}.mbt`、`semiring/{matrix,trop,graph,bp,nf,app}/`、`condensed/core/`、`bridge/f2_f3_f6_triad_bridge.mbt`、`tools/health_scan.py` |
 
 ---
 
-## 二、七大能力邊界：瓶頸 → 突破 → 見證
+## 二、十二大能力邊界：瓶頸 → 演算法突破 → 可複驗見證
 
-這是整部工程史最值得讀的一頁：**每一條「這裡做不到」都被追到具體的演算法或語法限制，然後被打掉。**
+每一條「這裡原本做不到或會退化」都被追到具體的代數／組合／記憶體瓶頸，再以可複驗定理與多項式時間／硬體字組並行演算法打穿：
 
-| 邊界 | 當年的瓶頸 | 突破了什麼 | 可複驗見證 |
-|---|---|---|---|
-| 一 · Schema | 宇宙層級只有有限 `Int32`；容器不能帶路徑索引 | 直至 ε₀ 的 **Cantor 範式超限序數**（`cantor_ord_lt`，`1+ω=ω<ω+1`）；索引容器降階為正性函子；Tarski–Mahlo 反射證書 | `verify_mahlo_universe_reflection` |
-| 二 · DSystem／合成 | 高維布林空間逐點枚舉 `2ⁿ`；未知中性項分不清是缺陷還是拓撲障礙 | ROBDD 餘因子不交莖黏合轉換：**2 個規範莖覆蓋 `2²⁰ = 1,048,576`** 個居民；自由群 `F₂` 字約化證明交換子 `[a,b]` 在 `T²` 可填、在 `S¹∨S¹` 必拒（殘留字長 4） | `conv_sheaf_glued_boolean_partition`、`wedge_square_filler_report` |
-| 三 · 持久層／共識 | 只有單機 `fsync` 撕裂模型，沒有共識 | `3f+1` 拜占庭狀態機 + RFC 8032 Ed25519 法定人數封緘 + `CHWALJRN` 崩潰恢復；`wasm-gc` 與 `native` 上 100% 確定 | `bft_ed25519_quorum_commit_to_wal`（`n=4, f=1`，需 `2f+1=3` 獨立真簽章） |
-| 四 · 精確代數 | 超越數只能對一次有理數分離；特徵多項式的高斯消元遇有理數爆炸 | 任意次數 **Liouville 分離證書**；Schanuel 線性無關秩見證；**無除法 Berkowitz Toeplitz `O(n⁴)` + 多質數 CRT** 重構特徵多項式 | `liouville_transcendence_certificate`、`schanuel_linear_independence_cert`、`qmat_charpoly_berkowitz_crt` |
-| 五 · BDD／SAT／宿主立方 | 自然宿主立方需要 `2ⁿ` 次探針；單一連通分量 `n ≤ 20` | **泛點 Yoneda `O(1)` 具體化**：`n = 24` 只需 1 次求值（省 `16,777,216` 次探針）；Cuthill–McKee 前沿割寬排序，26 變量鏈得 **51 節點** ROBDD、精確 `#SAT = 66,791,053` | `reify_natural_dcube_symbolic_o1`、`bdd_dag_of_face_frontier_treewidth` |
-| 六 · 球面同倫／相干 | 單例傳輸硬上限 5 階；`dhit_face` 不能寫裸變數端點 | 任意 `n` 階單例收縮；**六維 `K₆`**（42 頂點、9 個五維小面、`χ = 1`）南北半球＋相干胞；裸變數端點 HIT；凝聚 Adams ↔ 立方 Brunerie 雙向互證 | `dpath_singleton_n_transport_value`、`dpath_associahedron_k6_coherence_value`、`Ext^{1,2}=F₂` 且 `Ext^{2,3}=0`（故 `2η=0`）↔ `\|β\|=2` |
-| 七 · HOU／模組 | 高階匹配結果型別須一階；模組熱替換禁止互遞迴與並行快照 | 內層 `ULam` 的高階匹配（候選皆經 βη 驗證）；Tarjan SCC + 無鎖 MVCC 原子熱替換；Goldfarb 不可判定性**在核心內**以丟番圖歸約見證（`2×3=6` 合一成立、`2×3=5` 拒絕） | `hou_match_higher_order_lambda`、`hot_load_tarjan_scc`、`hot_load_mvcc_commit_atomic`、`goldfarb_verify_diophantine_encoding` |
-
-**方法論上的一條硬規則**：能證的就證，不能證的就**量**，量到的邊界**寫進報告**。
-`cmd/semiringreport` 的 §19 專章就是這條規則的產物——例如「只有一個候選時，錯誤不會被發現」。
-
----
-
-## 三、三條技術主線
-
-**主線 A · 立方型別論核心**（`cubical/`，7 個子套件、65 檔、71,077 行）
-
-```text
-簡單型別 NbE → +η → 依賴 Π/Σ/宇宙 → Kan 全型別 → schema 生成器（inductive/HIT/open-IR）
-   → 一等 Equiv/ua/Glue → 受檢型別線與 registry → 計算性單值性
-   → π₁(S¹)≃ℤ → π₂(S²)≃ℤ → Blakers–Massey → π₄(S³)≅ℤ/2ℤ
-```
-演進的判準始終是同一句話：**把「在有限宇宙上算得出來」升級成「在依賴核心裡算得出來」**。
-`cubical/finite` 至今仍是規格樣板；`cubical/kernel` 是唯一信任邊界（零浮點、零代數耦合）。
-
-**主線 B · 精確代數與判定**（`algebra/`、`gcd/`、`semiring/trop/`）
-
-```text
-Rat → BigInt（任意精度）→ QuadNum/AlgNum（Q[x]/(m)）→ 分裂域塔 → 實根隔離(Sturm) → Rouché 認證
-   → 超越分離（Liouville/Schanuel）→ 無除法 Berkowitz+CRT（避開分數爆炸）
-   → 泛消元 GCD（F_p RREF / ℤ HNF·SNF / 擴張歐氏 / Grassmann / 自由群）五域對帳
-```
-判定的哲學：**先選規範形，再用比較規範形代替比較物件**（BDD 根 ID、DFA 典範字串、DFT 範形、
-minimal 多項式餘式、`Trop` 的根與重數）。
-
-**主線 C · 工程化與可信度**（`architecture.json`、`cubical/store`、`hostfs/`、`accel/`、`tools/`）
-
-```text
-可檢查的依賴 DAG → 分離編譯（interface_hash + 依賴指紋）
-   → CHMODBIN/CHDAGBIN/CHREGBIN（版本協商、TLV 段、增量 delta）
-   → 雜湊鏈 + Ed25519 工件庫 + 崩潰一致 WAL → BFT 法定人數 → SCC 原子熱替換
-   → CPU 64-bit SWAR / Ozaki II + RNS NTT / Hscanbox / HVM2 → WGSL 著色器（瀏覽器零依賴驗證台）
-```
-這一線的價值不在「多一個功能」，而在**讓前面的數學家不會因為編譯順序、位元組格式或
-崩潰時序而失去可信度**。
-
-**主線 D · 型別論機制的三根軸**（`meta/`，5 套件、19 檔 —— 第九聯邦）
-
-```text
-數學地板（序數 · 合一/反合一 · 擬陣 · 有限複形 · Ramsey）
-   ├─ 反射：          reify ⊣ reflect（NbE）→ decide_eq（快）＋ check_cert（逐步重放） → 宇宙抬升保守性 → Mahlo 式反射
-   ├─ 全域實例：      Horn/SLD 解析 → 序數終止 → 臨界對一致性 → 黏合（H¹ 障礙）→ 鏡像對偶 → Ramsey 深度窗口
-   └─ 歸納-歸納：     schema → 索引檢查 → 切片塔 Kleene 鏈（Fin 落後 Nat 一階）→ 互遞迴消除器 → 序數終止憑證
-                      → STLC 的 β（ctx_insert / subst_insert 的索引傳輸）→ 逐步型別保持
-```
-
-四項續作把「已知未做」變成可執行：STLC 的 β、一致性判準的完備化（可達目標宇宙＋區域實例＋
-擴充穩定性＋Newman 引導）、可導性擬陣判準（交換公理太弱，給出次模性反例）、以及
-**R(4,4) = 18 / R(3,5) = 14**（Paley 圖 P₁₇ 給下界、遞迴上界 9+9 給上界，兩邊夾死，
-不需要 2^153 的窮舉）。細節見 [`meta/README.md`](meta/README.md) §6.5。
-
-這一線的判準和前六期一樣：**不是「實作了特性」，而是「機制中的每一條命題都被重算一次」**。
-`moon run cmd/metatheory` 逐條印出被機器重算的定律與最小見證，不引用任何外部結論。
+| # | 領域 | 原本的瓶頸 | 突破與演算法 | 可複驗見證 |
+|---:|---|---|---|---|
+| 1 | **Schema 與大宇宙** | 宇宙層級僅有限整數；容器不能帶路徑索引 | 直至 `ε₀` 的 Cantor 範式超限序數；索引容器降階為正性函子；Tarski–Mahlo 反射與一等 `DLevelDecl` 驗證 | `verify_mahlo_universe_reflection`、`check_level_polymorphic_declarations` |
+| 2 | **DSystem 與自由 De Morgan 區間** | 高維布林枚舉 `2ⁿ`；樸素布林指派誤將 `i ∧ ¬i` 塌縮為 `0`、將 `(i=0)∨(i=1)` 塌縮為 `⊤` | ROBDD 餘因子不交莖黏合（2 個規範莖覆蓋 `2²⁰` 點）；**Kalman 雙軌自由 De Morgan `I_DM` 與自由 CCHM `Cofib(n)`** 保持 `loop(i ∧ ¬i) ≠ base` 及 `∂I ≠ ⊤_F` | `conv_sheaf_glued_boolean_partition`、`dim_eq_demorgan`、`cchm_face_entails` |
+| 3 | **持久層與拜占庭共識** | 單機 `fsync` 撕裂模型無跨節點共識；模組儲存耦合高層凝聚套件 | `3f+1` BFT 狀態機 + RFC 8032 Ed25519 法定人數封緘 + `CHWALJRN` 崩潰恢復；摘要鏈下沉 `L0 gcd` 使 `cubical/store` 降至 `pkgL3` | `bft_ed25519_quorum_commit_to_wal`、`ugcd_digest_chain_verify` |
+| 4 | **精確代數與無分數消元** | 高斯消元遇有理數分子分母指數爆炸；`Rat` 小整數頻繁配置 `BigInt` | `Rat` `Int64` 無溢位快徑；**Sylvester–Bareiss `O(n³)` 行列式**；**無除法 Berkowitz + 多素數 CRT** 特徵多項式；**Ozaki-II INT8 DP4A CRT** `QMat` 乘法；Liouville／Schanuel 超越分離 | `qmat_det`、`qmat_charpoly_berkowitz_crt`、`qmat_mul_ozaki2_crt`、`liouville_transcendence_certificate` |
+| 5 | **BDD／SAT 與泛點具體化** | 自然宿主立方需 `2ⁿ` 次探針 | **泛點 Yoneda `O(1)` 具體化**（`n=24` 僅 1 次求值，省 `16,777,216` 次探針）；Cuthill–McKee 前沿割寬（26 變量鏈 51 節點、`#SAT = 66,791,053`）＋ `n ≤ 6` 單 `UInt64` SWAR 面快徑 | `reify_natural_dcube_symbolic_o1`、`bdd_dag_of_face_frontier_treewidth` |
+| 6 | **球面同倫與凝聚 Steenrod–Adams** | 單例傳輸硬上限 5 階；稠密 `F₂` 矩陣使 Adams 分解卡在低次數 | 任意 `n` 階單例收縮與六維 `K₆`（42 頂點、9 小面）；`condensed/core` 以**內部次數 `t` 齊次分塊 + `@swar.gf2_rref_eliminate_u64` 64× 加速**直抵 `trunc_deg=12`，機器證明 `h₀, h₁=η, h₂=ν, h₃=σ` 與 **`Ext_A^{3,6}=1`（`η³ = 4ν`）** | `dpath_associahedron_k6_coherence_value`、`adams_ext_swar_frontier_report` |
+| 7 | **HOU 高階合一與模組熱替換** | Huet 分支回溯每次複製整張代換表 `O(\|subst\|)`；熱替換禁互遞迴 | **`O(Δ)` Trail-Stack 增量回溯**；內層 `ULam` 高階匹配；Tarjan SCC + 無鎖 MVCC 原子熱替換；核心內 Goldfarb 丟番圖不可判定性見證 | `hou_unify`、`hou_match_higher_order_lambda`、`hot_load_mvcc_commit_atomic` |
+| 8 | **代數幾何 Gröbner 基與行列式** | Buchberger 氣泡排序與線性減法 `O(\|p\|³)`；Fitting 行列式 `O(k!)` Laplace 展開 | **64-bit `Mono64` 無分支 3 指令單項式整除**、Yan 對數地理桶、Gebauer–Möller 判準、**M4RI `GF(2)` 布林 F4**、**三素數 CRT + Wang 有理重構模 F4**，以及 **Grassmann–Plücker `O(k·2^k)`／Berkowitz `O(k⁴)` 行列式** | `f4_boolean_groebner_gf2`、`f4_groebner_rat_modular`、`verify_f8_f5_f1_triad_bridge` |
+| 9 | **有限對稱與 Burnside 子群格** | `perm_key64` 在 `n > 12` 溢位；雙生成元掃描漏掉秩 `≥ 3` 子群（如 `(C₂)³ ≤ B₃`） | **無度數上限 `PermLut`**（`n ≤ 15` 4-bit Nibble SWAR、`n > 15` SplitMix64 + 原像核對）；**Holt 陪集剪枝逐層擴張子群格**（`A₅(60)` 精確得 `9` 類、`B₃(48)` 精確得 `33` 類）＋ Burnside Möbius 上三角回代 | `subgroup_classes`、`burnside_mobius_solve`、`verify_general_yoneda_bijection` |
+| 10 | **熱帶幾何、負權最短路與最小 DFA** | 牛頓多胞形下凸包 `O(n⁴)` 四重迴圈；APSP 不支援負權；Moore `O(\|Q\|²)` 最小化 | **3D 脊邊禮品包裝 BFS `O(n log n + n·#Faces)`**；Karp 最小環平均熱帶特徵對；Bellman–Ford + **Johnson 稀疏負權 APSP**；有環因子圖 **Min-Fill 精確半環變數消去**；**Valmari–Hopcroft `O(\|Σ\|\|Q\|log\|Q\|)` 最小 DFA** | `BPoly::subdivision`、`trop_eigenvalue_karp`、`apsp_johnson`、`dfa_minimize` |
+| 11 | **凝聚固態對偶與整數格正規形** | 射影塔自由性僅有秩對帳無基底矩陣；`ℤ`-HNF 尾端主元相消退化 | Havas–Majewski–Matthews 範數導引 `ℤ`-SNF 與 Domich–Kannan–Trotter 模有界 `ℤ`-HNF；**構造性 Nöbeling 分層纖維單模基底 `B_ℤ`（`|det(B_ℤ)| = 1`）** 證明 `C(S,ℤ) ≅ ⨁ ℤ` 與 `ℤ[S]^■ ≅ ∏ ℤ` | `nobeling_unimodular_basis_zmat`、`verify_nobeling_free_solid_duality` |
+| 12 | **元理論合一、解析與有限集合宇宙** | 樹狀 Robinson 合一遇深度 `d` 項指數爆炸 `2^d`；`V_n` 受字串枚舉限制 | **Paterson–Wegman 線性時間 DAG MGU**（深度 16 指數項零展開合一）；SLG 表格化記憶解析；雙向 E-graph QIIT；**Ackermann 64-bit 位元雙射實算全體 `V₅ = 65,536` 個遺傳有限集** | `unify_dag_linear`、`resolve_indexed_tabled`、`hf64_v5_rank_census` |
 
 ---
 
-## 四、里程碑數字
+## 三、九大聯邦 ＋ 大一統頂點全景（`52` 套件 · `61` 元件 · `282` 檔 · `182,929` 行）
 
-| 項目 | 數字 | 出處 |
+| 聯邦 | 規模（`arch_check.py` 實測） | 所屬套件（`pkgL0 .. pkgL9`） | 核心數學結構與代表演算法 |
 |---|---|---|
-| 定理總表 | **129 / 129** | `cmd/main`（`root/spec.mbt` 的 `print_report`） |
-| 大一統證書 | **47 / 47**（`atlas 18/18`） | `cmd/showcase` 的 `all_certs_ok` 與 summary 行 |
-| 跨聯邦橋 | `K₆ = 15/15`、`K₇ = 21/21` | `@bridge` |
-| 幾何—邏輯圖譜 | `ATLAS-01..18` | `@bridge` |
-| 猜想實驗室 | `CONJ-01..12`、演化族 6 | `@conjecture` |
-| 張量圖譜 | `𝔽₃` 6,561 張量秩計數 `[1, 128, 4032, 2400]` | `@tensor`、`spec.mbt` |
-| 同倫 | `π₁(S¹)≃ℤ`、`π₂(S²)≃ℤ`、`π₄(S³)≅ℤ/2ℤ` | `@homotopy` |
-| 指定有限模型的局部相干角 | `11040→552→0`；`276` 個規範類、總重數 `11040` | `@homotopy`、`@bridge` |
-| 直覺猜想與反例攻擊 | **5 條**：1 條有界倖存、4 條反例後修正 | [`bridge/INTUITIVE_CONJECTURES.md`](bridge/INTUITIVE_CONJECTURES.md) |
-| 上同調 | `h¹(ℙ¹, O(−2)) = 1`；`T²` 杯秩 1 vs `S¹∨S¹∨S²` 秩 0 | `@scheme`、`@topos` |
-| 量化工程的極限 | 26 變量鏈 51 節點、`#SAT=66,791,053`；`n=24` 方塊 1 次求值 | `@face_bdd`、`cubical/kernel` |
-| **型別論與九聯邦元理論定律** | **545 / 545**（`86` 個 `law_*`、`448` 互異、`179` 族） | `cmd/metatheory`（第九聯邦，逐條重算） |
-| Ramsey 的更大值 | **R(4,4)=18**、**R(3,5)=14**（Paley P₁₇ 下界 ＋ 遞迴上界夾死） | `meta/core/ramsey_ex.mbt` |
-| STLC 的 β | 每一步約簡都 `icheck` 通過且索引不變（含走入 binder 的索引傳輸） | `meta/iit/stlc.mbt` |
-| 可導性擬陣性 | 判準（無合成規則落在目標集上 ＋ 每規則最多覆蓋一目標），12 樣本與嚴格秩公理逐一對帳 | `meta/instances/characterize.mbt` |
-| 全代碼健檢 | `5,745` 函式／方法：**死碼候選 0、無引用型別 0、空殼 `enum` 0、完全相同函式體 0** | [`tools/health_report.md`](tools/health_report.md) |
-| 形式化（**數學筆記，非 kt 的形式化**） | **492** 條定理已在 Lean 4.35.0 中證明並登記。**與 kt 之間沒有人讀以外的橋**：實測 580 條宣告中只有 **137 條是全稱／歸納**（真正算不出來的那批），403 條是 `decide`/`native_decide` 的具體計算（kt 跑一次就知道），40 條其他。437 個舊標籤是**人讀的族對應**，不是同一命題；本輪新增 48 條能力定律的全稱版本尚未寫（六條證明義務見 [`lean/WHY.md`](lean/WHY.md) §3）（含 **R(3,4) = 9、R(4,4) = 18、R(3,5) = 14 的精確值**、R(3,3) ≤ 6、R(3,4) ≤ 10、擬陣的秩公理／交換公理／**貪心最優**／對偶 `r** = r`／Q 上線性擬陣、**Euler–Poincaré 全稱版與覆蓋神經的 H¹ 黏合判準**、字典序遞移與 ord_max 是 lattice join／結合的全稱版本、10 條 CNF 恆等式、**歸納-歸納型別的 ι 律與終止性（對所有項）**、**STLC 的 β 索引傳輸與主體約簡**、**擬陣判準／Möbius 併攏障礙／Newman 引理／完備一致性**、**宇宙反射的保守性與 Mahlo 式反射**（極限層成立、臨界後繼失效）、**NbE 的 β/η/冪等/保型，且「先 reflect 再 reify 等於直接 reify」對所有型別成立**、**快判定與逐步憑證兩條路徑一致且篡改被拒**、**實例憑證不靠搜尋即可獨立複驗**） | [`lean/`](lean/README.md) |
-| 反射的兩條判斷路徑 | NbE `decide_eq` 與逐步憑證 `check_cert` 在所有樣本上一致 | `meta/reflect/proof.mbt` |
-| 歸納-歸納的相位差 | `Fin` 的擴張永遠落後 `Nat` 一階（第 1 階段 `Fin = ∅`、第 2 階段才出現） | `meta/iit/schema.mbt` |
+| **F1 `cubical`** | `14` 套件<br>`121` 檔 / `111,679` 行 | `cubical-face-bdd`(`L0`), `algebra-core`(`L1`), `cubical-finite`(`L1`), `hostfs`(`L1`), `algebra`(`L2`), `cubical-kernel`(`L2`), `cubical-elaborator`(`L3`), `cubical-hermitian`(`L3`), `cubical-homotopy`(`L3`), `cubical-store`(`L3`), `cubical-autonomy`(`L5`), `cubical-structures`(`L6`), `root`(`L7`), `cmd-main`(`L8`) | Kalman 自由 De Morgan `I_DM` 與 CCHM `Cofib(n)`、ROBDD／CDCL-LRAT；可信依賴立方核心（NbE、Kan、Glue、Open-IR、`ε₀`/Mahlo）；`O(Δ)` Trail-Stack HOU；`π₁(S¹)`/`π₂(S²)`/Brunerie `π₄(S³)`/`K₆`；瑪爾切夫泛代數自主層與 **54 項高階立方結構 × 26 動詞 × 14 組合**；`algebra/core` Ozaki-II／Bareiss 與分裂域塔；Ed25519 BFT／MVCC 模組庫（`cmd/main` **`137/137`**） |
+| **F2 `symlib`** | `4` 套件<br>`30` 檔 / `9,964` 行 | `symlib-core`(`L0`), `symlib`(`L1`), `cmd-symdemo`(`L2`), `cmd-symbench`(`L2`) | **`L0 symlib/core`**：硬體 `popcnt`/`and_popcount` `BitVec`、無度數上限 `PermLut`、零配置 Schreier–Sims（含 `A_n`, `B_n`）、位向量 1-WL 與 McKay 同構引擎；**`L1 symlib`**：Holt 陪集剪枝任意秩子群格（`A₅:9, B₃:33`）、Burnside Möbius 分解、`G-Set` 單子、Warshall `cat_thin`、Kan 擴張與非薄／群胚一般米田雙射 |
+| **F3 `semiring`** | `16` 套件<br>`44` 檔 / `13,795` 行 | `semiring-{algebra,nf,par,ratelimit,sim}`(`L1`), `semiring-{bp,io,matrix,monoid,trop}`(`L2`), `semiring-{cat,graph,spline}`(`L3`), `semiring-{app,par-host}`(`L4`), `cmd-semiringreport`(`L5`) | `@swar` Four-Russians 64-bit 布林矩陣乘 `mul_bool_swar`、M4RI `mul_gf2_m4ri_swar`、64-bit 布林／分塊熱帶閉包；3D 脊邊禮品包裝牛頓正則細分；Karp 熱帶特徵值與臨界特徵向量；Bellman–Ford＋Johnson 負權 APSP；Min-Fill 精確變數消去；Valmari–Hopcroft `O(\|Σ\|\|Q\|log\|Q\|)` 最小 DFA 與 19 節實測報告 |
+| **F4 `topos`** | `2` 套件<br>`9` 檔 / `8,210` 行 | `topos-site`(`L2`), `topos`(`L3`) | **`L2 topos/site`**：零線性代數耦合景、`Sieve64` 64-bit 雙 Heyting 核、MAC 相容族枚舉、本徵幾何態射 `Lan ⊣ u* ⊣ Ran`、Diaconescu `G`-主叢與一階幾何理論 Kripke–Joyal 力迫 `model_satisfies_theory`；**`L3 topos`**：雙重否定 `Sh_{¬¬}` 布林層化、亞歷山德羅夫／Chu 對偶、`RP²` 模撓率上同調與杯積 |
+| **F5 `scheme`** | `1` 套件<br>`6` 檔 / `6,150` 行 | `scheme`(`L3`) | 64-bit `Mono64` SWAR 單項式整除／`GRevLex`、Yan 地理桶、Gebauer–Möller、M4RI 布林 F4、三素數 CRT 模 F4、Grassmann–Plücker／Berkowitz 行列式、黏合概形、仿射纖維積、`Ω¹_{B/A}`、Fitting 平滑性、吹脹解消、Serre 對偶與 Chow 動機 `h(ℙ¹) = 1 ⊕ 𝕃` |
+| **F6 `condensed`** | `3` 套件<br>`8` 檔 / `5,059` 行 | `gcd`(`L0`), `condensed-core`(`L1`), `condensed`(`L4`) | **下頂點 `V₁` (`gcd`)**：16-lane 延遲取模 `F_p`、HMM `ℤ`-SNF、Bareiss 行列式、DKT 模有界 `ℤ`-HNF、CRT、`ugcd_rat_recon_bigint` 與摘要鏈；**`L1 condensed/core`**：`CompactProfiniteTower`、構造性 Nöbeling 自由基底、Roos–Milnor `R¹lim`、`CondAnima`、`CondSolidModule` 與 **64× `@swar` Steenrod–Adams 極小分解**；**`L4 condensed`**：`CondAnalyticStack`、共軛四元數消元中軸與凝聚四猜想 |
+| **F7 `discovery`** | `3` 套件<br>`5` 檔 / `3,587` 行 | `tensor`(`L2`), `discovery-kernel`(`L3`), `conjecture`(`L5`) | `tensor`：64-trit `GF(3)` 全體 `6,561` 張量秩圖譜 `[1, 128, 4032, 2400]`、64-bit MRV/MAC Gromov–Hausdorff 距離、支配坍縮 VR 同調、Radon 反演、Clifford 旋量；`conjecture/kernel`：Half-GCD 有理重構與 64-bit `ctz` 位平面蘊含格；`conjecture`：6 演化轉移律與 12 項 Lakatos 猜想 |
+| **F8 `accel`** | `2` 套件<br>`10` 檔 / `3,601` 行 | `accel-swar`(`L0`), `accel`(`L4`) + `webgpu/index.html` | **`L0 accel/swar`**：64-bit 硬體原語全集（M4RI RREF、64-trit `GF(3)`、Ozaki-II DP4A CRT、Stockham NTT、立方蝴蝶、Scanbox、HVM2 `INetArena`）；**`L4 accel`**：跨聯邦加速見證與 **8/8 靜態可移植性審計通過之瀏覽器零依賴 WebGPU WGSL 著色器** |
+| **F9 `meta`** | `5` 套件<br>`30` 檔 / `14,092` 行 | `meta-core`(`L0`), `meta-instances`(`L1`), `meta-iit`(`L1`), `meta-reflect`(`L2`), `cmd-metatheory`(`L3`) | **零外部業務依賴之元理論地板與三軸引擎（`545/545` 定律、`86` 個 `law_*`、`448` 互異、`179` 族）**：反射（NbE + 逐步憑證 + `V₅ = 65,536` HF64 + Mahlo）、全域實例（SLG 記憶解析 + 臨界對 + 擬陣判準）、歸納—歸納（Kleene 切片塔 + 雙向 E-graph QIIT + STLC β），以及 Paley `R(4,4)=18` / `R(3,5)=14`、Burnside Möbius、Karp 對偶與 Nöbeling 單模反演定律 |
+| **頂點 `unification`** | `2` 套件<br>`19` 檔 / `6,792` 行 | `bridge`(`L8`), `cmd-showcase`(`L9`) | **九聯邦完全圖 `K₉ = 36/36` 全配對跨聯邦雙邊橋**、`F7 → F9 → F4 → F1` 四聯邦定理自動晉升管線、**`F8 ↔ F5 ↔ F1` 硬體—符號—型別三元橋**、**`F2 ↔ F3 ↔ F6` 對稱—半環—凝聚三元橋**、五聯邦五角大一統定理、`ATLAS-01..18` 幾何—邏輯圖譜、旋轉差分與 **`47/47` 大一統證書** |
 
 ---
 
-## 五、架構：雙 V + X 形交疊
+## 四、里程碑數字一覽
+
+| 項目 | 實測數字 | 驗證入口／出處 |
+|---|---|---|
+| **主定理總表** | **137 / 137**（規格註冊表 `1,598` 個唯一公開符號，`0` 幽靈條目） | `cmd/main`（`verify.mbt` + `spec.mbt`） |
+| **第九聯邦元理論定律** | **545 / 545**（`86` 個 `law_*` 函式、`448` 條互異標籤、`179` 個定律族） | `cmd/metatheory`（逐條重算） |
+| **大一統證書與全配對橋** | **47 / 47 證書** · **`K₉ = 36 / 36` 九聯邦完全雙邊橋** · **3 條跨聯邦三元／四元合流管線** | `cmd/showcase`（`bridge/`） |
+| **高階立方結構與範疇組合** | **54 / 54 結構證書** × **26 個運算動詞** × **14 種範疇組合模式**（14 條交互定理） | `cubical/structures` |
+| **全倉靜態健檢（`health_scan.py` v2）** | **`5,745` 函式／方法：死碼 `0`、無引用型別 `0`、空殼 `enum` `0`、完全重複 `0`** | [`tools/health_report.md`](tools/health_report.md) |
+| **多目標零警告編譯閘** | **`wasm-gc` · `wasm` · `js` · `native` 四大目標皆 `0 warnings, 0 errors`** | `moon check --deny-warn` |
+| **同倫與凝聚 Steenrod–Adams** | `π₁(S¹)≃ℤ`、`π₂(S²)≃ℤ`、`π₄(S³)≅ℤ/2ℤ`；Adams 極小分解至 `t=12` 證出 `h₀,h₁,h₂,h₃` 與 **`Ext_A^{3,6}=1`（`η³=4ν`）** | `cubical/homotopy`、`condensed/core` |
+| **有限對稱與 Burnside 環** | Holt 任意生成元秩子群共軛類格：`S₄(24):11`、**`A₅(60):9`**、**`B₃(48):33`**（含 3-生成元初等阿貝爾子群 `(C₂)³`） | `symlib/marks.mbt` |
+| **立方退化分解與遺傳有限集宇宙** | 全體 `65,536` 個 4-立方體 Eilenberg–Zilber 唯一分層 `[2, 8, 60, 872, 64594]`；Ackermann 位元雙射實算 `V₅ = 65,536`（`rank 4` 佔 `65,520`） | `cubical/structures`、`meta/reflect` |
+| **張量秩與精確度量幾何** | `𝔽₃` 全體 `6,561` 張量秩分佈 `[1, 128, 4032, 2400]`；MRV/MAC 分支定界實算 `2·d_GH(C₅,C₆)=1`、`2·d_GH(C₆,K₅)=2` | `tensor/`、`accel/swar/` |
+| **幾何—邏輯圖譜與猜想實驗室** | `ATLAS-01..18`（正負雙見證） · `CONJ-01..12`（6 演化族） · 5 條直覺猜想與反例修正 | `bridge/`、`conjecture/`、[`bridge/INTUITIVE_CONJECTURES.md`](bridge/INTUITIVE_CONJECTURES.md) |
+| **Ramsey 精確夾逼** | **`R(4,4) = 18`**、**`R(3,5) = 14`**（Paley 自補圖 `P₁₇` 下界 ＋ 遞迴上界夾死，免除 `2¹⁵³` 窮舉） | `meta/core/ramsey_ex.mbt` |
+| **WebGPU 瀏覽器硬體著色器** | **`8 / 8` 註冊 WGSL 計算著色器**（`7 / 7` 前沿套件）通過無 `f64`/無遞迴靜態可移植性審計 | `accel/webgpu_wgsl_kernels.mbt`、`webgpu/index.html` |
+| **Lean 4 獨立數學筆記對照** | Lean 4.35.0 中已證 **492** 條定理（137 條全稱／歸納定理 + 403 條具體計算；與 `kt` 為人讀族對照，證明義務見 [`lean/WHY.md`](lean/WHY.md)） | [`lean/README.md`](lean/README.md) |
+
+---
+
+## 五、架構：五基石 `L0` ＋ 六組輕重分離 ＋ 雙 V / X 樞紐 / `K₉` 完全星稜柱
 
 ```text
-        [ 上 V₂：@bridge 大一統層 · cmd/* ]   47/47 證書 · K₆ 15/15 · 雙 V 閉環
-                        ▲                                    ▲
-        (幾何—拓撲—同倫左翼)                          (代數—邏輯—熱帶右翼)
-        Cubical · Topos · Scheme          Symlib · Semiring · Algebra
-                        ▲                                    ▲
-        ══════ [ X 形交疊樞紐：@condensed ] ══════
-          凝聚範疇 · 規範消元範疇 · Steenrod–Adams · 守恆律賬本 · 猜想 ×4
-                        ▲                                    ▲
-        (連續—層化—幾何分支)                          (離散—符號—路徑分支)
-        Topos · Scheme · HostFS           Symlib · Semiring · Algebra
-                        ▲                                    ▲
-        [ 下 V₁：@gcd 泛消元新最大公因數基底 ]  F_p RREF · ℤ HNF/SNF · 擴張歐氏 · 五域消元
+         [ 上頂點 V₂ · L8–L9 unification：bridge + cmd/showcase ]
+     47/47 證書 · K₉ = 36/36 全配對橋 · F7→F9→F4→F1 · F8×F5×F1 · F2×F3×F6
+                  ▲                        ▲                        ▲
+     (幾何—拓撲—同倫左翼)            (X 交疊凝聚樞紐)         (代數—對稱—半環—元理論右翼)
+   F1 cubical · F4 topos          F6 condensed (L1/L4)       F2 symlib · F3 semiring
+   F5 scheme  · F7 discovery      Nöbeling · Solid · Adams   F8 accel  · F9 meta (零業務依賴)
+                  ▲                        ▲                        ▲
+         ════ 六組 `pub using` 無損輕重分離（100% 向後相容 API）════
+   algebra/core ⊂ algebra · symlib/core ⊂ symlib · condensed/core ⊂ condensed
+   topos/site ⊂ topos     · conjecture/kernel ⊂ conjecture · accel/swar ⊂ accel
+                  ▲                        ▲                        ▲
+         [ 五大零外部依賴 L0 基石：gcd · accel/swar · cubical/face_bdd · symlib/core · meta/core ]
 ```
 
-九個聯邦各自可獨立編譯、獨立驗證；`@gcd`（下頂點）與 `@bridge`（上頂點）是唯一被允許橫向聚合的兩處。
-第九聯邦 `meta/` 不接依賴圖的任一端：它只依賴自己的 `meta/core`，用命題「重算」而非「引用」來支撐三大機制
-（反射／全域實例／歸納-歸納，見 [`meta/README.md`](meta/README.md)）。它是**橫向**加入的第五條主線，
-不改變原有雙 V 形的上下頂點。
-完整依賴圖與層級見 `architecture.json`，規則見 `agent.v2.md`。
+* **單向無環保證**：`architecture.json` 精確定義 **`52` 個套件（`pkgL0 .. pkgL9`）** 與 **`61` 個架構元件（`compL0 .. compL14`）**，由 `tools/arch_check.py` 同時強制檢驗 `moon.pkg` 實體匯入圖、跨聯邦白名單與源碼層級符號引用圖（`exceptions: []`）。
+* **第九聯邦 `meta/` 的獨立性**：`meta/*` 對主倉其餘八個聯邦保持**零業務匯入**，所有跨聯邦機制（瑪爾切夫同餘、De Morgan `M₄`、`Mono64` SWAR、Burnside Möbius、Karp 熱帶對偶、Nöbeling 單模反演、覆蓋聚焦等）皆以獨立數學命題在 `meta/` 內逐點重算，再於 `bridge/meta_k9_unification.mbt` 與八大聯邦雙邊對帳。
 
 ---
 
-## 六、從哪裡讀起
+## 六、從哪裡讀起（全倉 52 套件 README 全覆蓋導覽）
 
-| 你想做的事 | 從這裡開始 |
+| 你想探索的主題 | 推薦閱讀路徑 |
 |---|---|
-| 全景與快速上手 | 本檔 → [`readme.v2.md`](readme.v2.md) |
-| 型別論機制（反射／實例／歸納-歸納） | [`meta/README.md`](meta/README.md) → `meta/reflect/nbe.mbt` → `meta/instances/engine.mbt` → `meta/iit/schema.mbt` |
-| 程式碼健檢／債務盤點 | `python3 tools/health_scan.py` → [`tools/health_report.md`](tools/health_report.md) |
-| 三個能力的能力對帳 | [`meta/CAPABILITIES.md`](meta/CAPABILITIES.md)（能不能用／能不能自己檢查／邊界在哪） |
-| 定律的 Lean 4 形式化 | [`lean/README.md`](lean/README.md)（`lake build`；目前 492 條定理、437 個舊標籤（340 個互異）全覆蓋；MoonBit 側現有 545 條） |
-| 為什麼不用 Why3 + Z3 | [`meta/prove_feasibility.md`](meta/prove_feasibility.md)（`moon prove` 實測報告） |
-| 型別論／證明助理 | [`cubical/finite/`](cubical/finite/README.md) → [`cubical/kernel/`](cubical/kernel/README.md) → [`cubical/homotopy/`](cubical/homotopy/README.md) |
-| 演算法／效能 | [`semiring/matrix/`](semiring/matrix/README.md) → [`semiring/sim/`](semiring/sim/README.md) → [`accel/`](accel/README.md) → [`cmd/semiringreport/`](cmd/semiringreport/README.md) |
-| 代數幾何／範疇論 | [`symlib/`](symlib/README.md) → [`topos/`](topos/README.md) → [`scheme/`](scheme/README.md) → [`condensed/`](condensed/README.md) |
-| 科學方法自動化 | [`tensor/`](tensor/README.md) → [`conjecture/`](conjecture/README.md) → [`bridge/`](bridge/README.md) |
-| 改架構／接下這個專案 | **[`agent.md`](agent.md)**（英文交接手冊：43 份 README 索引、閱讀路徑、模板、onboarding）→ [`agent.v2.md`](agent.v2.md)（治理與通報） |
-| 逐條規格 | `spec.mbt` 的 `spec_registry`；`spec_registry_sound()` 檢查非空欄位、名稱與符號唯一性，`spec_covers` 查詢登記覆蓋 |
-
-**全倉 43 份資料夾 README**（16 個頂層 + 27 個巢狀子套件）都是「逐個讀完該資料夾每一個碼檔」後寫的，
-索引與表格在 [`agent.md`](agent.md) Part II。
+| **全景與架構治理** | 本檔 → [`readme.v2.md`](readme.v2.md) → [`agent.md`](agent.md)（全倉 52 套件索引與交接規範）→ [`agent.v2.md`](agent.v2.md)（架構憲章與歷輪重構報告） |
+| **依賴立方核心與高階結構** | [`cubical/finite/`](cubical/finite/README.md) → [`cubical/face_bdd/`](cubical/face_bdd/README.md) → [`cubical/kernel/`](cubical/kernel/README.md) → [`cubical/homotopy/`](cubical/homotopy/README.md) → [`cubical/autonomy/`](cubical/autonomy/README.md) → [`cubical/structures/`](cubical/structures/README.md) |
+| **合一、模組庫與崩潰一致** | [`cubical/elaborator/`](cubical/elaborator/README.md) → [`cubical/store/`](cubical/store/README.md) → [`hostfs/`](hostfs/README.md) |
+| **精確代數與泛消元 GCD** | [`gcd/`](gcd/README.md) → [`algebra/core/`](algebra/core/README.md) → [`algebra/`](algebra/README.md) → [`cubical/hermitian/`](cubical/hermitian/README.md) |
+| **有限對稱、範疇與半環演算法** | [`symlib/core/`](symlib/core/README.md) → [`symlib/`](symlib/README.md) → [`semiring/`](semiring/README.md)（含 15 個子套件）→ [`cmd/semiringreport/`](cmd/semiringreport/README.md) |
+| **拓撲斯、概形與凝聚數學** | [`topos/site/`](topos/site/README.md) → [`topos/`](topos/README.md) → [`scheme/`](scheme/README.md) → [`condensed/core/`](condensed/core/README.md) → [`condensed/`](condensed/README.md) |
+| **64-bit SWAR 與 WebGPU 加速** | [`accel/swar/`](accel/swar/README.md) → [`accel/`](accel/README.md) → [`webgpu/`](webgpu/README.md) |
+| **張量幾何、猜想發現與大一統橋** | [`tensor/`](tensor/README.md) → [`conjecture/kernel/`](conjecture/kernel/README.md) → [`conjecture/`](conjecture/README.md) → [`bridge/`](bridge/README.md) → [`cmd/showcase/`](cmd/showcase/README.md) |
+| **第九聯邦元理論與形式化對照** | [`meta/README.md`](meta/README.md) → [`cmd/metatheory/`](cmd/metatheory/README.md) → [`meta/CAPABILITIES.md`](meta/CAPABILITIES.md) → [`lean/README.md`](lean/README.md) → [`lean/WHY.md`](lean/WHY.md) |
+| **程式碼健檢與規格總帳** | `spec.mbt`（`spec_registry`） · `verify.mbt` · [`tools/README.md`](tools/README.md) · [`tools/health_report.md`](tools/health_report.md) |
 
 ---
 
 ## 七、工程紀律（摘要）
 
-1. **沒有常駐單元測試、沒有煙霧測試。** 改動 → 在**該檔案最底部**寫臨時 `test` → `moon test <單一套件>`
-   → 讀值 → **立即刪除**。有長期價值的檢查提升成正式 `check_*` / `*_report` 函式。
-2. **同一個問題用兩條互不相關的路徑各算一次**，答案相同才算數（FW vs Lehmann vs 分塊；`trop_det` 三路；
-   幾何 `|β|=2` vs 代數 `Ext^{2,3}=0`）。
-3. **檢查器必須有負對照**：`ReportBroken`（破壞分配律）、`ReportLying`（謊稱冪等）必須被拒絕。
-4. **所有工作報告、建議、專案內容變更**只走 [`agent.v2.md`](agent.v2.md)。
+1. **零常駐單元測試、零煙霧測試**：開發時在受改 `.mbt` 檔案**最底部**寫臨時 `test { ... }`（搭配 `debug_inspect`）→ `moon test <單一套件> --target wasm-gc` 即驗 → **立即刪除臨時 `test` 塊**；具長期價值的驗證一律升格為正式純函式 `check_*` / `verify_*` / `law_*`（由 `arch_check.py` 強制檢查零殘留測試檔與零殘留 `test` 塊）。
+2. **雙路徑獨立互證**：同一個數學量用兩條互不相關的演算法各算一次，結果逐位相等才算通過（如 Bareiss vs SNF、多素數模 F4 vs 有理 Buchberger、HVM2 交互網 vs 依賴型 NbE、幾何 `|β|=2` vs 代數 `Ext^{2,3}=0`）。
+3. **強制負對照**：每個檢查器皆配備反例攻擊（Girard 宇宙悖論環、仿射對角變數複用、角點不相容邊界、`S₃` 非正規子群覆蓋、篡改證明憑證、破壞分配律半環皆必須被精確拒絕）。
+4. **治理與流水紀錄**：架構治理與階段驗收報告統一歸檔於 [`agent.v2.md`](agent.v2.md)，開發進度與待辦流水帳維護於 [`Dev.txt`](Dev.txt)。
 
 細節見 [`agent.md`](agent.md) Part I。
 
@@ -218,6 +155,4 @@ minimal 多項式餘式、`Trop` 的根與重數）。
 
 ## 授權與狀態
 
-授權見 [`LICENSE`](LICENSE)。本倉庫為研究級工程：`137/137`、`545/545` 與 `47/47` 是**這次執行算出來的**，
-不是宣稱；每一條限制在哪一個數字開始咬人，寫在 `cmd/semiringreport` §19 與各資料夾 README 的
-「限制」段落裡。
+授權見 [`LICENSE`](LICENSE)。本倉庫為研究級數學與系統工程：`137/137` 主定理、`545/545` 元理論定律、`47/47` 大一統證書與 `K₉ = 36/36` 跨聯邦全橋皆為**每次 CI 現場重算之結果**；每一項演算法的前提與退化邊界皆量化記錄於 `cmd/semiringreport` §19 與各套件 `README.md` 中。

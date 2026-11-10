@@ -1,8 +1,8 @@
 # `condensed/` — X 形交疊樞紐：凝聚數學、固態／液態模、Steenrod–Adams、持久不變量賬本
 
-> **架構位置**：`architecture.json` 中的 `condensed`，**Layer 3**，依賴 `gcd`、`algebra`、`symlib`、`semiring-trop`、`topos`、`scheme` —— 它是全倉**唯一同時匯入五個聯邦**的套件，因此正是雙 V 形架構中的 **X 形交疊樞紐（X-pivot）**。
-> 聯邦歸屬：**F6**（第六聯邦：下 V 基底 `@gcd` ＋ X 交疊凝聚樞紐）。
-> MoonBit 套件名：`vv0101v01/cubical-hermitian/condensed`。
+> **架構位置**：`architecture.json` 中的 `condensed`（**Layer 4**，依賴 `L1 condensed/core` 並透過 `reexport_core.mbt` 100% 重導出，聯同 `gcd`、`algebra-core`、`symlib`、`semiring-trop`、`topos`、`scheme`）—— 它是全倉**唯一同時匯入五個聯邦**的套件，因此正是雙 V 形架構中的 **X 形交疊樞紐（X-pivot）**。
+> 聯邦歸屬：**F6**（第六聯邦：`gcd` + `condensed/core` + `condensed`，共 **3 套件、8 個 `.mbt`、5,059 行**）。
+> MoonBit 套件名：`vv0101v01/cubical-hermitian/condensed`（純同調／Nöbeling／64× `@swar` Steenrod–Adams 輕核見 [`condensed/core/README.md`](core/README.md)）。
 
 ---
 

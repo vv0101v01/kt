@@ -1,7 +1,7 @@
-# `bridge/` — 上 V 頂點 `V₂`：星稜柱、K₇ 全橋、幾何—邏輯圖譜與 47/47 大一統證書
+# `bridge/` — 上 V 頂點 `V₂`：星稜柱、`K₉ = 36/36` 全配對橋、三大三元／四元合流管線與 47/47 大一統證書
 
-> **架構位置**：`architecture.json` 中的 `bridge`，**Layer 8**（倒數第二層），依賴 **18 個上游套件**（`gcd`、`root`、`algebra`、`symlib`、`semiring-{algebra,graph,matrix,trop,cat,nf}`、`topos`、`scheme`、`condensed`、`tensor`、`conjecture`、`accel`、`cubical-autonomy`、`cubical-structures`）。
-> 角色：**雙 V 形的上頂點 `V₂`**，也是**唯一**被允許同時匯入全部聯邦的整合層。
+> **架構位置**：`architecture.json` 中的 `bridge`，**Layer 8**（倒數第二層），依賴全部九大聯邦之上游公開介面（含 `meta` 四套件、`cubical-autonomy`、`cubical-structures`、`accel`、`condensed`、`scheme`、`topos`、`semiring-*`、`symlib`、`gcd`、`root`）。
+> 角色：**雙 V 形的上頂點 `V₂`**，也是**唯一**被允許同時匯入全部九大聯邦的整合層（18 個 `.mbt` 檔，共 **6,626 行**）。
 > MoonBit 套件名：`vv0101v01/cubical-hermitian/bridge`。執行入口：`cmd/showcase`。
 
 ---
@@ -37,7 +37,9 @@
 | `free_category.mbt` | 95 | DAG 的自由範疇 → `@sym.FinCat` 的內部建構器（`free_category_to_fincat`） |
 | `rotation_axis_bridge.mbt` | 465 | 共軛四元數凝聚中軸 ↔ Jacobi／Jordan／Hopf／Tamari 四族旋轉；逐族關係對齊、消元前後 `previous/current/deltas` 數值比較，以及 `11040→552→0` 相干角消元總報告 |
 | `intuitive_conjecture_lab.mbt` | 415 | 五條由實際結構直覺提出的猜想與反例攻擊：1 條有界倖存、4 條反例後修正；完整人讀報告見 [`INTUITIVE_CONJECTURES.md`](INTUITIVE_CONJECTURES.md) |
-| `malcev_presheaf_autonomy_bridge.mbt` | 58 | 構造性泛代數自主類型論 × 雙重否定核 `j(x)=¬¬x` 預層層化模板 × 64-bit SWAR 立方退化樹（`64594 + 942 = 65536`）跨聯邦驗證橋 |
+| `malcev_presheaf_autonomy_bridge.mbt` | 91 | 構造性泛代數自主類型論 × 雙重否定核 `j(x)=¬¬x` 預層層化模板 × 64-bit SWAR 立方退化樹（`64594 + 942 = 65536`）× 54 項高階立方結構跨聯邦驗證橋 |
+| `meta_k9_unification.mbt` | 536 | **九聯邦完全圖 `K₉ = 36/36` 全配對跨聯邦雙邊橋**（`K8-22..28` + `K9-29..36`）與 **`F7 → F9 → F4 → F1` 四聯邦定理自動晉升管線** |
+| `f2_f3_f6_triad_bridge.mbt` | 296 | **`F2 ↔ F3 ↔ F6` 對稱—半環—凝聚三元合流橋**（`A₅` 序對 2-軌道 Burnside Möbius ↔ Four-Russians/M4RI/Hopcroft/Johnson/3D 牛頓細分 ↔ 構造性 Nöbeling 自由基底與 64× `@swar` Steenrod–Adams `η³=4ν`） |
 
 ---
 

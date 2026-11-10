@@ -23,14 +23,15 @@ Layer 1  groebner_ideal.mbt                  多元多項式環、單項序、Bu
 
 ---
 
-## 2. 檔案清單（5 檔，約 5.0k 行）
+## 2. 檔案清單（6 檔，共 6,150 行）
 
 | 檔案 | 行數 | 主題 |
 |---|---:|---|
+| `f4_macaulay_swar.mbt` | 1168 | 7 變數 7-bit `Mono64` 無分支 3 指令單項式整除／`GRevLex`、Yan 對數地理桶（Geobuckets）、Gebauer–Möller 臨界對判準、串接 `@swar.gf2_rref_eliminate_u64` 之 Lazard–Macaulay M4RI 布林 Faugère F4 `f4_boolean_groebner_gf2`，以及三素數 CRT + `ugcd_rat_recon_bigint` 有理重構模 F4 `f4_groebner_rat_modular` |
 | `groebner_ideal.mbt` | 1210 | 多元多項式、三種單項序、Buchberger 約化 Gröbner 基（規範形）、消元／交／商／飽和、Rabinowitsch Nullstellensatz、根理想、Krull 維度 |
 | `sheafification_affine_reduced.mbt` | 585 | 座標環與環同態、`O(D(f))` 局部化截面、單位分解層化、準相干模 `M~`、約化概形 `X_red` 與泛性質 |
-| `derived_structural_theorems.mbt` | 703 | Kähler 微分 `Ω¹_{B/A}`、`Fitt₀`、非分歧／平展判準、Jacobi 奇異軌跡與 Tjurina 數 `τ`、Hilbert 多項式、吹脹解消、`F_{p²}` Frobenius 下降 |
-| `scheme_morphisms_affine_proper.mbt` | 1272 | 黏合概形與重疊資料、典範圖集（`𝔸ⁿ`、`ℙ¹`、`ℙ²`、雙原點直線、去點平面）、態射與纖維積、對角分離性、仿射態射判定、`ℚ((t))` Laurent 級數、DVR 賦值真判定 |
+| `derived_structural_theorems.mbt` | 703 | Kähler 微分 `Ω¹_{B/A}`、Grassmann–Plücker `O(k·2^k)`／Berkowitz `O(k⁴)` 行列式、`Fitt₀`、非分歧／平展判準、Jacobi 奇異軌跡與 Tjurina 數 `τ`、Hilbert 多項式、吹脹解消、`F_{p²}` Frobenius 下降 |
+| `scheme_morphisms_affine_proper.mbt` | 1272 | 黏合概形與重疊資料、典範圖集（`𝔸ⁿ`、`ℙ¹`、`ℙ²`、雙原點直線、去點平面）、態射合成與纖維積、對角分離性、仿射態射判定、`ℚ((t))` Laurent 級數、DVR 賦值真判定 |
 | `cycles_dual_points_categorify.mbt` | 1212 | `ℙ¹` 的 Weil／主除子與有理等價、`ℙ²` Bézout 交點數、Čech 上同調算 `O(n)`、Serre 對偶與 Riemann–Roch、平面曲線 `ω_C^•`、點函子 `h_X(R)`、Zariski 切空間、Chow 對應與 `h(ℙ¹) = 1 ⊕ L` |
 
 ---

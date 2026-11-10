@@ -195,14 +195,13 @@ defect.
 |---|---|---|
 | **`agent.md`** (this file) | Binding policy + the full folder/sub-package map + reading orders + README template | English |
 | [`agent.v2.md`](agent.v2.md) | Governance: architecture rules, 7-way `cubical` split, MoonBit style, WGSL portability, refactor records, **all work reports and proposals** | Chinese |
-| [`readme.v2.md`](readme.v2.md) | Root overview: the 8-federation double-V architecture, package→federation table, quick commands | Chinese |
-| **`<folder>/README.md`** × 16 | One per top-level folder: file-by-file reading of every `.mbt` in it | Chinese |
-| **`<folder>/<sub>/README.md`** × 28 | One per nested sub-package inside `cubical/`, `semiring/`, `cmd/` | Chinese |
-| `architecture.json` | Machine-readable source of truth: 9 federations + apex, 46 packages, 55 components | JSON |
+| [`readme.v2.md`](readme.v2.md) | Root overview: the 9-federation + apex architecture, package→federation table, quick commands | Chinese |
+| **`<folder>/README.md`** × 17 | One per top-level folder (`gcd/` .. `webgpu/`, including `meta/`): file-by-file reading of every `.mbt` in it | Chinese |
+| **`<folder>/<sub>/README.md`** × 40 | One per nested sub-package inside `cubical/`(9), `semiring/`(15), `cmd/`(6), `meta/`(4), plus the 6 decoupled light cores (`symlib/core`, `algebra/core`, `condensed/core`, `topos/site`, `conjecture/kernel`, `accel/swar`) | Chinese |
+| `architecture.json` | Machine-readable source of truth: 9 federations + apex, **52 packages, 61 components** | JSON |
 | `tools/arch_check.py` | Enforces the above and prints the totals quoted everywhere | Python |
 
-**Total documentation written for this map: 16 + 27 = 43 per-folder READMEs, 5,474 lines**
-(2,536 lines for the 16 top-level files, 2,938 for the 27 nested ones).
+**Total documentation coverage: 100% of all 52 MoonBit packages + infrastructure folders (`17` top-level + `40` nested sub-package `README.md`s, plus root `README.md` / `readme.v2.md` / `agent.v2.md`).**
 
 **Rule for maintainers:** if you add, remove, split, merge, or rename a package, you update **three**
 places in one commit — `architecture.json`, the affected `README.md`(s), and the corresponding table row
@@ -211,98 +210,110 @@ same severity as a failing gate.
 
 ---
 
-## 5. The 16 top-level folders
+## 5. The 17 top-level folders
 
-`.mbt` counts and line counts are the on-disk truth for that folder (**recursive** for the three package
-groups `cubical/`, `semiring/`, `cmd/`, whose code lives one level down). "README" is the length of that
-folder's `README.md` in lines.
+`.mbt` counts and line counts are the on-disk truth for that folder (**recursive** for folders containing nested sub-packages).
 
-| # | Folder | Federation · layer | `.mbt` | Lines | README | What it is |
-|---:|---|---|---:|---:|---:|---|
-| 1 | [`gcd/`](gcd/README.md) | F6 · L0 (lower-V apex `V₁`) | 2 | 1,196 | 136 | Five-domain generic elimination GCD: `F_p` RREF, `ℤ` HNF/SNF, CRT, Grassmann duality, free-group reduction, six-domain certificates |
-| 2 | [`algebra/`](algebra/README.md) | F1 · L1 | 22 | 18,797 | 165 | Exact rational/algebraic tower: complete polynomial factorization, number fields, Jordan theory, certified intervals, transcendence certificates |
-| 3 | [`cubical/`](cubical/README.md) | F1 · L0–L5 (**8 sub-packages**) | 70 | 73,858 | 239 | The trusted dependent-cubical core: NbE, Kan, Glue, univalence, HITs, ROBDD/CDCL, elaborator, persistence, and constructive universal algebra autonomy |
-| 4 | [`symlib/`](symlib/README.md) | F2 · L1 | 26 | 8,768 | 159 | Finite symmetry: individualisation–refinement, Schreier–Sims, canonical forms, `G`-sets & Burnside, categorification, Yoneda/Kan |
-| 5 | [`semiring/`](semiring/README.md) | F3 · L1–L4 (**15 sub-packages**) | 38 | 9,778 | 161 | Idempotent/star/tropical semirings and a "types are theorems" algorithm library, plus the 19-section measurement report |
-| 6 | [`topos/`](topos/README.md) | F4 · L2 | 7 | 7,530 | 142 | Grothendieck/elementary toposes: sites, sheaves, `Ω_J`, `¬¬` sheafification template, bi-Heyting/Alexandrov/Chu dualities, geometric morphisms, cohomology |
-| 7 | [`scheme/`](scheme/README.md) | F5 · L2 | 5 | 4,982 | 142 | Algebraic geometry: Gröbner bases, glued schemes, Kähler/Fitting, Serre duality, valuative truth test, Chow motives |
-| 8 | [`condensed/`](condensed/README.md) | F6 · L3 (X-overlap hub) | 4 | 3,249 | 189 | Condensed mathematics: profinite towers, solid/liquid modules, Steenrod–Adams, persistent-invariant ledger, quaternion rotation axis, four conjectures |
-| 9 | [`tensor/`](tensor/README.md) | F7 · L2 | 2 | 1,769 | 165 | Multilinear tensor geometry: the 6,561-tensor `𝔽₃` atlas, discrete Radon, Clifford spinors, non-crossing forests, VR homology |
-| 10 | [`conjecture/`](conjecture/README.md) | F7 · L5 | 2 | 1,291 | 169 | Lakatos conjecture-evolution engine: automatic conservation-law discovery, out-of-sample transfer, five epistemic lenses, 12 cross-federation conjectures |
-| 11 | [`bridge/`](bridge/README.md) | apex · L7 (upper-V apex `V₂`) | 16 | 5,496 | 213 | `K₇` 21/21 bridges, four-family rotation axis, Mal'cev/¬¬-presheaf/autonomy bridge, five intuition-driven conjectures, geometry–logic atlas, 47/47 certificates |
-| 12 | [`accel/`](accel/README.md) | F8 · L4 | 6 | 3,181 | 186 | CPU 64-bit SWAR (M4RI / GF(3) / Face / Cubical Degeneracy) + Ozaki II / RNS NTT / Scanbox / HVM2 + WGSL shaders |
-| 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 822 | 149 | Executable crash-consistency model (content `fsync` before the directory entry) + BFT `3f+1` quorum durable replicas |
-| 14 | [`cmd/`](cmd/README.md) | 5 executables · L2–L8 | 10 | 3,844 | 136 | Theorem ledger (`129`), unification showcase (`47`) plus rotation-axis report, symmetry demo/bench, semiring measurement report (`§1–§19`) |
-| 15 | [`tools/`](tools/README.md) | infrastructure (not a MoonBit package) | 0 | 0 | 96 | `arch_check.py`: federation partition, file ownership, `moon.pkg` imports, source reference graph, statistics |
-| 16 | [`webgpu/`](webgpu/README.md) | F8 browser side | 0 | 0 | 98 | Zero-dependency single-page verifier: `navigator.gpu` detection, 6 WGSL audits, CPU-SWAR bitwise cross-check |
+| # | Folder | Federation · layer | `.mbt` | Lines | What it is |
+|---:|---|---|---:|---:|---|
+| 1 | [`gcd/`](gcd/README.md) | F6 · L0 (lower-V apex `V₁`) | 3 | 1,683 | Five-domain generic elimination GCD: 16-lane lazy `F_p` RREF, HMM `ℤ`-SNF, Bareiss det, modular HNF, CRT, Wang rational recon & digest chain |
+| 2 | [`algebra/`](algebra/README.md) | F1 · L1–L2 (`algebra/core` + `algebra`) | 23 | 19,282 | Exact rational/algebraic tower (`Rat` `Int64` fast path, Bareiss/Ozaki-II `QMat`, complete factorization, number fields, Jordan, certified intervals, transcendence) |
+| 3 | [`cubical/`](cubical/README.md) | F1 · L0–L6 (**9 sub-packages**) | 77 | 78,794 | Trusted dependent-cubical core: Kalman free De Morgan `I_DM`, CCHM `Cofib(n)`, NbE, Kan, Glue, univalence, HITs, `O(Δ)` HOU, BFT/MVCC store, universal algebra autonomy & 54 cubical structures |
+| 4 | [`symlib/`](symlib/README.md) | F2 · L0–L1 (`symlib/core` + `symlib`) | 27 | 9,061 | Finite symmetry: hardware `popcnt` `BitVec`, unbounded `PermLut`, Schreier–Sims, McKay search, Holt arbitrary-rank subgroup lattices, Burnside Möbius & groupoid Yoneda/Kan |
+| 5 | [`semiring/`](semiring/README.md) | F3 · L1–L4 (**15 sub-packages**) | 39 | 10,982 | `@swar` Bool/GF(2) GEMM, 3D gift-wrapping Newton subdivision, Karp tropical eigenpairs, Johnson negative-weight APSP, Min-Fill VE & Hopcroft `O(\|Σ\|\|Q\|log\|Q\|)` minimal DFA |
+| 6 | [`topos/`](topos/README.md) | F4 · L2–L3 (`topos/site` + `topos`) | 9 | 8,210 | Grothendieck sites, `Sieve64` SWAR bi-Heyting kernel, MAC matching families, `¬¬` Boolean sheafification, Alexandrov/Chu dualities, geometric morphisms, Torsors & cohomology |
+| 7 | [`scheme/`](scheme/README.md) | F5 · L3 | 6 | 6,150 | `Mono64` SWAR, Yan geobuckets, M4RI Boolean F4, multi-prime CRT modular F4, Grassmann–Plücker det, glued schemes, Kähler/Fitting, Serre duality & Chow motives |
+| 8 | [`condensed/`](condensed/README.md) | F6 · L1–L4 (`condensed/core` + `condensed`) | 5 | 3,376 | Profinite towers, constructive Nöbeling unimodular basis, Roos–Milnor `R¹lim`, solid/liquid modules, 64× `@swar` Steenrod–Adams (`h₃=σ`, `η³=4ν`) & analytic stacks |
+| 9 | [`tensor/`](tensor/README.md) | F7 · L2 | 2 | 2,151 | 64-trit `𝔽₃` 6,561-tensor rank atlas `[1, 128, 4032, 2400]`, MRV/MAC exact Gromov–Hausdorff, dominated VR collapse, Radon & Clifford spinors |
+| 10 | [`conjecture/`](conjecture/README.md) | F7 · L3–L5 (`conjecture/kernel` + `conjecture`) | 3 | 1,436 | Half-GCD rational reconstruction, 64-bit `ctz` bitplane implication lattice, Lakatos conjecture-evolution engine & 12 cross-federation conjectures |
+| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 18 | 6,626 | **`K₉ = 36/36` all-pairs bridges**, `F7→F9→F4→F1` promotion, `F8×F5×F1` & `F2×F3×F6` triads, 18-entry geometry–logic atlas & 47/47 certificates |
+| 12 | [`accel/`](accel/README.md) | F8 · L0–L4 (`accel/swar` + `accel`) | 10 | 3,601 | `L0` 64-bit SWAR primitives (M4RI RREF, 64-trit `GF(3)`, Ozaki-II CRT, Stockham NTT, Cube64 butterfly, Scanbox, HVM2 `INetArena`) + 8/8 portable WGSL shaders |
+| 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 828 | Executable crash-consistency model (`fsync` ordering) + BFT `3f+1` quorum durable replicas |
+| 14 | [`meta/`](meta/README.md) | F9 · L0–L2 (**4 library sub-packages**) | 29 | 13,967 | Zero-business-dependency metatheory floor & three-axis engine: Paterson–Wegman DAG MGU, Bareiss, SLG tabling, bidirectional E-graph QIIT, NbE reflection, `V₅ = 65,536` HF64 & Paley Ramsey |
+| 15 | [`cmd/`](cmd/README.md) | 6 executables · L2–L9 | 11 | 4,013 | `cmd/main` (`137/137`), `cmd/metatheory` (`545/545`), `cmd/showcase` (`47/47` + `K₉=36/36`), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
+| 16 | [`tools/`](tools/README.md) | infrastructure | 0 | 0 | `arch_check.py`, `health_scan.py` (`5,745` fns, `0` dead code, `0` duplicates), `gen_laws.py`, `gen_labels.py` |
+| 17 | [`webgpu/`](webgpu/README.md) | F8 browser side | 0 | 0 | Zero-dependency browser verifier for all 8 registered WGSL compute shaders + CPU-SWAR bitwise cross-check |
 
-**Totals: 222 `.mbt` files, 152,883 lines** — identical to the `totals` printed by
-`python3 tools/arch_check.py`. Per-federation breakdown from the same run:
+**(Plus root package `.` : `18` `.mbt` files, `12,769` lines → Grand Total: `52` packages, `61` components, `282` `.mbt` files, `182,929` lines.)**
 
 | Federation | Packages | Files | Lines |
 |---|---:|---:|---:|
-| `cubical` | 11 | 108 | 103,095 |
-| `symlib` | 3 | 29 | 9,671 |
-| `semiring` | 16 | 43 | 12,577 |
-| `topos` | 1 | 6 | 6,767 |
-| `scheme` | 1 | 5 | 4,982 |
-| `condensed` | 2 | 6 | 4,445 |
-| `discovery` | 2 | 4 | 3,060 |
-| `accel` | 1 | 5 | 2,722 |
-| apex / unification | 2 | 16 | 5,564 |
-| root package | 1 | 18 | 12,393 |
+| `cubical` (incl. root, `algebra`, `hostfs`, `cmd/main`) | 14 | 121 | 111,679 |
+| `symlib` | 4 | 30 | 9,964 |
+| `semiring` | 16 | 44 | 13,795 |
+| `topos` | 2 | 9 | 8,210 |
+| `scheme` | 1 | 6 | 6,150 |
+| `condensed` | 3 | 8 | 5,059 |
+| `discovery` | 3 | 5 | 3,587 |
+| `accel` | 2 | 10 | 3,601 |
+| `meta` | 5 | 30 | 14,092 |
+| `unification` (apex) | 2 | 19 | 6,792 |
 
 ---
 
-## 6. The 27 nested sub-packages
+## 6. The 40 nested sub-packages
 
-`cubical/`, `semiring/`, and `cmd/` are **package groups**: each nested folder is its own `moon.pkg`
-with its own `README.md`. The three groups hold **113 `.mbt` files / 84,699 lines**; their READMEs total
-**2,941 lines**.
+`cubical/`, `semiring/`, `cmd/`, and `meta/` are package groups, joined by the 6 decoupled lightweight core sub-packages (`symlib/core`, `algebra/core`, `condensed/core`, `topos/site`, `conjecture/kernel`, `accel/swar`). Every nested folder is its own `moon.pkg` with its own `README.md`.
 
-### 6.1 `cubical/` — 8 sub-packages (70 files, 73,858 lines)
+### 6.1 `cubical/` — 9 sub-packages (77 files, 78,794 lines)
 
 | # | Sub-package | Layer | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
-| 1 | [`cubical/face_bdd/`](cubical/face_bdd/README.md) | L0 | 5 | 6,209 | 140 | Two decision procedures for faces: ROBDD canonical form (`O(1)` equality) and CDCL proofs (DRUP/DRAT/LRAT) |
-| 2 | [`cubical/finite/`](cubical/finite/README.md) | L1 | 4 | 1,828 | 141 | The finite universe: η-NbE, wiring, `ua` / `coe` / `PathP` / `Glue` / `J` — **the best entry point in the repository** |
-| 3 | [`cubical/hermitian/`](cubical/hermitian/README.md) | L2 | 9 | 3,199 | 143 | Hermitian projectors and certifiable cubical filling (float → `QuadC` → `AlgC`) + the Karoubi envelope |
-| 4 | [`cubical/kernel/`](cubical/kernel/README.md) | L2 | 20 | 30,899 | 180 | **The trust boundary**: dependent NbE, Kan, DSystem repair, inductive/HIT/open-IR schemas, ε₀ ordinals |
-| 5 | [`cubical/elaborator/`](cubical/elaborator/README.md) | L3 | 4 | 5,514 | 143 | Bidirectional elaboration; higher-order **matching** (decidable) / bounded Huet search / Goldfarb undecidability certificate |
-| 6 | [`cubical/homotopy/`](cubical/homotopy/README.md) | L3 | 14 | 12,281 | 189 | Computational homotopy: `π₁(S¹)≃ℤ`, `π₂(S²)≃ℤ`, `π₄(S³)≅ℤ/2ℤ`, Blakers–Massey, `Kₙ` coherence |
-| 7 | [`cubical/store/`](cubical/store/README.md) | L5 | 9 | 11,147 | 184 | `CHMODBIN` / `CHDAGBIN` / `CHREGBIN`, version negotiation, Ed25519 WAL, SCC-atomic hot reload |
-| 8 | [`cubical/autonomy/`](cubical/autonomy/README.md) | L5 | 5 | 2,645 | 85 | Constructive universal algebra autonomy, Mal'cev congruences/quotients, affine & bi-De Morgan cubical duality, Moore free paths, degeneracy trees, 5D alternating boundaries, bidirectional NF pruning, Kripke–Alexandrov validity & `¬¬` presheaf gluing |
-| 9 | [`cubical/structures/`](cubical/structures/README.md) | L6 | 6 | 4,374 | 88 | All 54 higher cubical structures (Swan strict constant-extent `Id`, free path fibration, 65,536-cube Eilenberg–Zilber split, affine bidirectional & `LJF` focusing, polynomial container Yoneda & SIP, Galois covering correspondence, torus/`RP²` torsion, HOU motive reconstruction, matroid boundary repair, computational reflection) + 26-verb × 14-composition atlas |
+| 1 | [`cubical/face_bdd/`](cubical/face_bdd/README.md) | L0 | 6 | 6,705 | 148 | Kalman free De Morgan `I_DM`, free CCHM `Cofib(n)`, `UInt64` SWAR fast path, ROBDD (`O(1)` eq) & CDCL (DRUP/DRAT/LRAT) |
+| 2 | [`cubical/finite/`](cubical/finite/README.md) | L1 | 4 | 1,834 | 141 | The finite universe: η-NbE, wiring, `ua` / `coe` / `PathP` / `Glue` / `J` — **the best entry point in the repository** |
+| 3 | [`cubical/hermitian/`](cubical/hermitian/README.md) | L3 | 9 | 3,201 | 143 | Hermitian projectors and certifiable cubical filling (float → `QuadC` → `AlgC`) + the Karoubi envelope |
+| 4 | [`cubical/kernel/`](cubical/kernel/README.md) | L2 | 20 | 30,968 | 180 | **The trust boundary**: dependent NbE, Kan, DSystem repair, `DLevelDecl`, inductive/HIT/open-IR schemas, ε₀ ordinals |
+| 5 | [`cubical/elaborator/`](cubical/elaborator/README.md) | L3 | 4 | 5,610 | 145 | Bidirectional elaboration; `O(Δ)` Trail-Stack HOU / higher-order matching / Goldfarb undecidability certificate |
+| 6 | [`cubical/homotopy/`](cubical/homotopy/README.md) | L3 | 14 | 12,264 | 189 | Computational homotopy: `π₁(S¹)≃ℤ`, `π₂(S²)≃ℤ`, `π₄(S³)≅ℤ/2ℤ`, Blakers–Massey, `Kₙ` coherence |
+| 7 | [`cubical/store/`](cubical/store/README.md) | L3 | 9 | 11,193 | 184 | `CHMODBIN` / `CHDAGBIN` / `CHREGBIN`, version negotiation, Ed25519 BFT WAL, SCC-atomic MVCC hot reload |
+| 8 | [`cubical/autonomy/`](cubical/autonomy/README.md) | L5 | 5 | 2,645 | 85 | Constructive universal algebra autonomy, Mal'cev congruences/quotients, affine & bi-De Morgan cubical duality, Moore free paths, degeneracy trees, 5D alternating boundaries, bidirectional NF pruning & `¬¬` presheaf gluing |
+| 9 | [`cubical/structures/`](cubical/structures/README.md) | L6 | 6 | 4,374 | 87 | All 54 higher cubical structures (Swan strict `Id`, free path fibration, 65,536-cube Eilenberg–Zilber split, affine bidirectional & `LJF` focusing, polynomial container Yoneda & SIP, Galois covering correspondence, torus/`RP²` torsion, HOU motive reconstruction, matroid boundary repair, computational reflection) + 26-verb × 14-composition atlas |
 
-### 6.2 `semiring/` — 15 sub-packages (38 files, 9,778 lines)
+### 6.2 `semiring/` — 15 sub-packages (39 files, 10,982 lines)
 
 | # | Sub-package | Layer | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
-| 1 | [`semiring/algebra/`](semiring/algebra/README.md) | L1 | 6 | 2,265 | 147 | Ten-trait hierarchy + `Ops` counter, seven concrete semirings, law checkers (with negative controls) |
-| 2 | [`semiring/matrix/`](semiring/matrix/README.md) | L1 | 6 | 1,594 | 154 | Generic `Mat[E]`, six multiplications, four closures, CSR sparsity, automatic cache-parameter selection |
-| 3 | [`semiring/graph/`](semiring/graph/README.md) | L2 | 4 | 569 | 104 | Bitset closure, functional decomposition, Dijkstra, multi-objective Pareto (partial order ⇒ Dijkstra is illegal) |
+| 1 | [`semiring/algebra/`](semiring/algebra/README.md) | L1 | 6 | 2,208 | 147 | Ten-trait hierarchy + `Ops` counter, seven concrete semirings, `CyclicSet` hardware `popcnt`, law checkers (with negative controls) |
+| 2 | [`semiring/matrix/`](semiring/matrix/README.md) | L2 | 6 | 1,797 | 154 | Generic `Mat[E]`, `@swar` Four-Russians 64-bit Bool & M4RI `GF(2)` GEMM, SWAR closures, CSR sparsity |
+| 3 | [`semiring/graph/`](semiring/graph/README.md) | L3 | 4 | 643 | 104 | Bitset closure, functional decomposition, Dijkstra, Bellman–Ford + Johnson negative-weight APSP, multi-objective Pareto |
 | 4 | [`semiring/io/`](semiring/io/README.md) | L2 | 1 | 153 | 58 | `Bytes`-direct parsing vs. the naive path, reproducible synthetic data |
-| 5 | [`semiring/monoid/`](semiring/monoid/README.md) | L2 | 1 | 530 | 81 | Prefix scan / segment tree / sparse table / Fenwick — **four strengths, four type-class costs** |
-| 6 | [`semiring/par/`](semiring/par/README.md) | L2 | 2 | 159 | 73 | Backend-agnostic parallelism contract: chunking, two-pass scan (elementwise identical to sequential) |
-| 7 | [`semiring/sim/`](semiring/sim/README.md) | L2 | 2 | 261 | 96 | Parameterised cache model + access trace + `time_min` (minimum, not mean) |
-| 8 | [`semiring/bp/`](semiring/bp/README.md) | L3 | 1 | 354 | 82 | Generalised distributive law: one program, `Prob` = sum-product, `TropMax` = MAP; exact on trees, error measured on cycles |
+| 5 | [`semiring/monoid/`](semiring/monoid/README.md) | L2 | 1 | 533 | 81 | Prefix scan / segment tree / sparse table / Fenwick — **four strengths, four type-class costs** |
+| 6 | [`semiring/par/`](semiring/par/README.md) | L1 | 2 | 159 | 73 | Backend-agnostic parallelism contract: chunking, two-pass scan (elementwise identical to sequential) |
+| 7 | [`semiring/sim/`](semiring/sim/README.md) | L1 | 2 | 261 | 96 | Parameterised cache model + access trace + `time_min` (minimum, not mean) |
+| 8 | [`semiring/bp/`](semiring/bp/README.md) | L2 | 1 | 535 | 82 | Generalised distributive law + Min-Fill exact variable elimination `bp_exact_all_marginals_ve` on loopy factor graphs |
 | 9 | [`semiring/cat/`](semiring/cat/README.md) | L3 | 3 | 554 | 100 | Free category (hom-sets), set matrices, decategorification (cardinality preserves multiplication), Maslov dequantisation |
-| 10 | [`semiring/nf/`](semiring/nf/README.md) | L3 | 3 | 712 | 101 | DFA minimisation + canonical strings, Brzozowski derivatives, monoid word problem (two independent paths) |
-| 11 | [`semiring/par_host/`](semiring/par_host/README.md) | L2 (platform ext.) | 1 | 112 | 69 | `supported_targets: native`; structured concurrency; **honestly states that one thread does not speed up CPU work** |
-| 12 | [`semiring/ratelimit/`](semiring/ratelimit/README.md) | L3 | 2 | 489 | 97 | GCRA with a single `tat` cell + hierarchical limiting + eviction counters |
+| 10 | [`semiring/nf/`](semiring/nf/README.md) | L1 | 3 | 903 | 101 | 64-bit hashed Brzozowski DFA construction + Valmari–Hopcroft `O(\|Σ\|\|Q\|log\|Q\|)` DFA minimisation, monoid word problem |
+| 11 | [`semiring/par_host/`](semiring/par_host/README.md) | L4 (platform ext.) | 1 | 112 | 69 | `supported_targets: native`; structured concurrency |
+| 12 | [`semiring/ratelimit/`](semiring/ratelimit/README.md) | L1 | 2 | 490 | 97 | GCRA with a single `tat` cell + hierarchical limiting + eviction counters |
 | 13 | [`semiring/spline/`](semiring/spline/README.md) | L3 | 1 | 348 | 71 | Periodic cubic splines in three agreeing solvers; the monoid (`AffineM`) path solves no linear system |
-| 14 | [`semiring/trop/`](semiring/trop/README.md) | L3 | 3 | 1,307 | 115 | Tropical polynomial roots with multiplicity, Newton polytope dual subdivision (integer area conservation), `trop_det` three ways |
-| 15 | [`semiring/app/`](semiring/app/README.md) | L4 | 2 | 371 | 79 | Transitive closure (three agreeing algorithms) + one matrix, two semirings, two different answers |
+| 14 | [`semiring/trop/`](semiring/trop/README.md) | L2 | 3 | 1,631 | 115 | Tropical roots, 3D ridge gift-wrapping Newton subdivision `O(n log n + n·#Faces)`, Karp tropical eigenpairs, `trop_det` |
+| 15 | [`semiring/app/`](semiring/app/README.md) | L4 | 3 | 655 | 79 | Transitive closure + consensus + portable `wasm-gc` verification suite `verify_semiring_wasm_suite` |
 
-### 6.3 `cmd/` — 5 executables (10 files, 3,844 lines)
+### 6.3 `cmd/` — 6 executables (11 files, 4,013 lines)
 
 | # | Sub-package | Target | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
-| 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | A six-line entry point: the `Bool` from `print_report()` becomes the exit code |
-| 2 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 136 | 66 | Narrative output for seven federations × `K₇` 21/21 × double-V plus the quaternion rotation axis, each with a quantitative witness |
-| 3 | [`cmd/symdemo/`](cmd/symdemo/README.md) | all | 1 | 309 | 65 | `symlib` demo: "derived vs. direct" two-path agreement + monad laws |
-| 4 | [`cmd/symbench/`](cmd/symbench/README.md) | all | 2 | 594 | 88 | 12-case full-pipeline timing + seven derived-algorithm families (A–G) with `OK/FAIL × cost ratio` |
-| 5 | [`cmd/semiringreport/`](cmd/semiringreport/README.md) | **native only** | 5 | 2,799 | 118 | The 19-section measurement report; §19 turns every limitation into a measured number |
+| 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | Entry point for the `137/137` theorem ledger (`print_report()`) |
+| 2 | [`cmd/metatheory/`](cmd/metatheory/README.md) | all | 1 | 125 | 31 | Ninth Federation entry point recomputing all `545/545` metatheory laws across `86` `law_*` functions |
+| 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 166 | 66 | Nine federations × `K₉ = 36/36` × three cross-federation triads/pipelines × `47/47` certificates |
+| 4 | [`cmd/symdemo/`](cmd/symdemo/README.md) | all | 1 | 309 | 65 | `symlib` demo: "derived vs. direct" two-path agreement + monad laws |
+| 5 | [`cmd/symbench/`](cmd/symbench/README.md) | all | 2 | 594 | 88 | 12-case full-pipeline timing + seven derived-algorithm families (A–G) |
+| 6 | [`cmd/semiringreport/`](cmd/semiringreport/README.md) | **native only** | 5 | 2,813 | 118 | The 19-section measurement report; §19 turns every limitation into a measured number |
+
+### 6.4 `meta/` & decoupled lightweight core sub-packages — 10 sub-packages (53 files, 29,938 lines)
+
+| # | Sub-package | Layer | `.mbt` | Lines | What it is |
+|---:|---|---|---:|---:|---|
+| 1 | [`meta/core/`](meta/core/README.md) | L0 | 12 | 4,903 | Ordinals, `Int64` Bareiss, Paterson–Wegman linear DAG MGU, matroids, complexes, Paley Ramsey (`R(4,4)=18, R(3,5)=14`) & universal algebra laws |
+| 2 | [`meta/instances/`](meta/instances/README.md) | L1 | 6 | 4,206 | Horn/SLG tabled resolution, ordinal termination, critical-pair coherence, `H¹` gluing & matroid characterization |
+| 3 | [`meta/iit/`](meta/iit/README.md) | L1 | 5 | 2,811 | Induction-induction Kleene slice tower (`Fin` lags `Nat`), bidirectional E-graph QIIT & STLC β index transport |
+| 4 | [`meta/reflect/`](meta/reflect/README.md) | L2 | 6 | 2,047 | NbE `decide_eq` + replayable certificates `check_cert`, Ackermann `V₅ = 65,536` HF64 & Mahlo universe reflection |
+| 5 | [`accel/swar/`](accel/swar/README.md) | L0 | 6 | 2,300 | Zero-dependency 64-bit SWAR: 64-trit `GF(3)`, M4RI RREF, Ozaki-II DP4A CRT, Stockham NTT, Cube64 butterfly, Scanbox & HVM2 `INetArena` |
+| 6 | [`symlib/core/`](symlib/core/README.md) | L0 | 11 | 3,316 | Zero-dependency symmetry kernel: hardware `popcnt` `BitVec`, unbounded `PermLut`, Schreier–Sims & McKay search |
+| 7 | [`algebra/core/`](algebra/core/README.md) | L1 | 3 | 2,938 | `Rat` `Int64` fast path, `Poly`/`QPoly` & Bareiss/Ozaki-II `QMat` decoupled from field towers |
+| 8 | [`condensed/core/`](condensed/core/README.md) | L1 | 2 | 1,953 | `CompactProfiniteTower`, constructive Nöbeling unimodular basis, Roos–Milnor `R¹lim` & 64× `@swar` Steenrod–Adams |
+| 9 | [`topos/site/`](topos/site/README.md) | L2 | 5 | 5,046 | Linear-algebra-free Grothendieck sites, `Sieve64` SWAR bi-Heyting kernel, MAC gluing, sheafification, `Ω_J` & Torsors |
+| 10 | [`conjecture/kernel/`](conjecture/kernel/README.md) | L3 | 1 | 418 | Half-GCD modular rational reconstruction & 64-bit `ctz` bitplane implication lattice |
 
 ---
 

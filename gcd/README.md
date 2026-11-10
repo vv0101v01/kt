@@ -26,9 +26,10 @@
 
 | 檔案 | 行數 | 職責 |
 |---|---:|---|
-| `elim_snf.mbt` | 818 | `F_p` 精確線性代數（RREF、秩、零空間、行列式）＋ `BigInt` 整數矩陣、Smith 正規形 `U·M·V = D`、Hermite 正規形、擴展歐幾里得、CRT 對稱重建、`ℤ`-整數零空間基底 |
+| `elim_snf.mbt` | 1126 | `F_p` 精確線性代數（16-lane 轉置延遲取模 `fp_mat_mul`、單次取模 `fp_rref`、秩、零空間、行列式）＋ `BigInt` 整數矩陣、Havas–Majewski–Matthews 範數導引 Smith 正規形 `zmat_snf`、無分數 Bareiss 行列式 `zmat_det_bareiss`、Domich–Kannan–Trotter 模有界 Hermite 正規形 `zmat_hnf_modular`、擴展歐幾里得、CRT 對稱重建與 `ℤ`-零空間基底 |
 | `universal_gcd.mbt` | 378 | 六域泛 GCD 證書 `[T-UnivGCD-SixFold]`、`p`-進賦值、導出 Tor 群階、自由群 `F₂` 字約化、canon 商格 meet/join、Grassmann 對偶、主定律檢查 |
-| `moon.pkg` | — | 只有 `moonbitlang/core/debug` 一個外部依賴（幾乎零依賴的基底） |
+| `digest_chain_ledger.mbt` | 179 | FNV-1a 64-bit 確定性摘要鏈、`ℤ`-零空間持久守恆律賬本，以及任意精度 Wang 模有理數重構 `ugcd_rat_recon_bigint` |
+| `moon.pkg` | — | 只有 `moonbitlang/core/debug` 與 `bigint` 標準庫依賴（零業務依賴 `L0` 基底） |
 | `pkg.generated.mbti` | — | 對外介面快照（由 `moon info` 產生） |
 
 ---
