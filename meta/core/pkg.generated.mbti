@@ -286,6 +286,10 @@ pub fn ufn(Int32, Array[UTerm]) -> UTerm
 
 pub fn uvar(Int32) -> UTerm
 
+pub fn law_ramsey_ex_r45_witness_graph_gives_r45_ge_25() -> Array[(String, Bool)]
+pub fn r45_witness_edges() -> Array[(Int32, Int32)]
+pub fn r45_witness_masks() -> Array[Int32]
+
 // Errors
 
 // Types and methods

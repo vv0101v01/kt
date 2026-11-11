@@ -46,13 +46,13 @@
      python3 tools/arch_check.py
      ```
    - 透過 `git diff *.mbti` 審視公開介面變化是否符合預期；若重構無意改變外部 API，`.mbti` 應保持零非預期變動。
-   - 跨聯邦重大變更完成後，按需執行（嚴格不加 `--release`）`moon run cmd/showcase --target wasm-gc`（`47/47` 大一統證書＋`K_9=36/36`＋`F8↔F5↔F1`＋`F2↔F3↔F6` 雙三元橋）、`moon run cmd/main --target wasm-gc`（`137/137` 定理總表）或 `moon run cmd/metatheory --target wasm-gc`（`545/545` 元理論定律逐條重算）做端到端驗收。
+   - 跨聯邦重大變更完成後，按需執行（嚴格不加 `--release`）`moon run cmd/showcase --target wasm-gc`（`48/48` 大一統證書＋`K_9=36/36`＋`F8↔F5↔F1`＋`F2↔F3↔F6` 雙三元橋）、`moon run cmd/main --target wasm-gc`（`139/139` 定理總表）或 `moon run cmd/metatheory --target wasm-gc`（`565/565` 元理論定律逐條重算）做端到端驗收（MoonBit 數字為遠端 2026-11-10 實測；合併截面未重跑）。
 
 ---
 
-## 二、宏觀架構治理（三輪重構 `S1–S4` ＋ `R1–R4` ＋ `T1–T4` 後之九聯邦五基石 DAG）
+## 二、宏觀架構治理（三輪重構 `S1–S4` ＋ `R1–R4` ＋ `T1–T4` 後之九聯邦五基石 DAG；2026-11-11 合併第十聯邦 `ualg`）
 
-全倉受 `architecture.json`、`tools/arch_check.py` 與 `tools/health_scan.py` 嚴格守門，遵循單向無環依賴（現況 **`9` 聯邦＋`unification` 大一統頂點、`52` 套件、`61` 元件、`282` 個 `.mbt`、`182,929` 行、`5,745` 個函式／方法 `0` 死碼／`0` 無引用型別／`0` 空殼列舉／`0` 完全相同重複**）：
+全倉受 `architecture.json`、`tools/arch_check.py` 與 `tools/health_scan.py` 嚴格守門，遵循單向無環依賴（合併後現況 **`10` 聯邦（九聯邦入雙 V／K₉、第十聯邦 `ualg` 平行、未入 K₉）＋`unification` 大一統頂點、`57` 套件、`66` 元件、`318` 個 `.mbt`、`199,215` 行**；`health_scan` 數字係遠端 2026-11-10 實測（`5,810` 函式／方法 `0` 死碼），合併截面未重跑）：
 
 - **Package Layer 0（五基石零依賴地基 `V₁`）**：
   1. `gcd`（五域泛消元基底：16-lane 延遲取模 `F_p` GEMM/RREF、Havas–Majewski–Matthews `ℤ`-SNF、Bareiss 無分數行列式 `zmat_det_bareiss`、Domich–Kannan–Trotter 模有界 `zmat_hnf_modular`、CRT、`ugcd_rat_recon_bigint`、FNV-1a 64-bit 摘要鏈與 `ℤ`-零空間賬本）；
@@ -67,7 +67,7 @@
   - `condensed` (`L4`)、`accel` (`L4`，含 `8/8` 靜態審計對齊 `webgpu/index.html` 之 WGSL 著色器)、`semiring/par_host` (`L4`)；
   - `cubical/autonomy` (`L5`)、`conjecture` (`L5`)、`cmd/semiringreport` (`L5`)、`cubical/structures` (`L6`，全體 54 項高階立方結構 × 26 動詞 × 14 組合)、`root` (`L7`)。
 - **Package Layers 8–9 / Component Layers 13–14（上頂點 `V₂` 大一統觀察層）**：
-  - `bridge` (`pkgL8` / `compL13`) 與 `cmd/showcase` (`pkgL9` / `compL14`)：九聯邦完全圖 **`K₉ = 36/36`**、`F7 → F9 → F4 → F1` 四聯邦定理自動晉升、`F8 ↔ F5 ↔ F1` 三元合流證書、18 項幾何—邏輯圖譜與 `47/47` 大一統證書。**任何下層聯邦絕對禁止反向匯入 `bridge`**。
+  - `bridge` (`pkgL8` / `compL13`) 與 `cmd/showcase` (`pkgL9` / `compL14`)：九聯邦完全圖 **`K₉ = 36/36`**、`F7 → F9 → F4 → F1` 四聯邦定理自動晉升、`F8 ↔ F5 ↔ F1` 與 `F2 ↔ F3 ↔ F6` 雙三元合流證書、18 項幾何—邏輯圖譜與 `48/48` 大一統證書。**任何下層聯邦絕對禁止反向匯入 `bridge`**。
 
 ---
 
@@ -285,11 +285,11 @@
 ```bash
 export PATH="$HOME/.moon/bin:$PATH"
 moon build --target wasm-gc                 # Finished, 0 errors
-moon run  cmd/metatheory --target wasm-gc   # 通過 485 / 485 定律
+moon run  cmd/metatheory --target wasm-gc   # 通過 551 / 551 定律
 moon run  cmd/main       --target wasm-gc   # passed 129/129
 moon run  cmd/showcase   --target wasm-gc   # 47/47 證書 + 硬體加速 all_ok
-python3 tools/arch_check.py                 # architecture ok: 44 packages, 53 components, 248 .mbt, 164,345 lines
-python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
+python3 tools/arch_check.py                 # architecture ok: 49 packages, 58 components, 272 .mbt, 173,944 lines
+python3 tools/gen_labels.py                 # 551 條 / 453 互異 / 146 族
 ```
 
 * 關鍵量化證據：NbE 一般 β **316 個項**；SLD 完備性 **21,672 組**目標/深度對照；QIIT 良定義 **25 對**居民；`s(s x)=x` 下 `s⁴z = z`、無限多 `sⁿz` 收成 **2 類**。
@@ -320,18 +320,422 @@ python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
 | 靜態 | `moon check --deny-warn --target wasm-gc` | 0 warning／0 error |
 | 建置 | `moon build --target wasm-gc` | `Finished` |
 | 登記新鮮度 | `python3 tools/gen_laws.py && git diff --exit-code -- 'meta/*/laws.mbt'` | 重新產生後工作區無差異（防「加了 `law_*` 卻忘記重生 `laws.mbt`」） |
-| 定律 | `moon run cmd/metatheory --target wasm-gc` | `通過 485 / 485 定律` |
-| 定理 | `moon run cmd/main --target wasm-gc` | `passed 129/129` |
-| 證書 | `moon run cmd/showcase --target wasm-gc` | `47/47`、硬體加速 `all_ok=true` |
+| 定律 | `moon run cmd/metatheory --target wasm-gc` | `通過 565 / 565 定律`（遠端 2026-11-10 實測；合併截面未重跑） |
+| 定理 | `moon run cmd/main --target wasm-gc` | `passed 139/139`（遠端 2026-11-10 實測；合併截面未重跑） |
+| 證書 | `moon run cmd/showcase --target wasm-gc` | `48/48`、`K₉=36/36`、硬體加速 `all_ok=true`（遠端 2026-11-10 實測；合併截面未重跑） |
 | 架構 | `python3 tools/arch_check.py` | `architecture ok` |
 
 觸發：`push` 到 `main`、`pull_request` 與 `workflow_dispatch`；`concurrency` 對同一 ref 取消舊跑，避免長跑堆積。
 
 ---
 
-## 十、2026-11-10 工作報告：構造性泛代數自主類型論 × 雙重否定核預層模板 × 全譜立方結構與 64-Bit SWAR 退化樹
+## 十、工作報告：2026-11-10 第十聯邦 `ualg/`（構造性泛代數 × 預層模板 × De Morgan 立方體）
 
-### 10.1 What changed（變更範圍與行數）
+輸入是四份文件（構造性泛代數自主類型論、預層模板、工作內容 4、組合範例）與工程約束／作業規範。流水帳在根目錄 `Dev.txt`（本輪新建）。
+
+### 10.1 What changed
+
+| 項目 | 內容 |
+|---|---|
+| 新聯邦 | `ualg`：`ualg/core`（L0）、`ualg/site`（L0）、`ualg/demorgan`（L1）、`cmd/ualg`（L2）。只匯入 `moonbitlang/core`，`allowed_external_packages` 為空 |
+| 規模 | 18 個 `.mbt`、6,618 行；27 條 `law_*`、141 個命題 |
+| 登記 | `architecture.json`（+1 聯邦、+4 套件、+4 元件）；`tools/arch_check.py` 的聯邦個數上限 9 → 10；CI 多一步 `moon run cmd/ualg --target wasm-gc` |
+| 文件 | `ualg/README.md`、三個子套件 README、`cmd/ualg/README.md`、`Dev.txt`；`agent.md` Part II 與 `cmd/README.md` 各加一列 |
+
+### 10.2 Why / invariant
+
+三個跨模組的接點，每個都是「同一個對象、兩到三條獨立計算路徑」：
+
+1. **[T-Kal]** DM(n) 的反鏈正規形 = 2n 個字面的單調真值表 = `ualg/core` 用泛代數閉包算出的 F_{V(𝟜)}(n)（6、168 逐元素對上）。
+2. **[T-F3]** 面格 𝔽(n)：`core.cg` 的商 = 「刪去不一致子句」的核 = `site` 的 O(Vⁿ)（5、48；|𝔽(3)| = 15,936）。
+3. **[T-Bool]** 同一個關係 x∧¬x ≈ 0 若當 De Morgan 同餘（連 ¬），其核恰是 ¬¬ 核子的核，商為 𝟚^(2ⁿ)。
+
+### 10.3 本輪被計算否定或修正的（四條）
+
+1. 猜想「D₄ 的 10 個子群在 DM(2) 上全部 Galois 閉」為假：9 個。例外是 C₄，Fix(C₄) = Fix(D₄)。定律改為陳述實際結果。
+2. `face.mbt` 首版兩條 FAIL 來自把任意標號的分割直接交給 `part_leq`（要求代表元形式）；改為先 `part_norm`，前提寫進 README。
+3. 層化定律首版的測試預層沒有一個是層，「F 是層 ⇔ η 同構」只驗到一邊；補了 4 個層並要求個數恰為 4。
+4. 伴隨計數首版有一個 G 是終對象（計數恆為 1）；換成有鑑別力的層。
+
+### 10.4 How verified
+
+| 指令 | 結果 |
+|---|---|
+| `moon check --deny-warn --target wasm-gc`（全倉庫） | Finished，0 warning／0 error |
+| `moon build --target wasm-gc`（全倉庫） | Finished，6 個執行檔 |
+| `moon run cmd/ualg --target wasm-gc` | 通過 141 / 141 個命題 |
+| `python3 tools/arch_check.py` | architecture ok: 10 federations + unification apex, 48 packages, 57 components, 266 .mbt files, 170,963 lines |
+
+工具鏈 moon 0.1.20261104／moonc v0.10.20。未用 `--release`。既有的 `cmd/metatheory`、`cmd/main`、`cmd/showcase` **沒有在本機重跑**（工程約束：接手後不得對既有專案跑測試）；它們由遠端 CI 負責。**本輪沒有 push**（沙盒無憑證），所以遠端 CI 尚未對這個 commit 跑過。
+
+### 10.5 Boundaries（明示）
+
+* 本聯邦沒有型別檢查器、沒有 Kan 運算、沒有 HIT；Kan 填充、懸掛、推出、圓、環面只做到**立方複形的同調層**。
+* DM(n) 完整列舉到 n = 2；Aut([3]) = B₃ 只驗「生成的 48 個都可逆」，沒有窮舉排除第 49 個。
+* `tools/gen_laws.py` 只處理 `meta/*`；本聯邦的 `laws.mbt` 是手寫的，CI 的登記新鮮度檢查不涵蓋它。
+* 與 `cubical/face_bdd`、`topos/`、`symlib/` 的橋接尚未做（列在 `Dev.txt` §九）。
+* 根目錄 `spec.mbt` 的符號登記表沒有加入本聯邦的符號。
+
+### 10.6 交付清單
+
+1. 入口：`moon run cmd/ualg --target wasm-gc`。
+2. 文件：`ualg/README.md`（總覽與界線）→ 三個子套件 README → `Dev.txt`（未完成與已定未開展）。
+3. 下一步候選：`Dev.txt` §九 的三條橋接；[ACCRS] 等變 Kan 條件的 B_n 版本。
+
+## 十一、工作報告：2026-11-10 第二輪 `ualg/cube/`（立方體上的層化 × 雙重否定核子）
+
+輸入：使用者單行指令「實做這2個大項：立方體上層化，雙重否定既核子」。經 `ask_user` 確認：
+範圍＝**新套件** `ualg/cube/`（聯邦內、Layer 2）；「層化」＝ sheafification（Sh_j(E) 左伴隨）；
+「雙重否定既核子」＝「雙重否定**即**核子」（j = ¬¬、j(j(p)) = j(p)）。流水帳在 `Dev.txt` 第 2 節。
+
+### 11.1 What changed
+
+| 項目 | 內容 |
+|---|---|
+| 新套件 | `ualg/cube`（L2）：`faces.mbt`（面碼↔頂點遮罩雙重索引）、`sheaf.mbt`（F×G、F+G、F⊠G、ρ、`psh_vertex`、70 個預層窮舉、V² 拒絕採樣）、`cubical_sheaf.mbt`（大項一）、`dneg.mbt`（大項二）、`laws.mbt`。只匯入 `moonbitlang/core` + 本聯邦 |
+| 規模 | 5 檔、1,194 行；2 章定律、26 個命題；`cmd/ualg` 擴充為 4 個套件、Layer 2 → **L3** |
+| 登記 | `architecture.json`：+1 套件／+1 元件（49 packages、58 components）；`arch_check.py` 無需改動（都在 5..10 聯邦內）；CI 不變（`moon run cmd/ualg` 已涵蓋） |
+| 文件 | `ualg/cube/README.md`（新）、`ualg/README.md`、`cmd/ualg/README.md`、`agent.md`、`Dev.txt`、本節 |
+
+### 11.2 新得到的定理
+
+大項二（雙重否定核子）：
+
+* **[T-Cube-1]** 立方體上 j = ¬¬ 的兩條獨立路徑一致：Heyting 否定（`hneg∘hneg`）= 頂點閉包；15,989 個開集逐一比對（n ≤ 3）。
+* **[T-Cube-3] Glivenko**：Fix(¬¬) = {u_S : S ⊆ 頂點}，S ↦ u_S 是 P(頂點) ≅ Fix(¬¬) 的布林代數同構（保補、保交；併 = j(u∨v)）；
+  正則子複形數 **4、16、256**（|O(V³)| = 15,936 = `face_count_recursive(3)` 對帳）。
+* **[T-Cube-4]** j ⊣ i（v 取正則開集；n ≤ 3）。**[T-Cube-5/T-Bool-cube]** DM(n) 布林反射的核 = j 的核（第三條路徑），類數 4、16。
+* **[T-Cube-6]** dim ≥ 1 的面（25 個）：j(∂σ) = j(↓σ)（球面與填充在布林化下不可分）；j 不保併（484 組反例）；
+  量詞與布林化不交換（j∃i ≠ ∃i j 4 組、j∀i ≠ ∀i j 44 組）。
+
+大項一（層化）：
+
+* **[T-Cube-S1] Sh_¬¬(□ⁿ) ≃ Set^{頂點}**：ρ_x 逐點雙射；且 ρ 是**顯式自然同構** F ≅ F̂(F|頂點)（n = 1 的全部 10 個層、n = 2 的 16 個子終層）。
+* **[T-Cube-S2]** 子複形 K 的層化 = 頂點閉包 a(K) = u_{verts K}（V¹、V² 全部子複形窮舉；V³ 抽 60 個 + 公式對帳）；
+  **子終 ¬¬-層 = 正則子複形**，4、16、256 個。
+* **[T-Cube-S3]** a(F)(x) = ∏_{v≤x}|F(v)|（V¹ 全部 **70** 個大小 ≤ 2 預層；V² 112 個；V³ 常數 Δ2、Δ3 算到頂纖維 256、6561）；
+  冪等 a(aF) ≅ aF；**F 層 ⇔ η_F 同構**。
+* **[T-Cube-S4] 層化只經由頂點決定**：a(aF⊠aG) = a(F⊠G)（Künneth）、a(F×G) = aF×aG、a(F+G) = a(aF+aG)。
+* **[T-Cube-S5] |Ω_¬¬(x)| = 2^{2^{dim x}}**（n ≤ 3 全部面）；對照 id-核子 Ω_id：頂 = 48 ≠ 16。
+* **[T-Cube-S6]** a ⊣ i 計數（V¹ 86 對；V² 32 對）；層 F、G 之間 |Nat(F,G)| = ∏_v |G(v)|^|F(v)|（100 對）；G = Ω（非層）時 16 ≠ 47。
+
+### 11.3 本輪被計算否定或修正的（七條）
+
+1. `a(F⊠G) ≅ aF⊠aG` 為假（F = G = Δ2：邊處 8 ≠ 16）→ 正確：a(aF⊠aG) = a(F⊠G)。
+2. `a(F+G) ≅ aF+aG`（逐點）為假 → 正確：a(F+G) ≅ a(aF+aG)（a 左伴隨保 Sh-餘極限）。
+3. Glivenko「Fix(¬¬) 保併」為假 → Fix 的併 = j(u∨v)（484 組對照）。
+4. `∂σ ≡ ↓σ` 對 σ = 頂點不成立 → 限制 dim ≥ 1，頂點情形寫進標籤。
+5. Ω_¬¬（V²）首版公式按錯誤元素序寫死 → 改為 `face_dim` 計算（與 V³ 同一段）。
+6. V³ 不做 15,936 個子複形的 `is_sheaf` 全窮舉（太慢）→ n ≤ 2 全窮舉 + n = 3 以格刻畫窮舉 + 代表元直驗，標籤誠實標註。
+7. a(Δk) 頂纖維的首版標籤字面數字寫錯（公式本身對）→ 已更正。
+
+### 11.4 How verified
+
+| 指令 | 結果 |
+|---|---|
+| `moon check --deny-warn --target wasm-gc`（全倉庫） | Finished，0 warning／0 error |
+| `moon build --target wasm-gc`（全倉庫） | Finished（6 個執行檔含 cmd/ualg） |
+| `moon run cmd/ualg --target wasm-gc` | 通過 **167 / 167** 個命題 |
+| `python3 tools/arch_check.py` | architecture ok: 10 federations + unification apex, **49 packages, 58 components, 271 .mbt files, 173,471 lines** |
+
+工具鏈同第 1 輪（moon 0.1.20261104／moonc v0.10.20），未用 `--release`。**既有套件未重跑**（工程約束）。**沒有 push**（沙盒無憑證），遠端 CI 未跑。
+
+### 11.5 Boundaries（明示）
+
+* V³ 二元核子公理只驗偽隨機 1,200 對（窮舉是 254M 對，沒做）。
+* Sh_¬¬(□ⁿ) ≃ Set^{頂點} 是**對尺寸窮舉 + ρ 的顯式自然同構**；不是類型論意義的證明。
+* Ω_¬¬ 只驗了逐面的大小公式；限制映射的具體形狀沒有驗。
+* 量詞與布林化不交換只做了反例計數（4／44），沒有分類所有反例的形狀。
+* 沒有與 `topos/`、`cubical/` 橋接；核子普查仍只在小偏序可行。
+* 本輪網絡搜索：[GLIV]（代數版 Glivenko：¬¬ 同態到正則元布林代數上，Springer 2008）、[MDL]（Rijke–Shulman–Spitters, Modalities in HoTT §3.3：¬¬-模態 = 沿 ¬¬ 拓撲層化；只對 hProp 等於 ¬¬ 本身——本輪把 j 與 a 分成兩個大項正是為此）、[CAUS]（arXiv:2607.15629，旁證）、[SUBLOC]（MathOverflow 60380：X^{¬¬} 最小稠密子locale）。**日期更正**：本輪實測 HKT 為 2026-11-10，第 1 輪文件日期正確，先前「2026-11-09」的判斷是錯的。
+
+### 11.6 交付清單
+
+1. 入口：`moon run cmd/ualg --target wasm-gc`（167/167）。
+2. 文件：`ualg/cube/README.md` → `ualg/README.md` → `Dev.txt` 第 2 輪。
+3. 下一步：`Dev.txt` §九——橋接（face_bdd／topos）、[GLIV] 類 Glivenko 定理在 DM(n) 上的陳述、V³ 二元公理窮舉（約 254M 對，需 Poset 遮罩最佳化）。
+
+## 十二、2026-11-10 第 3 輪：`meta/` 四個缺口的結案（MoonBit 側）
+
+任務面：「重新對 meta 所有缺口動工」。只動 MoonBit 側（Lean 凍結、無 toolchain）；
+不新增無關文件；既有 README／CAPABILITIES／agent 文件照舊同步；**不 push**。
+
+### 12.1 交付（四個缺口，全部有機器複驗）
+
+1. **STLC η-約簡**（`meta/iit/stlc.mbt`）：`stlc_eta` + `stlc_unweaken`（與 `subst_insert` 對稱的索引傳輸）。
+   `x ∉ FV(f)` 的**可判定形式**：vz/vs 表示法中，相對 binder 深度 δ 的任何 `vz`（ctor 4）絕對位置恰為 δ，
+   要命中「受綁變數」（f 根上下文位置 0）只可能是 `vz`——故「f 不含 `vz`」⟺「x ∉ FV(f)」。
+   η 例（`λx. (λy. y) x ↝ λy. y`）保型由 `icheck`／`iindex_of` 重算複驗（9 條檢查：良構、索引相同、
+   語法上等於 `stlc_ex_eta_rhs`、η 不再自動觸發、參數非受綁變數時不觸發、f 隔一層 binder 用到 x 時不觸發）。
+   邊界：root-only，與 β 一致；強正規化（SN）仍未證——見 §12.3。
+2. **matroidal_criterion (⇐) 的逐實例證書**（`meta/instances/characterize.mbt`）：
+   `matroidal_certificate`（產生：可解目標 = 公理可解目標；每個可解目標一個區塊 = 覆蓋它的公理規則；
+   區塊互斥檢查；合成規則 head 落在目標上 ⇒ 誠實回 `None`）+
+   `verify_matroidal_certificate`（**不看產生器**：分割完備性/互斥、區塊規則皆公理且 head 可合一其目標、
+   loop 不覆蓋任何目標、可解清單與現場重算一致、**2^n 窮盡對帳**，n ≤ 12，與 `submodularity_witness`
+   同一上限；n > 12 直接 false）。取代舊版「12 個樣本環境逐一對帳」。12 條檢查含：竄改證書（丟 loop、
+   砍可解清單）必須被驗證器拒絕；判準成立時貪心刪除對 n ≤ 4 的**每一種**刪除順序都得到最優解。
+   剩餘邊界寫在文件裡：Lean 側的全稱定理（原 O-義務）仍未做。
+3. **mirror_rule 的多目標問題**（`meta/instances/compose.mbt`）：
+   量測先行——⊨ 樸素鏡像在 ≥ 2 前提規則上**雙向都不對應**（`env_composite_chain`：
+   SLD 說可導、樸素鏡像說不可導，定律 #3 釘住此反例）。故：
+   (a) `mirror_exact(e)` 成為鏡像定理的**可執行前置條件**（≤ 1 前提）；
+   (b) 多目標的正確餘衍生 = **正向最小模型** `forward_least_model`（pattern 對實例單向匹配 +
+   吞併 collapse；∪ 項大小（目標大小 + 2）、原子數 256、輪數上限；三值誠實輸出：
+   `Some(true)` / `Some(false)`（不動點才可說否）/ `None`（超限拒絕））。
+   `forward_derivable` 的預算論證寫在函式註解：本系統每條規則的子目標實例都 ≤ 其結論，
+   故 |f| ≤ |goal| 可證；預算外的原子不可能參與本目標的推導。
+   7 個環境（含 `env_show` 的雙前提 `showPair`）× 4 個目標與 SLD 逐點一致（定律 #6）。
+4. **R(4,5) ≥ 25**（`meta/core/ramsey_ex.mbt`）：以**發表見證**機器複驗下界——McKay–Radziszowski
+   1995 完整目錄 `r45_24.g6`（352,366 張；CC BY 4.0）的**首張** (4,5,24)-graph 直接嵌入本倉
+   （24 個遮罩，124 條邊，度數 9×2／10×12／11×10）。兩條獨立演算法複驗：`ramsey_check_coloring`
+   （無紅 K₄、無藍 K₅）與 `g_clique_count` 遮罩交集（K₄ = 0；補圖 K₅ = 0 = 獨立 5-集）。
+   Lean/HOL4 對照：Gauthier–Brown (LIPIcs ITP 2024, 16:1–16:18) 以同一目錄為 R(4,5) > 24 的見證完成形式化。
+   上界仍為遞迴值 32（R(3,5)+R(4,4) = 14+18）——1995 年的 `R(4,5) = 25` 證明（3.2 CPU-years 窮舉）不在本倉範圍。
+
+量化：`cmd/metatheory` **485 → 527**（+42 條檢查：η 9、證書 12、餘衍生 10、R(4,5) 11）；
+`law_*` 63 → **67**；標籤 **485 → 527**（互異 **430**、**123** 族；core 126／instances 169／iit 173／reflect 59）；
+`lean/labels/moonbit-labels.md` 已由 `tools/gen_labels.py` 讀實際輸出重生。
+
+### 12.2 How verified
+
+| 指令 | 結果 |
+|---|---|
+| `moon run cmd/metatheory --target wasm-gc`（反覆跑直到全綠；中途兩次 FAIL：項大小預算論證、`env_show` 不在鏡像精確片段的斷言） | 通過 **527 / 527** 定律 |
+| `python3 tools/arch_check.py` | architecture ok: 10 federations + unification apex, **49 packages, 58 components, 271 .mbt files, 173,471 lines** |
+| `python3 tools/gen_laws.py` / `gen_labels.py` | laws.mbt 重生無漂移；標籤清單重生為 527／430／123 |
+| `moon check --deny-warn --target wasm-gc`（修錯期間） | Finished，0 warning／0 error |
+
+工具鏈同前（moon 0.1.20261104／moonc v0.10.20）；`/var/tmp/moonhome` 的 registry 曾被沙盒清空，
+`moon update` 重建後 `moonbitlang/async` 恢復可解析（教訓：`.mooncakes` 在工作區會持久化，registry 索引不會）。
+**沒有 push**（使用者指示：只在明示要求時推）；遠端 CI 對本輪 commit 未跑。
+**本輪未跑 `cargo`／Lean（凍結）**；`cmd/ualg` 未重跑（本輪未動 `ualg/`）。
+
+### 12.3 Boundaries（明示）
+
+* STLC：η 已做、**強正規化仍未證**；β/η 皆 root-only；`subst_insert` 的索引傳輸不涵蓋相依型別。
+* 擬陣證書：n ≤ 12 的**窮盡**對帳；n > 12 誠實 `false`；2^n 對帳成本寫在 `verify_*` 註解裡；
+  Lean 全稱定理未做；`(⇒)` 方向只有反例族，沒有構造性證明。
+* 餘衍生：有界（項大小／256 原子／燃料輪數）；`capped = true` 時「否」不可信（程式內三值處理）；
+  「預算外原子不可能參與本目標推導」的論證依賴「子目標 ≤ 結論」的規則形狀，已明示寫在程式註解裡。
+* R(4,5)：只有 **≥ 25**（發表見證機器複驗）；**不是 25 的證明**，更不是 `R(4,5) = 25`；
+  完整證明（1995）與其 HOL4 形式化（2024）是外部工作，本倉不重現。
+* R(5,5) 未動（43 ≤ R ≤ 48，雙邊超出本倉方法）；Lean 仍凍結。
+
+### 12.4 交付清單
+
+1. 入口：`moon run cmd/metatheory --target wasm-gc`（527/527）。
+2. 文件：`meta/README.md`（§7 邊界／§10 缺口處理）、`meta/CAPABILITIES.md`（第 3 輪補記）、
+   `lean/labels/moonbit-labels.md`（重生）、`README.md`／`readme.v2.md`（計數與 `--release` 修正）、
+   `.github/workflows/ci.yml`（標籤 527/527）、`Dev.txt` 第 3 輪。
+3. ~~下一步：STLC 強正規化~~（已由第 4 輪以「逐項 SN 證書」結案，見第十三節；普世定理仍屬 Lean 義務）、
+   擬陣證書全稱版（signed 表示 + 邏輯關係，
+   屬 Lean 義務）。R(4,5) 見證的上游逐邊交叉核對**已完成**（2026-11-10）：重新下載 `r45_24.g6`
+   第 1 行，以獨立 Python 解码器解碼（n = 24、276 個資料位元恰好耗盡、124 條邊、
+   度數 9×2／10×12／11×10），與 `meta/core/ramsey_ex.mbt` 嵌入的 24 個遮罩逐位一致。
+
+## 十三、2026-11-10 第 4 輪：推送暫緩 ＋ STLC 逐項 SN 證書（MoonBit 側）
+
+任務面：使用者要求「自已重新算過」→ 明示「我要求你先推」→（推送無法執行、使用者裁定暫緩）
+→「跟進 agent.v2 待辦事項」並指定先做 **STLC 強正規化**（第十二節末「下一步 1」）。
+
+### 13.1 交付（第十二節「下一步 1」結案；不是普世定理）
+
+**`meta/iit/sn.mbt`** ——逐項 SN 證書，β∪η、**所有位置**（ξ 基準）：
+* `stlc_one_step_reducts`：一步歸約窮舉（β∪η），結構等式去重。
+* `stlc_sn_depth(t, max_nodes) : Int32?`：完整歸約樹窮舉（記憶化）；`Some(k)` = 全部路徑 ≤ k
+  （完整樹驗明；對 STLC 項樹必有限故有預算即完整）；**預算超 ⇒ `None`（不是「不 SN」）**。
+* `stlc_sn_tree_typed(s, t, max_nodes) : Bool?`：樹上每個節點重跑 `icheck`。
+* 6 條新 `law_*`（73 總數）：電池良構＋有限證書（id/app1/app2/k_app/eta_deep/open_var）；
+  精確深度（id=0、app1=1、app2=1、eta_deep=1、k_app=2）；two_positions 恰 2 個互異一步歸約；
+  η-redex 探索（λh.λx. h x ⇒ λh. h）；預算三值；測度（最長路徑深度）沿每一步嚴格下降。
+
+`cmd/metatheory` 輸出新增一行（**527 → 551 定律全綠**）：
+`STLC 逐項 SN 證書（窮舉 β∪η 歸約樹，**不是**全稱定理）：two_positions 一步歸約數 = 2，k_app 深度 = 2`
+
+**另：R(4,5) ≥ 25 見證的上游逐邊交叉核對完成**（第十二節「下一步 3」；第 4 輪開場）：n = 24、
+124 邊、124×2 = 度數和 248、度數分佈 9×2／10×12／11×10、與嵌入遮罩逐位相等——
+上界仍 32；這不是 R(4,5) = 25 的證明。
+
+### 13.2 How verified
+
+| 指令 | 結果 |
+|---|---|
+| `moon check --deny-warn --target wasm-gc` | 0 warning／0 error（曾捕獲 `SnCtx` 未標 `priv`） |
+| `moon run cmd/metatheory --target wasm-gc` | 通過 **551 / 551** 定律 |
+| `python3 tools/gen_laws.py` | total law functions: **73**；`laws.mbt` 重生無漂移 |
+| `python3 tools/gen_labels.py` | **551 條／453 互異／146 族**（core 126／instances 169／iit 197／reflect 59）；工具現在也印出分套件統計 |
+| `python3 tools/arch_check.py` | architecture ok: 10 聯邦 + apex，**49 packages / 58 components / 272 .mbt / 173,944 行** |
+| `moon run cmd/ualg`（第 4 輪開場自算）、`cmd/main`、`cmd/showcase` | 167/167、129/129、47/47（本輪未動對應程式碼） |
+
+工具鏈 moon 0.1.20261104／moonc v0.10.20／wasm-gc；`moon update` 重建過 registry（勿 rm /var/tmp/*-build）；
+未用 --release；無 benchmark。
+
+### 13.3 Boundaries（明示）
+
+* **這不是全稱強正規化定理**：Tait–Girard 可歸約性／邏輯關係在本倉無法表達（Lean 凍結）；
+  普世命題仍未證。`Some(k)` 是最長路徑上界，不是項大小的函數；樹本質指數時只能 `None`。
+* 預算是「窮舉節點數」；共享子項經記憶化（結構等式）；`None` 不蘊含「項不終止」。
+* SN 證書對**封閉的 STLC 項**設計；開放項電池項（stlc_ex_var）僅作為 ICHT 檢查旁路納入，
+  未陳述開放項終止性的額外論述。
+* R(4,5) 上界仍 32；R(5,5) 未動；lean/ 凍結；**未 push**（使用者裁定暫緩）。
+
+### 13.4 交付清單
+
+1. 入口：`moon run cmd/metatheory --target wasm-gc`（551/551）；`meta/iit/sn.mbt` + `cmd/metatheory` 新增一行輸出。
+2. 文件：`meta/iit/README.md`（sn.mbt 行）、`meta/README.md`（§7 邊界表 β/η 行＋§10 第 1 項）、
+   `meta/CAPABILITIES.md`（現況＋第 4 輪補記）、`README.md`／`readme.v2.md`（計數＋SN 能力列）、
+   `lean/labels/moonbit-labels.md`（重生＋iit 分佈附註）、`lean/README.md`／`lean/WHY.md`／
+   `lean/labels/coverage.md`（計數）、`.github/workflows/ci.yml`（551/551）、`Dev.txt` 第十三節。
+3. 下一步（若繼續）：擬陣證書全稱版（需 Lean/signed 表示＋邏輯關係，**Lean 凍結**）；
+   ualg/cube ↔ cubical/face_bdd、topos/site_presheaf 橋接對帳；[GLIV] 類 Glivenko 在 DM(n) 陳述；
+   V³ 二元核子公理窮舉（≈254M 對，需 POSETT 遮罩最佳化）；Lean 全稱鏡射（解凍後）。
+
+## 十四、2026-11-10 第 5 輪：Lean 全面複工 —— O4 交付（誠實版本 + 反例）／ Universe.lean DEPRECATED
+
+任務面：使用者選定 Lean 解凍（「lean 全面複工，把積壓事項全部做」）。積壓範圍：賴 lean/WHY.md §3
+六個 metatheorem 義務 O1–O6＋ Universe.lean 的 §5.3 處置＋相關文件同步。
+
+### 14.1 交付物
+
+| 義務 | 狀態 | 內容 |
+|---|---|---|
+| **O4** | ✅ **完成（誠實版本）** | 原命題 `orientable e → WellFounded (Rewrites e)` **為假**；落倉嚴格充分條件版 `measureDecreasing ⇒ WellFounded`＋`envShow_terminating`（`lean/KtLaws/Instances/Termination.lean`，316 行）。反例 kernel 驗明 `kt_node_measure_orientation_unsound` |
+| O1 / O2 / O3 / O5 / O6 | ❌ **未完成（如實）** | 需要 logical relation／推導樹全歸納／signed QIIT／SCC 自建／club 交理論（無 mathlib）；預估 1–2／2–3／3–4／1／1–2 週；未動工。記錄於 WHY.md §6 |
+| Universe.lean 處置 | ⏸ §5.3 A/B/C 等裁決 | 保留＋檔首 DEPRECATED 標記；不刪除（刪除需 §5.3 裁決；B 另倉受推送 deferral 限制） |
+| 登記表／文件 | ✅ 同步 | Registry 492→**505**（+13：`uSize_apply`/`sum_map_le_of_count_le`/`root_size_decreases`/`uSizeList_rewrite_lt`/`rewrites_size_decreases`/`rewrites_restriction_wf`/`envShow_rules_measureDecreasing`/`envShow_terminating`/ct_*decide/ct_step/kt_node_measure_orientation_unsound）；UNIVERSAL 137→**146**；WHY/README/coverage 同步 |
+
+### 14.2 How verified
+
+| 指令 | 結果 |
+|---|---|
+| `lake build`（全倉，Lean v4.35.0） | 綠（25 jobs；`example : provedLaws.length = 505 := rfl` kernel 通過） |
+| `lake env lean` 型別探測 | headσ = 6、bodyσ = 7 交叉確認（反例雙邊） |
+| 文件計數一致性 | WHY.md/README.md/UNIVERSAL.md/coverage.md/根 README.md 全部更新到 505/146/593/9,286（用 wc 重算，非照抄舊值） |
+
+### 14.3 Boundaries（明示）
+
+* **沒有「假 O4」**：原 `orientable ⇒ WellFounded` 沒有被做出來，因為**它為假**（kernel 反例）；
+  落倉的是更嚴的充分條件定理。完整主張需化簡序（RPO/KBO）。
+* **O1/O2/O3/O5/O6 沒有任何 pseudo-done**：沒有 `sorry` 冒充義務完成；沒有新增假設蒙混。
+* MoonBit 側未動；CI 未動；R(4,5)/R(5,5) 未動；**未 push**。
+* 登記表手工同步（provedLaws/#check/length rfl/import）；`Registry.lean` header 過時「437」已修正。
+* O4 的承載說明：`uSize_apply` 以 mutual **def** 承載證明（嵌套歸納對 tactic `induction` 不支援，
+  結構遞迴仍由同一 equation compiler 編譯，kernel 檢查照實生效）。
+
+### 14.4 交付清單
+
+1. `lean/KtLaws/Instances/Termination.lean`（新，316 行）＋ `KtLaws.lean`／`KtLaws/Registry.lean` +import。
+2. `lean/KtLaws/Reflect/Universe.lean`（DEPRECATED header；定理照舊建置）。
+3. 文件：`lean/WHY.md`（O4 列重寫、§2.1 全表與表合計重算、§6 已授權清單/未完成清單）、
+   `lean/README.md`、`lean/UNIVERSAL.md`、`lean/labels/coverage.md`、根 `README.md`、
+   `Dev.txt` 第十四節、本節。
+4. **工作區**現況：`lake build` 綠；git tree 乾淨（提交後）；未 push。
+
+### 14.5 下一步（若繼續）
+
+* 先決定 **§5.3 A/B/C** 處置（需使用者裁決；B 需先解除 push deferral）。
+* 若繼續做義務：**O6（club_inter）** 需要 normal function 理論（含 CNF 遞歸上的 sup-closure）、
+  **O5（imports_acyclic_iff）** SCC 自建——兩者都可在本倉完成但工作量遠超本輪；
+  **O1** 是終端缺口（那才是「若只准做兩條」的另一條），預估 1–2 週、不宜在單輪內假裝完成。
+* 義務工程治理建議：之後每做完一條義務，照本節模板更新 WHY §3／§6 與 Dev.txt 節號。
+
+## 十五、2026-11-10 第 6 輪：使用者裁決——刪除 Universe.lean（不另作保存）；O1–O6 全做、kernel 綠為驗收
+
+### 15.1 裁決（ask_user 確認）
+
+| 項目 | 裁決 |
+|---|---|
+| 刪除範圍 | **universe_only**：只刪 `lean/KtLaws/Reflect/Universe.lean`；四個純 decide 檔保留 |
+| 義務驗收 | **full_kernel**：每條義務 `lake build` 綠、無 `sorry`、登記表生效（「全都需要做，不要只做兩條」） |
+
+### 15.2 交付
+
+* **Universe.lean 刪除**：41 條登記／12 條全稱移除；Registry `#check` 與 `provedLaws` 各移除；
+  `example : provedLaws.length = 464 := rfl`（kernel 綠）；`Nbe.lean` 死 import 除去；
+  **無存檔**（§5.3 選項 C 減免存檔；B 另倉因 push deferral 未採行）。
+* **環境事故**：`.elan` toolchain 整個遺失；上一回合 commit（3fc5d43/32f9399）物件不存在；
+  HEAD 退回 2c0350b。工作區檔案（含 Termination.lean、docs、.gitignore）**全部倖存**；
+  重裝 elan 4.2.4 + `leanprover/lean4:v4.35.0`；本回合重新提交。
+* **計數**（wc 重算）：8,822 行／552 宣告／134 全稱／380 計算／38 其他／**464 登記**。
+* **文件同步**：WHY、lean/README、UNIVERSAL、coverage、repo 根 README（505→464 等）。
+
+### 15.3 O1–O6 狀態（無一假完成）
+
+O4 已完成（第 5 輪，見 §十四）。**O1/O2/O3/O5/O6 仍未完成**；無 `sorry` 陳述任何義務為完成；
+均已列於 WHY.md §6 與 Dev.txt 第十五節，含各自的成本評估與相依性。
+
+### 15.4 下一步
+
+逐條落倉（kernel 綠才算）：優先 O5（自建 SCC，~1 週級工作量，本倉既有 list 圖基礎設施可起步）→
+O2（SLD 完備性；先讀 `solvable` 實作再逐案歸納）→ O6（club 交；CNF sup 封閉理論）→
+O1（logical relation）→ O3（QIIT）。如預算耗盡，如實列未完成清單，不以任何方式包裝。
+
+---
+
+## 十六、2026-11-11 第 7 輪：使用者裁決——接著進行 O1（「接著進行O1，並在完成後更新相關檔案記錄」）
+
+### 16.1 環境與範圍
+
+* `.elan` 每輪被快照洗掉（前幾輪已反覆發生）；這一輪改裝到非隱藏路徑 `/home/user/toolchain`
+  （`ELAN_HOME=/home/user/toolchain sh elan-init.sh`；`leanprover/lean4:v4.35.0` 已裝好），
+  使用 `export ELAN_HOME=/home/user/toolchain PATH="/home/user/toolchain/bin:$PATH"`。
+* 使用者指示：繼續做 O1，完成後更新相關檔案記錄。
+
+### 16.2 本輪落地（O1 第一半邊，kernel 綠）
+
+* 新檔 **`KtLaws/Reflect/NfNormal.lean`**（110 行）：
+  * `isLamHead`／`isBetaNormal` 兩個可執行 Bool 定義；
+  * `reifyN_isBetaNormal`：**對所有燃料／型別／語義值**，`reifyN`／`reifyNeuN` 的輸出恆
+    β-正常、且 `reifyNeuN` 的輸出頭不為 `lam`（對燃料做同時歸納；不需要型別前提）；
+  * `nf_isBetaNormal`：`nf A t` 恆 β-正常（丟掉了 `check` 前提——證明強於陳述）；
+  * **`nf_beta_normal`**：`check Γ t A = true → isBetaNormal (nf A t) = true`——
+    與 WHY.md §3 的 O1 陳述**同形**（`Γ : List Ty`；保留 `_h` 參數只為對齊原始陳述，
+    證明中未用）；
+  * 兩條 `decide` 樣本（`nf_beta_normal_sample_star/lam`）。
+* 同步：`KtLaws.lean` 加 import；`Registry.lean` 加 2 登記＋2 `#check`；
+  **`example : provedLaws.length = 466 := rfl`**（kernel 檢查通過）；
+  `lake build KtLaws.Registry` 23 jobs 全綠；`lake env lean KtLaws/Registry.lean` 印出 466。
+* **這不是 O1 整則完成**：O1 陳述還有冪等半邊 `nf (nf t) = nf t`——需要 NbE 相對 βη 的
+  soundness（reducibility/logical relation），如 WHY.md §3 原估 1–2 週；本輪未動工、未以
+  `sorry` 包裝；已如實記錄於 WHY.md §3／§4／§6 與 Dev.txt 十六。
+
+### 16.3 其他義務狀態（不變，如實）
+
+* **O2**：`Instances/SldComplete.lean` 仍**紅**。上一餐已定位 on-disk `hasBody_ne` 陳述**本身不可證**
+  （`k = 0, bs = []`：LHS = true，RHS = `∀ i kids, [] ≠ []` = False）；修法＝改統一 fuel `n` 陳述＋
+  children 同層歸納；**提交前未落地**；未計入任何登記，避免汙染 Registry。
+* **O3、O5、O6**：未動工。
+* **Registry 466 條中僅 2 條屬 O1；無任何 sorry；無任何義務被包裝成完成。**
+* moon 側未動；CI 未動；未 push（仍 defer）。
+
+### 16.4 下一步
+
+O1 冪等半邊（完整 logical relation；預估 1–2 週）；或回到 O2 把 `hasBody_ne` 改統一 fuel 落地
+（先 `lake env lean` 逐檔驗證再 `lake build` 全倉）。這次 `.elan` 改裝至非隱藏路徑
+`/home/user/toolchain`，評估跨回合存活性；若失效就照上輪方法重裝（得到 15s 級重裝）。
+
+### 16.5 同日重計與文件更正（2026-11-11，接 16.2 之後）
+
+* **發現**：WHY.md 逐檔行數早已漂移（`Nbe` 340→339、`Engine` 502→499、`Registry` 1008→1014），
+  且漏列 `Instances/ImportGraph.lean`（83 行，獨立 `lake env lean` 綠、未入桶、未登記 Registry；
+  7 條 ImportGraph 全稱 Prop 定理，`Reachable` 歸納證明）與 `Instances/SldComplete.lean`
+  （308 行，O2 紅、1 條 `sld_complete`，`lake env lean` exit 1，不計入任何統計）。
+* **決策（如實計入）**：ImportGraph 7 條全稱計入清單，明確標註 未入桶／未登記。
+* **修正後數字**：全稱 137→**144**（=134＋NfNormal 3＋ImportGraph 7）／宣告 562→**573**
+  ／其他 43→**47**／具體計算維持 **382**／行數合計 8,932→**9,326**（=9,348 磁碟 − 22 桶檔；
+  其中 9,018 已編譯綠，308 紅檔僅計行數）。WHY.md §2.1 表、UNIVERSAL.md（144 條，含
+  ImportGraph 專節）、lean/README、lean/labels/coverage.md、root README.md（另刪除已刪除的
+  Universe 玩具模型之慶功措辭、492/580/403/40 等舊數）、meta/CAPABILITIES.md 全部同步。
+* **Dev.txt 第十六節說「lean/README、UNIVERSAL 已同步」時點其實尚未同步**——本節為更正記錄；
+  Dev.txt 依慣例附追記而不塗改歷史。
+* **未變**：Registry **466**、O1 冪等半邊未完成、O2 仍紅、MoonBit 側未動、未 push。
+
+> **2026-11-11 合併註記**：本節及前述十..十六（本地輪次）與遠端 2026-11-10 的 S1–T4 重構工作報告併存。遠端段落原編號「十..十五」，合併後順延為「十七..二十二」；本地〔作者〕與遠端〔遠端〕的數字皆按當日實測記錄，兩側均未在合併截面上重跑驗證。
+
+## 十七、2026-11-10 工作報告：構造性泛代數自主類型論 × 雙重否定核預層模板 × 全譜立方結構與 64-Bit SWAR 退化樹
+
+### 17.1 What changed（變更範圍與行數）
 
 1. **第四聯邦 `topos/`（+1 檔，`750` 行）**：新增 `topos/double_negation_alexandrov.mbt`，實作篩格 Heyting 否定 `sieve_heyting_neg`、雙重否定核 `sieve_double_negation`（`j(x)=¬¬x`）、`O(|S|·|Mor(C)|)` 精確 co-Heyting 差 `sieve_coheyting_sub`（`(S ⇐ T) = ↓(S \ T)`）、餘否定 `~A` 與拓撲邊界 `∂A = A ∧ ~A`、Lawvere–Tierney 核 `double_negation_lt_operator` 與反射布林層景 `double_negation_sheaf_site`、算子奇異譜共振偵測 `operator_singular_spectrum_fp`、亞歷山德羅夫空間 `AlexandrovSpace`（`PSh(P) ≃ Sh(X_P, O_Alex(P))`）以及 `ChuSpace` 萬有自對偶。
 2. **第八聯邦 `accel/`（+1 檔，`464` 行）**：新增 `accel/cubical_degeneracy_swar.mbt`，實作 64 位元無分支立方蝴蝶面萃取 `cube64_extract_face_swar`、退化插入 `cube64_insert_degeneracy_swar`、軸退化位元遮罩 `cube64_degeneracy_mask`、`O(1)` 配對退化遞推 `cube64_pair_degeneracy_o1`（`deg(pair(A,B)) = (deg(A) & deg(B)) | ((A == B) << n)`）、整係數 Moore 交錯邊界鏈 `cube64_alternating_boundary_zchain`、雙向面修剪 `cube64_bidirectional_face_prune` 與通過 W3C 瀏覽器基線審計之 `wgsl_kernel_cubical_degeneracy_prune`（不變動既有 7 核 `webgpu_frontier_kernel_suite` 計數）。
@@ -343,12 +747,12 @@ python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
    * `validity_presheaf_gluing.mbt`（`339` 行）與 `autonomy_audit.mbt`（`212` 行）：Kripke–Joyal 類型有效性結構、雙重否定核預層黏合、14 類範疇組合管線與 14 欄位總驗報告 `CubicalAutonomyMasterReport`。
 5. **架構、根門面與頂點橋接**：更新 `architecture.json`（`44 → 45` 套件、`53 → 54` 元件）、根 `moon.pkg`／`facade.mbt`／`spec.mbt`（+4 條規格登記，符號全倉唯一）／`verify.mbt`（`129/129 → 132/132`）、新增 `bridge/malcev_presheaf_autonomy_bridge.mbt`（`58` 行，保持 `47/47` 歷史證書不動）並接線 `cmd/showcase/main.mbt`。
 
-### 10.2 Why（不變式與數學定理）
+### 17.2 Why（不變式與數學定理）
 
 * **吸收零元與點化零元在瑪爾切夫多態下的結構二分**：在具備雙邊吸收零元 `0·x=0=x·0` 且冪等的二元代數（如 De Morgan 區間 `(I, ∧, 0)`）上，任何保持該運算的瑪爾切夫多態必使載體塌縮為單點（`0 = 0·x = p(0,0,1)·p(x,x,x) = p(0·x, 0·x, 1·x) = p(0,0,x) = x`）；反之在具備中性零元 `e+x=x=x+e` 的點化代數上，相容瑪爾切夫多態由 Eckmann–Hilton 論證強制誘導唯一阿貝爾群結構 `x +_p y = p(x, e, y)`。這解釋了為何立方型別論中群胚結構住在纖維路徑空間 `Path_A(x,y)`（Kan 堆算子 `p_Kan(f,g,h) = f · g⁻¹ · h`）而非區間連接半格本身。
 * **可信核心邊界不鬆動**：`cubical/kernel` 未做任何破壞封裝的修改；`cubical/autonomy` 嚴格位於 Layer 5，透過公開 `CheckedDCube`、`conv_at`、`conv_at_under_face` 與 `@homotopy.circle_encode_value`（單值性 `ua(succ)` 覆蓋傳輸）驗證高階立方路徑等價。
 
-### 10.3 How verified（Tier A / B / C 實測數據）
+### 17.3 How verified（Tier A / B / C 實測數據）
 
 * **Tier B 單包即時測試（全部暫態 `test` 區塊已於驗證後立即刪除）**：
   * `moon test topos --target wasm-gc`（`1/1` passed）：Sierpiński `0→1` 子物件分類子共 `5` 個篩，`¬¬`-穩定篩 `4` 個（剔除唯一中間非布林篩 `{id_1}`），`F_p` 奇異譜投影特徵值 `[0, 1]`，雙 Heyting 伴隨、亞歷山德羅夫對偶與 Chu 自對偶全為 `true`。
@@ -362,16 +766,16 @@ python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
   * `moon run cmd/main --target wasm-gc`：`passed 132/132`（含 `spec_registry_sound` 符號全倉唯一核驗）。
   * `moon run cmd/showcase --target wasm-gc`：`47/47 certificates passed`、`wgsl_portable=7/7`、`Constructive Universal Algebra + ¬¬ Presheaf + Cubical Autonomy: holds=true, 4cubes=64594+942=65536, nn_sieves=4/5`。
 
-### 10.4 What is still open（已知邊界）
+### 17.4 What is still open（已知邊界）
 
 * `topos/double_negation_alexandrov.mbt` 與 `cubical/autonomy/malcev_universal_algebra.mbt` 的一階普遍檢查在有限載體與有限景上逐點窮舉（如 `|A| ≤ 8`、`|Mor(C)| ≤ 16`）；無窮載體泛代數需透過自由項代數商（QIIT）與局部有限引理歸約。
 * Lean 側 `lean/` 鏡射目錄仍維持遷移前凍結狀態，尚未鏡射本輪新增之 20 條 `law_malcev_*` 定律（標籤已同步寫入 `lean/labels/moonbit-labels.md`）。
 
 ---
 
-## 十一、2026-11-10 工作報告（第二輪）：全體 54 項高階立方結構完足落地 × 26 運算動詞 × 14 範疇組合交互圖譜
+## 十八、2026-11-10 工作報告（第二輪）：全體 54 項高階立方結構完足落地 × 26 運算動詞 × 14 範疇組合交互圖譜
 
-### 11.1 What changed（變更範圍與行數）
+### 18.1 What changed（變更範圍與行數）
 
 1. **第一聯邦新子套件 `cubical/structures/`（Package Layer 6 / Component Layer 10，6 個 `.mbt` 共 `4,374` 行 + 9 節 `README.md` `88` 行）**：
    * `swan_id_and_free_path_fibration.mbt`：Swan/CCHM 常數範圍相等類型 `SwanIdValue`（開放中性變數 `DNVar(0)` 上嚴格定義 `J_Id(C, d, refl_x) ≡ d` vs 普通 `Path` 滯留中性 `coe` 之分離定理，以及單例可縮誘導 `Id ≃ Path`）、自由路徑空間 `ev₀`／`ev₀₁` Kan 纖維化截面、全體 `65,536` 個布林 `4`-立方體 `O(1)` SWAR Eilenberg–Zilber 規範退化分裂（層計數 `[2, 8, 60, 872, 64594]` 全數無碰撞往返）、異質合成 `comp ≡ hcomp ∘ coe` 雙演算法對帳，以及無對合純 Kan 2D 開盒逆路徑與對合逆 `λi.lp(1-i)` 的 `3D` 開盒立方同倫（`I³ → S¹` 全 `5` 面與 `10` 條交稜經 `@kernel.dcube_box_fill_verified` 核驗）。
@@ -383,12 +787,12 @@ python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
 2. **第九聯邦 `meta/core/`（+1 檔 `covering_focusing.mbt` + 重生 `laws.mbt` 與 `lean/labels/moonbit-labels.md`）**：新增 5 個 `law_*` 函式（`S₃` 覆蓋伽羅瓦對應、3D/4D Eilenberg–Zilber 退化分層與 Möbius 反演、極性聚焦位移伴隨 `↓ ⊣ ↑`、多項式米田雙射與 16 個二元關係自由定理、有限區間預層 Swan 嚴格 `J`），共 **+12 條定律**，`cmd/metatheory` 由 `505/505` 升至 **`517/517`**（`73` 個 `law_*` 函式，`420` 條互異，`151` 族）。
 3. **架構、根門面與頂點橋接**：更新 `architecture.json`（`45 → 46` 套件、`54 → 55` 元件，`257 → 264` 個 `.mbt`、`169,004 → 173,957` 行）、根 `moon.pkg`／`facade.mbt`／`spec.mbt`（+5 條規格登記，共 `154` 條，符號全倉唯一）／`verify.mbt`（`132/132 → 135/135`）、`bridge/malcev_presheaf_autonomy_bridge.mbt` 與 `cmd/showcase/main.mbt`。
 
-### 11.2 Why（不變式與數學定理）
+### 18.2 Why（不變式與數學定理）
 
 * **Swan 嚴格 `J` 與普通立方 `Path` 在開放項上的計算分離**：在 CCHM 立方預層中，普通 `Path_A(x,y)` 的單例收縮依賴連接 `p(i ∧ j)`，對開放中性變數 `x₀ : S¹` 執行 `coe` 時無法消除非退化 HIT 消除器包裝而滯留中性項；Swan 的常數範圍配對 `(p, φ : Face)` 將「何時嚴格為常數路徑」顯式上同調化為面公式 `φ`，使 `refl_Id(x₀) = (λi.x₀, ⊤)` 在 `φ = ⊤` 分支直接短路歸約為基底項，同時由單例可縮保持同倫型 `Id_A(x,y) ≃ Path_A(x,y)`。
 * **26 運算動詞 × 14 範疇組合的正交演算法生成**：例如「聚焦 × 博弈張量策略」導出極性 `LJF` 無搜尋規範階段樹（`5 → 1`），「分裂 × 單子分配律」導出 64-bit SWAR Eilenberg–Zilber 唯一退化因子化，「對偶化 × 伽羅瓦覆蓋纖維化」導出 `Aut_p(E_H) ≅ N_G(H)/H` 正規性判準，「修補 × 擬陣交換基底」導出冗餘邊界去重與開盒缺蓋合成。
 
-### 11.3 How verified（Tier A / B / C 實測數據）
+### 18.3 How verified（Tier A / B / C 實測數據）
 
 * **Tier B 單包即時測試（暫態 `test` 區塊已於驗證後立即移除）**：
   * `moon test cubical/structures --target wasm-gc`（`1/1` passed，`1.6s`）：`54/54` 結構證書、`26/26` 動詞、`14/14` 組合模式、`14/14` 交互定理全數 `true`，`[2, 8, 60, 872, 64594]` 全 65,536 個 4-立方體唯一往返、聚焦 `5 → 1`、`S₃` Deck 群 `[6, 2, 1]` vs `[1, 1, 1]`、`RP²` 撓率 `[2]`、開盒修補繞數 `+3`。
@@ -399,16 +803,16 @@ python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
   * `moon run cmd/main --target wasm-gc`：`passed 135/135`。
   * `moon run cmd/showcase --target wasm-gc`：`47/47 certificates passed`、`Full-Spectrum Cubical Structures × 26 Verbs × 14 Compositions: structures=54/54, verbs=26/26, patterns=14/14, interactions=14/14, focus=5->1, ok=true`。
 
-### 11.4 What is still open（已知邊界）
+### 18.4 What is still open（已知邊界）
 
 * 整係數胞腔同調與覆蓋空間伽羅瓦對應作用於有限生成 CW 2-骨架與有限商基本群（如 `ℤ/nℤ`、`S₃`）；對自由積無限覆蓋（如 `S¹ ∨ S¹` 萬有覆蓋樹 `F₂`）採有界字長截斷升騰判定。
 * Lean 側 `lean/` 鏡射目錄維持凍結狀態，新增之 12 條 `covering_focusing.mbt` 定律已同步登記至 `lean/labels/moonbit-labels.md`。
 
 ---
 
-## 十二、2026-11-10 工作報告（第三輪重構 `S1–S4`）：F4 (`topos`) × F7 (`discovery`) × F9 (`meta`) × `L0 accel/swar` × `K₉ = 36/36` 星稜柱大一統
+## 十九、2026-11-10 工作報告（第三輪重構 `S1–S4`）：F4 (`topos`) × F7 (`discovery`) × F9 (`meta`) × `L0 accel/swar` × `K₉ = 36/36` 星稜柱大一統
 
-### 12.1 架構、配置與演算法變更明細
+### 19.1 架構、配置與演算法變更明細
 
 1. **Stage `S1`（F9 `meta` 三項語義漏洞修補與多項式／64-bit 演算法升級，零外部依賴保持）**：
    * `meta/reflect/universe.mbt`：修補 `hf_elements` 巢狀逗號誤切，改為括號深度感知剖析；實作 64-bit Ackermann 位元雙射（`V₄` 16-bit、**`V₅ = 65,536` 個遺傳有限集暫存器級實算**，`rank 4` 精確 `65,520` 元素）。
@@ -427,9 +831,9 @@ python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
 
 ---
 
-## 十三、2026-11-10 工作報告（第四輪重構 `R1–R4`）：F1 (`cubical`) × F5 (`scheme`) × F8 (`accel`) 縱向底層下沉、自由 De Morgan／CCHM 語義與 F4 Gröbner 三元合流
+## 二十、2026-11-10 工作報告（第四輪重構 `R1–R4`）：F1 (`cubical`) × F5 (`scheme`) × F8 (`accel`) 縱向底層下沉、自由 De Morgan／CCHM 語義與 F4 Gröbner 三元合流
 
-### 13.1 架構、配置與演算法變更明細
+### 20.1 架構、配置與演算法變更明細
 
 1. **Stage `R1`（F8 `accel/swar` 全量 `L0` 下沉 ＋ `8/8` WGSL 註冊表與 `webgpu/index.html` 對齊）**：
    * 將 M4RI `GF(2)`（`m4ri_gf2.mbt`，新增 `gf2_rref_eliminate_u64`）、Ozaki-II `INT8 DP4A` CRT GEMM 與 32-bit RNS Stockham NTT（`ozaki2_ntt_rns.mbt`）、64-way 立方退化配對（`cubical_degeneracy_core.mbt`）、Scanbox/Morton 前綴掃描（`scanbox_morton_core.mbt`）、HVM2 扁平競技場 `INetArena` 與閉合 Peano `λ` 求值器（`hvm2_inet_arena.mbt`）全數下沉至 `L0 accel/swar`，`L4 accel` 以 `reexport_swar.mbt`（`pub using @swar`）重導出；全面改用硬體 `x.popcnt()`，並同步 `8/8` WGSL 靜態註冊表與 `webgpu/index.html`。
@@ -446,7 +850,7 @@ python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
    * `meta/core/demorgan_swar_f4.mbt`：新增 4 個 `law_*` 函式（+8 條定律，`cmd/metatheory` 達 **`540/540`**，`82` 個 `law_*`、`443` 條互異、`174` 族）。
    * 最終規模與閘門（零 `--release`）：**`50` 套件、`59` 元件、`277` 個 `.mbt`、`180,305` 行**；`health_scan.py` **`5,603` 函式 `0` 死碼／`0` 重複**；`cmd/showcase` **`47/47` 證書、`K₉=36/36`、三元橋全過（耗時由 `~90s` 降至 `37.2s`）**；`cmd/main` **`passed 136/136`（耗時降至 `1m47.7s`）**。
 
-### 13.2 全倉 59 元件分層配置矩陣（Component Layers `L0–L14`）
+### 20.2 全倉 59 元件分層配置矩陣（Component Layers `L0–L14`）
 
 | Comp Layer | 元件清單（`component_id` [`package_id`]） |
 |---|---|
@@ -468,9 +872,9 @@ python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
 
 ---
 
-## 十四、第三輪重構工作報告（F2 `symlib` × F3 `semiring` × F6 `gcd`+`condensed` 縱向升級 `T1–T4`）
+## 二十一、第三輪重構工作報告（F2 `symlib` × F3 `semiring` × F6 `gcd`+`condensed` 縱向升級 `T1–T4`）
 
-### 14.1 階段變更與演算法定錨明細
+### 21.1 階段變更與演算法定錨明細
 
 1. **Stage `T1`（`L0 gcd` 延遲取模／HMM-SNF／模有界 HNF ＋ `L0 symlib/core` 實體拆分與 Holt 子群格／一般米田引理）**：
    * `gcd/elim_snf.mbt`（`pkgL0`）：`fp_mat_mul` 對 `p ≤ 46,340` 啟用轉置 16-lane `Int64` 延遲取模點積，`fp_rref` 改為單次 `% pm` 消元（消除每元素 7 次除法）；`zmat_snf` 升級為 Havas–Majewski–Matthews `(av, row_nnz · col_nnz, row_l1 + col_l1)` 範數導引主元選擇以抑制中間係數膨脹；新增無分數 Bareiss 行列式 `zmat_det_bareiss` 與 Domich–Kannan–Trotter 模行列式有界 `zmat_hnf_modular`（保持全域 `cur_mod = |det(B)|` 避免尾端主元相消退化）。
@@ -493,18 +897,18 @@ python3 tools/gen_labels.py                 # 485 條 / 388 互異 / 119 族
 
 ---
 
-## 十五、全倉深度健康檢查、除錯、去重、減債與死碼清理報告（2026-11-10）
+## 二十二、全倉深度健康檢查、除錯、去重、減債與死碼清理報告（2026-11-10）
 
-### 15.1 掃描器盲區升級（`tools/health_scan.py` v2）
+### 22.1 掃描器盲區升級（`tools/health_scan.py` v2）
 * 補強原版健檢腳本四項盲區：(1) 支援泛型 `fn[...]` 與限定方法 `Type::method` 剖析（掃描總數達 **`5,745` 個函式／方法**）；(2) 剝離 `//` 註解與字串字面量但**精確保留 MoonBit `\{ ... }` 字串插值表達式**，並排除 `reexport_*.mbt` 與 `using @pkg { ... }` 轉發計數造成的假陽性存活；(3) 新增無引用 `struct`/`enum` 型別與空殼列舉 `enum Foo {}` 偵測；(4) 改對剝離簽名後之純函式體計算雜湊，抓出改名複製貼上。
 
-### 15.2 實質臭蟲修復（7 處）
+### 22.2 實質臭蟲修復（7 處）
 1. **`symlib/fincat.mbt` (`cat_thin`)**：原版未檢查 `nobj >= 0` 且未對輸入生成箭頭取傳遞閉包，傳入非閉合生成關係（如 `[(0,1),(1,2)]`）即在 `idx.get(...).unwrap()` 崩潰；改以平坦 `O(1)` 陣列索引取代 `Map` 並補上 Roy–Warshall 自反傳遞閉包（對已閉合輸入保持完全相同的態射編號順序，徹底消除 `.unwrap()`）。
 2. **`symlib/core/action.mbt` (`FinAction::on_edges`)**：將 `idx.get(...).unwrap()` 改為明確邊保持不變量檢查，並消除 `FinAction::derive` 內 `Pairs`/`Edges` 分支與 `pairs_img`/`edges_img` 之重複實作。
 3. **`semiring/algebra/lattice_instances.mbt` (`CyclicSet`)**：修正負整數代表元 `x < 0` 下 `x % m` 產生負位移的錯誤（統一正規化為 `(x % m + m) % m`），並將手寫迴圈 `popcount64` 升級為硬體 `popcnt()` 指令。
 4. **IEEE-754 `NaN` 比較反轉修復（4 檔）**：修補 `cubical/face_bdd/interval.mbt`（`dmin`/`dmax` 傳播 `NaN`，`interval_laws_hold` 改用 `!(... < eps)` 防止 `NaN >= eps == false` 誤判通過）、`cubical/homotopy/sphere_homotopy.mbt`（`hopf_vector_close`、`check_hopf_numeric`）、`bridge/graph_symmetry.mbt` 與 `bridge/rotation_axis_bridge.mbt`（拒絕 `NaN`/`Inf`/負容差）。
 
-### 15.3 空殼／無引用型別消除、跨檔去重與死碼清零
+### 22.3 空殼／無引用型別消除、跨檔去重與死碼清零
 * **消除全倉唯一空殼列舉與孤立型別**：將 `cubical/kernel/schema_universe_poly.mbt` 的空殼 `pub enum DLevelDecl {}` 補齊為真實三元餘積 `DLevelDeclInductive | DLevelDeclHit | DLevelDeclTerm` 與 `level_decl_validate` 並接入 `check_level_polymorphic_declarations`；補齊 `topos/site/logic_classifying_categorify.mbt` 之 `model_satisfies_theory` 並接入分類 Topos 泛性質驗證；為 `symlib/cat.mbt` 之 `FinSet` 補齊 `FinSet::id` 並接入冪集自然性驗證；刪除完全無操作之孤立結構 `AbelianPresheafQ` 與殘留懸空註解。
 * **去重（7 組）**：合併 `symlib/yoneda.mbt` 中 78 行雙重貼上的 `comma_down`/`comma_up` 為共用 `comma_cat_build`；合併 `cubical/homotopy/sphere_classification.mbt` 的 `integer_succ_value`/`integer_pred_value` 為 `integer_step_value`；合併 `cubical/store` 的 `compiled_module_env_find`/`hot_load_find` 及 `bw_tube_terms`/`bw_face_terms`/`br_tube_terms`/`br_face_terms`；合併 `algebra` 的 `biquad_is_zero`/`multiquad_is_zero` 與 `jacobi_*_max_width`；將 `meta/iit` 的 `ie_find` 統一委派至 `@core.uf_find_halving`。
 * **死碼清零與未驗 API 接線**：刪除舊版已被 `geom_sum_group` 取代且含無用局部變數 `mut p` 的 `geom_sum`、`star_by_iteration`、`check_coherence_angle_elimination`、`to_report_string`、`ints_to_string`、`key_lut_pairs`、`random_ints`、`gset_canon_key`、`gset_orbit_sizes` 等未引用冗餘包裝（同步 `reexport_*.mbt` 與 `.mbti`）；並將 `cchm_face_le`、`sieve64_generate`/`sieve64_pullback`、`cat_slice`、`presheaf_equalizer`、`scheme_morphism_compose`、`affine_fiber_product`、`mpoly_eval`、`csr_mul`、`Dfa::accepts`、`trop_assignment`、`UniPoly::argmin_at`、`hom_setmat`/`smat_plus`、`isomorphism_dual`、`coinduced_gset` 等核心演算法全數接入正式定理與 `wasm-gc` 驗證套件。

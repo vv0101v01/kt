@@ -53,7 +53,28 @@ pub fn all_laws() -> Array[(String, Bool)] {
   for (l, b) in law_stlc_normalization_reaches_a_stuck_value() {
     out.push((l, b))
   }
+  for (l, b) in law_stlc_sn_budget_is_three_valued() {
+    out.push((l, b))
+  }
+  for (l, b) in law_stlc_sn_certificates_cover_a_battery() {
+    out.push((l, b))
+  }
+  for (l, b) in law_stlc_sn_depth_is_exact_for_small_terms() {
+    out.push((l, b))
+  }
+  for (l, b) in law_stlc_sn_eta_redex_is_explored() {
+    out.push((l, b))
+  }
+  for (l, b) in law_stlc_sn_measure_decreases_along_every_step() {
+    out.push((l, b))
+  }
+  for (l, b) in law_stlc_sn_reducts_enumerate_all_positions() {
+    out.push((l, b))
+  }
   for (l, b) in law_stlc_stlc_beta_is_index_preserving() {
+    out.push((l, b))
+  }
+  for (l, b) in law_stlc_stlc_eta_removes_a_trivial_binder() {
     out.push((l, b))
   }
   for (l, b) in law_stlc_subject_reduction_on_a_battery() {

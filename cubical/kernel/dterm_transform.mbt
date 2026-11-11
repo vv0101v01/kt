@@ -43,7 +43,11 @@ fn dterm_map_vars_list(
   depth : Int32,
   f : (Int32, Int32) -> DTerm,
 ) -> Array[DTerm] {
-  terms.map(t => dterm_map_vars_at(t, depth, f))
+  let out : Array[DTerm] = []
+  for i in 0..<terms.length() {
+    out.push(dterm_map_vars_at(terms[i], depth, f))
+  }
+  out
 }
 
 ///|

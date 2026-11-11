@@ -1,10 +1,14 @@
-# Lean 側的「全稱／歸納」清單（137 條）
+# Lean 側的「全稱／歸納」清單（144 條，2026-11-11 重計）
 
-由 `lean/KtLaws/**/*.lean` 以**證明形狀**抽出的全稱或歸納性命題，共 **137** 條。
+（2026-11-10：依使用者裁決刪除 `Reflect/Universe.lean` 玩具模型——其 12 條全稱一併移除，146 → 134。）
+（2026-11-11：新增 `Reflect/NfNormal.lean`（O1 第一半邊，kernel 綠），134 → 137；隨後重計補錄 `Instances/ImportGraph.lean` 7 條（未入桶、未登記 Registry；獨立 `lake env lean` 綠），137 → 144。`Instances/SldComplete.lean` 紅（O2 未完成），不計入。）
+
+由 `lean/KtLaws/**/*.lean` 以**證明形狀**抽出的全稱或歸納性命題，共 **144** 條（134 + `Reflect/NfNormal.lean` 3 條 + `Instances/ImportGraph.lean` 7 條，2026-11-11 重計）。
+計數規則：逐檔 `grep -cE '^(theorem|lemma)'`，依證明主體分類（`decide`/`native_decide` 主體 ⇒ 具體計算；顯式參數／∀／`induction`／`wellFounded` ⇒ 全稱歸納；其餘 ⇒ 其他）。`SldComplete.lean`（紅）不計入。
 分類判準（可重跑）：證明主體不是 `decide`/`native_decide`，且陳述含顯式參數或 `∀`，或證明用到 `induction`／`wellFounded`／`Acc`。
 
 這批是 [`WHY.md`](WHY.md) §2 所講「原因部份」的實際資產：它們是 kt 的執行檢查**確立不了**的全稱主張。
-其餘 403 條具體計算＋40 條其他**不在這份清單裡**——那些 kt 跑一次就知道，屬於「超出理由」的部分。
+其餘 382 條具體計算＋47 條其他**不在這份清單裡**——那些 kt 跑一次就知道，屬於「超出理由」的部分。
 
 ## `lean/KtLaws/Graph.lean`（11）
 
@@ -75,6 +79,18 @@
 ## `lean/KtLaws/Instances/Coherence.lean`（1）
 
 - `ambiguityFilter_nil_of_unique_top`
+
+## `lean/KtLaws/Instances/Termination.lean`（9）
+
+- `uSize_apply`
+- `root_size_decreases`
+- `uSizeList_rewrite_lt`
+- `rewrites_size_decreases`
+- `rewrites_restriction_wf`
+- `envShow_rules_measureDecreasing`
+- `envShow_terminating`
+- `sum_map_le_of_count_le`
+- `kt_node_measure_orientation_unsound`
 
 ## `lean/KtLaws/Instances/Engine.lean`（7）
 
@@ -153,20 +169,21 @@
 - `certTextAux_ge`
 - `certText_pos`
 
-## `lean/KtLaws/Reflect/Universe.lean`（12）
+## `lean/KtLaws/Reflect/NfNormal.lean`（3）
 
-- `max_atom_bridge`
-- `ordSucc_ofNat`
-- `stmtMaxAtom_le_reflect`
-- `stmtMaxAtom_reflect_noAtom`
-- `stmtMaxAtom_eq_zero_of_noAtom`
-- `stmtMaxAtom_reflect_hasAtom`
-- `conserv_general`
-- `provable_mono`
-- `reflects_unbounded`
-- `le_foldr_max`
-- `reflects_finite_fragment`
-- `reflects_minimal`
+- `reifyN_isBetaNormal`
+- `nf_isBetaNormal`
+- `nf_beta_normal`
+
+## `lean/KtLaws/Instances/ImportGraph.lean`（7）— 未入桶、未登記 Registry（獨立 `lake env lean` 綠；O5 邏輯核心）
+
+- `imports_trans`
+- `acyclic_self_edge_absent`
+- `reach_antisym_of_acyclic`
+- `no_mutual_reach_of_acyclic`
+- `imports_acyclic_iff_mutuality`
+- `cycle_of_distinct_mutual`
+- `cycle_of_self_loop`
 
 ## `lean/KtLaws/Simplicial.lean`（11）
 

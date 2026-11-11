@@ -179,6 +179,18 @@ pub fn checked_coe_value(
 }
 
 ///|
+pub fn checked_comp_value(
+  line : DCheckedTypeLine,
+  branches : DSystem,
+  base : DValue,
+  dlevel : Int32,
+) -> DValue {
+  comp_value(line.line, branches, base, dlevel)
+}
+
+///|
+
+///|
 /// Pack a raw semantic line only after reifying and rechecking it at
 /// a generic dimension.  The quoted body is read in the empty
 /// context, so this succeeds precisely for lines whose generic fibre

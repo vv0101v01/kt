@@ -1,17 +1,17 @@
 # MoonBit 標籤 ↔ Lean 定理對照表
 
 > **⚠️ 這張表是「人讀的族對應」，不是形式連結**：Lean 命題與 kt 的 `Bool` 檢查之間沒有 refinement／extraction 橋，
-> 「有對應」不等於「已形式化」。必要性與比例見 [`../WHY.md`](../WHY.md)（137/580 為全稱、403/580 為具體計算）。
+> 「有對應」不等於「已形式化」。必要性與比例見 [`../WHY.md`](../WHY.md)（144/573 為全稱、382/573 為具體計算；2026-11-11 重計）。
 
-> **現況更新**：kt 側已增至 **485** 條標籤（388 條互異），本表只涵蓋遷移前的 **437** 條；
+> **現況更新**：kt 側已增至 **551** 條標籤（453 條互異），本表只涵蓋遷移前的 **437** 條；
 > 本輪新增的 48 條能力定律（NbE 一般 β／SLD 完備性／匯入圖 SCC／QIIT 商良定義／修補終止序／真實 club 反射）
-> 尚未鏡射到 Lean。原始 485 條清單見 [`moonbit-labels.md`](moonbit-labels.md)。
+> 尚未鏡射到 Lean。原始 551 條清單見 [`moonbit-labels.md`](moonbit-labels.md)。
 
 由 `cmd/lawcount`（`moon run`，讀四個 `all_laws()`）實測的標籤總數是 **437**
 （`core` 115 / `instances` 123 / `iit` 151 / `reflect` 48）—— 但其中**大量重複**：
 同一個 `chk` 在迴圈裡被 push 多次（例：iit 的 Even/Odd `#6`/`#7` 各出現 13 次），
 去重之後只剩 **340 個互異標籤**（core 102 / instances 120 / iit 74 / reflect 44）。
-Lean 側目前有 **492** 條已登記定理。兩邊條數不對齊是刻意的：某些家族 MoonBit
+Lean 側目前有 **466** 條已登記定理（玩具模型 Universe.lean 已於 2026-11-10 刪除；2026-11-11 新增 O1 第一半邊 2 條登記）。兩邊條數不對齊是刻意的：某些家族 MoonBit
 用多個樣本標籤檢查同一件事（iit 的 Even/Odd 有 29 個標籤但只有 7 個互異），Lean 側寫成全稱定理；
 反過來某些家族 Lean 側更細（reflect 44 個互異標籤 ↔ 91 條定理）。
 
@@ -34,9 +34,8 @@ Lean 側目前有 **492** 條已登記定理。兩邊條數不對齊是刻意的
 | core / complex | 4 | `euler_poincare_complex`、交錯和恆等式 | 同上 |
 | core / unification | 7 | `unify_correct`, `unify_generality_x`, `unify_generality_y`, `unify_exists`, `unify_occurs`, `unify_constants`, `unify_symm_left`, `unify_symm_right`, `unify_symm_both` | 15 條覆蓋 11 個標籤（`KtLaws/Unify.lean`） |
 | core / anti-unification = join (dual of mgu) | 4 | `lgg_shape`, `lgg_first_child`, `lgg_second_child_fresh`, `lgg_second_child_one_var`, `lgg_vars_are_fresh`, `lgg_is_join` | 同上 |
-| instances | 123 | Engine 22 / Characterize 40 / Compose 35 / Coherence 40 | 138 條覆蓋 123 個標籤（`KtLaws/Instances/*`） |
+| instances | 123 | Engine 22 / Characterize 40 / Compose 35 / Coherence 40 / Termination 13 | 151 條覆蓋 123 個標籤（`KtLaws/Instances/*`） |
 | iit | 151（互異 74） | Schema 35 / Examples 樣本 / STLC 40 / Extra 6 | 88 條全稱定理覆蓋 12 個族，逐族對照見 §iit |
-| reflect / universe reflection | 18 | `conserv_*`（8 條保守性）、`mahlo_*`（10 條 Mahlo） | 23 條覆蓋 18 個標籤 |
 | reflect / reflection | 15 | `proof_decide_fast` … `proof_last_is_nf` + `termText_pos`／`certTextAux_ge`／`certText_pos` | 16+3 條覆蓋 15 個標籤 |
 | reflect / link | 8 | `link_checks`, `link_depth_two`, `link_shape`, `link_root_goal`, `link_nested_checks`, `link_nested_depth`, `link_nested_shape`, `link_no_cert` | 13 條覆蓋 8 個標籤 |
 | reflect / nbe | 7 | `nbe_beta`, `nbe_idempotent`, `nbe_eta`, `nbe_eval_neutral`, `nbe_check_terminates`, `nbe_check_preserved`, `nbe_check_rejects` | 逐條 1:1 |

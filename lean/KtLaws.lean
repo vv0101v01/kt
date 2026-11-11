@@ -13,8 +13,9 @@ import KtLaws.Instances.Engine
 import KtLaws.Instances.Characterize
 import KtLaws.Instances.Compose
 import KtLaws.Instances.Coherence
-import KtLaws.Reflect.Universe
+import KtLaws.Instances.Termination
 import KtLaws.Reflect.Nbe
+import KtLaws.Reflect.NfNormal
 import KtLaws.Reflect.Proof
 import KtLaws.Reflect.Link
 import KtLaws.Unify

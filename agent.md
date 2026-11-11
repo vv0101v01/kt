@@ -13,8 +13,8 @@ no longer exists. [`agent.v2.md`](agent.v2.md) remains the authoritative governa
 overlap, `agent.v2.md` governs the detail and this file governs the procedure and the map.
 
 **Repository at a glance** — MoonBit package `vv0101v01/cubical-hermitian` v2.0.0,
-`preferred_target = "wasm"`, **9 federations + 1 unification apex**, **52 packages**, **61 components**,
-**286 `.mbt` files**, **185,986 lines** (verified by `python3 tools/arch_check.py`).
+`preferred_target = "wasm"`, **10 federations (9 in the dual-V graph + `ualg` in parallel) + 1 unification apex**,
+**57 packages**, **66 components**, **318 `.mbt` files**, **199,215 lines** (verified by `python3 tools/arch_check.py`, 2026-11-11 post-merge).
 
 ---
 
@@ -118,9 +118,10 @@ git diff '*.mbti'
 
 `.mbti` snapshots are the diff that catches accidental public-API changes: a refactor that is meant to be
 internal must leave the generated interfaces untouched. For cross-federation work, finish with an
-end-to-end run — `moon run cmd/main --target wasm-gc` (`137/137` theorems),
-`moon run cmd/metatheory --target wasm-gc` (`545/545` laws), and
-`moon run cmd/showcase --target wasm-gc` (`47/47` certificates + `K_9 = 36/36` bridges).
+end-to-end run — `moon run cmd/main --target wasm-gc` (`139/139` theorems),
+`moon run cmd/metatheory --target wasm-gc` (`565/565` laws), and
+`moon run cmd/showcase --target wasm-gc` (`48/48` certificates + `K_9 = 36/36` bridges).
+(Remote's 2026-11-10 verification; the merged tree has not been re-run — see §5 merge note.)
 
 ### 1.3 The one-sentence version
 
@@ -172,8 +173,8 @@ recorded. Submit through it:
   replacing, a limit worth measuring. State the motivation, the invariant at stake, the estimated blast
   radius (which packages, which federations, which `.mbti` surfaces), and the verification plan.
 * **Project-content changes** — anything that alters what the repository *is*: the federation map or
-  `architecture.json` components, the theorem registry counts (`137/137`), the metatheory law counts
-  (`545/545`), the certificate ledger (`47/47`), the `K₉ = 36` bridge counts, `ATLAS-01..18`,
+  `architecture.json` components, the theorem registry counts (`139/139`), the metatheory law counts
+  (`565/565`), the certificate ledger (`48/48`), the `K₉ = 36` bridge counts, `ATLAS-01..18`,
   `CONJ-01..12`, the `agent.v2.md` rules themselves, and the per-folder `README.md` set mapped in Part II
   of this file.
 * **Boundary changes** — a new `moon.pkg` import edge, a new `supported_targets` restriction, a new
@@ -210,44 +211,121 @@ same severity as a failing gate.
 
 ---
 
-## 5. The 17 top-level folders
+## 5. The 18 top-level folders
 
-`.mbt` counts and line counts are the on-disk truth for that folder (**recursive** for folders containing nested sub-packages).
+`.mbt` counts and line counts are the on-disk truth for that folder, **recursive**, measured 2026-11-11
+post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 
 | # | Folder | Federation · layer | `.mbt` | Lines | What it is |
 |---:|---|---|---:|---:|---|
 | 1 | [`gcd/`](gcd/README.md) | F6 · L0 (lower-V apex `V₁`) | 3 | 1,683 | Five-domain generic elimination GCD: 16-lane lazy `F_p` RREF, HMM `ℤ`-SNF, Bareiss det, modular HNF, CRT, Wang rational recon & digest chain |
-| 2 | [`algebra/`](algebra/README.md) | F1 · L1–L2 (`algebra/core` + `algebra`) | 23 | 19,282 | Exact rational/algebraic tower (`Rat` `Int64` fast path, Bareiss/Ozaki-II `QMat`, complete factorization, number fields, Jordan, certified intervals, transcendence) |
-| 3 | [`cubical/`](cubical/README.md) | F1 · L0–L6 (**9 sub-packages**) | 80 | 81,437 | Trusted dependent-cubical core: Kalman free De Morgan `I_DM`, CCHM `Cofib(n)`, NbE, Kan, Glue, univalence, HITs, `O(Δ)` HOU, BFT/MVCC store, universal algebra autonomy & all 54 higher cubical structures (zero piggybacking) |
-| 4 | [`symlib/`](symlib/README.md) | F2 · L0–L1 (`symlib/core` + `symlib`) | 27 | 9,061 | Finite symmetry: hardware `popcnt` `BitVec`, unbounded `PermLut`, Schreier–Sims, McKay search, Holt arbitrary-rank subgroup lattices, Burnside Möbius & groupoid Yoneda/Kan |
-| 5 | [`semiring/`](semiring/README.md) | F3 · L1–L4 (**15 sub-packages**) | 39 | 10,982 | `@swar` Bool/GF(2) GEMM, 3D gift-wrapping Newton subdivision, Karp tropical eigenpairs, Johnson negative-weight APSP, Min-Fill VE & Hopcroft `O(\|Σ\|\|Q\|log\|Q\|)` minimal DFA |
-| 6 | [`topos/`](topos/README.md) | F4 · L2–L3 (`topos/site` + `topos`) | 9 | 8,210 | Grothendieck sites, `Sieve64` SWAR bi-Heyting kernel, MAC matching families, `¬¬` Boolean sheafification, Alexandrov/Chu dualities, geometric morphisms, Torsors & cohomology |
+| 2 | [`algebra/`](algebra/README.md) | F1 · L1–L2 (`algebra/core` + `algebra`) | 23 | 19,220 | Exact rational/algebraic tower (`Rat` `Int64` fast path, Bareiss/Ozaki-II `QMat`, complete factorization, number fields, Jordan, certified intervals, transcendence) |
+| 3 | [`cubical/`](cubical/README.md) | F1 · L0–L6 (**9 sub-packages**) | 82 | 83,245 | Trusted dependent-cubical core: Kalman free De Morgan `I_DM`, CCHM `Cofib(n)`, NbE, Kan, Glue, univalence, HITs, `O(Δ)` HOU, BFT/MVCC store, universal algebra autonomy & all 54 higher cubical structures (zero piggybacking) |
+| 4 | [`symlib/`](symlib/README.md) | F2 · L0–L1 (`symlib/core` + `symlib`) | 27 | 8,927 | Finite symmetry: hardware `popcnt` `BitVec`, unbounded `PermLut`, Schreier–Sims, McKay search, Holt arbitrary-rank subgroup lattices, Burnside Möbius & groupoid Yoneda/Kan |
+| 5 | [`semiring/`](semiring/README.md) | F3 · L1–L4 (**15 sub-packages**) | 40 | 11,077 | `@swar` Bool/GF(2) GEMM, 3D gift-wrapping Newton subdivision, Karp tropical eigenpairs, Johnson negative-weight APSP, Min-Fill VE & Hopcroft `O(‖Σ‖‖Q‖log‖Q‖)` minimal DFA |
+| 6 | [`topos/`](topos/README.md) | F4 · L2–L3 (`topos/site` + `topos`) | 10 | 8,607 | Grothendieck sites, `Sieve64` SWAR bi-Heyting kernel, MAC matching families, `¬¬` Boolean sheafification, Alexandrov/Chu dualities, geometric morphisms, Torsors & cohomology |
 | 7 | [`scheme/`](scheme/README.md) | F5 · L3 | 6 | 6,150 | `Mono64` SWAR, Yan geobuckets, M4RI Boolean F4, multi-prime CRT modular F4, Grassmann–Plücker det, glued schemes, Kähler/Fitting, Serre duality & Chow motives |
 | 8 | [`condensed/`](condensed/README.md) | F6 · L1–L4 (`condensed/core` + `condensed`) | 5 | 3,376 | Profinite towers, constructive Nöbeling unimodular basis, Roos–Milnor `R¹lim`, solid/liquid modules, 64× `@swar` Steenrod–Adams (`h₃=σ`, `η³=4ν`) & analytic stacks |
 | 9 | [`tensor/`](tensor/README.md) | F7 · L2 | 2 | 2,151 | 64-trit `𝔽₃` 6,561-tensor rank atlas `[1, 128, 4032, 2400]`, MRV/MAC exact Gromov–Hausdorff, dominated VR collapse, Radon & Clifford spinors |
 | 10 | [`conjecture/`](conjecture/README.md) | F7 · L3–L5 (`conjecture/kernel` + `conjecture`) | 3 | 1,436 | Half-GCD rational reconstruction, 64-bit `ctz` bitplane implication lattice, Lakatos conjecture-evolution engine & 12 cross-federation conjectures |
-| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 18 | 6,627 | **`K₉ = 36/36` all-pairs bridges**, `F7→F9→F4→F1` promotion, `F8×F5×F1` & `F2×F3×F6` triads, 18-entry geometry–logic atlas & 47/47 certificates |
-| 12 | [`accel/`](accel/README.md) | F8 · L0–L4 (`accel/swar` + `accel`) | 10 | 3,601 | `L0` 64-bit SWAR primitives (M4RI RREF, 64-trit `GF(3)`, Ozaki-II CRT, Stockham NTT, Cube64 butterfly, Scanbox, HVM2 `INetArena`) + 8/8 portable WGSL shaders |
-| 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 828 | Executable crash-consistency model (`fsync` ordering) + BFT `3f+1` quorum durable replicas |
-| 14 | [`meta/`](meta/README.md) | F9 · L0–L2 (**4 library sub-packages**) | 30 | 14,278 | Zero-business-dependency metatheory floor & three-axis engine: Paterson–Wegman DAG MGU, Bareiss, SLG tabling, bidirectional E-graph QIIT, NbE reflection, `V₅ = 65,536` HF64, Vogt/HS realignment & Paley Ramsey |
-| 15 | [`cmd/`](cmd/README.md) | 6 executables · L2–L9 | 11 | 4,013 | `cmd/main` (`138/138`), `cmd/metatheory` (`553/553`), `cmd/showcase` (`47/47` + `K₉=36/36`), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
-| 16 | [`tools/`](tools/README.md) | infrastructure | 0 | 0 | `arch_check.py`, `health_scan.py` (`5,794` fns, `0` dead code, `0` duplicates), `gen_laws.py`, `gen_labels.py` |
+| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 19 | 6,813 | **`K₉ = 36/36` all-pairs bridges**, `F7→F9→F4→F1` promotion, `F8×F5×F1` & `F2×F3×F6` triads, 18-entry geometry–logic atlas & 48/48 certificates |
+| 12 | [`accel/`](accel/README.md) | F8 · L0–L4 (`accel/swar` + `accel`) | 11 | 3,887 | `L0` 64-bit SWAR primitives (M4RI RREF, 64-trit `GF(3)`, Ozaki-II CRT, Stockham NTT, Cube64 butterfly, Scanbox, HVM2 `INetArena`) + 8/8 portable WGSL shaders |
+| 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 818 | Executable crash-consistency model (`fsync` ordering) + BFT `3f+1` quorum durable replicas |
+| 14 | [`meta/`](meta/README.md) | F9 · L0–L2 (**4 library sub-packages** + `cmd/metatheory`) | 33 | 17,115 | Zero-business-dependency metatheory floor & three-axis engine: Paterson–Wegman DAG MGU, Bareiss, SLG tabling, bidirectional E-graph QIIT, NbE reflection, `V₅ = 65,536` HF64, Vogt/HS realignment & Paley Ramsey |
+| 15 | [`cmd/`](cmd/README.md) | 6 executables · L2–L9 | 12 | 4,076 | `cmd/main` (`139/139`), `cmd/metatheory` (`565/565`), `cmd/showcase` (`48/48` + `K₉=36/36`), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
+| 16 | [`tools/`](tools/README.md) | infrastructure (not a MoonBit package) | 0 | 0 | `arch_check.py`: federation partition, file ownership, `moon.pkg` imports, source reference graph, statistics |
 | 17 | [`webgpu/`](webgpu/README.md) | F8 browser side | 0 | 0 | Zero-dependency browser verifier for all 8 registered WGSL compute shaders + CPU-SWAR bitwise cross-check |
+| 18 | [`ualg/`](ualg/README.md) | F10 · L0–L3 (**4 sub-packages** + `cmd/ualg`) | 22 | 7,756 | Constructive universal algebra × presheaf template × De Morgan cubes (congruence lattices/quotients, Mal'cev terms, Rees quotients, nuclei, `¬¬`-sheafification as counted left adjoint; free De Morgan algebras `DM(n)`; cubical double-negation nucleus; Glivenko). Parallel to the dual-V graph; **not wired into `K₉`**; Lean-side counterpart: `lean/KtLaws/Instances/ImportGraph.lean` (O5 logic core, green, unregistered) |
 
-**(Plus root package `.` : `18` `.mbt` files, `12,871` lines → Grand Total: `52` packages, `61` components, `286` `.mbt` files, `185,986` lines.)**
+> **2026-11-11 merge note.** Row 18 (`ualg/`) is local-side work (rounds 5–7) that shares ancestor 84266c0 with the
+> remote line's S1–T4 refactor; both were merged on 2026-11-11. Remote's pre-merge table (286 `.mbt`, 185,986 lines) and
+> local's (222 `.mbt`, 152,883 lines) are both **superseded** by the post-merge reality measured by
+> `python3 tools/arch_check.py`: **10 federations + unification apex · 57 packages · 66 components · 318 `.mbt` files ·
+> 199,215 lines**. Remote's MoonBit claims (139/139, 565/565, 48/48, 5,810 fns `0` dead code, four-target zero-warning
+> `moon check`) are **carried from remote's 2026-11-10 verification and have NOT been re-run on this merged tree**
+> (no `moon` toolchain in this sandbox). Re-run before trusting them.
+>
+> **2026-11-10 note.** Row 17 was extended on 2026-11-10 (same day) with `ualg/cube/` (L2): cubical sheafification
+> (`Sh_¬¬(□ⁿ) ≃ Set^{頂點}`) and the cubical double-negation nucleus (Glivenko, Ω_¬¬ size formula). `cmd/ualg` moved to L3.
+> The heading count ("16"), the totals line below and the per-federation table still predate both `meta/` and `ualg/`;
+> the current on-disk truth is the output of `python3 tools/arch_check.py`: **10 federations, 49 packages, 58 components,
+> 271 `.mbt` files, 173,471 lines**.
+>
+> **2026-11-10 note (round 3).** The fourth federation `meta/` (47→**67** `law_*` functions, **527/527** laws,
+> counter-distribution core 126／instances 169／iit 173／reflect 59, 430 distinct labels, 123 families) closed its
+> four open items: STLC η (`stlc_eta`, x ∉ FV(f) made decidable as "no `vz` node in f", index-preservation re-measured),
+> the matroid criterion's (⇐) side upgraded from 12-sample comparison to **per-instance certificates** verified by
+> construction-independent checks + 2^n exhaustive rank reconciliation (n ≤ 12), multi-target mirror rules handled by a
+> **co-derivation** (`forward_least_model`, forward fixed-point closure, three-valued honest `None`) with `mirror_exact`
+> as the executable precondition of the mirror law (a measured counterexample pins down that naive mirroring is
+> two-sided wrong for ≥ 2 premises), and the **R(4,5) ≥ 25 lower bound** certified by the published McKay–Radziszowski
+> `r45_24.g6` first-graph witness embedded in the tree (124 edges; re-verified by two independent algorithms).
+> Upper bound for R(4,5) remains 32 (recursion bound); R(5,5) untouched. `cmd/metatheory` now prints `通過 527 / 527 定律`.
+
+> **2026-11-10 note (round 4).** `meta/iit/sn.mbt`: STLC 逐項 SN certificates — full-tree exhaustive β∪η
+> (`stlc_one_step_reducts`, **all positions**, structural dedupe); `stlc_sn_depth` returns `Some(k)` = every
+> reduction path ≤ k certified by complete exploration, or `None` over budget (**not** "not SN");
+> `stlc_sn_tree_typed` re-checks `icheck` at every node of the tree. Measure (longest-path depth) strictly
+> decreases along every step (battery law). Exact small depths: id=0, app1=1, app2=1, eta_deep=1, k_app=2;
+> `two_positions` = exactly 2 distinct one-step reducts (after redesign — the first construction had three
+> routes converging to the same term). **Not a universal SN theorem** (Tait–Girard/logical relations belong
+> to Lean; frozen). R(4,5) ≥ 25 witness re-audited byte-level vs upstream `r45_24.g6` line 1 (independent
+> decoder: n=24, 276 data bits exactly consumed, 124 edges, degrees 9×2/10×12/11×10; masks bit-identical;
+> upper bound stays 32; R(5,5) untouched). Suite now **551/551** (73 `law_*` fns); labels regenerated:
+> **551 條／453 互異／146 族** (iit 197 條／119 互異); `arch_check` → **272 .mbt / 173,944 行**.
+> Push deferred to a later user instruction (no remote configured in sandbox; .git/config lost).
+> Reminder: after any `/var/tmp` cleanup, run `. /home/user/moon_env.sh && moon update` before building.
+
+> **2026-11-10 note (round 5).** Lean unfreezes and round 5 lands the Lean backlog's first obligation:
+> **O4 done, honestly** — the WHY.md draft `orientable e → WellFounded (Rewrites e)` (node-count
+> orientation, kt's `orientable`) is *false*: `h(f x, y) ⇒ g(y, y)` is oriented at `uSize` (4 > 3) with
+> Vars(body) ⊆ Vars(head), yet the substitution y ↦ `ufn 7 [ufn 0 [], ufn 0 []]` makes one root step
+> grow a term from 6 to 7. Honest delivery: `lean/KtLaws/Instances/Termination.lean` (316 lines) proves
+> the sound restricted criterion (`measureDecreasing`: pointwise `varsOf` count domination + strict ufn
+> decrease ⇒ every rewrite step shrinks `uSize` ⇒ `WellFounded (Rewrites e)`), verifies `envShow`'s four
+> rules instance-wise (`envShow_terminating`), and ships the counterexample as a kernel-checked negative
+> asset (`kt_node_measure_orientation_unsound`). **2026-11-10 update (round 6):** user ordered the toy
+> `Reflect/Universe.lean` **deleted with no archive** （不另作保存） — deletion landed; the four pure-`decide`
+> files were kept （裁決 universe_only）. Registry 505 → **464**; UNIVERSAL 146 → **134**; full rebuild green.
+> Note: round-5 commit objects were lost with the pre-6 snapshot (HEAD reset to 2c0350b); the worktree
+> content all survived and was re-committed in round 6. **O1–O6 mandate (full_kernel)**: every obligation
+> must build green with no `sorry` and registry entry — not just the two “easiest”. O4 stands done
+> (round 5). **O1 is not done**: O1 needs a full logical
+> relation (1–2 wk), O2 SLD-completeness (2–3 wk), O3 QIIT respectfulness (3–4 wk), O5 SCC-from-scratch
+> (no mathlib, ~1 wk), O6 club intersection (no mathlib, 1–2 wk). No `sorry` passes anything off as done.
+> MoonBit side untouched; **not pushed**.
+>
+> **2026-11-11 update (round 7):** user ordered O1 next （「接著進行O1」）. **O1 is still not done** —
+> but its `isBetaNormal` half landed as a **kernel-green, registry-checked** structural theorem
+> (`KtLaws/Reflect/NfNormal.lean`, 110 lines): `reifyN_isBetaNormal` (mutual induction on fuel — for *all*
+> fuel/types/values, reify output is β-normal with lam-free head), `nf_isBetaNormal`, and `nf_beta_normal`
+> (`check Γ t A = true → isBetaNormal (nf A t) = true`, same statement shape as O1; the hypothesis is
+> unused — the result is stronger). `KtLaws.lean` + `Registry.lean` updated (464 → **466**, two `#check`s).
+> The **idempotency half (`nf (nf t) = nf t`) is not done** and remains honest-open: it needs a full
+> reducibility/logical relation (NbE soundness under βη), 1–2 weeks. O2's status is unchanged: its on-disk
+> `hasBody_ne` statement is itself unprovable (k = 0, bs = [] ⇒ LHS true, RHS false); a fix (uniform-fuel
+> statement) is identified but not landed; `Instances/SldComplete.lean` stays red and is not counted.
+> Same-day doc recount (2026-11-11): WHY.md/UNIVERSAL.md per-file line counts fixed to `wc` truth
+> (9,326 total excl. barrel; was 8,932), missing `SldComplete.lean`/`ImportGraph.lean` rows added;
+> ImportGraph's 7 universal theorems now counted (全稱 137→**144**, 宣告 562→**573**, 其他 43→**47**),
+> marked 未入桶未登記； lean/README、root README、coverage.md、CAPABILITIES.md synced (Registry 466;
+> Universe toy-model mention removed from root README). MoonBit side untouched; **not pushed**.
+
+**合併截面總計（`python3 tools/arch_check.py`，2026-11-11）：`10` 聯邦 + `unification` apex · `57` packages · `66` components · `318` `.mbt` files · `199,215` lines。**
 
 | Federation | Packages | Files | Lines |
 |---|---:|---:|---:|
-| `cubical` (incl. root, `algebra`, `hostfs`, `cmd/main`) | 14 | 124 | 114,424 |
-| `symlib` | 4 | 30 | 9,964 |
-| `semiring` | 16 | 44 | 13,795 |
-| `topos` | 2 | 9 | 8,210 |
+| `cubical` (incl. root, `algebra`, `hostfs`, `cmd/main`) | 14 | 126 | 116,167 |
+| `symlib` | 4 | 30 | 9,830 |
+| `semiring` | 16 | 45 | 13,885 |
+| `topos` | 2 | 10 | 8,607 |
 | `scheme` | 1 | 6 | 6,150 |
 | `condensed` | 3 | 8 | 5,059 |
 | `discovery` | 3 | 5 | 3,587 |
-| `accel` | 2 | 10 | 3,601 |
-| `meta` | 5 | 31 | 14,403 |
-| `unification` (apex) | 2 | 19 | 6,793 |
+| `accel` | 2 | 11 | 3,887 |
+| `meta` | 5 | 34 | 17,246 |
+| `ualg` | 5 | 23 | 7,813 |
+| `unification` (apex) | 2 | 20 | 6,984 |
 
 ---
 
@@ -293,12 +371,13 @@ same severity as a failing gate.
 
 | # | Sub-package | Target | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
-| 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | Entry point for the `138/138` theorem ledger (`print_report()`) |
-| 2 | [`cmd/metatheory/`](cmd/metatheory/README.md) | all | 1 | 125 | 31 | Ninth Federation entry point recomputing all `553/553` metatheory laws across `90` `law_*` functions |
-| 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 166 | 66 | Nine federations × `K₉ = 36/36` × three cross-federation triads/pipelines × `47/47` certificates |
+| 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | Entry point for the `139/139` theorem ledger (`print_report()`) |
+| 2 | [`cmd/metatheory/`](cmd/metatheory/README.md) | all | 1 | 125 | 31 | Ninth Federation entry point recomputing all `565/565` metatheory laws across `94` `law_*` functions |
+| 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 166 | 66 | Nine federations × `K₉ = 36/36` × three cross-federation triads/pipelines × `48/48` certificates |
 | 4 | [`cmd/symdemo/`](cmd/symdemo/README.md) | all | 1 | 309 | 65 | `symlib` demo: "derived vs. direct" two-path agreement + monad laws |
 | 5 | [`cmd/symbench/`](cmd/symbench/README.md) | all | 2 | 594 | 88 | 12-case full-pipeline timing + seven derived-algorithm families (A–G) |
 | 6 | [`cmd/semiringreport/`](cmd/semiringreport/README.md) | **native only** | 5 | 2,813 | 118 | The 19-section measurement report; §19 turns every limitation into a measured number |
+| 7 | [`cmd/ualg/`](cmd/ualg/README.md) | all | 1 | 57 | 55 | Federation-10 law table: recomputes and prints the propositions of `ualg/core`, `ualg/site`, `ualg/demorgan`, `ualg/cube`; aborts if any is false (local-side, 2026-11-10) |
 
 ### 6.4 `meta/` & decoupled lightweight core sub-packages — 10 sub-packages (54 files, 30,233 lines)
 
@@ -334,9 +413,9 @@ same severity as a failing gate.
 **Changing the architecture** — `agent.v2.md` (governance) → §1–§3 of this file (verification and
 reporting) → `tools/` → `architecture.json`.
 
-**Just need to run something** — `moon run cmd/main --target wasm-gc` (138/138 theorems),
-`moon run cmd/metatheory --target wasm-gc` (553/553 laws),
-`moon run cmd/showcase --target wasm-gc` (47/47 certificates + K_9=36/36),
+**Just need to run something** — `moon run cmd/main --target wasm-gc` (139/139 theorems),
+`moon run cmd/metatheory --target wasm-gc` (565/565 laws),
+`moon run cmd/showcase --target wasm-gc` (48/48 certificates + K_9=36/36),
 `moon run cmd/semiringreport --target native` (the measurement report).
 
 ---
@@ -367,10 +446,10 @@ against real signatures** — if a function name or arity changes, the README ch
 
 ## 9. Onboarding checklist (first hour)
 
-1. `python3 tools/arch_check.py` → confirm `52 packages, 61 components, 286 .mbt files, 185986 .mbt lines` on your machine. This is
+1. `python3 tools/arch_check.py` → confirm `10 federations + unification apex, 57 packages, 66 components, 318 .mbt files, 199215 .mbt lines` on your machine. This is
    your baseline; every later claim of "unchanged architecture" is measured against it.
 2. `moon check --deny-warn --target wasm-gc` → must be silent.
-3. `moon run cmd/main --target wasm-gc` → must end at `138/138` (`cmd/metatheory` → `553 / 553`).
+3. `moon run cmd/main --target wasm-gc` → must end at `139/139` (`cmd/metatheory` → `565 / 565`).
 4. Read `cubical/finite/README.md`, then `semiring/algebra/README.md` — they are the two smallest
    self-contained views of what this repository is about.
 5. Read §1.2 Tier B of this file once more, then make a one-line change to some file and walk the loop

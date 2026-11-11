@@ -1,0 +1,109 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/ualg/site"
+
+// Values
+pub fn all_laws() -> Array[(String, Array[(String, Bool)])]
+
+pub fn all_nuclei(Poset, Array[Int32]) -> Array[Array[Int32]]
+
+pub fn bit(Int32, Int32) -> Bool
+
+pub fn count_nat(Poset, Presheaf, Presheaf) -> Int32
+
+pub fn dneg_via_atoms(Poset, Int32) -> Int32
+
+pub fn fixed_points(Array[Int32], (Int32) -> Int32) -> Array[Int32]
+
+pub fn full_mask(Poset) -> Int32
+
+pub fn hneg(Poset, Int32) -> Int32
+
+pub fn imp(Poset, Int32, Int32) -> Int32
+
+pub fn is_iso(Presheaf, Presheaf, Array[Array[Int32]]) -> Bool
+
+pub fn is_natural(Poset, Presheaf, Presheaf, Array[Array[Int32]]) -> Bool
+
+pub fn is_nucleus(Array[Int32], (Int32) -> Int32) -> Bool
+
+pub fn is_open(Poset, Int32) -> Bool
+
+pub fn is_sheaf(Poset, Array[Int32], (Int32) -> Int32, Presheaf) -> Bool
+
+pub fn j_closed(Int32) -> (Int32) -> Int32
+
+pub fn j_dneg(Poset) -> (Int32) -> Int32
+
+pub fn j_open(Poset, Int32) -> (Int32) -> Int32
+
+pub fn law_alexandrov_topology() -> Array[(String, Bool)]
+
+pub fn law_double_negation_nucleus() -> Array[(String, Bool)]
+
+pub fn law_heyting_algebra_of_opens() -> Array[(String, Bool)]
+
+pub fn law_nuclei_census_and_isbell() -> Array[(String, Bool)]
+
+pub fn law_presheaf_template_sheafification() -> Array[(String, Bool)]
+
+pub fn law_sheaves_for_other_topologies() -> Array[(String, Bool)]
+
+pub fn least_cover(Poset, Array[Int32], (Int32) -> Int32, Int32) -> Int32
+
+pub fn leq(Poset, Int32, Int32) -> Bool
+
+pub fn matching_families(Poset, Presheaf, Int32) -> Array[Array[Int32]]
+
+pub fn minimals(Poset) -> Int32
+
+pub fn opens_all(Poset) -> Array[Int32]
+
+pub fn opens_count(Poset) -> Int64
+
+pub fn plus(Poset, Array[Int32], (Int32) -> Int32, Presheaf) -> (Presheaf, Array[Array[Int32]], Bool)
+
+pub fn poset_antichain(Int32) -> Poset
+
+pub fn poset_chain(Int32) -> Poset
+
+pub fn poset_cube(Int32) -> Poset
+
+pub fn poset_from_leq(Array[Array[Bool]]) -> Poset
+
+pub fn poset_ok(Poset) -> Bool
+
+pub fn poset_product(Poset, Poset) -> Poset
+
+pub fn poset_v() -> Poset
+
+pub fn psh_const(Poset, Int32) -> Presheaf
+
+pub fn psh_make(Poset, Array[Int32], (Int32, Int32, Int32) -> Int32) -> Presheaf
+
+pub fn psh_ok(Poset, Presheaf) -> Bool
+
+pub fn psh_omega(Poset, Array[Int32], (Int32) -> Int32) -> Presheaf
+
+pub fn psh_sub(Poset, Int32) -> Presheaf
+
+pub fn sheafify(Poset, Array[Int32], (Int32) -> Int32, Presheaf) -> (Presheaf, Array[Array[Int32]], Bool)
+
+pub fn specialization(Array[Int32], Int32) -> Array[Array[Bool]]
+
+// Errors
+
+// Types and methods
+pub(all) struct Poset {
+  n : Int32
+  down : Array[Int32]
+  up : Array[Int32]
+}
+
+pub(all) struct Presheaf {
+  size : Array[Int32]
+  res : Array[Array[Array[Int32]]]
+}
+
+// Type aliases
+
+// Traits

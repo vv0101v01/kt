@@ -32,12 +32,12 @@
 
 ///|
 pub fn dim_is_zero(r : Dim) -> Bool {
-  dim_is_zero_demorgan(r)
+  dim_eq_sem(r, DZero)
 }
 
 ///|
 pub fn dim_is_one(r : Dim) -> Bool {
-  dim_is_one_demorgan(r)
+  dim_eq_sem(r, DOne)
 }
 
 // ---------------------------------------------------------------------------
@@ -206,7 +206,7 @@ pub fn coe_value(
   v : DValue,
   dlevel : Int32,
 ) -> DValue {
-  if dim_eq_demorgan(r, s) {
+  if dim_eq_sem(r, s) {
     v
   } else if dim_is_zero(r) && dim_is_one(s) {
     comp_value(line, dsystem_empty(), v, dlevel)
@@ -1038,7 +1038,7 @@ fn circle_coord_candidates(
 ///|
 pub fn circle_sem_coord_norm(r : Dim) -> Dim {
   let s = dim_simplify(r)
-  if dim_eq_sem(s, DZero) || dim_eq_sem(s, DOne) {
+  if dim_is_zero(s) || dim_is_one(s) {
     DZero
   } else {
     circle_dim_of(circle_point(s))

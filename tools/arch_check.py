@@ -162,9 +162,9 @@ def main() -> int:
     # ---- 5-federation + unification apex partition -----------------------
     pkg_to_fed: dict[str, str] = {}
     if federations or unification:
-        if len(federations) not in (5, 6, 7, 8, 9):
+        if len(federations) not in (5, 6, 7, 8, 9, 10):
             errors.append(
-                f"expected 5..9 federations in architecture.json, got {len(federations)}"
+                f"expected 5..10 federations in architecture.json, got {len(federations)}"
             )
         for fed_id, fed in federations.items():
             for pkg_id in fed["packages"]:

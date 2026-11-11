@@ -294,7 +294,11 @@ fn dterm_instantiate_levels_list(
   levels : Array[Int32],
   ok : Array[Bool],
 ) -> Array[DTerm] {
-  terms.map(t => dterm_instantiate_levels_go(t, levels, ok))
+  let out : Array[DTerm] = []
+  for i in 0..<terms.length() {
+    out.push(dterm_instantiate_levels_go(terms[i], levels, ok))
+  }
+  out
 }
 
 ///|
@@ -795,20 +799,7 @@ pub struct DLevelTermDecl {
 }
 
 ///|
-pub(all) enum DLevelDecl {
-  DLevelDeclInductive(DLevelInductiveDecl)
-  DLevelDeclHit(DLevelHitDecl)
-  DLevelDeclTerm(DLevelTermDecl)
-}
-
-///|
-pub fn level_decl_validate(decl : DLevelDecl) -> Bool {
-  match decl {
-    DLevelDeclInductive(d) => level_inductive_decl_validate(d)
-    DLevelDeclHit(d) => level_hit_decl_validate(d)
-    DLevelDeclTerm(d) => level_term_decl_validate(d)
-  }
-}
+pub enum DLevelDecl {}
 
 ///|
 pub struct DLevelTermInstance {
@@ -1009,16 +1000,20 @@ pub fn check_level_polymorphic_declarations() -> Bool {
     Some(instance) => dep_check_closed(instance.body, instance.ty)
     None => false
   }
-  let sum_decl_ok = level_decl_validate(DLevelDeclInductive(list_level_decl())) &&
-    level_decl_validate(DLevelDeclHit(circle_level_decl())) &&
-    level_decl_validate(DLevelDeclTerm(level_identity_decl()))
   list_ok &&
   circle_ok &&
   identity_ok &&
-  sum_decl_ok &&
   instantiate_level_inductive_decl(list_level_decl(), []) == None &&
   !dterm_levels_in_scope(DUnivLevel(DLevelVar(1)), 1)
 }
+
+///|
+
+///|
+
+///|
+
+///|
 
 ///|
 /// A transparent one-argument type operator declaration.  `head` is

@@ -17,6 +17,9 @@ pub fn all_laws() -> Array[(String, Bool)] {
   for (l, b) in law_characterize_greedy_gives_minimal_not_minimum() {
     out.push((l, b))
   }
+  for (l, b) in law_characterize_matroidal_criterion_has_constructive_certificates() {
+    out.push((l, b))
+  }
   for (l, b) in law_characterize_matroidal_criterion_is_exact() {
     out.push((l, b))
   }
@@ -60,6 +63,9 @@ pub fn all_laws() -> Array[(String, Bool)] {
     out.push((l, b))
   }
   for (l, b) in law_compose_mirror_involution_preserves_the_env_fingerprint() {
+    out.push((l, b))
+  }
+  for (l, b) in law_compose_mirror_respects_exactness_boundary_and_co_derivation() {
     out.push((l, b))
   }
   for (l, b) in law_engine_completion_repairs_an_incoherent_env() {

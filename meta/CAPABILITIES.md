@@ -8,9 +8,35 @@
 3. **邊界在哪** —— 明示寫出來，不用「未來工作」帶過。
 
 本輪全部落在 **kt（MoonBit）側**，`lean/` 一行沒改（仍凍結在 492 條定理）。
-現況：`cmd/metatheory` **485 / 485 定律**、`cmd/main` **129 / 129**、`arch_check` → `architecture ok`
-（44 packages、248 `.mbt`、164,345 行）。標籤分佈：core 115（互異 102）／instances 147（144）／
-iit 164（87）／reflect 59（55），合計 485 條、**388 條互異**；定律函式 63 個。
+現況：`cmd/metatheory` **551 / 551 定律**、`cmd/main` **129 / 129**、`arch_check` → `architecture ok`
+（49 packages、58 components、272 `.mbt`、**173,944 行**）。標籤分佈：core 126（互異 113）／instances 169（166）／
+iit 197（119）／reflect 59（55），合計 551 條、**453 條互異**；定律函式 73 個。
+
+**2026-11-10 第 3 輪把上一輪的四個「沒做」結案（MoonBit 側）：**
+
+1. **STLC 的 η**：`stlc_eta`——`λx:A. f x → f`（`x ∉ FV(f)`）。x ∉ FV(f) 的**可判定形式**：
+   在此 vz/vs 表示法裡，相對 binder 深度 δ 的 `vz` 絕對位置恰為 δ，命中「受綁變數」（f 根上下文位置 0）
+   只可能是 `vz`；故「f 無 `vz`」⟺「受綁變數自由出現」。`stlc_unweaken` 與 `subst_insert` 完全對稱，
+   刪除上下文第 k 格並重寫所有變數，任何變數指向第 k 格即回 `None`（= x ∈ FV(f) 的情形）。
+   保型由 `icheck`／`iindex_of` 重算複驗（9 條檢查）。
+2. **擬陣判準 (⇐) 的逐實例證書**：`matroidal_certificate` 產生分割證書（每個可解目標一個區塊 =
+   覆蓋它的公理規則；其餘規則為 loop），`verify_matroidal_certificate` **獨立於產生器**重算：
+   分割完備性／互斥性／公理性／loop 不覆蓋／可解清單一致性，加上 **2^n 窮盡對帳**（n ≤ 12，
+   與 `submodularity_witness` 同一上限；n > 12 直接 `false`）。取代「12 個樣本環境」的舊對帳；
+   12 條檢查含竄改證書（丟 loop、砍可解清單）必須被驗證器拒絕、n ≤ 4 全排列窮盡下貪心刪除在
+   判準成立時對**每種**刪除順序都得到最優解（= 可解目標數）。
+3. **多目標規則的餘衍生**：`mirror_rule` 現明定 ≤ 1 前提精確（`mirror_exact` 可執行前置條件）；
+   ≥ 2 前提的樸素鏡像給出與 `solvable` **雙向都不對應**的結果（量測反例 `env_composite_chain`
+   釘進定律 #3：SLD 說可導、鏡像說不可導）。正確的餘衍生是 `forward_least_model`：
+   **正向不動點**閉包（pattern 對實例的單向匹配 + 吞併 collapse；∪ 項大小／原子數 256／輪數上限），
+   三值誠實輸出（Some(true)/Some(false)/None）；`forward_derivable` 以目標大小 + 2 為項大小預算
+   （本系統規則皆為「子目標 ≤ 結論」，預算外的原子不可能參與本目標的推導）。
+   7 個環境 × 4 目標與 SLD 逐點一致（定律 #6），含 `env_show`（雙前提 `showPair`）。
+4. **R(4,5) ≥ 25**：McKay–Radziszowski 1995 完整目錄 `r45_24.g6` 的**首張** (4,5,24)-graph（2026-11-10 已重下載逐邊交叉核對：獨立解碼 n = 24、124 邊、度數 9×2／10×12／11×10，與嵌入遮罩逐位一致）
+   （124 條邊、度數 9×2／10×12／11×10）直接嵌入本倉（`r45_witness_masks`），
+   兩條獨立演算法機器複驗：`ramsey_check_coloring`（無紅 K₄、無藍 K₅）與
+   `g_clique_count` 遮罩交集（再數一次 K₄ = 0、補圖 K₅ = 0）。上界仍是遞迴值 32
+   （R(3,5)+R(4,4) = 14+18）；1995 年的 `R(4,5) = 25` 證明（窮舉所有 25 點候選）不在本倉範圍。
 
 ---
 
@@ -61,7 +87,7 @@ Lean 側的 `KtLaws/Reflect/Universe.lean` 仍是**舊玩具模型**的鏡射，
 | 不一致時自動修（Knuth–Bendix 式） | ✅ | `repair_step`／`complete` |
 | **修補帶終止序（新規則必須 head > body，否則報告不硬塞）** | ✅ **本輪新增** | `rule_oriented`／`complete_oriented` |
 | **模組匯入圖的良基性：SCC 判環、環給真見證、DAG 給典範解析序** | ✅ **本輪新增** | `modules.mbt` `resolve_modules` |
-| 局部解黏合／Möbius 障礙、鏡像對偶、完備化與 Newman | ✅ | `compose.mbt`、`coherence.mbt` |
+| 局部解黏合／Möbius 障礙、**≤ 1 前提精確**鏡像對偶（`mirror_exact`）、**多目標餘衍生**（`forward_least_model`）、完備化與 Newman | ✅ | `compose.mbt`、`coherence.mbt` |
 
 **本輪在這裡做了三件事：**
 
@@ -90,7 +116,8 @@ Lean 側的 `KtLaws/Reflect/Universe.lean` 仍是**舊玩具模型**的鏡射，
 | schema（sort／建構子／索引項）與索引檢查 | ✅ | `schema.mbt` `icheck` |
 | Kleene 鏈、有限 schema 穩定化、`Even/Odd` 不成長 | ✅ | `schema.mbt`、`examples.mbt` |
 | 互遞迴消除器（ι 律）＋ 序數終止憑證 | ✅ | `iit_fold`／`iit_measure` |
-| STLC 的 β 與索引傳輸 | ✅ | `stlc.mbt` |
+| STLC 的 β／**η** 與索引傳輸 | ✅ | `stlc.mbt` |
+| STLC 的逐項 SN 證書（窮舉 β∪η 歸約樹；預算超 ⇒ `None`） | ✅ 逐項／❌ 全稱定理 | `sn.mbt` |
 | **等式進 schema（`ISchema.eqs`）＋ `ischema_ok` 承認等式** | ✅ **本輪完成** | `schema.mbt` `IEquation`／`ieq_ok` |
 | **商對整條 Kleene 鏈良定義（任意兩居民商相等 ⇒ 摺疊相等）** | ✅ **本輪新增** | `quotient.mbt` |
 | 商與 `iit_stage`／`iit_enumerate` 的相容、商不逃出鏈 | ✅ **本輪新增** | `quotient.mbt` |
@@ -127,7 +154,7 @@ Lean 側的 `KtLaws/Reflect/Universe.lean` 仍是**舊玩具模型**的鏡射，
 ```
 export PATH="$HOME/.moon/bin:$PATH"
 moon build --target wasm-gc                 # 綠
-moon run  cmd/metatheory --target wasm-gc   # 通過 485 / 485 定律
+moon run  cmd/metatheory --target wasm-gc   # 通過 551 / 551 定律
 moon run  cmd/main       --target wasm-gc   # passed 129/129
 python3 tools/arch_check.py                 # architecture ok
 python3 tools/gen_laws.py                   # 重新掃描 law_* 並重寫四個 laws.mbt
@@ -141,8 +168,8 @@ python3 tools/gen_labels.py                 # 從 metatheory 實際輸出重生 
 而三個能力裡有一批「對所有項／所有環境／所有 schema」的主張**既算不出來也證不動**。
 按這個理由，形式化**只應該覆蓋全稱且需要歸納的命題**。
 
-實測落差（同一份文件 §2）：Lean 側 580 條宣告中 **137 條是全稱／歸納**（屬於理由），
-**403 條是 `decide`/`native_decide` 的具體計算**（超出理由：kt 跑一次就知道）。
+實測落差（同一份文件 §2，2026-11-11 重計）：Lean 側 573 條宣告中 **144 條是全稱／歸納**（屬於理由；含 `Instances/ImportGraph.lean` 7 條未入桶未登記），
+**382 條是 `decide`/`native_decide` 的具體計算**（超出理由：kt 跑一次就知道）。
 本輪六個能力的全稱版本全部未寫，已列為證明義務 **O1–O6**（成本 6–10 週，建議先做 O4 定向⇒終止、O1 NbE 一般 β）。
 
 **因此「定理條數」不是本倉的進度指標**，正確的指標是「O1–O6 完成數」，以及三段式對帳（能不能用／能不能自己檢查／邊界在哪）。
@@ -152,3 +179,34 @@ python3 tools/gen_labels.py                 # 從 metatheory 實際輸出重生 
 工具記錄：`tools/gen_laws.py` 的正規表達式原本只認**單行**簽名，`moonfmt` 折行過的 `law_*` 會被漏掉
 （曾把 437 條漏成 128 條）。已改成跨行容忍；`tools/gen_labels.py` 改成讀**實際執行輸出**，
 所以「漏登記」在標籤清單裡一定看得出來。
+
+---
+
+## 2026-11-10 第 4 輪：STLC 強正規化 —— 以「逐項 SN 證書」落地（MoonBit 側）
+
+使用者指定跟進本檔 §12.4「下一步 1」（`agent.v2.md` 第十二節末尾：STLC 強正規化，序數 well-founded 度量）。
+
+**交付**（`meta/iit/sn.mbt`，6 條新 `law_*`）：
+1. `stlc_one_step_reducts(t)`：**所有位置**的 β∪η 一步歸約（ξ 規則基準，不是 root-only）；
+   結構等式去重（同一子項收縮出同一父項是可能的）。
+2. `stlc_sn_depth(t, max_nodes) : Int32?`：窮舉 t 的完整歸約樹（記憶化，結構等式），
+   `Some(k)` = **全部路徑 ≤ k** 經完整樹驗明；預算超 ⇒ `None`——**不是**「不 SN」（不可反向推論）。
+3. `stlc_sn_tree_typed(s, t, max_nodes) : Bool?`：樹上**每一個節點**重跑 `icheck`；
+   `Some(true)` 才算過（η 判準 `x ∉ FV(f)` 沿用 `stlc_eta` 的可判定形式）。
+4. 測度律：`longest-path 深度` 沿每一步**嚴格下降**（電池 5 項逐項驗）——
+   這就是以最長路徑為序的良基測度的可執行影子。
+5. 精確實測：id → `Some(0)`；app1 → `Some(1)`；app2 → `Some(1)`；eta_deep → `Some(1)`；
+   k_app → `Some(2)`；two_positions → 恰好 2 個互異一步歸約（根的 β 與函式體內 redex，
+   兩路收縮到**不同**的項；曾踩坑：三條路徑收斂到同一項、去重後長度 1）。
+6. 預算三值律：預算 1 對可約簡項 ⇒ `None`；對卡住（不可歸約）項 ⇒ `Some(0)`。
+
+**誠實邊界（未做，別過度引用）**：
+* 這是**逐項**憑證：不能表達「所有良型 STLC 項都 SN」的全稱命題——那需要 Tait–Girard
+  可歸約性／邏輯關係，本倉 Lean 凍結。`Some(k)` 是最長路徑上界，**不是**項大小的函數。
+* 預算是「窮舉節點數」，共享子項經記憶化；樹本質指數級時只能回 `None`。
+* β∪η 皆納入（η 判準 `x ∉ FV(f)` 可判定形式）；η 本身的保型已由第 3 輪定律覆蓋；樹上逐節點 `icheck` 把守保型。
+* R(4,5) 上界仍 32；R(5,5) 未動；Lean 仍凍結；本文件不主張任何全稱定理。
+
+量化：`cmd/metatheory` **527 → 551**（+24 條檢查：η 電池、精確深度、位置窮舉、η 探索、
+預算三值、測度下降）；`law_*` 67 → **73**；標籤 **551／453 互異／146 族**
+（iit 197／119，其餘不變）；`arch_check` **272 .mbt／173,944 行**（sn.mbt 新增）。

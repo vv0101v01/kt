@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// meta/iit — STLC 的 β 與**索引傳輸**（把「未實作」的那一項做完）
+// meta/iit — STLC 的 β、**索引傳輸**與 η-約簡
 // ---------------------------------------------------------------------------
 //
 // 上一版只做到「索引檢查 + 消除器」，並明白寫著：`beta` 未實作，因為
@@ -283,6 +283,103 @@ pub fn stlc_norm(t : IVal, fuel : Int32) -> IVal {
     n = n + 1
   }
   cur
+}
+
+// ---------------------------------------------------------------------------
+// 5.5 η：λx:A. f x → f（x ∉ FV(f)）
+// ---------------------------------------------------------------------------
+//
+// 表示法關鍵（與 vz/vs 的設計一致）：
+//   * app(G, A, B, f, x)：f : Tm G (A→B)、x : Tm G A
+//   * stlc_eta 只認「根節點是 λx:A.(f x)」這一格——與 β 一樣 root-only，
+//     不假裝是 ξ 規則（不在 binder 底下做 η）。
+//   * x ∉ FV(f) 的**可判定形式**：f 裡面不得有任何 ctor 4（vz 節點）。
+//     原因：在此表示法裡，相對 binder 深度 δ 的 vz 絕對位置恰為 δ——
+//     它必指向 f 根上下文從內數第 δ 格；要命中「受綁變數」（f 根上下文位置 0）
+//     只可能是 vz。vs 節點（至少包一層）絕對位置 ≥ δ+1，必指向 f 根
+//     上下文位置 ≥ 1，即綁定以外的項。所以「沒有 vz」⟺「沒有受綁變數自由出現」。
+//     這比逐節點算位置更穩，實測也由 stlc_unweaken 在移除時再檢查一次。
+//
+// stlc_unweaken 與 subst_insert 完全對稱：
+//   subst_insert 在上下文位置 k 插入一個型別並重寫所有變數；
+//   stlc_unweaken 在上下文位置 k **刪除**一個型別並重寫所有變數——
+//   任何變數若指向第 k 格即回 None（就是 x ∈ FV(f) 的情形，由 η 拒絕）。
+
+///|
+/// 從 t 的上下文中刪除位置 k 的元素，並同步重寫所有變數節點。
+/// 若任何變數指向位置 k（＝被刪除的那一格），回傳 None。
+pub fn stlc_unweaken(t : IVal, k : Int32) -> IVal? {
+  if is_var(t) {
+    let p = var_depth(t)
+    if p == k {
+      // 有變數指向被刪除的元素 ⇒ 這一格不能刪（f 用到受綁變數）
+      return None
+    }
+    let ctx = ctx_remove(var_full_ctx(t), k)
+    let np = if p > k { p - 1 } else { p }
+    Some(make_var(ctx, np, var_ty(t)))
+  } else if t.ctor == 7 {
+    let g = t.args[0]
+    if k == 0 {
+      // 根上下文位置 0 被刪除 ⇒ body（上下文 cons A0 g）的位置 1 被刪除
+      match stlc_unweaken(t.args[3], 1) {
+        Some(u) =>
+          Some(stlc_lam(ctx_remove(g, 0), t.args[1], t.args[2], u))
+        None => None
+      }
+    } else {
+      match stlc_unweaken(t.args[3], k) {
+        Some(u) =>
+          Some(stlc_lam(ctx_remove(g, k - 1), t.args[1], t.args[2], u))
+        None => None
+      }
+    }
+  } else if t.ctor == 6 {
+    // app(G, A, B, f, x)：兩個子項共用上下文
+    match stlc_unweaken(t.args[3], k) {
+      Some(f) =>
+        match stlc_unweaken(t.args[4], k) {
+          Some(x) =>
+            Some(stlc_app(ctx_remove(t.args[0], k), t.args[1], t.args[2], f, x))
+          None => None
+        }
+      None => None
+    }
+  } else {
+    Some(t)
+  }
+}
+
+///|
+/// η-約簡：λx:A. f x → f（x ∉ FV(f)）。
+/// root-only；不滿足模式時回 None，絕不猜測。
+pub fn stlc_eta(t : IVal) -> IVal? {
+  if t.ctor != 7 {
+    return None
+  }
+  let g = t.args[0]
+  let a = t.args[1]
+  let b = t.args[2]
+  let body = t.args[3]
+  if body.ctor != 6 {
+    return None
+  }
+  // app 的上下文必須是 cons A G（受綁變數那一層）
+  if !ival_eq(body.args[0], stlc_cons(a, g)) {
+    return None
+  }
+  // app 的結果型別必須是 B
+  if !ival_eq(body.args[2], b) {
+    return None
+  }
+  let f = body.args[3]
+  let x = body.args[4]
+  // 參數必須就是受綁變數本身：vz(G, A)
+  if !(x.ctor == 4 && ival_eq(x.args[0], g) && ival_eq(x.args[1], a)) {
+    return None
+  }
+  // f : Tm (cons A G) (A→B)；x ∉ FV(f) ⟺ stlc_unweaken(f, 0) 成功
+  stlc_unweaken(f, 0)
 }
 
 // ---------------------------------------------------------------------------
@@ -632,5 +729,143 @@ pub fn law_stlc_normalization_reaches_a_stuck_value() -> Array[(String, Bool)] {
       )
     None => @core.chk(out, "iit: normalization reaches a stuck value #7", false)
   }
+  out
+}
+
+// ---------------------------------------------------------------------------
+// 11. η 的範例與定律
+// ---------------------------------------------------------------------------
+
+///|
+/// 測試專用的變數重建：第 `pos` 個位置（完整上下文 `ctx` 為該節點所在上下文）。
+fn ex_var(ctx : IVal, pos : Int32, ty : IVal) -> IVal {
+  make_var(ctx, pos, ty)
+}
+
+///| λy:nat. y 弱化到上下文 cons nat nil（η-約簡右側的原式）。
+pub fn stlc_ex_eta_arg() -> IVal {
+  stlc_lam(
+    stlc_cons(n(), nil()),
+    n(),
+    n(),
+    stlc_vz(stlc_cons(n(), nil()), n()),
+  )
+}
+
+///| λx:nat. (λy:nat. y) x —— η-redex（f 不用 x）。
+pub fn stlc_ex_eta_lhs() -> IVal {
+  let g = nil()
+  stlc_lam(
+    g,
+    n(),
+    n(),
+    stlc_app(
+      stlc_cons(n(), g),
+      n(),
+      n(),
+      stlc_ex_eta_arg(),
+      stlc_vz(g, n()),
+    ),
+  )
+}
+
+///| η-約簡右側：λy:nat. y（上下文 nil）。
+pub fn stlc_ex_eta_rhs() -> IVal {
+  stlc_ex_id()
+}
+
+///| λ 一層、上下文兩個 nat：f = λw. G[0]（用外層位置 1，不用受綁變數），
+///| 參數也不是受綁變數（位置 2）——兩條理由都不觸發 η。
+pub fn stlc_ex_eta_nonbound() -> IVal {
+  let g = stlc_cons(n(), stlc_cons(n(), nil()))
+  let body_ctx = stlc_cons(n(), g) // cons (x:nat) G，位置 0=x, 1=G[0], 2=G[1]
+  let f = stlc_lam(
+    body_ctx,
+    n(),
+    n(),
+    ex_var(stlc_cons(n(), body_ctx), 2, n()),
+  )
+  stlc_lam(
+    g,
+    n(),
+    n(),
+    stlc_app(body_ctx, n(), n(), f, ex_var(body_ctx, 2, n())),
+  )
+}
+
+///| λx:nat. (λy:nat. x) x —— f 透過一層 binder 用到受綁變數，η 不得動它。
+pub fn stlc_ex_eta_uses_bound() -> IVal {
+  let g = nil()
+  let body_ctx = stlc_cons(n(), g) // cons (x:nat) nil
+  // f = λy:nat. x ：body 裡 x 的絕對位置 = 1（穿過一層 binder）
+  let f = stlc_lam(body_ctx, n(), n(), ex_var(stlc_cons(n(), body_ctx), 1, n()))
+  stlc_lam(
+    g,
+    n(),
+    n(),
+    stlc_app(body_ctx, n(), n(), f, stlc_vz(g, n())),
+  )
+}
+
+///|
+pub fn law_stlc_stlc_eta_removes_a_trivial_binder() -> Array[
+  (String, Bool),
+] {
+  let s = schema_stlc()
+  let out : Array[(String, Bool)] = []
+  let lhs = stlc_ex_eta_lhs()
+  @core.chk(out, "iit: STLC η removes a trivial binder #1", icheck(s, lhs))
+  match stlc_eta(lhs) {
+    Some(r) => {
+      @core.chk(out, "iit: STLC η removes a trivial binder #2", icheck(s, r))
+      @core.chk(
+        out,
+        "iit: STLC η removes a trivial binder #3",
+        stlc_same_index(s, lhs, r),
+      )
+      @core.chk(
+        out,
+        "iit: STLC η removes a trivial binder #4",
+        ival_eq(r, stlc_ex_eta_rhs()),
+      )
+      // η 的結果不再是 η-redex 了（λy.y 不是 λz.(f z) 形狀）
+      @core.chk(
+        out,
+        "iit: STLC η removes a trivial binder #5",
+        match stlc_eta(r) {
+          Some(_) => false
+          None => true
+        },
+      )
+    }
+    None => {
+      @core.chk(out, "iit: STLC η removes a trivial binder #2", false)
+      @core.chk(out, "iit: STLC η removes a trivial binder #3", false)
+      @core.chk(out, "iit: STLC η removes a trivial binder #4", false)
+      @core.chk(out, "iit: STLC η removes a trivial binder #5", false)
+    }
+  }
+  // 參數不是受綁變數：不觸發
+  let t2 = stlc_ex_eta_nonbound()
+  @core.chk(out, "iit: STLC η removes a trivial binder #6", icheck(s, t2))
+  @core.chk(
+    out,
+    "iit: STLC η removes a trivial binder #7",
+    match stlc_eta(t2) {
+      Some(_) => false
+      None => true
+    },
+  )
+  // f 用到受綁變數（隔一層 binder）：不觸發
+  let t3 = stlc_ex_eta_uses_bound()
+  @core.chk(out, "iit: STLC η removes a trivial binder #8", icheck(s, t3))
+  @core.chk(
+    out,
+    "iit: STLC η removes a trivial binder #9",
+    match stlc_eta(t3) {
+      Some(_) => false
+      None => true
+    },
+  )
   out
 }

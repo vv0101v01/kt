@@ -17,6 +17,11 @@
 //
 // 兩邊一夾：R(4,4) = 18；同樣的手法把 R(3,5) 夾成 14（5+9 上界，K₁₃ 見證下界）。
 // 於是「更大的值」不是靠更快的窮舉，而是靠**換一個數學結構**。
+//
+// R(4,5) ≥ 25 同理——但這次見證不是構造出來的，而是**發表的**：
+// McKay–Radziszowski 1995 年的完整目錄 r45_24.g6（352,366 張 (4,5,24)-graph）
+// 第一張的位元組直接嵌在本檔（見 r45_witness_masks），
+// 以兩條獨立演算法機器複驗（ramsey_check_coloring 與遮罩數 K₄/補圖 K₅）。
 
 // ---------------------------------------------------------------------------
 // 位元遮罩圖的基本工具
@@ -431,6 +436,82 @@ pub fn ramsey_exact(k : Int32, l : Int32) -> Int32? {
 }
 
 // ---------------------------------------------------------------------------
+// McKay–Radziszowski 完整目錄的第一張 (4,5,24)-graph：R(4,5) ≥ 25
+// ---------------------------------------------------------------------------
+//
+// 發表來源：
+//   B. D. McKay, S. P. Radziszowski, "R(4,5) = 25", J. Graph Theory 19 (1995) 309–322.
+//   圖的位元組取自 McKay 公開的完整目錄 r45_24.g6 的**第一行**（目錄 2016 年由
+//   McKay 與 Angeltveit 補完，共 352,366 張）；
+//   URL：https://users.cecs.anu.edu.au/~bdm/data/r45_24.g6 （CC BY 4.0）。
+//   Gauthier–Brown 的形式化驗證（LIPIcs ITP 2024, 16:1–16:18）以同一目錄為
+//   R(4,5) > 24 的下界見證。
+//
+// 本檔**不線上抓取任何資料**：24 個遮罩直接嵌入下方，任何人都能以任何標準
+// graph6 解碼器對照 r45_24.g6 第 1 行：
+//   graph6 第 1 行為 W?CX@DDWc[PJUtlYnHDtAdeIhSYZDYn`iQeY[NWNKON|ef?
+//   （W = 24+63；276 bits = 46 個 6-bit 字元，共 47 個字元，對齊無填充）。
+// 複驗方式（本檔定律）：遮罩互相對稱、邊數 = 124、ramsey_check_coloring 無紅 K₄
+// 無藍 K₅、並以 g_clique_count 在補圖上再數一次獨立 5-集（兩條獨立演算法）。
+
+///|
+/// 發表見證的 adjacency 遮罩（24 × Int32，bit j = 頂點 j 與之相鄰）。
+pub fn r45_witness_masks() -> Array[Int32] {
+  [
+    0xd3ac00,
+    0xec5300,
+    0xe2e2c0,
+    0x39f030,
+    0x86dc28,
+    0xcd2518,
+    0x599684,
+    0x0e7944,
+    0xbca0a2,
+    0xab1846,
+    0x616871,
+    0xb21691,
+    0x142ada,
+    0x2095ad,
+    0xad049e,
+    0x9a215d,
+    0x964669,
+    0x4d8a95,
+    0x5351b2,
+    0x42c3ea,
+    0x659949,
+    0x506f0e,
+    0x3e0467,
+    0x01cb37,
+  ]
+}
+
+///|
+/// 發表見證的邊列舉（由遮罩推出；保持 (i < j) 慣例）。
+pub fn r45_witness_edges() -> Array[(Int32, Int32)] {
+  let m = r45_witness_masks()
+  let out : Array[(Int32, Int32)] = []
+  for i in 0..<m.length() {
+    for j in (i + 1)..<m.length() {
+      if g_edge(m, i, j) {
+        out.push((i, j))
+      }
+    }
+  }
+  out
+}
+
+///|
+/// 補圖遮罩（自環位清掉）。
+fn complement_masks(m : Array[Int32]) -> Array[Int32] {
+  let full = (1 << 24) - 1
+  let out : Array[Int32] = []
+  for i in 0..<m.length() {
+    out.push(full ^ m[i] ^ (1 << i))
+  }
+  out
+}
+
+// ---------------------------------------------------------------------------
 // 定律
 // ---------------------------------------------------------------------------
 
@@ -666,6 +747,96 @@ pub fn law_ramsey_ex_ramsey_window_is_now_usable_up_to_d3() -> Array[
     out,
     "ramsey: depth window now usable up to d=3 #6",
     ramsey_window(4) >= ramsey_window(3),
+  )
+  out
+}
+
+///|
+pub fn law_ramsey_ex_r45_witness_graph_gives_r45_ge_25() -> Array[
+  (String, Bool),
+] {
+  let out : Array[(String, Bool)] = []
+  let m = r45_witness_masks()
+  let full = (1 << 24) - 1
+  // (1) 形狀：24 頂點、每列只在低 24 位
+  chk(out, "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #1", m.length() == 24)
+  let mut shape_ok = true
+  for i in 0..<m.length() {
+    if ((m[i] >> 24) != 0) {
+      shape_ok = false
+    }
+    if m[i] >> 24 != 0 {
+      shape_ok = false
+    }
+    // 無自環
+    if ((m[i] >> i) & 1) != 0 {
+      shape_ok = false
+    }
+  }
+  chk(out, "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #2", shape_ok)
+  // (2) 對稱性 + 邊數 = 124（degree sum = 248）
+  let mut sym = true
+  let mut bits = 0
+  for i in 0..<m.length() {
+    for j in 0..<m.length() {
+      if g_edge(m, i, j) != g_edge(m, j, i) {
+        sym = false
+      }
+    }
+    bits = bits + popcount(m[i])
+  }
+  chk(out, "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #3", sym)
+  chk(out, "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #4", bits == 248)
+  let edges = r45_witness_edges()
+  chk(out, "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #5", edges.length() == 124)
+  // (3) 主複驗：無紅 K₄、無藍 K₅（與 P₁₇ 同一台機器）
+  chk(
+    out,
+    "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #6",
+    ramsey_check_coloring(4, 5, 24, edges),
+  )
+  // (4) 第二條獨立演算法：遮罩交集數 K₄ = 0；補圖數 K₅ = 0（= 獨立 5-集）
+  chk(
+    out,
+    "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #7",
+    g_clique_count(m, full, 4) == 0,
+  )
+  chk(
+    out,
+    "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #8",
+    g_clique_count(complement_masks(m), full, 5) == 0,
+  )
+  // (5) 誠實邊界：上界仍是遞迴值 32（R(3,5)+R(4,4) = 14+18），
+  //     1995 年的 R(4,5) = 25 證明（窮舉 25 點所有候選）不在本專案範圍。
+  chk(
+    out,
+    "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #9",
+    ramsey_rec_bound(4, 5) == 32,
+  )
+  // (6) 但遞迴上界確實比 Erdős–Szekeres 緊（35）
+  chk(
+    out,
+    "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #10",
+    erdos_szekeres(4, 5) == 35 && ramsey_rec_bound(4, 5) < erdos_szekeres(4, 5),
+  )
+  // (7) 度數序列量測（9×2、10×12、11×10；與 P₁₇ 的 8-正則結構不同）
+  let mut n9 = 0
+  let mut n10 = 0
+  let mut n11 = 0
+  for i in 0..<m.length() {
+    let d = popcount(m[i])
+    if d == 9 {
+      n9 = n9 + 1
+    } else if d == 10 {
+      n10 = n10 + 1
+    } else if d == 11 {
+      n11 = n11 + 1
+    }
+  }
+  chk(
+    out,
+    "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #11",
+    n9 == 2 && n10 == 12 && n11 == 10,
   )
   out
 }

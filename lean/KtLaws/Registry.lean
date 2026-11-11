@@ -4,7 +4,7 @@
   與 MoonBit 側 `tools/gen_laws.py` 同一個精神：定律必須登記，否則不算數。
   每一筆都對應一個真的 `theorem`，而且下面 `section Checks` 用 `#check` 逐一指到
   具體常數——名字打錯、定理被刪，這裡就會編不過（不會出現「登記了但不存在」）。
-  `#eval` 印出目前條數；MoonBit 側總數是 437。
+  `#eval` 印出目前條數；MoonBit 側目前總數 551／互異 453（2026-11-10）。
 -/
 import KtLaws.Ramsey
 import KtLaws.RamseyEx
@@ -18,8 +18,9 @@ import KtLaws.Instances.Engine
 import KtLaws.Instances.Characterize
 import KtLaws.Instances.Compose
 import KtLaws.Instances.Coherence
-import KtLaws.Reflect.Universe
+import KtLaws.Instances.Termination
 import KtLaws.Reflect.Nbe
+import KtLaws.Reflect.NfNormal
 import KtLaws.Reflect.Proof
 import KtLaws.Reflect.Link
 import KtLaws.Unify
@@ -314,6 +315,23 @@ def provedLaws : List String :=
     "instances: Newman #6 ⇒ 不全域合流（逆否）",
     "instances: Newman #7 繞圈環境終止性失敗",
     "instances: Newman #8 本批環境上沒有反例",
+    -- Instances / termination（O4 重寫終止，13 條；見 Instances/Termination.lean）
+    "instances: 代入後 uSize 的精確展開（ufn 各貢獻 1、變數各貢獻代入值）",
+    "instances: 多重集包含 ⇒ 加權和不增（count 點式比較）",
+    "instances: 根重列在足夠條件下嚴格減少 uSize",
+    "instances: 參數清單重寫每步嚴格減少 uSizeList",
+    "instances: 任意位置重寫每步嚴格減少 uSize",
+    "instances: 足夠條件 ⇒ 重寫關係良基（InvImage uSize）",
+    "instances: envShow 四條規則逐一驗明足夠條件",
+    "instances: envShow 重寫全域終止",
+    "instances: 反例：純規則 h(f x, y) ⇒ g(y, y) 在 kt 節點數上定向卻增大",
+    "instances: 反例的成長步（headσ 大小 6 < bodyσ 大小 7）",
+    "instances: 反例大項大小逐點可判定（6、7、4、3）",
+    "instances: 反例改寫在重寫系統中成立（Rewrites ctEnv）",
+    "instances: kt 的『head 節點數 > body 節點數』不是終止性證明",
+    -- Reflect / NbE（O1 第一半邊，2 條；見 Reflect/NfNormal.lean）
+    "reflect: NbE reify/reifyNeu 的輸出恆 β-正常（頭不為 lam；對所有項/燃料成立）",
+    "reflect: Well-typed 項正規化後 β-正常（nf_beta_normal；冪等半邊仍待 logical relation）",
     -- Ordinal: 比較的結構性（5）
     "ordinal: 自然數三向比較判等 iff 相等",
     "ordinal: 自然數比較交換 ⇔ swap",
@@ -350,30 +368,6 @@ def provedLaws : List String :=
     "ordinal CNF: ω^(ω^ω) 是範式且大於 ω^ω",
     "ordinal CNF: 範式性在加法下封閉（實例）",
     "ordinal CNF: ω²·ω = ω³",
-    -- reflect / universe：保守性 + Mahlo 式反射（23 條）
-    "reflect / universe：保守性是可判定的（#1 句子在層級 2 可證）",
-    "reflect / universe：保守性 #2 在層級 1 不可證",
-    "reflect / universe：保守性 #3 抬一層後在層級 3 仍可證",
-    "reflect / universe：保守性 #4 在層級 2 上保守",
-    "reflect / universe：保守性 #5 在層級 5 上也保守",
-    "reflect / universe：保守性 #6 顯然真的句子也保守",
-    "reflect / universe：保守性 #7 unreflect∘reflect 保留最大原子",
-    "reflect / universe：保守性 #8 所以 unreflect∘reflect 一定成功",
-    "reflect / universe：保守性 #9 原子 0 不能往下反射",
-    "reflect / universe：保守性 #10 原子 1 可以往下反射",
-    "reflect / universe：Mahlo 式反射 #1 在最小充分層級上失敗",
-    "reflect / universe：Mahlo 式反射 #2 臨界層沒有更小的見證",
-    "reflect / universe：Mahlo 式反射 #3 層級 3 的見證真的證得出句子",
-    "reflect / universe：Mahlo 式反射 #4 層級 3 上確實有見證",
-    "reflect / universe：Mahlo 式反射 #5 ω 是極限層",
-    "reflect / universe：Mahlo 式反射 #6 有限層級 3 不是極限",
-    "reflect / universe：Mahlo 式反射 #7 ω+1 不是極限（是後繼）",
-    "reflect / universe：Mahlo 式反射 #8 在 ω 上反射到嚴格更小的層級",
-    "reflect / universe：Mahlo 式反射 #9 極限反射給出有限見證",
-    "reflect / universe：Mahlo 式反射 #10 所以 ω 上有見證",
-    "reflect / universe：Mahlo 式反射 #11 層級 0 不是極限",
-    "reflect / universe：Mahlo 式反射 #12 succ ω 不是極限層——極限條件不可省",
-    "reflect / universe：Mahlo 式反射 #13 succ ω 上仍反射得下去（限制的是原則，不是這一個檢查）",
     -- reflect / nbe：β、η、冪等、保型（7 條）
     "reflect / nbe：#1 β 規約 (λx.x) * ↦ *",
     "reflect / nbe：#2 冪等 nf(nf t) = nf t",
@@ -496,8 +490,6 @@ def provedLaws : List String :=
     "reflect / α-等價檢查器 #2 巢狀目標也一樣",
     "reflect / α-等價檢查器 #3 兩個檢查器在良性憑證上答案相同",
     "reflect / α-等價檢查器 #4 篡改過的憑證一樣被拒",
-    "reflect / 對齊 #1 triv 的最大原子在 MoonBit 側是 −1",
-    "reflect / 對齊 #2 夾到 0 之後與 Nat 版本逐句相同",
     "reflect / 列印 #1 任何項印出來至少一個字元（對所有項）",
     "reflect / 列印 #2 憑證其餘部分每格至少 3 個字元",
     "reflect / 列印 #3 不是空帳就一定印得出東西",
@@ -512,22 +504,6 @@ def provedLaws : List String :=
     "reflect / 反射一般律 #1 對所有型別、所有深度、所有中性值：先 reflect 再 reify 等於直接 reify",
     "reflect / 反射一般律 #2 換成 nf 實際用的燃料 64 也一樣（η 擴張再收縮不動正規形式）",
     -- 前沿對帳（36 條）：反射原理的 club 結構、全域實例的「不造假」、IIT 的可判定範圍與初始代數唯一性
-    "reflect / 前沿 club #0 輔助：`cmp 0 0 = eq`",
-    "reflect / 前沿 club #0b 輔助：有限序數的比較就是自然數比較",
-    "reflect / 前沿 club #0c 輔助：有限層的可證性 = `maxAtom < n`",
-    "reflect / 前沿 club #0d 輔助：`ordOfNat n + 1 = ordOfNat (n+1)`",
-    "reflect / 前沿 club #0e 輔助：`ordOfNat a < ordOfNat b ⟺ a < b`",
-    "reflect / 前沿 club #0f 輔助：反射不會讓最大原子變小",
-    "reflect / 前沿 club #0g 輔助：無原子的句子反射後最大原子不變",
-    "reflect / 前沿 club #0h 輔助：無原子 ⇒ 最大原子是 0",
-    "reflect / 前沿 club #0i 輔助：有原子 ⇒ 最大原子恰好 +1",
-    "reflect / 前沿 #1 **全稱保守性**：對所有 n ≥ 1、所有句子，抬升一層不改變可證性",
-    "reflect / 前沿 #2 邊界：n = 0 時保守性失效（所以 #1 的假設不能省）",
-    "reflect / 前沿 #3 反射層類是**閉**的：可證性沿層級單調上升",
-    "reflect / 前沿 #4 反射層類是**無界**的：任何層級之上都有反射層",
-    "reflect / 前沿 #5 輔助：清單成員的最大原子 ≤ 清單的摺疊最大值",
-    "reflect / 前沿 #6 **有限片段**：有限多個句子共用同一個反射層（club 對有限交封閉）",
-    "reflect / 前沿 #7 **最小反射層**：`maxAtom+1` 反射，`maxAtom` 不反射",
     "instances / 前沿 #1 輔助：典範化每一步只是「二選一」",
     "instances / 前沿 #2 輔助：摺疊結果一定落在原清單裡",
     "instances / 前沿 #3 **典範化不造假**：選出的推導一定來自輸入",
@@ -858,29 +834,6 @@ section Checks
 #check @Ordinal.cnf_normal_closed
 #check @Ordinal.cnf_mul_omega
 
-#check @KtLaws.Reflect.conserv_provable_two
-#check @KtLaws.Reflect.conserv_not_provable_one
-#check @KtLaws.Reflect.conserv_reflect_provable
-#check @KtLaws.Reflect.conserv_at_two
-#check @KtLaws.Reflect.conserv_at_five
-#check @KtLaws.Reflect.conserv_triv
-#check @KtLaws.Reflect.unreflect_reflect_max_atom
-#check @KtLaws.Reflect.unreflect_reflect_some
-#check @KtLaws.Reflect.unreflect_atom_zero
-#check @KtLaws.Reflect.unreflect_atom_one
-#check @KtLaws.Reflect.mahlo_critical_none
-#check @KtLaws.Reflect.mahlo_critical_no_smaller
-#check @KtLaws.Reflect.mahlo_three_witness
-#check @KtLaws.Reflect.mahlo_three_some
-#check @KtLaws.Reflect.omega_is_limit
-#check @KtLaws.Reflect.three_not_limit
-#check @KtLaws.Reflect.omega_succ_not_limit
-#check @KtLaws.Reflect.mahlo_omega_smaller
-#check @KtLaws.Reflect.mahlo_omega_provable
-#check @KtLaws.Reflect.mahlo_omega_some
-#check @KtLaws.Reflect.zero_not_limit
-#check @KtLaws.Reflect.succ_omega_not_limit
-#check @KtLaws.Reflect.mahlo_succ_omega_witness
 
 #check @KtLaws.Reflect.nbe_beta
 #check @KtLaws.Reflect.nbe_idempotent
@@ -995,22 +948,6 @@ section Checks
 #check @KtLaws.Reflect.eta_contract_shifts
 #check @KtLaws.Reflect.nbe_reify_refl_neutral
 #check @KtLaws.Reflect.nbe_reify_reflect_fuel
-#check @KtLaws.Reflect.cmp_zero_zero
-#check @KtLaws.Reflect.ofNat_cmp
-#check @KtLaws.Reflect.provable_ofNat
-#check @KtLaws.Reflect.ordSucc_ofNat
-#check @KtLaws.Reflect.ordLt_ofNat
-#check @KtLaws.Reflect.stmtMaxAtom_le_reflect
-#check @KtLaws.Reflect.stmtMaxAtom_reflect_noAtom
-#check @KtLaws.Reflect.stmtMaxAtom_eq_zero_of_noAtom
-#check @KtLaws.Reflect.stmtMaxAtom_reflect_hasAtom
-#check @KtLaws.Reflect.conserv_general
-#check @KtLaws.Reflect.conserv_at_zero_is_false
-#check @KtLaws.Reflect.provable_mono
-#check @KtLaws.Reflect.reflects_unbounded
-#check @KtLaws.Reflect.le_foldr_max
-#check @KtLaws.Reflect.reflects_finite_fragment
-#check @KtLaws.Reflect.reflects_minimal
 #check @KtLaws.Instances.pick_eq_or
 #check @KtLaws.Instances.foldl_pick_mem
 #check @KtLaws.Instances.canonical_mem
@@ -1042,8 +979,6 @@ section Checks
 #check @KtLaws.Reflect.variant_accepts_nested
 #check @KtLaws.Reflect.variant_agrees
 #check @KtLaws.Reflect.variant_rejects_tampering
-#check @KtLaws.Reflect.max_atom_triv_int
-#check @KtLaws.Reflect.max_atom_bridge
 #check @KtLaws.Reflect.termText_pos
 #check @KtLaws.Reflect.certTextAux_ge
 #check @KtLaws.Reflect.certText_pos
@@ -1055,9 +990,25 @@ section Checks
 #check @KtLaws.Instances.coherence_shortcut_agrees
 #check @KtLaws.Instances.coherence_shortcut_needs_hypothesis
 
+#check @KtLaws.Instances.uSize_apply
+#check @KtLaws.Instances.sum_map_le_of_count_le
+#check @KtLaws.Instances.root_size_decreases
+#check @KtLaws.Instances.uSizeList_rewrite_lt
+#check @KtLaws.Instances.rewrites_size_decreases
+#check @KtLaws.Instances.rewrites_restriction_wf
+#check @KtLaws.Instances.envShow_rules_measureDecreasing
+#check @KtLaws.Instances.envShow_terminating
+#check @KtLaws.Instances.ct_orientable_node_measure
+#check @KtLaws.Instances.ct_bodyterm_size
+#check @KtLaws.Instances.ct_headterm_size
+#check @KtLaws.Instances.ct_step
+#check @KtLaws.Instances.kt_node_measure_orientation_unsound
+#check @KtLaws.Reflect.reifyN_isBetaNormal
+#check @KtLaws.Reflect.nf_beta_normal
+
 end Checks
 
 /-- 登記條數（編譯期就確定，不是執行期數的）。 -/
-example : provedLaws.length = 492 := rfl
+example : provedLaws.length = 466 := rfl
 
-#eval s!"lean 側已證明並登記：{provedLaws.length} 條（MoonBit 側總數 437／互異 340）"
+#eval s!"lean 側已證明並登記：{provedLaws.length} 條（MoonBit 側目前總數 551／互異 453）"

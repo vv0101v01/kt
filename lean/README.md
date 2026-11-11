@@ -1,13 +1,13 @@
 # `lean/` — MoonBit 定律的 Lean 4 形式化
 
-**狀態：492 條定理已證明並登記（宣告 580 條、登記 492 條），`lake build` 綠。**
+**狀態：466 條定理已證明並登記（宣告 573 條、登記 466 條），`lake build` 綠（Lean v4.35.0）。2026-11-10 依使用者裁決刪除 `Reflect/Universe.lean`（玩具模型，無對應物；不另作保存）。2026-11-11 新增 `Reflect/NfNormal.lean`（O1 第一半邊：`nf_beta_normal`；冪等半邊未完成）。**
 
 > ⚠️ **這不是 kt 的形式化。** 本目錄是與 kt **並行**的數學筆記：`Bool` 檢查與 `Prop` 命題之間**沒有形式橋**
 > （沒有 refinement、沒有 extraction、沒有 translation validation），所以「Lean 綠」不蘊含「kt 綠」。
-> 實測分類：580 條宣告中 **137 條是全稱／歸納**（kt 的取樣確立不了、這才是形式化的**理由**），
-> **403 條是 `decide`/`native_decide` 的具體計算**（kt 執行時本來就算得到），40 條其他。
+> 實測分類（2026-11-11 重計）：573 條宣告中 **144 條是全稱／歸納**（kt 的取樣確立不了、這才是形式化的**理由**；含 `Instances/ImportGraph.lean` 7 條未入桶未登記），
+> **382 條是 `decide`/`native_decide` 的具體計算**（kt 執行時本來就算得到），47 條其他。`Instances/SldComplete.lean`（O2 未完成、紅）不計入。
 > 形式化的原因、範圍界定、六條未完成的證明義務（O1–O6）、以及「可用／不可用／如何處置」的判定，
-> 見 **[`WHY.md`](WHY.md)**；137 條全稱清單見 [`UNIVERSAL.md`](UNIVERSAL.md)。
+> 見 **[`WHY.md`](WHY.md)**；144 條全稱清單見 [`UNIVERSAL.md`](UNIVERSAL.md)。
 > 437 個舊標籤與本目錄定理的關係是**人讀的族對應**，不是同一命題（Lean 命題通常更強：全稱 vs 樣本）。
 
 ```
@@ -27,13 +27,14 @@ KtLaws/Instances/Engine.lean      實例引擎：SLD 解析、終止、一致性
 KtLaws/Instances/Characterize.lean 可導性秩是不是擬陣的**判準**（交換公理太弱）     40 條
 KtLaws/Instances/Compose.lean     最小基、覆蓋併攏（Möbius 障礙）、鏡像對偶、深度窗口 35 條
 KtLaws/Instances/Coherence.lean   完備一致性、區域實例、擴充穩定性、Newman 引理    40 條
-KtLaws/Reflect/Universe.lean      宇宙反射：保守性（可判定）＋ Mahlo 式反射（極限 vs 後繼）  23 條
+KtLaws/Instances/Termination.lean 重寫終止（O4）：精確代入公式＋多重集鉗制＋Wf；反例證偽節點數定向  13 條
 KtLaws/Reflect/Nbe.lean           reify ⊣ reflect：β、η、冪等、保型（值域去函式化）        7 條
 KtLaws/Reflect/Proof.lean         快（NbE 判定）＋ 慢（逐步憑證獨立重放）兩條路徑          16 條
 KtLaws/Reflect/Link.lean          實例推導 → 憑證 → 不含搜尋的獨立檢查器                  13 條
 KtLaws/Unify.lean                合一的正確性/普遍性/occurs check + 反合一 lgg 是 join   15 條
 KtLaws/RamseyEx.lean             Ramsey 的界與夾擠：遞迴上界、Paley、精確值、深度窗口   46 條
-KtLaws/Registry.lean    已證明定律的登記表，`#eval` 印出條數（492）
+KtLaws/Registry.lean    已證明定律的登記表，`#eval` 印出條數（466）
+KtLaws/Reflect/NfNormal.lean  O1 第一半邊：reify/nf 的輸出恆 β-正常（`nf_beta_normal`）；冪等 `nf (nf t) = nf t` 未完成  2 條登記
 labels/coverage.md      437 個 MoonBit 標籤 ↔ Lean 定理的對照表（實測；本輪新增 48 條未列）
 ```
 
@@ -56,7 +57,7 @@ python3 tools/registry_audit.py      # 登記表對帳：登記筆數 / #check �
 而 SMT 不做計算（連「四元素陣列上數到 2」都 timeout）。Lean 沒有這些限制：
 遞迴、`decide`／`native_decide`、歸納、`simp` 全都在。
 
-## 2. 已證明（492 條，kernel 檢查通過）
+## 2. 已證明（466 條，kernel 檢查通過）
 
 ### 2.1 Ramsey（18 條）— 精確值 R(3,4) = 9、R(4,4) = 18、R(3,5) = 14
 
@@ -195,7 +196,7 @@ theorem beta2_arg_weakened :
 所以凡是要用 `decide` 算的函式（`icheck`、`itermOfVal`、`ieval`、`iindexOf`、`ichemaOK`、`collectIndexEdges`）
 都得改寫成「對 `Nat` 燃料或對清單做結構遞迴」的形式。
 
-### 2.6 全域實例（138 條；instances 家族 123 個標籤，Lean 側另有 15 條更強的形式）
+### 2.6 全域實例（151 條；instances 家族 123 個標籤，Lean 側另有 28 條更強的形式）
 
 `meta/instances/` 的主題是：**一個 typeclass 系統真正難的不是「找得到實例」，而是
 終止、一致性、組合性**。四件事在這裡都變成可判定的檢查，而且都不是「大概會處理」：
@@ -208,6 +209,7 @@ theorem beta2_arg_weakened :
 | 一致性 | 臨界對 + 典範化（優先級高者勝、平手取索引小者）+ 不一致見證；**終止與一致性是兩件事** | `overlap_*`、`clash_*` |
 | **判準（40 條）** | 可導性秩是擬陣秩 ⟺ 沒有合成規則落在目標上 **且** 每條規則最多覆蓋一個目標；交換公理**太弱**（反例：秩一次跳 2，違反次模性 R3） | `axiomatic_*`、`failure_reason_is_R3`、`criterion_agrees` |
 | 組合（35 條） | 貪心給**極小**不給最小；覆蓋併攏的下降條件與 ℤ₂ 單值化障礙（**Möbius 帶上非零截面黏不起來，零截面永遠黏得起來**）；鏡像對偶是對合且互證；`R(4,4) = 18` 比 `C(6,3) = 20` 更緊 | `mobius_*`、`mirror_*`、`ramsey_window_4_beats_erdos_szekeres` |
+| 重寫終止（13 條，O4） | 一階項重寫關係：精確代入公式 `uSize_apply`＋多重集鉗制 `sum_map_le_of_count_le` ⇒ 每步嚴格減少 `uSize`（`rewrites_size_decreases`）；任意位置收縮 ⇒ `rewrites_restriction_wf`（`InvImage uSize Nat.lt_wfRel.wf`）；`envShow` 四條規則驗明 ⇒ `envShow_terminating`；**kt 的「head 節點數 > body 節點數」被 kernel 證偽**——`h(f x, y) ⇒ g(y, y)` 是定向的（4 > 3）卻一步把項從 6 長到 7（`kt_node_measure_orientation_unsound`） | `rewrites_restriction_wf`、`envShow_terminating`、`kt_node_measure_orientation_unsound` |
 | 完備化（40 條） | 不用使用者 battery：從規則的 head/body 做**可達目標宇宙**閉包（BFS + mgu 實例化 + 具體化），在宇宙上檢查見證唯一；區域實例是舊 API 看不見的那一半；擴充穩定性（COCHIS）可判定；Newman 引理（終止 ∧ 局部合流 ⇒ 全域合流）實測 | `universe_*`、`local_instance_*`、`stable_*`、`newman_*` |
 
 三條最有價值的：
@@ -219,16 +221,17 @@ theorem beta2_arg_weakened :
   非零截面黏不起來、零截面黏得起來；這是 Möbius 帶的拓撲事實，不是類比。
 * **`criterion_agrees`** —— 六個環境 × 兩組目標集，判準與**嚴格秩公理檢查**（R1/R2/R3）
   逐一一致；判準不是猜的。
+* **`kt_node_measure_orientation_unsound`** —— 2026-11-10：kt/moon 側 `orientable`（head 節點數
+  > body 節點數）**不是**終止性證明；Lean 側落倉的可證版本是更嚴的充分條件
+  （body 變數出現點式不增於 head＋ufn 節點嚴格多）。完整主張需要化簡序（RPO/KBO），未做。
 
-### 2.7 反射（59 條；reflect 家族 48 個標籤）— 快／慢兩條路徑、保守性、Mahlo、獨立重放
+### 2.7 反射（37 條；reflect 家族 48 個標籤；2026-11-10 刪除玩具模型 Universe.lean 後排除宇宙反射那半）— 快／慢兩條路徑、獨立重放
 
-`meta/reflect/` 的四個檔案對應四個 Lean 模組。實測標籤數：universe reflection 18、
-reflection 15、link 8、nbe 7 = **48**；Lean 側 59 條（多出來的是 MoonBit 裡落在
-`match` 未觸發分支上的標籤，Lean 側改陳述成同一樣本的**另一面向**，並在檔案頭註明）。
+`meta/reflect/` 的四個檔案對應三個 Lean 模組（universe reflection 18 個標籤對應的玩具模型 2026-11-10 已刪除）。
+實測標籤數：universe reflection 18（無對應 Lean 側）、reflection 15、link 8、nbe 7。
 
 | 家族 | 定律 | Lean 名稱（節選） | 手法 |
 |---|---|---|---|
-| 宇宙反射（23） | 句子在層級 l 可證 ⟺ 所有原子 < l；抬一層不改可證性 | `conserv_at_two`、`conserv_at_five`、`unreflect_reflect_max_atom` | `decide`（序數比較用 `Ordinal.cmp`） |
 | Mahlo 式（13） | 極限層上必存在更小的見證；**臨界後繼上失效** | `mahlo_omega_some`、`mahlo_critical_none`、`succ_omega_not_limit` | `decide`；`isLimitLevel` = CNF 末項指數非零 |
 | NbE（7） | β、η、冪等、保型 | `nbe_beta`、`nbe_eta`、`nbe_idempotent`、`nbe_check_preserved` | `decide`（值域去函式化，見 §4） |
 | 憑證（16） | 快判定與慢重放一致；篡改起點／終點都被拒 | `proof_decide_fast`、`proof_decide_agrees`、`proof_tampered_end` | `decide`（憑證指紋用 `List Nat`） |
@@ -285,7 +288,7 @@ reflection 15、link 8、nbe 7 = **48**；Lean 側 59 條（多出來的是 Moon
 | §6 的 η 定律只是樣本 | `nbe_reify_refl_neutral`（對所有型別、深度、中性值）＋ `nbe_reify_reflect_fuel`（燃料 64） | `Reflect/Nbe.lean` §8 |
 | α-等價（`u_variant_eq`）用 `uEq` 代替 | `uCanon`/`uFingerprint`/`uVariantEq` ＋ `variant_refl/symm/trans/renames/distinguishes` ＋ α-等價版檢查器 `checkInstanceProofV` 的四條對帳 | `Reflect/Link.lean` §2, §3b, §5–6 |
 | 「可列印」只用 `List Nat` 指紋 | `termText`/`certText`（`List Char`）＋ `termText_pos`、`certTextAux_ge`、`certText_pos` | `Reflect/Proof.lean` §6 |
-| `triv` 的最大原子用 0（MoonBit 是 −1） | `stmtMaxAtomI` ＋ `max_atom_triv_int`、`max_atom_bridge` | `Reflect/Universe.lean` §6 |
+| ~~`triv` 的最大原子用 0~~（該模組已刪） | — | 隨玩具模型 Universe.lean 於 2026-11-10 刪除 |
 | `ambiguousGoals` 的短路只有一句註解 | `ambiguityFilter_nil_of_unique_top`（一般引理）＋ 六條白箱／對照組定理 | `Instances/Coherence.lean` §12 |
 
 兩件順帶查清的事：
@@ -326,7 +329,7 @@ reflection 15、link 8、nbe 7 = **48**；Lean 側 59 條（多出來的是 Moon
 | `ord_to_string`（`+` 變 `w` 的那條字串定律） | Lean 側沒有 port 列印函式；數學會等價於 `cnf_absorption`。 |
 | `isNormal` 的定義 | 這裡用「每項指數大於**其後所有**項」的版本（比 MoonBit 的相鄰檢查更強）；兩者在有遞移性時等價；遞移性已補上，之後可改回相鄰版本並證等價。 |
 | Ramsey 家族 | ✅ 完整：`R(3,3) ≤ 6`、`R(3,4) = 9`、`R(4,4) = 18`、`R(3,5) = 14`（上界全部是結構性證明，下界是循環圖見證）。剩下 `R(4,5)` 這類更大的值未做。 |
-| ~~逐標籤對應表~~ | ✅ 已寫成 [`labels/coverage.md`](labels/coverage.md)（437 個標籤逐族對照；`labels/moonbit-labels.md` 是 485 條的原始清單）。 |
+| ~~逐標籤對應表~~ | ✅ 已寫成 [`labels/coverage.md`](labels/coverage.md)（437 個標籤逐族對照；`labels/moonbit-labels.md` 是 551 條的原始清單）。 |
 
 ## 3. 標籤的分佈與搬遷路線
 
@@ -338,11 +341,11 @@ reflection 15、link 8、nbe 7 = **48**；Lean 側 59 條（多出來的是 Moon
 | `meta/instances` | 123 | SLD 解析、終止、一致性、擬陣判準、覆蓋併攏、鏡像對偶、完備化與 Newman |
 | `meta/iit` | 151 | Even/Odd 29、互遞迴消除器 26、Kleene 鏈 23、subject reduction 15、Nat/Fin 14、STLC 27、正規化 6、依賴圖 5、有限 schema 4、佔位符 2 |
 | `meta/reflect` | 48 | universe reflection 18（Mahlo 10 + 保守性 8）、reflection 15、link 8、nbe 7 |
-| **合計** | **485**（互異 **388**；本輪 +48） | Lean 側已登記 **492** 條定理（覆蓋前 437 條） |
+| **合計** | **551**（互異 **453**；本輪 +48＋第 4 輪 +24） | Lean 側已登記 **466** 條定理（覆蓋前 437 條＋WT 新增 13 條＋O1 第一半邊 2 條；Universe 玩具 41 條除外） |
 
 Lean 側與 MoonBit 側的條數不對齊是**刻意的**：MoonBit 的標籤多半是同一族定理在樣本上的
-實例，Lean 側則把族寫成全稱定理（序數 31 ≥ 18、實例 138 ≥ 123、simplicial 19 ≥ 18、
-iit 82 對 151 個標籤但族全覆蓋、reflect 59 ≥ 48）。
+實例，Lean 側則把族寫成全稱定理（序數 31 ≥ 18、實例 151 ≥ 123、simplicial 19 ≥ 18、
+iit 82 對 151 個標籤但族全覆蓋、reflect 37 ≥ 48（玩具模型已刪））。
 
 建議順序（每步都要 `lake build` 綠才往下）：
 
@@ -517,6 +520,6 @@ import KtLaws
 
 ## 6. 與 MoonBit 側的關係（重要）
 
-Lean 這批證明**不會**取代 MoonBit 的 485 條執行期定律：兩邊各自是獨立的檢查，
+Lean 這批證明**不會**取代 MoonBit 的 551 條執行期定律：兩邊各自是獨立的檢查，
 重疊處（Ramsey 見證、擬陣對偶）現在有兩份互相印證的證據；不重疊處仍是 MoonBit 一家之言。
 這也是這條路線誠實的價值所在——不是把 `moon check` 換掉，而是多加一層**不靠執行的**保證。

@@ -1,0 +1,273 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/ualg/core"
+
+import {
+  "moonbitlang/core/bigint",
+}
+
+// Values
+pub fn alg_affine_zn(Int32) -> Alg
+
+pub fn alg_bool2() -> Alg
+
+pub fn alg_chain(Int32) -> Alg
+
+pub fn alg_dm4() -> Alg
+
+pub fn alg_gf2k(Int32, Int32) -> Alg
+
+pub fn alg_kleene3() -> Alg
+
+pub fn alg_lattice_of_order(String, Array[Array[Bool]]) -> Alg
+
+pub fn alg_m3() -> Alg
+
+pub fn alg_n5() -> Alg
+
+pub fn alg_ok(Alg) -> Bool
+
+pub fn alg_product(Alg, Alg) -> Alg
+
+pub fn alg_rect_band(Int32, Int32) -> Alg
+
+pub fn alg_s3() -> Alg
+
+pub fn alg_semilattice2() -> Alg
+
+pub fn alg_steiner3() -> Alg
+
+pub fn alg_stone3() -> Alg
+
+pub fn alg_zn(Int32) -> Alg
+
+pub fn alg_zn_mul(Int32) -> Alg
+
+pub fn all_laws() -> Array[(String, Array[(String, Bool)])]
+
+pub fn ap2(Op, Int32, Int32, Int32) -> Int32
+
+pub fn ap3(Op, Int32, Int32, Int32, Int32) -> Int32
+
+pub fn automorphisms(Alg) -> Array[Array[Int32]]
+
+pub fn basic_translations(Alg) -> Array[Array[Int32]]
+
+pub fn burnside_sum(Array[Array[Int32]]) -> (Int32, Int32)
+
+pub fn cg(Alg, Array[(Int32, Int32)]) -> Array[Int32]
+
+pub fn charpoly_cross_checked(Array[Array[@bigint.BigInt]]) -> Bool
+
+pub fn close_tuples(Alg, Array[Array[Int32]], Array[Int32]?, Int32) -> Closure
+
+pub fn closed_sets_bruteforce(Polarity) -> Array[Array[Bool]]
+
+pub fn closed_sets_next_closure(Polarity) -> Array[Array[Bool]]
+
+pub fn closure_term(Closure, Int32) -> Term
+
+pub fn closure_to_alg(Alg, Closure, String) -> Alg
+
+pub fn con_bruteforce(Alg) -> Array[Array[Int32]]
+
+pub fn con_distributive(Array[Array[Int32]]) -> Bool
+
+pub fn con_lattice(Alg) -> Array[Array[Int32]]
+
+pub fn con_modular(Array[Array[Int32]]) -> Bool
+
+pub fn con_permutable(Array[Array[Int32]]) -> Bool
+
+pub fn cycle_type(Array[Int32]) -> (Array[Int32], Int32)
+
+pub fn digits(Int32, Int32, Int32) -> Array[Int32]
+
+pub fn fixstab_polarity(Int32, Array[Array[Int32]]) -> Polarity
+
+pub fn free_algebra(Alg, Int32, Int32) -> Closure
+
+pub fn functional_charpoly(Array[Int32]) -> Array[@bigint.BigInt]
+
+pub fn functional_matrix(Array[Int32]) -> Array[Array[@bigint.BigInt]]
+
+pub fn galois_axioms_hold(Polarity) -> Bool
+
+pub fn generating_set(Alg) -> Array[Int32]
+
+pub fn ideals(Array[Int32], Int32) -> Array[Int32]
+
+pub fn ideals_bruteforce(Array[Int32], Int32) -> Array[Int32]
+
+pub fn identities(Array[Int32], Int32) -> Array[Int32]
+
+pub fn ipow(Int32, Int32) -> Int32
+
+pub fn is_associative(Array[Int32], Int32) -> Bool
+
+pub fn is_congruence(Alg, Array[Int32]) -> Bool
+
+pub fn is_hom(Alg, Alg, Array[Int32]) -> Bool
+
+pub fn is_ideal(Array[Int32], Int32, Int32) -> Bool
+
+pub fn is_idempotent(Alg) -> Bool
+
+pub fn is_subgroup(Array[Array[Int32]], Array[Bool]) -> Bool
+
+pub fn kernel(Array[Int32]) -> Array[Int32]
+
+pub fn law_congruence_lattice_two_paths() -> Array[(String, Bool)]
+
+pub fn law_galois_connection_and_next_closure() -> Array[(String, Bool)]
+
+pub fn law_galois_fixstab_fundamental_theorem() -> Array[(String, Bool)]
+
+pub fn law_galois_mod_th_varieties() -> Array[(String, Bool)]
+
+pub fn law_ideals_and_rees_quotient() -> Array[(String, Bool)]
+
+pub fn law_malcev_theorem_permutability() -> Array[(String, Bool)]
+
+pub fn law_malcev_three_algorithms() -> Array[(String, Bool)]
+
+pub fn law_quotient_and_isomorphism_theorems() -> Array[(String, Bool)]
+
+pub fn law_spectrum_functional_and_quotient() -> Array[(String, Bool)]
+
+pub fn law_zero_and_absorbing_census() -> Array[(String, Bool)]
+
+pub fn left_absorbing(Array[Int32], Int32) -> Array[Int32]
+
+pub fn left_identities(Array[Int32], Int32) -> Array[Int32]
+
+pub fn malcev_global(Alg, Int32) -> MalcevVerdict
+
+pub fn malcev_idempotent_local(Alg) -> (Bool, Array[Int32])
+
+pub fn malcev_reflexive_symmetric(Alg) -> (Bool, Int32, Int32)
+
+pub fn malcev_term_ok(Alg, Term) -> Bool
+
+pub fn mat_charpoly(Array[Array[@bigint.BigInt]]) -> Array[@bigint.BigInt]
+
+pub fn mat_det(Array[Array[@bigint.BigInt]]) -> @bigint.BigInt
+
+pub fn modth_polarity(Array[(Term, Term, Int32)], Array[Alg]) -> Polarity
+
+pub fn op_apply(Op, Int32, Array[Int32]) -> Int32
+
+pub fn op_binary(String, Int32, (Int32, Int32) -> Int32) -> Op
+
+pub fn op_const(String, Int32) -> Op
+
+pub fn op_ternary(String, Int32, (Int32, Int32, Int32) -> Int32) -> Op
+
+pub fn op_unary(String, Int32, (Int32) -> Int32) -> Op
+
+pub fn orbit_count(Array[Array[Int32]]) -> Int32
+
+pub fn order_from_covers(Int32, Array[(Int32, Int32)]) -> Array[Array[Bool]]
+
+pub fn part_blocks(Array[Int32]) -> Int32
+
+pub fn part_discrete(Int32) -> Array[Int32]
+
+pub fn part_full(Int32) -> Array[Int32]
+
+pub fn part_join(Array[Int32], Array[Int32]) -> Array[Int32]
+
+pub fn part_leq(Array[Int32], Array[Int32]) -> Bool
+
+pub fn part_meet(Array[Int32], Array[Int32]) -> Array[Int32]
+
+pub fn part_norm(Array[Int32]) -> Array[Int32]
+
+pub fn part_permute(Array[Int32], Array[Int32]) -> Bool
+
+pub fn polar_down(Polarity, Array[Bool]) -> Array[Bool]
+
+pub fn polar_up(Polarity, Array[Bool]) -> Array[Bool]
+
+pub fn poly_div_monic(Array[@bigint.BigInt], Array[@bigint.BigInt]) -> (Array[@bigint.BigInt], Bool)
+
+pub fn poly_eval(Array[@bigint.BigInt], @bigint.BigInt) -> @bigint.BigInt
+
+pub fn poly_mul(Array[@bigint.BigInt], Array[@bigint.BigInt]) -> Array[@bigint.BigInt]
+
+pub fn principal_ideal(Array[Int32], Int32, Int32) -> Int32
+
+pub fn quotient(Alg, Array[Int32]) -> (Alg, Array[Int32])
+
+pub fn rees_partition(Int32, Int32) -> Array[Int32]
+
+pub fn right_absorbing(Array[Int32], Int32) -> Array[Int32]
+
+pub fn right_identities(Array[Int32], Int32) -> Array[Int32]
+
+pub fn root_multiplicity(Array[@bigint.BigInt], Int32) -> Int32
+
+pub fn same_family(Array[Array[Int32]], Array[Array[Int32]]) -> Bool
+
+pub fn satisfies(Alg, Term, Term, Int32) -> Bool
+
+pub fn set_size(Array[Bool]) -> Int32
+
+pub fn sg(Alg, Array[Int32]) -> Array[Int32]
+
+pub fn show_ints(Array[Int32]) -> String
+
+pub fn subalgebra(Alg, Array[Int32]) -> (Alg, Array[Int32])
+
+pub fn term_eval(Alg, Term, Array[Int32]) -> Int32
+
+pub fn term_show(Alg, Term) -> String
+
+pub fn term_size(Term) -> Int32
+
+pub fn tuple_key(Array[Int32]) -> String
+
+pub fn zeros(Array[Int32], Int32) -> Array[Int32]
+
+// Errors
+
+// Types and methods
+pub(all) struct Alg {
+  name : String
+  n : Int32
+  ops : Array[Op]
+}
+
+pub(all) struct Closure {
+  elems : Array[Array[Int32]]
+  origin : Array[(Int32, Array[Int32])]
+  complete : Bool
+  hit : Int32
+}
+
+pub(all) struct MalcevVerdict {
+  exists : Bool
+  complete : Bool
+  term : Term?
+  r_size : Int32
+}
+
+pub(all) struct Op {
+  name : String
+  arity : Int32
+  table : Array[Int32]
+}
+
+pub(all) struct Polarity {
+  nx : Int32
+  ny : Int32
+  rel : Array[Array[Bool]]
+}
+
+pub(all) enum Term {
+  TVar(Int32)
+  TApp(Int32, Array[Term])
+}
+
+// Type aliases
+
+// Traits

@@ -1,0 +1,6 @@
+// ualg/cube — 立方體上的雙重否定核子 × 立方體上的層化：只依賴本聯邦。
+import {
+  "vv0101v01/cubical-hermitian/ualg/core",
+  "vv0101v01/cubical-hermitian/ualg/site",
+  "vv0101v01/cubical-hermitian/ualg/demorgan",
+}

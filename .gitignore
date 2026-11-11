@@ -4,3 +4,7 @@ target/
 __pycache__/
 *.exe
 .DS_Store
+
+# Lean build outputs（lake build 產物；不提交）
+lean/build/
+lean/.lake/

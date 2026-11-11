@@ -19,7 +19,6 @@
   3. `reify` / `reify_neutral` 帶**燃料**（`reifyN`/`reifyNeuN` 共用同一個遞減 Nat），
      原因同上：互遞迴而沒有結構遞減。燃料 64 遠大於本檔任何項的型別/項深度。
 -/
-import KtLaws.Reflect.Universe
 
 namespace KtLaws.Reflect
 

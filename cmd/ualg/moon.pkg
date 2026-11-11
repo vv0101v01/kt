@@ -1,0 +1,8 @@
+import {
+  "vv0101v01/cubical-hermitian/ualg/core",
+  "vv0101v01/cubical-hermitian/ualg/site",
+  "vv0101v01/cubical-hermitian/ualg/demorgan",
+  "vv0101v01/cubical-hermitian/ualg/cube",
+}
+
+pkgtype(kind: "executable")

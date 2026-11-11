@@ -135,12 +135,10 @@ mutual
     | 0, _, _, _, _ => []
     | _ + 1, _, _, _, [] => []
     | n + 1, goal, seen, i, r :: rs =>
-      (let base := 1000 * (n + 1)
-       let head := renumber base r.head
-       match uMgu head goal with
+      (match uMgu (renumber (1000 * (n + 1)) r.head) goal with
        | none => []
        | some sub =>
-         solveBody e n (r.body.map (fun b => uApply sub (renumber base b))) seen i goal [])
+         solveBody e n (r.body.map (fun b => uApply sub (renumber (1000 * (n + 1)) b))) seen i goal [])
       ++ resolveRuleList e n goal seen (i + 1) rs
 
   /-- 把 body 的目標依序解掉（每個解都接到 `kids`）。 -/
@@ -166,17 +164,16 @@ mutual
   /-- 存在一條從 `goal` 出發的路。 -/
   def hasPath (e : Env) : Nat → UTerm → List UTerm → Bool
     | 0, _, _ => false
-    | n + 1, goal, seen => if keyIn seen goal then false else hasRuleList e n goal (goal :: seen) e.rules
+    | n + 1, goal, seen => if keyIn seen goal then false else hasRuleList e n goal (goal :: seen) e.rules 0
 
-  def hasRuleList (e : Env) : Nat → UTerm → List UTerm → List Rule → Bool
-    | 0, _, _, _ => false
-    | _ + 1, _, _, [] => false
-    | n + 1, goal, seen, r :: rs =>
-      (let base := 1000 * (n + 1)
-       match uMgu (renumber base r.head) goal with
+  def hasRuleList (e : Env) : Nat → UTerm → List UTerm → List Rule → Nat → Bool
+    | 0, _, _, _, _ => false
+    | _ + 1, _, _, [], _ => false
+    | n + 1, goal, seen, r :: rs, i =>
+      (match uMgu (renumber (1000 * (n + 1)) r.head) goal with
        | none => false
-       | some sub => hasBody e n (r.body.map (fun b => uApply sub (renumber base b))) seen)
-      || hasRuleList e n goal seen rs
+       | some sub => hasBody e n (r.body.map (fun b => uApply sub (renumber (1000 * (n + 1)) b))) seen)
+      || hasRuleList e n goal seen rs (i + 1)
 
   /-- body 的每個目標都要解得掉。 -/
   def hasBody (e : Env) : Nat → List UTerm → List UTerm → Bool

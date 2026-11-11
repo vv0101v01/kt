@@ -1,3 +1,10 @@
+## MoonBit 側定律標籤（逐條）
+
+> **2026-11-11 合併註記**：本檔由 `tools/gen_labels.py` 依 `moon run cmd/metatheory` 的實際輸出生成，不是手抄。
+> 合併時無 `moon` 工具鏈，本檔**未在合併截面重新生成**。遠端 97dab6b 的快照標頭為「553 條／456 互異」並含兩條
+> `bareiss64 sylvester exactness` 條目；合併樹的宣稱定律總數為 565/565（遠端 2026-11-10 實測，合併截面未重跑）。
+> 推送後／有工具鏈時請重跑 `python3 tools/gen_labels.py` 以刷新本檔。
+
 ## MoonBit 側 553 條定律標籤（逐條）
 
 原始 553 條；去重後 456 條互異。這份清單由 `tools/gen_labels.py` 讀 `cmd/metatheory` 的實際輸出產生，不是手抄。
@@ -312,6 +319,20 @@
 - ramsey: R(4,4) and R(3,5) pinned exactly #13
 - ramsey: R(4,4) and R(3,5) pinned exactly #14
 
+## core / ramsey: McKay-Radziszowski witness gives R(4,5) >= 25  (11)
+
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #1
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #2
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #3
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #4
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #5
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #6
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #7
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #8
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #9
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #10
+- ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #11
+
 ## core / ramsey: recursion bound beats Erdős–Szekeres  (10)
 
 - ramsey: recursion bound beats Erdős–Szekeres #1
@@ -431,6 +452,21 @@
 - instances: greedy gives minimal not minimum #6
 - instances: greedy gives minimal not minimum #7
 - instances: greedy gives minimal not minimum #8
+
+## instances / instances: matroidal criterion has constructive certificates  (12)
+
+- instances: matroidal criterion has constructive certificates #1
+- instances: matroidal criterion has constructive certificates #2
+- instances: matroidal criterion has constructive certificates #3
+- instances: matroidal criterion has constructive certificates #4
+- instances: matroidal criterion has constructive certificates #5
+- instances: matroidal criterion has constructive certificates #6
+- instances: matroidal criterion has constructive certificates #7
+- instances: matroidal criterion has constructive certificates #8
+- instances: matroidal criterion has constructive certificates #9
+- instances: matroidal criterion has constructive certificates #10
+- instances: matroidal criterion has constructive certificates #11
+- instances: matroidal criterion has constructive certificates #12
 
 ## instances / instances: matroidal criterion is exact  (12)
 
@@ -555,6 +591,19 @@
 - instances: mirror involution preserves the env fingerprint #1
 - instances: mirror involution preserves the env fingerprint #2
 - instances: mirror involution preserves the env fingerprint #3
+
+## instances / instances: mirror respects the exactness boundary and co-derivation  (10)
+
+- instances: mirror respects the exactness boundary and co-derivation #1
+- instances: mirror respects the exactness boundary and co-derivation #2
+- instances: mirror respects the exactness boundary and co-derivation #3
+- instances: mirror respects the exactness boundary and co-derivation #4
+- instances: mirror respects the exactness boundary and co-derivation #5
+- instances: mirror respects the exactness boundary and co-derivation #6
+- instances: mirror respects the exactness boundary and co-derivation #7
+- instances: mirror respects the exactness boundary and co-derivation #8
+- instances: mirror respects the exactness boundary and co-derivation #9
+- instances: mirror respects the exactness boundary and co-derivation #10
 
 ## instances / instances: completion repairs an incoherent env #1 (incoherent before)  (1)
 
@@ -896,6 +945,99 @@
 - iit: normalization reaches a stuck value #5
 - iit: normalization reaches a stuck value #6
 
+## iit / iit: sn depth over budget is None (not false)  (1)
+
+- iit: sn depth over budget is None (not false)
+
+## iit / iit: sn depth of irreducible term fits in budget 1  (1)
+
+- iit: sn depth of irreducible term fits in budget 1
+
+## iit / iit: sn tree_typed over budget is None  (1)
+
+- iit: sn tree_typed over budget is None
+
+## iit / iit: sn tree_typed of irreducible term fits in budget 1  (1)
+
+- iit: sn tree_typed of irreducible term fits in budget 1
+
+## iit / iit: sn battery is well-formed (id)  (1)
+
+- iit: sn battery is well-formed (id)
+
+## iit / iit: sn battery is well-formed (app1)  (1)
+
+- iit: sn battery is well-formed (app1)
+
+## iit / iit: sn battery is well-formed (app2)  (1)
+
+- iit: sn battery is well-formed (app2)
+
+## iit / iit: sn battery is well-formed (k_app)  (1)
+
+- iit: sn battery is well-formed (k_app)
+
+## iit / iit: sn battery is well-formed (eta_deep)  (1)
+
+- iit: sn battery is well-formed (eta_deep)
+
+## iit / iit: sn battery is well-formed (open_var)  (1)
+
+- iit: sn battery is well-formed (open_var)
+
+## iit / iit: sn battery: every term has a finite certificate  (1)
+
+- iit: sn battery: every term has a finite certificate
+
+## iit / iit: sn battery: every node of every path type-checks  (1)
+
+- iit: sn battery: every node of every path type-checks
+
+## iit / iit: sn depth(stlc_ex_id()) == Some(0)  (1)
+
+- iit: sn depth(stlc_ex_id()) == Some(0)
+
+## iit / iit: sn depth(stlc_ex_app1()) == Some(1)  (1)
+
+- iit: sn depth(stlc_ex_app1()) == Some(1)
+
+## iit / iit: sn depth(stlc_ex_app2()) == Some(1)  (1)
+
+- iit: sn depth(stlc_ex_app2()) == Some(1)
+
+## iit / iit: sn depth(stlc_ex_eta_deep()) == Some(1)  (1)
+
+- iit: sn depth(stlc_ex_eta_deep()) == Some(1)
+
+## iit / iit: sn depth(stlc_ex_k_app()) == Some(2)  (1)
+
+- iit: sn depth(stlc_ex_k_app()) == Some(2)
+
+## iit / iit: sn eta_deep has exactly one one-step reduct  (1)
+
+- iit: sn eta_deep has exactly one one-step reduct
+
+## iit / iit: sn eta_deep reduces to stlc_ex_fid()  (1)
+
+- iit: sn eta_deep reduces to stlc_ex_fid()
+
+## iit / iit: sn measure decreases along every one-step reduction (battery)  (1)
+
+- iit: sn measure decreases along every one-step reduction (battery)
+
+## iit / iit: sn reducts of two_positions has exactly 2 results  (1)
+
+- iit: sn reducts of two_positions has exactly 2 results
+
+## iit / iit: sn reduct preserves the index (position law)  (2)
+
+- iit: sn reduct preserves the index (position law)
+- iit: sn reduct preserves the index (position law)
+
+## iit / iit: sn reducts of app1 is the single beta step  (1)
+
+- iit: sn reducts of app1 is the single beta step
+
 ## iit / iit: STLC β is index-preserving  (9)
 
 - iit: STLC β is index-preserving #1
@@ -907,6 +1049,18 @@
 - iit: STLC β is index-preserving #7
 - iit: STLC β is index-preserving #8
 - iit: STLC β is index-preserving #9
+
+## iit / iit: STLC η removes a trivial binder  (9)
+
+- iit: STLC η removes a trivial binder #1
+- iit: STLC η removes a trivial binder #2
+- iit: STLC η removes a trivial binder #3
+- iit: STLC η removes a trivial binder #4
+- iit: STLC η removes a trivial binder #5
+- iit: STLC η removes a trivial binder #6
+- iit: STLC η removes a trivial binder #7
+- iit: STLC η removes a trivial binder #8
+- iit: STLC η removes a trivial binder #9
 
 ## iit / iit: subject reduction on a battery  (15)
 

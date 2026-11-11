@@ -252,6 +252,18 @@ pub fn with_hypotheses(Env, Array[@core.UTerm]) -> Env
 
 pub fn witness_is_cycle(ImportGraph, Array[Int32]) -> Bool
 
+pub fn env_axiomatic_dup() -> Env
+pub fn env_axiomatic_with_loop() -> Env
+pub fn env_composite_chain() -> Env
+pub fn env_unary_chain() -> Env
+pub fn forward_derivable(Env, @core.UTerm, Int32) -> Bool?
+pub fn forward_least_model(Env, Int32, Int32, Int32) -> ForwardClosure?
+pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> Array[(String, Bool)]
+pub fn law_compose_mirror_respects_exactness_boundary_and_co_derivation() -> Array[(String, Bool)]
+pub fn matroidal_certificate(Env, Array[@core.UTerm], Int32) -> MatroidCertificate?
+pub fn mirror_exact(Env) -> Bool
+pub fn verify_matroidal_certificate(Env, Array[@core.UTerm], MatroidCertificate, Int32) -> Bool
+
 // Errors
 
 // Types and methods
@@ -328,6 +340,18 @@ pub struct Transition {
   i : Int32
   j : Int32
   sign : Int32
+}
+
+pub struct ForwardClosure {
+  facts : Array[@core.UTerm]
+  capped : Bool
+  fixpoint : Bool
+}
+
+pub struct MatroidCertificate {
+  solvable : Array[Int32]
+  blocks : Array[Array[Int32]]
+  loops : Array[Int32]
 }
 
 // Type aliases

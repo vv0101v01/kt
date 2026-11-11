@@ -15,6 +15,7 @@
 | `cmd/symdemo` | native 建議 | `symlib`、`moonbitlang/core/bench` | `symlib` 全功能演示（自同構群／作用／折疊／單子／範疇化） |
 | `cmd/symbench` | native 建議 | `symlib`、`moonbitlang/core/bench` | 7 個**衍生演算法** vs 暴力／全搜索的對照基準 |
 | `cmd/semiringreport` | **native only** | 15 個 `semiring/*` 子套件 + `moonbitlang/core/math` | 19 節量測報告（約 66 秒，屬**慢閘門**） |
+| `cmd/ualg` | 全 target | `ualg/core`、`ualg/site`、`ualg/demorgan` | 第十聯邦定律總表：**141/141 個命題**（構造性泛代數 × 預層模板 × De Morgan 立方體），見 [`ualg/README.md`](ualg/README.md) |
 
 一行指令速查：
 

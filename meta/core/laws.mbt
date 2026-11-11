@@ -119,6 +119,9 @@ pub fn all_laws() -> Array[(String, Bool)] {
   for (l, b) in law_ramsey_ex_r44_and_r35_are_pinned_exactly() {
     out.push((l, b))
   }
+  for (l, b) in law_ramsey_ex_r45_witness_graph_gives_r45_ge_25() {
+    out.push((l, b))
+  }
   for (l, b) in law_ramsey_ex_ramsey_recursion_bound_beats_erdos_szekeres() {
     out.push((l, b))
   }

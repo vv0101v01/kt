@@ -1,19 +1,20 @@
 # meta — 反射 × 全域實例 × 歸納-歸納：從數學結構長出來的三個型別論機制
 
 > MoonBit `moonc v0.10.20` · `moon 0.1.20261104` · 第九聯邦（`meta-core` / `meta-instances` / `meta-iit` / `meta-reflect` / `cmd-metatheory`）
-> `moon run cmd/metatheory --target wasm-gc` → **545/545 定律** · `python3 tools/arch_check.py` → `architecture ok`
+> `moon run cmd/metatheory --target wasm-gc` → **565/565 定律**（遠端 2026-11-10 實測；2026-11-11 合併截面未重跑）· `python3 tools/arch_check.py` → `architecture ok`（10 聯邦／57 套件／66 元件／318 .mbt／199,215 行）
 
 ---
 
 ## 0. 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                          # 9 聯邦 / 52 套件 / 61 元件 / 282 .mbt / 182,929 行
-moon check --deny-warn --target wasm-gc              # 0 warnings, 0 errors
-moon run cmd/metatheory --target wasm-gc             # 545/545 定律（逐條重算，不是引用）
-moon run cmd/main       --target wasm-gc             # 137/137 定理（舊聯邦未回歸）
-moon run cmd/showcase   --target wasm-gc             # 47/47 大一統證書 + K_9=36/36（未受健檢影響）
-python3 tools/health_scan.py > tools/health_report.md # 5,745 函式／方法：0 死碼 / 0 無引用型別 / 0 重複
+python3 tools/arch_check.py                          # 10 聯邦 / 57 套件 / 66 元件 / 318 .mbt / 199,215 行（合併截面實測）
+moon check --deny-warn --target wasm-gc              # 0 warnings, 0 errors（遠端 2026-11-10 四目標實測）
+moon run cmd/metatheory --target wasm-gc             # 565/565 定律（逐條重算；遠端實測，合併截面未重跑）
+moon run cmd/main       --target wasm-gc             # 139/139 定理（遠端實測，合併截面未重跑）
+moon run cmd/showcase   --target wasm-gc             # 48/48 大一統證書 + K_9=36/36（遠端實測）
+moon run cmd/ualg       --target wasm-gc             # 第十聯邦：ualg 全命題重算（本地落倉）
+python3 tools/health_scan.py > tools/health_report.md # 合併截面未重跑（遠端 2026-11-10：5,810 函式／方法，0 死碼）
 ```
 
 `cmd/metatheory` 印出的不是「測試通過」四個字，而是**每一條被機器重算的命題**，例如：
@@ -292,14 +293,14 @@ subst_insert t x k     // 同步重寫所有變數節點（vs 鏈的深度會跟
 
 | 事項 | 狀態 |
 |---|---|
-| 「所有定律都通過」 | ✅ 485/485，`moon run cmd/metatheory` 每次重算 |
+| 「所有定律都通過」 | ✅ 565/565（遠端 2026-11-10 實測；合併截面未重跑），`moon run cmd/metatheory` 每次重算 |
 | 「這些是形式化定理」 | ❌ 不是。它們是**機器可判定的具體實例 + 結構性論證**；沒有在 Coq/Agda 裡做 meta-theorem 的形式化 |
 | 一致性判準 | 現在是「**可達目標宇宙**（程式生成）+ 區域實例 + 典範化子推導」上的判定；仍受深度上限約束，且不是完整的合流判定程序 |
-| 可導性閉包是擬陣嗎 | **有判準了**：`matroidal_criterion`（無合成規則落在 G 上 + 每規則最多覆蓋一個目標），在 12 個樣本上與嚴格秩公理逐一對帳；仍未給出形式化證明 |
-| R(4,4) | **算出來了 = 18**（Paley 下界 + 遞迴上界夾死）。仍未算的：R(4,5)（已知 25，我們只給 ≤ 32 的上界）、R(5,5) |
+| 可導性閉包是擬陣嗎 | **有判準，且已升級為逐實例證書**：`matroidal_criterion` + `matroidal_certificate`／`verify_matroidal_certificate`——分割（blocks/loops）結構檢查 + **2^n 窮盡對帳**（n ≤ 12，與 `submodularity_witness` 同一上限），取代舊版 12 樣本對帳；形式化證明（Lean）仍未做 |
+| R(4,4) | **算出來了 = 18**（Paley 下界 + 遞迴上界夾死）。R(4,5)：**≥ 25 已以發表見證機器複驗**（McKay–Radziszowski 目錄 `r45_24.g6` 首張 (4,5,24)-graph：124 條邊、無 K₄、無獨立 5-集，兩條獨立演算法；2026-11-10 重下載以獨立解碼器逐邊交叉核對一致）；上界仍 ≤ 32（遞迴）。R(5,5) 仍未算 |
 | II 消除器 | 是「索引擦除後」的互遞迴消除器；真正依賴 motive 的消除器需要相依宿主語言 |
-| STLC 的 `beta` | **已實作**（`stlc_beta` + `subst_insert` 的索引傳輸），並逐步驗證良構與索引不變。仍未做：η、多步正規化的**終止性證明**（目前用燃料上限） |
-| 多目標規則的鏡像 | `mirror_rule` 只鏡像 0/1 目標規則；多目標需要餘衍生，原樣保留並註明 |
+| STLC 的 `beta`／`eta` | **皆已實作**（`stlc_beta` + `subst_insert` 索引傳輸；`stlc_eta`，`x ∉ FV(f)` 的可判定形式 = f 不含 `vz` 節點，機器複驗保型）。多步正規化：**逐項 SN 證書**（`meta/iit/sn.mbt`，β∪η、位置不限，窮舉歸約樹；`Some(k)` = 全路徑 ≤ k、預算超 ⇒ `None`；樹上每節點 `icheck` 通過）。仍未做：**全稱的強正規化定理**（Tait–Girard，Lean 凍結） |
+| 多目標規則的鏡像 | `mirror_rule` 的 ≤ 1 前提精確性由 `mirror_exact` 可執行檢查；多目標規則用**餘衍生** `forward_least_model`（正向最小模型，∪ 項大小／原子數／輪數上限，超限誠實回 `None`）；樸素鏡像在 ≥ 2 前提下雙向不成立（量測反例已釘進定律 #3） |
 
 ---
 
@@ -344,7 +345,8 @@ meta/instances/
 meta/iit/
   schema.mbt              II schema、索引求值/檢查、Kleene 鏈、互遞迴消除器、序數終止憑證
   examples.mbt            Even/Odd、Nat/Fin、STLC Ctx/Ty/Tm（建構子轉發到 stlc.mbt）
-  stlc.mbt                STLC 的 β：ctx_insert / subst_insert 索引傳輸、弱化、單步與多步約簡、型別保持
+  stlc.mbt                STLC 的 β／η：ctx_insert / subst_insert 索引傳輸、弱化、單步與多步約簡、型別保持
+  sn.mbt                  STLC 逐項 SN 證書：窮舉 β∪η 歸約樹（Some(k) = 全路徑 ≤ k、預算超 ⇒ None）、η 納入、樹逐節點 icheck
   laws.mbt
 
 meta/reflect/
@@ -354,7 +356,7 @@ meta/reflect/
   link.mbt                實例推導 → ProofNode → 無搜尋檢查器
   laws.mbt
 
-cmd/metatheory/main.mbt   485 條定律總表 + 六個最小見證（含 STLC β 與 R(4,4)=18）
+cmd/metatheory/main.mbt   551 條定律總表 + 七個最小見證（含 STLC β/η／SN 證書行與 R(4,5) ≥ 25）
 tools/gen_laws.py         由 `pub fn law_*` 自動產生各套件 laws.mbt（取代手抄索引）
 tools/gen_labels.py       讀 `cmd/metatheory` 的**實際輸出**重生 lean/labels/moonbit-labels.md（漏登記一定看得出來）
 tools/health_scan.py      死碼 / 重複 / 債務掃描（報告，非閘門）
@@ -373,20 +375,24 @@ tools/health_report.md    最近一次健檢結果
 
 ## 10. 已知的下一步（不假裝做完）
 
-已於本輪完成的四項（細節見 §6.5）：STLC 的 β 與索引傳輸、一致性判準的完備化、
+已於先前輪次完成的四項（細節見 §6.5）：STLC 的 β 與索引傳輸、一致性判準的完備化、
 可導性閉包的擬陣判準、Ramsey 的 R(4,4)=18 與 R(3,5)=14。
+2026-11-10（第 3 輪）又結案四項：STLC 的 η（`stlc_eta`）、擬陣判準的逐實例證書（取代 12 樣本對帳）、
+多目標規則的餘衍生（正向最小模型 + `mirror_exact` 前置條件）、R(4,5) ≥ 25 的發表見證複驗。
 
 仍然沒做的（寫清楚，不用「未來工作」帶過）：
 
-1. **η 與多步正規化的終止性**：`stlc_beta` 是單步 + 燃料上限；沒有給出強正規化的證明。
-   要做的話得在索引層引入 well-founded 度量（可重用 `iit_measure` 的序數）。
-2. **判準的形式化證明**：`matroidal_criterion` 的 (⇐) 方向只有樣本對帳與紙上論證，
-   沒有在證明助手裡形式化；`(⇒)` 只給反例族。
-3. **R(4,5)**：已知 25，我們只能給 ≤ 32（遞迴）與 ≥ 18（Paley P₁₇）。要夾死需要
-   24 頂點的 (4,5)-free 見證，局部搜尋在 wasm 上跑不動。
+1. **多步正規化的終止性**：**逐項 SN 證書已做**（2026-11-10，`meta/iit/sn.mbt`：β∪η、位置不限，窮舉完整歸約樹；`Some(k)` = 所有路徑 ≤ k 由完整樹驗明；`stlc_sn_tree_typed` 對樹上每個節點重跑 `icheck`；預算超一律回 `None`）。**全稱的強正規化定理仍未證**——那是 Tait–Girard 可歸約性／邏輯關係，不是本倉 MoonBit 側能表達的命題（Lean 凍結）。入口見 §6.5；深度上界是「最長路徑」不是大小的線性函數，兩條都是實測值。
+2. **判準的形式化證明**：`matroidal_criterion` 的 (⇐) 方向現有**逐實例證書**（`matroidal_certificate` 產生、
+   `verify_matroidal_certificate` 獨立驗證，結構檢查 + 2^n 窮盡對帳，n ≤ 12）；
+   證明助手裡的**全稱**定理仍未做（Lean 側 O-義務）；`(⇒)` 只給反例族。
+3. **R(4,5)**：**≥ 25 已以發表見證機器複驗**（McKay–Radziszowski 1995 完整目錄 `r45_24.g6` 的首張
+   (4,5,24)-graph，124 條邊；本檔嵌入 24 個遮罩，兩條獨立演算法複驗：`ramsey_check_coloring`
+   與遮罩數 K₄／補圖數 K₅）。它仍是 **≥ 25、≤ 32** 的夾擠，不是精確值：
+   1995 年 `R(4,5) = 25` 的證明窮舉了 25 點的所有候選（約 3.2 CPU-years），不在本專案範圍。
 4. **Ramsey 更大值的工程極限**：R(5,5) 已知 43 ≤ R ≤ 48，兩邊都超出本檔的方法。
 5. **把定律搬進證明助手**：`meta/*` 的結構性論證可望在 Agda/Lean 裡形式化成 meta-theorem，
-   這會把「485 條具體定律」升級為「定理」。
+   這會把「551 條具體定律」升級為「定理」。
    *進度*：Why3 + Z3 這條路已實測並排除（見 [`prove_feasibility.md`](prove_feasibility.md)）；
    改走 Lean 4.35.0，工程骨架在 [`../lean/`](../lean/README.md)，目前 **492** 條定理已證明登記（437 個舊標籤／340 個互異全覆蓋；本輪新增 48 條尚未鏡射）
    （Ramsey／圖 19 條含 `R(3,4) = 9`、`R(4,4) = 18`、`R(3,5) = 14` 三個精確值；
@@ -422,4 +428,4 @@ tools/health_report.md    最近一次健檢結果
 | 同一套件的第二份 `ramsey_window` | **合併**：轉發 `@core.ramsey_upper`，並刪掉「R(4,4) 不可算」的過時說明 | 1 |
 | 過時的說明文字 | 更新 `ramsey.mbt` 檔頭、`compose.mbt` 邊界註解、`meta/README` 誠實邊界表裡的「未實作 STLC β」標記 | 3 |
 
-死碼候選：14 → 4 → **0**（全倉健檢升級後，掃描 `5,745` 個函式／方法達成 **0 死碼、0 無引用型別、0 空殼 `enum`、0 完全相同函式體**，`cmd/metatheory` 達 **545/545 定律**）。
+死碼候選：14 → 4 → **0**（全倉健檢升級後，掃描 `5,810` 個函式／方法達成 **0 死碼、0 無引用型別、0 空殼 `enum`、0 完全相同函式體**（遠端 2026-11-10 實測），`cmd/metatheory` 達 **565/565 定律**）。

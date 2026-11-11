@@ -167,6 +167,19 @@
       "allowed_external_packages": [],
       "summary_en": "Federation 9 — Metatheory: ordinals/matroids/Ramsey/complexes as the mathematical floor; global instances with coherence and descent gluing; inductive-inductive types with term-valued indices; reflection with replayable certificates.",
       "summary_zh": "第九聯邦 — 元理論：以序數／擬陣／Ramsey／複形為數學底層；全域實例的一致性與下降黏合；索引為項的歸納-歸納型別；可重放憑證的反射。"
+    },
+    {
+      "id": "ualg",
+      "packages": [
+        "ualg-core",
+        "ualg-site",
+        "ualg-demorgan",
+        "cmd-ualg",
+        "ualg-cube"
+      ],
+      "allowed_external_packages": [],
+      "summary_en": "Federation 10 — Constructive universal algebra × presheaf template × De Morgan cubes: congruence lattices and quotients (Freese closure vs brute force), Mal'cev terms by three algorithms, zero/absorbing elements and Rees quotients, Galois connections (Fix ⊣ Stab, Mod ⊣ Th) by NextClosure, translation-operator spectra; Alexandrov sites, Lawvere–Tierney nuclei, double-negation sheafification as a counted left adjoint; free De Morgan algebras DM(n) with Kalman normal forms, the De Morgan cube category and its automorphism group B_n, the affine (read-once) fragment, the face lattice with ∃ ⊣ w ⊣ ∀, cubical homology of open boxes, suspensions, pushouts and tori, and Hodge Laplacian spectra. Round 2 adds ualg/cube: the cubical double-negation nucleus (j = ¬¬ on the face Heyting algebra, Glivenko Fix(¬¬) ≅ P(vertices)) and cubical sheafification (Sh_¬¬(□^n) ≃ Set^{vertices}, a(F)(x) = ∏_{v≤x}|F(v)|, subterminal sheaves = regular subcomplexes, a depends only on vertex restrictions).",
+      "summary_zh": "第十聯邦 — 構造性泛代數 × 預層模板 × De Morgan 立方體：同餘格與商代數（Freese 閉包對暴力列舉）、Mal'cev 項的三個演算法、零元／吸收元與 Rees 商、Galois 連接（Fix ⊣ Stab、Mod ⊣ Th，NextClosure）、平移算子的譜；Alexandrov 景、Lawvere–Tierney 核子、雙重否定層化作為以計數驗證的左伴隨；自由 De Morgan 代數 DM(n) 與 Kalman 正規形、De Morgan 立方體範疇及其自同構群 B_n、仿射（read-once）片段、面格與 ∃ ⊣ w ⊣ ∀、開盒／懸掛／推出／環面的立方同調，以及 Hodge Laplace 譜。 第二輪新增 ualg/cube：立方體上的雙重否定核子（面 Heyting 代數上的 j = ¬¬、Glivenko：Fix(¬¬) ≅ P(頂點)）與立方體上的層化（Sh_¬¬(□ⁿ) ≃ Set^{頂點}、a(F)(x) = ∏_{v≤x}|F(v)|、子終層 = 正則子複形、層化只經由頂點決定）。"
     }
   ],
   "unification": {
@@ -853,6 +866,63 @@
       ],
       "summary_en": "Layer-1 Condensed & Homotopy core: profinite/compact towers, constructive Nöbeling unimodular basis, Solid/p-Liquid modules, Roos–Milnor R^1 lim, and 64-bit @swar Steenrod–Adams minimal resolutions.",
       "summary_zh": "L1 凝聚與同倫核心：有限／緊緻射影極限塔、構造性 Nöbeling 單模基底、固態與 p-液態模、Roos–Milnor R¹lim 與 64-bit @swar Steenrod–Adams 極小分解。"
+    },
+    {
+      "id": "ualg-core",
+      "path": "ualg/core",
+      "moon": "vv0101v01/cubical-hermitian/ualg/core",
+      "layer": 0,
+      "depends_on": [],
+      "summary_en": "Constructive universal algebra on finite table algebras: terms and identities, subalgebra/product/free-algebra closures, congruence generation and the congruence lattice, quotients and isomorphism theorems, Mal'cev term search (global, reflexive-symmetric, idempotent-local), zero/absorbing elements, ideals and Rees quotients, polarities with NextClosure, Fix ⊣ Stab and Mod ⊣ Th Galois correspondences, exact characteristic polynomials of translation operators.",
+      "summary_zh": "有限表格代數上的構造性泛代數：項與恆等式、子代數／積／自由代數閉包、同餘生成與同餘格、商代數與同構定理、Mal'cev 項搜尋（全域、自反對稱、冪等局部）、零元／吸收元、理想與 Rees 商、極性與 NextClosure、Fix ⊣ Stab 與 Mod ⊣ Th 的 Galois 對應、平移算子的精確特徵多項式。"
+    },
+    {
+      "id": "ualg-site",
+      "path": "ualg/site",
+      "moon": "vv0101v01/cubical-hermitian/ualg/site",
+      "layer": 0,
+      "depends_on": [],
+      "summary_en": "The presheaf template on finite posets: Alexandrov topology and the Heyting algebra of opens, nuclei (Lawvere–Tierney topologies) with a full census and Isbell's density theorem, double negation j = ¬¬, presheaves, matching families, the j-sheaf condition, the plus construction and sheafification with unit, and the adjunction a ⊣ i verified by counting natural transformations.",
+      "summary_zh": "有限偏序上的預層模板：Alexandrov 拓撲與開集的 Heyting 代數、核子（Lawvere–Tierney 拓撲）普查與 Isbell 稠密性定理、雙重否定 j = ¬¬、預層、匹配族、j-層條件、plus 構造與帶單位的層化，並以自然變換計數驗證伴隨 a ⊣ i。"
+    },
+    {
+      "id": "ualg-demorgan",
+      "path": "ualg/demorgan",
+      "moon": "vv0101v01/cubical-hermitian/ualg/demorgan",
+      "layer": 1,
+      "depends_on": [
+        "ualg-core",
+        "ualg-site"
+      ],
+      "summary_en": "De Morgan cubes: free De Morgan algebras DM(n) as antichain normal forms with Kalman's 𝟜-semantics and Dedekind numbers, the De Morgan cube category (substitution, cubical identities, Aut = B_n), the affine read-once fragment via Gurvich's criterion, the face lattice 𝔽(n) as a quotient and as subcomplexes with quantifiers ∃ ⊣ w ⊣ ∀, cubical chain complexes (open boxes, suspension, pushout, Künneth, tori), Hodge Laplacian spectra, and the Galois correspondence of the square's symmetry group.",
+      "summary_zh": "De Morgan 立方體：以反鏈正規形表示的自由 De Morgan 代數 DM(n)、Kalman 的 𝟜-語義與 Dedekind 數、De Morgan 立方體範疇（代換、立方恆等式、Aut = B_n）、以 Gurvich 判準刻畫的仿射 read-once 片段、作為商與作為子複形的面格 𝔽(n) 及量詞 ∃ ⊣ w ⊣ ∀、立方鏈複形（開盒、懸掛、推出、Künneth、環面）、Hodge Laplace 譜，以及正方形對稱群的 Galois 對應。"
+    },
+    {
+      "id": "cmd-ualg",
+      "path": "cmd/ualg",
+      "moon": "vv0101v01/cubical-hermitian/cmd/ualg",
+      "layer": 3,
+      "depends_on": [
+        "ualg-core",
+        "ualg-site",
+        "ualg-demorgan",
+        "ualg-cube"
+      ],
+      "summary_en": "Executable law table for federation 10: recomputes and prints every proposition of ualg/core, ualg/site and ualg/demorgan and ualg/cube; exits non-zero if any is false.",
+      "summary_zh": "第十聯邦的定律總表執行檔：當場重算並印出 ualg/core、ualg/site、ualg/demorgan、ualg/cube 的每個命題；任何一條為假即以非零狀態結束。"
+    },
+    {
+      "id": "ualg-cube",
+      "path": "ualg/cube",
+      "moon": "vv0101v01/cubical-hermitian/ualg/cube",
+      "layer": 2,
+      "depends_on": [
+        "ualg-core",
+        "ualg-site",
+        "ualg-demorgan"
+      ],
+      "summary_en": "Cubical sheafification and the cubical double-negation nucleus: the face Heyting algebra's two computations of j = ¬¬ (Heyting negation vs vertex closure), nuclei axioms on all opens of V^n (n <= 3), Glivenko's theorem Fix(¬¬) ≅ P(vertices) (4, 16, 256 regular subcomplexes), j ⊣ i left adjoint on Ω, the third path to the [T-Bool] Boolean-reflection kernel, sphere vs filling under ¬¬ (∂σ ~ ↓σ for dim >= 1), j not preserving joins (484 counterexamples on V, V²), quantifier-vs-Booleanization non-commutation (∃i 4, ∀i 44 counterexamples on 𝔽(2)); Sh_¬¬(□^n) ≃ Set^{vertices} via rho bijectivity and explicit rho : F ≅ F̂(F|verts) natural iso, subterminal sheaves = regular subcomplexes (4, 16, 256), sheafification of subcomplexes = vertex closure (a(K) = u_{verts K}, all 5 + 48, V³ sampled), the formula a(F)(x) = ∏_{v≤x} |F(v)| (all 70 size ≤ 2 presheaves on V, 112 on V², constants on V³ with 256/6561-element top fibers), a depends only on vertex restrictions (a(aF⊠aG) = a(F⊠G), a(F×G) = aF×aG, a(F+G) = a(aF+aG)), |Ω_¬¬(x)| = 2^{2^{dim x}} (n ≤ 3), a ⊣ i counted on V and V², and |Nat(F,G)| = ∏_v |G(v)|^|F(v)| for sheaves.",
+      "summary_zh": "立方體上的層化與立方體雙重否定核子：面 Heyting 代數上 j = ¬¬ 的兩條獨立計算（Heyting 否定對頂點閉包）、Vⁿ（n ≤ 3）全部開集上的核子公理、Glivenko 定理 Fix(¬¬) ≅ P(頂點)（4、16、256 個正則子複形）、Ω 上的左伴隨 j ⊣ i、[T-Bool] 布林反射核的第三條路徑、球面與填充在 ¬¬ 下不可分（維數 ≥ 1 的面共 25 個）、j 不保併（V、V² 共 484 組反例）、量詞與布林化不交換（∃i 4 組、∀i 44 組反例）；Sh_¬¬(□ⁿ) ≃ Set^{頂點}（ρ 雙射與顯式自然同構 F ≅ F̂(F|頂點)）、子終層 = 正則子複形（4、16、256）、子複形的層化 = 頂點閉包（V¹、V² 全部 5、48 個，V³ 樣本 60 個）、a(F)(x) = ∏_{v≤x}|F(v)|（V¹ 全部 70 個大小 ≤ 2 預層、V² 112 個、V³ 常數預層頂纖維 256／6561）、層化只經由頂點決定（a(aF⊠aG) = a(F⊠G)、a(F×G) = aF×aG、a(F+G) = a(aF+aG)）、|Ω_¬¬(x)| = 2^{2^{dim x}}（n ≤ 3）、V 與 V² 上的 a ⊣ i 計數，以及層之間 |Nat(F,G)| = ∏_v |G(v)|^|F(v)|。"
     }
   ],
   "components": [
@@ -1787,6 +1857,73 @@
       ],
       "summary_en": "Layer-1 Condensed profinite/solid & @swar Steenrod–Adams homotopy core.",
       "summary_zh": "L1 凝聚射影塔／固態模與 @swar Steenrod–Adams 同倫核心。"
+    },
+    {
+      "id": "ualg-core",
+      "package": "ualg-core",
+      "layer": 0,
+      "files": [
+        "ualg/core/*.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "Constructive universal algebra on finite table algebras: terms and identities, subalgebra/product/free-algebra closures, congruence generation and the congruence lattice, quotients and isomorphism theorems, Mal'cev term search (global, reflexive-symmetric, idempotent-local), zero/absorbing elements, ideals and Rees quotients, polarities with NextClosure, Fix ⊣ Stab and Mod ⊣ Th Galois correspondences, exact characteristic polynomials of translation operators.",
+      "summary_zh": "有限表格代數上的構造性泛代數：項與恆等式、子代數／積／自由代數閉包、同餘生成與同餘格、商代數與同構定理、Mal'cev 項搜尋（全域、自反對稱、冪等局部）、零元／吸收元、理想與 Rees 商、極性與 NextClosure、Fix ⊣ Stab 與 Mod ⊣ Th 的 Galois 對應、平移算子的精確特徵多項式。"
+    },
+    {
+      "id": "ualg-site",
+      "package": "ualg-site",
+      "layer": 0,
+      "files": [
+        "ualg/site/*.mbt"
+      ],
+      "depends_on": [],
+      "summary_en": "The presheaf template on finite posets: Alexandrov topology and the Heyting algebra of opens, nuclei (Lawvere–Tierney topologies) with a full census and Isbell's density theorem, double negation j = ¬¬, presheaves, matching families, the j-sheaf condition, the plus construction and sheafification with unit, and the adjunction a ⊣ i verified by counting natural transformations.",
+      "summary_zh": "有限偏序上的預層模板：Alexandrov 拓撲與開集的 Heyting 代數、核子（Lawvere–Tierney 拓撲）普查與 Isbell 稠密性定理、雙重否定 j = ¬¬、預層、匹配族、j-層條件、plus 構造與帶單位的層化，並以自然變換計數驗證伴隨 a ⊣ i。"
+    },
+    {
+      "id": "ualg-demorgan",
+      "package": "ualg-demorgan",
+      "layer": 1,
+      "files": [
+        "ualg/demorgan/*.mbt"
+      ],
+      "depends_on": [
+        "ualg-core",
+        "ualg-site"
+      ],
+      "summary_en": "De Morgan cubes: free De Morgan algebras DM(n) as antichain normal forms with Kalman's 𝟜-semantics and Dedekind numbers, the De Morgan cube category (substitution, cubical identities, Aut = B_n), the affine read-once fragment via Gurvich's criterion, the face lattice 𝔽(n) as a quotient and as subcomplexes with quantifiers ∃ ⊣ w ⊣ ∀, cubical chain complexes (open boxes, suspension, pushout, Künneth, tori), Hodge Laplacian spectra, and the Galois correspondence of the square's symmetry group.",
+      "summary_zh": "De Morgan 立方體：以反鏈正規形表示的自由 De Morgan 代數 DM(n)、Kalman 的 𝟜-語義與 Dedekind 數、De Morgan 立方體範疇（代換、立方恆等式、Aut = B_n）、以 Gurvich 判準刻畫的仿射 read-once 片段、作為商與作為子複形的面格 𝔽(n) 及量詞 ∃ ⊣ w ⊣ ∀、立方鏈複形（開盒、懸掛、推出、Künneth、環面）、Hodge Laplace 譜，以及正方形對稱群的 Galois 對應。"
+    },
+    {
+      "id": "cmd-ualg",
+      "package": "cmd-ualg",
+      "layer": 3,
+      "files": [
+        "cmd/ualg/*.mbt"
+      ],
+      "depends_on": [
+        "ualg-core",
+        "ualg-site",
+        "ualg-demorgan",
+        "ualg-cube"
+      ],
+      "summary_en": "Executable law table for federation 10: recomputes and prints every proposition of ualg/core, ualg/site and ualg/demorgan and ualg/cube; exits non-zero if any is false.",
+      "summary_zh": "第十聯邦的定律總表執行檔：當場重算並印出 ualg/core、ualg/site、ualg/demorgan、ualg/cube 的每個命題；任何一條為假即以非零狀態結束。"
+    },
+    {
+      "id": "ualg-cube",
+      "package": "ualg-cube",
+      "layer": 2,
+      "files": [
+        "ualg/cube/*.mbt"
+      ],
+      "depends_on": [
+        "ualg-core",
+        "ualg-site",
+        "ualg-demorgan"
+      ],
+      "summary_en": "Cubical sheafification and the cubical double-negation nucleus: the face Heyting algebra's two computations of j = ¬¬ (Heyting negation vs vertex closure), nuclei axioms on all opens of V^n (n <= 3), Glivenko's theorem Fix(¬¬) ≅ P(vertices) (4, 16, 256 regular subcomplexes), j ⊣ i left adjoint on Ω, the third path to the [T-Bool] Boolean-reflection kernel, sphere vs filling under ¬¬ (∂σ ~ ↓σ for dim >= 1), j not preserving joins (484 counterexamples on V, V²), quantifier-vs-Booleanization non-commutation (∃i 4, ∀i 44 counterexamples on 𝔽(2)); Sh_¬¬(□^n) ≃ Set^{vertices} via rho bijectivity and explicit rho : F ≅ F̂(F|verts) natural iso, subterminal sheaves = regular subcomplexes (4, 16, 256), sheafification of subcomplexes = vertex closure (a(K) = u_{verts K}, all 5 + 48, V³ sampled), the formula a(F)(x) = ∏_{v≤x} |F(v)| (all 70 size ≤ 2 presheaves on V, 112 on V², constants on V³ with 256/6561-element top fibers), a depends only on vertex restrictions (a(aF⊠aG) = a(F⊠G), a(F×G) = aF×aG, a(F+G) = a(aF+aG)), |Ω_¬¬(x)| = 2^{2^{dim x}} (n ≤ 3), a ⊣ i counted on V and V², and |Nat(F,G)| = ∏_v |G(v)|^|F(v)| for sheaves.",
+      "summary_zh": "立方體上的層化與立方體雙重否定核子：面 Heyting 代數上 j = ¬¬ 的兩條獨立計算（Heyting 否定對頂點閉包）、Vⁿ（n ≤ 3）全部開集上的核子公理、Glivenko 定理 Fix(¬¬) ≅ P(頂點)（4、16、256 個正則子複形）、Ω 上的左伴隨 j ⊣ i、[T-Bool] 布林反射核的第三條路徑、球面與填充在 ¬¬ 下不可分（維數 ≥ 1 的面共 25 個）、j 不保併（V、V² 共 484 組反例）、量詞與布林化不交換（∃i 4 組、∀i 44 組反例）；Sh_¬¬(□ⁿ) ≃ Set^{頂點}（ρ 雙射與顯式自然同構 F ≅ F̂(F|頂點)）、子終層 = 正則子複形（4、16、256）、子複形的層化 = 頂點閉包（V¹、V² 全部 5、48 個，V³ 樣本 60 個）、a(F)(x) = ∏_{v≤x}|F(v)|（V¹ 全部 70 個大小 ≤ 2 預層、V² 112 個、V³ 常數預層頂纖維 256／6561）、層化只經由頂點決定（a(aF⊠aG) = a(F⊠G)、a(F×G) = aF×aG、a(F+G) = a(aF+aG)）、|Ω_¬¬(x)| = 2^{2^{dim x}}（n ≤ 3）、V 與 V² 上的 a ⊣ i 計數，以及層之間 |Nat(F,G)| = ∏_v |G(v)|^|F(v)|。"
     }
   ],
   "exceptions": []

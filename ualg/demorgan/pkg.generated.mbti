@@ -1,0 +1,174 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/ualg/demorgan"
+
+import {
+  "moonbitlang/core/bigint",
+  "vv0101v01/cubical-hermitian/ualg/site",
+}
+
+// Values
+pub fn affine_elements(Int32) -> (Array[Array[Int32]], Array[Int32])
+
+pub fn all_laws() -> Array[(String, Array[(String, Bool)])]
+
+pub fn clause_consistent(Int32) -> Bool
+
+pub fn clause_face(Int32, Int32) -> Int32
+
+pub fn cx_betti(Array[Bool], Int32, Int64) -> Array[Int32]
+
+pub fn cx_boundary(Int32) -> Array[Bool]
+
+pub fn cx_boundary_matrix(Array[Array[Int32]], Int32, Int32) -> Array[Array[Int64]]
+
+pub fn cx_cells(Array[Bool], Int32) -> Array[Array[Int32]]
+
+pub fn cx_euler(Array[Bool], Int32) -> Int32
+
+pub fn cx_facet(Int32, Int32, Int32) -> Array[Bool]
+
+pub fn cx_full(Int32) -> Array[Bool]
+
+pub fn cx_inter(Array[Bool], Array[Bool]) -> Array[Bool]
+
+pub fn cx_is_complex(Array[Bool], Int32) -> Bool
+
+pub fn cx_laplacian(Array[Array[Int32]], Int32, Int32) -> Array[Array[@bigint.BigInt]]
+
+pub fn cx_open_box(Int32, Int32, Int32) -> Array[Bool]
+
+pub fn cx_product(Array[Bool], Array[Bool]) -> Array[Bool]
+
+pub fn cx_suspension(Array[Bool]) -> Array[Bool]
+
+pub fn cx_union(Array[Bool], Array[Bool]) -> Array[Bool]
+
+pub fn dedekind_by_intervals(Int32) -> Int64
+
+pub fn dedekind_by_pairs(Int32) -> Int64
+
+pub fn dm_elements(Int32) -> Array[Array[Int32]]
+
+pub fn dm_index(Array[Array[Int32]]) -> Map[String, Int32]
+
+pub fn dnf_dual(Array[Int32]) -> Array[Int32]
+
+pub fn dnf_join(Array[Int32], Array[Int32]) -> Array[Int32]
+
+pub fn dnf_key(Array[Int32]) -> String
+
+pub fn dnf_leq(Array[Int32], Array[Int32]) -> Bool
+
+pub fn dnf_meet(Array[Int32], Array[Int32]) -> Array[Int32]
+
+pub fn dnf_neg(Array[Int32]) -> Array[Int32]
+
+pub fn dnf_norm(Array[Int32]) -> Array[Int32]
+
+pub fn dnf_nvar(Int32) -> Array[Int32]
+
+pub fn dnf_one() -> Array[Int32]
+
+pub fn dnf_show(Array[Int32]) -> String
+
+pub fn dnf_subst(Array[Int32], Array[Array[Int32]]) -> Array[Int32]
+
+pub fn dnf_table(Array[Int32], Int32) -> UInt64
+
+pub fn dnf_var(Int32) -> Array[Int32]
+
+pub fn dnf_vars(Array[Int32]) -> Int32
+
+pub fn dnf_zero() -> Array[Int32]
+
+pub fn face_at(Array[Int32], Int32, Int32) -> Array[Int32]
+
+pub fn face_clause(Int32, Int32) -> Int32
+
+pub fn face_count_recursive(Int32) -> Int64
+
+pub fn face_digit(Int32, Int32) -> Int32
+
+pub fn face_dim(Int32, Int32) -> Int32
+
+pub fn face_exists(Array[Int32], Int32) -> Array[Int32]
+
+pub fn face_forall(Array[Int32], Int32) -> Array[Int32]
+
+pub fn face_mentions(Array[Int32], Int32) -> Bool
+
+pub fn face_norm(Array[Int32]) -> Array[Int32]
+
+pub fn face_open(@site.Poset, Array[Int32], Int32) -> Int32
+
+pub fn flip_mask(Int32) -> Int32
+
+pub fn is_affine(Array[Int32]) -> Bool
+
+pub fn law_affine_fragment_read_once() -> Array[(String, Bool)]
+
+pub fn law_cube_automorphisms_hyperoctahedral() -> Array[(String, Bool)]
+
+pub fn law_cube_category_substitution() -> Array[(String, Bool)]
+
+pub fn law_cubical_homology_kan_boxes() -> Array[(String, Bool)]
+
+pub fn law_dedekind_numbers_three_paths() -> Array[(String, Bool)]
+
+pub fn law_demorgan_normal_form_kalman() -> Array[(String, Bool)]
+
+pub fn law_face_lattice_three_paths() -> Array[(String, Bool)]
+
+pub fn law_face_quantifiers_adjoint() -> Array[(String, Bool)]
+
+pub fn law_hodge_laplacian_spectrum() -> Array[(String, Bool)]
+
+pub fn law_square_symmetry_galois() -> Array[(String, Bool)]
+
+pub fn law_suspension_pushout_kunneth() -> Array[(String, Bool)]
+
+pub fn lit_pullback(Array[Array[Int32]], Int32) -> Array[Int32]
+
+pub fn monotone_count_bruteforce(Int32) -> Int32
+
+pub fn monotone_tables(Int32) -> Array[UInt64]
+
+pub fn mor_compose(Array[Array[Int32]], Array[Array[Int32]]) -> Array[Array[Int32]]
+
+pub fn mor_group(Array[Array[Array[Int32]]], Int32) -> Array[Array[Array[Int32]]]
+
+pub fn mor_id(Int32) -> Array[Array[Int32]]
+
+pub fn mor_is_affine(Array[Array[Int32]]) -> Bool
+
+pub fn mor_is_iso(Array[Array[Int32]], Int32) -> Bool
+
+pub fn mor_key(Array[Array[Int32]]) -> String
+
+pub fn open_face(@site.Poset, Int32, Int32) -> Array[Int32]
+
+pub fn pow3(Int32) -> Int32
+
+pub fn rank_exact(Array[Array[Int64]]) -> Int32
+
+pub fn rank_mod(Array[Array[Int64]], Int64) -> Int32
+
+pub fn subst_action(Array[Array[Int32]], Array[Array[Int32]], (Array[Int32]) -> Array[Int32]) -> Array[Int32]
+
+pub fn table_bit(UInt64, Int32) -> Bool
+
+pub fn table_dm4_tuple(UInt64, Int32) -> Array[Int32]
+
+pub fn table_dnf(UInt64, Int32) -> Array[Int32]
+
+pub fn table_neg(UInt64, Int32) -> UInt64
+
+pub fn table_pull(UInt64, Array[Int32]) -> UInt64
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

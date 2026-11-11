@@ -1,0 +1,53 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vv0101v01/cubical-hermitian/ualg/cube"
+
+import {
+  "vv0101v01/cubical-hermitian/ualg/site",
+}
+
+// Values
+pub fn all_laws() -> Array[(String, Array[(String, Bool)])]
+
+pub fn dneg_vertex(Int32, Int32) -> Int32
+
+pub fn face_boundary(@site.Poset, Int32) -> Int32
+
+pub fn face_vertices(Int32, Int32) -> Int32
+
+pub fn law_cubical_sheafification() -> Array[(String, Bool)]
+
+pub fn law_double_negation_nucleus_cubical() -> Array[(String, Bool)]
+
+pub fn min_below(@site.Poset, Int32) -> Array[Int32]
+
+pub fn nat_product(@site.Poset, @site.Presheaf, @site.Presheaf) -> Int32
+
+pub fn open_vertex_mask(Int32, Int32) -> Int32
+
+pub fn psh_sum(@site.Poset, @site.Presheaf, @site.Presheaf) -> @site.Presheaf
+
+pub fn psh_tensor(@site.Poset, @site.Poset, @site.Presheaf, @site.Presheaf) -> @site.Presheaf
+
+pub fn psh_times(@site.Poset, @site.Presheaf, @site.Presheaf) -> @site.Presheaf
+
+pub fn psh_vertex(Int32, Array[Int32]) -> @site.Presheaf
+
+pub fn rho_bijective(@site.Poset, @site.Presheaf) -> Bool
+
+pub fn rho_eta(@site.Poset, @site.Presheaf) -> Array[Array[Int32]]
+
+pub fn vert_sizes_of(Int32, @site.Presheaf) -> Array[Int32]
+
+pub fn vertex_closure(Int32, Int32) -> Int32
+
+pub fn vertex_code(Int32, Int32) -> Int32
+
+pub fn vertex_index(Int32, Int32) -> Int32
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

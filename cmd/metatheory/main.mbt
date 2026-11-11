@@ -83,7 +83,7 @@ fn demo_ramsey() -> String {
   let r34 = @core.ramsey(3, 4)
   let p44 = @core.ramsey_pin(4, 4)
   let p35 = @core.ramsey_pin(3, 5)
-  "Ramsey：R(3,3) = \{r33}，R(3,4) = \{r34}（搜尋算出）；R(4,4) = \{p44.upper}（Paley 圖 P₁₇ 的 \{p44.witness.length()} 條紅邊給下界 + 遞迴上界 9+9 給上界，兩邊夾死）；R(3,5) = \{p35.upper}（K₁₃ 見證）；Erdős–Szekeres 的 C(6,3) = \{@core.erdos_szekeres(4, 4)} 已被嚴格優於"
+  "Ramsey：R(3,3) = \{r33}，R(3,4) = \{r34}（搜尋算出）；R(4,4) = \{p44.upper}（Paley 圖 P₁₇ 的 \{p44.witness.length()} 條紅邊給下界 + 遞迴上界 9+9 給上界，兩邊夾死）；R(3,5) = \{p35.upper}（K₁₃ 見證）；R(4,5) ≥ 25（McKay–Radziszowski 目錄第一張 (4,5,24)-graph，124 條邊，機器複驗無 K₄ 無獨立 5-集）；Erdős–Szekeres 的 C(6,3) = \{@core.erdos_szekeres(4, 4)} 已被嚴格優於"
 }
 
 ///|
@@ -94,7 +94,13 @@ fn demo_stlc() -> String {
     Some(x) => x
     None => t
   }
-  "歸納-歸納的 STLC：β 約簡 (λx.λy.x) arg ↝ 仍良構 = \{@iit.icheck(s, r)}，且索引（上下文, 型別）完全不變 = \{@iit.stlc_same_index(s, t, r)}（走入一層 binder 時的索引傳輸是重算出來的）"
+  let t2 = @iit.stlc_ex_sn_two_positions()
+  let n_reducts = @iit.stlc_one_step_reducts(t2).length()
+  let d_kid = match @iit.stlc_sn_depth(@iit.stlc_ex_k_app(), 1024) {
+    Some(d) => "\{d}"
+    None => "None"
+  }
+  "歸納-歸納的 STLC：β 約簡 (λx.λy.x) arg ↝ 仍良構 = \{@iit.icheck(s, r)}，且索引（上下文, 型別）完全不變 = \{@iit.stlc_same_index(s, t, r)}（走入一層 binder 時的索引傳輸是重算出來的）\nSTLC 逐項 SN 證書（窮舉 β∪η 歸約樹，**不是**全稱定理）：two_positions 一步歸約數 = \{n_reducts}，k_app 深度 = \{d_kid}"
 }
 
 ///|

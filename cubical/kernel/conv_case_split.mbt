@@ -28,6 +28,20 @@
 // ==================================================================
 
 ///|
+fn cs_mentions_var(t : DTerm, index : Int32) -> Bool {
+  let mut found = false
+  ignore(
+    dterm_map_vars_at(t, 0, (v, depth) => {
+      if v - depth == index {
+        found = true
+      }
+      DTVar(v)
+    }),
+  )
+  found
+}
+
+///|
 fn cs_eval_ctx(ctx : Array[DTerm]) -> (DEnv, Array[DValue]) {
   let values : Array[DValue] = []
   let types : Array[DValue] = []
@@ -240,9 +254,9 @@ fn cs_conv_go(
         continue
       }
       let index = ctx.length() - 1 - i
-      if dterm_free_var_occurs(a, index) ||
-        dterm_free_var_occurs(b, index) ||
-        dterm_free_var_occurs(ty, index) {
+      if cs_mentions_var(a, index) ||
+        cs_mentions_var(b, index) ||
+        cs_mentions_var(ty, index) {
         candidates.push(i)
       }
     }
@@ -681,9 +695,9 @@ fn cs_finite_go(
           break
         } else if chosen_i < 0 {
           let index = ctx.length() - 1 - i
-          if dterm_free_var_occurs(a, index) ||
-            dterm_free_var_occurs(b, index) ||
-            dterm_free_var_occurs(ty, index) {
+          if cs_mentions_var(a, index) ||
+            cs_mentions_var(b, index) ||
+            cs_mentions_var(ty, index) {
             chosen_i = i
             chosen_cases = cases
           }
@@ -756,4 +770,16 @@ pub fn conv_terms_finite_case_split_report(
     probes: stats.probes,
     root_difference_variables: root_diff.length(),
   }
+}
+
+///|
+pub fn conv_terms_finite_case_split(
+  ctx : Array[DTerm],
+  ty : DTerm,
+  a : DTerm,
+  b : DTerm,
+  depth_budget~ : Int32 = 16,
+  max_cases~ : Int32 = 64,
+) -> Bool {
+  conv_terms_finite_case_split_report(ctx, ty, a, b, depth_budget~, max_cases~).holds
 }

@@ -88,6 +88,15 @@ def main():
         lines.append("")
     open("lean/labels/moonbit-labels.md", "w").write("\n".join(lines))
     print(f"寫出 lean/labels/moonbit-labels.md：{len(labs)} 條、{uniq} 條互異、{len(order)} 族")
+    per_pkg = {}
+    for (p, _fam), items in groups.items():
+        d = per_pkg.setdefault(p, [0, set()])
+        d[0] += len(items)
+        d[1].update(re.sub(r"\\\{[^}]*\\\}", "#", it) for it in items)
+    for p in PKGS:
+        if p in per_pkg:
+            n, u = per_pkg[p]
+            print(f"  {p}: {n} 條（互異 {len(u)}）")
 
 
 if __name__ == "__main__":

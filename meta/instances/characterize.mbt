@@ -375,6 +375,244 @@ pub fn env_min_vs_minimal() -> Env {
 }
 
 // ---------------------------------------------------------------------------
+// 4.5 判準 (⇐) 的建設性證書：分割 + 窮盡對帳
+// ---------------------------------------------------------------------------
+//
+// 舊版對「公理可解 ⇒ 擬陣」只給 12 個樣本環境的對帳（law_characterize_..._is_exact）。
+// 這裡把它升級成**逐實例證書**：
+//
+//   若目標集 G 在環境 E 中是公理可解、且沒有合成規則的 head 落在 G 上、
+//   且每條規則至多覆蓋一個目標，則 rank_E,G(S) = |{ B ∈ 分割 : B ∩ S ≠ ∅ }|，
+//   其中分割把覆蓋同一個目標的公理規則放進同一個區塊、其餘規則放進 loop。
+//   右邊是**分割擬陣**的秩——這條等式就是 Lean 側 O3 定理的內容。
+//
+// 證書可被證明者獨立驗證（verify_matroidal_certificate 不呼叫產生器）：
+//   結構檢查（分割、非空、互斥、公理性、loop 不覆蓋、可解清單一致），
+//   加上**窮盡對帳**：對全部 2^n 個規則子集 S（n ≤ 12，與 submodularity_witness
+//   同一上限）重算 rank(S) 並與區塊計數對照。通過 ⟺ 這個實例上，
+//   可導性秩就是該分割擬陣的秩——不是「12 個樣本剛好都對」。
+//
+// n > 12 時驗證器直接回 false：不假裝驗完了（局部驗證的能力上限寫在這裡）。
+
+///|
+/// 擬陣性「⇐」方向的**證書**：環境在目標集上是分割擬陣。
+pub struct MatroidCertificate {
+  /// 可解目標的索引（goals 的下標）
+  solvable : Array[Int32]
+  /// 與 solvable 對齊：blocks[i] = 覆蓋 goals[solvable[i]] 的公理規則索引
+  blocks : Array[Array[Int32]]
+  /// 不覆蓋任何目標的規則（loop；由判準 (1) 知合成規則必落在此處）
+  loops : Array[Int32]
+}
+
+///|
+/// 證書產生器。判準不成立時回傳 None——不產生「看起來像證書」的假東西：
+///   (1) 有合成規則的 head 與某目標可合一；
+///   (2) 有目標 E 可解但「只有公理」解不出；
+///   (3) 某條公理覆蓋 ≥ 2 個目標（區塊無法互斥）。
+pub fn matroidal_certificate(
+  e : Env,
+  goals : Array[@core.UTerm],
+  depth : Int32,
+) -> MatroidCertificate? {
+  // 構件 (1)：不許有合成規則的 head 落在目標上
+  if composite_rule_reaches_goal(e, goals) {
+    return None
+  }
+  let ax = axiom_rules(e)
+  // 可解目標 = 公理可解目標
+  let solvable_idx : Array[Int32] = []
+  for i in 0..<goals.length() {
+    if solvable(e, goals[i], depth) {
+      if !solvable(ax, goals[i], depth) {
+        return None
+      }
+      solvable_idx.push(i)
+    }
+  }
+  // 每個目標一個區塊（互斥檢查在此完成）
+  let blocks : Array[Array[Int32]] = []
+  let used : Array[Int32] = []
+  for i in solvable_idx {
+    let b : Array[Int32] = []
+    for j in 0..<e.rules.length() {
+      let r = e.rules[j]
+      if r.body.length() != 0 {
+        continue
+      }
+      if @core.u_unifiable(renumber(r.head, 0), goals[i]) {
+        b.push(j)
+      }
+    }
+    // 公理可解 ⇒ 一定有覆蓋規則，空區塊表示不一致（直接拒絕）
+    if b.length() == 0 {
+      return None
+    }
+    for j in b {
+      for u in used {
+        if u == j {
+          // 區塊互斥失敗：一條規則覆蓋 ≥ 2 個目標
+          return None
+        }
+      }
+      used.push(j)
+    }
+    blocks.push(b)
+  }
+  let loops : Array[Int32] = []
+  for j in 0..<e.rules.length() {
+    let mut hit = false
+    for u in used {
+      if u == j {
+        hit = true
+      }
+    }
+    if !hit {
+      loops.push(j)
+    }
+  }
+  Some(MatroidCertificate::{ solvable: solvable_idx, blocks, loops })
+}
+
+///|
+/// 證書驗證器：不呼叫產生器，只看證書與環境本身，全部重算。
+/// 通過 ⟺ 該實例的可導性秩 = 該分割擬陣的秩（n ≤ 12 時為窮盡驗證）。
+pub fn verify_matroidal_certificate(
+  e : Env,
+  goals : Array[@core.UTerm],
+  cert : MatroidCertificate,
+  depth : Int32,
+) -> Bool {
+  let n = e.rules.length()
+  if n > 12 {
+    return false // 窮盡對帳的上限；不假裝驗完了
+  }
+  if cert.solvable.length() != cert.blocks.length() {
+    return false
+  }
+  for i in cert.solvable {
+    if i < 0 || i >= goals.length() {
+      return false
+    }
+  }
+  // (1) 分割：區塊非空、blocks ∪ loops = 全部規則、互不相交
+  let seen : Array[Int32] = []
+  for b in cert.blocks {
+    if b.length() == 0 {
+      return false
+    }
+    for j in b {
+      if j < 0 || j >= n {
+        return false
+      }
+      for s in seen {
+        if s == j {
+          return false
+        }
+      }
+      seen.push(j)
+    }
+  }
+  for j in cert.loops {
+    if j < 0 || j >= n {
+      return false
+    }
+    for s in seen {
+      if s == j {
+        return false
+      }
+    }
+    seen.push(j)
+  }
+  if seen.length() != n {
+    return false
+  }
+  // (2) 每個區塊的規則：公理 + head 可合一其目標
+  for i in 0..<cert.blocks.length() {
+    let gi = cert.solvable[i]
+    for j in cert.blocks[i] {
+      let r = e.rules[j]
+      if r.body.length() != 0 {
+        return false
+      }
+      if !@core.u_unifiable(renumber(r.head, 0), goals[gi]) {
+        return false
+      }
+    }
+  }
+  // (3) loop 不覆蓋任何目標
+  for j in cert.loops {
+    for g in goals {
+      if @core.u_unifiable(renumber(e.rules[j].head, 0), g) {
+        return false
+      }
+    }
+  }
+  // 可解清單與現場重算一致
+  for i in 0..<goals.length() {
+    let mut listed = false
+    for k in cert.solvable {
+      if k == i {
+        listed = true
+      }
+    }
+    if listed != solvable(e, goals[i], depth) {
+      return false
+    }
+  }
+  // (4) 窮盡對帳：rank(S) == |{ B : B ∩ S ≠ ∅ }|，全部 2^n 個 S
+  let total = 1 << n
+  for mask in 0..<total {
+    let ss : Array[Int32] = []
+    for k in 0..<n {
+      if (mask >> k) % 2 == 1 {
+        ss.push(k)
+      }
+    }
+    let mut hit = 0
+    for b in cert.blocks {
+      let mut any = false
+      for k in ss {
+        for j in b {
+          if j == k {
+            any = true
+          }
+        }
+      }
+      if any {
+        hit = hit + 1
+      }
+    }
+    if rank_of(e, ss, goals, depth) != hit {
+      return false
+    }
+  }
+  true
+}
+
+///|
+/// 覆蓋同一目標的平行公理（分割區塊大小 > 1 的範例）。
+pub fn env_axiomatic_dup() -> Env {
+  env([
+    rule("intRule", 0, cls_show(ty_int()), []),
+    rule("boolRule", 0, cls_show(ty_bool()), []),
+    rule("arrIntRule", 0, cls_show(ty_array(ty_int())), []),
+    rule("intRuleDup", 1, cls_show(ty_int()), []),
+  ])
+}
+
+///|
+/// 公理與 loop 並存的環境：unused 是 Eq Int 的公理，不覆蓋 Show 類的任何目標。
+pub fn env_axiomatic_with_loop() -> Env {
+  env([
+    rule("intRule", 0, cls_show(ty_int()), []),
+    rule("boolRule", 0, cls_show(ty_bool()), []),
+    rule("arrIntRule", 0, cls_show(ty_array(ty_int())), []),
+    rule("unusedEq", 0, cls_eq(ty_int()), []),
+  ])
+}
+
+// ---------------------------------------------------------------------------
 // 定律
 // ---------------------------------------------------------------------------
 
@@ -662,5 +900,178 @@ pub fn law_characterize_greedy_gives_minimal_not_minimum() -> Array[
     "instances: greedy gives minimal not minimum #8",
     axiomatic_fragment(e, goals, 6),
   )
+  out
+}
+
+// ---------------------------------------------------------------------------
+// 定律：證書的逐實例驗證
+// ---------------------------------------------------------------------------
+
+///|
+/// 全排列（n ≤ 6 才列舉；否則放棄——不假裝測遍了）。
+fn permutations(xs : Array[Int32]) -> Array[Array[Int32]] {
+  if xs.length() <= 1 {
+    return [xs]
+  }
+  let out : Array[Array[Int32]] = []
+  for i in 0..<xs.length() {
+    let rest : Array[Int32] = []
+    for k in 0..<xs.length() {
+      if k != i {
+        rest.push(xs[k])
+      }
+    }
+    for p in permutations(rest) {
+      let q : Array[Int32] = [xs[i]]
+      for v in p {
+        q.push(v)
+      }
+      out.push(q)
+    }
+  }
+  out
+}
+
+///|
+pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> Array[
+  (String, Bool),
+] {
+  let out : Array[(String, Bool)] = []
+  let gi = cls_show(ty_int())
+  let gb = cls_show(ty_bool())
+  let ga = cls_show(ty_array(ty_int()))
+  let goals = [gi, gb, ga]
+  // (1) 公理環境：證書存在且獨立驗證通過
+  match matroidal_certificate(env_axiomatic(), goals, 6) {
+    Some(c) => {
+      @core.chk(
+        out,
+        "instances: matroidal criterion has constructive certificates #1",
+        verify_matroidal_certificate(env_axiomatic(), goals, c, 6),
+      )
+      @core.chk(
+        out,
+        "instances: matroidal criterion has constructive certificates #2",
+        c.blocks.length() == 3 && c.loops.length() == 0,
+      )
+    }
+    None => {
+      @core.chk(out, "instances: matroidal criterion has constructive certificates #1", false)
+      @core.chk(out, "instances: matroidal criterion has constructive certificates #2", false)
+    }
+  }
+  // (2) 平行公理環境：區塊 {intRule, intRuleDup}，證書照樣驗證通過（2^4 = 16 個子集窮盡對帳）
+  match matroidal_certificate(env_axiomatic_dup(), goals, 6) {
+    Some(c) =>
+      @core.chk(
+        out,
+        "instances: matroidal criterion has constructive certificates #3",
+        verify_matroidal_certificate(env_axiomatic_dup(), goals, c, 6),
+      )
+    None =>
+      @core.chk(out, "instances: matroidal criterion has constructive certificates #3", false)
+  }
+  // (3) 判準不成立的環境，證書**誠實回傳 None**（不假裝有證書）：
+  // (a) 需要合成規則
+  @core.chk(
+    out,
+    "instances: matroidal criterion has constructive certificates #4",
+    match matroidal_certificate(env_needs_composition(), [gi, ga], 6) {
+      None => true
+      Some(_) => false
+    },
+  )
+  // (b) 合成規則的 head 落在目標集上（Pair Int Bool 案）
+  @core.chk(
+    out,
+    "instances: matroidal criterion has constructive certificates #5",
+    match matroidal_certificate(env_min_vs_minimal(), [gi, ga, cls_show(ty_pair(ty_int(), ty_bool()))], 6) {
+      None => true
+      Some(_) => false
+    },
+  )
+  // (c) 一條規則覆蓋兩個目標（萬用實例）：區塊無法互斥
+  let wild = env([rule("showAny", 0, cls_show(@core.uvar(0)), [])])
+  @core.chk(
+    out,
+    "instances: matroidal criterion has constructive certificates #6",
+    match matroidal_certificate(wild, [gi, gb], 6) {
+      None => true
+      Some(_) => false
+    },
+  )
+  // (4) loop 環境：證書通過，且「loop 真的被計入分割」
+  match matroidal_certificate(env_axiomatic_with_loop(), goals, 6) {
+    Some(c) => {
+      @core.chk(
+        out,
+        "instances: matroidal criterion has constructive certificates #7",
+        verify_matroidal_certificate(env_axiomatic_with_loop(), goals, c, 6),
+      )
+      @core.chk(
+        out,
+        "instances: matroidal criterion has constructive certificates #8",
+        c.loops.length() == 1,
+      )
+      // 竄改：把 loop 從分割裡丟掉 ⇒ 驗證必須失敗（分割不再完備）
+      let tampered = MatroidCertificate::{
+        solvable: c.solvable,
+        blocks: c.blocks,
+        loops: [],
+      }
+      @core.chk(
+        out,
+        "instances: matroidal criterion has constructive certificates #9",
+        !verify_matroidal_certificate(env_axiomatic_with_loop(), goals, tampered, 6),
+      )
+      // 竄改：砍掉可解清單 ⇒ 驗證必須失敗
+      let tampered2 = MatroidCertificate::{
+        solvable: [c.solvable[0]],
+        blocks: [c.blocks[0]],
+        loops: c.loops,
+      }
+      @core.chk(
+        out,
+        "instances: matroidal criterion has constructive certificates #10",
+        !verify_matroidal_certificate(env_axiomatic_with_loop(), goals, tampered2, 6),
+      )
+    }
+    None => {
+      @core.chk(out, "instances: matroidal criterion has constructive certificates #7", false)
+      @core.chk(out, "instances: matroidal criterion has constructive certificates #8", false)
+      @core.chk(out, "instances: matroidal criterion has constructive certificates #9", false)
+      @core.chk(out, "instances: matroidal criterion has constructive certificates #10", false)
+    }
+  }
+  // (5) 判準成立時，貪心刪除對**每一種**刪除順序都得到最優解（n ≤ 4，全排列窮盡）
+  let mut greedy_ok = true
+  for p in permutations([0, 1, 2]) {
+    if greedy_basis_with_order(env_axiomatic(), goals, p, 6).length() != 3 {
+      // 分割擬陣中最小生成集大小 = 可解目標數 = 3
+      greedy_ok = false
+    }
+  }
+  for p in permutations([0, 1, 2, 3]) {
+    if greedy_basis_with_order(env_axiomatic_dup(), goals, p, 6).length() != 3 {
+      greedy_ok = false
+    }
+  }
+  @core.chk(
+    out,
+    "instances: matroidal criterion has constructive certificates #11",
+    greedy_ok,
+  )
+  // (6) 證書成立 ⇒ 嚴格擬陣性（同一環境兩邊一致，不只是「樣本一致」）
+  match matroidal_certificate(env_axiomatic_dup(), goals, 6) {
+    Some(c) =>
+      @core.chk(
+        out,
+        "instances: matroidal criterion has constructive certificates #12",
+        verify_matroidal_certificate(env_axiomatic_dup(), goals, c, 6) &&
+        matroidal_strict(env_axiomatic_dup(), goals, 6),
+      )
+    None =>
+      @core.chk(out, "instances: matroidal criterion has constructive certificates #12", false)
+  }
   out
 }

@@ -6,7 +6,8 @@
 |---|---|
 | `schema.mbt` | `ISchema`/`ICtor`/`ITerm`/`IArg`、索引求值 `iterm_of_val`、`icheck`／`icheck_at`、`iit_stage`／`iit_enumerate`（Kleene 鏈 `T_{n+1} = T_n ∪ F(T_n)`）、`iit_fold`、`iit_measure`／`iit_subterm_decrease`、`ischema_ok`、**QIIT 核心**：`IEquation`／`ipat_var`／`i_match`／`i_inst`／`i_rewrite`／`iquot`、`ISchema.eqs`、`quot_fuel`／`iquot_schema`／`icheck_q`／`iit_fold_q` |
 | `quotient.mbt` | QIIT 商的**定律檔**：等式住在 schema 裡、四次 `s` 全消、消除器尊重等式、純 `iit_fold` 不尊重（對照組）、索引檢查商不變、ι 律在商後仍成立、商是保守的 |
-| `stlc.mbt` | STLC 的 `Ctx/Ty/Tm` 索引傳輸：`subst_insert`／`stlc_weaken`／`stlc_beta`／`stlc_norm` |
+| `stlc.mbt` | STLC 的 `Ctx/Ty/Tm` 索引傳輸：`subst_insert`／`stlc_weaken`／`stlc_beta`／`stlc_norm`／**`stlc_unweaken`／`stlc_eta`（η-約簡；`x ∉ FV(f)` 可判定形式 = f 不含 `vz` 節點）** |
+| `sn.mbt` | **STLC 逐項 SN 證書**：`stlc_one_step_reducts`（β∪η，位置不限，去重）／`stlc_sn_depth`（窮舉樹，`Some(k)` = 全路徑 ≤ k；預算超 ⇒ `None`，**不是**「不 SN」）／`stlc_sn_tree_typed`（樹上每節點 `icheck`）；6 條定律含精確深度（id=0、app1=1、app2=1、eta_deep=1、k_app=2、two_positions 恰 2 個互異一步歸約） |
 | `examples.mbt` | `Even/Odd`（無限、不穩定）、`Nat/Fin`（**Fin 落後 Nat 一階**）、`STLC Ctx/Ty/Tm` |
 | `qiit_displayed_cwf.mbt` | **四分類內蘊帶族範疇（CwF）互遞迴 QIIT**（`QiitCon`、`QiitTy`、`QiitSub`、`QiitTm` + 跨等式轉換子 `QTmCoh`）：商正規化 `qiit_norm_*`、相依索引檢查 `qiit_check_*`、Kaposi–Kovács–Altenkirch 展示代數 `QiitDisplayedCwfAlgebra` 相干審計 `qiit_verify_displayed_coherence` 與 `law_qiit_intrinsic_cwf_and_displayed_eliminator` |
 

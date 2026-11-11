@@ -755,7 +755,9 @@ fn glue_equiv_normalize(
         quote_at(level, dlevel, DVEquivTy(tys[i], base, 0), equivs[i]),
       ),
     )
-    face_keys.push(face_bdd_canon_key(faces[i]))
+    face_keys.push(
+      Repr(bdd_of_face(faces[i], face_nvars_sem(faces[i]))).to_string(),
+    )
   }
   for _pass in 0..<tys.length() {
     for j in 0..<(tys.length() - 1) {
@@ -859,6 +861,24 @@ pub fn quote_unglue_equiv_neutral(
 
 ///|
 /// The AST type former for equivalences.
+
+///|
+pub fn mk_equiv_term(
+  a : DTerm,
+  b : DTerm,
+  f : DTerm,
+  g : DTerm,
+  sect : DTerm,
+  retr : DTerm,
+) -> DTerm {
+  DMkEquiv(a, b, f, g, sect, retr)
+}
+
+///|
+
+///|
+
+///|
 fn glue_equiv_at(line : (Dim) -> DValue, d : Dim) -> DGlueEquivParts {
   match as_glue_equiv(line(d)) {
     Some(parts) => parts

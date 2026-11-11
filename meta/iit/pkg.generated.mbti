@@ -184,6 +184,15 @@ pub fn stlc_weaken(IVal, IVal) -> IVal
 
 pub fn subst_insert(IVal, IVal, Int32) -> IVal
 
+pub fn law_stlc_stlc_eta_removes_a_trivial_binder() -> Array[(String, Bool)]
+pub fn stlc_eta(IVal) -> IVal?
+pub fn stlc_ex_eta_arg() -> IVal
+pub fn stlc_ex_eta_lhs() -> IVal
+pub fn stlc_ex_eta_nonbound() -> IVal
+pub fn stlc_ex_eta_rhs() -> IVal
+pub fn stlc_ex_eta_uses_bound() -> IVal
+pub fn stlc_unweaken(IVal, Int32) -> IVal?
+
 // Errors
 
 // Types and methods

@@ -85,6 +85,8 @@ pub fn check_type_operator_positivity_extraction() -> Bool
 
 pub fn checked_coe_value(DCheckedTypeLine, @face_bdd.Dim, @face_bdd.Dim, DValue, Int32) -> DValue
 
+pub fn checked_comp_value(DCheckedTypeLine, DSystem, DValue, Int32) -> DValue
+
 pub fn checked_constant_type_line(DTerm, DEnv, DEnv, DDimEnv) -> DCheckedTypeLine?
 
 pub fn checked_constant_type_line_closed(DTerm) -> DCheckedTypeLine?
@@ -220,6 +222,8 @@ pub fn conv_telescope_values(Int32, Int32, Array[DTelescopeEntry], Array[DValue]
 pub fn conv_terms_case_split(Array[DTerm], DTerm, DTerm, DTerm) -> Bool
 
 pub fn conv_terms_case_split_report(Array[DTerm], DTerm, DTerm, DTerm) -> CaseSplitReport
+
+pub fn conv_terms_finite_case_split(Array[DTerm], DTerm, DTerm, DTerm, depth_budget? : Int32, max_cases? : Int32) -> Bool
 
 pub fn conv_terms_finite_case_split_report(Array[DTerm], DTerm, DTerm, DTerm, depth_budget? : Int32, max_cases? : Int32) -> CaseSplitReport
 
@@ -497,6 +501,10 @@ pub fn dopen_arg_code(String) -> DOpenIRArg
 
 pub fn dopen_arg_decoded_code_fn(String, Int32, Int32) -> DOpenIRArg
 
+pub fn dopen_arg_decoded_val(String, Int32, Int32) -> DOpenIRArg
+
+pub fn dopen_arg_external(String, DTerm) -> DOpenIRArg
+
 pub fn dopen_ir_constructor(String, Array[DOpenIRArg]) -> DOpenIRConstructor
 
 pub fn dopen_ir_decoder(String, Int32, Array[DTerm]) -> DOpenIRDecoder
@@ -509,9 +517,13 @@ pub fn dopen_val_code(DOpenIRCode) -> DOpenIRArgVal
 
 pub fn dopen_val_code_fn((DValue) -> DOpenIRCode) -> DOpenIRArgVal
 
+pub fn dopen_val_term(DTerm) -> DOpenIRArgVal
+
 pub fn dpositivity_declaration(DTerm, Int32, strict_args? : Array[Int32], positive_args? : Array[Int32], scope? : Int32) -> DPositivityDeclaration?
 
 pub fn dpositivity_declaration_from_lambda(DTerm, Int32, scope? : Int32) -> DPositivityDeclaration?
+
+pub fn dpositivity_report(Bool, Bool, Bool, Bool, Bool) -> DPositivityReport
 
 pub fn dpositivity_witness(DPositivityDeclaration, DTerm) -> DPositivityWitness
 
@@ -871,8 +883,6 @@ pub fn instantiate_level_inductive_decl(DLevelInductiveDecl, Array[Int32]) -> DI
 
 pub fn instantiate_level_term_decl(DLevelTermDecl, Array[Int32]) -> DLevelTermInstance?
 
-pub fn kernel_eval_closed_peano(DTerm) -> Int32?
-
 pub fn lazy_deval(DTerm, DEnv, DDimEnv) -> DValue
 
 pub fn lazy_force_count(DValue) -> Int32
@@ -880,8 +890,6 @@ pub fn lazy_force_count(DValue) -> Int32
 pub fn lazy_is_forced(DValue) -> Bool
 
 pub fn lazy_value(() -> DValue) -> DValue
-
-pub fn level_decl_validate(DLevelDecl) -> Bool
 
 pub fn level_hit_decl_validate(DLevelHitDecl) -> Bool
 
@@ -904,6 +912,8 @@ pub fn map_branches(DSystem, ((@face_bdd.Dim) -> DValue) -> (@face_bdd.Dim) -> D
 pub fn memo_dim_line((@face_bdd.Dim) -> DValue) -> (@face_bdd.Dim) -> DValue
 
 pub fn memo_family((DValue) -> DValue, DValue, Int32, Int32) -> (DValue) -> DValue
+
+pub fn mk_equiv_term(DTerm, DTerm, DTerm, DTerm, DTerm, DTerm) -> DTerm
 
 pub fn mutual_ctor_index(DMutualFamily, Int32, Int32) -> Int32
 
@@ -1088,6 +1098,8 @@ pub fn simultaneous_ir_compile_decode(DSimultaneousIRSpec, Int32) -> DInductiveS
 pub fn simultaneous_ir_compile_eliminator(DSimultaneousIRSpec, Int32) -> DTerm?
 
 pub fn simultaneous_ir_compile_eliminator_block(DSimultaneousIRSpec) -> Array[DTerm?]
+
+pub fn simultaneous_ir_compile_joint(DSimultaneousIRSpec, Int32) -> DTerm?
 
 pub fn simultaneous_ir_compile_joint_block(DSimultaneousIRSpec) -> Array[DTerm?]
 
@@ -1493,10 +1505,7 @@ pub struct DInfer {
   ty : DValue
 }
 
-pub(all) enum DLevelDecl {
-  DLevelDeclInductive(DLevelInductiveDecl)
-  DLevelDeclHit(DLevelHitDecl)
-  DLevelDeclTerm(DLevelTermDecl)
+pub enum DLevelDecl {
 }
 
 #derive(Eq, @debug.Debug)
@@ -1618,7 +1627,7 @@ pub fn DOpenIRArg::not_equal(Self, Self) -> Bool
 pub fn DOpenIRArg::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
-pub(all) enum DOpenIRArgKind {
+pub enum DOpenIRArgKind {
   DOpenArgExternal(DTerm)
   DOpenArgCode
   DOpenArgDecodedVal(Int32, Int32)
@@ -1628,7 +1637,7 @@ pub fn DOpenIRArgKind::equal(Self, Self) -> Bool
 pub fn DOpenIRArgKind::not_equal(Self, Self) -> Bool
 pub fn DOpenIRArgKind::to_repr(Self) -> @debug.Repr
 
-pub(all) enum DOpenIRArgVal {
+pub enum DOpenIRArgVal {
   DOpenValTerm(DTerm)
   DOpenValCode(DOpenIRCode)
   DOpenValCodeFn((DValue) -> DOpenIRCode)
