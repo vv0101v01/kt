@@ -892,7 +892,7 @@ Dev.txt（本節）、agent.md、agent.v2.md、lean/README.md、lean/UNIVERSAL.m
 - [x] Tier A 每次編輯後 check/build/arch_check 全綠；Tier B 臨時 test --update 讀值即刪（9 邊 + 6 替換全 holds=true）；Tier C moon info && moon fmt + .mbti 同步。
 - [x] showcase 實跑 exit 0：10/10 聯邦、K10=45/45、ualg=9/9、6/6 替換、48/48 歷史證書、atlas=18/18、K9=36/36、晉升=true、七支柱=true。
 - [x] 工作樹內容完整；沙箱快照再次排除 `.git`，已重新 clone 取回 `.git`（HEAD 仍 60435a1）並重建提交。
-- [ ] commit + push CI：本輪執行中（使用者已提供 GitHub token；推送後更新此列並記錄遠端 HEAD）。
+- [x] commit + push CI 完成：主改动 commit `1aa1fff` 已推送至 `origin/main`（60435a1..1aa1fff）；其後 Dev.txt 狀態更新亦已推送。CI 全局編譯閘已觸發。沙箱無常駐憑證，token 僅用於本次推送，未寫入 .git/config 或 remote URL。
 
 【如實偏差記錄】
 - K10-39：單步 Boolean Kleene star 不足以生成同餘；改為「Kleene star ∘ 基本平移像」交替最小不動點，Freese cg == 半環閉包（45 主對、6 代數）。
