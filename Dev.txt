@@ -1001,3 +1001,9 @@ Dev.txt（本節）、agent.md、agent.v2.md、lean/README.md、lean/UNIVERSAL.m
 - cmd/showcase exit 0：10/10 聯邦、K10=40/40 active（45 attempted, 5 suspended）、ualg 9/9、wave1 6/6、wave2 7/7、atlas 18/18、51/51 證書、七支柱 true、中止理由印出。
 - cmd/main 139/139、cmd/metatheory 631/631、cmd/ualg 167/167。
 - 文檔：bridge/README.md（23/9,731、§2.1 審計表、§4 suspended rows）、readme.v2.md（40/45 active、51/51、coinvariants）、agent.v2.md §十七。
+
+### 本輪推送與 CI（如實）
+- commit `d46962b`（21 files，含新增 `bridge/audit.mbt`）已 push：`01d5477..d46962b main -> main`。
+- GitHub Actions run **43198027200**（head `d46962b`）→ **completed success**（https://github.com/vv0101v01/kt/actions/runs/43198027200）。
+- 推送用暫時 GIT_ASKPASS PAT，输出已 redact，token 檔即刪；`.git/config` 無 token。
+- 誠實結論：K₁₀ 不再宣稱 45/45；目前 40/45 active，5 條中止並公开理由。冇做假、冇硬砌全綠。
