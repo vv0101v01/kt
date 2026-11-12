@@ -962,3 +962,9 @@ Dev.txt（本節）、agent.md、agent.v2.md、lean/README.md、lean/UNIVERSAL.m
 - 歷史 Dev/agent 註記內嘅舊數字（565/199,215 等）保留為歷史記錄，唔改寫。
 
 【環境】moon 0.1.20261104；~/.moon 與 .git 再次因快照排除而遺失，已重裝 + moon update + 重新 clone 取回 .git（HEAD 0ba2307）。
+
+【本輪推送與 CI（如實）】
+- commit `0bef4e2`（15 檔，+1565/−144）已推送 `0ba2307..0bef4e2` 至 `origin/main`；工作樹乾淨、與遠端同步。
+- CI run 43149049606（head 0bef4e2）→ **completed success**，唯一 job「MoonBit 驗證閘（check / build / 定律 / 定理 / 架構）」全步驟 success（含 139/139、631/631、167/167、showcase 48/48 + K10 45/45 + wave2 7/7、arch_check、gen_laws 新鮮度）。
+- 上一輪 kernel De Morgan 修復 run 43137400602（0ba2307）亦為 success。
+- PAT 僅經臨時 GIT_ASKPASS 使用，用後即刪；未寫入 .git/config 或 remote URL。
