@@ -16,10 +16,7 @@
 
 ///|
 /// 代入：f(x_i := σ_i)。
-pub fn dnf_subst(
-  f : Array[Int32],
-  sigma : Array[Array[Int32]],
-) -> Array[Int32] {
+pub fn dnf_subst(f : Array[Int32], sigma : Array[Array[Int32]]) -> Array[Int32] {
   let negs = sigma.map(dnf_neg)
   let mut r = dnf_zero()
   for c in f {
@@ -526,11 +523,13 @@ pub fn law_affine_fragment_read_once() -> Array[(String, Bool)] {
     a == [1, 2, 8, 52],
   )
   chk(
-    out,
-    "兩條路徑：n ≤ 2 時 Gurvich 判準在整個 DM(n) 上篩出的集合 = 生成的集合（6 中 4、168 中 14）",
+    out, "兩條路徑：n ≤ 2 時 Gurvich 判準在整個 DM(n) 上篩出的集合 = 生成的集合（6 中 4、168 中 14）",
     two_paths,
   )
-  chk(out, "n = 3, 4：生成的 96 與 1146 個元素全部通過 Gurvich 判準", gurvich)
+  chk(
+    out, "n = 3, 4：生成的 96 與 1146 個元素全部通過 Gurvich 判準",
+    gurvich,
+  )
   let x0 = dnf_var(0)
   let x1 = dnf_var(1)
   let x2 = dnf_var(2)

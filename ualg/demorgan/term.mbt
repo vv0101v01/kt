@@ -378,8 +378,7 @@ pub fn law_dedekind_numbers_three_paths() -> Array[(String, Bool)] {
     }
   }
   chk(
-    out,
-    "區間公式 M(k) = Σ_{f,g∈M(k−2)} |↓(f∧g)|·|↑(f∨g)| 對 k = 2..6 給出相同的數（M(6) 只用 168² 項）",
+    out, "區間公式 M(k) = Σ_{f,g∈M(k−2)} |↓(f∧g)|·|↑(f∨g)| 對 k = 2..6 給出相同的數（M(6) 只用 168² 項）",
     intervals,
   )
   let mut brute = true
@@ -388,7 +387,10 @@ pub fn law_dedekind_numbers_three_paths() -> Array[(String, Bool)] {
       brute = false
     }
   }
-  chk(out, "窮舉全部 2^(2^k) 張真值表逐一驗單調（k ≤ 4，65 536 張）：計數相同", brute)
+  chk(
+    out, "窮舉全部 2^(2^k) 張真值表逐一驗單調（k ≤ 4，65 536 張）：計數相同",
+    brute,
+  )
   out
 }
 
@@ -469,7 +471,10 @@ pub fn law_demorgan_normal_form_kalman() -> Array[(String, Bool)] {
     "Kalman：ualg/core 以泛代數閉包算出的 F_{V(𝟜)}(n) 大小 \{@core.show_ints(free_sizes)}，與正規形經 𝟜-語義逐元素一一對應",
     kalman && free_sizes == sizes,
   )
-  chk(out, "De Morgan 公理：¬¬f = f、¬(f∧g) = ¬f∨¬g、序 ≤ 與真值表蘊涵一致（全部元素對）", axioms)
+  chk(
+    out, "De Morgan 公理：¬¬f = f、¬(f∧g) = ¬f∨¬g、序 ≤ 與真值表蘊涵一致（全部元素對）",
+    axioms,
+  )
   let x = dnf_var(0)
   let nx = dnf_nvar(0)
   let y = dnf_var(1)

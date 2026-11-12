@@ -471,7 +471,7 @@ pub fn matroidal_certificate(
       loops.push(j)
     }
   }
-  Some(MatroidCertificate::{ solvable: solvable_idx, blocks, loops })
+  Some(MatroidCertificate::{ solvable: solvable_idx, blocks, loops, })
 }
 
 ///|
@@ -956,8 +956,12 @@ pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> A
       )
     }
     None => {
-      @core.chk(out, "instances: matroidal criterion has constructive certificates #1", false)
-      @core.chk(out, "instances: matroidal criterion has constructive certificates #2", false)
+      @core.chk(
+        out, "instances: matroidal criterion has constructive certificates #1", false,
+      )
+      @core.chk(
+        out, "instances: matroidal criterion has constructive certificates #2", false,
+      )
     }
   }
   // (2) 平行公理環境：區塊 {intRule, intRuleDup}，證書照樣驗證通過（2^4 = 16 個子集窮盡對帳）
@@ -969,7 +973,9 @@ pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> A
         verify_matroidal_certificate(env_axiomatic_dup(), goals, c, 6),
       )
     None =>
-      @core.chk(out, "instances: matroidal criterion has constructive certificates #3", false)
+      @core.chk(
+        out, "instances: matroidal criterion has constructive certificates #3", false,
+      )
   }
   // (3) 判準不成立的環境，證書**誠實回傳 None**（不假裝有證書）：
   // (a) 需要合成規則
@@ -985,7 +991,12 @@ pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> A
   @core.chk(
     out,
     "instances: matroidal criterion has constructive certificates #5",
-    match matroidal_certificate(env_min_vs_minimal(), [gi, ga, cls_show(ty_pair(ty_int(), ty_bool()))], 6) {
+    match
+      matroidal_certificate(
+        env_min_vs_minimal(),
+        [gi, ga, cls_show(ty_pair(ty_int(), ty_bool()))],
+        6,
+      ) {
       None => true
       Some(_) => false
     },
@@ -1022,7 +1033,12 @@ pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> A
       @core.chk(
         out,
         "instances: matroidal criterion has constructive certificates #9",
-        !verify_matroidal_certificate(env_axiomatic_with_loop(), goals, tampered, 6),
+        !verify_matroidal_certificate(
+          env_axiomatic_with_loop(),
+          goals,
+          tampered,
+          6,
+        ),
       )
       // 竄改：砍掉可解清單 ⇒ 驗證必須失敗
       let tampered2 = MatroidCertificate::{
@@ -1033,14 +1049,28 @@ pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> A
       @core.chk(
         out,
         "instances: matroidal criterion has constructive certificates #10",
-        !verify_matroidal_certificate(env_axiomatic_with_loop(), goals, tampered2, 6),
+        !verify_matroidal_certificate(
+          env_axiomatic_with_loop(),
+          goals,
+          tampered2,
+          6,
+        ),
       )
     }
     None => {
-      @core.chk(out, "instances: matroidal criterion has constructive certificates #7", false)
-      @core.chk(out, "instances: matroidal criterion has constructive certificates #8", false)
-      @core.chk(out, "instances: matroidal criterion has constructive certificates #9", false)
-      @core.chk(out, "instances: matroidal criterion has constructive certificates #10", false)
+      @core.chk(
+        out, "instances: matroidal criterion has constructive certificates #7", false,
+      )
+      @core.chk(
+        out, "instances: matroidal criterion has constructive certificates #8", false,
+      )
+      @core.chk(
+        out, "instances: matroidal criterion has constructive certificates #9", false,
+      )
+      @core.chk(
+        out, "instances: matroidal criterion has constructive certificates #10",
+        false,
+      )
     }
   }
   // (5) 判準成立時，貪心刪除對**每一種**刪除順序都得到最優解（n ≤ 4，全排列窮盡）
@@ -1057,9 +1087,7 @@ pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> A
     }
   }
   @core.chk(
-    out,
-    "instances: matroidal criterion has constructive certificates #11",
-    greedy_ok,
+    out, "instances: matroidal criterion has constructive certificates #11", greedy_ok,
   )
   // (6) 證書成立 ⇒ 嚴格擬陣性（同一環境兩邊一致，不只是「樣本一致」）
   match matroidal_certificate(env_axiomatic_dup(), goals, 6) {
@@ -1071,7 +1099,10 @@ pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> A
         matroidal_strict(env_axiomatic_dup(), goals, 6),
       )
     None =>
-      @core.chk(out, "instances: matroidal criterion has constructive certificates #12", false)
+      @core.chk(
+        out, "instances: matroidal criterion has constructive certificates #12",
+        false,
+      )
   }
   out
 }

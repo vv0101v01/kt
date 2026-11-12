@@ -1,7 +1,7 @@
-# `bridge/` — 上 V 頂點 `V₂`：星稜柱、`K₉ = 36/36` 全配對橋、三大三元／四元合流管線與 47/47 大一統證書
+# `bridge/` — 上 V 頂點 `V₂`：星稜柱、`K₁₀ = 45/45` 全配對構造性橋、三大三元／四元合流管線、48/48 歷史證書 ＋ K₁₀ 獨立證書
 
-> **架構位置**：`architecture.json` 中的 `bridge`，**Layer 8**（倒數第二層），依賴全部九大聯邦之上游公開介面（含 `meta` 四套件、`cubical-autonomy`、`cubical-structures`、`accel`、`condensed`、`scheme`、`topos`、`semiring-*`、`symlib`、`gcd`、`root`）。
-> 角色：**雙 V 形的上頂點 `V₂`**，也是**唯一**被允許同時匯入全部九大聯邦的整合層（18 個 `.mbt` 檔，共 **6,627 行**）。
+> **架構位置**：`architecture.json` 中的 `bridge`，**Layer 8**（倒數第二層），依賴全部十大聯邦之上游公開介面（含 `meta` 四套件、`cubical-autonomy`、`cubical-structures`、`accel`、`condensed`、`scheme`、`topos`、`semiring-*`、`symlib`、`gcd`、`root`）。
+> 角色：**雙 V 形的上頂點 `V₂`**，也是**唯一**被允許同時匯入全部十大聯邦的整合層（21 個 `.mbt` 檔，共 **8,307 行**）。
 > MoonBit 套件名：`vv0101v01/cubical-hermitian/bridge`。執行入口：`cmd/showcase`。
 
 ---
@@ -14,11 +14,11 @@
 2. **形狀定理** —— X 形交疊（`[T-X-Chiasmus]`）、雙 V 形、星稜柱；
 3. **證書彙整** —— 把各聯邦原生證書壓成最小共通形狀 `BridgeCertificate`，輸出大一統總表。
 
-聯邦數的演進史就寫在這兩個檔案裡：`five_federation_plan.mbt`（K₅ = 10 條 + 五聯邦五邊形定理）→ `double_v_chiasm.mbt`（K₆ = 15 條 + X 交疊）→ `discovery_k7_bridges.mbt`（K₇ = **21 條** + Lakatos 迴圈）。
+聯邦數的演進史：`five_federation_plan.mbt`（K₅ = 10）→ `double_v_chiasm.mbt`（K₆ = 15 + X 交疊）→ `discovery_k7_bridges.mbt`（K₇ = 21 + Lakatos）→ `meta_k9_unification.mbt`（K₉ = 36 + F7→F9→F4→F1 晉升）→ **`ualg_federation_constructions.mbt`（K₁₀ = 45，第十聯邦 `ualg` 的 9 條構造性邊）＋ `structural_bridge_replacements.mbt`（6 條名義弱橋的數學構造替換）**。
 
 ---
 
-## 2. 檔案清單（16 檔，約 5.5k 行）
+## 2. 檔案清單（21 檔，約 8.3k 行）
 
 | 檔案 | 行數 | 內容 |
 |---|---:|---|
@@ -38,8 +38,10 @@
 | `rotation_axis_bridge.mbt` | 465 | 共軛四元數凝聚中軸 ↔ Jacobi／Jordan／Hopf／Tamari 四族旋轉；逐族關係對齊、消元前後 `previous/current/deltas` 數值比較，以及 `11040→552→0` 相干角消元總報告 |
 | `intuitive_conjecture_lab.mbt` | 415 | 五條由實際結構直覺提出的猜想與反例攻擊：1 條有界倖存、4 條反例後修正；完整人讀報告見 [`INTUITIVE_CONJECTURES.md`](INTUITIVE_CONJECTURES.md) |
 | `malcev_presheaf_autonomy_bridge.mbt` | 91 | 構造性泛代數自主類型論 × 雙重否定核 `j(x)=¬¬x` 預層層化模板 × 64-bit SWAR 立方退化樹（`64594 + 942 = 65536`）× 54 項高階立方結構跨聯邦驗證橋 |
-| `meta_k9_unification.mbt` | 536 | **九聯邦完全圖 `K₉ = 36/36` 全配對跨聯邦雙邊橋**（`K8-22..28` + `K9-29..36`）與 **`F7 → F9 → F4 → F1` 四聯邦定理自動晉升管線** |
+| `meta_k9_unification.mbt` | ~470 | **九聯邦完全圖 `K₉ = 36/36`**（`K8-22..28` + `K9-29..36`；其中 6 條弱橋已改呼叫 `structural_bridge_replacements.mbt`）與 **`F7 → F9 → F4 → F1` 四聯邦定理自動晉升管線**；`ten_federation_descriptors` / `verify_k10_ten_federation_unification` 在 `ualg_federation_constructions.mbt` |
 | `f2_f3_f6_triad_bridge.mbt` | 296 | **`F2 ↔ F3 ↔ F6` 對稱—半環—凝聚三元合流橋**（`A₅` 序對 2-軌道 Burnside Möbius ↔ Four-Russians/M4RI/Hopcroft/Johnson/3D 牛頓細分 ↔ 構造性 Nöbeling 自由基底與 64× `@swar` Steenrod–Adams `η³=4ν`） |
+| `ualg_federation_constructions.mbt` | ~1000 | **第十聯邦 `ualg` 的 9 條構造性跨聯邦邊 `K10-37..45`**：面格↔雙軌 CCHM BDD、B₂ marks/Burnside、Cg=Boolean-Kleene 最小不動點、□² 開集↔Sieve64 Heyting/¬¬、Stanley–Reisner/Hilbert、平移譜↔Roos–Milnor 逆極限、SWAR 蘊涵格、GF(2) RREF Betti、同餘/Mal'cev↔meta 關係代數；每條皆含量化見證＋獨立路徑＋負對照 |
+| `structural_bridge_replacements.mbt` | ~420 | **6 條名義弱橋的數學構造替換**：`K8-22` 16 元素布林面代數↔ROBDD sat_count/apply 同態、`K8-24` 四路熱帶 APSP/Kleene 一致＋負環、`K8-27` Ozaki-II CRT==schoolbook==BigInt ZMat（>2^53）＋SNF、`K9-29` STLC βη NBE↔DTerm 依賴 NBE 編譯、`K9-31` 一元 Horn 最小模型==Boolean Kleene star（Knaster–Tarski）＋二元 body 負控制、`K9-34` Möbius 符號單值化↔rlim([-1]) 2-撓 |
 
 ---
 
@@ -54,7 +56,7 @@ pub(all) struct BridgeCertificate {
 }
 ```
 轉換器：`certificate_of_cubical`、`certificate_of_symlib`、`certificate_of_semiring_law`。
-`certificates_all_ok` 與 `certificate_summary` 供 `cmd/showcase` 印總表；`root` 的定理總表（129 條）與本檔的 47 條大一統證書是兩套互補視角。
+`certificates_all_ok` 與 `certificate_summary` 供 `cmd/showcase` 印總表；`root` 的定理總表（139 條）與本檔的 48 條歷史大一統證書是兩套互補視角；K₁₀ 另發獨立證書（45/45 橋、9/9 ualg 邊、6/6 替換）。
 
 ---
 
@@ -191,13 +193,19 @@ for row in atlas { println(row.id, row.witness_holds, row.contrast_holds) }
 let rotations = @bridge.verify_rotation_axis_bridge()
 assert_true(rotations.holds)             // 4/4，含 3/3 精確守恆律
 
-// 5) 證書總表（歷史 47 條；旋轉中軸證書獨立輸出）
+// 5) 證書總表（歷史 48 條；旋轉中軸證書獨立輸出）
 let certs = @bridge.bridge_certificates()
 assert_true(@bridge.certificates_all_ok(certs))
 
 // 6) 九聯邦 K_9 (36/36) 全配對橋與 F7 -> F9 -> F4 -> F1 定理自動晉升管線
 let k9 = @bridge.verify_k9_meta_discovery_topos_unification()
 assert_true(k9.all_holds)                // 9/9 聯邦 · K9=36/36 · 四聯邦晉升=true
+
+// 7) 十聯邦 K_10 (45/45) 構造性全配對橋（含 ualg 9 條邊與 6 條弱橋替換）
+let k10 = @bridge.verify_k10_ten_federation_unification()
+assert_true(k10.all_holds)               // 10/10 聯邦 · K10=45/45 · ualg=9/9
+for e in @bridge.verify_k10_ualg_federation_bridges() { println(e.id, e.holds, e.quantitative_witness) }
+for e in @bridge.verify_structural_bridge_replacements() { println(e.id, e.holds, e.quantitative_witness) }
 ```
 
 ---
@@ -212,6 +220,6 @@ assert_true(k9.all_holds)                // 9/9 聯邦 · K9=36/36 · 四聯邦�
 ## 11. 驗證
 
 ```bash
-moon run cmd/showcase --target wasm-gc               # 9/9 聯邦 · K9=36/36 · F8↔F5↔F1 + F2↔F3↔F6 + F1×F3×F4×F8×F9 七支柱五元橋 · F7->F9->F4->F1 晉升 · 48/48 證書
+moon run cmd/showcase --target wasm-gc               # 10/10 聯邦 · K10=45/45（K9=36/36 歷史子圖）· ualg 9 構造邊 · 6 弱橋替換 · F8↔F5↔F1 + F2↔F3↔F6 + 七支柱五元橋 · F7->F9->F4->F1 晉升 · 48/48 歷史證書 + K10 證書
 python3 tools/arch_check.py                          # 確認沒有任何下層反向匯入 bridge
 ```

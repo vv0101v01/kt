@@ -64,9 +64,15 @@ pub fn env(Array[Rule]) -> Env
 
 pub fn env_axiomatic() -> Env
 
+pub fn env_axiomatic_dup() -> Env
+
+pub fn env_axiomatic_with_loop() -> Env
+
 pub fn env_chain() -> Env
 
 pub fn env_clash() -> Env
+
+pub fn env_composite_chain() -> Env
 
 pub fn env_fingerprint(Env) -> String
 
@@ -80,7 +86,13 @@ pub fn env_needs_composition() -> Env
 
 pub fn env_show() -> Env
 
+pub fn env_unary_chain() -> Env
+
 pub fn evidence(Env, Deriv) -> @core.UTerm
+
+pub fn forward_derivable(Env, @core.UTerm, Int32) -> Bool?
+
+pub fn forward_least_model(Env, Int32, Int32, Int32) -> ForwardClosure?
 
 pub fn glue(Array[Patch], Array[Transition]) -> GlueReport
 
@@ -120,6 +132,8 @@ pub fn law_characterize_exchange_axiom_alone_is_too_weak() -> Array[(String, Boo
 
 pub fn law_characterize_greedy_gives_minimal_not_minimum() -> Array[(String, Bool)]
 
+pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> Array[(String, Bool)]
+
 pub fn law_characterize_matroidal_criterion_is_exact() -> Array[(String, Bool)]
 
 pub fn law_coherence_complete_checking_needs_no_user_battery() -> Array[(String, Bool)]
@@ -146,6 +160,8 @@ pub fn law_compose_instances_ramsey_window_vs_pigeonhole_window_measured_not_ass
 
 pub fn law_compose_mirror_involution_preserves_the_env_fingerprint() -> Array[(String, Bool)]
 
+pub fn law_compose_mirror_respects_exactness_boundary_and_co_derivation() -> Array[(String, Bool)]
+
 pub fn law_engine_completion_repairs_an_incoherent_env() -> Array[(String, Bool)]
 
 pub fn law_engine_completion_uses_a_termination_order() -> Array[(String, Bool)]
@@ -164,6 +180,8 @@ pub fn law_engine_sld_resolution_is_complete_within_depth() -> Array[(String, Bo
 
 pub fn local_instance(String, Int32, @core.UTerm) -> Rule
 
+pub fn matroidal_certificate(Env, Array[@core.UTerm], Int32) -> MatroidCertificate?
+
 pub fn matroidal_criterion(Env, Array[@core.UTerm], Int32) -> Bool
 
 pub fn matroidal_failure(Env, Array[@core.UTerm], Int32) -> String?
@@ -175,6 +193,8 @@ pub fn maximal_derivs(Env, Array[Deriv]) -> Array[Deriv]
 pub fn minimal_instance_basis(Env, Array[@core.UTerm], Int32) -> Array[Int32]
 
 pub fn mirror_env(Env) -> Env
+
+pub fn mirror_exact(Env) -> Bool
 
 pub fn mirror_rule(Rule) -> Rule
 
@@ -248,21 +268,11 @@ pub fn ty_pair(@core.UTerm, @core.UTerm) -> @core.UTerm
 
 pub fn unit_increment_witness(Env, Array[@core.UTerm], Int32) -> (Int32, Int32, Int32)?
 
+pub fn verify_matroidal_certificate(Env, Array[@core.UTerm], MatroidCertificate, Int32) -> Bool
+
 pub fn with_hypotheses(Env, Array[@core.UTerm]) -> Env
 
 pub fn witness_is_cycle(ImportGraph, Array[Int32]) -> Bool
-
-pub fn env_axiomatic_dup() -> Env
-pub fn env_axiomatic_with_loop() -> Env
-pub fn env_composite_chain() -> Env
-pub fn env_unary_chain() -> Env
-pub fn forward_derivable(Env, @core.UTerm, Int32) -> Bool?
-pub fn forward_least_model(Env, Int32, Int32, Int32) -> ForwardClosure?
-pub fn law_characterize_matroidal_criterion_has_constructive_certificates() -> Array[(String, Bool)]
-pub fn law_compose_mirror_respects_exactness_boundary_and_co_derivation() -> Array[(String, Bool)]
-pub fn matroidal_certificate(Env, Array[@core.UTerm], Int32) -> MatroidCertificate?
-pub fn mirror_exact(Env) -> Bool
-pub fn verify_matroidal_certificate(Env, Array[@core.UTerm], MatroidCertificate, Int32) -> Bool
 
 // Errors
 
@@ -275,6 +285,12 @@ pub(all) struct Deriv {
 
 pub(all) struct Env {
   rules : Array[Rule]
+}
+
+pub struct ForwardClosure {
+  facts : Array[@core.UTerm]
+  capped : Bool
+  fixpoint : Bool
 }
 
 pub struct GlueReport {
@@ -292,6 +308,12 @@ pub(all) struct IndexedEnv {
   exact_buckets : Map[Int64, Array[Int32]]
   wild_arg_buckets : Map[Int32, Array[Int32]]
   var_head_rules : Array[Int32]
+}
+
+pub struct MatroidCertificate {
+  solvable : Array[Int32]
+  blocks : Array[Array[Int32]]
+  loops : Array[Int32]
 }
 
 pub struct MatroidVerdict {
@@ -340,18 +362,6 @@ pub struct Transition {
   i : Int32
   j : Int32
   sign : Int32
-}
-
-pub struct ForwardClosure {
-  facts : Array[@core.UTerm]
-  capped : Bool
-  fixpoint : Bool
-}
-
-pub struct MatroidCertificate {
-  solvable : Array[Int32]
-  blocks : Array[Array[Int32]]
-  loops : Array[Int32]
 }
 
 // Type aliases

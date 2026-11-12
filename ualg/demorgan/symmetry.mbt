@@ -18,9 +18,11 @@ pub fn subst_action(
   norm : (Array[Int32]) -> Array[Int32],
 ) -> Array[Int32] {
   let index = dm_index(elems)
-  elems.map(f => match index.get(dnf_key(norm(dnf_subst(f, sigma)))) {
-    Some(i) => i
-    None => -1
+  elems.map(f => {
+    match index.get(dnf_key(norm(dnf_subst(f, sigma)))) {
+      Some(i) => i
+      None => -1
+    }
   })
 }
 
@@ -101,7 +103,10 @@ pub fn law_square_symmetry_galois() -> Array[(String, Bool)] {
       os = false
     }
   }
-  chk(out, "軌道–穩定子：DM(2) 的每個元素 |軌道|·|穩定子| = 8", os)
+  chk(
+    out, "軌道–穩定子：DM(2) 的每個元素 |軌道|·|穩定子| = 8",
+    os,
+  )
   // 子群（暴力）與 Galois 閉子群（NextClosure）
   let mut subgroups = 0
   let mut closed_direct = 0

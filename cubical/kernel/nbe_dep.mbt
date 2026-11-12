@@ -460,6 +460,27 @@ pub fn denv_len(env : DEnv) -> Int32 {
 }
 
 ///|
+/// Normalize a closed Peano `DTerm` via dependent NbE (`deval_dim`) and decode
+/// `DVZeroNat` / `DVSucc(...)` to `Some(n)` (`None` if stuck or non-Nat).
+pub fn kernel_eval_closed_peano(t : DTerm) -> Int32? {
+  let mut cur = force_value(deval_dim(t, DEnvNil, DDimEnvNil))
+  let mut acc = 0
+  let mut fuel = 100000
+  while fuel > 0 {
+    fuel = fuel - 1
+    match cur {
+      DVZeroNat => return Some(acc)
+      DVSucc(inner) => {
+        acc = acc + 1
+        cur = force_value(inner)
+      }
+      _ => return None
+    }
+  }
+  None
+}
+
+///|
 pub fn denv_at(env : DEnv, i : Int32) -> DValue? {
   if i < 0 {
     return None

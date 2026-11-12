@@ -914,7 +914,64 @@ O1 冪等半邊（完整 logical relation；預估 1–2 週）；或回到 O2 �
 * **死碼清零與未驗 API 接線**：刪除舊版已被 `geom_sum_group` 取代且含無用局部變數 `mut p` 的 `geom_sum`、`star_by_iteration`、`check_coherence_angle_elimination`、`to_report_string`、`ints_to_string`、`key_lut_pairs`、`random_ints`、`gset_canon_key`、`gset_orbit_sizes` 等未引用冗餘包裝（同步 `reexport_*.mbt` 與 `.mbti`）；並將 `cchm_face_le`、`sieve64_generate`/`sieve64_pullback`、`cat_slice`、`presheaf_equalizer`、`scheme_morphism_compose`、`affine_fiber_product`、`mpoly_eval`、`csr_mul`、`Dfa::accepts`、`trop_assignment`、`UniPoly::argmin_at`、`hom_setmat`/`smat_plus`、`isomorphism_dual`、`coinduced_gset` 等核心演算法全數接入正式定理與 `wasm-gc` 驗證套件。
 * **全目標驗證結果**：`moon check --deny-warn` 於 **`wasm-gc`、`wasm`、`js`、`native` 四大目標全數 `0` warnings / `0` errors**；`arch_check.py` 通過（`52` 套件、`61` 元件、`282` 檔、`182,929` 行）；`health_scan.py` 達成 **`5,745` 函式／方法：`0` 死碼、`0` 無引用型別、`0` 空殼列舉、`0` 完全重複**；`cmd/metatheory` **`545/545`**、`cmd/main` **`137/137`**、`cmd/showcase` **`47/47 + K₉=36/36 + 雙三元橋`**、`cmd/symdemo`／`cmd/symbench`／`cmd/semiringreport` 全數通過。
 
+---
 
+## 十五、K10 真正跨聯邦橋建設計劃與完成實錄（2026-11-12）
 
+### 15.1 起點與審計結論
 
+- 工具鏈：`moon 0.1.20261104`、`moonc v0.10.20+65efd5b93`；`moon update` 後 `moonbitlang/async@0.22.5` 解析成功。
+-  inherited blocker 已修復：`cubical/kernel/nbe_dep.mbt` 恢復 `kernel_eval_closed_peano`（`force_value(deval_dim(...))` + fuel 100000 解碼 `DVZeroNat/DVSucc`）。Tier A 首次全綠：`moon check --deny-warn --target wasm-gc`、`moon build --target wasm-gc`、`python3 tools/arch_check.py` 皆 exit 0。未改 `facade.mbt` / `verify.mbt` / root `.mbti`。
+- 審計發現「名義聯邦」弱橋（純布林合取或兩獨立報告拼在一起）：`K8-22`、`K8-24`、`K8-27`、`K9-29`、`K9-31`、`K9-34`。本輪以具體數學構造替換，不再用 `a_ok && b_ok` 當橋定理。
+- 第十聯邦 `ualg` 已在 `architecture.json` 但不在 bridge 依賴圖；本輪把 `ualg-core/site/demorgan/cube` 接入 bridge，新增 9 條邊 `K10-37..K10-45`，使完全圖從 `K9=36` 升為 `K10=45`。
+
+### 15.2 新增 9 條 K10 邊（每條都是構造＋定理＋量化見證＋負控制）
+
+| ID | 邊 | 構造 | 定理/演算法 | 負控制 |
+|---|---|---|---|---|
+| K10-37 | Ualg×Cubical | DNF 面公式 → 雙軌 BDD（變數 `2i,2i+1`，valid mask 禁止 `p_i∧q_i`，允許 `p_i=q_i=0` 表自由座標） | `𝔽(2)` 48 個子複形與 CCHM cofibration lattice 忠實同構；`face_exists/face_forall` = 三值 valid domain 上的 Boolean ∃/∀；∃⊣弱化⊣∀ 全部 48×2 對帳 | `x∨¬x ≠ ⊤` 在面格；Boolean 反射（只禁 both-1 且把 free 當 endpoint）會塌縮，與面格區分 |
+| K10-38 | Ualg×Symlib | `mor_group` B₂ 8 個代換在 48 個子複形上誘導置換 → `PermGroup::new` / `gset_points` / `mark_vector` / `table_of_marks` | Burnside 軌道數 15；marks 表與 formula 表逐項相等；軌道–穩定子 `|orb|·|stab|=8` | 平凡群作用有 48 軌道，非 B₂ 的 15 |
+| K10-39 | Ualg×Semiring | 同餘生成 `Cg(R)` = 「Boolean SWAR Kleene star ∘ 基本平移像」的最小不動點（等價閉包與平移像交替迭代至穩定） | Mal'cev 引理的半環演算法：Freese `cg` == Boolean-Kleene 分割，對 Zn6/Chain3/M3/N5/𝟚/×Zn2² 全部主同餘對帳 | Chain3 配對 (0,2) 的原始等價分割不是同餘；Kleene 閉包後才是 full |
+| K10-40 | Ualg×Topos | `poset_cube(2)` → `cat_poset` → `SitePrecomp64`；頂物件 sieves ↔ 48 個開集 | Heyting implication/negation/¬¬、union/inter 在 `ualg/site` 與 `topos/site` Sieve64 逐對同構；子終層化 = 頂點閉包 | ∂□² 與 □² 的 ¬¬ 相同但子複形不同；¬¬ 不保併 |
+| K10-41 | Ualg×Scheme | 立方子複形 K → 頂點 simplicial complex Δ_K（S 是面 iff 其張成最小立方 face 在 K）→ Stanley–Reisner 理想 | ∂□² 的 Δ 是 C₄：I=(x0x2,x1x3)，Hilbert 多項式 4t，degree 4，p_a=1，Betti [1,1]（β₁=1，去尾零）；□² 的 Δ 是 full simplex：I=0，Hilbert cubic，degree 1，p_a=0，Betti [1] | 邊界與填充的 SR 理想/Hilbert 多項式/Betti 皆不同 |
+| K10-42 | Ualg×Condensed | 有限代數平移/自同構 f → `functional_matrix` → `rlim_zmat_endomorphism` | 置換 f：lim0 rank = 圈數 = χ_f 在 1 的根重數，lim1 torsion 空；一般平移：rank = dim ker(I−f) ≤ 代數重數，SNF torsion 給 cokernel | 整數自同態 3·I₂：χ(1)≠0（根重數 0）但 SNF 餘核 (Z/2)²，分離譜與逆極限不變量；有限 endofunction 的 I−f 恆無撓且 rank=圈數，故負控制须用一般整數矩陣 |
+| K10-43 | Ualg×Discovery | 48 個 □² 子複形上 4 個謂詞（Betti=[1]、χ=1、¬¬-正則、full）→ `implication_lattice_build` SWAR bitplane | 蘊含格與最小反例由 bitplane 算出，與暴力枚舉逐項相等；P0⇒P1、P3⇒P2/P0；P2⇒P0、P0⇒P2 被反例否證 | 兩 opposite vertices（正則但 β0=2）；open box（無環但非正則） |
+| K10-44 | Ualg×Accel | `cx_boundary_matrix` mod 2 → `gf2_bit_matrix_from_ints` → `gf2_rref_rank_u64` → Betti | torsion-free 立方複形上 GF2 SWAR rank == Q Bareiss rank == mod-p rank；full/boundary/open boxes/suspension/T²=(ΣS⁰)×(ΣS⁰)（n=4）/S²=∂□³ 對帳；T² β=[1,2,1]、S² β=[1,0,1] | 本輪例子無撓；不宣稱一般 torsion 複形 mod2==Q |
+| K10-45 | Ualg×Meta | ualg 分割同餘 ↔ `meta/core` Boolean relation；`ua_quotient_classes`/`ua_kernel_congruence`/`ua_equiv_join_closure`/`ua_rel_comp`；Mal'cev term → `ua_is_malcev_op` + `ua_is_ternary_congruence` | 商投影核 == θ；同餘聯/複合兩路徑一致；Mal'cev 項保所有同餘 | 非 Mal'cev 運算 (x+y)%3 在 Chain3 上既不是 Mal'cev 也不保非 congruence 分割 [0,1,0]；投影運算保所有等價關係故不能用作負控制 |
+
+### 15.3 替換 6 條弱橋
+
+| ID | 新構造 |
+|---|---|
+| K8-22 | SWAR truth-word Boolean algebra → ROBDD：`popcount(face_truth_u64)=bdd_dag_sat_count`，and/or/not 與 BDD apply 逐 face 同態 |
+| K8-24 | weighted digraph → `tropical_blocked_kleene_closure` == `closure_trop_swar` == `apsp_kleene` == `apsp_dijkstra`（非負權）；負環控制 `has_negative_cycle` |
+| K8-27 | profinite bonding ZMat → `qmat_mul_ozaki2_crt` == `qmat_mul` == `zmat_mul`；`rlim_zmat_endomorphism` SNF 對帳 |
+| K9-29 | meta/reflect simply typed Term → cubical DTerm compilation；closed Unit 項的 βη nf 兩邊一致（id/const/apply/η-redex） |
+| K9-31 | unary definite Horn program → dependency graph Boolean Kleene star == `forward_least_model`；SLG tabling diamond hits；binary-body 負控制顯示 reachability 不足 |
+| K9-34 | meta/instances Möbius patch glue/monodromy ↔ condensed sign endomorphism `rlim_zmat_endomorphism([-1])` torsion [2]；trivial +1 rank 1；零截面恆可黏 |
+
+### 15.4 接線與驗收
+
+1. `bridge/moon.pkg` + `architecture.json packages[bridge].depends_on` 同步加入 `ualg-core`(@ucommon)、`ualg-site`(@usite)、`ualg-demorgan`(@udm)、`ualg-cube`(@ucube)（exact-match）。
+2. `FederationId` 加 `Ualg`；新增 `ten_federation_descriptors()`、`verify_k10_ualg_federation_bridges()`、`TenFederationUnificationReport`、`verify_k10_ten_federation_unification()`。
+3. `cmd/showcase` 改印 10-fed / K10=45/45 / atlas=18；保留歷史 48 證書 ledger，新增獨立 K10 certificate；final guard 納入 `k10_rep.all_holds`。
+4. 同步 `bridge/README.md`、`ualg/README.md`、`agent.md`、`readme.v2.md`、`architecture.json` apex 措辭、CI labels、三處 frozen "47-entry" 註解。
+5. Tier A 每次編輯後跑；Tier B 只在 bridge 檔尾臨時 `test` + `moon test bridge --target wasm-gc --update` → 讀值 → 重跑 → 即刪；Tier C `moon info && moon fmt` + `.mbti` diff。不跑 inherited suites、不用 `--release`、不做 benchmark。
+6. 完成後 commit + push，讓 CI global compile gate 跑。
+
+### 15.6 完成狀態（本輪實作，全部 Tier A/B/C 綠）
+
+- **接線完成**：`bridge/moon.pkg` + `architecture.json` 加入 `ualg-core/site/demorgan/cube`（@ucommon/@usite/@udm/@ucube）、`cubical-face-bdd`（@fb）、`cubical-kernel`（@kernel）；`FederationId` 加 `Ualg`（無 match site 需改）。
+- **9 條構造性邊全部 holds=true**（`bridge/ualg_federation_constructions.mbt`）：K10-37 faces=48/48 faithful/order/quantifiers/adjunction=true、boundary≠top；K10-38 |B₂|=8 orbits=15=Burnside=ualg marks==formula orbit_stabilizer=true；K10-39 principal_pairs=45 Freese==Kleene=true；K10-40 opens=sieves=48 bijective/ops/sheafify=true join_failures=482；K10-41 boundary(dim=1,deg=4,genus=1,H(2)=8,β=[1,1]) full(dim=3,deg=1,genus=0,H(2)=10,β=[1])；K10-42 GL(2,2) 6/6 perm rank=cycles=root_mult，3·I₂ torsion=2 contrast=true；K10-43 samples=48 brute==SWAR strict=3 equiv=1 兩個極小反例；K10-44 complexes=11 Q==F2==SWAR T²β=[1,2,1] S²β=[1,0,1]；K10-45 congruences=22 relation/quotient_kernel/join/Mal'cev=true negative=true。
+- **6 條弱橋替換全部 holds=true**（`bridge/structural_bridge_replacements.mbt`，`meta_k9_unification.mbt` 已改呼叫）：K8-22 16/16 faces truth/sat_count/homomorphism=true；K8-24 four_way=true negative_cycle=true；K8-27 small_triple=true big_crt==school_beyond2^53=true torsion6=true；K9-29 closed_terms=5/5 meta_nf==dep_nf η/open_rejected=true；K9-31 unary_facts=2/2 Kleene_reach=3/3 binary_body 負控制=true；K9-34 mobius obstruction/monodromy=true rlim(-1) torsion=[2] rlim(+1) rank=1 zero/trivial glue=true。
+- **showcase 實跑通過**：`moon run cmd/showcase --target wasm-gc` exit 0，印出 10/10 聯邦、K10=45/45、ualg=9/9、6/6 替換、48/48 歷史證書、atlas=18/18、K9=36/36 歷史子圖、F7→F9→F4→F1 晉升=true、七支柱五元=true，final guard 無 abort。
+- **與計劃的如實偏差**：K10-41 Betti 以 `cx_betti` 去尾零輸出 [1,1]（非 [1,0,1]）；K10-42 負控制改用一般整數自同態 3·I₂（有限 endofunction 的 I−f 恆無撓，無法產生 torsion 對照）；K10-44 T² 以 ΣS⁰×ΣS⁰（n=4）構造、S²=∂□³ β=[1,0,1]；K10-45 負控制改用 (x+y)%3（投影保所有等價關係，不能當負控制）。K10-39 閉包改为 Kleene star 與平移像交替最小不動點（單步 Kleene star 不足以生成同餘）。
+- **Tier C**：`moon info --target wasm-gc && moon fmt` 已跑；`.mbti` 同步（bridge 新增 pub 介面、cubical/kernel 恢復 kernel_eval_closed_peano、meta/ualg 等 fmt 重排）。`moon check --deny-warn`、`moon build`、`arch_check.py` 全 exit 0。
+- **文檔同步**：bridge/README、ualg/README（§7 未做橋接→已完成 K10）、agent.md、readme.v2.md、architecture.json apex、CI labels（565/167/139/48+K10）、三處 frozen 47-entry 註解→48-entry 歷史 ledger。
+
+### 15.5 前沿搜索（本輪）
+
+- Stanley–Reisner / Hochster：squarefree monomial ideal ↔ simplicial complex，Betti 由 induced subcomplex homology 決定（arXiv:math/0410107；arXiv:2607.10639）。
+- Knaster–Tarski / Horn immediate consequence：definite program least model = lfp(T_P)，finite unary case = reachability closure（Imperial College KR notes；arXiv:cs/9511102）。
+- ¬¬-sheafification / cubical sets：Lawvere–Tierney ¬¬ nucleus，sheafification 是 left adjoint，subterminal case = vertex closure（Swan HoTTEST 2023；finite Alexandrov sheaf literature）。
 

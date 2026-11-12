@@ -61,22 +61,22 @@ pub fn psh_tensor(
 ) -> @site.Presheaf {
   let pn = p.n
   let pq = @site.poset_product(p, q)
-  @site.psh_make(pq, Array::makei(pq.n, idx => f.size[idx % pn] * g.size[idx / pn]), (
-    y,
-    x,
-    s,
-  ) => {
-    if y == x {
-      return s
-    }
-    let a = y % pn
-    let b = y / pn
-    let u = x % pn
-    let w = x / pn
-    let j = s % g.size[b]
-    let i = s / g.size[b]
-    f.res[a][u][i] * g.size[w] + g.res[b][w][j]
-  })
+  @site.psh_make(
+    pq,
+    Array::makei(pq.n, idx => f.size[idx % pn] * g.size[idx / pn]),
+    (y, x, s) => {
+      if y == x {
+        return s
+      }
+      let a = y % pn
+      let b = y / pn
+      let u = x % pn
+      let w = x / pn
+      let j = s % g.size[b]
+      let i = s / g.size[b]
+      f.res[a][u][i] * g.size[w] + g.res[b][w][j]
+    },
+  )
 }
 
 ///|
@@ -84,7 +84,7 @@ pub fn psh_tensor(
 pub fn min_below(p : @site.Poset, x : Int32) -> Array[Int32] {
   let mins : Array[Int32] = []
   for v in 0..<p.n {
-    if p.down[v] == (1 << v) && @site.leq(p, v, x) {
+    if p.down[v] == 1 << v && @site.leq(p, v, x) {
       mins.push(v)
     }
   }
@@ -172,7 +172,7 @@ pub fn nat_product(
 ) -> Int32 {
   let mut total : Int64 = 1L
   for v in 0..<p.n {
-    if p.down[v] == (1 << v) {
+    if p.down[v] == 1 << v {
       let mut pw : Int64 = 1L
       for _ in 0..<f.size[v] {
         pw = pw * g.size[v].to_int64()
@@ -183,14 +183,13 @@ pub fn nat_product(
   total.to_int()
 }
 
-
 ///|
 /// F 在頂點上的大小表（位 v ↔ 二進位頂點索引 v）。
 pub fn vert_sizes_of(n : Int32, f : @site.Presheaf) -> Array[Int32] {
   let p = @site.poset_cube(n)
   let out = Array::make(1 << n, 0)
   for v in 0..<p.n {
-    if p.down[v] == (1 << v) {
+    if p.down[v] == 1 << v {
       out[vertex_index(v, n)] = f.size[v]
     }
   }
@@ -225,13 +224,15 @@ fn lcg64(s : Int64) -> Int64 {
 fn all_presheaves_v() -> Array[@site.Presheaf] {
   let p = @site.poset_v()
   let out : Array[@site.Presheaf] = []
-  let pow_i : Array[Array[Int32]] = Array::makei(3, c => Array::makei(3, s => {
-    let mut r = 1
-    for _ in 0..<c {
-      r = r * s
-    }
-    r
-  }))
+  let pow_i : Array[Array[Int32]] = Array::makei(3, c => {
+    Array::makei(3, s => {
+      let mut r = 1
+      for _ in 0..<c {
+        r = r * s
+      }
+      r
+    })
+  })
   for s0 in 0..<=2 {
     for s1 in 0..<=2 {
       for se in 0..<=2 {
@@ -242,12 +243,14 @@ fn all_presheaves_v() -> Array[@site.Presheaf] {
           for c1 in 0..<m1 {
             let f1 : Array[Int32] = decode_digits(c1, se, s1)
             out.push(
-              @site.psh_make(p, [s0, s1, se], (y, x, s) => if y == x {
-                s
-              } else if x == 0 {
-                f0[s]
-              } else {
-                f1[s]
+              @site.psh_make(p, [s0, s1, se], (y, x, s) => {
+                if y == x {
+                  s
+                } else if x == 0 {
+                  f0[s]
+                } else {
+                  f1[s]
+                }
               }),
             )
           }
@@ -309,7 +312,13 @@ fn random_presheaves_v2(count : Int32, seed : Int64) -> Array[@site.Presheaf] {
         total = total * sizes[x]
       }
       s = lcg64(s)
-      maps.push(decode_digits(((s >> 33) % total.to_int64()).to_int(), sizes[y], sizes[x]))
+      maps.push(
+        decode_digits(
+          ((s >> 33) % total.to_int64()).to_int(),
+          sizes[y],
+          sizes[x],
+        ),
+      )
     }
     if !feasible {
       continue

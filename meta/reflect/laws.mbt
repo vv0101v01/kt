@@ -4,8 +4,7 @@
 // 每一條定律都是一個 `law_*` 函式；這裡只負責把它們串成一個清單，
 // 由 `cmd/metatheory` 逐條執行並印出。要加定律就加 `pub fn law_*`，再跑一次產生器。
 
-///|
-/// reflect 套件的全部定律。
+///| reflect 套件的全部定律。
 pub fn all_laws() -> Array[(String, Bool)] {
   let out : Array[(String, Bool)] = []
   for (l, b) in law_link_link_instance_proofs_are_checkable_without_search() {

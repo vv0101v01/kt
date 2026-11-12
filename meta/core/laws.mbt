@@ -4,14 +4,13 @@
 // 每一條定律都是一個 `law_*` 函式；這裡只負責把它們串成一個清單，
 // 由 `cmd/metatheory` 逐條執行並印出。要加定律就加 `pub fn law_*`，再跑一次產生器。
 
-///|
-/// 定律登記：把一個可判定的命題收進報告（全聯邦唯一定義，其他套件用 `@core.chk`）。
+
+///| 定律登記：把一個可判定的命題收進報告（全聯邦唯一定義，其他套件用 `@core.chk`）。
 pub fn chk(out : Array[(String, Bool)], label : String, cond : Bool) -> Unit {
   out.push((label, cond))
 }
 
-///|
-/// core 套件的全部定律。
+///| core 套件的全部定律。
 pub fn all_laws() -> Array[(String, Bool)] {
   let out : Array[(String, Bool)] = []
   for (l, b) in law_algebra_bareiss64_sylvester_exactness() {
@@ -32,12 +31,10 @@ pub fn all_laws() -> Array[(String, Bool)] {
   for (l, b) in law_complex_covers_gluing_criterion_via_h1_of_the_nerve() {
     out.push((l, b))
   }
-  for
-    (l, b) in law_complex_f_vector_alternating_sum_is_the_euler_characteristic() {
+  for (l, b) in law_complex_f_vector_alternating_sum_is_the_euler_characteristic() {
     out.push((l, b))
   }
-  for
-    (l, b) in law_complex_simplicial_complexes_betti_numbers_and_euler_poincar() {
+  for (l, b) in law_complex_simplicial_complexes_betti_numbers_and_euler_poincar() {
     out.push((l, b))
   }
   for (l, b) in law_covering_galois_correspondence() {
@@ -76,8 +73,7 @@ pub fn all_laws() -> Array[(String, Bool)] {
   for (l, b) in law_malcev_quotient_algebra_and_first_isomorphism() {
     out.push((l, b))
   }
-  for
-    (l, b) in law_malcev_reflexive_graph_internal_groupoid_and_matroid_ramsey() {
+  for (l, b) in law_malcev_reflexive_graph_internal_groupoid_and_matroid_ramsey() {
     out.push((l, b))
   }
   for (l, b) in law_matroid_matroid_duality_is_an_involution() {

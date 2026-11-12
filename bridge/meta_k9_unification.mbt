@@ -312,10 +312,10 @@ pub fn verify_k9_federation_bridges(
     Some(es) => es.copy()
     None => verify_k7_federation_bridges()
   }
-  let acc = match accel_precomputed {
-    Some(r) => r
-    None => @accel.verify_accel_federation()
-  }
+  // The Accel health report is superseded by the constructive K8 replacements
+  // (structural_bridge_replacements.mbt); the labelled argument is kept for
+  // API compatibility with existing callers.
+  ignore(accel_precomputed)
   let atlas = match atlas_precomputed {
     Some(a) => a
     None => @tensor.f3_tensor222_atlas_build()
@@ -329,15 +329,7 @@ pub fn verify_k9_federation_bridges(
   }
 
   // K8-22..K8-28: Federation 8 (`Accel`) ↔ Federations 1..7
-  let k8_22_ok = acc.face_swar_bdd_sat_ok && acc.ozaki2_crt_exact_and_fp64_ok
-  base.push(FederationPairBridge::{
-    id: "K8-22",
-    lhs: Accel,
-    rhs: Cubical,
-    bridge_theorem: "64-Bit SWAR ROBDD Face Truth-Blocks & Ozaki-II CRT Exact Matrix ↔ Cubical @face_bdd / @exactalg",
-    holds: k8_22_ok,
-    quantitative_witness: "Face_SWAR=\{acc.face_swar_bdd_sat_ok}, Ozaki2_CRT=\{acc.ozaki2_crt_exact_and_fp64_ok}",
-  })
+  base.push(replace_k8_22_swar_face_bdd())
 
   let s3_ord = @sym.aut_order(@sym.Graph::complete(3))
   let chunk0 = @swar.gf3_hyperdet222_chunk64(0, 64)
@@ -352,16 +344,7 @@ pub fn verify_k9_federation_bridges(
     quantitative_witness: "|S_3|=\{s3_ord}, gf3_sub64(Δ,Δ)=(0,0)",
   })
 
-  let tie2 = @strop.trop_det_tie_count([[1L, 3L], [2L, 4L]])
-  let k8_24_ok = acc.scanbox_morton_tropical_ok && tie2 == 2
-  base.push(FederationPairBridge::{
-    id: "K8-24",
-    lhs: Accel,
-    rhs: Semiring,
-    bridge_theorem: "Morton Z-Order Scanbox Min-Plus Kernel ↔ @semiring/trop Exact Tropical Closure",
-    holds: k8_24_ok,
-    quantitative_witness: "Morton_trop=\{acc.scanbox_morton_tropical_ok}, trop_ties=\{tie2}",
-  })
+  base.push(replace_k8_24_tropical_four_way())
 
   let sieve64_ok = @tsite.verify_sieve64_sip_biheyting_and_mac_equivalence()
   base.push(FederationPairBridge::{
@@ -389,16 +372,7 @@ pub fn verify_k9_federation_bridges(
     quantitative_witness: "V(Det)(F_3)=\{det_zero}/6561, |P^2(F_3)|=\{p2_f3}",
   })
 
-  let k8_27_ok = acc.wgsl_browser_kernels_audited == 7 &&
-    @condensed.cond_quaternion_axis_conserved()
-  base.push(FederationPairBridge::{
-    id: "K8-27",
-    lhs: Accel,
-    rhs: Condensed,
-    bridge_theorem: "7/7 Browser-Portable 32-Bit WGSL Frontier Kernels ↔ Condensed Quaternion Axis Conservation",
-    holds: k8_27_ok,
-    quantitative_witness: "WGSL=\{acc.wgsl_browser_kernels_audited}/7, quat_conserved=\{k8_27_ok}",
-  })
+  base.push(replace_k8_27_ozaki_crt_zmat_snf())
 
   let dkern_ok = @dkernel.check_discovery_kernel_laws()
   base.push(FederationPairBridge::{
@@ -411,20 +385,7 @@ pub fn verify_k9_federation_bridges(
   })
 
   // K9-29..K9-36: Federation 9 (`Meta`) ↔ Federations 1..8
-  let k9_29_ok = meta_laws_batch_ok(
-      @mcore.law_unify_dag_paterson_wegman_equivalence(),
-    ) &&
-    meta_laws_batch_ok(
-      @miit.law_iit_egraph_bidirectional_congruence_and_algebra_coherence(),
-    )
-  base.push(FederationPairBridge::{
-    id: "K9-29",
-    lhs: Meta,
-    rhs: Cubical,
-    bridge_theorem: "Paterson–Wegman DAG Unification & E-Graph QIIT Normalization ↔ Cubical Dependent Elaboration & Quotients",
-    holds: k9_29_ok,
-    quantitative_witness: "DAG_MGU_depth16+QIIT_EGraph=\{k9_29_ok}",
-  })
+  base.push(replace_k9_29_stlc_dterm_nbe())
 
   let c4_aut = @sym.aut_order(@sym.Graph::cycle(4))
   let malcev_ok = meta_laws_batch_ok(@mcore.law_algebra_exact_rational_rank()) &&
@@ -438,17 +399,7 @@ pub fn verify_k9_federation_bridges(
     quantitative_witness: "|Aut(C_4)|=\{c4_aut}, meta_rank=\{malcev_ok}",
   })
 
-  let tab_ok = meta_laws_batch_ok(
-    @minstances.law_engine_indexed_tabling_and_orientable_coherence(),
-  )
-  base.push(FederationPairBridge::{
-    id: "K9-31",
-    lhs: Meta,
-    rhs: Semiring,
-    bridge_theorem: "Horn Dependency Ordinal Termination & SLG Tabling ↔ Star-Semiring Transitive Closure",
-    holds: tab_ok,
-    quantitative_witness: "indexed_SLG_tabling_orientable=\{tab_ok}",
-  })
+  base.push(replace_k9_31_horn_kleene_least_model())
 
   let s1_fp = @topos.nerve_cohomology_dimensions_fp(
     @topos.boundary_simplex_nerve(2),
@@ -484,16 +435,7 @@ pub fn verify_k9_federation_bridges(
     quantitative_witness: "Bareiss_rk=\{cauchy7_rk} (cert=\{cauchy7_cert}), |P^2(F_3)|=\{p2_f3}",
   })
 
-  let k9_34_ok = tab_ok &&
-    @condensed.cond_ledger_verify(@condensed.cond_ledger_new())
-  base.push(FederationPairBridge::{
-    id: "K9-34",
-    lhs: Meta,
-    rhs: Condensed,
-    bridge_theorem: "Modular Instance Descent Coherence ↔ Condensed Profinite Descent & Tamper-Evident Ledger",
-    holds: k9_34_ok,
-    quantitative_witness: "instance_coherence=\{tab_ok}, ledger_genesis_ok=\{k9_34_ok}",
-  })
+  base.push(replace_k9_34_mobius_glue_rlim_torsion())
 
   let promo = promote_discovered_implication_to_focused_theorem(
     atlas_precomputed=Some(atlas),

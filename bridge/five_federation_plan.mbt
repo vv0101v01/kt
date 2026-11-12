@@ -11,7 +11,10 @@
 // Unification Theorem are verified on non-trivial mathematical witnesses.
 
 ///|
-/// Canonical identifier of the five autonomous mathematical federations.
+/// Canonical identifier of the ten autonomous mathematical federations.
+/// Historically introduced as the five-federation pentagon (`K5-01..10`), then
+/// extended to `K9` and now `K10` by adding the constructive universal-algebra
+/// federation `Ualg`.
 #derive(Debug, Eq)
 pub(all) enum FederationId {
   Cubical
@@ -23,6 +26,7 @@ pub(all) enum FederationId {
   Discovery
   Accel
   Meta
+  Ualg
 }
 
 ///|

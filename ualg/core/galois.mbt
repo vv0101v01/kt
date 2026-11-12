@@ -307,12 +307,11 @@ pub fn modth_polarity(
   {
     nx: eqs.length(),
     ny: algs.length(),
-    rel: Array::makei(eqs.length(), i => Array::makei(algs.length(), j => satisfies(
-      algs[j],
-      eqs[i].0,
-      eqs[i].1,
-      eqs[i].2,
-    ))),
+    rel: Array::makei(eqs.length(), i => {
+      Array::makei(algs.length(), j => {
+        satisfies(algs[j], eqs[i].0, eqs[i].1, eqs[i].2)
+      })
+    }),
   }
 }
 
@@ -326,7 +325,7 @@ fn lcg_relation(nx : Int32, ny : Int32, seed : Int32) -> Polarity {
       rel[x][y] = ((s >> 16) & 3) != 0
     }
   }
-  { nx, ny, rel }
+  { nx, ny, rel, }
 }
 
 ///|
@@ -377,8 +376,7 @@ pub fn law_galois_connection_and_next_closure() -> Array[(String, Bool)] {
     }
   }
   chk(
-    out,
-    "伽羅瓦連接公理：12 個 6×7 關係，對全部 2⁶×2⁷ 組 (S,T) 驗 T⊆S↑ ⇔ S⊆T↓、膨脹、↑↓↑ = ↑、兩側閉集等勢",
+    out, "伽羅瓦連接公理：12 個 6×7 關係，對全部 2⁶×2⁷ 組 (S,T) 驗 T⊆S↑ ⇔ S⊆T↓、膨脹、↑↓↑ = ↑、兩側閉集等勢",
     ax,
   )
   chk(
@@ -447,7 +445,7 @@ pub fn law_galois_fixstab_fundamental_theorem() -> Array[(String, Bool)] {
         }
       }
       // 次數公式 |Fix(H)| = 2^(k/|H|)、Fix(H) 是子體、H 是子群
-      if elems.length() != (1 << (k / set_size(h))) ||
+      if elems.length() != 1 << (k / set_size(h)) ||
         sg(a, elems) != elems ||
         !is_subgroup(auts, h) {
         fund = false
@@ -460,13 +458,11 @@ pub fn law_galois_fixstab_fundamental_theorem() -> Array[(String, Bool)] {
     }
   }
   chk(
-    out,
-    "GF(4)、GF(8)、GF(16)：|Aut| = k，Frobenius x↦x² 是自同構且生成 Aut",
+    out, "GF(4)、GF(8)、GF(16)：|Aut| = k，Frobenius x↦x² 是自同構且生成 Aut",
     frob,
   )
   chk(
-    out,
-    "伽羅瓦基本定理：閉子群數 = d(k)（每個子群皆閉），Fix(H) 是子體、|Fix(H)| = 2^(k/|H|)",
+    out, "伽羅瓦基本定理：閉子群數 = d(k)（每個子群皆閉），Fix(H) 是子體、|Fix(H)| = 2^(k/|H|)",
     fund,
   )
   chk(
@@ -551,7 +547,9 @@ pub fn law_galois_mod_th_varieties() -> Array[(String, Bool)] {
   chk(
     out,
     "Th(𝟚) = \{show_ints(th(0))} ⊋ Th(𝟛) = \{show_ints(th(1))} ⊋ Th(𝟜) = \{show_ints(th(2))}：排中律分離 𝟚/𝟛，Kleene 律分離 𝟛/𝟜",
-    th(0) == [0, 1, 2, 3, 4, 5, 6] && th(1) == [0, 3, 4, 6] && th(2) == [0, 3, 6],
+    th(0) == [0, 1, 2, 3, 4, 5, 6] &&
+    th(1) == [0, 3, 4, 6] &&
+    th(2) == [0, 3, 6],
   )
   chk(
     out,

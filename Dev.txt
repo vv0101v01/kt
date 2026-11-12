@@ -870,3 +870,37 @@ Dev.txt（本節）、agent.md、agent.v2.md、lean/README.md、lean/UNIVERSAL.m
 - lean 側驗收狀態不變：O1 idempotence 半邊未完成、O2 `sld_complete` 未綠；本提交不宣稱任何 lean 驗收結果。
 - MoonBit 側數字（139/139、565/565、48/48、5,810 fns `0` 死碼）皆為遠端 2026-11-10 實測，
   本提交未在合併截面重跑；push 後需使用者以具工具鏈環境重跑 `moon check`/`gen_labels.py` 刷新標籤檔。
+
+===== 2026-11-12 K10 真正跨聯邦橋（本輪） =====
+
+【指令】用戶要求 substantially improve 10 federations 之間的 bridge；嚴禁 bool && bool 名義聯邦；必須是兩個數學結構相互作用導出新定理/演算法。依工程約束：最新穩定 MoonBit + 聯網查語法；Dev.txt 每輪更新；不新建文檔（除首次開發）；局部編譯+inspect 即測即刪；回合結束前 push CI + commit；README 列定理/演算法/依賴圖/接口；無 --release/benchmark；核心公理（topos internal logic、local axioms、Galois correspondence、logical elimination）適用每個模組。
+
+【環境】moon 0.1.20261104 / moonc v0.10.20+65efd5b93；moon update 後 async@0.22.5 解析。HEAD 60435a1。已恢復 cubical/kernel/nbe_dep.mbt 的 kernel_eval_closed_peano（inherited merge 遺失），Tier A check/build/arch_check 全 exit 0。未改 facade/verify/root .mbti。
+
+【審計】弱橋：K8-22/K8-24/K8-27/K9-29/K9-31/K9-34 為純布林合取或獨立報告拼接。ualg 在 architecture.json 但不在 bridge deps；FederationId 只有 9 ctor。
+
+【已完成】
+- [x] 恢復 kernel_eval_closed_peano，baseline Tier A green。
+- [x] 詳盡 K10 計劃寫入 agent.v2.md §十五（9 新邊 K10-37..45 + 6 弱橋替換 + 接線/驗收/前沿搜索）。
+
+【待辦→已完成（本輪）】
+- [x] bridge/moon.pkg + architecture.json bridge deps 加 ualg-core/site/demorgan/cube（@ucommon/@usite/@udm/@ucube）、cubical-face-bdd（@fb）、cubical-kernel（@kernel）；exact-match 通過 arch_check。
+- [x] FederationId 加 Ualg；新增 bridge/ualg_federation_constructions.mbt（9 構造邊 K10-37..45 + ten_federation_descriptors + TenFederationUnificationReport + verify_k10_ten_federation_unification）。
+- [x] 新增 bridge/structural_bridge_replacements.mbt（K8-22/24/27、K9-29/31/34 真構造）；meta_k9_unification.mbt 已改呼叫，移除舊布林合取弱橋。
+- [x] cmd/showcase 10-fed/K10-45/atlas-18 + 獨立 K10 證書 + final guard 納入 k10_rep.all_holds；三處 frozen 47-entry 註解→48-entry 歷史 ledger。
+- [x] README/agent.md/readme.v2/architecture apex/CI labels（565/167/139/48+K10）同步；ualg/README §7「未做橋接」→已完成 K10 九邊。
+- [x] Tier A 每次編輯後 check/build/arch_check 全綠；Tier B 臨時 test --update 讀值即刪（9 邊 + 6 替換全 holds=true）；Tier C moon info && moon fmt + .mbti 同步。
+- [x] showcase 實跑 exit 0：10/10 聯邦、K10=45/45、ualg=9/9、6/6 替換、48/48 歷史證書、atlas=18/18、K9=36/36、晉升=true、七支柱=true。
+- [x] 工作樹內容完整；沙箱快照再次排除 `.git`，已重新 clone 取回 `.git`（HEAD 仍 60435a1）並重建提交。
+- [ ] commit + push CI：本輪執行中（使用者已提供 GitHub token；推送後更新此列並記錄遠端 HEAD）。
+
+【如實偏差記錄】
+- K10-39：單步 Boolean Kleene star 不足以生成同餘；改為「Kleene star ∘ 基本平移像」交替最小不動點，Freese cg == 半環閉包（45 主對、6 代數）。
+- K10-41：cx_betti 去尾零，∂□² 的 C₄ Betti=[1,1]（β₁=1），非計劃所寫 [1,0,1]；Hilbert P=4t、deg=4、p_a=1、H(2)=8 不變。
+- K10-42：有限 endofunction 的 I−f 恆無撓且 rank=圈數=根重數，無法用非單射平移做 torsion 負控制；改用一般整數自同態 3·I₂（χ(1)≠0 但 SNF 餘核 (Z/2)²）。
+- K10-44：T² 以 ΣS⁰×ΣS⁰（n=4）構造（∂□¹=S⁰ 非 S¹），β=[1,2,1]；S²=∂□³ β=[1,0,1]。
+- K10-45：投影運算保所有等價關係，不能當負控制；改用 (x+y)%3 在 Chain3 上非 Mal'cev 且非 congruence。
+- 環境事故：本輪中段 ~/.moon 與 .git 因快照排除而遺失；已重裝 moon 0.1.20261104（同版本）、moon update、重新 clone 取回 .git（HEAD 仍 60435a1），工作樹內容無損。其後跨訊息快照再次排除 .git，本地 commit 物件遺失，但工作樹 53 項改动完整；已再次重建 .git 並重新提交推送。
+
+【前沿搜索】Stanley–Reisner/Hochster（arXiv:math/0410107, 2607.10639）；Knaster–Tarski/Horn lfp（Imperial KR, arXiv:cs/9511102）；¬¬ sheafification/cubical（Swan HoTTEST 2023）。MoonBit 0.10.20 breaking：#derive attribute、Json moved、Array on js is struct、exact_view/unsafe_view、async 0.22.5 pin for wasm-gc。
+

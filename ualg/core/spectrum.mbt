@@ -16,15 +16,19 @@ pub fn mat_charpoly(a : Array[Array[BigInt]]) -> Array[BigInt] {
   let n = a.length()
   let c = Array::make(n + 1, 0N)
   c[n] = 1N
-  let mut m = Array::makei(n, i => Array::makei(n, j => if i == j { 1N } else { 0N }))
+  let mut m = Array::makei(n, i => {
+    Array::makei(n, j => if i == j { 1N } else { 0N })
+  })
   for k in 1..<=n {
-    let am = Array::makei(n, i => Array::makei(n, j => {
-      let mut s = 0N
-      for l in 0..<n {
-        s = s + a[i][l] * m[l][j]
-      }
-      s
-    }))
+    let am = Array::makei(n, i => {
+      Array::makei(n, j => {
+        let mut s = 0N
+        for l in 0..<n {
+          s = s + a[i][l] * m[l][j]
+        }
+        s
+      })
+    })
     let mut tr = 0N
     for i in 0..<n {
       tr = tr + am[i][i]
@@ -150,11 +154,15 @@ pub fn root_multiplicity(p : Array[BigInt], r : Int32) -> Int32 {
 fn char_det_at(a : Array[Array[BigInt]], x : Int32) -> BigInt {
   let n = a.length()
   mat_det(
-    Array::makei(n, i => Array::makei(n, j => if i == j {
-      BigInt::from_int(x) - a[i][j]
-    } else {
-      -a[i][j]
-    })),
+    Array::makei(n, i => {
+      Array::makei(n, j => {
+        if i == j {
+          BigInt::from_int(x) - a[i][j]
+        } else {
+          -a[i][j]
+        }
+      })
+    }),
   )
 }
 
@@ -299,8 +307,7 @@ pub fn law_spectrum_functional_and_quotient() -> Array[(String, Bool)] {
     fun_ok,
   )
   chk(
-    out,
-    "共振 ⇔ 不變量：特徵值 1 的重數 = 圈數，特徵值 0 的重數 = 非循環元素數",
+    out, "共振 ⇔ 不變量：特徵值 1 的重數 = 圈數，特徵值 0 的重數 = 非循環元素數",
     res_ok,
   )
   // 商的整除性
@@ -355,6 +362,9 @@ pub fn law_spectrum_functional_and_quotient() -> Array[(String, Bool)] {
       gen_ok = false
     }
   }
-  chk(out, "一般整數矩陣（1×1 至 6×6，元素 −7..8）：FL 與 Bareiss 一致", gen_ok)
+  chk(
+    out, "一般整數矩陣（1×1 至 6×6，元素 −7..8）：FL 與 Bareiss 一致",
+    gen_ok,
+  )
   out
 }

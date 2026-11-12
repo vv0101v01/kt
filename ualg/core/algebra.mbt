@@ -55,21 +55,17 @@ pub fn show_ints(xs : Array[Int32]) -> String {
 
 ///|
 pub fn op_const(name : String, c : Int32) -> Op {
-  { name, arity: 0, table: [c] }
+  { name, arity: 0, table: [c], }
 }
 
 ///|
 pub fn op_unary(name : String, n : Int32, f : (Int32) -> Int32) -> Op {
-  { name, arity: 1, table: Array::makei(n, f) }
+  { name, arity: 1, table: Array::makei(n, f), }
 }
 
 ///|
-pub fn op_binary(
-  name : String,
-  n : Int32,
-  f : (Int32, Int32) -> Int32,
-) -> Op {
-  { name, arity: 2, table: Array::makei(n * n, i => f(i % n, i / n)) }
+pub fn op_binary(name : String, n : Int32, f : (Int32, Int32) -> Int32) -> Op {
+  { name, arity: 2, table: Array::makei(n * n, i => f(i % n, i / n)), }
 }
 
 ///|
@@ -266,9 +262,9 @@ pub fn subalgebra(a : Alg, elems : Array[Int32]) -> (Alg, Array[Int32]) {
       let ds = digits(idx, m, r)
       pos[op_apply(op, a.n, ds.map(d => elems[d]))]
     })
-    ops.push({ name: op.name, arity: r, table })
+    ops.push({ name: op.name, arity: r, table, })
   }
-  ({ name: "Sub(" + a.name + ")", n: m, ops }, pos)
+  ({ name: "Sub(" + a.name + ")", n: m, ops, }, pos)
 }
 
 ///|
@@ -286,9 +282,9 @@ pub fn alg_product(a : Alg, b : Alg) -> Alg {
       let ib = op_apply(g, b.n, ds.map(d => d / a.n))
       ia + a.n * ib
     })
-    ops.push({ name: f.name, arity: r, table })
+    ops.push({ name: f.name, arity: r, table, })
   }
-  { name: "(" + a.name + "×" + b.name + ")", n, ops }
+  { name: "(" + a.name + "×" + b.name + ")", n, ops, }
 }
 
 ///|
@@ -428,7 +424,7 @@ pub fn close_tuples(
     }
     i = i + 1
   }
-  { elems, origin, complete: i == elems.length() && hit < 0, hit }
+  { elems, origin, complete: i == elems.length() && hit < 0, hit, }
 }
 
 ///|
@@ -466,9 +462,9 @@ pub fn closure_to_alg(a : Alg, cl : Closure, name : String) -> Alg {
         None => -1
       }
     })
-    ops.push({ name: op.name, arity: r, table })
+    ops.push({ name: op.name, arity: r, table, })
   }
-  { name, n: m, ops }
+  { name, n: m, ops, }
 }
 
 ///|
@@ -503,7 +499,7 @@ pub fn alg_zn(n : Int32) -> Alg {
 ///|
 /// 乘法么半群 (ℤ_n; ·)。
 pub fn alg_zn_mul(n : Int32) -> Alg {
-  { name: "(Z\{n},·)", n, ops: [op_binary("·", n, (a, b) => a * b % n)] }
+  { name: "(Z\{n},·)", n, ops: [op_binary("·", n, (a, b) => a * b % n)], }
 }
 
 ///|
@@ -539,9 +535,9 @@ fn s3_index(p : Array[Int32]) -> Int32 {
 ///|
 /// 對稱群 (S_3; ∘, ⁻¹, e)。
 pub fn alg_s3() -> Alg {
-  let mul = (a : Int32, b : Int32) => s3_index(
-    Array::makei(3, i => s3_perms[a][s3_perms[b][i]]),
-  )
+  let mul = (a : Int32, b : Int32) => {
+    s3_index(Array::makei(3, i => s3_perms[a][s3_perms[b][i]]))
+  }
   let inv = (a : Int32) => {
     let q = Array::make(3, 0)
     for i in 0..<3 {
@@ -591,7 +587,7 @@ pub fn alg_lattice_of_order(name : String, leq : Array[Array[Bool]]) -> Alg {
     }
     best
   }
-  { name, n, ops: [op_binary("∧", n, meet), op_binary("∨", n, join)] }
+  { name, n, ops: [op_binary("∧", n, meet), op_binary("∨", n, join)], }
 }
 
 ///|
@@ -637,7 +633,7 @@ pub fn alg_n5() -> Alg {
 ///|
 /// 二元半格 ({0,1}; ∧)。
 pub fn alg_semilattice2() -> Alg {
-  { name: "SL2", n: 2, ops: [op_binary("∧", 2, (a, b) => a & b)] }
+  { name: "SL2", n: 2, ops: [op_binary("∧", 2, (a, b) => a & b)], }
 }
 
 ///|
@@ -712,7 +708,7 @@ pub fn alg_dm4() -> Alg {
     4,
     (a, b) => a & b,
     (a, b) => a | b,
-    a => (1 - a / 2) + 2 * (1 - a % 2),
+    a => 1 - a / 2 + 2 * (1 - a % 2),
     3,
   )
 }

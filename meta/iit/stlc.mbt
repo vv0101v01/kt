@@ -323,14 +323,12 @@ pub fn stlc_unweaken(t : IVal, k : Int32) -> IVal? {
     if k == 0 {
       // 根上下文位置 0 被刪除 ⇒ body（上下文 cons A0 g）的位置 1 被刪除
       match stlc_unweaken(t.args[3], 1) {
-        Some(u) =>
-          Some(stlc_lam(ctx_remove(g, 0), t.args[1], t.args[2], u))
+        Some(u) => Some(stlc_lam(ctx_remove(g, 0), t.args[1], t.args[2], u))
         None => None
       }
     } else {
       match stlc_unweaken(t.args[3], k) {
-        Some(u) =>
-          Some(stlc_lam(ctx_remove(g, k - 1), t.args[1], t.args[2], u))
+        Some(u) => Some(stlc_lam(ctx_remove(g, k - 1), t.args[1], t.args[2], u))
         None => None
       }
     }
@@ -742,49 +740,38 @@ fn ex_var(ctx : IVal, pos : Int32, ty : IVal) -> IVal {
   make_var(ctx, pos, ty)
 }
 
-///| λy:nat. y 弱化到上下文 cons nat nil（η-約簡右側的原式）。
+///|
+/// λy:nat. y 弱化到上下文 cons nat nil（η-約簡右側的原式）。
 pub fn stlc_ex_eta_arg() -> IVal {
-  stlc_lam(
-    stlc_cons(n(), nil()),
-    n(),
-    n(),
-    stlc_vz(stlc_cons(n(), nil()), n()),
-  )
+  stlc_lam(stlc_cons(n(), nil()), n(), n(), stlc_vz(stlc_cons(n(), nil()), n()))
 }
 
-///| λx:nat. (λy:nat. y) x —— η-redex（f 不用 x）。
+///|
+/// λx:nat. (λy:nat. y) x —— η-redex（f 不用 x）。
 pub fn stlc_ex_eta_lhs() -> IVal {
   let g = nil()
   stlc_lam(
     g,
     n(),
     n(),
-    stlc_app(
-      stlc_cons(n(), g),
-      n(),
-      n(),
-      stlc_ex_eta_arg(),
-      stlc_vz(g, n()),
-    ),
+    stlc_app(stlc_cons(n(), g), n(), n(), stlc_ex_eta_arg(), stlc_vz(g, n())),
   )
 }
 
-///| η-約簡右側：λy:nat. y（上下文 nil）。
+///|
+/// η-約簡右側：λy:nat. y（上下文 nil）。
 pub fn stlc_ex_eta_rhs() -> IVal {
   stlc_ex_id()
 }
 
 ///| λ 一層、上下文兩個 nat：f = λw. G[0]（用外層位置 1，不用受綁變數），
-///| 參數也不是受綁變數（位置 2）——兩條理由都不觸發 η。
+
+///|
+/// 參數也不是受綁變數（位置 2）——兩條理由都不觸發 η。
 pub fn stlc_ex_eta_nonbound() -> IVal {
   let g = stlc_cons(n(), stlc_cons(n(), nil()))
   let body_ctx = stlc_cons(n(), g) // cons (x:nat) G，位置 0=x, 1=G[0], 2=G[1]
-  let f = stlc_lam(
-    body_ctx,
-    n(),
-    n(),
-    ex_var(stlc_cons(n(), body_ctx), 2, n()),
-  )
+  let f = stlc_lam(body_ctx, n(), n(), ex_var(stlc_cons(n(), body_ctx), 2, n()))
   stlc_lam(
     g,
     n(),
@@ -793,24 +780,18 @@ pub fn stlc_ex_eta_nonbound() -> IVal {
   )
 }
 
-///| λx:nat. (λy:nat. x) x —— f 透過一層 binder 用到受綁變數，η 不得動它。
+///|
+/// λx:nat. (λy:nat. x) x —— f 透過一層 binder 用到受綁變數，η 不得動它。
 pub fn stlc_ex_eta_uses_bound() -> IVal {
   let g = nil()
   let body_ctx = stlc_cons(n(), g) // cons (x:nat) nil
   // f = λy:nat. x ：body 裡 x 的絕對位置 = 1（穿過一層 binder）
   let f = stlc_lam(body_ctx, n(), n(), ex_var(stlc_cons(n(), body_ctx), 1, n()))
-  stlc_lam(
-    g,
-    n(),
-    n(),
-    stlc_app(body_ctx, n(), n(), f, stlc_vz(g, n())),
-  )
+  stlc_lam(g, n(), n(), stlc_app(body_ctx, n(), n(), f, stlc_vz(g, n())))
 }
 
 ///|
-pub fn law_stlc_stlc_eta_removes_a_trivial_binder() -> Array[
-  (String, Bool),
-] {
+pub fn law_stlc_stlc_eta_removes_a_trivial_binder() -> Array[(String, Bool)] {
   let s = schema_stlc()
   let out : Array[(String, Bool)] = []
   let lhs = stlc_ex_eta_lhs()

@@ -3,7 +3,7 @@
 > **架構位置**：`architecture.json` 的聯邦 `ualg`，5 個套件——`ualg-core`（L0）、`ualg-site`（L0）、
 > `ualg-demorgan`（L1）、`ualg-cube`（L2）、`cmd-ualg`（L3，執行檔，位於 `cmd/ualg/`）。
 > **只匯入 `moonbitlang/core`**，不匯入本倉庫任何其他聯邦（`allowed_external_packages` 為空），
-> 所以整個資料夾可以原封不動搬到獨立倉庫。與 `cubical/`、`topos/`、`symlib/` 的橋接列在 §7（尚未做）。
+> 所以整個資料夾可以原封不動搬到獨立倉庫。與 `cubical/`、`topos/`、`symlib/`、`semiring/`、`scheme/`、`condensed/`、`discovery/`、`accel/`、`meta/` 的跨聯邦橋接已由 `bridge/ualg_federation_constructions.mbt`（K₁₀ = 45/45 中的 9 條 `ualg` 邊）完成，見 §7。
 
 ## 1. 一句話定位
 
@@ -103,5 +103,17 @@ python3 tools/arch_check.py                 # architecture ok: 10 federations �
 * **規模**：DM(n) 可列舉到 n = 2（168 個）；n = 3 只算個數與抽樣。偏序 ≤ 30 點（Int32 遮罩）。
   立方複形到 □⁶（T³，729 個面碼）；V³ 有 15,936 個開集，全部只對一元運算窮舉；二元核子公理由偽隨機抽樣，不是全窮舉。
 * **層化只到 Alexandrov 景**：Sh_¬¬(□ⁿ) 的等價是對尺寸的窮舉 + ρ 的顯式自然同構；不是類型論意義的證明。
-* **未做的橋接**：`cubical/face_bdd`（面公式的 BDD 表示）、`topos/`（site 與層化的既有實作）、
-  `symlib/`（自同構群）。目前三者與本聯邦各算各的，沒有互相對帳。
+* **已完成的跨聯邦橋接（K₁₀，`bridge/ualg_federation_constructions.mbt`）**：本聯邦不再「各算各的」，
+  而是作為第十聯邦 `Ualg` 接入 `bridge` 的完全圖 `K₁₀ = 45/45`。9 條構造性邊每條都把 `ualg` 的物件／演算法
+   transported 到另一聯邦，再用獨立路徑與負對帳驗證同一個量化不變量：
+  - `K10-37 Ualg×Cubical`：𝔽(2) 面格 ↔ 雙軌 CCHM cofibration BDD；∃/∀ 面量詞 = 三值有效域上的布林 rail 量詞（48/48 面、伴隨、邊界≠top）。
+  - `K10-38 Ualg×Symlib`：B₂ = Aut([2]) 代換誘導 48 點 G-set；Burnside 軌道數 15、table of marks、orbit–stabilizer 與 `ualg` 獨立置換作用一致。
+  - `K10-39 Ualg×Semiring`：Mal'cev 同餘生成 Cg(R) = Boolean SWAR Kleene star ∘ 基本平移像的最小不動點；Freese union-find == 半環閉包（45 主對、6 代數）。
+  - `K10-40 Ualg×Topos`：□² 子複形開集 ↔ 頂物件 Sieve64；Heyting 蘊涵、¬¬ 核子、子終層層化 = 頂點閉包同構运输（48/48，∂□² 在 ¬¬ 下 ~ □²，join 不守恆 482 組為負對照）。
+  - `K10-41 Ualg×Scheme`：立方子複形 → 頂點 Stanley–Reisner 理想；∂□² 給 C₄（P(t)=4t、deg 4、p_a=1、β=[1,1]），□² 給滿單形（三次 Hilbert 多項式），兩者理想與 Betti 相異。
+  - `K10-42 Ualg×Condensed`：有限平移譜 χ_f(1) ↔ Roos–Milnor 逆極限；置換的 lim0 秩 = 圈數 = 根重數且無撓；整數自同態 3·I₂ 的 χ(1)≠0 但 SNF 餘核 (Z/2)²，分離譜與逆極限不變量。
+  - `K10-43 Ualg×Discovery`：48 個 □² 子複形上的 SWAR 位平面蘊涵發現；無環⇒χ=1、滿⇒正則/無環被導出，正則⇒無環與無環⇒正則被極小反例否證。
+  - `K10-44 Ualg×Accel`：立方邊界矩陣 mod 2 → M4RI/SWAR GF(2) RREF 秩 → Betti；在無撓立方族上等於精確 ℚ Bareiss 與 mod-p 秩（T² β=[1,2,1]、S² β=[1,0,1]）。
+  - `K10-45 Ualg×Meta`：分割同餘 ↔ `meta/core` 布林關係代數；商核、同餘聯閉包、Mal'cev 項保所有同餘一致；非 Mal'cev 運算與非 congruence 關係被拒絕。
+  另外 `bridge/structural_bridge_replacements.mbt` 把 6 條舊名義弱橋（K8-22/24/27、K9-29/31/34）換成真實數學構造，
+  其中 `K9-31` 的一元 Horn 最小模型 == Boolean Kleene star 正是 Knaster–Tarski lfp 在本倉的落地。

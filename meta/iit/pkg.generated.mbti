@@ -106,7 +106,21 @@ pub fn law_qiit_intrinsic_cwf_and_displayed_eliminator() -> Array[(String, Bool)
 
 pub fn law_stlc_normalization_reaches_a_stuck_value() -> Array[(String, Bool)]
 
+pub fn law_stlc_sn_budget_is_three_valued() -> Array[(String, Bool)]
+
+pub fn law_stlc_sn_certificates_cover_a_battery() -> Array[(String, Bool)]
+
+pub fn law_stlc_sn_depth_is_exact_for_small_terms() -> Array[(String, Bool)]
+
+pub fn law_stlc_sn_eta_redex_is_explored() -> Array[(String, Bool)]
+
+pub fn law_stlc_sn_measure_decreases_along_every_step() -> Array[(String, Bool)]
+
+pub fn law_stlc_sn_reducts_enumerate_all_positions() -> Array[(String, Bool)]
+
 pub fn law_stlc_stlc_beta_is_index_preserving() -> Array[(String, Bool)]
+
+pub fn law_stlc_stlc_eta_removes_a_trivial_binder() -> Array[(String, Bool)]
 
 pub fn law_stlc_subject_reduction_on_a_battery() -> Array[(String, Bool)]
 
@@ -154,13 +168,35 @@ pub fn stlc_beta(IVal) -> IVal?
 
 pub fn stlc_cons(IVal, IVal) -> IVal
 
+pub fn stlc_eta(IVal) -> IVal?
+
 pub fn stlc_ex_app1() -> IVal
 
 pub fn stlc_ex_app2() -> IVal
 
 pub fn stlc_ex_arg() -> IVal
 
+pub fn stlc_ex_eta_arg() -> IVal
+
+pub fn stlc_ex_eta_deep() -> IVal
+
+pub fn stlc_ex_eta_lhs() -> IVal
+
+pub fn stlc_ex_eta_nonbound() -> IVal
+
+pub fn stlc_ex_eta_rhs() -> IVal
+
+pub fn stlc_ex_eta_uses_bound() -> IVal
+
+pub fn stlc_ex_fid() -> IVal
+
 pub fn stlc_ex_id() -> IVal
+
+pub fn stlc_ex_k() -> IVal
+
+pub fn stlc_ex_k_app() -> IVal
+
+pub fn stlc_ex_sn_two_positions() -> IVal
 
 pub fn stlc_ex_var() -> IVal
 
@@ -170,11 +206,19 @@ pub fn stlc_nil() -> IVal
 
 pub fn stlc_norm(IVal, Int32) -> IVal
 
+pub fn stlc_one_step_reducts(IVal) -> Array[IVal]
+
 pub fn stlc_same_index(ISchema, IVal, IVal) -> Bool
+
+pub fn stlc_sn_depth(IVal, Int32) -> Int32?
+
+pub fn stlc_sn_tree_typed(ISchema, IVal, Int32) -> Bool?
 
 pub fn stlc_ty_arr(IVal, IVal) -> IVal
 
 pub fn stlc_ty_nat() -> IVal
+
+pub fn stlc_unweaken(IVal, Int32) -> IVal?
 
 pub fn stlc_vs(IVal, IVal, IVal, IVal) -> IVal
 
@@ -183,15 +227,6 @@ pub fn stlc_vz(IVal, IVal) -> IVal
 pub fn stlc_weaken(IVal, IVal) -> IVal
 
 pub fn subst_insert(IVal, IVal, Int32) -> IVal
-
-pub fn law_stlc_stlc_eta_removes_a_trivial_binder() -> Array[(String, Bool)]
-pub fn stlc_eta(IVal) -> IVal?
-pub fn stlc_ex_eta_arg() -> IVal
-pub fn stlc_ex_eta_lhs() -> IVal
-pub fn stlc_ex_eta_nonbound() -> IVal
-pub fn stlc_ex_eta_rhs() -> IVal
-pub fn stlc_ex_eta_uses_bound() -> IVal
-pub fn stlc_unweaken(IVal, Int32) -> IVal?
 
 // Errors
 

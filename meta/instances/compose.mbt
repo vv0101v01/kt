@@ -360,7 +360,10 @@ fn lookup_pair(sub : Array[(Int32, @core.UTerm)], x : Int32) -> @core.UTerm? {
 }
 
 ///|
-fn apply_pair(t : @core.UTerm, sub : Array[(Int32, @core.UTerm)]) -> @core.UTerm {
+fn apply_pair(
+  t : @core.UTerm,
+  sub : Array[(Int32, @core.UTerm)],
+) -> @core.UTerm {
   match t {
     @core.UVar(x) =>
       match lookup_pair(sub, x) {
@@ -392,10 +395,7 @@ fn saturate_round(
     fresh = fresh + 1
     // 每次使用規則都重新命名（避免與 facts 的變數 id 串位）
     let ren = fresh
-    let head = @core.u_apply(
-      fresh_sub(u_vars_of(r.head), ren),
-      r.head,
-    )
+    let head = @core.u_apply(fresh_sub(u_vars_of(r.head), ren), r.head)
     let body : Array[@core.UTerm] = []
     for b in r.body {
       body.push(@core.u_apply(fresh_sub(u_vars_of(b), ren), b))
@@ -564,21 +564,17 @@ pub fn forward_least_model(
       }
     }
     if !changed {
-      return Some(ForwardClosure::{ facts, capped, fixpoint: true }) // 不動點
+      return Some(ForwardClosure::{ facts, capped, fixpoint: true, }) // 不動點
     }
     round = round + 1
   }
-  Some(ForwardClosure::{ facts, capped, fixpoint: false }) // 燃料用盡
+  Some(ForwardClosure::{ facts, capped, fixpoint: false, }) // 燃料用盡
 }
 
 ///|
 /// 正向可導判定：goal 可導 ⟺ closure 中某原子吞併 goal。
 /// None = 超出界限，無法保證；絕不把「沒找到」當成「證否」。
-pub fn forward_derivable(
-  e : Env,
-  goal : @core.UTerm,
-  fuel : Int32,
-) -> Bool? {
+pub fn forward_derivable(e : Env, goal : @core.UTerm, fuel : Int32) -> Bool? {
   // 大小預算 = 目標項大小 + 2；本實例系統的規則形狀皆為「子目標 ≤ 封閉項」，
   // 預算外的項不可能貢獻於此目標的推導；觸及預算即把「否」降級為 None。
   let budget = @core.u_size(goal) + 2
@@ -1060,6 +1056,7 @@ pub fn law_compose_mirror_involution_preserves_the_env_fingerprint() -> Array[
 // ---------------------------------------------------------------------------
 
 ///|
+
 ///|
 /// 一元鏈環境：一條公理 + 一條單前提合成規則（鏡像定理精確片段的範例）。
 pub fn env_unary_chain() -> Env {
@@ -1069,6 +1066,7 @@ pub fn env_unary_chain() -> Env {
   ])
 }
 
+///|
 /// 量測反例環境：Show(Pair Int Bool) 只能經由**雙前提**規則解出。
 /// E ⊢ Show(Pair Int Bool) 為真，但樸素鏡像（把雙前提規則原樣保留）得出 ⊤ 不可導——
 /// 這正是「多目標鏡像」必須用餘衍生處理的原因（量測，不假設）。
@@ -1147,17 +1145,13 @@ pub fn law_compose_mirror_respects_exactness_boundary_and_co_derivation() -> Arr
   for ee in envs {
     for g in goals {
       match forward_derivable(ee, g, 16) {
-        Some(fwd) =>
-          if fwd != solvable(ee, g, 8) {
-            agree = false
-          }
+        Some(fwd) => if fwd != solvable(ee, g, 8) { agree = false }
         None => agree = false // 界限內必須飽和，否則本定律不成立
       }
     }
   }
   @core.chk(
-    out,
-    "instances: mirror respects the exactness boundary and co-derivation #6",
+    out, "instances: mirror respects the exactness boundary and co-derivation #6",
     agree,
   )
   // (7) 對稱性恢復：在 ≤ 1 前提的片段上，mirror_exact 為真且鏡像定理成立
@@ -1174,7 +1168,13 @@ pub fn law_compose_mirror_respects_exactness_boundary_and_co_derivation() -> Arr
     solvable(simple, g, 8) && dual_derivable(simple, g, 8),
   )
   // (8) 正向閉包裡的泛化公理吞併了無限族：closure 不會爆炸
-  match forward_least_model(env([rule("showAny", 0, cls_show(@core.uvar(0)), [])]), 4, 256, 16) {
+  match
+    forward_least_model(
+      env([rule("showAny", 0, cls_show(@core.uvar(0)), [])]),
+      4,
+      256,
+      16,
+    ) {
     Some(c) =>
       @core.chk(
         out,
@@ -1183,8 +1183,7 @@ pub fn law_compose_mirror_respects_exactness_boundary_and_co_derivation() -> Arr
       )
     None =>
       @core.chk(
-        out,
-        "instances: mirror respects the exactness boundary and co-derivation #9",
+        out, "instances: mirror respects the exactness boundary and co-derivation #9",
         false,
       )
   }
@@ -1192,12 +1191,9 @@ pub fn law_compose_mirror_respects_exactness_boundary_and_co_derivation() -> Arr
   let chain = env([
     rule("intRule", 0, cls_show(ty_int()), []),
     rule("arrRule", 0, cls_show(ty_array(ty_int())), [cls_show(ty_int())]),
-    rule(
-      "arr2Rule",
-      0,
-      cls_show(ty_array(ty_array(ty_int()))),
-      [cls_show(ty_array(ty_int()))],
-    ),
+    rule("arr2Rule", 0, cls_show(ty_array(ty_array(ty_int()))), [
+      cls_show(ty_array(ty_int())),
+    ]),
   ])
   @core.chk(
     out,

@@ -12,9 +12,15 @@ fn main {
   let mut index = 0
   let packages = [
     ("ualg/core — 構造性泛代數", @core.all_laws()),
-    ("ualg/site — 預層模板（Alexandrov 景與 j-層）", @site.all_laws()),
+    (
+      "ualg/site — 預層模板（Alexandrov 景與 j-層）",
+      @site.all_laws(),
+    ),
     ("ualg/demorgan — De Morgan 立方體", @demorgan.all_laws()),
-    ("ualg/cube — 立方體上的層化與雙重否定核子", @cube.all_laws()),
+    (
+      "ualg/cube — 立方體上的層化與雙重否定核子",
+      @cube.all_laws(),
+    ),
   ]
   for pkg in packages {
     let (title, chapters) = pkg

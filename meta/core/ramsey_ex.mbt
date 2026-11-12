@@ -458,30 +458,9 @@ pub fn ramsey_exact(k : Int32, l : Int32) -> Int32? {
 /// 發表見證的 adjacency 遮罩（24 × Int32，bit j = 頂點 j 與之相鄰）。
 pub fn r45_witness_masks() -> Array[Int32] {
   [
-    0xd3ac00,
-    0xec5300,
-    0xe2e2c0,
-    0x39f030,
-    0x86dc28,
-    0xcd2518,
-    0x599684,
-    0x0e7944,
-    0xbca0a2,
-    0xab1846,
-    0x616871,
-    0xb21691,
-    0x142ada,
-    0x2095ad,
-    0xad049e,
-    0x9a215d,
-    0x964669,
-    0x4d8a95,
-    0x5351b2,
-    0x42c3ea,
-    0x659949,
-    0x506f0e,
-    0x3e0467,
-    0x01cb37,
+    0xd3ac00, 0xec5300, 0xe2e2c0, 0x39f030, 0x86dc28, 0xcd2518, 0x599684, 0x0e7944,
+    0xbca0a2, 0xab1846, 0x616871, 0xb21691, 0x142ada, 0x2095ad, 0xad049e, 0x9a215d,
+    0x964669, 0x4d8a95, 0x5351b2, 0x42c3ea, 0x659949, 0x506f0e, 0x3e0467, 0x01cb37,
   ]
 }
 
@@ -759,10 +738,14 @@ pub fn law_ramsey_ex_r45_witness_graph_gives_r45_ge_25() -> Array[
   let m = r45_witness_masks()
   let full = (1 << 24) - 1
   // (1) 形狀：24 頂點、每列只在低 24 位
-  chk(out, "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #1", m.length() == 24)
+  chk(
+    out,
+    "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #1",
+    m.length() == 24,
+  )
   let mut shape_ok = true
   for i in 0..<m.length() {
-    if ((m[i] >> 24) != 0) {
+    if m[i] >> 24 != 0 {
       shape_ok = false
     }
     if m[i] >> 24 != 0 {
@@ -786,9 +769,17 @@ pub fn law_ramsey_ex_r45_witness_graph_gives_r45_ge_25() -> Array[
     bits = bits + popcount(m[i])
   }
   chk(out, "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #3", sym)
-  chk(out, "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #4", bits == 248)
+  chk(
+    out,
+    "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #4",
+    bits == 248,
+  )
   let edges = r45_witness_edges()
-  chk(out, "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #5", edges.length() == 124)
+  chk(
+    out,
+    "ramsey: McKay-Radziszowski witness gives R(4,5) >= 25 #5",
+    edges.length() == 124,
+  )
   // (3) 主複驗：無紅 K₄、無藍 K₅（與 P₁₇ 同一台機器）
   chk(
     out,

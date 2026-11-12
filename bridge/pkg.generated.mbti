@@ -66,6 +66,24 @@ pub fn check_square_cell_symmetry() -> Bool
 
 pub fn check_tropical_bridges() -> Bool
 
+pub fn construct_k10_ualg_accel_gf2_cubical_betti() -> FederationPairBridge
+
+pub fn construct_k10_ualg_condensed_translation_spectrum() -> FederationPairBridge
+
+pub fn construct_k10_ualg_cubical_face_bdd() -> FederationPairBridge
+
+pub fn construct_k10_ualg_discovery_cubical_implications() -> FederationPairBridge
+
+pub fn construct_k10_ualg_meta_congruence_malcev() -> FederationPairBridge
+
+pub fn construct_k10_ualg_scheme_stanley_reisner() -> FederationPairBridge
+
+pub fn construct_k10_ualg_semiring_congruence_kleene() -> FederationPairBridge
+
+pub fn construct_k10_ualg_symlib_burnside_marks() -> FederationPairBridge
+
+pub fn construct_k10_ualg_topos_cube_sieve64() -> FederationPairBridge
+
 pub fn exact_determinant_int64(Array[Array[Int64]]) -> @vv0101v01/cubical-hermitian/algebra/core.Rat
 
 pub fn exact_permanent_int64(Array[Array[Int64]], Int32) -> @vv0101v01/cubical-hermitian/algebra/core.Rat
@@ -110,6 +128,18 @@ pub fn qpoly_tropicalize_padic(@vv0101v01/cubical-hermitian/algebra/core.QPoly, 
 
 pub fn rat_padic_valuation(@vv0101v01/cubical-hermitian/algebra/core.Rat, Int32) -> Int32?
 
+pub fn replace_k8_22_swar_face_bdd() -> FederationPairBridge
+
+pub fn replace_k8_24_tropical_four_way() -> FederationPairBridge
+
+pub fn replace_k8_27_ozaki_crt_zmat_snf() -> FederationPairBridge
+
+pub fn replace_k9_29_stlc_dterm_nbe() -> FederationPairBridge
+
+pub fn replace_k9_31_horn_kleene_least_model() -> FederationPairBridge
+
+pub fn replace_k9_34_mobius_glue_rlim_torsion() -> FederationPairBridge
+
 pub fn rotation_axis_certificate(precomputed? : RotationAxisBridgeReport?) -> BridgeCertificate
 
 pub fn run_grand_unification_system() -> GrandUnificationReport
@@ -131,6 +161,8 @@ pub fn signed_perm_wiring(@vv0101v01/cubical-hermitian/symlib/core.Perm, Array[B
 pub fn six_federation_descriptors() -> Array[FederationDescriptor]
 
 pub fn square_cell_incidence() -> (@vv0101v01/cubical-hermitian/symlib/core.Graph, Array[Int32])
+
+pub fn ten_federation_descriptors(accel_precomputed? : @accel.AccelFederationReport?) -> Array[FederationDescriptor]
 
 pub fn translate_coord_ring_to_zariski_theory(@scheme.CoordRing, Array[@scheme.MPoly]) -> (Int32, Array[@site.PropGeoAxiom])
 
@@ -165,6 +197,12 @@ pub fn verify_frontier_7pillars_grand_unification() -> Frontier7PillarsPentadRep
 pub fn verify_glivenko_topos_subtopos_bridge() -> Bool
 
 pub fn verify_intuitive_conjecture_lab() -> IntuitiveConjectureLabReport
+
+pub fn verify_k10_ten_federation_bridges(k7_precomputed? : Array[FederationPairBridge]?, accel_precomputed? : @accel.AccelFederationReport?, atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> Array[FederationPairBridge]
+
+pub fn verify_k10_ten_federation_unification(k7_precomputed? : Array[FederationPairBridge]?, accel_precomputed? : @accel.AccelFederationReport?, rotation_precomputed? : RotationAxisBridgeReport?, k5_preverified_ok? : Bool?) -> TenFederationUnificationReport
+
+pub fn verify_k10_ualg_federation_bridges() -> Array[FederationPairBridge]
 
 pub fn verify_k5_federation_bridges() -> Array[FederationPairBridge]
 
@@ -215,6 +253,8 @@ pub fn verify_semiring_kleene_alexandroff_topos_bridge() -> Bool
 pub fn verify_seven_federation_star_prism(k7_precomputed? : Array[FederationPairBridge]?) -> SevenFederationStarPrismReport
 
 pub fn verify_six_pillar_circle_sphere_unification() -> Bool
+
+pub fn verify_structural_bridge_replacements() -> Array[FederationPairBridge]
 
 pub fn verify_symlib_galois_topos_bridge() -> Bool
 
@@ -339,6 +379,7 @@ pub(all) enum FederationId {
   Discovery
   Accel
   Meta
+  Ualg
 }
 pub fn FederationId::equal(Self, Self) -> Bool
 pub fn FederationId::not_equal(Self, Self) -> Bool
@@ -544,6 +585,21 @@ pub(all) struct SevenFederationStarPrismReport {
 pub fn SevenFederationStarPrismReport::equal(Self, Self) -> Bool
 pub fn SevenFederationStarPrismReport::not_equal(Self, Self) -> Bool
 pub fn SevenFederationStarPrismReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct TenFederationUnificationReport {
+  ten_federations_verified : Int32
+  k10_bridges_verified : Int32
+  ualg_bridges_verified : Int32
+  promotion_pipeline : FourFederationPromotionReport
+  v5_ackermann_65536_sets_verified : Bool
+  rotation_axis_cert_ok : Bool
+  legacy_k5_dispatch_ok : Bool
+  all_holds : Bool
+}
+pub fn TenFederationUnificationReport::equal(Self, Self) -> Bool
+pub fn TenFederationUnificationReport::not_equal(Self, Self) -> Bool
+pub fn TenFederationUnificationReport::to_repr(Self) -> @debug.Repr
 
 pub(all) struct WeightedGraphReport {
   n : Int32

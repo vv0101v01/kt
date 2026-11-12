@@ -227,10 +227,7 @@ pub fn con_bruteforce(a : Alg) -> Array[Array[Int32]] {
 
 ///|
 /// 兩個同餘族是否為同一個集合。
-pub fn same_family(
-  xs : Array[Array[Int32]],
-  ys : Array[Array[Int32]],
-) -> Bool {
+pub fn same_family(xs : Array[Array[Int32]], ys : Array[Array[Int32]]) -> Bool {
   if xs.length() != ys.length() {
     return false
   }
@@ -269,9 +266,9 @@ pub fn quotient(a : Alg, p : Array[Int32]) -> (Alg, Array[Int32]) {
       let ds = digits(idx, m, r)
       cls[op_apply(op, n, ds.map(d => reps[d]))]
     })
-    ops.push({ name: op.name, arity: r, table })
+    ops.push({ name: op.name, arity: r, table, })
   }
-  ({ name: a.name + "/θ", n: m, ops }, cls)
+  ({ name: a.name + "/θ", n: m, ops, }, cls)
 }
 
 ///|
@@ -405,14 +402,19 @@ pub fn law_congruence_lattice_two_paths() -> Array[(String, Bool)] {
       zn_ok = false
     }
   }
-  chk(out, "|Con(ℤ_n)| = d(n)（n = 2..9；同餘 ↔ 子群 ↔ 因數）", zn_ok)
+  chk(
+    out, "|Con(ℤ_n)| = d(n)（n = 2..9；同餘 ↔ 子群 ↔ 因數）", zn_ok,
+  )
   let mut ch_ok = true
   for n in 2..<=6 {
-    if con_lattice(alg_chain(n)).length() != (1 << (n - 1)) {
+    if con_lattice(alg_chain(n)).length() != 1 << (n - 1) {
       ch_ok = false
     }
   }
-  chk(out, "|Con(Chain_n)| = 2^(n−1)（n = 2..6；每條覆蓋邊獨立塌縮）", ch_ok)
+  chk(
+    out, "|Con(Chain_n)| = 2^(n−1)（n = 2..6；每條覆蓋邊獨立塌縮）",
+    ch_ok,
+  )
   chk(
     out,
     "S3 的同餘 = 正規子群 {1, A3, S3}：|Con| = 3",
@@ -583,14 +585,15 @@ pub fn law_quotient_and_isomorphism_theorems() -> Array[(String, Bool)] {
         for x in 0..<12 {
           phi[pi2[pi1[x]]] = pi3[x]
         }
-        if !is_congruence(q1, psi_over) ||
-          q2.n != q3.n ||
-          !is_hom(q2, q3, phi) {
+        if !is_congruence(q1, psi_over) || q2.n != q3.n || !is_hom(q2, q3, phi) {
           iso3 = false
         }
       }
     }
   }
-  chk(out, "第三同構定理：θ ≤ ψ ⇒ (ℤ12/θ)/(ψ/θ) ≅ ℤ12/ψ（全部可比配對）", iso3)
+  chk(
+    out, "第三同構定理：θ ≤ ψ ⇒ (ℤ12/θ)/(ψ/θ) ≅ ℤ12/ψ（全部可比配對）",
+    iso3,
+  )
   out
 }

@@ -88,7 +88,10 @@ pub fn law_double_negation_nucleus_cubical() -> Array[(String, Bool)] {
       }
     }
   }
-  chk(out, "核子（一元）：u ≤ j(u) 且 j(j(u)) = j(u)（n = 1, 2, 3 全部開集；j(∅) = ∅）", unary)
+  chk(
+    out, "核子（一元）：u ≤ j(u) 且 j(j(u)) = j(u)（n = 1, 2, 3 全部開集；j(∅) = ∅）",
+    unary,
+  )
   let mut meet = true
   for u in o1 {
     for v in o1 {
@@ -114,7 +117,11 @@ pub fn law_double_negation_nucleus_cubical() -> Array[(String, Bool)] {
       meet = false
     }
   }
-  chk(out, "核子（二元）：j(u∧v) = j(u)∧j(v)（n ≤ 2 窮舉 \{o1.length() * o1.length() + o2.length() * o2.length()} 對；n = 3 偽隨機 1200 對）", meet)
+  chk(
+    out,
+    "核子（二元）：j(u∧v) = j(u)∧j(v)（n ≤ 2 窮舉 \{o1.length() * o1.length() + o2.length() * o2.length()} 對；n = 3 偽隨機 1200 對）",
+    meet,
+  )
   // ---- 3. Glivenko：Fix(¬¬) ≅ P(頂點) -------------------------------------
   let reg_counts : Array[Int32] = []
   let mut gliv = true
@@ -147,9 +154,9 @@ pub fn law_double_negation_nucleus_cubical() -> Array[(String, Bool)] {
         }
       }
     }
-    if seen.length() != (1 << (1 << n)) ||
+    if seen.length() != 1 << (1 << n) ||
       !boolops ||
-      fixed.length() != (1 << (1 << n)) {
+      fixed.length() != 1 << (1 << n) {
       gliv = false
     }
   }
@@ -173,7 +180,10 @@ pub fn law_double_negation_nucleus_cubical() -> Array[(String, Bool)] {
       }
     }
   }
-  chk(out, "j ⊣ i：j(u) ≤ v ⇔ u ≤ v（v 取遍全部正則開集；n ≤ 3）", adj)
+  chk(
+    out, "j ⊣ i：j(u) ≤ v ⇔ u ≤ v（v 取遍全部正則開集；n ≤ 3）",
+    adj,
+  )
   // ---- 5. [T-Bool] 第三條路徑：DM(n) 的布林反射核 = j 的核 -----------------
   let kernel_counts : Array[Int32] = []
   let mut kernel_ok = true
@@ -212,7 +222,7 @@ pub fn law_double_negation_nucleus_cubical() -> Array[(String, Bool)] {
     let pv = @core.part_norm(labels_vert)
     if !@core.part_leq(ph, pv) ||
       !@core.part_leq(pv, ph) ||
-      map_h.length() != (1 << (1 << n)) {
+      map_h.length() != 1 << (1 << n) {
       kernel_ok = false
     }
   }
@@ -272,13 +282,19 @@ pub fn law_double_negation_nucleus_cubical() -> Array[(String, Bool)] {
     let jphi = @demorgan.open_face(q2, dneg_vertex(2, u), 2)
     for i in 0..<2 {
       // j(∃i u) ?= ∃i(j u)
-      let a = dneg_vertex(2, @demorgan.face_open(q2, @demorgan.face_exists(phi, i), 2))
+      let a = dneg_vertex(
+        2,
+        @demorgan.face_open(q2, @demorgan.face_exists(phi, i), 2),
+      )
       let b = @demorgan.face_open(q2, @demorgan.face_exists(jphi, i), 2)
       if a != b {
         ex_diff = ex_diff + 1
       }
       // j(∀i u) ?= ∀i(j u)
-      let c = dneg_vertex(2, @demorgan.face_open(q2, @demorgan.face_forall(phi, i), 2))
+      let c = dneg_vertex(
+        2,
+        @demorgan.face_open(q2, @demorgan.face_forall(phi, i), 2),
+      )
       let d = @demorgan.face_open(q2, @demorgan.face_forall(jphi, i), 2)
       if c != d {
         fa_diff = fa_diff + 1

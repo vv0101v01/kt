@@ -2,7 +2,7 @@
 // Five intuition-driven conjectures with explicit counterexample attacks.
 //
 // This is a standalone Lakatosian lab, separate from the historical 12-entry
-// conjecture atlas and the 47-certificate ledger.  A record's `audit_ok`
+// conjecture atlas and the 48-certificate historical ledger.  A record's `audit_ok`
 // means that its reported outcome is supported by the stated finite search;
 // it does not mean that the original conjecture is true.  In particular,
 // `RefutedAndRefined` records deliberately preserve the failed statement and

@@ -3,7 +3,7 @@
 // Presheaf Template, Bi-De Morgan / Affine Cubical Duality, and 64-Bit SWAR
 // Degeneracy Tree Bridge (Federations 1 × 2 × 4 × 6 × 8).
 //
-// Keeps the historical 47-entry `gu_certs` ledger unchanged while providing a
+// Keeps the historical 48-entry `gu_certs` ledger unchanged while providing a
 // first-class cross-federation audit consumed by `cmd/showcase`.
 
 ///|

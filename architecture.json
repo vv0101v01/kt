@@ -189,8 +189,8 @@
       "cmd-showcase"
     ],
     "observer": true,
-    "summary_en": "Upper-V & Nine-Federation Star-Prism Grand Unification Apex — Nine-federation Double-V, X-Overlap, Lakatosian & Metatheoretic synthesis, complete K_9 (36/36) pairwise cross-federation bridges, F7->F9->F4->F1 automated theorem promotion, Five-Federation Pentagon theorem, and 18-entry Geometry-Logic Atlas.",
-    "summary_zh": "上V與九聯邦星稜柱大一統匯流頂點 — 九聯邦雙V形、X形交疊、Lakatos 猜想演化與元理論匯流、K_9（36/36）全配對跨聯邦橋、F7→F9→F4→F1 定理自動晉升管線、五聯邦五角大一統定理與 18 項幾何—邏輯精細圖譜。"
+    "summary_en": "Upper-V & Ten-Federation Star-Prism Grand Unification Apex — Ten-federation Double-V, X-Overlap, Lakatosian & Metatheoretic synthesis, complete K_10 (45/45) pairwise cross-federation bridges, constructive universal-algebra/cubical/scheme/topos/semiring/symlib/condensed/discovery/accel/meta edges, F7->F9->F4->F1 automated theorem promotion, Five-Federation Pentagon theorem, and 18-entry Geometry-Logic Atlas.",
+    "summary_zh": "上V與十聯邦星稜柱大一統匯流頂點 — 十聯邦雙V形、X形交疊、Lakatos 猜想演化與元理論匯流、K_10（45/45）全配對跨聯邦橋、構造性泛代數×立方/概形/拓撲斯/半環/對稱/凝聚/發現/硬體/元理論邊、F7→F9→F4→F1 定理自動晉升管線、五聯邦五角大一統定理與 18 項幾何—邏輯精細圖譜。"
   },
   "packages": [
     {
@@ -684,10 +684,16 @@
         "meta-instances",
         "meta-iit",
         "meta-reflect",
-        "semiring-app"
+        "semiring-app",
+        "cubical-face-bdd",
+        "ualg-core",
+        "ualg-site",
+        "ualg-demorgan",
+        "ualg-cube",
+        "cubical-kernel"
       ],
-      "summary_en": "Upper-V & Nine-Federation Star-Prism Apex V_2: complete K_9 (36/36) cross-federation bridges across all 9 federations, F7->F9->F4->F1 automated theorem promotion, logical theory translations, and 18-entry geometry-logic correspondence atlas.",
-      "summary_zh": "上V與九聯邦星稜柱頂點 V_2：九聯邦 K_9（36/36）全配對跨聯邦橋、F7→F9→F4→F1 定理自動晉升管線、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜。"
+      "summary_en": "Upper-V & Ten-Federation Star-Prism Apex V_2: complete K_10 (45/45) cross-federation bridges across all 10 federations, constructive ualg federation edges, F7->F9->F4->F1 automated theorem promotion, logical theory translations, and 18-entry geometry-logic correspondence atlas.",
+      "summary_zh": "上V與十聯邦星稜柱頂點 V_2：十聯邦 K_10（45/45）全配對跨聯邦橋、構造性 ualg 聯邦邊、F7→F9→F4→F1 定理自動晉升管線、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜。"
     },
     {
       "id": "cmd-showcase",
@@ -700,8 +706,8 @@
         "symlib",
         "root"
       ],
-      "summary_en": "Executable nine-federation K_9 Star-Prism & F7->F9->F4->F1 theorem-promotion showcase.",
-      "summary_zh": "九聯邦 K_9 星稜柱與 F7→F9→F4→F1 定理自動晉升大一統展示執行入口。"
+      "summary_en": "Executable ten-federation K_10 Star-Prism & F7->F9->F4->F1 theorem-promotion showcase.",
+      "summary_zh": "十聯邦 K_10 星稜柱與 F7→F9→F4→F1 定理自動晉升大一統展示執行入口。"
     },
     {
       "id": "semiring-par-host",
@@ -1428,8 +1434,8 @@
         "*"
       ],
       "observer": true,
-      "summary_en": "Nine-federation K_9 (36/36) grand unification, F7->F9->F4->F1 theorem promotion, logical theory translation, and 18-entry geometry-logic correspondence atlas. No federation may depend back on this component.",
-      "summary_zh": "九聯邦 K_9（36/36）大一統、F7→F9→F4→F1 定理自動晉升、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜；下層聯邦不得反向依賴此元件。"
+      "summary_en": "Ten-federation K_10 (45/45) grand unification, F7->F9->F4->F1 theorem promotion, logical theory translation, and 18-entry geometry-logic correspondence atlas. No federation may depend back on this component.",
+      "summary_zh": "十聯邦 K_10（45/45）大一統、F7→F9→F4→F1 定理自動晉升、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜；下層聯邦不得反向依賴此元件。"
     },
     {
       "id": "showcase-app",
@@ -1442,8 +1448,8 @@
         "*"
       ],
       "observer": true,
-      "summary_en": "Nine-federation K_9 Star-Prism & F7->F9->F4->F1 theorem-promotion executable showcase.",
-      "summary_zh": "九聯邦 K_9 星稜柱與 F7→F9→F4→F1 定理晉升大一統展示執行入口。"
+      "summary_en": "Ten-federation K_10 Star-Prism & F7->F9->F4->F1 theorem-promotion executable showcase.",
+      "summary_zh": "十聯邦 K_10 星稜柱與 F7→F9→F4→F1 定理晉升大一統展示執行入口。"
     },
     {
       "id": "semiring-par-host",

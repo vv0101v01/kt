@@ -69,7 +69,7 @@ pub fn face_open(p : @site.Poset, f : Array[Int32], n : Int32) -> Int32 {
 pub fn open_face(p : @site.Poset, u : Int32, n : Int32) -> Array[Int32] {
   let cs : Array[Int32] = []
   for x in 0..<p.n {
-    if has(u, x) && (p.up[x] & u) == (1 << x) {
+    if has(u, x) && (p.up[x] & u) == 1 << x {
       cs.push(face_clause(x, n))
     }
   }
@@ -151,15 +151,25 @@ pub fn law_face_lattice_three_paths() -> Array[(String, Bool)] {
     let elems = dm_elements(n)
     let m = elems.length()
     let index = dm_index(elems)
-    let idx = (f : Array[Int32]) => match index.get(dnf_key(f)) {
-      Some(i) => i
-      None => -1
+    let idx = (f : Array[Int32]) => {
+      match index.get(dnf_key(f)) {
+        Some(i) => i
+        None => -1
+      }
     }
-    let meet = @core.op_binary("∧", m, (a, b) => idx(dnf_meet(elems[a], elems[b])))
-    let join = @core.op_binary("∨", m, (a, b) => idx(dnf_join(elems[a], elems[b])))
+    let meet = @core.op_binary("∧", m, (a, b) => {
+      idx(dnf_meet(elems[a], elems[b]))
+    })
+    let join = @core.op_binary("∨", m, (a, b) => {
+      idx(dnf_join(elems[a], elems[b]))
+    })
     let neg = @core.op_unary("¬", m, a => idx(dnf_neg(elems[a])))
-    let lat : @core.Alg = { name: "DM(\{n}) 的格約化", n: m, ops: [meet, join] }
-    let dm : @core.Alg = { name: "DM(\{n})", n: m, ops: [meet, join, neg] }
+    let lat : @core.Alg = {
+      name: "DM(\{n}) 的格約化",
+      n: m,
+      ops: [meet, join],
+    }
+    let dm : @core.Alg = { name: "DM(\{n})", n: m, ops: [meet, join, neg], }
     let pairs : Array[(Int32, Int32)] = []
     for i in 0..<n {
       pairs.push((idx(dnf_meet(dnf_var(i), dnf_nvar(i))), idx(dnf_zero())))
@@ -233,7 +243,8 @@ pub fn law_face_lattice_three_paths() -> Array[(String, Bool)] {
     )
     if !@core.part_leq(theta_dm, jker) ||
       !@core.part_leq(jker, theta_dm) ||
-      theta_dm[idx(dnf_join(dnf_var(0), dnf_nvar(0)))] != theta_dm[idx(dnf_one())] ||
+      theta_dm[idx(dnf_join(dnf_var(0), dnf_nvar(0)))] !=
+      theta_dm[idx(dnf_one())] ||
       theta[idx(dnf_join(dnf_var(0), dnf_nvar(0)))] == theta[idx(dnf_one())] {
       bool_ok = false
     }
@@ -243,11 +254,16 @@ pub fn law_face_lattice_three_paths() -> Array[(String, Bool)] {
     "路徑一（ualg/core 的 Cg）：DM(n) 的格約化對 ⟨x_i∧¬x_i ≈ 0⟩ 的商有 \{@core.show_ints(lat_blocks)} 個類（n = 1, 2）",
     lat_blocks == [5, 48],
   )
-  chk(out, "路徑二：該同餘恰是「刪去不一致子句」的核（兩個分割互相細化）", kernel_ok)
-  chk(out, "路徑三（ualg/site）：類數 = 面偏序 Vⁿ 的開集數（列舉與遞推計數皆同）", site_ok)
   chk(
-    out,
-    "𝔽(n) ≅ O(Vⁿ)：公式 ↦ 子複形是格同構（∧ ↦ ∩、∨ ↦ ∪、雙射、可逆）",
+    out, "路徑二：該同餘恰是「刪去不一致子句」的核（兩個分割互相細化）",
+    kernel_ok,
+  )
+  chk(
+    out, "路徑三（ualg/site）：類數 = 面偏序 Vⁿ 的開集數（列舉與遞推計數皆同）",
+    site_ok,
+  )
+  chk(
+    out, "𝔽(n) ≅ O(Vⁿ)：公式 ↦ 子複形是格同構（∧ ↦ ∩、∨ ↦ ∪、雙射、可逆）",
     iso,
   )
   chk(
@@ -320,7 +336,8 @@ pub fn law_face_quantifiers_adjoint() -> Array[(String, Bool)] {
           dnf_join(fa, face_forall(psi, i)) ||
           face_forall(face_norm(dnf_meet(phi, psi)), i) !=
           face_norm(dnf_meet(fa, face_forall(psi, i))) ||
-          face_exists(dnf_join(phi, psi), i) != dnf_join(ex, face_exists(psi, i)) {
+          face_exists(dnf_join(phi, psi), i) !=
+          dnf_join(ex, face_exists(psi, i)) {
           lattice = false
         }
         if face_exists(face_norm(dnf_meet(phi, psi)), i) !=
@@ -347,12 +364,16 @@ pub fn law_face_quantifiers_adjoint() -> Array[(String, Bool)] {
     }
   }
   chk(
-    out,
-    "∃i、∀i 的正規形公式 = 伴隨的定義（最小／最大的不含 i 的 ψ），𝔽(2) 全部 48 個公式 × 2 個方向",
+    out, "∃i、∀i 的正規形公式 = 伴隨的定義（最小／最大的不含 i 的 ψ），𝔽(2) 全部 48 個公式 × 2 個方向",
     brute,
   )
-  chk(out, "∃i ⊣ 弱化 ⊣ ∀i：∃i.φ ≤ ψ ⇔ φ ≤ ψ ⇔ …、ψ ≤ ∀i.φ ⇔ ψ ≤ φ（ψ 不含 i）", adj)
-  chk(out, "Frobenius：∃i.(φ ∧ ψ) = (∃i.φ) ∧ ψ（ψ 不含 i）", frob)
+  chk(
+    out, "∃i ⊣ 弱化 ⊣ ∀i：∃i.φ ≤ ψ ⇔ φ ≤ ψ ⇔ …、ψ ≤ ∀i.φ ⇔ ψ ≤ φ（ψ 不含 i）",
+    adj,
+  )
+  chk(
+    out, "Frobenius：∃i.(φ ∧ ψ) = (∃i.φ) ∧ ψ（ψ 不含 i）", frob,
+  )
   chk(
     out,
     "∀i 同時保 ∧ 與 ∨（面是併質元），∃i 保 ∨；對照：∃i 不保 ∧ 共 \{ex_meet_fail} 組",
@@ -374,7 +395,10 @@ pub fn law_face_quantifiers_adjoint() -> Array[(String, Bool)] {
     face_forall(dnf_one(), 0) == dnf_one() &&
     face_forall(dnf_var(1), 0) == dnf_var(1),
   )
-  chk(out, "Beck–Chevalley：量詞與另一方向的面代換 (j := b) 交換", bc)
+  chk(
+    out, "Beck–Chevalley：量詞與另一方向的面代換 (j := b) 交換",
+    bc,
+  )
   // n = 3：𝔽(3) 太大，改用確定性的偽隨機樣本
   let mut s = 20261110L
   let mut sample_ok = true

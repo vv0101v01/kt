@@ -456,7 +456,7 @@ pub fn verify_rotation_axis_bridge() -> RotationAxisBridgeReport {
 
 ///|
 /// Standalone certificate; it is intentionally separate from the historical
-/// 47-certificate ledger so existing milestone counts remain unchanged.
+/// 48-certificate historical ledger so existing milestone counts remain unchanged.
 pub fn rotation_axis_certificate(
   precomputed~ : RotationAxisBridgeReport? = None,
 ) -> BridgeCertificate {

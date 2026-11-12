@@ -15,7 +15,10 @@ pub fn all_laws() -> Array[(String, Array[(String, Bool)])] {
     ("零元與吸收元普查", law_zero_and_absorbing_census()),
     ("理想與 Rees 商", law_ideals_and_rees_quotient()),
     ("Galois 連接與 NextClosure", law_galois_connection_and_next_closure()),
-    ("Galois 基本定理（Fix ⊣ Stab）", law_galois_fixstab_fundamental_theorem()),
+    (
+      "Galois 基本定理（Fix ⊣ Stab）",
+      law_galois_fixstab_fundamental_theorem(),
+    ),
     ("Mod ⊣ Th：簇的 Galois 對應", law_galois_mod_th_varieties()),
     ("譜：平移算子與商", law_spectrum_functional_and_quotient()),
   ]

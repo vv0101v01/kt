@@ -35,7 +35,7 @@ pub fn poset_from_leq(leq : Array[Array[Bool]]) -> Poset {
       }
     }
   }
-  { n, down, up }
+  { n, down, up, }
 }
 
 ///|
@@ -88,8 +88,9 @@ pub fn poset_v() -> Poset {
 pub fn poset_product(p : Poset, q : Poset) -> Poset {
   let n = p.n * q.n
   poset_from_leq(
-    Array::makei(n, a => Array::makei(n, b => leq(p, a % p.n, b % p.n) &&
-      leq(q, a / p.n, b / p.n))),
+    Array::makei(n, a => {
+      Array::makei(n, b => leq(p, a % p.n, b % p.n) && leq(q, a / p.n, b / p.n))
+    }),
   )
 }
 
@@ -158,7 +159,7 @@ pub fn opens_count(p : Poset) -> Int64 {
     }
     let mut x = -1
     for i in 0..<p.n {
-      if bit(s, i) && (p.up[i] & s) == (1 << i) {
+      if bit(s, i) && (p.up[i] & s) == 1 << i {
         x = i
       }
     }
@@ -193,7 +194,7 @@ pub fn hneg(p : Poset, u : Int32) -> Int32 {
 pub fn minimals(p : Poset) -> Int32 {
   let mut m = 0
   for x in 0..<p.n {
-    if p.down[x] == (1 << x) {
+    if p.down[x] == 1 << x {
       m = m | (1 << x)
     }
   }
@@ -203,14 +204,16 @@ pub fn minimals(p : Poset) -> Int32 {
 ///|
 /// 由開集族還原特化序：x ≤ y ⇔ 含 y 的開集都含 x。
 pub fn specialization(opens : Array[Int32], n : Int32) -> Array[Array[Bool]] {
-  Array::makei(n, x => Array::makei(n, y => {
-    for u in opens {
-      if bit(u, y) && !bit(u, x) {
-        return false
+  Array::makei(n, x => {
+    Array::makei(n, y => {
+      for u in opens {
+        if bit(u, y) && !bit(u, x) {
+          return false
+        }
       }
-    }
-    true
-  }))
+      true
+    })
+  })
 }
 
 ///|
@@ -309,11 +312,14 @@ pub fn law_alexandrov_topology() -> Array[(String, Bool)] {
     topo,
   )
   chk(
-    out,
-    "開集計數三條路徑相同：線性延拓深搜 = 極大元遞迴 N(S)=N(S∖x)+N(S∖↓x) = 2ⁿ 窮舉",
+    out, "開集計數三條路徑相同：線性延拓深搜 = 極大元遞迴 N(S)=N(S∖x)+N(S∖↓x) = 2ⁿ 窮舉",
     three,
   )
-  chk(out, "特化序還原偏序（故為 T0）；x 的最小開鄰域 = ↓x", spec && nbhd)
+  chk(
+    out,
+    "特化序還原偏序（故為 T0）；x 的最小開鄰域 = ↓x",
+    spec && nbhd,
+  )
   // 連續 = 單調：V → Chain3、Chain3 → V、V → V 的全部函數
   let mut cm = true
   let mut mono_total = 0
@@ -425,6 +431,9 @@ pub fn law_heyting_algebra_of_opens() -> Array[(String, Bool)] {
       bool_ok = false
     }
   }
-  chk(out, "對照：反鏈（離散空間）的開集代數是布林代數，排中律成立", bool_ok)
+  chk(
+    out, "對照：反鏈（離散空間）的開集代數是布林代數，排中律成立",
+    bool_ok,
+  )
   out
 }

@@ -24,11 +24,15 @@ pub fn psh_make(
 ) -> Presheaf {
   {
     size,
-    res: Array::makei(p.n, y => Array::makei(p.n, x => if leq(p, x, y) {
-      Array::makei(size[y], s => gen(y, x, s))
-    } else {
-      []
-    })),
+    res: Array::makei(p.n, y => {
+      Array::makei(p.n, x => {
+        if leq(p, x, y) {
+          Array::makei(size[y], s => gen(y, x, s))
+        } else {
+          []
+        }
+      })
+    }),
   }
 }
 
@@ -70,7 +74,9 @@ pub fn psh_const(p : Poset, k : Int32) -> Presheaf {
 ///|
 /// 開集 u 當作子終對象（u = ↓x 時即可表預層 y(x)）。
 pub fn psh_sub(p : Poset, u : Int32) -> Presheaf {
-  psh_make(p, Array::makei(p.n, x => if bit(u, x) { 1 } else { 0 }), (_, _, _) => 0)
+  psh_make(p, Array::makei(p.n, x => if bit(u, x) { 1 } else { 0 }), (_, _, _) => {
+    0
+  })
 }
 
 ///|
@@ -80,8 +86,9 @@ pub fn psh_omega(
   opens : Array[Int32],
   j : (Int32) -> Int32,
 ) -> Presheaf {
-  let sieves = Array::makei(p.n, x => opens.filter(s => (s & p.down[x]) == s &&
-    (j(s) & p.down[x]) == s))
+  let sieves = Array::makei(p.n, x => {
+    opens.filter(s => (s & p.down[x]) == s && (j(s) & p.down[x]) == s)
+  })
   let find = (x : Int32, s : Int32) => {
     for i, t in sieves[x] {
       if t == s {
@@ -90,10 +97,9 @@ pub fn psh_omega(
     }
     -1
   }
-  psh_make(p, Array::makei(p.n, x => sieves[x].length()), (y, x, s) => find(
-    x,
-    sieves[y][s] & p.down[x],
-  ))
+  psh_make(p, Array::makei(p.n, x => sieves[x].length()), (y, x, s) => {
+    find(x, sieves[y][s] & p.down[x])
+  })
 }
 
 ///|
@@ -186,11 +192,9 @@ pub fn is_sheaf(
         }
         let seen : Map[String, Bool] = Map([])
         for t in 0..<f.size[x] {
-          seen[fam_key(Array::makei(p.n, z => if bit(s, z) {
-            f.res[x][z][t]
-          } else {
-            -1
-          }))] = true
+          seen[fam_key(
+            Array::makei(p.n, z => if bit(s, z) { f.res[x][z][t] } else { -1 }),
+          )] = true
         }
         if seen.length() != f.size[x] {
           return false
@@ -219,11 +223,13 @@ pub fn plus(
     }
   }
   let mut valid = true
-  let lookup = (x : Int32, m : Array[Int32]) => match index[x].get(fam_key(m)) {
-    Some(i) => i
-    None => {
-      valid = false
-      0
+  let lookup = (x : Int32, m : Array[Int32]) => {
+    match index[x].get(fam_key(m)) {
+      Some(i) => i
+      None => {
+        valid = false
+        0
+      }
     }
   }
   for x in 0..<n {
@@ -233,14 +239,20 @@ pub fn plus(
       }
     }
   }
-  let g = psh_make(p, Array::makei(n, x => fams[x].length()), (y, x, s) => lookup(
-    x,
-    Array::makei(n, z => if bit(cover[x], z) { fams[y][s][z] } else { -1 }),
-  ))
-  let unit = Array::makei(n, x => Array::makei(f.size[x], t => lookup(
-    x,
-    Array::makei(n, z => if bit(cover[x], z) { f.res[x][z][t] } else { -1 }),
-  )))
+  let g = psh_make(p, Array::makei(n, x => fams[x].length()), (y, x, s) => {
+    lookup(
+      x,
+      Array::makei(n, z => if bit(cover[x], z) { fams[y][s][z] } else { -1 }),
+    )
+  })
+  let unit = Array::makei(n, x => {
+    Array::makei(f.size[x], t => {
+      lookup(
+        x,
+        Array::makei(n, z => if bit(cover[x], z) { f.res[x][z][t] } else { -1 }),
+      )
+    })
+  })
   (g, unit, valid)
 }
 
@@ -254,7 +266,9 @@ pub fn sheafify(
 ) -> (Presheaf, Array[Array[Int32]], Bool) {
   let (f1, u1, v1) = plus(p, opens, j, f)
   let (f2, u2, v2) = plus(p, opens, j, f1)
-  let unit = Array::makei(p.n, x => Array::makei(f.size[x], t => u2[x][u1[x][t]]))
+  let unit = Array::makei(p.n, x => {
+    Array::makei(f.size[x], t => u2[x][u1[x][t]])
+  })
   (f2, unit, v1 && v2)
 }
 
@@ -356,12 +370,14 @@ fn psh_on_v(
   to0 : Array[Int32],
   to1 : Array[Int32],
 ) -> Presheaf {
-  psh_make(poset_v(), size, (y, x, s) => if y == x {
-    s
-  } else if x == 0 {
-    to0[s]
-  } else {
-    to1[s]
+  psh_make(poset_v(), size, (y, x, s) => {
+    if y == x {
+      s
+    } else if x == 0 {
+      to0[s]
+    } else {
+      to1[s]
+    }
   })
 }
 
@@ -419,9 +435,17 @@ pub fn law_presheaf_template_sheafification() -> Array[(String, Bool)] {
     "層化良構：\{fs.length()} 個預層的 F⁺⁺ 仍是預層、S_x ⊆ S_y 前提成立、單位 η : F → aF 自然",
     well,
   )
-  chk(out, "aF 是 ¬¬-層（對每個覆蓋篩檢查匹配族雙射）", sheaf)
-  chk(out, "公式：V 上 a(F) 的大小 = [|F(v0)|, |F(v1)|, |F(v0)|·|F(v1)|]", formula)
-  chk(out, "冪等：a(aF) ≅ aF（aF 的單位逐點雙射）——即 j(j(p)) = j(p) 的預層版", idem)
+  chk(
+    out, "aF 是 ¬¬-層（對每個覆蓋篩檢查匹配族雙射）", sheaf,
+  )
+  chk(
+    out, "公式：V 上 a(F) 的大小 = [|F(v0)|, |F(v1)|, |F(v0)|·|F(v1)|]",
+    formula,
+  )
+  chk(
+    out, "冪等：a(aF) ≅ aF（aF 的單位逐點雙射）——即 j(j(p)) = j(p) 的預層版",
+    idem,
+  )
   chk(
     out,
     "F 是層 ⇔ η_F 是同構（\{fs.length()} 個中 \{sheaf_count} 個本來就是層）；Ω 本身不是 ¬¬-層",
@@ -506,7 +530,9 @@ pub fn law_sheaves_for_other_topologies() -> Array[(String, Bool)] {
       degenerate = false
     }
     let (a3, _, v3) = sheafify(p, opens, jc, f)
-    if !v3 || a3.size != [1, f.size[1], f.size[2]] || !is_sheaf(p, opens, jc, a3) {
+    if !v3 ||
+      a3.size != [1, f.size[1], f.size[2]] ||
+      !is_sheaf(p, opens, jc, a3) {
       closed = false
     }
   }
@@ -515,9 +541,18 @@ pub fn law_sheaves_for_other_topologies() -> Array[(String, Bool)] {
     "三種核子都是核子：id、⊤、閉核子 u ↦ u∪{v0}",
     is_nucleus(opens, id) && is_nucleus(opens, top) && is_nucleus(opens, jc),
   )
-  chk(out, "j = id（平凡拓撲）：每個預層都是層，η 是同構 ⇒ Sh_id = PSh", triv)
-  chk(out, "j = ⊤（退化拓撲）：a(F) 恆為終對象 [1,1,1] ⇒ Sh_⊤ = {1}", degenerate)
-  chk(out, "閉核子 c = {v0}：a(F) 的大小 = [1, |F(v1)|, |F(e)|] ⇒ Sh_j ≃ PSh(P∖c)", closed)
+  chk(
+    out, "j = id（平凡拓撲）：每個預層都是層，η 是同構 ⇒ Sh_id = PSh",
+    triv,
+  )
+  chk(
+    out, "j = ⊤（退化拓撲）：a(F) 恆為終對象 [1,1,1] ⇒ Sh_⊤ = {1}",
+    degenerate,
+  )
+  chk(
+    out, "閉核子 c = {v0}：a(F) 的大小 = [1, |F(v1)|, |F(e)|] ⇒ Sh_j ≃ PSh(P∖c)",
+    closed,
+  )
   // 立方體 V²：¬¬-層化
   let q = poset_cube(2)
   let qo = opens_all(q)
@@ -527,7 +562,7 @@ pub fn law_sheaves_for_other_topologies() -> Array[(String, Bool)] {
   let (ac, _, vc) = sheafify(q, qo, jq, psh_const(q, 2))
   let mut prod = true
   for x in 0..<q.n {
-    if ac.size[x] != (1 << (q.down[x] & minimals(q)).popcnt()) {
+    if ac.size[x] != 1 << (q.down[x] & minimals(q)).popcnt() {
       prod = false
     }
   }
@@ -550,6 +585,9 @@ pub fn law_sheaves_for_other_topologies() -> Array[(String, Bool)] {
       repr = false
     }
   }
-  chk(out, "正方形 V²：9 個可表預層 y(x) 全是 ¬¬-層（拓撲是次典範的）", repr)
+  chk(
+    out, "正方形 V²：9 個可表預層 y(x) 全是 ¬¬-層（拓撲是次典範的）",
+    repr,
+  )
   out
 }

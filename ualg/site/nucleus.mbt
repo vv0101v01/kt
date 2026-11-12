@@ -75,16 +75,22 @@ pub fn all_nuclei(p : Poset, opens : Array[Int32]) -> Array[Array[Int32]] {
     index[u] = i
   }
   let top = full_mask(p)
-  let impt = Array::makei(m, i => Array::makei(m, k => match
-    index.get(imp(p, opens[i], opens[k])) {
-    Some(v) => v
-    None => -1
-  }))
-  let meet = Array::makei(m, i => Array::makei(m, k => match
-    index.get(opens[i] & opens[k]) {
-    Some(v) => v
-    None => -1
-  }))
+  let impt = Array::makei(m, i => {
+    Array::makei(m, k => {
+      match index.get(imp(p, opens[i], opens[k])) {
+        Some(v) => v
+        None => -1
+      }
+    })
+  })
+  let meet = Array::makei(m, i => {
+    Array::makei(m, k => {
+      match index.get(opens[i] & opens[k]) {
+        Some(v) => v
+        None => -1
+      }
+    })
+  })
   let out : Array[Array[Int32]] = []
   for code in 0..<(1 << m) {
     let mut ok = match index.get(top) {
@@ -139,7 +145,7 @@ pub fn law_double_negation_nucleus() -> Array[(String, Bool)] {
     }
     let fix = fixed_points(opens, j)
     reg.push(fix.length())
-    if fix.length() != (1 << minimals(p).popcnt()) {
+    if fix.length() != 1 << minimals(p).popcnt() {
       gliv = false
     }
     for u in opens {
@@ -170,11 +176,13 @@ pub fn law_double_negation_nucleus() -> Array[(String, Bool)] {
     }
   }
   chk(
-    out,
-    "j = ¬¬ 是核子：u ≤ j(u)、j(j(u)) = j(u)、j(u∧v) = j(u)∧j(v)（V、V²、V×Chain3 的全部開集）",
+    out, "j = ¬¬ 是核子：u ≤ j(u)、j(j(u)) = j(u)、j(u∧v) = j(u)∧j(v)（V、V²、V×Chain3 的全部開集）",
     nuc,
   )
-  chk(out, "¬¬u 的兩條路徑：Heyting 定義 = 「↓x 的極小元全在 u」", atoms)
+  chk(
+    out, "¬¬u 的兩條路徑：Heyting 定義 = 「↓x 的極小元全在 u」",
+    atoms,
+  )
   chk(
     out,
     "Glivenko：正則開集數 \{show_ints(reg)} = 2^{#極小元}，且構成布林代數（補元、u∧¬u = ∅、j(u∨¬u) = ⊤）",
@@ -201,7 +209,10 @@ pub fn law_double_negation_nucleus() -> Array[(String, Bool)] {
       dense = false
     }
   }
-  chk(out, "立方體面偏序 Vⁿ（n = 1,2,3）：邊界 ∂□ⁿ 是開集且 ¬¬(∂□ⁿ) = ⊤（稠密）", dense)
+  chk(
+    out, "立方體面偏序 Vⁿ（n = 1,2,3）：邊界 ∂□ⁿ 是開集且 ¬¬(∂□ⁿ) = ⊤（稠密）",
+    dense,
+  )
   out
 }
 
@@ -213,13 +224,14 @@ pub fn law_nuclei_census_and_isbell() -> Array[(String, Bool)] {
   let mut isbell = true
   let mut dense_count = true
   let counts : Array[Int32] = []
-  for p in [
-    poset_chain(3),
-    poset_v(),
-    poset_antichain(3),
-    poset_product(poset_chain(2), poset_chain(2)),
-    poset_chain(4),
-  ] {
+  for
+    p in [
+      poset_chain(3),
+      poset_v(),
+      poset_antichain(3),
+      poset_product(poset_chain(2), poset_chain(2)),
+      poset_chain(4),
+    ] {
     let opens = opens_all(p)
     let nuclei = all_nuclei(p, opens)
     counts.push(nuclei.length())
@@ -227,9 +239,13 @@ pub fn law_nuclei_census_and_isbell() -> Array[(String, Bool)] {
     for i, u in opens {
       index[u] = i
     }
-    let lookup = (t : Array[Int32]) => (u : Int32) => match index.get(u) {
-      Some(i) => t[i]
-      None => -1
+    let lookup = (t : Array[Int32]) => {
+      (u : Int32) => {
+        match index.get(u) {
+          Some(i) => t[i]
+          None => -1
+        }
+      }
     }
     let dn = j_dneg(p)
     let mut dense = 0
@@ -254,10 +270,10 @@ pub fn law_nuclei_census_and_isbell() -> Array[(String, Bool)] {
         }
       }
     }
-    if nuclei.length() != (1 << p.n) {
+    if nuclei.length() != 1 << p.n {
       census = false
     }
-    if !has_dn || dense != (1 << (p.n - minimals(p).popcnt())) {
+    if !has_dn || dense != 1 << (p.n - minimals(p).popcnt()) {
       dense_count = false
     }
   }

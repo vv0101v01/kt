@@ -99,8 +99,7 @@ pub fn cx_is_complex(k : Array[Bool], n : Int32) -> Bool {
   for c in 0..<k.length() {
     if k[c] {
       for i in 0..<n {
-        if face_digit(c, i) == 2 &&
-          (!k[c - pow3(i)] || !k[c - 2 * pow3(i)]) {
+        if face_digit(c, i) == 2 && (!k[c - pow3(i)] || !k[c - 2 * pow3(i)]) {
           return false
         }
       }
@@ -345,7 +344,11 @@ fn reduced(b : Array[Int32]) -> Array[Int32] {
 
 ///|
 fn at(b : Array[Int32], i : Int32) -> Int32 {
-  if i >= 0 && i < b.length() { b[i] } else { 0 }
+  if i >= 0 && i < b.length() {
+    b[i]
+  } else {
+    0
+  }
 }
 
 ///|
@@ -417,9 +420,16 @@ pub fn law_cubical_homology_kan_boxes() -> Array[(String, Bool)] {
       }
     }
   }
-  chk(out, "∂∘∂ = 0（□ⁿ，n ≤ 4 的全部邊界矩陣）；f-向量 f_k = C(n,k)·2^{n−k}，總和 3ⁿ", dd && fvec)
+  chk(
+    out,
+    "∂∘∂ = 0（□ⁿ，n ≤ 4 的全部邊界矩陣）；f-向量 f_k = C(n,k)·2^{n−k}，總和 3ⁿ",
+    dd && fvec,
+  )
   chk(out, "□ⁿ 可縮：Betti = (1)，n = 0..4", cube)
-  chk(out, "∂□ⁿ ≃ S^{n−1}：Betti = (2)、(1,1)、(1,0,1)、(1,0,0,1)，n = 1..4", bdry)
+  chk(
+    out, "∂□ⁿ ≃ S^{n−1}：Betti = (2)、(1,1)、(1,0,1)、(1,0,0,1)，n = 1..4",
+    bdry,
+  )
   chk(
     out,
     "開盒無環：n = 1..4 的全部 \{boxes} 個開盒 Betti = (1)——開盒 ↪ □ⁿ 是同調等價（Kan 填充的必要條件）",
@@ -431,11 +441,13 @@ pub fn law_cubical_homology_kan_boxes() -> Array[(String, Bool)] {
     cx_betti(cx_boundary(3), 3, 0L) != cx_betti(cx_full(3), 3, 0L),
   )
   chk(
-    out,
-    "秩的兩條路徑：Bareiss（ℚ 上精確）= 𝔽₂ = 𝔽₃ = 𝔽_{2³¹−1} 上的 Gauss 消去（以上複形皆無撓）",
+    out, "秩的兩條路徑：Bareiss（ℚ 上精確）= 𝔽₂ = 𝔽₃ = 𝔽_{2³¹−1} 上的 Gauss 消去（以上複形皆無撓）",
     modp,
   )
-  chk(out, "Euler–Poincaré：Σ(−1)^k f_k = Σ(−1)^k β_k，且每個都是對取面封閉的複形", euler)
+  chk(
+    out, "Euler–Poincaré：Σ(−1)^k f_k = Σ(−1)^k β_k，且每個都是對取面封閉的複形",
+    euler,
+  )
   out
 }
 
@@ -459,13 +471,19 @@ pub fn law_suspension_pushout_kunneth() -> Array[(String, Bool)] {
     }
   }
   chk(
-    out,
-    "Σᵏ S⁰ ≃ Sᵏ：懸掛 k 次的 Betti = ∂□^{k+1} 的 Betti（k = 1, 2, 3）——圓 S¹ = ΣS⁰",
+    out, "Σᵏ S⁰ ≃ Sᵏ：懸掛 k 次的 Betti = ∂□^{k+1} 的 Betti（k = 1, 2, 3）——圓 S¹ = ΣS⁰",
     spheres,
   )
   let torus = cx_product(s1, s1)
   let four = cx_product(s0, s0)
-  let list = [(s0, 1), (s1, 2), (s2, 3), (four, 2), (torus, 4), (cx_open_box(3, 0, 1), 3)]
+  let list = [
+    (s0, 1),
+    (s1, 2),
+    (s2, 3),
+    (four, 2),
+    (torus, 4),
+    (cx_open_box(3, 0, 1), 3),
+  ]
   let mut shift = true
   for kn in list {
     let (c, n) = kn
@@ -481,8 +499,7 @@ pub fn law_suspension_pushout_kunneth() -> Array[(String, Bool)] {
     }
   }
   chk(
-    out,
-    "懸掛同構 β̃_{k+1}(ΣK) = β̃_k(K)：K = S⁰、S¹、S²、四點、T²、開盒（6 個）",
+    out, "懸掛同構 β̃_{k+1}(ΣK) = β̃_k(K)：K = S⁰、S¹、S²、四點、T²、開盒（6 個）",
     shift,
   )
   let t2 = cx_betti(torus, 4, 0L)
@@ -536,8 +553,7 @@ pub fn law_suspension_pushout_kunneth() -> Array[(String, Bool)] {
     }
   }
   chk(
-    out,
-    "推出：開盒 ∪_{S^{n−2}} 面 = ∂□ⁿ ≃ S^{n−1}（n = 2, 3, 4）——兩個可縮件沿赤道黏合 = 赤道的懸掛；χ 滿足容斥",
+    out, "推出：開盒 ∪_{S^{n−2}} 面 = ∂□ⁿ ≃ S^{n−1}（n = 2, 3, 4）——兩個可縮件沿赤道黏合 = 赤道的懸掛；χ 滿足容斥",
     push,
   )
   out
@@ -574,7 +590,8 @@ pub fn law_hodge_laplacian_spectrum() -> Array[(String, Bool)] {
         rank_exact(
           Array::makei(size, i => Array::makei(size, j => lap[i][j].to_int64())),
         )
-      if nullity != at(betti, d) || @core.root_multiplicity(chi, 0) != at(betti, d) {
+      if nullity != at(betti, d) ||
+        @core.root_multiplicity(chi, 0) != at(betti, d) {
         hodge = false
       }
       // 實非負根 ⇒ 係數正負相間
@@ -593,7 +610,9 @@ pub fn law_hodge_laplacian_spectrum() -> Array[(String, Bool)] {
     "離散 Hodge：dim ker Δ_k = β_k，兩條路徑（Bareiss 零度；χ_Δ 在 0 的重數）——\{count} 個 (複形, k)",
     hodge,
   )
-  chk(out, "Δ_k 半正定的必要條件：特徵多項式係數正負相間", psd)
+  chk(
+    out, "Δ_k 半正定的必要條件：特徵多項式係數正負相間", psd,
+  )
   let mut graph = true
   let mut kun = true
   let mut cases = 0
@@ -619,8 +638,7 @@ pub fn law_hodge_laplacian_spectrum() -> Array[(String, Bool)] {
     }
   }
   chk(
-    out,
-    "超立方體圖 Q_n（n ≤ 4）：χ(Δ_0) = ∏_j (x − 2j)^{C(n,j)}——譜 {0, 2, …, 2n}",
+    out, "超立方體圖 Q_n（n ≤ 4）：χ(Δ_0) = ∏_j (x − 2j)^{C(n,j)}——譜 {0, 2, …, 2n}",
     graph,
   )
   chk(

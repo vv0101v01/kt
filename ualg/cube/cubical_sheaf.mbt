@@ -18,18 +18,17 @@ fn show_big(xs : Array[Int64]) -> String {
 
 ///|
 /// 把 j 預先算好存進遮罩表（稠密核子：只碰 opens）。
-fn memo_j(
-  opens : Array[Int32],
-  j : (Int32) -> Int32,
-) -> (Int32) -> Int32 {
+fn memo_j(opens : Array[Int32], j : (Int32) -> Int32) -> (Int32) -> Int32 {
   let table : Map[Int32, Int32] = Map([])
   for u in opens {
     table[u] = j(u)
   }
-  u => (match table.get(u) {
-    Some(v) => v
-    None => j(u)
-  })
+  u => {
+    match table.get(u) {
+      Some(v) => v
+      None => j(u)
+    }
+  }
 }
 
 ///|
@@ -54,7 +53,10 @@ pub fn law_cubical_sheafification() -> Array[(String, Bool)] {
     q12.up == p2.up &&
     q13.down == p3.down &&
     q13.up == p3.up
-  chk(out, "偏序積：V×V ≅ V²、V×V² ≅ V³（down/up 遮罩逐一相同）", prod_iso)
+  chk(
+    out, "偏序積：V×V ≅ V²、V×V² ≅ V³（down/up 遮罩逐一相同）",
+    prod_iso,
+  )
   let pool_v = all_presheaves_v()
   // ---- 2. Sub(1)(PSh) ≅ Ω 的子終 = 子複形；層 ⇔ 正則 -----------------------
   // n = 1, 2：對全部子複形直接驗 is_sheaf；n = 3：以 j(K) = K 的格刻畫驗
@@ -105,7 +107,11 @@ pub fn law_cubical_sheafification() -> Array[(String, Bool)] {
     "[T-Cube-S2] 子終預層 = 子複形：¬¬-層的個數 \{sub_sheaf1}、\{sub_sheaf2}、\{sub_reg3} = 2^{2ⁿ}（n = 1, 2 以 is_sheaf 窮舉；n = 3 以格刻畫窮舉 + 4 個代表元直接檢查）",
     sub_sheaf1 == 4 && sub_sheaf2 == 16 && sub_reg3 == 256 && spot3,
   )
-  chk(out, "[T-Cube-S1] 層的 ρ 逐點雙射（V¹、V² 全部子終層）", rho1 && rho2)
+  chk(
+    out,
+    "[T-Cube-S1] 層的 ρ 逐點雙射（V¹、V² 全部子終層）",
+    rho1 && rho2,
+  )
   // §2b. 顯式同構 F ≅ F̂(F|頂點)：ρ 是自然同構
   let mut explicit_iso = true
   let mut iso_count = 0
@@ -115,7 +121,8 @@ pub fn law_cubical_sheafification() -> Array[(String, Bool)] {
     }
     iso_count = iso_count + 1
     let fhat = psh_vertex(1, vert_sizes_of(1, f))
-    if !@site.psh_ok(p1, fhat) || !@site.is_natural(p1, f, fhat, rho_eta(p1, f)) ||
+    if !@site.psh_ok(p1, fhat) ||
+      !@site.is_natural(p1, f, fhat, rho_eta(p1, f)) ||
       !@site.is_iso(f, fhat, rho_eta(p1, f)) {
       explicit_iso = false
     }
@@ -126,7 +133,8 @@ pub fn law_cubical_sheafification() -> Array[(String, Bool)] {
       continue
     }
     let fhat = psh_vertex(2, vert_sizes_of(2, f))
-    if !@site.psh_ok(p2, fhat) || !@site.is_natural(p2, f, fhat, rho_eta(p2, f)) ||
+    if !@site.psh_ok(p2, fhat) ||
+      !@site.is_natural(p2, f, fhat, rho_eta(p2, f)) ||
       !@site.is_iso(f, fhat, rho_eta(p2, f)) {
       explicit_iso = false
     }
@@ -214,7 +222,11 @@ pub fn law_cubical_sheafification() -> Array[(String, Bool)] {
     "[T-Cube-S3] a(F)(x) = ∏_{v≤x}|F(v)|（V¹ 全部 70 個大小 ≤ 2 的預層；其中 \{n_sheaves_v} 個本來就是層）；aF 是層、η 自然",
     formula_v && sheaf_v && eta_nat,
   )
-  chk(out, "[T-Cube-S3] 冪等 a(aF) ≅ aF；F 是層 ⇔ η_F 是同構（70 個全部檢查）", idem_v && iff_v)
+  chk(
+    out,
+    "[T-Cube-S3] 冪等 a(aF) ≅ aF；F 是層 ⇔ η_F 是同構（70 個全部檢查）",
+    idem_v && iff_v,
+  )
   // V²：子終 + 常數 + LCG 隨機函子
   let mut formula_2 = true
   let mut idem_2 = true
@@ -262,11 +274,16 @@ pub fn law_cubical_sheafification() -> Array[(String, Bool)] {
       }
       prod
     })
-    if !valid || af.size != expected || !@site.is_natural(p3, f, af, @site.sheafify(p3, o3, j3, f).1) {
+    if !valid ||
+      af.size != expected ||
+      !@site.is_natural(p3, f, af, @site.sheafify(p3, o3, j3, f).1) {
       formula_3 = false
     }
   }
-  chk(out, "[T-Cube-S3] a(Δ2)、a(Δ3) 在 V³：|F(x)| = k^{2^{dim x}}（頂點 2、3、棱 4、9、面 16、81、方體 256、6561——字面算出）", formula_3)
+  chk(
+    out, "[T-Cube-S3] a(Δ2)、a(Δ3) 在 V³：|F(x)| = k^{2^{dim x}}（頂點 2、3、棱 4、9、面 16、81、方體 256、6561——字面算出）",
+    formula_3,
+  )
   // ---- 5. Künneth：a(F ⊠ G) ≅ aF ⊠ aG；a(F × G)、a(F + G) -------------------
   let tensor_pool : Array[@site.Presheaf] = [
     @site.psh_const(p1, 1),
@@ -353,10 +370,7 @@ pub fn law_cubical_sheafification() -> Array[(String, Bool)] {
   // ---- 7. a ⊣ i 的計數與 Nat 的頂點公式 -------------------------------------
   let mut adj = true
   let mut nat_count_v = 0
-  let gs_v = [
-    @site.psh_omega(p1, o1, j1),
-    @site.psh_const(p1, 1),
-  ]
+  let gs_v = [@site.psh_omega(p1, o1, j1), @site.psh_const(p1, 1)]
   for g in gs_v {
     for f in pool_v {
       let af = @site.sheafify(p1, o1, j1, f).0
@@ -369,7 +383,11 @@ pub fn law_cubical_sheafification() -> Array[(String, Bool)] {
       nat_count_v = nat_count_v + 1
     }
   }
-  chk(out, "[T-Cube-S6] a ⊣ i：|Nat(aF,G)| = |Nat(F,G)|（V¹，G = Ω_¬¬、Δ1，\{nat_count_v} 對計數）", adj)
+  chk(
+    out,
+    "[T-Cube-S6] a ⊣ i：|Nat(aF,G)| = |Nat(F,G)|（V¹，G = Ω_¬¬、Δ1，\{nat_count_v} 對計數）",
+    adj,
+  )
   // V²：子終層 F 對 G = Ω_¬¬(V²)、Δ1 的伴隨計數
   let mut adj2 = true
   let mut cnt2 = 0
@@ -386,14 +404,20 @@ pub fn law_cubical_sheafification() -> Array[(String, Bool)] {
       cnt2 = cnt2 + 1
     }
   }
-  chk(out, "[T-Cube-S6] a ⊣ i（V²）：|Nat(aF,G)| = |Nat(F,G)|（F、G ∈ 子終層與 Δ1，\{cnt2} 對計數）", adj2)
+  chk(
+    out,
+    "[T-Cube-S6] a ⊣ i（V²）：|Nat(aF,G)| = |Nat(F,G)|（F、G ∈ 子終層與 Δ1，\{cnt2} 對計數）",
+    adj2,
+  )
   // 反例對照
-  let f_ctl = @site.psh_make(p1, [2, 2, 0], (y, x, s) => if y == x {
-    s
-  } else if x == 0 {
-    [0, 1][s]
-  } else {
-    [0, 0][s]
+  let f_ctl = @site.psh_make(p1, [2, 2, 0], (y, x, s) => {
+    if y == x {
+      s
+    } else if x == 0 {
+      [0, 1][s]
+    } else {
+      [0, 0][s]
+    }
   })
   let af_ctl = @site.sheafify(p1, o1, j1, f_ctl).0
   let n_f = @site.count_nat(p1, f_ctl, @site.psh_omega(p1, o1, u => u))

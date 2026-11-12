@@ -120,7 +120,7 @@ git diff '*.mbti'
 internal must leave the generated interfaces untouched. For cross-federation work, finish with an
 end-to-end run — `moon run cmd/main --target wasm-gc` (`139/139` theorems),
 `moon run cmd/metatheory --target wasm-gc` (`565/565` laws), and
-`moon run cmd/showcase --target wasm-gc` (`48/48` certificates + `K_9 = 36/36` bridges).
+`moon run cmd/showcase --target wasm-gc` (`48/48` historical certificates + `K_10 = 45/45` constructive bridges, incl. 9 `ualg` edges and 6 structural replacements).
 (Remote's 2026-11-10 verification; the merged tree has not been re-run — see §5 merge note.)
 
 ### 1.3 The one-sentence version
@@ -228,11 +228,11 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 | 8 | [`condensed/`](condensed/README.md) | F6 · L1–L4 (`condensed/core` + `condensed`) | 5 | 3,376 | Profinite towers, constructive Nöbeling unimodular basis, Roos–Milnor `R¹lim`, solid/liquid modules, 64× `@swar` Steenrod–Adams (`h₃=σ`, `η³=4ν`) & analytic stacks |
 | 9 | [`tensor/`](tensor/README.md) | F7 · L2 | 2 | 2,151 | 64-trit `𝔽₃` 6,561-tensor rank atlas `[1, 128, 4032, 2400]`, MRV/MAC exact Gromov–Hausdorff, dominated VR collapse, Radon & Clifford spinors |
 | 10 | [`conjecture/`](conjecture/README.md) | F7 · L3–L5 (`conjecture/kernel` + `conjecture`) | 3 | 1,436 | Half-GCD rational reconstruction, 64-bit `ctz` bitplane implication lattice, Lakatos conjecture-evolution engine & 12 cross-federation conjectures |
-| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 19 | 6,813 | **`K₉ = 36/36` all-pairs bridges**, `F7→F9→F4→F1` promotion, `F8×F5×F1` & `F2×F3×F6` triads, 18-entry geometry–logic atlas & 48/48 certificates |
+| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 21 | 8,307 | **`K₁₀ = 45/45` constructive all-pairs bridges** (9 `ualg` edges + 6 weak-bridge replacements), `F7→F9→F4→F1` promotion, `F8×F5×F1` & `F2×F3×F6` triads, 18-entry geometry–logic atlas, 48/48 historical certificates + K₁₀ certificate |
 | 12 | [`accel/`](accel/README.md) | F8 · L0–L4 (`accel/swar` + `accel`) | 11 | 3,887 | `L0` 64-bit SWAR primitives (M4RI RREF, 64-trit `GF(3)`, Ozaki-II CRT, Stockham NTT, Cube64 butterfly, Scanbox, HVM2 `INetArena`) + 8/8 portable WGSL shaders |
 | 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 818 | Executable crash-consistency model (`fsync` ordering) + BFT `3f+1` quorum durable replicas |
 | 14 | [`meta/`](meta/README.md) | F9 · L0–L2 (**4 library sub-packages** + `cmd/metatheory`) | 33 | 17,115 | Zero-business-dependency metatheory floor & three-axis engine: Paterson–Wegman DAG MGU, Bareiss, SLG tabling, bidirectional E-graph QIIT, NbE reflection, `V₅ = 65,536` HF64, Vogt/HS realignment & Paley Ramsey |
-| 15 | [`cmd/`](cmd/README.md) | 6 executables · L2–L9 | 12 | 4,076 | `cmd/main` (`139/139`), `cmd/metatheory` (`565/565`), `cmd/showcase` (`48/48` + `K₉=36/36`), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
+| 15 | [`cmd/`](cmd/README.md) | 6 executables · L2–L9 | 12 | 4,076 | `cmd/main` (`139/139`), `cmd/metatheory` (`565/565`), `cmd/showcase` (`48/48` + `K₁₀=45/45`), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
 | 16 | [`tools/`](tools/README.md) | infrastructure (not a MoonBit package) | 0 | 0 | `arch_check.py`: federation partition, file ownership, `moon.pkg` imports, source reference graph, statistics |
 | 17 | [`webgpu/`](webgpu/README.md) | F8 browser side | 0 | 0 | Zero-dependency browser verifier for all 8 registered WGSL compute shaders + CPU-SWAR bitwise cross-check |
 | 18 | [`ualg/`](ualg/README.md) | F10 · L0–L3 (**4 sub-packages** + `cmd/ualg`) | 22 | 7,756 | Constructive universal algebra × presheaf template × De Morgan cubes (congruence lattices/quotients, Mal'cev terms, Rees quotients, nuclei, `¬¬`-sheafification as counted left adjoint; free De Morgan algebras `DM(n)`; cubical double-negation nucleus; Glivenko). Parallel to the dual-V graph; **not wired into `K₉`**; Lean-side counterpart: `lean/KtLaws/Instances/ImportGraph.lean` (O5 logic core, green, unregistered) |
@@ -373,7 +373,7 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 |---:|---|---|---:|---:|---:|---|
 | 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | Entry point for the `139/139` theorem ledger (`print_report()`) |
 | 2 | [`cmd/metatheory/`](cmd/metatheory/README.md) | all | 1 | 125 | 31 | Ninth Federation entry point recomputing all `565/565` metatheory laws across `94` `law_*` functions |
-| 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 166 | 66 | Nine federations × `K₉ = 36/36` × three cross-federation triads/pipelines × `48/48` certificates |
+| 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 208 | 66 | Ten federations × `K₁₀ = 45/45` × three cross-federation triads/pipelines × `48/48` historical certificates + K₁₀ certificate |
 | 4 | [`cmd/symdemo/`](cmd/symdemo/README.md) | all | 1 | 309 | 65 | `symlib` demo: "derived vs. direct" two-path agreement + monad laws |
 | 5 | [`cmd/symbench/`](cmd/symbench/README.md) | all | 2 | 594 | 88 | 12-case full-pipeline timing + seven derived-algorithm families (A–G) |
 | 6 | [`cmd/semiringreport/`](cmd/semiringreport/README.md) | **native only** | 5 | 2,813 | 118 | The 19-section measurement report; §19 turns every limitation into a measured number |
@@ -415,7 +415,7 @@ reporting) → `tools/` → `architecture.json`.
 
 **Just need to run something** — `moon run cmd/main --target wasm-gc` (139/139 theorems),
 `moon run cmd/metatheory --target wasm-gc` (565/565 laws),
-`moon run cmd/showcase --target wasm-gc` (48/48 certificates + K_9=36/36),
+`moon run cmd/showcase --target wasm-gc` (48/48 historical certificates + K_10=45/45),
 `moon run cmd/semiringreport --target native` (the measurement report).
 
 ---

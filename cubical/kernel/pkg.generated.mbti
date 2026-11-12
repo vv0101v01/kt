@@ -883,6 +883,8 @@ pub fn instantiate_level_inductive_decl(DLevelInductiveDecl, Array[Int32]) -> DI
 
 pub fn instantiate_level_term_decl(DLevelTermDecl, Array[Int32]) -> DLevelTermInstance?
 
+pub fn kernel_eval_closed_peano(DTerm) -> Int32?
+
 pub fn lazy_deval(DTerm, DEnv, DDimEnv) -> DValue
 
 pub fn lazy_force_count(DValue) -> Int32

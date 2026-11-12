@@ -100,6 +100,8 @@ pub fn law_ramsey_ex_paley_graph_gives_r44_ge_18() -> Array[(String, Bool)]
 
 pub fn law_ramsey_ex_r44_and_r35_are_pinned_exactly() -> Array[(String, Bool)]
 
+pub fn law_ramsey_ex_r45_witness_graph_gives_r45_ge_25() -> Array[(String, Bool)]
+
 pub fn law_ramsey_ex_ramsey_recursion_bound_beats_erdos_szekeres() -> Array[(String, Bool)]
 
 pub fn law_ramsey_ex_ramsey_window_is_now_usable_up_to_d3() -> Array[(String, Bool)]
@@ -200,6 +202,10 @@ pub fn paley_is_self_complementary(Int32) -> Bool
 
 pub fn paley_qr(Int32) -> Array[Int32]
 
+pub fn r45_witness_edges() -> Array[(Int32, Int32)]
+
+pub fn r45_witness_masks() -> Array[Int32]
+
 pub fn ramsey(Int32, Int32) -> Int32
 
 pub fn ramsey_3_4_free_k8() -> Array[(Int32, Int32)]
@@ -285,10 +291,6 @@ pub fn uf_find_halving(Array[Int32], Int32) -> Int32
 pub fn ufn(Int32, Array[UTerm]) -> UTerm
 
 pub fn uvar(Int32) -> UTerm
-
-pub fn law_ramsey_ex_r45_witness_graph_gives_r45_ge_25() -> Array[(String, Bool)]
-pub fn r45_witness_edges() -> Array[(Int32, Int32)]
-pub fn r45_witness_masks() -> Array[Int32]
 
 // Errors
 

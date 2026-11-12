@@ -109,9 +109,7 @@ fn sn_go(t : IVal, ctx : SnCtx) -> Int32? {
   for r in reducts {
     match sn_go(r, ctx) {
       None => cut = true
-      Some(d) => if d + 1 > best {
-          best = d + 1
-        }
+      Some(d) => if d + 1 > best { best = d + 1 }
     }
   }
   if cut {
@@ -125,19 +123,15 @@ fn sn_go(t : IVal, ctx : SnCtx) -> Int32? {
 /// 最長歸約路徑長度（β∪η，位置不限）。Some(k) = 完整樹驗明所有路徑 ≤ k；
 /// None = 節點預算用完（不是「無法終止」）。
 pub fn stlc_sn_depth(t : IVal, max_nodes : Int32) -> Int32? {
-  let ctx = SnCtx::{ memo: [], budget: [0], max_nodes }
+  let ctx = SnCtx::{ memo: [], budget: [0], max_nodes, }
   sn_go(t, ctx)
 }
 
 ///|
 /// 窮舉樹上每個節點 icheck 都通過 ⇒ Some(true)；任一失敗 ⇒ Some(false)；
 /// 預算超 ⇒ None。
-pub fn stlc_sn_tree_typed(
-  s : ISchema,
-  t : IVal,
-  max_nodes : Int32,
-) -> Bool? {
-  let ctx = SnCtx::{ memo: [], budget: [0], max_nodes }
+pub fn stlc_sn_tree_typed(s : ISchema, t : IVal, max_nodes : Int32) -> Bool? {
+  let ctx = SnCtx::{ memo: [], budget: [0], max_nodes, }
   tree_typed_go(s, t, ctx)
 }
 
@@ -183,12 +177,7 @@ pub fn stlc_ex_k() -> IVal {
       stlc_cons(nn, nil()),
       nn,
       nn,
-      stlc_vs(
-        stlc_cons(nn, nil()),
-        nn,
-        nn,
-        stlc_vz(nil(), nn),
-      ),
+      stlc_vs(stlc_cons(nn, nil()), nn, nn, stlc_vz(nil(), nn)),
     ),
   )
 }
@@ -197,13 +186,7 @@ pub fn stlc_ex_k() -> IVal {
 /// `(K id) id` —— 兩步 β 後回到 id；根不是 redex，只能先約簡函式位置。
 pub fn stlc_ex_k_app() -> IVal {
   let nn = stlc_ty_arr(n(), n())
-  let k_id = stlc_app(
-    nil(),
-    nn,
-    stlc_ty_arr(nn, nn),
-    stlc_ex_k(),
-    stlc_ex_id(),
-  )
+  let k_id = stlc_app(nil(), nn, stlc_ty_arr(nn, nn), stlc_ex_k(), stlc_ex_id())
   stlc_app(nil(), nn, nn, k_id, stlc_ex_id())
 }
 
@@ -219,21 +202,10 @@ pub fn stlc_ex_sn_two_positions() -> IVal {
     stlc_cons(nn, nil()),
     nn,
     nn,
-    stlc_lam(
-      stlc_cons(nn, nil()),
-      nn,
-      nn,
-      stlc_vz(stlc_cons(nn, nil()), nn),
-    ),
+    stlc_lam(stlc_cons(nn, nil()), nn, nn, stlc_vz(stlc_cons(nn, nil()), nn)),
     wid,
   )
-  stlc_app(
-    nil(),
-    nn,
-    nn,
-    stlc_lam(nil(), nn, nn, inner_app),
-    stlc_ex_id(),
-  )
+  stlc_app(nil(), nn, nn, stlc_lam(nil(), nn, nn, inner_app), stlc_ex_id())
 }
 
 ///|
@@ -287,8 +259,12 @@ pub fn law_stlc_sn_certificates_cover_a_battery() -> Array[(String, Bool)] {
       _ => good_typed = false
     }
   }
-  @core.chk(out, "iit: sn battery: every term has a finite certificate", good_depth)
-  @core.chk(out, "iit: sn battery: every node of every path type-checks", good_typed)
+  @core.chk(
+    out, "iit: sn battery: every term has a finite certificate", good_depth,
+  )
+  @core.chk(
+    out, "iit: sn battery: every node of every path type-checks", good_typed,
+  )
   out
 }
 
@@ -347,12 +323,24 @@ pub fn law_stlc_sn_reducts_enumerate_all_positions() -> Array[(String, Bool)] {
   let out : Array[(String, Bool)] = []
   let t = stlc_ex_sn_two_positions()
   let rs = stlc_one_step_reducts(t)
-  @core.chk(out, "iit: sn reducts of two_positions has exactly 2 results", rs.length() == 2)
+  @core.chk(
+    out,
+    "iit: sn reducts of two_positions has exactly 2 results",
+    rs.length() == 2,
+  )
   for r in rs {
-    @core.chk(out, "iit: sn reduct preserves the index (position law)", stlc_same_index(s, t, r))
+    @core.chk(
+      out,
+      "iit: sn reduct preserves the index (position law)",
+      stlc_same_index(s, t, r),
+    )
   }
   let rs1 = stlc_one_step_reducts(stlc_ex_app1())
-  @core.chk(out, "iit: sn reducts of app1 is the single beta step", rs1.length() == 1)
+  @core.chk(
+    out,
+    "iit: sn reducts of app1 is the single beta step",
+    rs1.length() == 1,
+  )
   out
 }
 
@@ -362,7 +350,11 @@ pub fn law_stlc_sn_eta_redex_is_explored() -> Array[(String, Bool)] {
   let out : Array[(String, Bool)] = []
   let t = stlc_ex_eta_deep()
   let rs = stlc_one_step_reducts(t)
-  @core.chk(out, "iit: sn eta_deep has exactly one one-step reduct", rs.length() == 1)
+  @core.chk(
+    out,
+    "iit: sn eta_deep has exactly one one-step reduct",
+    rs.length() == 1,
+  )
   @core.chk(
     out,
     "iit: sn eta_deep reduces to stlc_ex_fid()",
@@ -428,22 +420,17 @@ pub fn law_stlc_sn_measure_decreases_along_every_step() -> Array[(String, Bool)]
   for (_, t) in battery {
     match stlc_sn_depth(t, 4096) {
       None => decreases = false
-      Some(d) => {
+      Some(d) =>
         for r in stlc_one_step_reducts(t) {
           match stlc_sn_depth(r, 4096) {
-            Some(dr) => if d <= dr {
-                decreases = false
-              }
+            Some(dr) => if d <= dr { decreases = false }
             None => decreases = false
           }
         }
-      }
     }
   }
   @core.chk(
-    out,
-    "iit: sn measure decreases along every one-step reduction (battery)",
-    decreases,
+    out, "iit: sn measure decreases along every one-step reduction (battery)", decreases,
   )
   out
 }

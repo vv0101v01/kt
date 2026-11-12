@@ -265,7 +265,15 @@ pub fn law_zero_and_absorbing_census() -> Array[(String, Bool)] {
   )
   // 有界格的對偶：0 是 ∧ 的零元、∨ 的單位元；1 反之
   let mut dual = true
-  for a in [alg_bool2(), alg_kleene3(), alg_dm4(), alg_chain(5), alg_m3(), alg_n5()] {
+  for
+    a in [
+      alg_bool2(),
+      alg_kleene3(),
+      alg_dm4(),
+      alg_chain(5),
+      alg_m3(),
+      alg_n5(),
+    ] {
     let m = a.ops[0].table
     let j = a.ops[1].table
     if zeros(m, a.n) != identities(j, a.n) ||
@@ -275,8 +283,7 @@ pub fn law_zero_and_absorbing_census() -> Array[(String, Bool)] {
     }
   }
   chk(
-    out,
-    "有界格對偶（𝟚、𝟛、𝟜、Chain5、M3、N5）：∧ 的零元 = ∨ 的單位元，∨ 的零元 = ∧ 的單位元",
+    out, "有界格對偶（𝟚、𝟛、𝟜、Chain5、M3、N5）：∧ 的零元 = ∨ 的單位元，∨ 的零元 = ∧ 的單位元",
     dual,
   )
   out
@@ -302,7 +309,7 @@ pub fn law_ideals_and_rees_quotient() -> Array[(String, Bool)] {
   for a in zoo {
     let t = a.ops[0].table
     let n = a.n
-    let semigroup : Alg = { name: a.name, n, ops: [a.ops[0]] }
+    let semigroup : Alg = { name: a.name, n, ops: [a.ops[0]], }
     let i1 = ideals(t, n)
     let i2 = ideals_bruteforce(t, n)
     counts.push(i1.length())
@@ -342,7 +349,10 @@ pub fn law_ideals_and_rees_quotient() -> Array[(String, Bool)] {
     "Rees 商：\{total} 個理想的 ρ_I 都是同餘，且 S/ρ_I 的零元恰為類 I",
     rees,
   )
-  chk(out, "核 K(S) 是最小理想；S 有零元 ⇔ |K(S)| = 1（六個半群）", ker)
+  chk(
+    out, "核 K(S) 是最小理想；S 有零元 ⇔ |K(S)| = 1（六個半群）",
+    ker,
+  )
   // 反例對照：非理想子集的 Rees 分割不是同餘
   let z6 = alg_zn_mul(6)
   let mask12 = 0b110

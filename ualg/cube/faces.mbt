@@ -94,4 +94,3 @@ pub fn dneg_vertex(n : Int32, u : Int32) -> Int32 {
 pub fn face_boundary(p : @site.Poset, sigma : Int32) -> Int32 {
   p.down[sigma] ^ (1 << sigma)
 }
-
