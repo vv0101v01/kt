@@ -1,13 +1,6 @@
-## MoonBit 側定律標籤（逐條）
+## MoonBit 側 631 條定律標籤（逐條）
 
-> **2026-11-11 合併註記**：本檔由 `tools/gen_labels.py` 依 `moon run cmd/metatheory` 的實際輸出生成，不是手抄。
-> 合併時無 `moon` 工具鏈，本檔**未在合併截面重新生成**。遠端 97dab6b 的快照標頭為「553 條／456 互異」並含兩條
-> `bareiss64 sylvester exactness` 條目；合併樹的宣稱定律總數為 565/565（遠端 2026-11-10 實測，合併截面未重跑）。
-> 推送後／有工具鏈時請重跑 `python3 tools/gen_labels.py` 以刷新本檔。
-
-## MoonBit 側 553 條定律標籤（逐條）
-
-原始 553 條；去重後 456 條互異。這份清單由 `tools/gen_labels.py` 讀 `cmd/metatheory` 的實際輸出產生，不是手抄。
+原始 631 條；去重後 533 條互異。這份清單由 `tools/gen_labels.py` 讀 `cmd/metatheory` 的實際輸出產生，不是手抄。
 
 ## core / bareiss64 sylvester exactness #1 (7x7 high-minor exact division & full rank)  (1)
 
@@ -24,6 +17,14 @@
 - exact rational rank #3
 - exact rational rank #4
 - exact rational rank #5
+
+## core / artin-gluing-stc-boolean-canonicity-filters-2powk-to-2  (1)
+
+- artin-gluing-stc-boolean-canonicity-filters-2powk-to-2
+
+## core / sga4-recollement-open-closed-idempotence-and-asymmetric-annihilation  (1)
+
+- sga4-recollement-open-closed-idempotence-and-asymmetric-annihilation
 
 ## core / burnside_marks_upper_triangular_pos_diag  (1)
 
@@ -83,6 +84,14 @@
 ## core / kleene-demorgan-interval-connection-duality-and-distributivity  (1)
 
 - kleene-demorgan-interval-connection-duality-and-distributivity
+
+## core / dual-qtt-4element-linear-affine-omega-rig-axioms  (1)
+
+- dual-qtt-4element-linear-affine-omega-rig-axioms
+
+## core / memo-bidir-diamond-dag-linear-o-d-vs-exponential-tree  (1)
+
+- memo-bidir-diamond-dag-linear-o-d-vs-exponential-tree
 
 ## core / equiv-quadrilogy-fin3-27-maps-agree-6-bijections  (1)
 
@@ -229,6 +238,22 @@
 - matroid: linear matroid over Q #3
 - matroid: linear matroid over Q #4
 - matroid: linear matroid over Q #5
+
+## core / mtt-2cat-cohesive-flat-interchange-and-unit-laws  (1)
+
+- mtt-2cat-cohesive-flat-interchange-and-unit-laws
+
+## core / mtt-fitch-lock-strict-functorial-composition  (1)
+
+- mtt-fitch-lock-strict-functorial-composition
+
+## core / mtt-fitch-2cell-counit-unlocks-flat-and-blocks-reverse  (1)
+
+- mtt-fitch-2cell-counit-unlocks-flat-and-blocks-reverse
+
+## core / mtt-2cat-auditor-rejects-broken-horizontal-whiskering  (1)
+
+- mtt-2cat-auditor-rejects-broken-horizontal-whiskering
 
 ## core / myhill_nerode_pairwise_distinguishable_2_pow_k  (1)
 
@@ -935,6 +960,22 @@
 
 - iit: schema placeholders are rejected #1
 - iit: schema placeholders are rejected #2
+
+## iit / qiit-cwf-4sort-cross-equation-index-check  (1)
+
+- qiit-cwf-4sort-cross-equation-index-check
+
+## iit / qiit-cwf-rejects-incoherent-type-coercion  (1)
+
+- qiit-cwf-rejects-incoherent-type-coercion
+
+## iit / qiit-cwf-standard-displayed-algebra-coherent  (1)
+
+- qiit-cwf-standard-displayed-algebra-coherent
+
+## iit / qiit-cwf-rejects-syntax-sensitive-incoherent-algebra  (1)
+
+- qiit-cwf-rejects-syntax-sensitive-incoherent-algebra
 
 ## iit / iit: normalization reaches a stuck value  (6)
 

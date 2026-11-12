@@ -46,7 +46,7 @@
      python3 tools/arch_check.py
      ```
    - 透過 `git diff *.mbti` 審視公開介面變化是否符合預期；若重構無意改變外部 API，`.mbti` 應保持零非預期變動。
-   - 跨聯邦重大變更完成後，按需執行（嚴格不加 `--release`）`moon run cmd/showcase --target wasm-gc`（`48/48` 大一統證書＋`K_9=36/36`＋`F8↔F5↔F1`＋`F2↔F3↔F6` 雙三元橋）、`moon run cmd/main --target wasm-gc`（`139/139` 定理總表）或 `moon run cmd/metatheory --target wasm-gc`（`565/565` 元理論定律逐條重算）做端到端驗收（MoonBit 數字為遠端 2026-11-10 實測；合併截面未重跑）。
+   - 跨聯邦重大變更完成後，按需執行（嚴格不加 `--release`）`moon run cmd/showcase --target wasm-gc`（`48/48` 大一統證書＋`K_9=36/36`＋`F8↔F5↔F1`＋`F2↔F3↔F6` 雙三元橋）、`moon run cmd/main --target wasm-gc`（`139/139` 定理總表）或 `moon run cmd/metatheory --target wasm-gc`（`631/631` 元理論定律逐條重算）做端到端驗收（本地 2026-11-12 實測）。
 
 ---
 
@@ -320,9 +320,9 @@ python3 tools/gen_labels.py                 # 551 條 / 453 互異 / 146 族
 | 靜態 | `moon check --deny-warn --target wasm-gc` | 0 warning／0 error |
 | 建置 | `moon build --target wasm-gc` | `Finished` |
 | 登記新鮮度 | `python3 tools/gen_laws.py && git diff --exit-code -- 'meta/*/laws.mbt'` | 重新產生後工作區無差異（防「加了 `law_*` 卻忘記重生 `laws.mbt`」） |
-| 定律 | `moon run cmd/metatheory --target wasm-gc` | `通過 565 / 565 定律`（遠端 2026-11-10 實測；合併截面未重跑） |
-| 定理 | `moon run cmd/main --target wasm-gc` | `passed 139/139`（遠端 2026-11-10 實測；合併截面未重跑） |
-| 證書 | `moon run cmd/showcase --target wasm-gc` | `48/48`、`K₉=36/36`、硬體加速 `all_ok=true`（遠端 2026-11-10 實測；合併截面未重跑） |
+| 定律 | `moon run cmd/metatheory --target wasm-gc` | `通過 631 / 631 定律`（本地 2026-11-12 實測） |
+| 定理 | `moon run cmd/main --target wasm-gc` | `passed 139/139`（本地 2026-11-12 實測） |
+| 證書 | `moon run cmd/showcase --target wasm-gc` | `48/48`、`K₁₀=45/45`（歷史 `K₉=36/36` 子圖）、硬體加速 `all_ok=true`（本地 2026-11-12 實測） |
 | 架構 | `python3 tools/arch_check.py` | `architecture ok` |
 
 觸發：`push` 到 `main`、`pull_request` 與 `workflow_dispatch`；`concurrency` 對同一 ref 取消舊跑，避免長跑堆積。
@@ -967,7 +967,14 @@ O1 冪等半邊（完整 logical relation；預估 1–2 週）；或回到 O2 �
 - **showcase 實跑通過**：`moon run cmd/showcase --target wasm-gc` exit 0，印出 10/10 聯邦、K10=45/45、ualg=9/9、6/6 替換、48/48 歷史證書、atlas=18/18、K9=36/36 歷史子圖、F7→F9→F4→F1 晉升=true、七支柱五元=true，final guard 無 abort。
 - **與計劃的如實偏差**：K10-41 Betti 以 `cx_betti` 去尾零輸出 [1,1]（非 [1,0,1]）；K10-42 負控制改用一般整數自同態 3·I₂（有限 endofunction 的 I−f 恆無撓，無法產生 torsion 對照）；K10-44 T² 以 ΣS⁰×ΣS⁰（n=4）構造、S²=∂□³ β=[1,0,1]；K10-45 負控制改用 (x+y)%3（投影保所有等價關係，不能當負控制）。K10-39 閉包改为 Kleene star 與平移像交替最小不動點（單步 Kleene star 不足以生成同餘）。
 - **Tier C**：`moon info --target wasm-gc && moon fmt` 已跑；`.mbti` 同步（bridge 新增 pub 介面、cubical/kernel 恢復 kernel_eval_closed_peano、meta/ualg 等 fmt 重排）。`moon check --deny-warn`、`moon build`、`arch_check.py` 全 exit 0。
-- **文檔同步**：bridge/README、ualg/README（§7 未做橋接→已完成 K10）、agent.md、readme.v2.md、architecture.json apex、CI labels（565/167/139/48+K10）、三處 frozen 47-entry 註解→48-entry 歷史 ledger。
+- **文檔同步**：bridge/README、ualg/README（§7 未做橋接→已完成 K10）、agent.md、readme.v2.md、architecture.json apex、CI labels（631/167/139/48+K10）、三處 frozen 47-entry 註解→48-entry 歷史 ledger。
+
+### 15.7 CI 紅燈修復（同輪續）
+
+- **根因**：`cubical/kernel/nbe_dep.mbt::conv_at` 對 `DVCircleTy`/`DVTorusTy` 座標使用 Boolean 真值表判等 `dim_eq_sem`，使自由 De Morgan 區間的 `i∧¬i` 被誤判為端點，`loop(i∧¬i)` 塌縮到 `base`，導致 `cmd/main` 第 139 條「Kalman 雙軌自由 De Morgan 區間」負控制失敗（CI 唯一紅步）。
+- **修復**：circle/torus 座標判等改用 `dim_eq_demorgan`；不更改定理陳述、不放寬負控制。臨時 inspect probe 定位後即刪。
+- **驗收**：`cmd/main` 139/139、`cmd/metatheory` 631/631、`cmd/ualg` 167/167、`cmd/showcase` 48/48 + K₁₀=45/45 + ualg 9/9 + 替換 6/6 + atlas 18/18 + pentad true；check/build/arch_check/gen_laws/gen_labels 全綠。
+- **文檔**：現行定律數同步 565→631、`law_*` 94→104、arch 318/199215→320/201027；CI label 同步。
 
 ### 15.5 前沿搜索（本輪）
 

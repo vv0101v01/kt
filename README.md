@@ -1,8 +1,8 @@
 # cubical-hermitian — 一部可執行的數學工程史
 
 > MoonBit · `vv0101v01/cubical-hermitian` v2.0.0 · `preferred_target = "wasm"`
-> **10 聯邦 + `unification` 大一統頂點 · 57 套件 · 66 元件 · 318 個 `.mbt` · 199,215 行**
-> `python3 tools/arch_check.py` → `architecture ok`（2026-11-11 合併截面實測）· `cmd/main` → **139/139 定理** · `cmd/metatheory` → **565/565 定律** · `cmd/showcase` → **48/48 證書 + 54/54 立方結構**
+> **10 聯邦 + `unification` 大一統頂點 · 57 套件 · 66 元件 · 320 個 `.mbt` · 201,027 行**
+> `python3 tools/arch_check.py` → `architecture ok`（2026-11-11 合併截面實測）· `cmd/main` → **139/139 定理** · `cmd/metatheory` → **631/631 定律** · `cmd/showcase` → **48/48 證書 + 54/54 立方結構**
 > 全倉靜態健檢（遠端 2026-11-10 `health_scan.py` v3）：`5,810` 函式／方法 `0` 死碼 — **合併截面未重跑**，以遠端實測為準
 
 這個倉庫把「依賴立方型別論 × 精確代數 × 有限對稱 × 冪等／熱帶半環 × 格羅滕迪克拓撲斯 × 代數幾何概形 × 凝聚數學 × 多線性張量與猜想發現 × 64-bit SWAR／WebGPU 硬體加速 × 元理論三軸引擎」寫成一份**可編譯、可判定、可複驗**的程式。它不是論文附錄，而是一條**有年月、有瓶頸、有突破**的工程線。
@@ -15,10 +15,10 @@
 ## 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                           # 10 聯邦 + 頂點、57 套件、66 元件、318 .mbt / 199,215 行
+python3 tools/arch_check.py                           # 10 聯邦 + 頂點、57 套件、66 元件、320 .mbt / 201,027 行
 moon check --deny-warn --target wasm-gc               # 0 warnings, 0 errors（wasm-gc / wasm / js / native 四目標零警告；遠端 2026-11-10 實測）
 moon run cmd/symdemo        --target wasm-gc          # F2 有限對稱、Schreier–Sims、衍生演算法與單子律快驗
-moon run cmd/metatheory     --target wasm-gc          # 565/565 定律（94 個 law_*，逐條重算；遠端實測）
+moon run cmd/metatheory     --target wasm-gc          # 631/631 定律（104 個 law_*，逐條重算；本地 2026-11-12 實測）
 moon run cmd/main           --target wasm-gc          # 139/139 立方與跨領域主定理總表（遠端實測）
 moon run cmd/ualg           --target wasm-gc          # 第十聯邦：ualg/core、site、demorgan、cube 全命題重算（本地）
 moon run cmd/showcase       --target wasm-gc          # 9/9 聯邦 · K_9=36/36 全配對橋 · 四大跨聯邦合流管線 · 48/48 證書（遠端實測）
@@ -68,7 +68,7 @@ python3 tools/health_scan.py > tools/health_report.md # 合併截面未重跑（
 
 ---
 
-## 三、十大聯邦 ＋ 大一統頂點全景（`57` 套件 · `66` 元件 · `318` 檔 · `199,215` 行）
+## 三、十大聯邦 ＋ 大一統頂點全景（`57` 套件 · `66` 元件 · `320` 檔 · `201,027` 行）
 
 | 聯邦 | 規模（`arch_check.py` 實測） | 所屬套件（`pkgL0 .. pkgL9`） | 核心數學結構與代表演算法 |
 |---|---|---|---|
@@ -80,7 +80,7 @@ python3 tools/health_scan.py > tools/health_report.md # 合併截面未重跑（
 | **F6 `condensed`** | `3` 套件<br>`8` 檔 / `5,059` 行 | `gcd`(`L0`), `condensed-core`(`L1`), `condensed`(`L4`) | **下頂點 `V₁` (`gcd`)**：16-lane 延遲取模 `F_p`、HMM `ℤ`-SNF、Bareiss 行列式、DKT 模有界 `ℤ`-HNF、CRT、`ugcd_rat_recon_bigint` 與摘要鏈；**`L1 condensed/core`**：`CompactProfiniteTower`、構造性 Nöbeling 自由基底、Roos–Milnor `R¹lim`、`CondAnima`、`CondSolidModule` 與 **64× `@swar` Steenrod–Adams 極小分解**；**`L4 condensed`**：`CondAnalyticStack`、共軛四元數消元中軸與凝聚四猜想 |
 | **F7 `discovery`** | `3` 套件<br>`5` 檔 / `3,587` 行 | `tensor`(`L2`), `discovery-kernel`(`L3`), `conjecture`(`L5`) | `tensor`：64-trit `GF(3)` 全體 `6,561` 張量秩圖譜 `[1, 128, 4032, 2400]`、64-bit MRV/MAC Gromov–Hausdorff 距離、支配坍縮 VR 同調、Radon 反演、Clifford 旋量；`conjecture/kernel`：Half-GCD 有理重構與 64-bit `ctz` 位平面蘊含格；`conjecture`：6 演化轉移律與 12 項 Lakatos 猜想 |
 | **F8 `accel`** | `2` 套件<br>`11` 檔 / `3,887` 行 | `accel-swar`(`L0`), `accel`(`L4`) + `webgpu/index.html` | **`L0 accel/swar`**：64-bit 硬體原語全集（M4RI RREF、64-trit `GF(3)`、Ozaki-II DP4A CRT、Stockham NTT、立方蝴蝶、Scanbox、HVM2 `INetArena`、Stafford Mix13 Merkle 時代快取 `SwarMemoTable64`、16×4-bit 飽和半模 `swar_grade16_*`）；**`L4 accel`**：跨聯邦加速見證與 **8/8 靜態可移植性審計通過之瀏覽器零依賴 WebGPU WGSL 著色器** |
-| **F9 `meta`** | `5` 套件<br>`34` 檔 / `17,246` 行 | `meta-core`(`L0`), `meta-instances`(`L1`), `meta-iit`(`L1`), `meta-reflect`(`L2`), `cmd-metatheory`(`L3`) | **零外部業務依賴之元理論地板與三軸引擎（`565/565` 定律、`94` 個 `law_*`）**：反射（NbE + 逐步憑證 + `V₅ = 65,536` HF64 + Mahlo）、全域實例（SLG 記憶解析 + 臨界對 + 擬陣判準）、歸納—歸納（Kleene 切片塔 + 雙向 E-graph QIIT + **4-分類內蘊 CwF QIIT 展示消除器** + STLC β），以及嚴格模式 2-範疇 MTT、Paley `R(4,4)=18` / `R(3,5)=14`、Burnside Möbius、Karp 對偶、Nöbeling 單模反演、Vogt 伴隨化與 HS 重對齊定律 |
+| **F9 `meta`** | `5` 套件<br>`34` 檔 / `17,246` 行 | `meta-core`(`L0`), `meta-instances`(`L1`), `meta-iit`(`L1`), `meta-reflect`(`L2`), `cmd-metatheory`(`L3`) | **零外部業務依賴之元理論地板與三軸引擎（`631/631` 定律、`104` 個 `law_*`）**：反射（NbE + 逐步憑證 + `V₅ = 65,536` HF64 + Mahlo）、全域實例（SLG 記憶解析 + 臨界對 + 擬陣判準）、歸納—歸納（Kleene 切片塔 + 雙向 E-graph QIIT + **4-分類內蘊 CwF QIIT 展示消除器** + STLC β），以及嚴格模式 2-範疇 MTT、Paley `R(4,4)=18` / `R(3,5)=14`、Burnside Möbius、Karp 對偶、Nöbeling 單模反演、Vogt 伴隨化與 HS 重對齊定律 |
 | **F10 `ualg`** | `5` 套件<br>`23` 檔 / `7,813` 行 | `ualg-core`(`L0`), `ualg-site`(`L0`), `ualg-demorgan`(`L1`), `ualg-cube`(`L2`), `cmd-ualg`(`L3`) | **構造性泛代數**：項／恆等式／同餘生成／商與同構定理／Mal'cev 項搜尋；**有限偏序預層**：Alexandrov 拓撲、核子普查、Isbell 稠密性、`a ⊣ i` 自然變換計數驗證；**自由 De Morgan 代數** `DM(n)`（反鏈正規形、Kalman 𝟜-語義、Dedekind 數）、面格 `𝔽(n)` 與 `∃ ⊣ w ⊣ ∀`；**立方雙重否定核子** `j = ¬¬`：Glivenko `Fix(¬¬) ≅ P(頂點)`、`j 不保併`（V、V² 共 484 反例）、`∃i 4／∀i 44` 反例；**層化只經頂點決定** `a(aF⊠aG) = a(F⊠G)`；`cmd/ualg` 全命題重算執行檔 |
 | **頂點 `unification`** | `2` 套件<br>`20` 檔 / `6,984` 行 | `bridge`(`L8`), `cmd-showcase`(`L9`) | **九聯邦完全圖 `K₉ = 36/36` 全配對跨聯邦雙邊橋**、`F7 → F9 → F4 → F1` 四聯邦定理自動晉升管線、**`F8 ↔ F5 ↔ F1` 三元橋**、**`F2 ↔ F3 ↔ F6` 三元橋**、**`F1 × F3 × F4 × F8 × F9` 七大前沿支柱五元合流**、`ATLAS-01..18` 幾何—邏輯圖譜、旋轉差分與 **`48/48` 大一統證書** |
 
@@ -91,7 +91,7 @@ python3 tools/health_scan.py > tools/health_report.md # 合併截面未重跑（
 | 項目 | 實測數字 | 驗證入口／出處 |
 |---|---|---|
 | **主定理總表** | **139 / 139**（`158` 條規格、`1,649` 個唯一公開符號，`O(N)` 雜湊核驗 `0` 幽靈條目） | `cmd/main`（`verify.mbt` + `spec.mbt`；遠端實測，合併截面未重跑） |
-| **第九聯邦元理論定律** | **565 / 565**（`94` 個 `law_*` 函式，逐條重算） | `cmd/metatheory`（遠端實測，合併截面未重跑） |
+| **第九聯邦元理論定律** | **631 / 631**（`104` 個 `law_*` 函式，逐條重算） | `cmd/metatheory`（本地 2026-11-12 實測） |
 | **大一統證書與全配對橋** | **48 / 48 證書** · **`K₉ = 36 / 36` 九聯邦完全雙邊橋** · **4 條跨聯邦三元／四元／五元合流管線** | `cmd/showcase`（`bridge/`） |
 | **高階立方結構與範疇組合** | **54 / 54 獨立結構證書** × **26 個運算動詞** × **14 種範疇組合模式**（14 條交互定理，零別名搭便車） | `cubical/structures` |
 | **第十聯邦 ualg 定律** | `cmd/ualg` 逐條重算 `ualg/{core,site,demorgan,cube}` 全部命題（本地落倉；未登記 Lean、未入 barrel；獨立 `lake env lean` 綠檔 `ImportGraph.lean` 為 O5 邏輯內核之 Lean 對照） | `moon run cmd/ualg`；[`ualg/`](ualg/) |
@@ -165,4 +165,4 @@ python3 tools/health_scan.py > tools/health_report.md # 合併截面未重跑（
 
 ## 授權與狀態
 
-授權見 [`LICENSE`](LICENSE)。本倉庫為研究級數學與系統工程：`139/139` 主定理、`565/565` 元理論定律、`48/48` 大一統證書與 `K₉ = 36/36` 跨聯邦全橋為遠端 2026-11-10 CI 現場重算之結果（合併截面未重跑；第十聯邦 `ualg` 之 `cmd/ualg` 為本地落倉、亦未接入 CI）；每一項演算法的前提與退化邊界皆量化記錄於 `cmd/semiringreport` §19 與各套件 `README.md` 中。
+授權見 [`LICENSE`](LICENSE)。本倉庫為研究級數學與系統工程：`139/139` 主定理、`631/631` 元理論定律、`167/167` 第十聯邦命題、`48/48` 歷史證書與 `K₁₀ = 45/45` 跨聯邦全橋為本地 2026-11-12 實測並已接入 CI；每一項演算法的前提與退化邊界皆量化記錄於 `cmd/semiringreport` §19 與各套件 `README.md` 中。

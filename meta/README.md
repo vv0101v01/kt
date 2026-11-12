@@ -1,16 +1,16 @@
 # meta — 反射 × 全域實例 × 歸納-歸納：從數學結構長出來的三個型別論機制
 
 > MoonBit `moonc v0.10.20` · `moon 0.1.20261104` · 第九聯邦（`meta-core` / `meta-instances` / `meta-iit` / `meta-reflect` / `cmd-metatheory`）
-> `moon run cmd/metatheory --target wasm-gc` → **565/565 定律**（遠端 2026-11-10 實測；2026-11-11 合併截面未重跑）· `python3 tools/arch_check.py` → `architecture ok`（10 聯邦／57 套件／66 元件／318 .mbt／199,215 行）
+> `moon run cmd/metatheory --target wasm-gc` → **631/631 定律**（本地 2026-11-12 實測）· `python3 tools/arch_check.py` → `architecture ok`（10 聯邦／57 套件／66 元件／320 .mbt／201,027 行）
 
 ---
 
 ## 0. 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                          # 10 聯邦 / 57 套件 / 66 元件 / 318 .mbt / 199,215 行（合併截面實測）
+python3 tools/arch_check.py                          # 10 聯邦 / 57 套件 / 66 元件 / 320 .mbt / 201,027 行（本地 2026-11-12 實測）
 moon check --deny-warn --target wasm-gc              # 0 warnings, 0 errors（遠端 2026-11-10 四目標實測）
-moon run cmd/metatheory --target wasm-gc             # 565/565 定律（逐條重算；遠端實測，合併截面未重跑）
+moon run cmd/metatheory --target wasm-gc             # 631/631 定律（逐條重算；本地 2026-11-12 實測）
 moon run cmd/main       --target wasm-gc             # 139/139 定理（遠端實測，合併截面未重跑）
 moon run cmd/showcase   --target wasm-gc             # 48/48 大一統證書 + K_9=36/36（遠端實測）
 moon run cmd/ualg       --target wasm-gc             # 第十聯邦：ualg 全命題重算（本地落倉）
@@ -293,7 +293,7 @@ subst_insert t x k     // 同步重寫所有變數節點（vs 鏈的深度會跟
 
 | 事項 | 狀態 |
 |---|---|
-| 「所有定律都通過」 | ✅ 565/565（遠端 2026-11-10 實測；合併截面未重跑），`moon run cmd/metatheory` 每次重算 |
+| 「所有定律都通過」 | ✅ 631/631（本地 2026-11-12 實測），`moon run cmd/metatheory` 每次重算 |
 | 「這些是形式化定理」 | ❌ 不是。它們是**機器可判定的具體實例 + 結構性論證**；沒有在 Coq/Agda 裡做 meta-theorem 的形式化 |
 | 一致性判準 | 現在是「**可達目標宇宙**（程式生成）+ 區域實例 + 典範化子推導」上的判定；仍受深度上限約束，且不是完整的合流判定程序 |
 | 可導性閉包是擬陣嗎 | **有判準，且已升級為逐實例證書**：`matroidal_criterion` + `matroidal_certificate`／`verify_matroidal_certificate`——分割（blocks/loops）結構檢查 + **2^n 窮盡對帳**（n ≤ 12，與 `submodularity_witness` 同一上限），取代舊版 12 樣本對帳；形式化證明（Lean）仍未做 |
@@ -428,4 +428,4 @@ tools/health_report.md    最近一次健檢結果
 | 同一套件的第二份 `ramsey_window` | **合併**：轉發 `@core.ramsey_upper`，並刪掉「R(4,4) 不可算」的過時說明 | 1 |
 | 過時的說明文字 | 更新 `ramsey.mbt` 檔頭、`compose.mbt` 邊界註解、`meta/README` 誠實邊界表裡的「未實作 STLC β」標記 | 3 |
 
-死碼候選：14 → 4 → **0**（全倉健檢升級後，掃描 `5,810` 個函式／方法達成 **0 死碼、0 無引用型別、0 空殼 `enum`、0 完全相同函式體**（遠端 2026-11-10 實測），`cmd/metatheory` 達 **565/565 定律**）。
+死碼候選：14 → 4 → **0**（全倉健檢升級後，掃描 `5,810` 個函式／方法達成 **0 死碼、0 無引用型別、0 空殼 `enum`、0 完全相同函式體**（遠端 2026-11-10 實測），`cmd/metatheory` 達 **631/631 定律**）。

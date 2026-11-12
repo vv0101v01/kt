@@ -902,5 +902,12 @@ Dev.txt（本節）、agent.md、agent.v2.md、lean/README.md、lean/UNIVERSAL.m
 - K10-45：投影運算保所有等價關係，不能當負控制；改用 (x+y)%3 在 Chain3 上非 Mal'cev 且非 congruence。
 - 環境事故：本輪中段 ~/.moon 與 .git 因快照排除而遺失；已重裝 moon 0.1.20261104（同版本）、moon update、重新 clone 取回 .git（HEAD 仍 60435a1），工作樹內容無損。其後跨訊息快照再次排除 .git，本地 commit 物件遺失，但工作樹 53 項改动完整；已再次重建 .git 並重新提交推送。
 
+【CI 紅燈診斷與修復（同輪續）】
+- 症狀：push 後 CI run 43131998961（head f4fccf2）唯一失敗步為「Cubical 定理總表（139 / 139）」；本地 `moon run cmd/main --target wasm-gc` 重現 `passed 138/139`，失敗條目為「Kalman 雙軌自由 De Morgan 區間（loop(i∧¬i) ≠ base）…」。
+- 定位：臨時 inspect 拆分該條目後，`dm_ok=false`，其餘 `cchm_ok/qmat_ok/kernel_eval_closed_peano` 皆 true；再拆 `dm_ok` 得唯一 false 子句為 `!@kernel.conv_at(0,1,DVCircleTy,circle_point(i∧¬i),DVCirclePoint(DZero))`。根因：`cubical/kernel/nbe_dep.mbt` 的 `conv_at` 在 `DVCircleTy`/`DVTorusTy` 座標判等使用 Boolean 真值表 `dim_eq_sem`，把自由 De Morgan 區間中的 `i∧¬i` 誤判為端點 0，導致 `loop(i∧¬i)` 定義性塌縮到 `base`，違反 Kalman 雙軌自由 De Morgan 區間的非塌縮要求。
+- 修復：`conv_at` 的 circle/torus 座標判等改用 `dim_eq_demorgan`（自由 De Morgan 代數判等），並補註解說明 Boolean reflection 不可用於定義性判等。未改 `verify.mbt` 定理陳述、未放寬任何負控制。
+- 驗證：臨時 probe 即測即刪；`moon check --deny-warn --target wasm-gc`、`moon build --target wasm-gc`、`python3 tools/arch_check.py` 全綠；`cmd/main` **139/139**、`cmd/metatheory` **631/631**、`cmd/ualg` **167/167**、`cmd/showcase` 48/48 + K10=45/45 + ualg 9/9 + replacements 6/6 + atlas 18/18 + pentad true；`gen_laws.py` 104 laws、`gen_labels.py` 631 labels/533 distinct 已重生。
+- 文檔：CI label 565→631；README/readme.v2/agent.md/agent.v2/meta/README 之現行定律數 565→631、law_* 94→104、arch 318/199215→320/201027，並把「遠端實測/合併截面未重跑」之現行操作數字改為本地 2026-11-12 實測（歷史合併註記保留）。
+
 【前沿搜索】Stanley–Reisner/Hochster（arXiv:math/0410107, 2607.10639）；Knaster–Tarski/Horn lfp（Imperial KR, arXiv:cs/9511102）；¬¬ sheafification/cubical（Swan HoTTEST 2023）。MoonBit 0.10.20 breaking：#derive attribute、Json moved、Array on js is struct、exact_view/unsafe_view、async 0.22.5 pin for wasm-gc。
 

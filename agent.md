@@ -14,7 +14,7 @@ overlap, `agent.v2.md` governs the detail and this file governs the procedure an
 
 **Repository at a glance** — MoonBit package `vv0101v01/cubical-hermitian` v2.0.0,
 `preferred_target = "wasm"`, **10 federations (9 in the dual-V graph + `ualg` in parallel) + 1 unification apex**,
-**57 packages**, **66 components**, **318 `.mbt` files**, **199,215 lines** (verified by `python3 tools/arch_check.py`, 2026-11-11 post-merge).
+**57 packages**, **66 components**, **320 `.mbt` files**, **201,027 lines** (verified by `python3 tools/arch_check.py`, 2026-11-12 K₁₀ round).
 
 ---
 
@@ -119,9 +119,9 @@ git diff '*.mbti'
 `.mbti` snapshots are the diff that catches accidental public-API changes: a refactor that is meant to be
 internal must leave the generated interfaces untouched. For cross-federation work, finish with an
 end-to-end run — `moon run cmd/main --target wasm-gc` (`139/139` theorems),
-`moon run cmd/metatheory --target wasm-gc` (`565/565` laws), and
+`moon run cmd/metatheory --target wasm-gc` (`631/631` laws), and
 `moon run cmd/showcase --target wasm-gc` (`48/48` historical certificates + `K_10 = 45/45` constructive bridges, incl. 9 `ualg` edges and 6 structural replacements).
-(Remote's 2026-11-10 verification; the merged tree has not been re-run — see §5 merge note.)
+(Local 2026-11-12 re-run after the K₁₀ round and the De Morgan conversion fix; historical merge note in §5 is superseded for these counts.)
 
 ### 1.3 The one-sentence version
 
@@ -174,7 +174,7 @@ recorded. Submit through it:
   radius (which packages, which federations, which `.mbti` surfaces), and the verification plan.
 * **Project-content changes** — anything that alters what the repository *is*: the federation map or
   `architecture.json` components, the theorem registry counts (`139/139`), the metatheory law counts
-  (`565/565`), the certificate ledger (`48/48`), the `K₉ = 36` bridge counts, `ATLAS-01..18`,
+  (`631/631`), the certificate ledger (`48/48`), the `K₁₀ = 45/45` bridge counts (historical `K₉ = 36/36` subgraph), `ATLAS-01..18`,
   `CONJ-01..12`, the `agent.v2.md` rules themselves, and the per-folder `README.md` set mapped in Part II
   of this file.
 * **Boundary changes** — a new `moon.pkg` import edge, a new `supported_targets` restriction, a new
@@ -232,7 +232,7 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 | 12 | [`accel/`](accel/README.md) | F8 · L0–L4 (`accel/swar` + `accel`) | 11 | 3,887 | `L0` 64-bit SWAR primitives (M4RI RREF, 64-trit `GF(3)`, Ozaki-II CRT, Stockham NTT, Cube64 butterfly, Scanbox, HVM2 `INetArena`) + 8/8 portable WGSL shaders |
 | 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 818 | Executable crash-consistency model (`fsync` ordering) + BFT `3f+1` quorum durable replicas |
 | 14 | [`meta/`](meta/README.md) | F9 · L0–L2 (**4 library sub-packages** + `cmd/metatheory`) | 33 | 17,115 | Zero-business-dependency metatheory floor & three-axis engine: Paterson–Wegman DAG MGU, Bareiss, SLG tabling, bidirectional E-graph QIIT, NbE reflection, `V₅ = 65,536` HF64, Vogt/HS realignment & Paley Ramsey |
-| 15 | [`cmd/`](cmd/README.md) | 6 executables · L2–L9 | 12 | 4,076 | `cmd/main` (`139/139`), `cmd/metatheory` (`565/565`), `cmd/showcase` (`48/48` + `K₁₀=45/45`), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
+| 15 | [`cmd/`](cmd/README.md) | 6 executables · L2–L9 | 12 | 4,076 | `cmd/main` (`139/139`), `cmd/metatheory` (`631/631`), `cmd/showcase` (`48/48` + `K₁₀=45/45`), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
 | 16 | [`tools/`](tools/README.md) | infrastructure (not a MoonBit package) | 0 | 0 | `arch_check.py`: federation partition, file ownership, `moon.pkg` imports, source reference graph, statistics |
 | 17 | [`webgpu/`](webgpu/README.md) | F8 browser side | 0 | 0 | Zero-dependency browser verifier for all 8 registered WGSL compute shaders + CPU-SWAR bitwise cross-check |
 | 18 | [`ualg/`](ualg/README.md) | F10 · L0–L3 (**4 sub-packages** + `cmd/ualg`) | 22 | 7,756 | Constructive universal algebra × presheaf template × De Morgan cubes (congruence lattices/quotients, Mal'cev terms, Rees quotients, nuclei, `¬¬`-sheafification as counted left adjoint; free De Morgan algebras `DM(n)`; cubical double-negation nucleus; Glivenko). Parallel to the dual-V graph; **not wired into `K₉`**; Lean-side counterpart: `lean/KtLaws/Instances/ImportGraph.lean` (O5 logic core, green, unregistered) |
@@ -372,7 +372,7 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 | # | Sub-package | Target | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
 | 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | Entry point for the `139/139` theorem ledger (`print_report()`) |
-| 2 | [`cmd/metatheory/`](cmd/metatheory/README.md) | all | 1 | 125 | 31 | Ninth Federation entry point recomputing all `565/565` metatheory laws across `94` `law_*` functions |
+| 2 | [`cmd/metatheory/`](cmd/metatheory/README.md) | all | 1 | 125 | 31 | Ninth Federation entry point recomputing all `631/631` metatheory laws across `104` `law_*` functions |
 | 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 208 | 66 | Ten federations × `K₁₀ = 45/45` × three cross-federation triads/pipelines × `48/48` historical certificates + K₁₀ certificate |
 | 4 | [`cmd/symdemo/`](cmd/symdemo/README.md) | all | 1 | 309 | 65 | `symlib` demo: "derived vs. direct" two-path agreement + monad laws |
 | 5 | [`cmd/symbench/`](cmd/symbench/README.md) | all | 2 | 594 | 88 | 12-case full-pipeline timing + seven derived-algorithm families (A–G) |
@@ -414,7 +414,7 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 reporting) → `tools/` → `architecture.json`.
 
 **Just need to run something** — `moon run cmd/main --target wasm-gc` (139/139 theorems),
-`moon run cmd/metatheory --target wasm-gc` (565/565 laws),
+`moon run cmd/metatheory --target wasm-gc` (631/631 laws),
 `moon run cmd/showcase --target wasm-gc` (48/48 historical certificates + K_10=45/45),
 `moon run cmd/semiringreport --target native` (the measurement report).
 
@@ -446,10 +446,10 @@ against real signatures** — if a function name or arity changes, the README ch
 
 ## 9. Onboarding checklist (first hour)
 
-1. `python3 tools/arch_check.py` → confirm `10 federations + unification apex, 57 packages, 66 components, 318 .mbt files, 199215 .mbt lines` on your machine. This is
+1. `python3 tools/arch_check.py` → confirm `10 federations + unification apex, 57 packages, 66 components, 320 .mbt files, 201027 .mbt lines` on your machine. This is
    your baseline; every later claim of "unchanged architecture" is measured against it.
 2. `moon check --deny-warn --target wasm-gc` → must be silent.
-3. `moon run cmd/main --target wasm-gc` → must end at `139/139` (`cmd/metatheory` → `565 / 565`).
+3. `moon run cmd/main --target wasm-gc` → must end at `139/139` (`cmd/metatheory` → `631 / 631`).
 4. Read `cubical/finite/README.md`, then `semiring/algebra/README.md` — they are the two smallest
    self-contained views of what this repository is about.
 5. Read §1.2 Tier B of this file once more, then make a one-line change to some file and walk the loop

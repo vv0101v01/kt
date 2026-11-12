@@ -42,7 +42,7 @@
 
 ---
 
-## 二、十聯邦（九聯邦入雙 V／K₉）＋大一統頂點職責總覽（全倉 `57` 套件、`66` 元件、`318` 個 `.mbt`、`199,215` 行；靜態健檢合併截面未重跑）
+## 二、十聯邦（九聯邦入雙 V／K₉）＋大一統頂點職責總覽（全倉 `57` 套件、`66` 元件、`320` 個 `.mbt`、`201,027` 行；本地 2026-11-12 arch_check 實測）
 
 | 聯邦 | 套件數／規模 | 套件清單（含分層角色） | 核心數學結構與演算法職責 |
 |---|---|---|---|
@@ -54,7 +54,7 @@
 | **F6 `condensed`** | `3` 套件<br>`8` 檔 / `5,059` 行 | `gcd` (`L0`)、`condensed-core` (`L1`)、`condensed` (`L4`) | **下頂點 `V₁` (`gcd`)**：16-lane 延遲取模 `F_p` GEMM/RREF、Havas–Majewski–Matthews `ℤ`-SNF、Bareiss 行列式、Domich–Kannan–Trotter 模有界 `ℤ`-HNF、CRT、`ugcd_rat_recon_bigint` 與摘要鏈；**`L1 condensed/core`**：`CompactProfiniteTower`、構造性 Nöbeling 自由整數基底（`|det(B_ℤ)|=1`）、Roos–Milnor `R¹lim`、`CondAnima`、`CondSolidModule`、`CondSpectralSheaf` 與 **64× `@swar` Steenrod–Adams 極小分解（直抵 `h₃=σ` 與 `h₁³=h₀²h₂` / `η³=4ν`）**；**`L4 condensed`**：`CondAnalyticStack`、共軛四元數消元中軸與凝聚四猜想 |
 | **F7 `discovery`** | `3` 套件<br>`5` 檔 / `3,587` 行 | `tensor` (`L2`)、`discovery-kernel` (`L3`)、`conjecture` (`L5`) | `tensor`：64-trit `GF(3)` 全體 `6,561` 張量秩圖譜 `[1, 128, 4032, 2400]`、64-bit MRV/MAC Gromov–Hausdorff 距離、VR 坍縮、Radon 反演、Clifford 旋量；`conjecture/kernel`：Half-GCD 有理重構與位平面 `ctz` 蘊含格；`conjecture`：6 演化轉移律與 12 項 Lakatos 猜想 |
 | **F8 `accel`** | `2` 套件<br>`11` 檔 / `3,887` 行 | `accel-swar` (`L0`)、`accel` (`L4`) + `webgpu/index.html` | **`L0 accel/swar`**：64-bit 暫存器硬體原語全集（直接賦能 `algebra/core`、`semiring/matrix`、`condensed/core`、`topos/site`、`scheme`、`tensor`、`conjecture/kernel`）；**`L4 accel`**：跨聯邦加速見證與 **8/8 靜態可移植性審計通過之瀏覽器免費 WebGPU WGSL 著色器** |
-| **F9 `meta`** | `5` 套件<br>`34` 檔 / `17,246` 行 | `meta-core` (`L0`)、`meta-instances` (`L1`)、`meta-iit` (`L1`)、`meta-reflect` (`L2`)、`cmd-metatheory` (`L3`) | **零外部業務依賴之元理論地板與三軸引擎（`565/565` 定律、`94` 個 `law_*`；遠端 2026-11-10 實測，合併截面未重跑）**：新增 Burnside 上三角標記 Möbius 81 組分解、Karp 最小環平均對偶、Myhill–Nerode `2^k` 極小性與 Nöbeling 纖維單模反演定律，聯同 Bareiss、Paterson–Wegman MGU、SLG、QIIT E-graph、NbE 一般 β 與 `V₅ = 65,536` HF64 模型論反射 |
+| **F9 `meta`** | `5` 套件<br>`34` 檔 / `17,246` 行 | `meta-core` (`L0`)、`meta-instances` (`L1`)、`meta-iit` (`L1`)、`meta-reflect` (`L2`)、`cmd-metatheory` (`L3`) | **零外部業務依賴之元理論地板與三軸引擎（`631/631` 定律、`104` 個 `law_*`；本地 2026-11-12 實測）**：新增 Burnside 上三角標記 Möbius 81 組分解、Karp 最小環平均對偶、Myhill–Nerode `2^k` 極小性與 Nöbeling 纖維單模反演定律，聯同 Bareiss、Paterson–Wegman MGU、SLG、QIIT E-graph、NbE 一般 β 與 `V₅ = 65,536` HF64 模型論反射 |
 | **F10 `ualg`**（已接入雙 V／K₁₀） | `5` 套件<br>`23` 檔 / `7,813` 行 | `ualg-core`(`L0`)、`ualg-site`(`L0`)、`ualg-demorgan`(`L1`)、`ualg-cube`(`L2`)、`cmd-ualg`(`L3`) | **構造性泛代數**（項／恆等式／同餘格／商與同構定理／Mal'cev 項搜尋／`θ∘ψ=ψ∘θ=θ∨ψ`）、**有限偏序預層模板**（Alexandrov 拓撲、核子普查、Isbell 稠密性、`a ⊣ i` 計數驗證）、**自由 De Morgan 代數 `DM(n)`**（反鏈正規形、Kalman 𝟜-語義、Dedekind 數）、面格 `𝔽(n)` 與 `∃ ⊣ w ⊣ ∀`、**立方雙重否定核子 `j=¬¬`**（Glivenko：`Fix(¬¬) ≅ P(頂點)`；`j` 不保併；`∃i 4／∀i 44` 反例）、**層化只經頂點決定**；`cmd/ualg` 全命題重算執行檔（已入 CI；跨聯邦橋接見 `bridge/ualg_federation_constructions.mbt`） |
 | **頂點 `unification`** | `2` 套件<br>`22` 檔 / `8,515` 行 | `bridge` (`L8`)、`cmd-showcase` (`L9`) | **十聯邦完全圖 `K₁₀ = 45/45` 全配對構造性跨聯邦橋**（9 條 `ualg` 邊＋6 條弱橋替換）、`F7 → F9 → F4 → F1` 自動晉升管線、**`F8 ↔ F5 ↔ F1` 三元橋**、**`F2 ↔ F3 ↔ F6` 對稱—半環—凝聚三元合流橋**、五聯邦五角大一統定理、18 項幾何—邏輯圖譜、旋轉差分與 5 直覺猜想實驗室、以及 **`48/48` 大一統證書** |
 
@@ -88,10 +88,10 @@ python3 tools/health_scan.py
 
 # 2. 四大可執行驗證入口（wasm-gc 順序執行）
 moon run cmd/symdemo --target wasm-gc       # F2 有限對稱群、McKay 規範形與 Burnside 標記展示
-moon run cmd/metatheory --target wasm-gc    # F9 元理論三軸引擎：565 / 565 定律（遠端 2026-11-10 實測；合併截面未重跑）
+moon run cmd/metatheory --target wasm-gc    # F9 元理論三軸引擎：631 / 631 定律（本地 2026-11-12 實測）
 moon run cmd/ualg --target wasm-gc          # 第十聯邦：ualg 全命題重算（167/167，已入 CI）
 moon run cmd/showcase --target wasm-gc      # V₂ 十聯邦大一統：48/48 歷史證書 + K₁₀=45/45 + ualg 9 構造邊 + 6 弱橋替換 + F8↔F5F1 + F2↔F3↔F6
-moon run cmd/main --target wasm-gc          # F1+F6 定理總控登記表：passed 139/139（遠端實測，合併截面未重跑）
+moon run cmd/main --target wasm-gc          # F1+F6 定理總控登記表：passed 139/139（本地 2026-11-12 實測）
 # 3. 介面更新與格式化
 moon info --target wasm-gc && moon fmt
 
@@ -107,7 +107,7 @@ python3 tools/gen_labels.py  # 讀 cmd/metatheory 的**實際輸出**重生 lean
 ```
 
 * `gen_laws.py` 之前只認單行簽名，`moonfmt` 折行過的 `law_*` 會被漏掉（曾把 437 條漏成 128 條），現已修正。
-* `gen_labels.py` 從執行輸出取標籤，因此「定律漏登記」在標籤清單裡一定看得出來（現況 565 條；遠端 2026-11-10 實測，合併截面未重跑）。
+* `gen_labels.py` 從執行輸出取標籤，因此「定律漏登記」在標籤清單裡一定看得出來（現況 631 條；本地 2026-11-12 實測）。
 * 第九聯邦的能力三段式對帳（能不能用／能不能自己檢查／邊界在哪）與淌欠結案表見 [`meta/CAPABILITIES.md`](meta/CAPABILITIES.md)。
 
 ### 2.2 工具鏈可重建性（沙盒實測）

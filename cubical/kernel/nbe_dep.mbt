@@ -14,6 +14,7 @@ using @face_bdd {
   bdd_or,
   bdd_tree_cofactor,
   contains_int,
+  dim_eq_demorgan,
   dim_eq_sem,
   dim_nvars_sem,
   dim_simplify,
@@ -3767,7 +3768,11 @@ pub fn conv_at(
         (DVCirclePoint(r), DVCirclePoint(s)) => {
           let rr = circle_dim_of(circle_point(r))
           let ss = circle_dim_of(circle_point(s))
-          dim_eq_sem(rr, ss)
+          // The interval is the free De Morgan algebra, not its Boolean
+          // reflection: `i∧¬i` is not definitionally an endpoint, so
+          // `loop(i∧¬i)` must not collapse to `base`.  Boolean truth-table
+          // equality (`dim_eq_sem`) would unsoundly identify them.
+          dim_eq_demorgan(rr, ss)
         }
         (DVNeutral(x), DVNeutral(y)) => conv_neutral(level, dlevel, x, y)
         _ => false
@@ -3777,7 +3782,7 @@ pub fn conv_at(
         (DVTorusPoint(r1, r2), DVTorusPoint(s1, s2)) => {
           let (ra, rb) = torus_dims_of(torus_point(r1, r2))
           let (sa, sb) = torus_dims_of(torus_point(s1, s2))
-          dim_eq_sem(ra, sa) && dim_eq_sem(rb, sb)
+          dim_eq_demorgan(ra, sa) && dim_eq_demorgan(rb, sb)
         }
         (DVNeutral(x), DVNeutral(y)) => conv_neutral(level, dlevel, x, y)
         _ => false
