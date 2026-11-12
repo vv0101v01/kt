@@ -998,7 +998,7 @@ pub fn run_all_checks() -> Array[CheckResult] {
       },
     },
     CheckResult::{
-      name: "T1–T4 泛消元／凝聚核心升級：Domich–Kannan–Trotter 模行列式有界 HNF、Bareiss 無分數行列式、構造性 Nöbeling 單模整數基底（C(S,ℤ) 自由性与 Z[S]^■ 對偶積）、Roos–Milnor R¹lim 自同態撓因子與 64-bit @swar Steenrod–Adams 極小分解（h₀,h₁,h₂,h₃ 八元數 Hopf 類與 η³=4ν 代數恆等式 Ext_A^{3,6}=1）",
+      name: "T1–T4 泛消元／凝聚核心升級：Domich–Kannan–Trotter 模行列式有界 HNF、Bareiss 無分數行列式、構造性 Nöbeling 單模整數基底（C(S,ℤ) 自由性与 Z[S]^■ 對偶積）、Smith 餘核 coinvariants 自同態撓因子與 64-bit @swar Steenrod–Adams 極小分解（h₀,h₁,h₂,h₃ 八元數 Hopf 類與 η³=4ν 代數恆等式 Ext_A^{3,6}=1）",
       ok: {
         let mh = @gcd.zmat_from_int_rows([
           [4, 6, 10],
@@ -1014,7 +1014,7 @@ pub fn run_all_checks() -> Array[CheckResult] {
           @condensed.verify_nobeling_free_solid_duality(
             @condensed.compact_tower_padic(3, 3),
           )
-        let (r0, rtor) = @condensed.rlim_zmat_endomorphism(
+        let (r0, rtor) = @condensed.coinvariants_zmat_endomorphism(
           @gcd.zmat_from_int_rows([[3]]),
         )
         let ad = @condensed.adams_ext_swar_frontier_report()

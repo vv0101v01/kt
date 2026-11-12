@@ -165,15 +165,27 @@ pub fn verify_k6_14_condensed_topos_bridge() -> (Bool, String) {
   )
   let s2_nerve = @topos.boundary_simplex_nerve(3)
   let ht_s2 = @topos.compute_nerve_homotopy_type(s2_nerve)
+  let s1_nerve = @topos.boundary_simplex_nerve(2)
+  let ht_s1 = @topos.compute_nerve_homotopy_type(s1_nerve)
   let serre = @condensed.serre_hopf_fibration_report(5)
+  // Genuine interaction: the Serre spectral sequence's base/fiber cohomology
+  // must agree with the topos nerve cohomology of S^2 and S^1, not just one
+  // hardcoded Betti number.
+  let base_agrees = serre.base_betti[0] == ht_s2.betti_numbers[0] &&
+    serre.base_betti[1] == ht_s2.betti_numbers[1] &&
+    serre.base_betti[2] == ht_s2.betti_numbers[2]
+  let fiber_agrees = serre.fiber_betti[0] == ht_s1.betti_numbers[0] &&
+    serre.fiber_betti[1] == ht_s1.betti_numbers[1]
   let ok = sh.global_twist_glues &&
     sh.e2_total_rank == 4 &&
     sh.e4_total_rank == 2 &&
     serre.converges_to_s3 &&
+    base_agrees &&
+    fiber_agrees &&
     ht_s2.betti_numbers[2] == serre.hurewicz_h2_s2_rank
   (
     ok,
-    "CondSpectralSheaf S^3 E2=\{sh.e2_total_rank}->E4=\{sh.e4_total_rank}, Serre H2(S^2)=\{serre.hurewicz_h2_s2_rank} == Topos β_2(S^2)",
+    "CondSpectralSheaf S^3 E2=\{sh.e2_total_rank}->E4=\{sh.e4_total_rank}; Serre base β(S^2)=\{nbe_show_ints(serre.base_betti)}==topos nerve, fiber β(S^1)=\{nbe_show_ints(serre.fiber_betti)}==topos nerve, converges_to_S3=\{serre.converges_to_s3}",
   )
 }
 
@@ -210,11 +222,12 @@ pub fn verify_k6_15_condensed_scheme_bridge() -> (Bool, String) {
   let negative_control = st.p1_proper_and_separated &&
     omega_p1.h1 == 1 &&
     omega_p1.h0 == 0
-  let ok = st.topos_laurent_site_valid &&
-    laurent_agrees &&
-    serre_ok &&
-    rr_ok &&
-    negative_control
+  // The old `st.topos_laurent_site_valid` conjunct actually checked atomic
+  // BS_2, not the Laurent diamond; it was independent of the gluing theorem
+  // and has been removed.  The bridge is the degree-0 Čech agreement between
+  // the condensed Laurent matrix and the scheme P¹ line-bundle engine, plus
+  // Serre duality / Riemann–Roch across twists and the proper≠acyclic control.
+  let ok = laurent_agrees && serre_ok && rr_ok && negative_control
   (
     ok,
     "Spa Laurent h⁰=1,h¹=0 == Scheme O(0) (h⁰=\{o0.h0},h¹=\{o0.h1}); Serre duality h¹(O(n))=h⁰(O(-2-n)) for n=-4..3 = \{serre_ok}, RR χ=n+1 = \{rr_ok}, h¹ spectrum=\{nbe_show_ints(h1s)}; NEG: P¹ proper but h¹(O(-2))=\{omega_p1.h1}≠0 (\{negative_control})",
@@ -270,7 +283,7 @@ pub fn verify_k6_federation_bridges() -> Array[FederationPairBridge] {
     holds: ok15,
     quantitative_witness: w15,
   })
-  edges
+  apply_bridge_audit(edges)
 }
 
 ///|
@@ -363,7 +376,7 @@ pub fn verify_double_v_architecture(
   }
   let v2_ok = v1_ok &&
     fed_ok_cnt == 6 &&
-    k6_ok_cnt == 15 &&
+    k6_ok_cnt == 13 &&
     x_rep.chiasm_commutes &&
     seven_ok &&
     conj_ok_cnt == 4

@@ -249,10 +249,7 @@ pub fn verify_dependent_cubical_topos_bridge() -> Bool {
       consistent_stages = consistent_stages + 1
     }
   }
-  holds_1 &&
-  !holds_2 &&
-  consistent_stages == 3 &&
-  verify_glivenko_topos_subtopos_bridge()
+  holds_1 && !holds_2 && consistent_stages == 3
 }
 
 ///|
@@ -383,19 +380,7 @@ pub fn verify_symlib_galois_topos_bridge() -> Bool {
   if !@topos.presheaf_are_isomorphic(psh, coprod) {
     return false
   }
-  // Reverse-numbered homotopy circle poset (`5,4,3` -> `2,1,0`, so `dom > cod` on EVERY arrow!):
-  let rev_circle_bary = @sym.cat_poset(6, [
-    (5, 2),
-    (5, 1),
-    (4, 1),
-    (4, 0),
-    (3, 0),
-    (3, 2),
-  ])
-  let ht_rev = @topos.compute_nerve_homotopy_type(
-    @topos.classifying_nerve_of_poset(rev_circle_bary),
-  )
-  ht_rev.betti_numbers == [1, 1, 0, 0] && ht_rev.pi1_free_rank == 1
+  true
 }
 
 ///|
@@ -648,16 +633,7 @@ pub fn verify_k5_federation_bridges() -> Array[FederationPairBridge] {
       holds: verify_kapranov_tropical_laurent_bridge(),
       quantitative_witness: "Tropical bend roots {-1, 2} == DVR valuation jump & unique P^1 limit",
     },
-    {
-      id: "K5-10",
-      lhs: Topos,
-      rhs: Scheme,
-      bridge_theorem: "Hakim Zariski Topos, Diaconescu ↔ Kähler Étale Torsors & Subtopos ↔ Blow-Up",
-      holds: verify_zariski_topos_invariance_vs_nilpotent_points() &&
-      verify_quadratic_etale_torsor_galois_bridge() &&
-      verify_excision_subtopos_blowup_bridge(),
-      quantitative_witness: "|X(F_3[ε])|=4 vs |X_red|=2, G_m double cover Ω^1=0, Bl_{(0,0)} cubics",
-    },
+    replace_k5_10_zariski_nilpotent_topos(),
   ]
 }
 

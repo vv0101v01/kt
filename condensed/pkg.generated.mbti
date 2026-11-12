@@ -20,6 +20,8 @@ pub fn canon_morphism_valid(CanonMorphism) -> Bool
 
 pub fn canon_object_build(String, Int32, (Int32, Int32) -> Bool, (Int32) -> Int32) -> CanonObject
 
+pub fn coinvariants_zmat_endomorphism(@gcd.ZMat) -> (Int32, Array[@bigint.BigInt])
+
 pub fn compact_tower_cantor(Int32) -> @vv0101v01/cubical-hermitian/condensed/core.CompactProfiniteTower
 
 pub fn compact_tower_padic(Int32, Int32) -> @vv0101v01/cubical-hermitian/condensed/core.CompactProfiniteTower
@@ -121,8 +123,6 @@ pub fn cond_steenrod_adem_pair(Int32, Int32) -> Array[Array[Int32]]
 pub fn koszul_tor_report(Int32, Int32) -> @vv0101v01/cubical-hermitian/condensed/core.KoszulTorReport
 
 pub fn nobeling_unimodular_basis_zmat(@vv0101v01/cubical-hermitian/condensed/core.CompactProfiniteTower) -> @gcd.ZMat
-
-pub fn rlim_zmat_endomorphism(@gcd.ZMat) -> (Int32, Array[@bigint.BigInt])
 
 pub fn serre_hopf_fibration_report(Int32) -> @vv0101v01/cubical-hermitian/condensed/core.SerreReport
 

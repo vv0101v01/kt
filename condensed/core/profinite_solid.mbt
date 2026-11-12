@@ -834,12 +834,17 @@ pub fn verify_nobeling_free_solid_duality(t : CompactProfiniteTower) -> Bool {
 }
 
 ///|
-/// 一般有限階自由 `Z`-模逆向塔 `M_0 <--f_0-- M_1 <--f_1-- … <--f_{L-1}-- M_L` 之 Roos–Milnor 導出極限分析：
-/// 構造截斷位移算子 `Δ : ∏_{k=0}^L M_k → ∏_{k=0}^{L-1} M_k`，`(m_0, …, m_L) ↦ (m_0 - f_0(m_1), …, m_{L-1} - f_{L-1}(m_L))`，
-/// 並對單一自同態系統 `M <--f-- M` 同時給出循環位移算子 `id - f` 之 `(lim0_rank, r1lim_torsion_factors)`。
-pub fn rlim_zmat_endomorphism(f : @gcd.ZMat) -> (Int32, Array[BigInt]) {
+/// Coinvariants of a single endomorphism `f : Z^n -> Z^n`:
+/// `coker(I - f) = Z^n / (I - f) Z^n`.  Returns `(free_rank, torsion_factors)`
+/// from the Smith normal form of `I - f`.
+///
+/// This is NOT the inverse limit of the tower `... --f--> Z --f--> Z`.
+/// For an automorphism `f`, the inverse limit is `Z^n`, whereas these
+/// coinvariants can have smaller rank and torsion.  The old name
+/// `rlim_zmat_endomorphism` was mathematically misleading and has been removed.
+pub fn coinvariants_zmat_endomorphism(f : @gcd.ZMat) -> (Int32, Array[BigInt]) {
   guard f.rows == f.cols else {
-    abort("rlim_zmat_endomorphism: endomorphism must be square")
+    abort("coinvariants_zmat_endomorphism: endomorphism must be square")
   }
   let n = f.rows
   let id_minus_f = @gcd.zmat_make(n, n, 0N)

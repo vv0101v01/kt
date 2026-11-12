@@ -266,18 +266,15 @@ fn grand_unification_certificates_from_atlas(
     )
   }
   let x_rep = verify_x_overlap_chiasmus()
-  let (ok11, _) = verify_k6_11_condensed_cubical_bridge()
-  let (ok12, _) = verify_k6_12_condensed_symlib_bridge()
-  let (ok13, _) = verify_k6_13_condensed_semiring_bridge()
-  let (ok14, _) = verify_k6_14_condensed_topos_bridge()
-  let (ok15, _) = verify_k6_15_condensed_scheme_bridge()
-  let k6_new_ok = ok11 && ok12 && ok13 && ok14 && ok15
+  let k6_edges = verify_k6_federation_bridges()
+  let (k6_attempted, k6_active, k6_suspended) = bridge_audit_counts(k6_edges)
+  let k6_new_ok = bridge_audit_all_active_hold(k6_edges) && k6_active == 13
   certs.push(
     bridge_certificate(
       "double_v/chiasm",
-      "Double-V Architecture (V₁=@gcd → X=@condensed → V₂=@bridge K₆=15/15) & 7-Boundary Breakthrough",
+      "Double-V Architecture (V₁=@gcd → X=@condensed → V₂=@bridge K₆ active=13/15, suspended=2) & 7-Boundary Breakthrough",
       x_rep.chiasm_commutes && k6_new_ok,
-      detail="K6_new_edges_5=\{k6_new_ok}, x_overlap=\{x_rep.chiasm_commutes}, invariants=(1,2,1)",
+      detail="K6_active=\{k6_active}/\{k6_attempted}, suspended=\{k6_suspended}, x_overlap=\{x_rep.chiasm_commutes}, invariants=(1,2,1)",
     ),
   )
   let tensor_ok = @tensor.tensor_check_federation_laws()

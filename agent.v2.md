@@ -46,7 +46,7 @@
      python3 tools/arch_check.py
      ```
    - 透過 `git diff *.mbti` 審視公開介面變化是否符合預期；若重構無意改變外部 API，`.mbti` 應保持零非預期變動。
-   - 跨聯邦重大變更完成後，按需執行（嚴格不加 `--release`）`moon run cmd/showcase --target wasm-gc`（`48/48` 大一統證書＋`K_9=36/36`＋`F8↔F5↔F1`＋`F2↔F3↔F6` 雙三元橋）、`moon run cmd/main --target wasm-gc`（`139/139` 定理總表）或 `moon run cmd/metatheory --target wasm-gc`（`631/631` 元理論定律逐條重算）做端到端驗收（本地 2026-11-12 實測）。
+   - 跨聯邦重大變更完成後，按需執行（嚴格不加 `--release`）`moon run cmd/showcase --target wasm-gc`（`51/51` 證書＋`K_9=31/36 active`＋`F8↔F5↔F1`＋`F2↔F3↔F6` 雙三元橋；K₁₀=40/45 active，見 §十七）、`moon run cmd/main --target wasm-gc`（`139/139` 定理總表）或 `moon run cmd/metatheory --target wasm-gc`（`631/631` 元理論定律逐條重算）做端到端驗收（本地 2026-11-12 實測）。
 
 ---
 
@@ -67,7 +67,7 @@
   - `condensed` (`L4`)、`accel` (`L4`，含 `8/8` 靜態審計對齊 `webgpu/index.html` 之 WGSL 著色器)、`semiring/par_host` (`L4`)；
   - `cubical/autonomy` (`L5`)、`conjecture` (`L5`)、`cmd/semiringreport` (`L5`)、`cubical/structures` (`L6`，全體 54 項高階立方結構 × 26 動詞 × 14 組合)、`root` (`L7`)。
 - **Package Layers 8–9 / Component Layers 13–14（上頂點 `V₂` 大一統觀察層）**：
-  - `bridge` (`pkgL8` / `compL13`) 與 `cmd/showcase` (`pkgL9` / `compL14`)：九聯邦完全圖 **`K₉ = 36/36`**、`F7 → F9 → F4 → F1` 四聯邦定理自動晉升、`F8 ↔ F5 ↔ F1` 與 `F2 ↔ F3 ↔ F6` 雙三元合流證書、18 項幾何—邏輯圖譜與 `48/48` 大一統證書。**任何下層聯邦絕對禁止反向匯入 `bridge`**。
+  - `bridge` (`pkgL8` / `compL13`) 與 `cmd/showcase` (`pkgL9` / `compL14`)：九聯邦完全圖 **`K₉ = 31/36 active（5 suspended）`**、`F8 ↔ F5 ↔ F1` 與 `F2 ↔ F3 ↔ F6` 雙三元合流證書、18 項幾何—邏輯圖譜與 `51/51` 大一統／輔助證書；`F7 → F9 → F4 → F1` 晉升管線降級為探索性報告。**任何下層聯邦絕對禁止反向匯入 `bridge`**。
 
 ---
 
@@ -322,7 +322,7 @@ python3 tools/gen_labels.py                 # 551 條 / 453 互異 / 146 族
 | 登記新鮮度 | `python3 tools/gen_laws.py && git diff --exit-code -- 'meta/*/laws.mbt'` | 重新產生後工作區無差異（防「加了 `law_*` 卻忘記重生 `laws.mbt`」） |
 | 定律 | `moon run cmd/metatheory --target wasm-gc` | `通過 631 / 631 定律`（本地 2026-11-12 實測） |
 | 定理 | `moon run cmd/main --target wasm-gc` | `passed 139/139`（本地 2026-11-12 實測） |
-| 證書 | `moon run cmd/showcase --target wasm-gc` | `48/48`、`K₁₀=45/45`（歷史 `K₉=36/36` 子圖）、硬體加速 `all_ok=true`（本地 2026-11-12 實測） |
+| 證書 | `moon run cmd/showcase --target wasm-gc` | `51/51`、`K₁₀=40/45 active（5 suspended）`（歷史 `K₉=31/36 active` 子圖）、硬體加速 `all_ok=true`（本地 2026-11-12 實測） |
 | 架構 | `python3 tools/arch_check.py` | `architecture ok` |
 
 觸發：`push` 到 `main`、`pull_request` 與 `workflow_dispatch`；`concurrency` 對同一 ref 取消舊跑，避免長跑堆積。
@@ -889,7 +889,7 @@ O1 冪等半邊（完整 logical relation；預估 1–2 週）；或回到 O2 �
    * `semiring/app/wasm_verify.mbt`：建立不依賴 `par_host` 之全目標 `wasm-gc` 驗證入口 `verify_semiring_wasm_suite()`。
 3. **Stage `T3`（F6 `L1 condensed/core` 實體拆分、構造性 Nöbeling 自由整數基底、Roos–Milnor `R¹lim` 與 64× `@swar` Steenrod–Adams 前沿）**：
    * `condensed/core/`（`pkgL1`, `compL2`）與 `condensed/reexport_core.mbt`：將 `profinite_solid.mbt` 與 `spectral_homotopy.mbt`（`1,949` 行，僅依賴 `gcd` + `accel-swar`）拆為獨立輕核，使純代數／同倫下游免除 `scheme`/`topos`/`symlib` 耦合。
-   * `condensed/core/profinite_solid.mbt`：新增緊緻函數型射影塔 `CompactProfiniteTower`、構造性 Nöbeling 分層纖維單模整數基底 `nobeling_unimodular_basis_zmat` 與 `verify_nobeling_free_solid_duality`（Bareiss `|det(B_ℤ)|=1` + SNF 全 `1` 證明 `C(S,ℤ) ≅ ⨁ ℤ` 與 `ℤ[S]^■ ≅ ∏ ℤ`），以及 `rlim_zmat_endomorphism`。
+   * `condensed/core/profinite_solid.mbt`：新增緊緻函數型射影塔 `CompactProfiniteTower`、構造性 Nöbeling 分層纖維單模整數基底 `nobeling_unimodular_basis_zmat` 與 `verify_nobeling_free_solid_duality`（Bareiss `|det(B_ℤ)|=1` + SNF 全 `1` 證明 `C(S,ℤ) ≅ ⨁ ℤ` 與 `ℤ[S]^■ ≅ ∏ ℤ`），以及 `coinvariants_zmat_endomorphism`。
    * `condensed/core/spectral_homotopy.mbt`：將 `minimal_resolution_ext_f2` 重構為**內部次數 `t` 齊次分塊 `@swar.gf2_rref_eliminate_u64` + 64-bit `UInt64` `ctz` 位元列梯形化 + 稀疏生成元表示**，新增 `adams_ext_swar_frontier_report()`（`trunc_deg=12, s_max=4, t_max=12`），毫秒級機器證明 `h₀, h₁=η, h₂=ν, h₃=σ` 四個 Hopf 類、Adem 非 2-冪消滅定理及 **`Ext_A^{3,6} = 1`（`h₁³ = h₀²h₂` / `η³ = 4ν`）**。
 4. **Stage `T4`（`F2 ↔ F3 ↔ F6` 三元合流橋、元理論定律擴充與全倉閘門驗收）**：
    * `bridge/f2_f3_f6_triad_bridge.mbt`：新增 `verify_f2_f3_f6_triad_bridge()` 並接入 `cmd/showcase`（初期實測即精確驗證 `A₅` 在序對 `V×V` 上 2-可遷軌道數 `sum_o2 = 2` 而非無序對 `1`）；`verify.mbt` 新增第 **137** 項檢核；`meta/core/triad_f2_f3_f6_spec.mbt` 新增 4 個 `law_*` 函式（+5 條定律，`cmd/metatheory` 達 **`545/545`**，`86` 個 `law_*`、`448` 互異、`179` 族）。
@@ -934,7 +934,7 @@ O1 冪等半邊（完整 logical relation；預估 1–2 週）；或回到 O2 �
 | K10-39 | Ualg×Semiring | 同餘生成 `Cg(R)` = 「Boolean SWAR Kleene star ∘ 基本平移像」的最小不動點（等價閉包與平移像交替迭代至穩定） | Mal'cev 引理的半環演算法：Freese `cg` == Boolean-Kleene 分割，對 Zn6/Chain3/M3/N5/𝟚/×Zn2² 全部主同餘對帳 | Chain3 配對 (0,2) 的原始等價分割不是同餘；Kleene 閉包後才是 full |
 | K10-40 | Ualg×Topos | `poset_cube(2)` → `cat_poset` → `SitePrecomp64`；頂物件 sieves ↔ 48 個開集 | Heyting implication/negation/¬¬、union/inter 在 `ualg/site` 與 `topos/site` Sieve64 逐對同構；子終層化 = 頂點閉包 | ∂□² 與 □² 的 ¬¬ 相同但子複形不同；¬¬ 不保併 |
 | K10-41 | Ualg×Scheme | 立方子複形 K → 頂點 simplicial complex Δ_K（S 是面 iff 其張成最小立方 face 在 K）→ Stanley–Reisner 理想 | ∂□² 的 Δ 是 C₄：I=(x0x2,x1x3)，Hilbert 多項式 4t，degree 4，p_a=1，Betti [1,1]（β₁=1，去尾零）；□² 的 Δ 是 full simplex：I=0，Hilbert cubic，degree 1，p_a=0，Betti [1] | 邊界與填充的 SR 理想/Hilbert 多項式/Betti 皆不同 |
-| K10-42 | Ualg×Condensed | 有限代數平移/自同構 f → `functional_matrix` → `rlim_zmat_endomorphism` | 置換 f：lim0 rank = 圈數 = χ_f 在 1 的根重數，lim1 torsion 空；一般平移：rank = dim ker(I−f) ≤ 代數重數，SNF torsion 給 cokernel | 整數自同態 3·I₂：χ(1)≠0（根重數 0）但 SNF 餘核 (Z/2)²，分離譜與逆極限不變量；有限 endofunction 的 I−f 恆無撓且 rank=圈數，故負控制须用一般整數矩陣 |
+| K10-42 | Ualg×Condensed | 有限代數平移/自同構 f → `functional_matrix` → `coinvariants_zmat_endomorphism` | 置換 f：coinvariant free rank = 圈數 = χ_f 在 1 的根重數，torsion 空；一般平移：rank = dim ker(I−f) ≤ 代數重數，SNF torsion 給 coker(I−f) | 整數自同態 3·I₂：χ(1)≠0（根重數 0）但 SNF 餘核 (Z/2)²，分離譜與餘核 coinvariants 不變量；有限 endofunction 的 I−f 恆無撓且 rank=圈數，故負控制须用一般整數矩陣 |
 | K10-43 | Ualg×Discovery | 48 個 □² 子複形上 4 個謂詞（Betti=[1]、χ=1、¬¬-正則、full）→ `implication_lattice_build` SWAR bitplane | 蘊含格與最小反例由 bitplane 算出，與暴力枚舉逐項相等；P0⇒P1、P3⇒P2/P0；P2⇒P0、P0⇒P2 被反例否證 | 兩 opposite vertices（正則但 β0=2）；open box（無環但非正則） |
 | K10-44 | Ualg×Accel | `cx_boundary_matrix` mod 2 → `gf2_bit_matrix_from_ints` → `gf2_rref_rank_u64` → Betti | torsion-free 立方複形上 GF2 SWAR rank == Q Bareiss rank == mod-p rank；full/boundary/open boxes/suspension/T²=(ΣS⁰)×(ΣS⁰)（n=4）/S²=∂□³ 對帳；T² β=[1,2,1]、S² β=[1,0,1] | 本輪例子無撓；不宣稱一般 torsion 複形 mod2==Q |
 | K10-45 | Ualg×Meta | ualg 分割同餘 ↔ `meta/core` Boolean relation；`ua_quotient_classes`/`ua_kernel_congruence`/`ua_equiv_join_closure`/`ua_rel_comp`；Mal'cev term → `ua_is_malcev_op` + `ua_is_ternary_congruence` | 商投影核 == θ；同餘聯/複合兩路徑一致；Mal'cev 項保所有同餘 | 非 Mal'cev 運算 (x+y)%3 在 Chain3 上既不是 Mal'cev 也不保非 congruence 分割 [0,1,0]；投影運算保所有等價關係故不能用作負控制 |
@@ -945,10 +945,10 @@ O1 冪等半邊（完整 logical relation；預估 1–2 週）；或回到 O2 �
 |---|---|
 | K8-22 | SWAR truth-word Boolean algebra → ROBDD：`popcount(face_truth_u64)=bdd_dag_sat_count`，and/or/not 與 BDD apply 逐 face 同態 |
 | K8-24 | weighted digraph → `tropical_blocked_kleene_closure` == `closure_trop_swar` == `apsp_kleene` == `apsp_dijkstra`（非負權）；負環控制 `has_negative_cycle` |
-| K8-27 | profinite bonding ZMat → `qmat_mul_ozaki2_crt` == `qmat_mul` == `zmat_mul`；`rlim_zmat_endomorphism` SNF 對帳 |
+| K8-27 | profinite bonding ZMat → `qmat_mul_ozaki2_crt` == `qmat_mul` == `zmat_mul`；`coinvariants_zmat_endomorphism` SNF 對帳 |
 | K9-29 | meta/reflect simply typed Term → cubical DTerm compilation；closed Unit 項的 βη nf 兩邊一致（id/const/apply/η-redex） |
 | K9-31 | unary definite Horn program → dependency graph Boolean Kleene star == `forward_least_model`；SLG tabling diamond hits；binary-body 負控制顯示 reachability 不足 |
-| K9-34 | meta/instances Möbius patch glue/monodromy ↔ condensed sign endomorphism `rlim_zmat_endomorphism([-1])` torsion [2]；trivial +1 rank 1；零截面恆可黏 |
+| K9-34 | meta/instances Möbius patch glue/monodromy ↔ condensed sign endomorphism `coinvariants_zmat_endomorphism([-1])` torsion [2]；trivial +1 rank 1；零截面恆可黏 |
 
 ### 15.4 接線與驗收
 
@@ -1024,3 +1024,49 @@ O1 冪等半邊（完整 logical relation；預估 1–2 週）；或回到 O2 �
 
 - K5-10 複合邊（三個構造性合取）已透明化但未拆分；拆分需證書 ledger 48→50。
 - K9-35 見證字串偏薄；K9-32 欠負控制（填充三角形 H¹=0）。下一輪補。
+
+> **2026-11-12 第三輪審計更新**：上述債項已於 §十七 處理——K5-10 已拆分（主邊 Zariski 冪零不變性，étale/excision 歸獨立證書），K9-32 已補填充三角形/S² 負控制；K9-35 經覆核**缺乏可靠性定理，已中止**而非補 witness。
+
+
+---
+
+## 十七、2026-11-12 第三輪：全部 45 條 K₁₀ 橋誠實審計（keep / strengthen / abort）
+
+> 用戶指令：「假如困難達成，可以同我講，唔係一定咩都要做到，你 check 下有無橋其實需要中止…千萬別做假。」
+> 本輪**不追求全綠**，逐條覆核全部 45 條 K₁₀ 邊，分類為 **KEEP（真構造）／STRENGTHEN（補強）／ABORT（中止）**。
+> 新增 `bridge/audit.mbt`（199 行）作為 overlay：中止邊強制 `holds=false`、`bridge_theorem` 加 `[SUSPENDED]`、witness 寫明理由，且**不計入** verified。
+
+### 17.1 中止（ABORT，5 條）——寧願掛起，不做假
+
+| 邊 | 理由 |
+|---|---|
+| K6-11 Condensed×Cubical | 截斷 Adams Ext 與 Brunerie π₄(S³) 之間沒有構造出的比較映射；`Ext^{2,3}=0` 不是 `2η=0` 的證明，solenoid lim¹ 獨立 |
+| K6-13 Condensed×Semiring | 熱帶折點與 p-liquid 次可加性獨立，無共享物件／傳輸定理 |
+| K7-18 Discovery×Semiring | Viro 平手遮罩與張量蘊涵格獨立，無超域結構傳輸蘊涵序 |
+| K7-21 Discovery×Condensed | 雜湊鏈帳本與 Clifford 餘圈中心獨立；密碼式封裝不是數學橋 |
+| K9-35 Meta×Discovery | 晉升管線各階段缺乏從發現蘊涵到 Horn/聚焦證明的可靠性定理；符號規則用無關型別項。`promo.pipeline_holds` 已從 K9/K10 總閘移除，僅作探索性報告 |
+
+### 17.2 保留並強化（KEEP / STRENGTHEN）
+
+- **K6-14**：Serre SS 底 `β(S²)=[1,0,1]`、纖維 `β(S¹)=[1,1]` **全量**對帳 topos 神經（原本只比一個 Betti）。
+- **K6-15**：移除冒稱 Laurent diamond 的 `topos_laurent_site_valid`（實為 BS₂ 原子景）合取項；保留 Laurent Čech O(0) 對帳＋Serre/RR＋proper≠acyclic 負控制。
+- **K7-19**：VR(C₄,1)≃S¹ 神經＋非交叉森林層景，真構造，保留。
+- **K10-41**：□² 子複形→Stanley–Reisner 理想→Hilbert report，真構造，保留。
+- **K9-32**：補負控制——填充三角形 H¹=0、S² H¹=0/H²=1；Bareiss rank 與 topos nerve 上同調對帳。
+- **K5-10 拆分**：主邊只保留 Zariski classifying topos 冪零不變性 vs 點函子；étale torsor／excision 已有獨立 translation 證書。
+- **獨立合取項降級**：K5-03 Glivenko、K5-06 反序 S¹ 神經、K7-16 wedge filler、K7-20 Hironaka–Serre 曲線轉移拆出為 `verify_bridge_auxiliary_theorems()` 輔助證書（3 條），不再 inflate 雙邊橋。
+- **誤名修正**：`rlim_zmat_endomorphism` → `coinvariants_zmat_endomorphism`（`coker(I−f)` 的 Smith 餘核，**不是**逆極限）。K10-42/K8-27/K9-34/f2_f3_f6/verify.mbt 定理名同步。
+- **K7-17 註冊表標籤**：assembly `bridge_theorem` 仍殘留假 `Aut(K_4)=D_5` 字串，已改為 S₃ 軌道秩分層；README §4 旧 row 同步。
+
+### 17.3 誠實計數與閘門
+
+- `K₆ = 13/15 active（2 suspended）`、`K₇ = 17/21 active（4 suspended）`、`K₉ = 31/36 active（5 suspended）`、`K₁₀ = 40/45 active（5 suspended）`；ualg 9/9 不變。
+- `bridge_audit_counts` / `bridge_audit_all_active_hold` 確保 verified 只計 active；`grand_unification` 的 double_v 證書改用 audited K6 edges。
+- `cmd/showcase` 新增「Bridge Audit: suspended edges」段落印出 5 條中止理由；證書總表 **51/51**（48 歷史＋3 輔助）。
+- 文檔同步：`bridge/README.md`（23 檔／9,731 行、§2.1 審計表、§4 suspended rows）、`readme.v2.md`（40/45 active、51/51、coinvariants）、本檔 §十七。
+
+### 17.4 驗收（本地）
+
+- `moon check --deny-warn --target wasm-gc`、`moon build`、`moon info && moon fmt`、`gen_laws`、`arch_check` 全綠。
+- `cmd/showcase` exit 0：10/10 聯邦、K10=40/40 active（45 attempted, 5 suspended）、ualg 9/9、wave1 6/6、wave2 7/7、atlas 18/18、51/51 證書、七支柱 true、中止理由印出。
+- `cmd/main` 139/139、`cmd/metatheory` 631/631、`cmd/ualg` 167/167；`arch_check` 322 .mbt / 202,477 行 / 57 pkgs / 66 components；`gen_laws` 104 laws 新鮮。

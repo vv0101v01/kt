@@ -14,7 +14,7 @@
 //      and Hopcroft–Valmari `O(|Σ||Q|log|Q|)` minimal DFA;
 //   3. F6 (`gcd` + `condensed` + `condensed/core`): Domich–Kannan–Trotter modular HNF,
 //      Bareiss fraction-free determinant, Havas–Majewski–Matthews SNF, constructive
-//      Nöbeling unimodular basis `C(S, Z) ≅ ⨁ Z`, Roos–Milnor `rlim_zmat_endomorphism`,
+//      Nöbeling unimodular basis `C(S, Z) ≅ ⨁ Z`, Smith coinvariants `coinvariants_zmat_endomorphism`,
 //      and `64×` `@swar` Steenrod–Adams `Ext_A` up to `h_3 = σ` & `h_1^3 = h_0^2 h_2`;
 //   4. Cross-federation Cayley–Semiring–SNF triad invariant on `A_4`.
 
@@ -117,7 +117,7 @@ pub fn verify_f2_f3_f6_triad_bridge() -> F2F3F6TriadBridgeReport {
   let semi_ok = @sapp.verify_semiring_wasm_suite() &&
     sm_coprod.get(0, 2).length() == 2
 
-  // 3. F6 (`gcd` + `condensed`): Modular HNF, Bareiss, Nöbeling basis, Roos–Milnor, 64x Adams Ext_A
+  // 3. F6 (`gcd` + `condensed`): Modular HNF, Bareiss, Nöbeling basis, Smith coinvariants, 64x Adams Ext_A
   let m_hnf1 = @gcd.zmat_from_int_rows([[2, 1], [0, 3]])
   let m_hnf2 = @gcd.zmat_from_int_rows([
     [4, 6, 10],
@@ -134,10 +134,10 @@ pub fn verify_f2_f3_f6_triad_bridge() -> F2F3F6TriadBridgeReport {
   let t_cantor4 = @condensed.compact_tower_cantor(4)
   let t_padic3 = @condensed.compact_tower_padic(3, 3)
   let cp_cantor4 = @condensed.compact_tower_to_cond_profinite(t_cantor4, 5)
-  let (lim0_id, tor_id) = @condensed.rlim_zmat_endomorphism(
+  let (lim0_id, tor_id) = @condensed.coinvariants_zmat_endomorphism(
     @gcd.zmat_from_int_rows([[1]]),
   )
-  let (lim0_m3, tor_m3) = @condensed.rlim_zmat_endomorphism(
+  let (lim0_m3, tor_m3) = @condensed.coinvariants_zmat_endomorphism(
     @gcd.zmat_from_int_rows([[3]]),
   )
   let nobeling_ok = @condensed.cond_prof_valid(cp_cantor4) &&

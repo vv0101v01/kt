@@ -45,7 +45,7 @@ pub using @condcore {
   cond_steenrod_adem_pair,
   koszul_tor_report,
   nobeling_unimodular_basis_zmat,
-  rlim_zmat_endomorphism,
+  coinvariants_zmat_endomorphism,
   serre_hopf_fibration_report,
   ss_dq,
   ss_page_dd_zero,

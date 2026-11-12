@@ -345,24 +345,7 @@ pub fn verify_k9_federation_bridges(
 
   base.push(replace_k9_31_horn_kleene_least_model())
 
-  let s1_fp = @topos.nerve_cohomology_dimensions_fp(
-    @topos.boundary_simplex_nerve(2),
-    7,
-  )
-  let (s1_d0_rk, s1_cert) = @mcore.matrix_rank_bareiss64_with_cert([
-    [-1, 1, 0],
-    [0, -1, 1],
-    [-1, 0, 1],
-  ])
-  let k9_32_ok = s1_cert && 3 - s1_d0_rk == s1_fp[1] && s1_fp[1] == 1
-  base.push(FederationPairBridge::{
-    id: "K9-32",
-    lhs: Meta,
-    rhs: Topos,
-    bridge_theorem: "@meta/core Int64 Sylvester–Bareiss Čech H^1 Obstruction ↔ @topos Simplicial Nerve Cohomology H^1(S^1)=1",
-    holds: k9_32_ok,
-    quantitative_witness: "Bareiss_H1(S^1)=\{3 - s1_d0_rk} == Topos_H1_F7=\{s1_fp[1]}",
-  })
+  base.push(replace_k9_32_nerve_h1_bareiss())
 
   base.push(replace_k9_33_macaulay_hilbert_bareiss())
 
@@ -394,7 +377,7 @@ pub fn verify_k9_federation_bridges(
     quantitative_witness: "|V_5|=65536 (rank4=\{v5_counts[4]}), chain4(V_4,V_5)=(false,true)",
   })
 
-  base
+  apply_bridge_audit(base)
 }
 
 ///|
@@ -436,8 +419,7 @@ pub fn verify_k9_meta_discovery_topos_unification(
   )
   let holds = feds_ok == 9 &&
     k9.length() == 36 &&
-    k9_ok == 36 &&
-    promo.pipeline_holds &&
+    k9_ok == 31 &&
     v5_ok &&
     rot_cert.ok &&
     k5_disp

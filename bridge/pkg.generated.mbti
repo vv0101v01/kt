@@ -28,15 +28,23 @@ import {
 // Values
 pub fn accel_hardware_certificate() -> BridgeCertificate
 
+pub fn apply_bridge_audit(Array[FederationPairBridge]) -> Array[FederationPairBridge]
+
 pub fn assignment_cost(Array[Array[Int64]], @vv0101v01/cubical-hermitian/symlib/core.Perm) -> Int64
 
 pub fn average_permutation_matrices(Array[@vv0101v01/cubical-hermitian/symlib/core.Perm]) -> @hermitian.CMat
 
 pub fn bool_tuple_type(Int32) -> @finite.Ty
 
+pub fn bridge_audit_all_active_hold(Array[FederationPairBridge]) -> Bool
+
+pub fn bridge_audit_counts(Array[FederationPairBridge]) -> (Int32, Int32, Int32)
+
 pub fn bridge_certificate(String, String, Bool, detail? : String) -> BridgeCertificate
 
 pub fn bridge_certificates() -> Array[BridgeCertificate]
+
+pub fn bridge_suspension_reason(String) -> String
 
 pub fn build_cchm_interval_classifying_topos(Int32) -> @site.Site
 
@@ -132,6 +140,8 @@ pub fn replace_k5_02_face_lattice_chain_semiring() -> FederationPairBridge
 
 pub fn replace_k5_05_burnside_walk_orbits() -> FederationPairBridge
 
+pub fn replace_k5_10_zariski_nilpotent_topos() -> FederationPairBridge
+
 pub fn replace_k8_22_swar_face_bdd() -> FederationPairBridge
 
 pub fn replace_k8_23_s3_axis_invariance_swar() -> FederationPairBridge
@@ -149,6 +159,8 @@ pub fn replace_k9_29_stlc_dterm_nbe() -> FederationPairBridge
 pub fn replace_k9_30_congruence_orbit_rank() -> FederationPairBridge
 
 pub fn replace_k9_31_horn_kleene_least_model() -> FederationPairBridge
+
+pub fn replace_k9_32_nerve_h1_bareiss() -> FederationPairBridge
 
 pub fn replace_k9_33_macaulay_hilbert_bareiss() -> FederationPairBridge
 
@@ -176,6 +188,8 @@ pub fn six_federation_descriptors() -> Array[FederationDescriptor]
 
 pub fn square_cell_incidence() -> (@vv0101v01/cubical-hermitian/symlib/core.Graph, Array[Int32])
 
+pub fn suspended_bridge_ids() -> Array[String]
+
 pub fn ten_federation_descriptors(accel_precomputed? : @accel.AccelFederationReport?) -> Array[FederationDescriptor]
 
 pub fn translate_coord_ring_to_zariski_theory(@scheme.CoordRing, Array[@scheme.MPoly]) -> (Int32, Array[@site.PropGeoAxiom])
@@ -191,6 +205,8 @@ pub fn tropical_matrix_symmetries(Array[Array[Int64]], Int32) -> Array[@vv0101v0
 pub fn tropical_optimal_assignments(Array[Array[Int64]], Int32) -> Array[@vv0101v01/cubical-hermitian/symlib/core.Perm]
 
 pub fn verify_accel_hardware_bridge() -> @accel.AccelFederationReport
+
+pub fn verify_bridge_auxiliary_theorems() -> Array[BridgeCertificate]
 
 pub fn verify_cubical_algebra_scheme_bridge() -> Bool
 

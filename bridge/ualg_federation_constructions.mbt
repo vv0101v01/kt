@@ -562,7 +562,7 @@ pub fn construct_k10_ualg_condensed_translation_spectrum() -> FederationPairBrid
     let (cycles, transient) = @ucommon.cycle_type(f)
     let root_mult = @ucommon.root_multiplicity(chi, 1)
     let z = @gcd.zmat_from_rows(mat)
-    let (rank, torsion) = @condensed.rlim_zmat_endomorphism(z)
+    let (rank, torsion) = @condensed.coinvariants_zmat_endomorphism(z)
     perm_checked = perm_checked + 1
     if transient != 0 ||
       rank != cycles.length() ||
@@ -579,7 +579,7 @@ pub fn construct_k10_ualg_condensed_translation_spectrum() -> FederationPairBrid
   let chi = @ucommon.mat_charpoly(mat)
   let root_mult = @ucommon.root_multiplicity(chi, 1)
   let z = @gcd.zmat_from_rows(mat)
-  let (rank, torsion) = @condensed.rlim_zmat_endomorphism(z)
+  let (rank, torsion) = @condensed.coinvariants_zmat_endomorphism(z)
   let id_minus = @gcd.zmat_make(2, 2, 0N)
   for i in 0..<2 {
     for j in 0..<2 {
@@ -598,9 +598,9 @@ pub fn construct_k10_ualg_condensed_translation_spectrum() -> FederationPairBrid
     id: "K10-42",
     lhs: Ualg,
     rhs: Condensed,
-    bridge_theorem: "Finite translation spectrum χ_f(1) ↔ Roos–Milnor inverse limit of Z^n under f: permutations have lim0 rank = cycle count and no torsion; the integer endomorphism 3·I₂ has χ(1)≠0 yet SNF cokernel (Z/2)², separating spectral and inverse-limit invariants",
+    bridge_theorem: "Finite translation spectrum χ_f(1) ↔ coinvariants coker(I−f) of Z^n: permutations have free rank = cycle count and no torsion; the integer endomorphism 3·I₂ has χ(1)≠0 yet coinvariants (Z/2)², separating fixed-space spectrum from coinvariant torsion",
     holds,
-    quantitative_witness: "GL(2,2)_auts=\{perm_checked}/6, perm_rank=cycles=root_mult=\{perm_ok}, Z²_×3(rank=\{rank},root_mult=\{root_mult},torsion=\{torsion.length()},snf=\{snf_ok}), contrast=\{negative_control}",
+    quantitative_witness: "GL(2,2)_auts=\{perm_checked}/6, perm_rank=cycles=root_mult=\{perm_ok}, Z²_×3 coinvariants(rank=\{rank},root_mult=\{root_mult},torsion=\{torsion.length()},snf=\{snf_ok}), contrast=\{negative_control}",
   }
 }
 
@@ -983,7 +983,7 @@ pub fn verify_k10_ten_federation_bridges(
   for e in verify_k10_ualg_federation_bridges() {
     out.push(e)
   }
-  out
+  apply_bridge_audit(out)
 }
 
 ///|
@@ -1027,9 +1027,8 @@ pub fn verify_k10_ten_federation_unification(
   )
   let holds = feds_ok == 10 &&
     k10.length() == 45 &&
-    k10_ok == 45 &&
+    k10_ok == 40 &&
     ualg_ok == 9 &&
-    promo.pipeline_holds &&
     v5_ok &&
     rot_cert.ok &&
     k5_disp

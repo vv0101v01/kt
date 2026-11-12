@@ -226,7 +226,7 @@ pub fn replace_k8_27_ozaki_crt_zmat_snf() -> FederationPairBridge {
     }
   }
   let big_ok = @exactalg.qmat_eq(big_school, big_crt) && beyond_fp64
-  let (rank, torsion) = @condensed.rlim_zmat_endomorphism(za)
+  let (rank, torsion) = @condensed.coinvariants_zmat_endomorphism(za)
   let id_minus = @gcd.zmat_make(2, 2, 0N)
   for i in 0..<2 {
     for j in 0..<2 {
@@ -459,8 +459,8 @@ pub fn replace_k9_34_mobius_glue_rlim_torsion() -> FederationPairBridge {
   let trivial_glue = @minstances.glue(patches, trivial_trans)
   let minus_one = @gcd.zmat_from_rows([[-1N]])
   let plus_one = @gcd.zmat_from_rows([[1N]])
-  let (rank_m, torsion_m) = @condensed.rlim_zmat_endomorphism(minus_one)
-  let (rank_p, torsion_p) = @condensed.rlim_zmat_endomorphism(plus_one)
+  let (rank_m, torsion_m) = @condensed.coinvariants_zmat_endomorphism(minus_one)
+  let (rank_p, torsion_p) = @condensed.coinvariants_zmat_endomorphism(plus_one)
   let mobius_ok = mobius.glued == None &&
     mobius.obstruction != None &&
     mobius.structurally_ok &&
@@ -477,9 +477,9 @@ pub fn replace_k9_34_mobius_glue_rlim_torsion() -> FederationPairBridge {
     id: "K9-34",
     lhs: Meta,
     rhs: Condensed,
-    bridge_theorem: "Möbius sign monodromy obstruction ↔ condensed inverse limit of −1 on Z has 2-torsion; trivial +1 has rank 1 and no torsion; the zero section glues even under the Möbius twist",
+    bridge_theorem: "Möbius sign monodromy obstruction ↔ coinvariants coker(I−(−1))=Z/2; trivial +1 has coinvariants Z and no torsion; the zero section glues even under the Möbius twist",
     holds,
-    quantitative_witness: "mobius_glued=\{mobius.glued != None}, obstruction=\{mobius.obstruction != None}, monodromy=\{witness != None}, rlim(-1)=(rank=\{rank_m},torsion=\{torsion_m.length()}), rlim(+1)=(rank=\{rank_p},torsion=\{torsion_p.length()}), zero_glues=\{zero_ok}, trivial_glues=\{trivial_ok}",
+    quantitative_witness: "mobius_glued=\{mobius.glued != None}, obstruction=\{mobius.obstruction != None}, monodromy=\{witness != None}, coinv(-1)=(rank=\{rank_m},torsion=\{torsion_m.length()}), coinv(+1)=(rank=\{rank_p},torsion=\{torsion_p.length()}), zero_glues=\{zero_ok}, trivial_glues=\{trivial_ok}",
   }
 }
 

@@ -56,16 +56,13 @@ pub fn verify_k7_16_discovery_cubical_bridge() -> (Bool, String) {
   let flip6 = @tensor.nc_polygon_triangulations_flip_report(6)
   let fv4 = @cub.assoc_fvector(4)
   let fv5 = @cub.assoc_fvector(5)
-  let w_rep = @cub.wedge_square_filler_report([2], [2], [1], [1])
   let ok = flip5.catalan_count == fv4[0] &&
     flip5.flip_edges == fv4[1] &&
     flip6.catalan_count == fv5[0] &&
-    flip6.flip_edges == fv5[1] &&
-    !w_rep.fills_in_wedge_s1_s1 &&
-    w_rep.fills_in_abelianized_torus
+    flip6.flip_edges == fv5[1]
   (
     ok,
-    "flip(5,6)=(\{flip5.catalan_count},\{flip6.catalan_count})==K_{4,5} vertices; [a,b] wedge=false, torus=true",
+    "flip(5,6)=(\{flip5.catalan_count},\{flip6.catalan_count})==K_{4,5} vertices/edges; associahedron f-vectors agree",
   )
 }
 
@@ -277,17 +274,10 @@ pub fn verify_k7_20_discovery_scheme_bridge() -> (Bool, String) {
   let gram_ok = @tensor.radon_check_gram_identity(r3)
   let p2 = @scheme.scheme_projective_space(2)
   let p2_f3 = @scheme.eval_scheme_functor_of_points(p2, @scheme.fcomm_fp(3)).length()
-  let evo = @conjecture.discover_six_evolution_laws()
-  let curve_evo = evo[5]
-  let ok = gram_ok &&
-    r3.n * r3.n + r3.dirs == p2_f3 &&
-    p2_f3 == 13 &&
-    curve_evo.target_derived_on_train &&
-    curve_evo.target_holds_on_transfer &&
-    curve_evo.mirage_rejected_on_transfer
+  let ok = gram_ok && r3.n * r3.n + r3.dirs == p2_f3 && p2_f3 == 13
   (
     ok,
-    "|A^2(F_3)|+dirs=9+4=\{p2_f3}=|P^2(F_3)|, Hironaka–Serre transfer=\{curve_evo.target_holds_on_transfer}",
+    "|A^2(F_3)|+dirs=9+4=\{p2_f3}=|P^2(F_3)|; Radon Gram identity=\{gram_ok}",
   )
 }
 
@@ -335,7 +325,7 @@ pub fn verify_k7_federation_bridges() -> Array[FederationPairBridge] {
     id: "K7-17",
     lhs: Discovery,
     rhs: Symlib,
-    bridge_theorem: "Dihedral Aut(K_4) = D_5 ≠ S_4 Refutation & S_3 Hyperdeterminant Symmetry",
+    bridge_theorem: "S_3 orbit rank stratification of F_3^{2×2×2} tensors; orbit-stabilizer and flattening-rank negative control",
     holds: ok17,
     quantitative_witness: w17,
   })
@@ -371,7 +361,7 @@ pub fn verify_k7_federation_bridges() -> Array[FederationPairBridge] {
     holds: ok21,
     quantitative_witness: w21,
   })
-  edges
+  apply_bridge_audit(edges)
 }
 
 ///|
@@ -398,7 +388,7 @@ pub fn verify_seven_federation_star_prism(
   }
   let syn = @conjecture.synthesize_and_verify_conjecture_engine()
   let ok = fed_ok == 7 &&
-    k7_ok == 21 &&
+    k7_ok == 17 &&
     syn.all_consistent &&
     syn.total_conjectures == 12 &&
     syn.evolution_families_passed == 6

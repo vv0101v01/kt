@@ -1,6 +1,6 @@
 # kt (`cubical-hermitian` v2)
 
-基於 MoonBit 建構的**十聯邦（全十聯邦入雙 V／K₁₀ 星稜柱，第十聯邦 `ualg` 已構造性接入）五基石 `L0` 地基、雙V形（`V₁ = @gcd + @swar → X = @condensed → V₂ = @bridge`）、X形交疊、`K₁₀ = 45/45` 全配對構造性星稜柱大一統與 CPU SWAR／瀏覽器免費 WebGPU（WGSL）硬體加速**數學計算與形式結構平台。
+基於 MoonBit 建構的**十聯邦（全十聯邦入雙 V／K₁₀ 星稜柱，第十聯邦 `ualg` 已構造性接入）五基石 `L0` 地基、雙V形（`V₁ = @gcd + @swar → X = @condensed → V₂ = @bridge`）、X形交疊、`K₁₀ = 40/45 active（5 suspended）` 全配對構造性星稜柱大一統與 CPU SWAR／瀏覽器免費 WebGPU（WGSL）硬體加速**數學計算與形式結構平台。
 
 > **v2 治理與文檔說明**：v1 時期全套舊文檔與雙語附錄已完整封存於 Git 標籤 `v1-final`。自 v2 起，全倉以本檔 `readme.v2.md`（三輪全聯邦重構 `S1–S4`＋`R1–R4`＋`T1–T4`＋第十聯邦 `ualg` 構造性接入 K₁₀ 後之大局觀、系統全景與全倉 `57` 套件／`66` 元件配置導覽）、[`agent.v2.md`](agent.v2.md)（工程治理、零常駐測試制度、架構分層矩陣與重構工作報告）及 [`Dev.txt`](Dev.txt)（演進總帳）為核心綱領，並以 `architecture.json` 與各套件 `pkg.generated.mbti` 為唯一結構與介面真實來源。
 
@@ -8,7 +8,7 @@
 
 ## 一、三輪全聯邦重構（`S1–S4` ＋ `R1–R4` ＋ `T1–T4`）＋ 第十聯邦 `ualg` 構造性接入 `K₁₀` 後的大局觀與宏觀架構
 
-經過第一輪 **F4 (`topos`) × F7 (`discovery`) × F9 (`meta`) × `K₉`**（`S1–S4`）、第二輪 **F1 (`cubical`) × F5 (`scheme`) × F8 (`accel`)**（`R1–R4`）與第三輪 **F2 (`symlib`) × F3 (`semiring`) × F6 (`gcd` + `condensed`)**（`T1–T4`）三輪縱向重構後，**全部九大聯邦（9/9）**皆完成硬體 SWAR 對齊、`pub using` 輕重解耦與多項式時間演算法升級，全倉形成 **「五基石零依賴 `L0` 地基 → 六組 `pub using` 無損輕重分離核心層（`L1–L3`） → 中央凝聚／自主／猜想交匯層（`L4–L7`） → `K₁₀ = 45/45` 構造性星稜柱與多聯邦三元合流頂點（`L8–L9`）」** 的嚴格單向無環圖（DAG）：
+經過第一輪 **F4 (`topos`) × F7 (`discovery`) × F9 (`meta`) × `K₉`**（`S1–S4`）、第二輪 **F1 (`cubical`) × F5 (`scheme`) × F8 (`accel`)**（`R1–R4`）與第三輪 **F2 (`symlib`) × F3 (`semiring`) × F6 (`gcd` + `condensed`)**（`T1–T4`）三輪縱向重構後，**全部九大聯邦（9/9）**皆完成硬體 SWAR 對齊、`pub using` 輕重解耦與多項式時間演算法升級，全倉形成 **「五基石零依賴 `L0` 地基 → 六組 `pub using` 無損輕重分離核心層（`L1–L3`） → 中央凝聚／自主／猜想交匯層（`L4–L7`） → `K₁₀ = 40/45 active（5 suspended）` 構造性星稜柱與多聯邦三元合流頂點（`L8–L9`）」** 的嚴格單向無環圖（DAG）：
 
 1. **五基石零依賴 `L0` 地基（反轉依賴倒置）**：
    - `gcd`（五域泛消元基底：16-lane 延遲取模 `fp_mat_mul`／單次取模 `fp_rref`、Havas–Majewski–Matthews 範數導引 `zmat_snf`、Bareiss 無分數行列式 `zmat_det_bareiss`、Domich–Kannan–Trotter 模行列式有界 `zmat_hnf_modular`、CRT、`ugcd_rat_recon_bigint` 與 FNV-1a 摘要鏈賬本）；
@@ -22,15 +22,15 @@
 3. **九聯邦全覆蓋之多項式時間（`P`）與硬體 SWAR 演算法升級**：
    - **`F2 symlib`**：以 Holt 陪集剪枝逐層擴張演算法（`subgroup_classes`）完整支援任意生成元秩有限群（如 `A₅(60)` 9 類、含 3-生成 `(C₂)³` 之超八面體群 `B₃(48)` 33 類），實作 Burnside 環上三角標記矩陣 Möbius 精確回代求解器 `burnside_mobius_solve`，並建立非薄範疇／單對象群胚 `BG` 上之一般米田雙射 `verify_general_yoneda_bijection`；
    - **`F3 semiring`**：串接 `L0 @swar` 實作 Four-Russians `k=8` 64-bit 布林矩陣乘 `mul_bool_swar`、`GF(2)` M4RI `mul_gf2_m4ri_swar`、字組並聯布林閉包 `closure_bool_swar` 與分塊熱帶閉包 `closure_trop_swar`；以 3D 脊邊禮品包裝 BFS 將牛頓多邊形正則細分自 `O(n⁴)` 降至 `O(n log n + n·#Faces)`；實作 Karp 最小環平均熱帶特徵值 `trop_eigenvalue_karp`＋臨界特徵向量、Johnson 負權稀疏全源最短路 `apsp_johnson`、有環因子圖 Min-Fill 精確半環變數消去 `bp_exact_all_marginals_ve`、64-bit 結構雜湊導數自動機與 Hopcroft–Valmari `O(|Σ||Q|log|Q|)` 最小 DFA，並建立免 `par_host` 之全目標 `wasm-gc` 驗證套件 `verify_semiring_wasm_suite`；
-   - **`F6 gcd + condensed`**：實作緊緻函數型射影塔 `CompactProfiniteTower`、構造性 Nöbeling 分層纖維單模整數基底 `nobeling_unimodular_basis_zmat`（機器證明 `|det(B_ℤ)| = 1`、`C(S,ℤ)` 自由無撓與 `ℤ[S]^■ ≅ ∏ ℤ`）、Roos–Milnor `rlim_zmat_endomorphism`，並以齊次分塊 `@swar.gf2_rref_eliminate_u64` + 64-bit `ctz` 稀疏分解將 Steenrod–Adams 極小自由分解推進至 `A_{≤12}`，機器證明四個經典 Hopf 不變量一元素 `h₀, h₁=η, h₂=ν, h₃=σ`（直抵八元數 Hopf 纖維化）與穩定 3-幹著名恆等式 **`h₁³ = h₀²h₂`（`η³ = 4ν ∈ π₃ˢ ≅ ℤ/24`）**；
+   - **`F6 gcd + condensed`**：實作緊緻函數型射影塔 `CompactProfiniteTower`、構造性 Nöbeling 分層纖維單模整數基底 `nobeling_unimodular_basis_zmat`（機器證明 `|det(B_ℤ)| = 1`、`C(S,ℤ)` 自由無撓與 `ℤ[S]^■ ≅ ∏ ℤ`）、Smith 餘核 `coinvariants_zmat_endomorphism`（`coker(I−f)`，非逆極限），並以齊次分塊 `@swar.gf2_rref_eliminate_u64` + 64-bit `ctz` 稀疏分解將 Steenrod–Adams 極小自由分解推進至 `A_{≤12}`，機器證明四個經典 Hopf 不變量一元素 `h₀, h₁=η, h₂=ν, h₃=σ`（直抵八元數 Hopf 纖維化）與穩定 3-幹著名恆等式 **`h₁³ = h₀²h₂`（`η³ = 4ν ∈ π₃ˢ ≅ ℤ/24`）**；
    - 結合先前 `F1`（Kalman De Morgan／CCHM／Trail-Stack HOU）、`F4`（`Sieve64` 雙 Heyting 核）、`F5`（`Mono64` SWAR、M4RI 布林 F4、CRT 模 F4、Grassmann–Plücker／Berkowitz 行列式）、`F7`（64-trit `GF(3)` 張量圖譜、64-bit GH 距離、Half-GCD 與位平面 `ctz`）與 `F9`（Bareiss、Paterson–Wegman MGU、SLG、`V₅ = 65,536` HF64），全倉九聯邦實現零短板對齊。
-4. **全配對 `K₁₀ = 45/45` ＋ 四聯邦自動晉升 ＋ 雙三元合流橋 ＋ 6 條弱橋數學構造替換**：
-   頂點 `@bridge` 同時驗證 `K₁₀ = 45/45`（含第十聯邦 `ualg` 的 9 條構造性邊 `K10-37..45`，以及 `K8-22/24/27`、`K9-29/31/34` 六條名義弱橋的真實數學構造替換）、`48/48` 歷史證書＋K₁₀ 獨立證書、`F7 → F9 → F4 → F1` 自動晉升管線、**`F8 ↔ F5 ↔ F1` 硬體—符號—型別三元橋**，以及新增之 **`F2 ↔ F3 ↔ F6` 對稱—半環—凝聚三元合流橋**（`verify_f2_f3_f6_triad_bridge`）。
+4. **全配對 `K₁₀ = 40/45 active（5 suspended）` ＋ 四聯邦自動晉升 ＋ 雙三元合流橋 ＋ 13 條名義橋數學構造替換（6+7）＋ 第三輪誠實審計**：
+   頂點 `@bridge` 同時驗證 `K₁₀ = 40/45 active（5 suspended）`（含第十聯邦 `ualg` 的 9 條構造性邊 `K10-37..45`，以及 `K8-22/24/27`、`K9-29/31/34` 兩波共 13 條名義弱橋的真實數學構造替換；`audit.mbt` 中止 K6-11/K6-13/K7-18/K7-21/K9-35 五條無法真構造支持的邊）、`51/51` 歷史證書＋K₁₀ 獨立證書、`F7 → F9 → F4 → F1` 自動晉升管線（探索性報告，不再作為橋或總閘）、**`F8 ↔ F5 ↔ F1` 硬體—符號—型別三元橋**，以及新增之 **`F2 ↔ F3 ↔ F6` 對稱—半環—凝聚三元合流橋**（`verify_f2_f3_f6_triad_bridge`）。
 
 ```text
                  V₂ 大一統頂點：@bridge + cmd/showcase（Package Layers 8–9 / Component Layers 13–14）
-     K₁₀ 45/45 · F7→F9→F4→F1 晉升 · F8↔F5↔F1 三元橋 · F2↔F3↔F6 三元橋 · 18 圖譜 · 48/48 歷史證書 + K₁₀ 證書
-     （第十聯邦 ualg 已入此圖：9 條構造性邊 K10-37..45 + 6 條弱橋替換）
+     K₁₀ 40/45 active（5 suspended） · F8↔F5↔F1 三元橋 · F2↔F3↔F6 三元橋 · 18 圖譜 · 51/51 歷史證書 + K₁₀ 證書
+     （第十聯邦 ualg 已入此圖：9 條構造性邊 K10-37..45 + 13 條名義橋替換（6+7））
        ╱       ╱        ╱        ╱         │         ╲         ╲         ╲        ╲
   F1 cubical F2 symlib F3 semiring F4 topos F5 scheme F6 condensed F7 discovery F8 accel F9 meta F10 ualg
   (14 pkgs)  (4 pkgs)  (16 pkgs)   (2 pkgs) (1 pkg)   (3 pkgs)     (3 pkgs)    (2 pkgs) (5 pkgs)
@@ -56,7 +56,7 @@
 | **F8 `accel`** | `2` 套件<br>`11` 檔 / `3,887` 行 | `accel-swar` (`L0`)、`accel` (`L4`) + `webgpu/index.html` | **`L0 accel/swar`**：64-bit 暫存器硬體原語全集（直接賦能 `algebra/core`、`semiring/matrix`、`condensed/core`、`topos/site`、`scheme`、`tensor`、`conjecture/kernel`）；**`L4 accel`**：跨聯邦加速見證與 **8/8 靜態可移植性審計通過之瀏覽器免費 WebGPU WGSL 著色器** |
 | **F9 `meta`** | `5` 套件<br>`34` 檔 / `17,246` 行 | `meta-core` (`L0`)、`meta-instances` (`L1`)、`meta-iit` (`L1`)、`meta-reflect` (`L2`)、`cmd-metatheory` (`L3`) | **零外部業務依賴之元理論地板與三軸引擎（`631/631` 定律、`104` 個 `law_*`；本地 2026-11-12 實測）**：新增 Burnside 上三角標記 Möbius 81 組分解、Karp 最小環平均對偶、Myhill–Nerode `2^k` 極小性與 Nöbeling 纖維單模反演定律，聯同 Bareiss、Paterson–Wegman MGU、SLG、QIIT E-graph、NbE 一般 β 與 `V₅ = 65,536` HF64 模型論反射 |
 | **F10 `ualg`**（已接入雙 V／K₁₀） | `5` 套件<br>`23` 檔 / `7,813` 行 | `ualg-core`(`L0`)、`ualg-site`(`L0`)、`ualg-demorgan`(`L1`)、`ualg-cube`(`L2`)、`cmd-ualg`(`L3`) | **構造性泛代數**（項／恆等式／同餘格／商與同構定理／Mal'cev 項搜尋／`θ∘ψ=ψ∘θ=θ∨ψ`）、**有限偏序預層模板**（Alexandrov 拓撲、核子普查、Isbell 稠密性、`a ⊣ i` 計數驗證）、**自由 De Morgan 代數 `DM(n)`**（反鏈正規形、Kalman 𝟜-語義、Dedekind 數）、面格 `𝔽(n)` 與 `∃ ⊣ w ⊣ ∀`、**立方雙重否定核子 `j=¬¬`**（Glivenko：`Fix(¬¬) ≅ P(頂點)`；`j` 不保併；`∃i 4／∀i 44` 反例）、**層化只經頂點決定**；`cmd/ualg` 全命題重算執行檔（已入 CI；跨聯邦橋接見 `bridge/ualg_federation_constructions.mbt`） |
-| **頂點 `unification`** | `2` 套件<br>`22` 檔 / `8,515` 行 | `bridge` (`L8`)、`cmd-showcase` (`L9`) | **十聯邦完全圖 `K₁₀ = 45/45` 全配對構造性跨聯邦橋**（9 條 `ualg` 邊＋6 條弱橋替換）、`F7 → F9 → F4 → F1` 自動晉升管線、**`F8 ↔ F5 ↔ F1` 三元橋**、**`F2 ↔ F3 ↔ F6` 對稱—半環—凝聚三元合流橋**、五聯邦五角大一統定理、18 項幾何—邏輯圖譜、旋轉差分與 5 直覺猜想實驗室、以及 **`48/48` 大一統證書** |
+| **頂點 `unification`** | `2` 套件<br>`24` 檔 / `9,960` 行 | `bridge` (`L8`)、`cmd-showcase` (`L9`) | **十聯邦完全圖 `K₁₀ = 40/45 active（5 suspended）` 全配對構造性跨聯邦橋**（9 條 `ualg` 邊＋13 條名義橋替換（6+7））、`F7 → F9 → F4 → F1` 自動晉升管線（探索性報告，不再作為橋或總閘）、**`F8 ↔ F5 ↔ F1` 三元橋**、**`F2 ↔ F3 ↔ F6` 對稱—半環—凝聚三元合流橋**、五聯邦五角大一統定理、18 項幾何—邏輯圖譜、旋轉差分與 5 直覺猜想實驗室、以及 **`51/51` 大一統證書** |
 
 ---
 
@@ -90,7 +90,7 @@ python3 tools/health_scan.py
 moon run cmd/symdemo --target wasm-gc       # F2 有限對稱群、McKay 規範形與 Burnside 標記展示
 moon run cmd/metatheory --target wasm-gc    # F9 元理論三軸引擎：631 / 631 定律（本地 2026-11-12 實測）
 moon run cmd/ualg --target wasm-gc          # 第十聯邦：ualg 全命題重算（167/167，已入 CI）
-moon run cmd/showcase --target wasm-gc      # V₂ 十聯邦大一統：48/48 歷史證書 + K₁₀=45/45 + ualg 9 構造邊 + 6 弱橋替換 + F8↔F5F1 + F2↔F3↔F6
+moon run cmd/showcase --target wasm-gc      # V₂ 十聯邦大一統：51/51 歷史證書 + K₁₀=40/45 active（5 suspended） + ualg 9 構造邊 + 6 弱橋替換 + F8↔F5F1 + F2↔F3↔F6
 moon run cmd/main --target wasm-gc          # F1+F6 定理總控登記表：passed 139/139（本地 2026-11-12 實測）
 # 3. 介面更新與格式化
 moon info --target wasm-gc && moon fmt

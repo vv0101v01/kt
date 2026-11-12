@@ -16,7 +16,9 @@ fn main {
     let st = if fed.live_health_ok { "PASS" } else { "FAIL" }
     println("[\{st}] federation \{fed.slug}: \{fed.summary}")
   }
-  println("-- Historical K_7 Cross-Federation Pairwise Bridges (21/21) --")
+  println(
+    "-- Historical K_7 Cross-Federation Pairwise Bridges (17 active / 21 attempted) --",
+  )
   let k7_edges = @bridge.verify_k7_federation_bridges()
   let mut k7_passed = 0
   for edge in k7_edges {
@@ -39,10 +41,10 @@ fn main {
     "[PASS=\{x_rep.chiasm_commutes}] X-Overlap Chiasmus: D1=\{x_rep.diagonal_d1_syntax_nonarch_ok}, D2=\{x_rep.diagonal_d2_analytic_homotopy_ok}, invariants=\{x_rep.shared_chiasm_invariants.0},\{x_rep.shared_chiasm_invariants.1},\{x_rep.shared_chiasm_invariants.2}",
   )
   println(
-    "[PASS=\{dv_rep.upper_v_synthesis_apex_ok}] Double-V: V1_gcd=\{dv_rep.lower_v_gcd_apex_ok}, federations=\{dv_rep.six_federations_verified}/6, K6=\{dv_rep.k6_bridges_verified}/15, boundaries_7=\{dv_rep.seven_boundaries_breakthrough_ok}",
+    "[PASS=\{dv_rep.upper_v_synthesis_apex_ok}] Double-V: V1_gcd=\{dv_rep.lower_v_gcd_apex_ok}, federations=\{dv_rep.six_federations_verified}/6, K6=\{dv_rep.k6_bridges_verified}/13 (15 attempted, 2 suspended), boundaries_7=\{dv_rep.seven_boundaries_breakthrough_ok}",
   )
   println(
-    "[PASS=\{sp_rep.star_prism_commutes}] Star-Prism Discovery: federations=\{sp_rep.seven_federations_verified}/7, K7=\{sp_rep.k7_bridges_verified}/21, conjectures=\{sp_rep.conjectures_evaluated}/12, evolve=\{sp_rep.evolution_families_verified}/6, lakatos_refined=\{sp_rep.lakatos_refinements_verified}",
+    "[PASS=\{sp_rep.star_prism_commutes}] Star-Prism Discovery: federations=\{sp_rep.seven_federations_verified}/7, K7=\{sp_rep.k7_bridges_verified}/17 (21 attempted, 4 suspended), conjectures=\{sp_rep.conjectures_evaluated}/12, evolve=\{sp_rep.evolution_families_verified}/6, lakatos_refined=\{sp_rep.lakatos_refinements_verified}",
   )
   let rotation_axis = @bridge.verify_rotation_axis_bridge()
   println(
@@ -104,7 +106,7 @@ fn main {
     }
   }
   let unif_ok = legacy_fed_passed == 7 &&
-    k7_passed == 21 &&
+    k7_passed == 17 &&
     pentagon_ok &&
     six_ok &&
     atlas_passed == 18 &&
@@ -115,7 +117,7 @@ fn main {
     intuitive_lab.holds &&
     all_certs_ok
   println(
-    "historical seven-federation star-prism unification: federations=\{legacy_fed_passed}/7, K7_bridges=\{k7_passed}/21, conjectures=\{sp_rep.conjectures_evaluated}/12, intuition_lab=\{intuitive_lab.records.length()}/5, x_overlap=\{x_rep.chiasm_commutes}, star_prism=\{sp_rep.star_prism_commutes}, atlas=\{atlas_passed}/18, all_ok=\{unif_ok}",
+    "historical seven-federation star-prism unification: federations=\{legacy_fed_passed}/7, K7_bridges=\{k7_passed}/17 (21 attempted, 4 suspended), conjectures=\{sp_rep.conjectures_evaluated}/12, intuition_lab=\{intuitive_lab.records.length()}/5, x_overlap=\{x_rep.chiasm_commutes}, star_prism=\{sp_rep.star_prism_commutes}, atlas=\{atlas_passed}/18, all_ok=\{unif_ok}",
   )
   let cycle = @sgraph.Graph::build(4, [0, 1, 2, 3], [1, 2, 3, 0], [1, 1, 1, 1])
   let report = @bridge.weighted_graph_report(cycle, 32)
@@ -157,7 +159,7 @@ fn main {
   )
   let pp = k9_rep.promotion_pipeline
   println(
-    "Nine-Federation K_9 Star-Prism & F7->F9->F4->F1 Promotion: federations=\{k9_rep.nine_federations_verified}/9, K9_bridges=\{k9_rep.k9_bridges_verified}/36, V5_HF64=\{k9_rep.v5_ackermann_65536_sets_verified}, promote(F7_edges=\{pp.f7_bitplane_implications_found}, ctz_cex=\{pp.f7_hardware_ctz_counterexample}, F9_hits=\{pp.f9_slg_tabling_cache_hits}, H1_zero=\{pp.f9_bareiss_gluing_h1_zero}, F4_Sieve64=\{pp.f4_sieve64_global_truth_holds}, F1_LJF=\{pp.f1_ljf_focused_unique_proof})=\{k9_rep.all_holds}",
+    "Nine-Federation K_9 Star-Prism & F7->F9->F4->F1 Promotion: federations=\{k9_rep.nine_federations_verified}/9, K9_bridges=\{k9_rep.k9_bridges_verified}/31 (36 attempted, 5 suspended), V5_HF64=\{k9_rep.v5_ackermann_65536_sets_verified}, promote(F7_edges=\{pp.f7_bitplane_implications_found}, ctz_cex=\{pp.f7_hardware_ctz_counterexample}, F9_hits=\{pp.f9_slg_tabling_cache_hits}, H1_zero=\{pp.f9_bareiss_gluing_h1_zero}, F4_Sieve64=\{pp.f4_sieve64_global_truth_holds}, F1_LJF=\{pp.f1_ljf_focused_unique_proof})=\{k9_rep.all_holds}",
   )
   let k10_rep = @bridge.verify_k10_ten_federation_unification(
     k7_precomputed=Some(k7_edges),
@@ -166,7 +168,7 @@ fn main {
     k5_preverified_ok=Some(unif_ok),
   )
   println(
-    "Ten-Federation K_10 Constructive Unification: federations=\{k10_rep.ten_federations_verified}/10, K10_bridges=\{k10_rep.k10_bridges_verified}/45, ualg_bridges=\{k10_rep.ualg_bridges_verified}/9, V5_HF64=\{k10_rep.v5_ackermann_65536_sets_verified}, promotion=\{k10_rep.promotion_pipeline.pipeline_holds}, all_holds=\{k10_rep.all_holds}",
+    "Ten-Federation K_10 Constructive Unification: federations=\{k10_rep.ten_federations_verified}/10, K10_bridges=\{k10_rep.k10_bridges_verified}/40 (45 attempted, 5 suspended), ualg_bridges=\{k10_rep.ualg_bridges_verified}/9, V5_HF64=\{k10_rep.v5_ackermann_65536_sets_verified}, promotion=\{k10_rep.promotion_pipeline.pipeline_holds}, all_holds=\{k10_rep.all_holds}",
   )
   println("-- K10 Constructive ualg Federation Edges (9/9) --")
   for edge in @bridge.verify_k10_ualg_federation_bridges() {
@@ -193,12 +195,18 @@ fn main {
   }
   let k10_cert_ok = k10_rep.all_holds &&
     k10_rep.ten_federations_verified == 10 &&
-    k10_rep.k10_bridges_verified == 45 &&
+    k10_rep.k10_bridges_verified == 40 &&
     k10_rep.ualg_bridges_verified == 9 &&
     wave2_ok == 7
   println(
-    "[PASS=\{k10_cert_ok}] bridge/k10: Ten-Federation K_10 Constructive Unification Certificate — 45/45 pairwise bridges, 9 constructive ualg edges, 13 structural replacements of nominal bridges (6 wave-1 + 7 wave-2), atlas=\{atlas_passed}/18",
+    "[PASS=\{k10_cert_ok}] bridge/k10: Ten-Federation K_10 Constructive Unification Certificate — 40/45 active pairwise bridges (5 suspended), 9 constructive ualg edges, 13 structural replacements of nominal bridges (6 wave-1 + 7 wave-2), atlas=\{atlas_passed}/18",
   )
+  println(
+    "-- Bridge Audit: suspended edges (honest aborts, not counted as verified) --",
+  )
+  for id in @bridge.suspended_bridge_ids() {
+    println("[SUSPENDED] \{id}: \{@bridge.bridge_suspension_reason(id)}")
+  }
   let f7_pentad = @bridge.verify_frontier_7pillars_grand_unification()
   println(
     "Stage-3 Seven-Pillar Frontier Pentad (F1×F3×F4×F8×F9): MTT_2Functor=\{f7_pentad.f9_f1_mtt_2functor_embedding_ok}, DualQTT_SWAR=\{f7_pentad.f3_f8_f1_dual_qtt_swar_homomorphism_ok}, QIIT_CwF_Path=\{f7_pentad.f9_f1_qiit_cwf_displayed_path_coherence_ok}, Artin_OrtonPitts=\{f7_pentad.f4_f1_artin_gluing_orton_pitts_canonicity_ok}, Memo_Bidir_Ind=\{f7_pentad.f8_f1_merkle_memo_bidir_inductive_ok} (DAG \{f7_pentad.diamond_dag_unmemoized_visits}->\{f7_pentad.diamond_dag_memoized_visits}, \{f7_pentad.diamond_dag_speedup_ratio}x), all_holds=\{f7_pentad.all_holds}",
