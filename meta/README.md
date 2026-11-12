@@ -1,14 +1,14 @@
 # meta — 反射 × 全域實例 × 歸納-歸納：從數學結構長出來的三個型別論機制
 
 > MoonBit `moonc v0.10.20` · `moon 0.1.20261104` · 第九聯邦（`meta-core` / `meta-instances` / `meta-iit` / `meta-reflect` / `cmd-metatheory`）
-> `moon run cmd/metatheory --target wasm-gc` → **631/631 定律**（本地 2026-11-12 實測）· `python3 tools/arch_check.py` → `architecture ok`（10 聯邦／57 套件／66 元件／320 .mbt／201,027 行）
+> `moon run cmd/metatheory --target wasm-gc` → **631/631 定律**（本地 2026-11-12 實測）· `python3 tools/arch_check.py` → `architecture ok`（10 聯邦／57 套件／66 元件／321 .mbt／202,287 行）
 
 ---
 
 ## 0. 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                          # 10 聯邦 / 57 套件 / 66 元件 / 320 .mbt / 201,027 行（本地 2026-11-12 實測）
+python3 tools/arch_check.py                          # 10 聯邦 / 57 套件 / 66 元件 / 321 .mbt / 202,287 行（本地 2026-11-12 實測）
 moon check --deny-warn --target wasm-gc              # 0 warnings, 0 errors（遠端 2026-11-10 四目標實測）
 moon run cmd/metatheory --target wasm-gc             # 631/631 定律（逐條重算；本地 2026-11-12 實測）
 moon run cmd/main       --target wasm-gc             # 139/139 定理（遠端實測，合併截面未重跑）

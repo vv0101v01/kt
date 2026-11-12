@@ -178,21 +178,46 @@ pub fn verify_k6_14_condensed_topos_bridge() -> (Bool, String) {
 }
 
 ///|
-/// **`K6-15` (`Condensed ↔ Scheme`)**:
-/// Condensed `Spa(Q<T,T^{-1}>, Z_p)` Laurent rational gluing (`h^0 = 1, h^1 = 0`) matches
-/// `@scheme` `P^1` valuative properness (`is_proper == true`) & Serre dual `h^1(P^1, O(-2)) = 1`,
-/// plus `@exactalg` Berkowitz-CRT division-free characteristic polynomial!
+/// **`K6-15` (`Condensed ↔ Scheme`)** — repaired (the previous version bolted an
+/// unrelated `@exactalg` Berkowitz-CRT health flag onto the bridge).
+///
+/// The condensed analytic stack's Laurent (Tate) gluing computes the structure
+/// sheaf of the annulus: `h⁰ = 1, h¹ = 0`.  The scheme side must reproduce that
+/// in degree `0`, and then the *same* Čech engine is pushed through all twists
+/// `n = -4..3` to verify Serre duality `h¹(O(n)) = h⁰(O(-2-n))` and
+/// Riemann–Roch `χ(O(n)) = n + 1 = h⁰ - h¹`.
+/// Negative control: properness does **not** imply acyclicity — `P¹` is proper
+/// yet `h¹(O(-2)) = 1 ≠ 0`, the dualising twist that the condensed gluing sees.
 pub fn verify_k6_15_condensed_scheme_bridge() -> (Bool, String) {
   let st = @condensed.cond_analytic_stack_build()
+  let o0 = @scheme.cech_cohomology_p1_line_bundle(0)
+  let laurent_agrees = st.laurent_cech_exact && o0.h0 == 1 && o0.h1 == 0
+  let mut serre_ok = true
+  let mut rr_ok = true
+  let h1s : Array[Int32] = []
+  for n in -4..<4 {
+    let c = @scheme.cech_cohomology_p1_line_bundle(n)
+    let d = @scheme.cech_cohomology_p1_line_bundle(-2 - n)
+    if c.h1 != d.h0 {
+      serre_ok = false
+    }
+    if c.chi != n + 1 || c.chi != c.h0 - c.h1 {
+      rr_ok = false
+    }
+    h1s.push(c.h1)
+  }
   let omega_p1 = @scheme.cech_cohomology_p1_line_bundle(-2)
-  let p21_alg = @exactalg.check_phase21_transcendence_and_crt_charpoly()
-  let ok = st.p1_proper_and_separated &&
-    st.laurent_cech_exact &&
+  let negative_control = st.p1_proper_and_separated &&
     omega_p1.h1 == 1 &&
-    p21_alg
+    omega_p1.h0 == 0
+  let ok = st.topos_laurent_site_valid &&
+    laurent_agrees &&
+    serre_ok &&
+    rr_ok &&
+    negative_control
   (
     ok,
-    "Spa Laurent h^0=1,h^1=0 ↔ Scheme P^1 proper & h^1(O(-2))=\{omega_p1.h1}; Liouville+Berkowitz-CRT=true",
+    "Spa Laurent h⁰=1,h¹=0 == Scheme O(0) (h⁰=\{o0.h0},h¹=\{o0.h1}); Serre duality h¹(O(n))=h⁰(O(-2-n)) for n=-4..3 = \{serre_ok}, RR χ=n+1 = \{rr_ok}, h¹ spectrum=\{nbe_show_ints(h1s)}; NEG: P¹ proper but h¹(O(-2))=\{omega_p1.h1}≠0 (\{negative_control})",
   )
 }
 

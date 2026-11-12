@@ -598,14 +598,7 @@ pub fn verify_k5_federation_bridges() -> Array[FederationPairBridge] {
       holds: check_perm_wiring_bridge(),
       quantitative_witness: "|S_4|=24 round-trips on 16 Bool^4 states; P(σ)† == P(σ⁻¹)",
     },
-    {
-      id: "K5-02",
-      lhs: Cubical,
-      rhs: Semiring,
-      bridge_theorem: "FaceClass ROBDD Quotient Star-Semiring & p-adic QPoly Tropicalization",
-      holds: check_face_semiring_bridge() && check_tropical_bridges(),
-      quantitative_witness: "48 star-idempotent law samples + tropical Newton min-plus roots",
-    },
+    replace_k5_02_face_lattice_chain_semiring(),
     {
       id: "K5-03",
       lhs: Cubical,
@@ -622,14 +615,7 @@ pub fn verify_k5_federation_bridges() -> Array[FederationPairBridge] {
       holds: verify_cubical_algebra_scheme_bridge(),
       quantitative_witness: "dim_Q Q[x,y]/<x²+y²-1,x-y> = 2 = [Q(√2):Q]; Face ↦ Radical Ideal",
     },
-    {
-      id: "K5-05",
-      lhs: Symlib,
-      rhs: Semiring,
-      bridge_theorem: "2-Channel Weighted CSR Graph Automorphisms & Free DAG Category ↔ Star Closure",
-      holds: check_graph_symmetry_bridges() && check_free_category_bridge(),
-      quantitative_witness: "|Aut_w(C_4)|=4 (trace=1), |Hom_Free(4-DAG)|=11 == Kleene path count",
-    },
+    replace_k5_05_burnside_walk_orbits(),
     {
       id: "K5-06",
       lhs: Symlib,

@@ -1,7 +1,7 @@
 # `bridge/` — 上 V 頂點 `V₂`：星稜柱、`K₁₀ = 45/45` 全配對構造性橋、三大三元／四元合流管線、48/48 歷史證書 ＋ K₁₀ 獨立證書
 
 > **架構位置**：`architecture.json` 中的 `bridge`，**Layer 8**（倒數第二層），依賴全部十大聯邦之上游公開介面（含 `meta` 四套件、`cubical-autonomy`、`cubical-structures`、`accel`、`condensed`、`scheme`、`topos`、`semiring-*`、`symlib`、`gcd`、`root`）。
-> 角色：**雙 V 形的上頂點 `V₂`**，也是**唯一**被允許同時匯入全部十大聯邦的整合層（21 個 `.mbt` 檔，共 **8,307 行**）。
+> 角色：**雙 V 形的上頂點 `V₂`**，也是**唯一**被允許同時匯入全部十大聯邦的整合層（22 個 `.mbt` 檔，共 **9,554 行**）。
 > MoonBit 套件名：`vv0101v01/cubical-hermitian/bridge`。執行入口：`cmd/showcase`。
 
 ---
@@ -14,11 +14,11 @@
 2. **形狀定理** —— X 形交疊（`[T-X-Chiasmus]`）、雙 V 形、星稜柱；
 3. **證書彙整** —— 把各聯邦原生證書壓成最小共通形狀 `BridgeCertificate`，輸出大一統總表。
 
-聯邦數的演進史：`five_federation_plan.mbt`（K₅ = 10）→ `double_v_chiasm.mbt`（K₆ = 15 + X 交疊）→ `discovery_k7_bridges.mbt`（K₇ = 21 + Lakatos）→ `meta_k9_unification.mbt`（K₉ = 36 + F7→F9→F4→F1 晉升）→ **`ualg_federation_constructions.mbt`（K₁₀ = 45，第十聯邦 `ualg` 的 9 條構造性邊）＋ `structural_bridge_replacements.mbt`（6 條名義弱橋的數學構造替換）**。
+聯邦數的演進史：`five_federation_plan.mbt`（K₅ = 10）→ `double_v_chiasm.mbt`（K₆ = 15 + X 交疊）→ `discovery_k7_bridges.mbt`（K₇ = 21 + Lakatos）→ `meta_k9_unification.mbt`（K₉ = 36 + F7→F9→F4→F1 晉升）→ **`ualg_federation_constructions.mbt`（K₁₀ = 45，第十聯邦 `ualg` 的 9 條構造性邊）＋ `structural_bridge_replacements.mbt`（第一波 6 條名義弱橋替換）＋ `nominal_bridge_elimination.mbt`（第二波 7 條名義弱橋替換）**。
 
 ---
 
-## 2. 檔案清單（21 檔，約 8.3k 行）
+## 2. 檔案清單（22 檔，約 9.6k 行）
 
 | 檔案 | 行數 | 內容 |
 |---|---:|---|
@@ -38,12 +38,43 @@
 | `rotation_axis_bridge.mbt` | 465 | 共軛四元數凝聚中軸 ↔ Jacobi／Jordan／Hopf／Tamari 四族旋轉；逐族關係對齊、消元前後 `previous/current/deltas` 數值比較，以及 `11040→552→0` 相干角消元總報告 |
 | `intuitive_conjecture_lab.mbt` | 415 | 五條由實際結構直覺提出的猜想與反例攻擊：1 條有界倖存、4 條反例後修正；完整人讀報告見 [`INTUITIVE_CONJECTURES.md`](INTUITIVE_CONJECTURES.md) |
 | `malcev_presheaf_autonomy_bridge.mbt` | 91 | 構造性泛代數自主類型論 × 雙重否定核 `j(x)=¬¬x` 預層層化模板 × 64-bit SWAR 立方退化樹（`64594 + 942 = 65536`）× 54 項高階立方結構跨聯邦驗證橋 |
-| `meta_k9_unification.mbt` | ~470 | **九聯邦完全圖 `K₉ = 36/36`**（`K8-22..28` + `K9-29..36`；其中 6 條弱橋已改呼叫 `structural_bridge_replacements.mbt`）與 **`F7 → F9 → F4 → F1` 四聯邦定理自動晉升管線**；`ten_federation_descriptors` / `verify_k10_ten_federation_unification` 在 `ualg_federation_constructions.mbt` |
+| `meta_k9_unification.mbt` | ~470 | **九聯邦完全圖 `K₉ = 36/36`**（`K8-22..28` + `K9-29..36`；其中 11 條弱橋已改呼叫 `structural_bridge_replacements.mbt` / `nominal_bridge_elimination.mbt`）與 **`F7 → F9 → F4 → F1` 四聯邦定理自動晉升管線**；`ten_federation_descriptors` / `verify_k10_ten_federation_unification` 在 `ualg_federation_constructions.mbt` |
 | `f2_f3_f6_triad_bridge.mbt` | 296 | **`F2 ↔ F3 ↔ F6` 對稱—半環—凝聚三元合流橋**（`A₅` 序對 2-軌道 Burnside Möbius ↔ Four-Russians/M4RI/Hopcroft/Johnson/3D 牛頓細分 ↔ 構造性 Nöbeling 自由基底與 64× `@swar` Steenrod–Adams `η³=4ν`） |
 | `ualg_federation_constructions.mbt` | ~1000 | **第十聯邦 `ualg` 的 9 條構造性跨聯邦邊 `K10-37..45`**：面格↔雙軌 CCHM BDD、B₂ marks/Burnside、Cg=Boolean-Kleene 最小不動點、□² 開集↔Sieve64 Heyting/¬¬、Stanley–Reisner/Hilbert、平移譜↔Roos–Milnor 逆極限、SWAR 蘊涵格、GF(2) RREF Betti、同餘/Mal'cev↔meta 關係代數；每條皆含量化見證＋獨立路徑＋負對照 |
 | `structural_bridge_replacements.mbt` | ~420 | **6 條名義弱橋的數學構造替換**：`K8-22` 16 元素布林面代數↔ROBDD sat_count/apply 同態、`K8-24` 四路熱帶 APSP/Kleene 一致＋負環、`K8-27` Ozaki-II CRT==schoolbook==BigInt ZMat（>2^53）＋SNF、`K9-29` STLC βη NBE↔DTerm 依賴 NBE 編譯、`K9-31` 一元 Horn 最小模型==Boolean Kleene star（Knaster–Tarski）＋二元 body 負控制、`K9-34` Möbius 符號單值化↔rlim([-1]) 2-撓 |
+| `nominal_bridge_elimination.mbt` | ~1180 | **第二波 7 條名義弱橋的數學構造替換**：`K5-02` □³ 面格覆蓋關係→Kleene 閉包==CCHM 序＋冪零 Neumann 級數數極大鏈（2³·3!=48=\|B₃\|）、`K5-05` Burnside 閉路軌道 census（計數半環 tr((A\|Fix(g))^k)）、`K8-23` S₃ 軸作用於全部 6561 張量＋SWAR 超行列式不變性＋Burnside==union-find、`K8-26` rank≤1 locus==Segre 仿射錐（1+(q−1)\|P¹\|³=129）、`K8-28` SWAR bitplane 蘊含格==窮舉語義（25 對＋最小反例一致＋篡改偵測）、`K9-30` 同餘閉包==軌道分割==rank==Burnside、`K9-33` Macaulay 矩陣 Bareiss rank==Gröbner 標準單項式 Hilbert 函數 |
 
 ---
+
+## 2.1 名義橋消除（兩波共 13 條）與硬性原則
+
+**原則（硬性）**：一條聯邦邊 `holds` **不得**是兩個*互相獨立*的健康報告布林合取
+（`bool && bool`）。每條邊必須至少有一個**兩個數學結構相互作用而生的構造**，
+並附**量化見證**與**負控制**（把構造換成天真版本時負控制必須失敗）。
+
+* **第一波**（`structural_bridge_replacements.mbt`，6 條）：`K8-22 / K8-24 / K8-27 / K9-29 / K9-31 / K9-34`。
+* **第二波**（`nominal_bridge_elimination.mbt`，7 條）：
+
+| 邊 | 被消除的名義式 | 新構造（兩結構相互作用） | 負控制 |
+|---|---|---|---|
+| `K5-02` Cubical×Semiring | `check_face_semiring_bridge() && check_tropical_bridges()` | □³ 的 27 個面（CCHM 餘纖維格）→覆蓋關係；Boolean Kleene 閉包（blocked FW 與 Lehmann 兩算法）== `cchm_face_le` 全 729 對；計數半環上覆蓋矩陣冪零 `C⁴=0`，Neumann 級數數出 `2³·3! = 48` 條極大鏈（= 超八面體群 `B₃` 階） | 對稱化後閉包變全 1（序塌縮）、`C_sym⁴≠0`（star 發散） |
+| `K5-05` Symlib×Semiring | `check_graph_symmetry_bridges() && check_free_category_bridge()` | `Aut(C₄)=D`（Schreier–Sims，8 元）作用於閉路空間；被 `g` 固定的閉路必全落在 `Fix(g)`，故 `tr((A|_{Fix(g)})^k)`（計數半環冪）經 Burnside 平均 == 暴力軌道枚舉（k=1..4） | `(01)∉Aut`：其像不是路（顯式見證），天真平均 5 ≠ 真軌道數 1 |
+| `K8-23` Accel×Symlib | `\|S_3\|==6 && gf3_sub64(Δ,Δ)==0` | `S₃` 軸作用於全部 6561 個 `F_3^{2×2×2}` 張量；SWAR 超行列式 sweep 在**每一個**張量上對 6 個置換不變；Burnside `(1/6)Σ\|Fix\| = 1485` == union-find 軌道數 | 單項泛函 `t↦t[0,0,1]` 非不變（顯式 code），而同一 code 的 Det 不變 |
+| `K8-26` Accel×Scheme | `det_zero==2241 && det_zero==atlas && \|P²(F_3)\|==13` | rank≤1 locus == Segre `σ(P¹×P¹×P¹)` 的仿射錐；由 scheme functor-of-points 取 `\|P¹(F_3)\|=4` 導出 `1+(q−1)·4³=129` == atlas census；projectivised `64` 與 `1120` 對帳；`\|P²(F_3)\|=(q³−1)/(q−1)=13` 亦為導出 | `V(Det)⊋Segre 錐`：rank2 且 Det=0 見證 code 12；**Det=0 也不等價 rank≤2**：rank3 且 Det=0 見證 code 93（1536 個） |
+| `K8-28` Accel×Discovery | `check_discovery_kernel_laws() && det_zero==atlas.det_zero_count` | 5 個謂詞在 6561 樣本上的 SWAR bitplane 蘊含格（硬體 `ctz` 反例搜尋）== **獨立窮舉語義掃描** 全 25 對，且最小反例索引逐一相同、反例直接求值成立 | 天真 `Det=0⇒rank≤1` 被 code 12 否證；bitplane 篡改 1 bit 即被偵測（cex 0） |
+| `K9-30` Meta×Symlib | `meta_laws_batch_ok(...) && \|Aut(C_4)\|==8` | `Aut(K₃⊔K₂)` 生成元圖的等價閉包（`@mcore.ua_equiv_join_closure`）== symlib 軌道分割；類數 == 軌道指示矩陣的 `rank_Q` == 不動子空間維 == Burnside 平均 | 刪一個生成元 → 閉包嚴格變細（4 類 > 2 類），且為真子關係 |
+| `K9-33` Meta×Scheme | `cauchy7_cert && rank==3 && \|P²(F_3)\|==13` | `Q[x,y]/⟨x²+y²−1, x−y⟩` 的仿射 Hilbert 函數由 Macaulay 矩陣的**無分數 Bareiss rank** 算出（`HF = #monomials − rank`），與 Gröbner 標準單項式計數在 d=0..3 全等（1,2,2,2），每度攜 Bareiss 證書 | 胖點 `⟨x²,xy,y²⟩` HF=3 vs 其約化 `⟨x,y⟩` HF=1：rank 偵測到冪零（點集看不到） |
+
+* **同輪另修兩條「假陳述／外掛布林」**：
+  * `K7-17`：舊版把 `Graph::cycle(5)` 誤標為 `Aut(K_4)`（實為 `\|Aut(C_5)\|=10=\|D_5\|`，而 `\|Aut(K_4)\|=24`），且把無關的 invariance 旗標合取進來。新版改為 **S₃ 軌道上的張量秩分層**：秩在每個軌道上常值（窮舉 6561×6）、軌道 census 1485、秩直方圖 `[1,40,860,584]`、自由軌道 `\|orb\|·\|stab\|=6` 且穩定子對合成封閉；負控制為 **mode-0 flattening rank 在軌道內變動**（code 12：1≠2）。
+  * `K6-15`：舊版外掛了無關的 `@exactalg` Berkowitz-CRT 健康旗標。新版移除，改為 condensed Laurent(Tate) 黏合 `h⁰=1,h¹=0` 與 scheme `O(0)` Čech 對帳，並把同一 Čech 引擎推過 `n=-4..3` 驗證 **Serre 對偶** `h¹(O(n))=h⁰(O(-2-n))` 與 **Riemann–Roch** `χ=n+1`；負控制為「proper ⇒ acyclic」之謬誤（`P¹` proper 但 `h¹(O(-2))=1`）。
+
+* **複合邊的透明化原則**：`K5-10`（Topos×Scheme）目前仍是三個*各自構造性*定理的合取
+  （Zariski topos 冪零不變性、二次 étale torsor Galois、excision 子 topos↔blow-up）。
+  它**不是**名義橋（三個合取項各自都是 topos×scheme 的真構造），但屬**複合邊**；
+  因為 `K₁₀` 的邊數固定為 `C(10,2)=45`，同一對聯邦的多個定理只能掛在同一邊，
+  故保留為複合邊並在此明文列出三個子定理，**不得**再退化為健康報告合取。
+  若日後要完全拆開，需把子定理移入證書 ledger（48→50），屬下一輪工作。
 
 ## 3. 證書的最小共通形狀
 
@@ -201,11 +232,12 @@ assert_true(@bridge.certificates_all_ok(certs))
 let k9 = @bridge.verify_k9_meta_discovery_topos_unification()
 assert_true(k9.all_holds)                // 9/9 聯邦 · K9=36/36 · 四聯邦晉升=true
 
-// 7) 十聯邦 K_10 (45/45) 構造性全配對橋（含 ualg 9 條邊與 6 條弱橋替換）
+// 7) 十聯邦 K_10 (45/45) 構造性全配對橋（含 ualg 9 條邊與 13 條名義橋替換）
 let k10 = @bridge.verify_k10_ten_federation_unification()
 assert_true(k10.all_holds)               // 10/10 聯邦 · K10=45/45 · ualg=9/9
 for e in @bridge.verify_k10_ualg_federation_bridges() { println(e.id, e.holds, e.quantitative_witness) }
 for e in @bridge.verify_structural_bridge_replacements() { println(e.id, e.holds, e.quantitative_witness) }
+for e in @bridge.verify_nominal_bridge_elimination() { println(e.id, e.holds, e.quantitative_witness) }
 ```
 
 ---
@@ -220,6 +252,6 @@ for e in @bridge.verify_structural_bridge_replacements() { println(e.id, e.holds
 ## 11. 驗證
 
 ```bash
-moon run cmd/showcase --target wasm-gc               # 10/10 聯邦 · K10=45/45（K9=36/36 歷史子圖）· ualg 9 構造邊 · 6 弱橋替換 · F8↔F5↔F1 + F2↔F3↔F6 + 七支柱五元橋 · F7->F9->F4->F1 晉升 · 48/48 歷史證書 + K10 證書
+moon run cmd/showcase --target wasm-gc               # 10/10 聯邦 · K10=45/45（K9=36/36 歷史子圖）· ualg 9 構造邊 · 13 名義橋替換（6+7） · F8↔F5↔F1 + F2↔F3↔F6 + 七支柱五元橋 · F7->F9->F4->F1 晉升 · 48/48 歷史證書 + K10 證書
 python3 tools/arch_check.py                          # 確認沒有任何下層反向匯入 bridge
 ```

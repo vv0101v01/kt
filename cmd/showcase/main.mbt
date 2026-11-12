@@ -180,12 +180,24 @@ fn main {
     println("[\{st}] \{edge.id}: \{edge.bridge_theorem}")
     println("        \{edge.quantitative_witness}")
   }
+  println("-- Nominal-Bridge Elimination, Wave 2 (7/7) --")
+  let wave2 = @bridge.verify_nominal_bridge_elimination()
+  let mut wave2_ok = 0
+  for edge in wave2 {
+    let st = if edge.holds { "PASS" } else { "FAIL" }
+    if edge.holds {
+      wave2_ok = wave2_ok + 1
+    }
+    println("[\{st}] \{edge.id}: \{edge.bridge_theorem}")
+    println("        \{edge.quantitative_witness}")
+  }
   let k10_cert_ok = k10_rep.all_holds &&
     k10_rep.ten_federations_verified == 10 &&
     k10_rep.k10_bridges_verified == 45 &&
-    k10_rep.ualg_bridges_verified == 9
+    k10_rep.ualg_bridges_verified == 9 &&
+    wave2_ok == 7
   println(
-    "[PASS=\{k10_cert_ok}] bridge/k10: Ten-Federation K_10 Constructive Unification Certificate — 45/45 pairwise bridges, 9 constructive ualg edges, 6 structural replacements, atlas=\{atlas_passed}/18",
+    "[PASS=\{k10_cert_ok}] bridge/k10: Ten-Federation K_10 Constructive Unification Certificate — 45/45 pairwise bridges, 9 constructive ualg edges, 13 structural replacements of nominal bridges (6 wave-1 + 7 wave-2), atlas=\{atlas_passed}/18",
   )
   let f7_pentad = @bridge.verify_frontier_7pillars_grand_unification()
   println(
@@ -201,6 +213,7 @@ fn main {
     k9_rep.all_holds &&
     k10_rep.all_holds &&
     k10_cert_ok &&
+    wave2_ok == 7 &&
     fed_passed == 10 &&
     f7_pentad.all_holds else {
     abort("showcase failed")

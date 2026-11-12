@@ -982,3 +982,45 @@ O1 冪等半邊（完整 logical relation；預估 1–2 週）；或回到 O2 �
 - Knaster–Tarski / Horn immediate consequence：definite program least model = lfp(T_P)，finite unary case = reachability closure（Imperial College KR notes；arXiv:cs/9511102）。
 - ¬¬-sheafification / cubical sets：Lawvere–Tierney ¬¬ nucleus，sheafification 是 left adjoint，subterminal case = vertex closure（Swan HoTTEST 2023；finite Alexandrov sheaf literature）。
 
+
+---
+
+## 十六、第二波減技術債：名義布林橋消除與文檔對齊（2026-11-12）
+
+### 16.1 硬性原則（新增，適用所有聯邦邊）
+
+一條邊嘅 `holds` **严禁**係兩個*互相獨立*嘅健康報告布林合取。每條邊必須：
+1. 至少一個**兩結構相互作用而生嘅構造**（新定理／新算法）；
+2. 量化見證（實際數字，唔係淨 true/false）；
+3. **負控制**：將構造換成天真版本時必須失敗。
+複合邊（同一對聯邦嘅多個構造性定理）容許，但必須明文列出子定理，不得退化為健康報告合取。
+
+### 16.2 本輪消除嘅 7 條名義邊（`bridge/nominal_bridge_elimination.mbt`）
+
+| 邊 | 舊名義式 | 新構造 | 負控制 |
+|---|---|---|---|
+| K5-02 | face_semiring && tropical | □³ 面格→Kleene 閉包==CCHM 序（729 對、兩算法）；冪零 Neumann 級數數 48=2³·3! 極大鏈 | 對稱化序塌縮＋star 發散 |
+| K5-05 | graph_symmetry && free_category | Aut(C₄) Burnside 閉路軌道 census == 計數半環 tr((A\|Fix(g))^k) 平均 | (01)∉Aut、像不是路、5≠1 |
+| K8-23 | \|S_3\|==6 && Δ−Δ==0 | S₃ 軸作用全 6561 張量、SWAR Det 逐點不變、Burnside 1485==DSU | 單項泛函非不變 |
+| K8-26 | 2241 && atlas && 13 | rank≤1==Segre 仿射錐 129=1+(q−1)\|P¹\|³（scheme 導出） | rank2 det0 code12；rank3 det0 code93 |
+| K8-28 | dkern && det_zero | SWAR bitplane 蘊含格==窮舉語義 25 對＋最小反例一致 | Det=0⇒rank≤1 否證；1-bit 篡改偵測 |
+| K9-30 | meta_laws && \|Aut(C_4)\|==8 | 同餘閉包==軌道分割==rank_Q==Burnside | 刪生成元→4 類>2 類 |
+| K9-33 | cauchy7 && 13 | Macaulay Bareiss rank==Gröbner Hilbert HF=[1,2,2,2] | 胖點 HF3 vs 約化 HF1 |
+
+### 16.3 假陳述／外掛布林／死代碼修復
+
+- **K7-17 假陳述**：舊版以 `Graph::cycle(5)` 冒稱 `Aut(K_4)`（10 vs 24），docstring 數字與代碼不符。新版改為 S₃ 軌道秩分層（秩軌道常值、orbits 1485、hist [1,40,860,584]、Σ|stab|=6·orbits、Σ|orb|·|stab|=6·6561、自由軌道 orbit–stabilizer＋穩定子封閉），負控制為 mode-0 flattening rank 軌道內 1≠2。
+- **K6-15 外掛**：移除無關 `@exactalg` 旗標；改為 Laurent h⁰/h¹ == scheme O(0)，並跨 n=-4..3 驗 Serre 對偶與 Riemann–Roch；負控制 proper≠acyclic。
+- **死參數**：`verify_k9_federation_bridges` / `verify_k10_ten_federation_bridges` 嘅 `accel_precomputed~`（只 `ignore()`）已移除，三個呼叫點同步。
+- **死計算**：被替換邊遺留嘅 swar_dets/det_zero/s3_ord/chunk0/sub_zero/p2_f3/dkern_ok/c4_aut/malcev_ok/cauchy7_* 全數刪除。
+
+### 16.4 接線、閘與驗收
+
+- `cmd/showcase` 新增 Wave-2 (7/7) 段落，`wave2_ok == 7` 納入 K10 證書與 final guard。
+- 實跑：showcase exit 0（48/48、10/10、K10=45/45、ualg 9/9、wave1 6/6、wave2 7/7、atlas 18/18、七支柱 true）。
+- 文檔：ci.yml 565→631；全倉 321 .mbt / 202,287 行；agent.md bridge 22/9,554、showcase 221；bridge/README §2.1 逐邊記錄名義式→構造→負控制。
+
+### 16.5 剩餘債（如實，未宣稱清零）
+
+- K5-10 複合邊（三個構造性合取）已透明化但未拆分；拆分需證書 ledger 48→50。
+- K9-35 見證字串偏薄；K9-32 欠負控制（填充三角形 H¹=0）。下一輪補。

@@ -977,14 +977,9 @@ pub extend TenFederationUnificationReport with Eq::{not_equal, equal}
 ///|
 pub fn verify_k10_ten_federation_bridges(
   k7_precomputed~ : Array[FederationPairBridge]? = None,
-  accel_precomputed~ : @accel.AccelFederationReport? = None,
   atlas_precomputed~ : @tensor.F3Tensor222Atlas? = None,
 ) -> Array[FederationPairBridge] {
-  let out = verify_k9_federation_bridges(
-    k7_precomputed~,
-    accel_precomputed~,
-    atlas_precomputed~,
-  )
+  let out = verify_k9_federation_bridges(k7_precomputed~, atlas_precomputed~)
   for e in verify_k10_ualg_federation_bridges() {
     out.push(e)
   }
@@ -1008,7 +1003,6 @@ pub fn verify_k10_ten_federation_unification(
   }
   let k10 = verify_k10_ten_federation_bridges(
     k7_precomputed~,
-    accel_precomputed~,
     atlas_precomputed=Some(atlas),
   )
   let mut k10_ok = 0

@@ -14,7 +14,7 @@ overlap, `agent.v2.md` governs the detail and this file governs the procedure an
 
 **Repository at a glance** — MoonBit package `vv0101v01/cubical-hermitian` v2.0.0,
 `preferred_target = "wasm"`, **10 federations (9 in the dual-V graph + `ualg` in parallel) + 1 unification apex**,
-**57 packages**, **66 components**, **320 `.mbt` files**, **201,027 lines** (verified by `python3 tools/arch_check.py`, 2026-11-12 K₁₀ round).
+**57 packages**, **66 components**, **321 `.mbt` files**, **202,287 lines** (verified by `python3 tools/arch_check.py`, 2026-11-12 K₁₀ round).
 
 ---
 
@@ -228,7 +228,7 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 | 8 | [`condensed/`](condensed/README.md) | F6 · L1–L4 (`condensed/core` + `condensed`) | 5 | 3,376 | Profinite towers, constructive Nöbeling unimodular basis, Roos–Milnor `R¹lim`, solid/liquid modules, 64× `@swar` Steenrod–Adams (`h₃=σ`, `η³=4ν`) & analytic stacks |
 | 9 | [`tensor/`](tensor/README.md) | F7 · L2 | 2 | 2,151 | 64-trit `𝔽₃` 6,561-tensor rank atlas `[1, 128, 4032, 2400]`, MRV/MAC exact Gromov–Hausdorff, dominated VR collapse, Radon & Clifford spinors |
 | 10 | [`conjecture/`](conjecture/README.md) | F7 · L3–L5 (`conjecture/kernel` + `conjecture`) | 3 | 1,436 | Half-GCD rational reconstruction, 64-bit `ctz` bitplane implication lattice, Lakatos conjecture-evolution engine & 12 cross-federation conjectures |
-| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 21 | 8,307 | **`K₁₀ = 45/45` constructive all-pairs bridges** (9 `ualg` edges + 6 weak-bridge replacements), `F7→F9→F4→F1` promotion, `F8×F5×F1` & `F2×F3×F6` triads, 18-entry geometry–logic atlas, 48/48 historical certificates + K₁₀ certificate |
+| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 22 | 9,554 | **`K₁₀ = 45/45` constructive all-pairs bridges** (9 `ualg` edges + 13 nominal-bridge replacements in two waves), `F7→F9→F4→F1` promotion, `F8×F5×F1` & `F2×F3×F6` triads, 18-entry geometry–logic atlas, 48/48 historical certificates + K₁₀ certificate |
 | 12 | [`accel/`](accel/README.md) | F8 · L0–L4 (`accel/swar` + `accel`) | 11 | 3,887 | `L0` 64-bit SWAR primitives (M4RI RREF, 64-trit `GF(3)`, Ozaki-II CRT, Stockham NTT, Cube64 butterfly, Scanbox, HVM2 `INetArena`) + 8/8 portable WGSL shaders |
 | 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 818 | Executable crash-consistency model (`fsync` ordering) + BFT `3f+1` quorum durable replicas |
 | 14 | [`meta/`](meta/README.md) | F9 · L0–L2 (**4 library sub-packages** + `cmd/metatheory`) | 33 | 17,115 | Zero-business-dependency metatheory floor & three-axis engine: Paterson–Wegman DAG MGU, Bareiss, SLG tabling, bidirectional E-graph QIIT, NbE reflection, `V₅ = 65,536` HF64, Vogt/HS realignment & Paley Ramsey |
@@ -244,6 +244,8 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 > 199,215 lines**. Remote's MoonBit claims (139/139, 565/565, 48/48, 5,810 fns `0` dead code, four-target zero-warning
 > `moon check`) are **carried from remote's 2026-11-10 verification and have NOT been re-run on this merged tree**
 > (no `moon` toolchain in this sandbox). Re-run before trusting them.
+> **Superseded 2026-11-12**: the merged tree has since been re-run locally — `139/139`, `631/631`, `167/167`,
+> `48/48` + `K₁₀ = 45/45`, `architecture ok` (321 `.mbt`, 202,287 lines). The historical numbers above are kept only as a record.
 >
 > **2026-11-10 note.** Row 17 was extended on 2026-11-10 (same day) with `ualg/cube/` (L2): cubical sheafification
 > (`Sh_¬¬(□ⁿ) ≃ Set^{頂點}`) and the cubical double-negation nucleus (Glivenko, Ω_¬¬ size formula). `cmd/ualg` moved to L3.
@@ -373,7 +375,7 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 |---:|---|---|---:|---:|---:|---|
 | 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | Entry point for the `139/139` theorem ledger (`print_report()`) |
 | 2 | [`cmd/metatheory/`](cmd/metatheory/README.md) | all | 1 | 125 | 31 | Ninth Federation entry point recomputing all `631/631` metatheory laws across `104` `law_*` functions |
-| 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 208 | 66 | Ten federations × `K₁₀ = 45/45` × three cross-federation triads/pipelines × `48/48` historical certificates + K₁₀ certificate |
+| 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 221 | 66 | Ten federations × `K₁₀ = 45/45` × three cross-federation triads/pipelines × `48/48` historical certificates + K₁₀ certificate + 7/7 wave-2 nominal-bridge elimination gate |
 | 4 | [`cmd/symdemo/`](cmd/symdemo/README.md) | all | 1 | 309 | 65 | `symlib` demo: "derived vs. direct" two-path agreement + monad laws |
 | 5 | [`cmd/symbench/`](cmd/symbench/README.md) | all | 2 | 594 | 88 | 12-case full-pipeline timing + seven derived-algorithm families (A–G) |
 | 6 | [`cmd/semiringreport/`](cmd/semiringreport/README.md) | **native only** | 5 | 2,813 | 118 | The 19-section measurement report; §19 turns every limitation into a measured number |
@@ -446,7 +448,7 @@ against real signatures** — if a function name or arity changes, the README ch
 
 ## 9. Onboarding checklist (first hour)
 
-1. `python3 tools/arch_check.py` → confirm `10 federations + unification apex, 57 packages, 66 components, 320 .mbt files, 201027 .mbt lines` on your machine. This is
+1. `python3 tools/arch_check.py` → confirm `10 federations + unification apex, 57 packages, 66 components, 321 .mbt files, 202287 .mbt lines` on your machine. This is
    your baseline; every later claim of "unchanged architecture" is measured against it.
 2. `moon check --deny-warn --target wasm-gc` → must be silent.
 3. `moon run cmd/main --target wasm-gc` → must end at `139/139` (`cmd/metatheory` → `631 / 631`).

@@ -911,3 +911,54 @@ Dev.txt（本節）、agent.md、agent.v2.md、lean/README.md、lean/UNIVERSAL.m
 
 【前沿搜索】Stanley–Reisner/Hochster（arXiv:math/0410107, 2607.10639）；Knaster–Tarski/Horn lfp（Imperial KR, arXiv:cs/9511102）；¬¬ sheafification/cubical（Swan HoTTEST 2023）。MoonBit 0.10.20 breaking：#derive attribute、Json moved、Array on js is struct、exact_view/unsafe_view、async 0.22.5 pin for wasm-gc。
 
+
+===== 2026-11-12 第二波：全面減技術債／消除名義布林橋／文檔對齊現實（本輪） =====
+
+【指令】用戶指出「仲係差好遠，仍然有布林乘布林，多處小手段逃避責任，文檔與現實嚴重偏離」，要求再次全面減技術債、清理毫無價值擺設、增強未達標範疇。
+
+【審計：找出仍然係 bool && bool 嘅邊】
+- K5-02 = `check_face_semiring_bridge() && check_tropical_bridges()`（兩個獨立報告合取）。
+- K5-05 = `check_graph_symmetry_bridges() && check_free_category_bridge()`（同上）。
+- K8-23 = `|S_3|==6 && gf3_sub64(Δ,Δ)==(0,0)`（兩件無關事實；宣稱嘅 S_3 不變性根本冇驗）。
+- K8-26 = `det_zero==2241 && det_zero==atlas && |P²(F_3)|==13`（三個獨立數字）。
+- K8-28 = `check_discovery_kernel_laws() && det_zero==atlas.det_zero_count`。
+- K9-30 = `meta_laws_batch_ok(...) && |Aut(C_4)|==8`。
+- K9-33 = `cauchy7_cert && rank==3 && |P²(F_3)|==13`。
+- K6-15 外掛無關 `@exactalg` Berkowitz-CRT 健康旗標。
+- K7-17 **假陳述**：用 `Graph::cycle(5)` 但標為 `Aut(K_4)`（|Aut(C_5)|=10，|Aut(K_4)|=24），docstring 又寫「3 unidirectional / 0 equiv」而代碼驗 1/1。
+- 死參數：`verify_k9_federation_bridges(accel_precomputed~)` 只 `ignore()`；`verify_k10_ten_federation_bridges`  likewise pass-through。
+
+【已完成：7 條名義邊 → 真構造（bridge/nominal_bridge_elimination.mbt，~1180 行）】
+- [x] K5-02：□³ 27 面 CCHM 餘纖維格 → 覆蓋關係；Boolean Kleene 閉包（blocked FW + Lehmann 兩算法）== cchm_face_le 全 729 對；計數半環冪零 C⁴=0，Neumann 級數數出 48 = 2³·3! = |B₃| 條極大鏈。負控制：對稱化閉包全 1（序塌縮）＋ C_sym⁴≠0（star 發散）。holds=TRUE。
+- [x] K5-05：Aut(C₄)=D（8 元，Schreier–Sims）作用於閉路空間；tr((A|Fix(g))^k) 計數半環冪 + Burnside == 暴力軌道枚舉（k=1..4：walks [0,8,0,32]，orbits [0,1,0,4]）。負控制：(01)∉Aut、其像不是路、天真平均 5≠真 1。holds=TRUE。
+- [x] K8-23：S₃ 軸作用於全部 6561 張量；SWAR 超行列式逐張量不變；ΣFix=8910，Burnside 1485 == union-find 1485；digit-level action 與 tensor API 對帳（324 樣本）。負控制：單項泛函非不變（code 3）而 Det 不變。holds=TRUE。
+- [x] K8-26：rank≤1 locus == Segre 仿射錐；由 scheme functor-of-points |P¹(F_3)|=4 導出 1+(q−1)·4³=129 == atlas census；projectivised 64/1120；census 129+576+1536=2241。負控制：rank2 det0 code 12（V(Det)⊋錐）＋ **rank3 det0 code 93（Det=0 亦唔等價 rank≤2，共 1536 個）**。holds=TRUE。
+- [x] K8-28：5 謂詞 × 6561 樣本 SWAR bitplane 蘊含格 == 獨立窮舉語義全 25 對；最小反例索引逐一相同且直接求值成立。負控制：Det=0⇒rank≤1 被 code 12 否證；1-bit 篡改即偵測。holds=TRUE。
+- [x] K9-30：Aut(K₃⊔K₂)（12 元）生成元圖等價閉包 == 軌道分割；類數 2 == rank_Q(軌道指示矩陣) 2 == Burnside 2。負控制：刪一個生成元 → 4 類 > 2 類且真子關係。holds=TRUE。
+- [x] K9-33：Q[x,y]/⟨x²+y²−1,x−y⟩ 仿射 Hilbert 函數由 Macaulay 矩陣無分數 Bareiss rank 算出 HF=[1,2,2,2]（ranks [0,1,4,8]）== Gröbner 標準單項式 2；每度攜證書。負控制：胖點 HF=3 vs 約化 HF=1（rank 偵測冪零）。holds=TRUE。
+
+【已完成：假陳述／外掛布林修復】
+- [x] K7-17 改為 S₃ 軌道秩分層：秩在軌道上常值（窮舉）、orbits=1485、秩直方圖 [1,40,860,584]、Σ|stab|=8910=6·orbits、Σ|orb|·|stab|=39366=6·6561、自由軌道 |orb|·|stab|=6 且穩定子合成封閉；負控制 mode-0 flattening rank 在軌道內 1≠2（code 12）。holds=TRUE。舊「Aut(K_4)」假陳述已刪。
+- [x] K6-15 移除 @exactalg 外掛；condensed Laurent h⁰=1,h¹=0 == scheme O(0)；同一 Čech 引擎 n=-4..3 驗 Serre 對偶 h¹(O(n))=h⁰(O(-2-n)) 與 RR χ=n+1（h¹ 譜 [3,2,1,0,0,0,0,0]）；負控制 proper≠acyclic（h¹(O(-2))=1）。holds=TRUE。
+- [x] 死參數清理：`verify_k9_federation_bridges` / `verify_k10_ten_federation_bridges` 移除 `accel_precomputed~`（連同 `ignore()`），三個呼叫點同步；descriptors/unification 報告仍正當使用该參數。
+- [x] 移除被替換邊遺留嘅死計算（swar_dets/det_zero、s3_ord/chunk0/sub_zero、p2_f3、dkern_ok、c4_aut/malcev_ok、cauchy7_*）。
+
+【接線與閘】
+- [x] five_federation_plan K5-02/K5-05、meta_k9_unification K8-23/26/28、K9-30/33 全部改呼叫新構造。
+- [x] cmd/showcase 新增「Nominal-Bridge Elimination, Wave 2 (7/7)」段落，並把 `wave2_ok == 7` 納入 K10 證書與 final guard（唔係淨印）。
+- [x] showcase 實跑 exit 0：48/48 歷史證書、10/10 聯邦、K10=45/45、ualg 9/9、wave1 6/6、wave2 7/7、atlas 18/18、七支柱 true。
+
+【文檔對齊現實】
+- [x] ci.yml 第九聯邦 label 565→631（工作樹曾被快照還原為 565）。
+- [x] 全倉總數 320→321 .mbt、201,027→202,287 行（README/readme.v2/agent.md/meta/README）。
+- [x] agent.md bridge 列 21/8,307→22/9,554、showcase 208→221；2026-11-11 合併註記加「2026-11-12 已本地重跑 superseded」。
+- [x] bridge/README 新增 §2.1「名義橋消除（兩波共 13 條）與硬性原則」：逐邊列出被消除嘅名義式、新構造、負控制；明文記錄 K7-17 假陳述與 K6-15 外掛嘅修復。
+- [x] **複合邊透明化**：K5-10 仍係三個*各自構造性*定理嘅合取（Zariski 冪零不變性／étale torsor Galois／excision↔blow-up），唔係名義橋；因 K₁₀ 邊數固定 45，同一對聯邦多定理只能掛同一邊，故保留為複合邊並明文列出三個子定理。完全拆開需把子定理移入證書 ledger（48→50），列為下一輪工作。
+
+【剩餘債（如實列出，未宣稱清零）】
+- K5-10 複合邊（三個構造性合取）——已透明化，未拆分。
+- K9-35 `holds = promo.pipeline_holds`：單一真構造（F7→F9→F4→F1 晉升管線），但見證字串偏薄，下一輪補齊管線不變量。
+- K9-32 兩路 H¹(S¹) 對帳屬真構造，但欠負控制（填充三角形 H¹=0）；下一輪補。
+- 歷史 Dev/agent 註記內嘅舊數字（565/199,215 等）保留為歷史記錄，唔改寫。
+
+【環境】moon 0.1.20261104；~/.moon 與 .git 再次因快照排除而遺失，已重裝 + moon update + 重新 clone 取回 .git（HEAD 0ba2307）。

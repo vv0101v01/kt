@@ -305,44 +305,20 @@ pub fn promote_discovered_implication_to_focused_theorem(
 /// + `K8-22..K8-28` (7 Accel bridges) + `K9-29..K9-36` (8 Meta bridges)!
 pub fn verify_k9_federation_bridges(
   k7_precomputed~ : Array[FederationPairBridge]? = None,
-  accel_precomputed~ : @accel.AccelFederationReport? = None,
   atlas_precomputed~ : @tensor.F3Tensor222Atlas? = None,
 ) -> Array[FederationPairBridge] {
   let base = match k7_precomputed {
     Some(es) => es.copy()
     None => verify_k7_federation_bridges()
   }
-  // The Accel health report is superseded by the constructive K8 replacements
-  // (structural_bridge_replacements.mbt); the labelled argument is kept for
-  // API compatibility with existing callers.
-  ignore(accel_precomputed)
   let atlas = match atlas_precomputed {
     Some(a) => a
     None => @tensor.f3_tensor222_atlas_build()
   }
-  let swar_dets = @swar.gf3_sweep_all_6561_hyperdets()
-  let mut det_zero = 0
-  for v in swar_dets {
-    if v == 0 {
-      det_zero = det_zero + 1
-    }
-  }
-
   // K8-22..K8-28: Federation 8 (`Accel`) ↔ Federations 1..7
   base.push(replace_k8_22_swar_face_bdd())
 
-  let s3_ord = @sym.aut_order(@sym.Graph::complete(3))
-  let chunk0 = @swar.gf3_hyperdet222_chunk64(0, 64)
-  let sub_zero = @swar.gf3_sub64(chunk0, chunk0)
-  let k8_23_ok = s3_ord == 6L && sub_zero.lo == 0UL && sub_zero.hi == 0UL
-  base.push(FederationPairBridge::{
-    id: "K8-23",
-    lhs: Accel,
-    rhs: Symlib,
-    bridge_theorem: "Dual-Rail 64-Trit GF(3) Hyperdeterminant Polynomial ↔ S_3 Axis-Permutation Invariance",
-    holds: k8_23_ok,
-    quantitative_witness: "|S_3|=\{s3_ord}, gf3_sub64(Δ,Δ)=(0,0)",
-  })
+  base.push(replace_k8_23_s3_axis_invariance_swar())
 
   base.push(replace_k8_24_tropical_four_way())
 
@@ -356,48 +332,16 @@ pub fn verify_k9_federation_bridges(
     quantitative_witness: "Sieve64_SIP_biHeyting_MAC=\{sieve64_ok}",
   })
 
-  let p2_f3 = @scheme.eval_scheme_functor_of_points(
-    @scheme.scheme_projective_space(2),
-    @scheme.fcomm_fp(3),
-  ).length()
-  let k8_26_ok = det_zero == 2241 &&
-    det_zero == atlas.det_zero_count &&
-    p2_f3 == 13
-  base.push(FederationPairBridge::{
-    id: "K8-26",
-    lhs: Accel,
-    rhs: Scheme,
-    bridge_theorem: "103-Chunk SWAR Cayley Discriminant Variety V(Det) ↔ F_3-Rational Points (2241/6561) & |P^2(F_3)|=13",
-    holds: k8_26_ok,
-    quantitative_witness: "V(Det)(F_3)=\{det_zero}/6561, |P^2(F_3)|=\{p2_f3}",
-  })
+  base.push(replace_k8_26_segre_cone_point_census())
 
   base.push(replace_k8_27_ozaki_crt_zmat_snf())
 
-  let dkern_ok = @dkernel.check_discovery_kernel_laws()
-  base.push(FederationPairBridge::{
-    id: "K8-28",
-    lhs: Accel,
-    rhs: Discovery,
-    bridge_theorem: "64-Sample-Per-Word Bitplane `ctz` Implication & GF(3) Sweep ↔ @conjecture/kernel [E-Derive]",
-    holds: dkern_ok && det_zero == atlas.det_zero_count,
-    quantitative_witness: "discovery_kernel=\{dkern_ok}, det_zero=\{det_zero}",
-  })
+  base.push(replace_k8_28_bitplane_implication_soundness())
 
   // K9-29..K9-36: Federation 9 (`Meta`) ↔ Federations 1..8
   base.push(replace_k9_29_stlc_dterm_nbe())
 
-  let c4_aut = @sym.aut_order(@sym.Graph::cycle(4))
-  let malcev_ok = meta_laws_batch_ok(@mcore.law_algebra_exact_rational_rank()) &&
-    c4_aut == 8L
-  base.push(FederationPairBridge::{
-    id: "K9-30",
-    lhs: Meta,
-    rhs: Symlib,
-    bridge_theorem: "@meta/core Congruence Closure & Exact Rank ↔ @symlib Dihedral Automorphism |Aut(C_4)| = 8",
-    holds: malcev_ok,
-    quantitative_witness: "|Aut(C_4)|=\{c4_aut}, meta_rank=\{malcev_ok}",
-  })
+  base.push(replace_k9_30_congruence_orbit_rank())
 
   base.push(replace_k9_31_horn_kleene_least_model())
 
@@ -420,20 +364,7 @@ pub fn verify_k9_federation_bridges(
     quantitative_witness: "Bareiss_H1(S^1)=\{3 - s1_d0_rk} == Topos_H1_F7=\{s1_fp[1]}",
   })
 
-  let (cauchy7_rk, cauchy7_cert) = @mcore.matrix_rank_bareiss64_with_cert([
-    [2, 2, 4],
-    [3, 4, 9],
-    [4, 8, 17],
-  ])
-  let k9_33_ok = cauchy7_cert && cauchy7_rk == 3 && p2_f3 == 13
-  base.push(FederationPairBridge::{
-    id: "K9-33",
-    lhs: Meta,
-    rhs: Scheme,
-    bridge_theorem: "Fraction-Free Sylvester–Bareiss Minor Exactness ↔ @scheme Macaulay / Projective Evaluation",
-    holds: k9_33_ok,
-    quantitative_witness: "Bareiss_rk=\{cauchy7_rk} (cert=\{cauchy7_cert}), |P^2(F_3)|=\{p2_f3}",
-  })
+  base.push(replace_k9_33_macaulay_hilbert_bareiss())
 
   base.push(replace_k9_34_mobius_glue_rlim_torsion())
 
@@ -485,7 +416,6 @@ pub fn verify_k9_meta_discovery_topos_unification(
   }
   let k9 = verify_k9_federation_bridges(
     k7_precomputed~,
-    accel_precomputed~,
     atlas_precomputed=Some(atlas),
   )
   let mut k9_ok = 0

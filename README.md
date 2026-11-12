@@ -1,7 +1,7 @@
 # cubical-hermitian — 一部可執行的數學工程史
 
 > MoonBit · `vv0101v01/cubical-hermitian` v2.0.0 · `preferred_target = "wasm"`
-> **10 聯邦 + `unification` 大一統頂點 · 57 套件 · 66 元件 · 320 個 `.mbt` · 201,027 行**
+> **10 聯邦 + `unification` 大一統頂點 · 57 套件 · 66 元件 · 321 個 `.mbt` · 202,287 行**
 > `python3 tools/arch_check.py` → `architecture ok`（2026-11-11 合併截面實測）· `cmd/main` → **139/139 定理** · `cmd/metatheory` → **631/631 定律** · `cmd/showcase` → **48/48 證書 + 54/54 立方結構**
 > 全倉靜態健檢（遠端 2026-11-10 `health_scan.py` v3）：`5,810` 函式／方法 `0` 死碼 — **合併截面未重跑**，以遠端實測為準
 
@@ -15,7 +15,7 @@
 ## 30 秒驗證
 
 ```bash
-python3 tools/arch_check.py                           # 10 聯邦 + 頂點、57 套件、66 元件、320 .mbt / 201,027 行
+python3 tools/arch_check.py                           # 10 聯邦 + 頂點、57 套件、66 元件、321 .mbt / 202,287 行
 moon check --deny-warn --target wasm-gc               # 0 warnings, 0 errors（wasm-gc / wasm / js / native 四目標零警告；遠端 2026-11-10 實測）
 moon run cmd/symdemo        --target wasm-gc          # F2 有限對稱、Schreier–Sims、衍生演算法與單子律快驗
 moon run cmd/metatheory     --target wasm-gc          # 631/631 定律（104 個 law_*，逐條重算；本地 2026-11-12 實測）
@@ -68,7 +68,7 @@ python3 tools/health_scan.py > tools/health_report.md # 合併截面未重跑（
 
 ---
 
-## 三、十大聯邦 ＋ 大一統頂點全景（`57` 套件 · `66` 元件 · `320` 檔 · `201,027` 行）
+## 三、十大聯邦 ＋ 大一統頂點全景（`57` 套件 · `66` 元件 · `321` 檔 · `202,287` 行）
 
 | 聯邦 | 規模（`arch_check.py` 實測） | 所屬套件（`pkgL0 .. pkgL9`） | 核心數學結構與代表演算法 |
 |---|---|---|---|

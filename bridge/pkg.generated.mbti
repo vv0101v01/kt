@@ -128,15 +128,29 @@ pub fn qpoly_tropicalize_padic(@vv0101v01/cubical-hermitian/algebra/core.QPoly, 
 
 pub fn rat_padic_valuation(@vv0101v01/cubical-hermitian/algebra/core.Rat, Int32) -> Int32?
 
+pub fn replace_k5_02_face_lattice_chain_semiring() -> FederationPairBridge
+
+pub fn replace_k5_05_burnside_walk_orbits() -> FederationPairBridge
+
 pub fn replace_k8_22_swar_face_bdd() -> FederationPairBridge
+
+pub fn replace_k8_23_s3_axis_invariance_swar() -> FederationPairBridge
 
 pub fn replace_k8_24_tropical_four_way() -> FederationPairBridge
 
+pub fn replace_k8_26_segre_cone_point_census() -> FederationPairBridge
+
 pub fn replace_k8_27_ozaki_crt_zmat_snf() -> FederationPairBridge
+
+pub fn replace_k8_28_bitplane_implication_soundness() -> FederationPairBridge
 
 pub fn replace_k9_29_stlc_dterm_nbe() -> FederationPairBridge
 
+pub fn replace_k9_30_congruence_orbit_rank() -> FederationPairBridge
+
 pub fn replace_k9_31_horn_kleene_least_model() -> FederationPairBridge
+
+pub fn replace_k9_33_macaulay_hilbert_bareiss() -> FederationPairBridge
 
 pub fn replace_k9_34_mobius_glue_rlim_torsion() -> FederationPairBridge
 
@@ -198,7 +212,7 @@ pub fn verify_glivenko_topos_subtopos_bridge() -> Bool
 
 pub fn verify_intuitive_conjecture_lab() -> IntuitiveConjectureLabReport
 
-pub fn verify_k10_ten_federation_bridges(k7_precomputed? : Array[FederationPairBridge]?, accel_precomputed? : @accel.AccelFederationReport?, atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> Array[FederationPairBridge]
+pub fn verify_k10_ten_federation_bridges(k7_precomputed? : Array[FederationPairBridge]?, atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> Array[FederationPairBridge]
 
 pub fn verify_k10_ten_federation_unification(k7_precomputed? : Array[FederationPairBridge]?, accel_precomputed? : @accel.AccelFederationReport?, rotation_precomputed? : RotationAxisBridgeReport?, k5_preverified_ok? : Bool?) -> TenFederationUnificationReport
 
@@ -232,7 +246,7 @@ pub fn verify_k7_21_discovery_condensed_bridge() -> (Bool, String)
 
 pub fn verify_k7_federation_bridges() -> Array[FederationPairBridge]
 
-pub fn verify_k9_federation_bridges(k7_precomputed? : Array[FederationPairBridge]?, accel_precomputed? : @accel.AccelFederationReport?, atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> Array[FederationPairBridge]
+pub fn verify_k9_federation_bridges(k7_precomputed? : Array[FederationPairBridge]?, atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> Array[FederationPairBridge]
 
 pub fn verify_k9_meta_discovery_topos_unification(k7_precomputed? : Array[FederationPairBridge]?, accel_precomputed? : @accel.AccelFederationReport?, rotation_precomputed? : RotationAxisBridgeReport?, k5_preverified_ok? : Bool?) -> NineFederationUnificationReport
 
@@ -241,6 +255,8 @@ pub fn verify_kapranov_tropical_laurent_bridge() -> Bool
 pub fn verify_legacy_k5_system_dispatch(preverified_ok? : Bool?) -> Bool
 
 pub fn verify_malcev_presheaf_autonomy_bridge() -> MalcevPresheafAutonomyBridgeReport
+
+pub fn verify_nominal_bridge_elimination() -> Array[FederationPairBridge]
 
 pub fn verify_quadratic_etale_torsor_galois_bridge() -> Bool
 

@@ -70,27 +70,149 @@ pub fn verify_k7_16_discovery_cubical_bridge() -> (Bool, String) {
 }
 
 ///|
-/// **`K7-17` (`Discovery ↔ Symlib`)**:
-/// `@sym.aut_order` refutes naive `Aut(K_4) ≅ S_4` (`10 == |D_5| != 24 == |S_4|`),
-/// while Cayley `2x2x2` hyperdeterminant `Det` is strictly invariant under all
-/// `|S_3| = 6` permutations of tensor axes (`@sym.PermGroup` order 6)!
+/// **`K7-17` (`Discovery ↔ Symlib`)** — repaired (the previous version conjoined
+/// `|Aut(C_5)|=10` with an unrelated invariance flag and *mislabelled* `C_5` as
+/// `K_4`).
+///
+/// `S_3` (symlib Schreier–Sims) acts on the `6561` tensors of `F_3^{2×2×2}` by
+/// permuting axes.  Tensor rank is an axis-symmetric invariant, so it is
+/// constant on every orbit; the orbit census is computed by union-find and
+/// stratified by rank, and orbit–stabiliser `|orb|·|stab| = 6` is verified on a
+/// free orbit together with subgroup closure of the stabiliser.
+/// Negative control: the *mode-0 flattening rank* is only invariant under the
+/// `S_2` acting on the last two axes — an explicit tensor in an `S_3`-orbit has
+/// a different mode-0 rank, so the naive "all flattenings are invariants"
+/// claim is refuted.
 pub fn verify_k7_17_discovery_symlib_bridge() -> (Bool, String) {
-  let aut_k4 = @sym.aut_order(@sym.Graph::cycle(5))
-  let s3_ord = @sym.aut_order(@sym.Graph::complete(3))
-  let t_ghz = @tensor.t3_of(2, 2, 2, 7, (i, j, k) => {
-    if i == j && j == k {
-      1
-    } else if i == 0 && j == 1 && k == 1 {
-      2
-    } else {
-      0
-    }
+  let total = 6561
+  let atlas = @tensor.f3_tensor222_atlas_build()
+  let s3 = @sym.PermGroup::symmetric(3)
+  let perms = s3.elements(4096)
+  let imgs : Array[Array[Int32]] = Array::makei(perms.length(), gi => {
+    Array::makei(3, a => perms[gi].apply(a))
   })
-  let inv_ok = @tensor.t3_check_sl2_shear_and_s3_invariance(t_ghz)
-  let ok = aut_k4 == 10L && s3_ord == 6L && inv_ok
+  let srcmaps : Array[Array[Int32]] = Array::makei(imgs.length(), gi => {
+    nbe_axis_srcmap(imgs[gi])
+  })
+  let digits = Array::make(8, 0)
+  let perm_codes : Array[Array[Int32]] = Array::makei(imgs.length(), _ => {
+    Array::make(total, 0)
+  })
+  for c in 0..<total {
+    let mut r = c
+    for idx in 0..<8 {
+      digits[idx] = r % 3
+      r = r / 3
+    }
+    for gi in 0..<srcmaps.length() {
+      perm_codes[gi][c] = nbe_perm_code(digits, srcmaps[gi])
+    }
+  }
+  let parent = Array::makei(total, i => i)
+  let mut rank_constant = true
+  let mut stab_sum = 0
+  let mut orb_stab_sum = 0
+  let mut free_code = -1
+  let mut free_size = 0
+  let mut free_stab = 0
+  for c in 0..<total {
+    let seen : Array[Int32] = []
+    let mut stab = 0
+    for gi in 0..<imgs.length() {
+      let pc = perm_codes[gi][c]
+      if atlas.ranks[pc] != atlas.ranks[c] {
+        rank_constant = false
+      }
+      nbe_dsu_union(parent, c, pc)
+      if pc == c {
+        stab = stab + 1
+      }
+      let mut dup = false
+      for v in seen {
+        if v == pc {
+          dup = true
+        }
+      }
+      if !dup {
+        seen.push(pc)
+      }
+    }
+    stab_sum = stab_sum + stab
+    orb_stab_sum = orb_stab_sum + seen.length() * stab
+    if free_code < 0 && stab == 1 && seen.length() == 6 {
+      free_code = c
+      free_size = seen.length()
+      free_stab = stab
+    }
+  }
+  let orbits_total = nbe_dsu_classes(parent)
+  let orbit_rank_hist = Array::make(4, 0)
+  let mut rep_count = 0
+  for c in 0..<total {
+    if nbe_dsu_find(parent, c) == c {
+      orbit_rank_hist[atlas.ranks[c]] = orbit_rank_hist[atlas.ranks[c]] + 1
+      rep_count = rep_count + 1
+    }
+  }
+  // Stabiliser of the free orbit is a subgroup: closed under composition.
+  let stab_idx : Array[Int32] = []
+  for gi in 0..<imgs.length() {
+    if perm_codes[gi][free_code] == free_code {
+      stab_idx.push(gi)
+    }
+  }
+  let mut stab_closed = true
+  for a in stab_idx {
+    for b in stab_idx {
+      let comp = perms[a].compose(perms[b])
+      let mut found = false
+      for g in stab_idx {
+        if perms[g].equal(comp) {
+          found = true
+        }
+      }
+      if !found {
+        stab_closed = false
+      }
+    }
+  }
+  let orbit_stabilizer = free_code >= 0 &&
+    free_size * free_stab == 6 &&
+    stab_closed
+  // Negative control: mode-0 flattening rank varies inside an S_3-orbit.
+  let mut nc_code = -1
+  let mut nc_axis = -1
+  let mut nc_r0 = -1
+  let mut nc_r1 = -1
+  for c in 0..<512 {
+    if nc_code >= 0 {
+      break
+    }
+    let r0 = nbe_flatten_rank(c, 0)
+    for gi in 0..<imgs.length() {
+      let r1 = nbe_flatten_rank(perm_codes[gi][c], 0)
+      if r1 != r0 {
+        nc_code = c
+        nc_axis = gi
+        nc_r0 = r0
+        nc_r1 = r1
+        break
+      }
+    }
+  }
+  let negative_control = nc_code >= 0 &&
+    nc_r0 != nc_r1 &&
+    atlas.ranks[perm_codes[nc_axis][nc_code]] == atlas.ranks[nc_code]
+  let ok = perms.length() == 6 &&
+    rank_constant &&
+    stab_sum == 6 * orbits_total &&
+    orb_stab_sum == 6 * total &&
+    rep_count == orbits_total &&
+    orbit_stabilizer &&
+    negative_control
   (
     ok,
-    "|Aut(K_4)|=\{aut_k4}=|D_5|!=24, |S_3|=\{s3_ord} axis-invariance(Det)=\{inv_ok}",
+    "S_3 orbits=\{orbits_total} (Σ|stab|=\{stab_sum}=6·orbits, Σ|orb|·|stab|=\{orb_stab_sum}=6·\{total}), rank constant on orbits=\{rank_constant}, orbit rank hist=\{nbe_show_ints(orbit_rank_hist)}, free orbit code=\{free_code} |orb|·|stab|=\{free_size}·\{free_stab}=6 (\{orbit_stabilizer}); NEG: mode-0 flattening rank \{nc_r0}≠\{nc_r1} at code=\{nc_code} axis=\{nc_axis} while tensor rank unchanged",
   )
 }
 
