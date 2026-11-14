@@ -1,67 +1,41 @@
-# `cmd/showcase/` — 七聯邦 × 雙 V 架構的敘事式驗證（136 行）
+# `cmd/showcase/` — 單次快照的聯邦功能與驗收
 
-> **套件**：`vv0101v01/cubical-hermitian/cmd/showcase` · `pkgtype(kind: "executable")`
-> **依賴**：`bridge`、`semiring-graph`（`@sgraph`）、`symlib`（`@sym`）、`root`（`@cub`）、`moonbitlang/core/debug`
-> **1 檔 136 行** · 全 target 可編譯
-
----
-
-## 1. 定位
-
-`cmd/main` 回答「129 個定理對不對」；本套件回答**「這些定理為什麼應該放在一起看」**：
-
-```text
-  Seven Autonomous Mathematical Federations (7/7)
-  Complete K₇ Cross-Federation Pairwise Bridges (21/21)
-  X-Overlap Chiasmus, Double-V & Seven-Federation Star-Prism Discovery
-  Unified Certificate Ledger
-```
-
-每個區塊都用 `[PASS]`／`[FAIL]` 加上**定量見證**（`quantitative_witness`），因此輸出本身就是一份可讀的摘要報告。
-
----
-
-## 2. 輸出結構與對應 API
-
-| 段落 | 呼叫 | 內容 |
-|---|---|---|
-| 七聯邦健康 | `@bridge.seven_federation_descriptors()` → `fed.live_health_ok`、`fed.slug`、`fed.summary` | 7 個聯邦各自的**現況**（不是規格，是「現在跑起來健不健康」） |
-| `K₇` 橋 | `@bridge.verify_k7_federation_bridges()` → `edge.id`、`edge.bridge_theorem`、`edge.holds`、`edge.quantitative_witness` | 21 條兩兩橋接，每條附**定量見證**（例如兩側算出同一個整數） |
-| X-Overlap | `@bridge.verify_x_overlap_chiasmus()` → `chiasm_commutes`、`diagonal_d1_syntax_nonarch_ok`、`diagonal_d2_analytic_homotopy_ok`、`shared_chiasm_invariants` | 「兩條對角線交換」的交錯圖；D1（語法／非阿基米德）、D2（解析／同倫） |
-| 雙 V | `@bridge.verify_double_v_architecture()` → `upper_v_synthesis_apex_ok`、`lower_v_gcd_apex_ok`、`six_federations_verified`、`k6_bridges_verified`、`seven_boundaries_breakthrough_ok` | 上方 V（聯邦 → 合成 apex）、下方 V（聯邦 → `gcd` apex）；`K₆ = 15` |
-| 星稜鏡 | `@bridge.verify_seven_federation_star_prism(k7_precomputed=Some(k7_edges))` → `star_prism_commutes`、`seven_federations_verified`、`k7_bridges_verified`、`conjectures_evaluated`、`evolution_families_verified`、`lakatos_refinements_verified` | 把 `K₇` 的 21 條邊當成稜鏡的稜；`conjectures = 12`、`evolve = 6` |
-| 四元數凝聚中軸 | `@bridge.verify_rotation_axis_bridge()` → `families_passed`、`comparisons`、`coherence`、`axis` | 四族 `4/4`；相干角 `11040→552→0`（276 個規範類、總重數守恆），並逐項印出四族與中軸的消元前後數值及差值；不改 47 條歷史證書數 |
-| 直覺猜想實驗 | `@bridge.verify_intuitive_conjecture_lab()` | 四條原猜想、直覺、搜索範圍、反例與修正版；4 條全為反例後修正，納入總成功條件 |
-| 七支柱五聯邦前沿合流 | `@bridge.verify_frontier_7pillars_grand_unification()` | 橫跨 `F1 × F3 × F4 × F8 × F9` 對帳多模態 2-函子嵌入、SWAR 雙上下文 QTT 半模同態、內蘊 CwF 與立方路徑 QIIT、Artin 膠合 ↔ Orton–Pitts `Glue` 正規性及深度 10 鑽石 DAG `18,422 -> 108`（`170×`）記憶化雙向依值／歸納檢查 |
-| 證書帳本 | `@bridge.bridge_certificates()` | 48 張證書的彙總（`ATLAS-01..18`、`pentagon`、`bridge/frontier7` 等） |
-
-`k7_precomputed=Some(k7_edges)` 是**避免重算**的設計：`K₇` 的 21 條邊在上面已算過，此處直接注入 ⇒ 整份報告只算一次。
-
----
-
-## 3. 執行
+位置：**pkgL9 / compL14**。直接 import `bridge`、`semiring/graph`、`symlib`、root；沒有底層 package 依賴本入口。
 
 ```bash
-moon run cmd/showcase                    # wasm
-moon run cmd/showcase --target native --release
+moon run cmd/showcase --target wasm-gc
 ```
 
-輸出樣本（節錄）：
+不加 `--release`；本輪只聲稱已驗 wasm-gc，沒有把其他後端或實體 GPU 實跑列作完成。
+
+## 輸出與真正做的事
+
+1. 十聯邦原生健康描述子。
+2. **39 條 active 配對**：一次組裝配對快照，列出實際核驗的 ID、功能與量化見證。
+3. 嚴格 inventory report：39/39、ID／端點／覆蓋完整；15/15 checker laws 含負控制。
+4. 歷史 active 子圖：K6=13、K7=17、K9=30；這些不是完整 K6/K7/K9。
+5. 旋轉關係對齊及 4 個反例後修正的直覺猜想。
+6. **50 個原生／atlas／輔助證書**，其中 atlas=18；它們不增加配對橋數。
+7. ualg 9 條與第一／二波 6+7 替換，都從同一配對快照選取。
+8. F2×F3×F6 真正共享圖構造；F8×F5×F1 及前沿有限案例整合。
+9. **6 個 `[RETIRED]` 理由**，僅列 metadata，沒有失敗占位橋或退役計算。
+
+X-Overlap、沒有可靠性傳輸的 promotion、Malcev/Presheaf/Autonomy 獨立旗標包裝已刪。不要再把舊的 `45/45` 或 `chiasm_commutes` 當成現行輸出。
+
+## 快照與總閘
+
 ```text
-[PASS] federation gcd: ...
--- Complete K_7 Cross-Federation Pairwise Bridges (21/21) --
-[PASS] K7-01: ...
-        <quantitative_witness>
-[PASS=True] Double-V: V1_gcd=True, federations=6/6, K6=15/15, boundaries_7=True
+verify_k10_ten_federation_bridges()    一次
+    ↓
+validate_bridge_registry(edges)
+    ├─ 全量列印
+    ├─ K6/K7/K9/K10 各自再次驗 coverage
+    ├─ wave1 / wave2 選取
+    └─ final guard
 ```
 
----
+描述子、硬體 report、三元 report、前沿 report 同樣供列印／總閘重用。原生／atlas 套件仍可能各自重做部分底層核驗；例如 atlas-12/13 及六柱入口會再次核對 Zariski／Kapranov，因此不宣稱全程每個驗證函式只執行一次。預算資料只供可信的同一行程呼叫者；公開 `Bool` 不是不可偽造的形式證明。
 
-## 4. 為什麼它是 executable 而不是說明文件
+任何 active 構造、registry、負控制或保留的原生檢核失敗，入口會 `abort`，而不靠硬編通過數字掩蓋。
 
-三件事只有在**執行**時才知道：
-1. 七聯邦的 `live_health_ok` 是**現況**，不是規格；
-2. `quantitative_witness` 是本次算出來的數字（例如兩條獨立路徑算出同一個 `21`）；
-3. `star_prism_commutes` 需要 21 條邊**同時**成立 —— 單獨看每條邊看不出這件事。
-
-因此本套件是「架構文件」，只是它的語法是 MoonBit。
+完整層表及所有功能見 [`docs/`](../../docs/FEDERATION_ARCHITECTURE.md)；刪除／遷移見 [BRIDGE_MIGRATION](../../docs/BRIDGE_MIGRATION.md)。實跑記錄由 `agent.v2.md` 統一保存。

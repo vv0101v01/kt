@@ -1,9 +1,6 @@
 ///|
-// Phase 22 — Seven-Federation Star-Prism & Lakatosian Discovery Loop Unification:
-// Upgrades the 6-federation (`K_6` = 15/15) platform to 7 autonomous federations
-// (`cubical`, `symlib`, `semiring`, `topos`, `scheme`, `condensed`, `discovery`)
-// with all C(7, 2) = 21 edges of the complete bridge graph `K_7` (`K7-16` .. `K7-21`)
-// and the 7-entry Resolved Conjecture Atlas (Lakatosian Proof-and-Refutation Synthesis).
+// Seven-federation active comparison graph and resolved-conjecture reports.
+// 17 active edges, not a complete K7; K7-18 and K7-21 are deleted.
 
 ///|
 /// Report for the **Seven-Federation Star-Prism & Lakatosian Discovery Loop Architecture**.
@@ -36,7 +33,7 @@ pub fn seven_federation_descriptors() -> Array[FederationDescriptor] {
   out.push(FederationDescriptor::{
     id: Discovery,
     slug: "discovery",
-    packages: ["tensor", "conjecture"],
+    packages: ["tensor", "discovery-kernel", "conjecture"],
     canonical_normal_form: "Cayley 2x2x2 Hyperdeterminant / F_3 Rank Atlas, Radon Inversion, [E-Derive] Nullspace Basis & Implication DAG",
     categorification_role: "Multilinear Tensor/Spinor-Gauge/Radon Geometry & Lakatosian Conjecture-Discovery-Refinement Functor",
     live_health_ok: f7_ok,
@@ -46,11 +43,10 @@ pub fn seven_federation_descriptors() -> Array[FederationDescriptor] {
 }
 
 ///|
-/// **`K7-16` (`Discovery ↔ Cubical`)**:
-/// Polygon diagonal-flip evolution (`n = 5` pentagon `C_3 = 5`, `n = 6` `C_4 = 14`)
-/// matches Cubical Stasheff associahedron `(f_0, f_1)` of `K_{n-1}` (`assoc_fvector(4) == [5, 5, 1]`,
-/// `assoc_fvector(5) == [14, 21, 9, 1]`), and Lakatosian `CONJ-02` refutes naive `H_1=0` 2-box
-/// filling on `S^1 v S^1` while confirming free-group `F_2` normal-form filling!
+/// K7-16: compare vertex/edge counts of 5/6-gon flip graphs and the
+/// corresponding associahedron f-vectors. This is a bounded skeleton count
+/// comparison, not a constructed equivalence of categories; wedge fillers are
+/// separate auxiliary certificates.
 pub fn verify_k7_16_discovery_cubical_bridge() -> (Bool, String) {
   let flip5 = @tensor.nc_polygon_triangulations_flip_report(5)
   let flip6 = @tensor.nc_polygon_triangulations_flip_report(6)
@@ -80,9 +76,14 @@ pub fn verify_k7_16_discovery_cubical_bridge() -> (Bool, String) {
 /// `S_2` acting on the last two axes — an explicit tensor in an `S_3`-orbit has
 /// a different mode-0 rank, so the naive "all flattenings are invariants"
 /// claim is refuted.
-pub fn verify_k7_17_discovery_symlib_bridge() -> (Bool, String) {
+pub fn verify_k7_17_discovery_symlib_bridge(
+  atlas_precomputed~ : @tensor.F3Tensor222Atlas? = None,
+) -> (Bool, String) {
   let total = 6561
-  let atlas = @tensor.f3_tensor222_atlas_build()
+  let atlas = match atlas_precomputed {
+    Some(a) => a
+    None => @tensor.f3_tensor222_atlas_build()
+  }
   let s3 = @sym.PermGroup::symmetric(3)
   let perms = s3.elements(4096)
   let imgs : Array[Array[Int32]] = Array::makei(perms.length(), gi => {
@@ -214,61 +215,57 @@ pub fn verify_k7_17_discovery_symlib_bridge() -> (Bool, String) {
 }
 
 ///|
-/// **`K7-18` (`Discovery ↔ Semiring`)**:
-/// Viro–Krasner tropical hyperaddition tie-breaking on `{0..3}` aligns with `@strop`
-/// tropical determinant tie detection, and transitive implication closure on all
-/// `6,561` `F_3^{2x2x2}` tensors yields `3` unidirectional edges and `0` equivalence pairs!
-pub fn verify_k7_18_discovery_semiring_bridge() -> (Bool, String) {
-  let tie_cnt = @strop.trop_det_tie_count([[1L, 1L], [2L, 2L]])
-  let viro_tie = @tensor.hyper_tropical_viro_op(3, 1, 1)
-  let atlas = @tensor.f3_tensor222_atlas_build()
-  let (imp, _led, ok_lens) = @conjecture.evaluate_five_epistemic_lenses_into_ledger(
-    atlas_opt=Some(atlas),
-  )
-  // `1 (+) 1` in Viro hyperfield `{0..3}` has bitmask `(1<<1)|(1<<2)|(1<<3) = 14` (multi-valued tie!),
-  // and on `F_3^{2x2x2}`: `1` unidirectional implication (`rank<=1 => Det==0`) & `1` equivalence (`decomp2==0 <=> rank==3`)!
-  let ok = tie_cnt == 2 &&
-    viro_tie == 14 &&
-    ok_lens &&
-    imp.strict_unidirectional_edges == 1 &&
-    imp.nontrivial_equiv_pairs == 1
-  (
-    ok,
-    "trop_ties=\{tie_cnt}, Viro(1⊕1)=mask(\{viro_tie}), F_3_impl=(uni=\{imp.strict_unidirectional_edges}, eq=\{imp.nontrivial_equiv_pairs})",
-  )
-}
-
-///|
-/// **`K7-19` (`Discovery ↔ Topos`)**:
-/// Non-crossing chord-forest site `[T-X-Site]` (`48` opens on `4`-gon) satisfies
-/// Grothendieck sheaf equalizer gluing, while `VR(C_4, 1)` chain/cochain duality
-/// (`b = [1, 1]`) matches `@topos.boundary_simplex_nerve(2)` (`S^1` Betti `[1, 1]`)!
+/// K7-19: transport the same VR complex into a Topos nerve, rather than
+/// comparing C₄'s homology to an unrelated triangle boundary's dimensions.
 pub fn verify_k7_19_discovery_topos_bridge() -> (Bool, String) {
-  let (nc4, site_ok) = @tensor.nc_forest_grothendieck_site_ok(4, 7)
-  let c4_ms = @tensor.FiniteMetricSpace::{
-    n: 4,
-    dist: [[0, 1, 2, 1], [1, 0, 1, 2], [2, 1, 0, 1], [1, 2, 1, 0]],
+  let space = @tensor.metric_cycle_graph(4)
+  let mut agrees = true
+  let h0s : Array[Int32] = []
+  let h1s : Array[Int32] = []
+  for scale in 0..<3 {
+    guard metric_vr_to_topos_nerve(space, scale) is Some(nerve) else {
+      return (false, "valid VR complex rejected")
+    }
+    let vr = @tensor.metric_vr_homology_report(space, scale, 7)
+    let cohomology = @topos.nerve_cohomology_dimensions_fp(nerve, 7)
+    for degree in 0..<3 {
+      agrees = agrees && vr.betti_homology[degree] == cohomology[degree]
+    }
+    agrees = agrees &&
+      vr.chain_complex_dd_zero &&
+      vr.homology_cohomology_dual &&
+      vr.simplex_counts[0] == nerve.num_vertices &&
+      vr.simplex_counts[1] == nerve.edges.length() &&
+      vr.simplex_counts[2] == nerve.triangles.length() &&
+      vr.simplex_counts[3] == nerve.tetrahedra.length()
+    h0s.push(cohomology[0])
+    h1s.push(cohomology[1])
   }
-  let vr = @tensor.metric_vr_homology_report(c4_ms, 1, 7)
-  let s1_ht = @topos.compute_nerve_homotopy_type(
-    @topos.boundary_simplex_nerve(2),
-  )
-  let ok = nc4 == 48 &&
-    site_ok &&
-    vr.homology_cohomology_dual &&
-    vr.betti_homology[0] == s1_ht.betti_numbers[0] &&
-    vr.betti_homology[1] == s1_ht.betti_numbers[1]
+  guard metric_vr_to_topos_nerve(space, 2) is Some(full) else {
+    return (false, "full simplex rejected")
+  }
+  let tampered : @topos.SimplicialNerve = {
+    num_vertices: full.num_vertices,
+    edges: full.edges.copy(),
+    triangles: [],
+    tetrahedra: [],
+  }
+  let bad_h1 = @topos.nerve_cohomology_dimensions_fp(tampered, 7)[1]
+  let negative = h0s == [4, 1, 1] &&
+    h1s == [0, 1, 0] &&
+    bad_h1 == 3 &&
+    metric_vr_to_topos_nerve({ n: 2, dist: [[0, 1], []], }, 1) is None &&
+    metric_vr_to_topos_nerve(space, -1) is None
   (
-    ok,
-    "NC_site(4)=\{nc4} opens (sheaf=\{site_ok}), VR(C_4,1)=S^1 Betti=[\{vr.betti_homology[0]},\{vr.betti_homology[1]}]",
+    agrees && negative,
+    "same VR(C4,r) complex, r=0/1/2: H0=\{nbe_show_ints(h0s)}, H1=\{nbe_show_ints(h1s)}, tensor==Topos in degrees0..2=\{agrees}; NEG deleting faces yields H1=\{bad_h1}, malformed inputs rejected=\{negative}",
   )
 }
 
 ///|
-/// **`K7-20` (`Discovery ↔ Scheme`)**:
-/// Discrete Radon affine plane `A^2(F_3)` (`9` points, `12` lines, `4` directions)
-/// completes to `@scheme.projective_space(2)` over `F_3` (`|P^2(F_3)| = 9 + 4 = 13` points),
-/// and `[E-Scheme-Curve]` transfers Hironaka–Serre `p_a = delta + g_geom` from cubics to quartics!
+/// K7-20: affine Radon point/direction count 9+4 agrees with P2(F3)
+/// point enumeration. This is not an implementation of a general projective
+/// incidence transport. Curve-genus transfer is a separate auxiliary certificate.
 pub fn verify_k7_20_discovery_scheme_bridge() -> (Bool, String) {
   let r3 = @tensor.radon_make(3, 101)
   let gram_ok = @tensor.radon_check_gram_identity(r3)
@@ -282,42 +279,21 @@ pub fn verify_k7_20_discovery_scheme_bridge() -> (Bool, String) {
 }
 
 ///|
-/// **`K7-21` (`Discovery ↔ Condensed`)**:
-/// Federation 7's 5 epistemic lenses seal `5` relational theorems into `@condensed.CondInvariantLedger`
-/// with cryptographic chain verification, and Clifford cocycle radical `dim Z = |rad|`
-/// couples with Condensed twisted AHSS obstruction theory!
-pub fn verify_k7_21_discovery_condensed_bridge() -> (Bool, String) {
-  let (_imp, led, lens_ok) = @conjecture.evaluate_five_epistemic_lenses_into_ledger()
-  let (passed_laws, failed_laws) = @condensed.cond_ledger_audit_laws(led)
-  let tw3 = @tensor.twisted_group_clifford_cocycle_report(2, 3)
-  let ok = lens_ok &&
-    @condensed.cond_ledger_verify(led) &&
-    passed_laws == 2 &&
-    failed_laws == 0 &&
-    tw3.center_dim == 2 &&
-    tw3.coboundary_gauge_invariant
-  (
-    ok,
-    "ledger_entries=\{led.entries.length()}, laws_audited=(\{passed_laws},\{failed_laws}), Cl_3 center_dim=\{tw3.center_dim}",
-  )
-}
-
-///|
-/// Execute all **$\binom{7}{2} = 21$ pairwise cross-federation bridges (`K_7`)**:
-/// `K5-01..K5-10` (10 edges) + `K6-11..K6-15` (5 edges) + `K7-16..K7-21` (6 new Discovery edges)!
-pub fn verify_k7_federation_bridges() -> Array[FederationPairBridge] {
+/// Execute the 17 active comparisons of the historical seven-federation scope.
+/// The optional atlas is shared read-only; no suspended/retired work is executed.
+pub fn verify_k7_federation_bridges(
+  atlas_precomputed~ : @tensor.F3Tensor222Atlas? = None,
+) -> Array[FederationPairBridge] {
   let edges = verify_k6_federation_bridges()
   let (ok16, w16) = verify_k7_16_discovery_cubical_bridge()
-  let (ok17, w17) = verify_k7_17_discovery_symlib_bridge()
-  let (ok18, w18) = verify_k7_18_discovery_semiring_bridge()
+  let (ok17, w17) = verify_k7_17_discovery_symlib_bridge(atlas_precomputed~)
   let (ok19, w19) = verify_k7_19_discovery_topos_bridge()
   let (ok20, w20) = verify_k7_20_discovery_scheme_bridge()
-  let (ok21, w21) = verify_k7_21_discovery_condensed_bridge()
   edges.push(FederationPairBridge::{
     id: "K7-16",
     lhs: Discovery,
     rhs: Cubical,
-    bridge_theorem: "Polygon Flip Walk ↔ Stasheff K_n 1-Skeleton & Lakatosian F_2 Wedge Refinement",
+    bridge_theorem: "Polygon Flip Walk ↔ Stasheff K_n 1-Skeleton",
     holds: ok16,
     quantitative_witness: w16,
   })
@@ -330,18 +306,10 @@ pub fn verify_k7_federation_bridges() -> Array[FederationPairBridge] {
     quantitative_witness: w17,
   })
   edges.push(FederationPairBridge::{
-    id: "K7-18",
-    lhs: Discovery,
-    rhs: Semiring,
-    bridge_theorem: "Viro–Krasner Tropical Hyperfield Ties ↔ 6,561-Tensor F_3 Implication DAG",
-    holds: ok18,
-    quantitative_witness: w18,
-  })
-  edges.push(FederationPairBridge::{
     id: "K7-19",
     lhs: Discovery,
     rhs: Topos,
-    bridge_theorem: "Non-Crossing Forest Grothendieck Sheaf [T-X-Site] ↔ Vietoris–Rips / Nerve Duality",
+    bridge_theorem: "Same Vietoris–Rips complex transported to a Topos nerve; scale and face-deletion controls",
     holds: ok19,
     quantitative_witness: w19,
   })
@@ -349,27 +317,23 @@ pub fn verify_k7_federation_bridges() -> Array[FederationPairBridge] {
     id: "K7-20",
     lhs: Discovery,
     rhs: Scheme,
-    bridge_theorem: "Discrete Radon A^2(F_3) ↪ P^2(F_3) Completion & Hironaka–Serre Curve Genus Transfer",
+    bridge_theorem: "Discrete Radon A^2(F_3) ↪ P^2(F_3) Completion",
     holds: ok20,
     quantitative_witness: w20,
   })
-  edges.push(FederationPairBridge::{
-    id: "K7-21",
-    lhs: Discovery,
-    rhs: Condensed,
-    bridge_theorem: "Epistemic Relational Lenses → Condensed Invariant Ledger & Clifford Spinor Center",
-    holds: ok21,
-    quantitative_witness: w21,
-  })
-  apply_bridge_audit(edges)
+  edges
 }
 
 ///|
 /// Execute the full **Seven-Federation Star-Prism & Lakatosian Discovery Loop** verification.
 pub fn verify_seven_federation_star_prism(
   k7_precomputed~ : Array[FederationPairBridge]? = None,
+  federations_precomputed~ : Array[FederationDescriptor]? = None,
 ) -> SevenFederationStarPrismReport {
-  let feds = seven_federation_descriptors()
+  let feds = match federations_precomputed {
+    Some(fs) => fs
+    None => seven_federation_descriptors()
+  }
   let mut fed_ok = 0
   for f in feds {
     if f.live_health_ok {
@@ -380,6 +344,7 @@ pub fn verify_seven_federation_star_prism(
     Some(es) => es
     None => verify_k7_federation_bridges()
   }
+  let registry = validate_bridge_registry(k7, federation_count=7)
   let mut k7_ok = 0
   for e in k7 {
     if e.holds {
@@ -387,8 +352,8 @@ pub fn verify_seven_federation_star_prism(
     }
   }
   let syn = @conjecture.synthesize_and_verify_conjecture_engine()
-  let ok = fed_ok == 7 &&
-    k7_ok == 17 &&
+  let ok = federation_health_valid(feds, 7) &&
+    registry.all_holds &&
     syn.all_consistent &&
     syn.total_conjectures == 7 &&
     syn.evolution_families_passed == 6
@@ -401,4 +366,67 @@ pub fn verify_seven_federation_star_prism(
     epistemic_lenses_sealed: syn.epistemic_lenses_ledger_ok,
     star_prism_commutes: ok,
   }
+}
+
+///|
+/// Translate an integer metric's Vietoris–Rips flag complex to the SAME
+/// vertex/edge/triangle/tetrahedron data consumed by Topos. n is limited to
+/// 1..8, matching the tensor engine's documented finite domain. This is a
+/// 3-skeleton: sufficient for H⁰..H², NOT full higher-dimensional homology.
+/// Shape is checked before indexing and triangle sums use Int64 (no overflow).
+pub fn metric_vr_to_topos_nerve(
+  space : @tensor.FiniteMetricSpace,
+  scale : Int32,
+) -> @topos.SimplicialNerve? {
+  let n = space.n
+  if n < 1 || n > 8 || scale < 0 || space.dist.length() != n {
+    return None
+  }
+  for row in space.dist {
+    if row.length() != n {
+      return None
+    }
+  }
+  for i in 0..<n {
+    for j in 0..<n {
+      let d = space.dist[i][j]
+      if d < 0 ||
+        d != space.dist[j][i] ||
+        (i == j && d != 0) ||
+        (i != j && d == 0) {
+        return None
+      }
+      for k in 0..<n {
+        if space.dist[i][k].to_int64() >
+          d.to_int64() + space.dist[j][k].to_int64() {
+          return None
+        }
+      }
+    }
+  }
+  let edges : Array[(Int32, Int32)] = []
+  let triangles : Array[(Int32, Int32, Int32)] = []
+  let tetrahedra : Array[(Int32, Int32, Int32, Int32)] = []
+  for i in 0..<n {
+    for j in (i + 1)..<n {
+      if space.dist[i][j] > scale {
+        continue
+      }
+      edges.push((i, j))
+      for k in (j + 1)..<n {
+        if space.dist[i][k] > scale || space.dist[j][k] > scale {
+          continue
+        }
+        triangles.push((i, j, k))
+        for l in (k + 1)..<n {
+          if space.dist[i][l] <= scale &&
+            space.dist[j][l] <= scale &&
+            space.dist[k][l] <= scale {
+            tetrahedra.push((i, j, k, l))
+          }
+        }
+      }
+    }
+  }
+  Some({ num_vertices: n, edges, triangles, tetrahedra, })
 }

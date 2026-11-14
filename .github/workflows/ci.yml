@@ -22,13 +22,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: 安裝 MoonBit 工具鏈（官方 install 腳本）
+      - name: 安裝 MoonBit 正式工具鏈（.moonbit-version 固定）
         run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s -- "$(cat .moonbit-version)"
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
 
       - name: 工具鏈版本
-        run: moon version
+        run: moon version --all
 
       - name: 更新 registry 索引（moonbitlang/async 等依賴解析所需）
         run: moon update
@@ -38,6 +38,14 @@ jobs:
 
       - name: Wasm-GC 建置
         run: moon build --target wasm-gc
+
+      - name: 公開介面快照不得過期
+        run: |
+          moon info --target wasm-gc
+          git diff --exit-code -- '**/pkg.generated.mbti' 'pkg.generated.mbti'
+
+      - name: 聯邦功能清單、退役實作及生成文檔不得漂移
+        run: python3 tools/federation_docs.py --check
 
       - name: 定律登記不得過期（gen_laws.py 後工作區必須無差異）
         run: |
@@ -53,7 +61,7 @@ jobs:
       - name: Cubical 定理總表（139 / 139）
         run: moon run cmd/main --target wasm-gc
 
-      - name: 大一統證書（48 / 48 歷史 ledger ＋ K₁₀=45/45 ＋ 硬體加速）
+      - name: 聯邦驗收（39 active、6 retired、50 證書、15 checker laws）
         run: moon run cmd/showcase --target wasm-gc
 
       - name: 架構閘（聯邦白名單、分層、零殘留測試）

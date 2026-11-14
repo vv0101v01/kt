@@ -6,13 +6,11 @@ import {
   "vv0101v01/cubical-hermitian",
   "vv0101v01/cubical-hermitian/accel",
   "vv0101v01/cubical-hermitian/condensed",
-  "vv0101v01/cubical-hermitian/cubical/autonomy",
   "vv0101v01/cubical-hermitian/cubical/face_bdd",
   "vv0101v01/cubical-hermitian/cubical/finite",
   "vv0101v01/cubical-hermitian/cubical/hermitian",
   "vv0101v01/cubical-hermitian/cubical/homotopy",
   "vv0101v01/cubical-hermitian/cubical/kernel",
-  "vv0101v01/cubical-hermitian/cubical/structures",
   "vv0101v01/cubical-hermitian/scheme",
   "vv0101v01/cubical-hermitian/semiring/algebra",
   "vv0101v01/cubical-hermitian/semiring/cat",
@@ -26,9 +24,9 @@ import {
 }
 
 // Values
-pub fn accel_hardware_certificate() -> BridgeCertificate
+pub fn accel_hardware_certificate(precomputed? : @accel.AccelFederationReport?, triad_precomputed? : F8F5F1TriadBridgeReport?) -> BridgeCertificate
 
-pub fn apply_bridge_audit(Array[FederationPairBridge]) -> Array[FederationPairBridge]
+pub fn active_bridge_specs() -> Array[(String, FederationId, FederationId)]
 
 pub fn assignment_cost(Array[Array[Int64]], @vv0101v01/cubical-hermitian/symlib/core.Perm) -> Int64
 
@@ -36,15 +34,15 @@ pub fn average_permutation_matrices(Array[@vv0101v01/cubical-hermitian/symlib/co
 
 pub fn bool_tuple_type(Int32) -> @finite.Ty
 
-pub fn bridge_audit_all_active_hold(Array[FederationPairBridge]) -> Bool
-
-pub fn bridge_audit_counts(Array[FederationPairBridge]) -> (Int32, Int32, Int32)
-
 pub fn bridge_certificate(String, String, Bool, detail? : String) -> BridgeCertificate
 
-pub fn bridge_certificates() -> Array[BridgeCertificate]
+pub fn bridge_certificates(k7_precomputed? : Array[FederationPairBridge]?, federations_precomputed? : Array[FederationDescriptor]?, accel_precomputed? : @accel.AccelFederationReport?, triad_precomputed? : F8F5F1TriadBridgeReport?, frontier_precomputed? : Frontier7PillarsPentadReport?) -> Array[BridgeCertificate]
 
-pub fn bridge_suspension_reason(String) -> String
+pub fn bridge_edges_for_federations(Array[FederationPairBridge], Int32) -> Array[FederationPairBridge]
+
+pub fn bridge_registry_laws() -> Array[(String, Bool)]
+
+pub fn bridge_retirement_reason(String) -> String
 
 pub fn build_cchm_interval_classifying_topos(Int32) -> @site.Site
 
@@ -96,23 +94,29 @@ pub fn exact_permanent_int64(Array[Array[Int64]], Int32) -> @vv0101v01/cubical-h
 
 pub fn face_semiring_law_report() -> @algebra.LawReport
 
+pub fn federation_index(FederationId) -> Int32
+
 pub fn fincat_hom_counts(@symlib.FinCat) -> Array[Array[Int64]]
 
 pub fn five_federation_descriptors() -> Array[FederationDescriptor]
 
 pub fn free_category_to_fincat(@cat.DiGraph) -> @symlib.FinCat
 
-pub fn frontier_7pillars_bridge_certificate() -> BridgeCertificate
+pub fn frontier_7pillars_bridge_certificate(precomputed? : Frontier7PillarsPentadReport?) -> BridgeCertificate
 
 pub fn glivenko_double_negation_formula(@site.GeoFormula) -> @site.GeoFormula
 
-pub fn grand_unification_certificates() -> Array[BridgeCertificate]
+pub fn grand_unification_certificates(k7_precomputed? : Array[FederationPairBridge]?, federations_precomputed? : Array[FederationDescriptor]?) -> Array[BridgeCertificate]
+
+pub fn graph_closure_snf_report(@vv0101v01/cubical-hermitian/symlib/core.Graph) -> GraphClosureSnfReport?
 
 pub fn intuitive_conjecture_outcome_label(IntuitiveConjectureOutcome) -> String
 
 pub fn matrix_permutation_symmetries(@hermitian.CMat, Int32) -> Array[@vv0101v01/cubical-hermitian/symlib/core.Perm]
 
 pub fn matrix_support_graph(@hermitian.CMat) -> @vv0101v01/cubical-hermitian/symlib/core.Graph
+
+pub fn metric_vr_to_topos_nerve(@tensor.FiniteMetricSpace, Int32) -> @topos.SimplicialNerve?
 
 pub fn nine_federation_descriptors(accel_precomputed? : @accel.AccelFederationReport?) -> Array[FederationDescriptor]
 
@@ -127,8 +131,6 @@ pub fn perm_preserves_semiring_graph(@graph.Graph, @vv0101v01/cubical-hermitian/
 pub fn perm_wiring(@vv0101v01/cubical-hermitian/symlib/core.Perm) -> @finite.Wiring
 
 pub fn permutation_matrix(@vv0101v01/cubical-hermitian/symlib/core.Perm) -> @hermitian.CMat
-
-pub fn promote_discovered_implication_to_focused_theorem(atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> FourFederationPromotionReport
 
 pub fn qpoly_tropicalize_padic(@vv0101v01/cubical-hermitian/algebra/core.QPoly, Int32) -> @trop.UniPoly
 
@@ -146,11 +148,11 @@ pub fn replace_k8_23_s3_axis_invariance_swar() -> FederationPairBridge
 
 pub fn replace_k8_24_tropical_four_way() -> FederationPairBridge
 
-pub fn replace_k8_26_segre_cone_point_census() -> FederationPairBridge
+pub fn replace_k8_26_segre_cone_point_census(atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> FederationPairBridge
 
 pub fn replace_k8_27_ozaki_crt_zmat_snf() -> FederationPairBridge
 
-pub fn replace_k8_28_bitplane_implication_soundness() -> FederationPairBridge
+pub fn replace_k8_28_bitplane_implication_soundness(atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> FederationPairBridge
 
 pub fn replace_k9_29_stlc_dterm_nbe() -> FederationPairBridge
 
@@ -163,6 +165,8 @@ pub fn replace_k9_32_nerve_h1_bareiss() -> FederationPairBridge
 pub fn replace_k9_33_macaulay_hilbert_bareiss() -> FederationPairBridge
 
 pub fn replace_k9_34_mobius_glue_rlim_torsion() -> FederationPairBridge
+
+pub fn retired_bridge_ids() -> Array[String]
 
 pub fn rotation_axis_certificate(precomputed? : RotationAxisBridgeReport?) -> BridgeCertificate
 
@@ -186,8 +190,6 @@ pub fn six_federation_descriptors() -> Array[FederationDescriptor]
 
 pub fn square_cell_incidence() -> (@vv0101v01/cubical-hermitian/symlib/core.Graph, Array[Int32])
 
-pub fn suspended_bridge_ids() -> Array[String]
-
 pub fn ten_federation_descriptors(accel_precomputed? : @accel.AccelFederationReport?) -> Array[FederationDescriptor]
 
 pub fn translate_coord_ring_to_zariski_theory(@scheme.CoordRing, Array[@scheme.MPoly]) -> (Int32, Array[@site.PropGeoAxiom])
@@ -202,6 +204,8 @@ pub fn tropical_matrix_symmetries(Array[Array[Int64]], Int32) -> Array[@vv0101v0
 
 pub fn tropical_optimal_assignments(Array[Array[Int64]], Int32) -> Array[@vv0101v01/cubical-hermitian/symlib/core.Perm]
 
+pub fn validate_bridge_registry(Array[FederationPairBridge], federation_count? : Int32) -> BridgeRegistryReport
+
 pub fn verify_accel_hardware_bridge() -> @accel.AccelFederationReport
 
 pub fn verify_bridge_auxiliary_theorems() -> Array[BridgeCertificate]
@@ -210,7 +214,7 @@ pub fn verify_cubical_algebra_scheme_bridge() -> Bool
 
 pub fn verify_dependent_cubical_topos_bridge() -> Bool
 
-pub fn verify_double_v_architecture(k6_precomputed? : Array[FederationPairBridge]?) -> DoubleVArchitectureReport
+pub fn verify_double_v_architecture(k6_precomputed? : Array[FederationPairBridge]?, federations_precomputed? : Array[FederationDescriptor]?) -> DoubleVArchitectureReport
 
 pub fn verify_excision_subtopos_blowup_bridge() -> Bool
 
@@ -228,17 +232,13 @@ pub fn verify_intuitive_conjecture_lab() -> IntuitiveConjectureLabReport
 
 pub fn verify_k10_ten_federation_bridges(k7_precomputed? : Array[FederationPairBridge]?, atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> Array[FederationPairBridge]
 
-pub fn verify_k10_ten_federation_unification(k7_precomputed? : Array[FederationPairBridge]?, accel_precomputed? : @accel.AccelFederationReport?, rotation_precomputed? : RotationAxisBridgeReport?, k5_preverified_ok? : Bool?) -> TenFederationUnificationReport
+pub fn verify_k10_ten_federation_unification(k7_precomputed? : Array[FederationPairBridge]?, accel_precomputed? : @accel.AccelFederationReport?, rotation_precomputed? : RotationAxisBridgeReport?, k5_preverified_ok? : Bool?, k10_precomputed? : Array[FederationPairBridge]?, federations_precomputed? : Array[FederationDescriptor]?) -> TenFederationUnificationReport
 
 pub fn verify_k10_ualg_federation_bridges() -> Array[FederationPairBridge]
 
 pub fn verify_k5_federation_bridges() -> Array[FederationPairBridge]
 
-pub fn verify_k6_11_condensed_cubical_bridge() -> (Bool, String)
-
 pub fn verify_k6_12_condensed_symlib_bridge() -> (Bool, String)
-
-pub fn verify_k6_13_condensed_semiring_bridge() -> (Bool, String)
 
 pub fn verify_k6_14_condensed_topos_bridge() -> (Bool, String)
 
@@ -248,29 +248,23 @@ pub fn verify_k6_federation_bridges() -> Array[FederationPairBridge]
 
 pub fn verify_k7_16_discovery_cubical_bridge() -> (Bool, String)
 
-pub fn verify_k7_17_discovery_symlib_bridge() -> (Bool, String)
-
-pub fn verify_k7_18_discovery_semiring_bridge() -> (Bool, String)
+pub fn verify_k7_17_discovery_symlib_bridge(atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> (Bool, String)
 
 pub fn verify_k7_19_discovery_topos_bridge() -> (Bool, String)
 
 pub fn verify_k7_20_discovery_scheme_bridge() -> (Bool, String)
 
-pub fn verify_k7_21_discovery_condensed_bridge() -> (Bool, String)
-
-pub fn verify_k7_federation_bridges() -> Array[FederationPairBridge]
+pub fn verify_k7_federation_bridges(atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> Array[FederationPairBridge]
 
 pub fn verify_k9_federation_bridges(k7_precomputed? : Array[FederationPairBridge]?, atlas_precomputed? : @tensor.F3Tensor222Atlas?) -> Array[FederationPairBridge]
 
-pub fn verify_k9_meta_discovery_topos_unification(k7_precomputed? : Array[FederationPairBridge]?, accel_precomputed? : @accel.AccelFederationReport?, rotation_precomputed? : RotationAxisBridgeReport?, k5_preverified_ok? : Bool?) -> NineFederationUnificationReport
+pub fn verify_k9_meta_discovery_topos_unification(k7_precomputed? : Array[FederationPairBridge]?, accel_precomputed? : @accel.AccelFederationReport?, rotation_precomputed? : RotationAxisBridgeReport?, k5_preverified_ok? : Bool?, k9_precomputed? : Array[FederationPairBridge]?, federations_precomputed? : Array[FederationDescriptor]?) -> NineFederationUnificationReport
 
 pub fn verify_kapranov_tropical_laurent_bridge() -> Bool
 
 pub fn verify_legacy_k5_system_dispatch(preverified_ok? : Bool?) -> Bool
 
-pub fn verify_malcev_presheaf_autonomy_bridge() -> MalcevPresheafAutonomyBridgeReport
-
-pub fn verify_nominal_bridge_elimination() -> Array[FederationPairBridge]
+pub fn verify_nominal_bridge_elimination(precomputed? : Array[FederationPairBridge]?) -> Array[FederationPairBridge]
 
 pub fn verify_quadratic_etale_torsor_galois_bridge() -> Bool
 
@@ -280,17 +274,15 @@ pub fn verify_rotation_axis_bridge() -> RotationAxisBridgeReport
 
 pub fn verify_semiring_kleene_alexandroff_topos_bridge() -> Bool
 
-pub fn verify_seven_federation_star_prism(k7_precomputed? : Array[FederationPairBridge]?) -> SevenFederationStarPrismReport
+pub fn verify_seven_federation_star_prism(k7_precomputed? : Array[FederationPairBridge]?, federations_precomputed? : Array[FederationDescriptor]?) -> SevenFederationStarPrismReport
 
 pub fn verify_six_pillar_circle_sphere_unification() -> Bool
 
-pub fn verify_structural_bridge_replacements() -> Array[FederationPairBridge]
+pub fn verify_structural_bridge_replacements(precomputed? : Array[FederationPairBridge]?) -> Array[FederationPairBridge]
 
 pub fn verify_symlib_galois_topos_bridge() -> Bool
 
 pub fn verify_symlib_symmetric_scheme_bridge() -> Bool
-
-pub fn verify_x_overlap_chiasmus() -> XOverlapChiasmReport
 
 pub fn verify_zariski_topos_invariance_vs_nilpotent_points() -> Bool
 
@@ -309,12 +301,23 @@ pub(all) struct BridgeCertificate {
 }
 
 #derive(Eq, @debug.Debug)
+pub(all) struct BridgeRegistryReport {
+  expected_count : Int32
+  present_count : Int32
+  verified_count : Int32
+  errors : Array[String]
+  all_holds : Bool
+}
+pub fn BridgeRegistryReport::equal(Self, Self) -> Bool
+pub fn BridgeRegistryReport::not_equal(Self, Self) -> Bool
+pub fn BridgeRegistryReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
 pub(all) struct DoubleVArchitectureReport {
   lower_v_gcd_apex_ok : Bool
   six_federations_verified : Int32
   k6_bridges_verified : Int32
-  x_overlap_ok : Bool
-  seven_boundaries_breakthrough_ok : Bool
+  registry_ok : Bool
   refuted_conjectures_evaluated : Int32
   upper_v_synthesis_apex_ok : Bool
 }
@@ -324,16 +327,8 @@ pub fn DoubleVArchitectureReport::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
 pub(all) struct F2F3F6TriadBridgeReport {
-  a5_subgroup_classes : Int32
-  b3_subgroup_classes : Int32
-  burnside_mobius_exact_ok : Bool
-  nonthin_groupoid_yoneda_ok : Bool
-  deg16_permlut_cayley_ok : Bool
-  semiring_wasm_suite_ok : Bool
-  modular_hnf_snf_ok : Bool
-  nobeling_solid_duality_ok : Bool
-  adams_h3_sigma_and_eta3_ok : Bool
-  cayley_semiring_snf_triad_ok : Bool
+  cases : Array[GraphClosureSnfReport]
+  negative_control_detected : Bool
   all_holds : Bool
 }
 pub fn F2F3F6TriadBridgeReport::equal(Self, Self) -> Bool
@@ -429,22 +424,6 @@ pub fn FederationPairBridge::not_equal(Self, Self) -> Bool
 pub fn FederationPairBridge::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
-pub(all) struct FourFederationPromotionReport {
-  f7_bitplane_implications_found : Int32
-  f7_hardware_ctz_counterexample : Int32
-  f9_horn_orientable_and_complete : Bool
-  f9_slg_tabling_cache_hits : Int32
-  f9_bareiss_gluing_h1_zero : Bool
-  f4_sieve64_global_truth_holds : Bool
-  f1_ljf_focused_unique_proof : Bool
-  f1_refuted_converse_blocked : Bool
-  pipeline_holds : Bool
-}
-pub fn FourFederationPromotionReport::equal(Self, Self) -> Bool
-pub fn FourFederationPromotionReport::not_equal(Self, Self) -> Bool
-pub fn FourFederationPromotionReport::to_repr(Self) -> @debug.Repr
-
-#derive(Eq, @debug.Debug)
 pub struct Frontier7PillarsPentadReport {
   f9_f1_mtt_2functor_embedding_ok : Bool
   f3_f8_f1_dual_qtt_swar_homomorphism_ok : Bool
@@ -495,6 +474,20 @@ pub fn GrandUnificationReport::not_equal(Self, Self) -> Bool
 pub fn GrandUnificationReport::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
+pub(all) struct GraphClosureSnfReport {
+  vertices : Int32
+  components : Int32
+  reachable_pairs : Int32
+  expected_reachable_pairs : Int32
+  laplacian_rank : Int32
+  snf_certificate_ok : Bool
+  all_holds : Bool
+}
+pub fn GraphClosureSnfReport::equal(Self, Self) -> Bool
+pub fn GraphClosureSnfReport::not_equal(Self, Self) -> Bool
+pub fn GraphClosureSnfReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
 pub(all) struct IntuitiveConjectureLabReport {
   records : Array[IntuitiveConjectureRecord]
   refuted_and_refined : Int32
@@ -541,25 +534,9 @@ pub fn KtRotationFamilyAlignment::not_equal(Self, Self) -> Bool
 pub fn KtRotationFamilyAlignment::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
-pub(all) struct MalcevPresheafAutonomyBridgeReport {
-  autonomy_master : @autonomy.CubicalAutonomyMasterReport
-  work4_atlas : @structures.Work4Complete54Report
-  presheaf_dn : @topos.DoubleNegationTemplateReport
-  swar_cube : @accel.CubicalSwarDegeneracyReport
-  alexandrov_duality_ok : Bool
-  chu_universal_duality_ok : Bool
-  nondeg_plus_deg_4cubes : Int32
-  holds : Bool
-}
-pub fn MalcevPresheafAutonomyBridgeReport::equal(Self, Self) -> Bool
-pub fn MalcevPresheafAutonomyBridgeReport::not_equal(Self, Self) -> Bool
-pub fn MalcevPresheafAutonomyBridgeReport::to_repr(Self) -> @debug.Repr
-
-#derive(Eq, @debug.Debug)
 pub(all) struct NineFederationUnificationReport {
   nine_federations_verified : Int32
   k9_bridges_verified : Int32
-  promotion_pipeline : FourFederationPromotionReport
   v5_ackermann_65536_sets_verified : Bool
   rotation_axis_cert_ok : Bool
   legacy_k5_dispatch_ok : Bool
@@ -619,7 +596,6 @@ pub(all) struct TenFederationUnificationReport {
   ten_federations_verified : Int32
   k10_bridges_verified : Int32
   ualg_bridges_verified : Int32
-  promotion_pipeline : FourFederationPromotionReport
   v5_ackermann_65536_sets_verified : Bool
   rotation_axis_cert_ok : Bool
   legacy_k5_dispatch_ok : Bool
@@ -642,20 +618,6 @@ pub(all) struct WeightedGraphReport {
   finite_distance_sum : Int64
   support_characteristic_poly : @vv0101v01/cubical-hermitian/algebra/core.QPoly
 }
-
-#derive(Eq, @debug.Debug)
-pub(all) struct XOverlapChiasmReport {
-  diagonal_d1_syntax_nonarch_ok : Bool
-  diagonal_d2_analytic_homotopy_ok : Bool
-  x_pivot_gcd_lattice_ok : Bool
-  x_pivot_condensed_4_structures_ok : Bool
-  x_pivot_2_categories_ok : Bool
-  shared_chiasm_invariants : (Int32, Int32, Int32)
-  chiasm_commutes : Bool
-}
-pub fn XOverlapChiasmReport::equal(Self, Self) -> Bool
-pub fn XOverlapChiasmReport::not_equal(Self, Self) -> Bool
-pub fn XOverlapChiasmReport::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

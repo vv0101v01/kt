@@ -484,7 +484,13 @@ pub fn replace_k9_34_mobius_glue_rlim_torsion() -> FederationPairBridge {
 }
 
 ///|
-pub fn verify_structural_bridge_replacements() -> Array[FederationPairBridge] {
+pub fn verify_structural_bridge_replacements(
+  precomputed~ : Array[FederationPairBridge]? = None,
+) -> Array[FederationPairBridge] {
+  if precomputed is Some(edges) {
+    let ids = ["K8-22", "K8-24", "K8-27", "K9-29", "K9-31", "K9-34"]
+    return edges.filter(e => ids.contains(e.id))
+  }
   [
     replace_k8_22_swar_face_bdd(),
     replace_k8_24_tropical_four_way(),

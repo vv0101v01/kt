@@ -115,8 +115,8 @@
         "accel:accel-swar",
         "symlib:symlib-core"
       ],
-      "summary_en": "Federation 6 (Lower-V GCD Base + X-Overlap Condensed Pivot) — Universal Elimination-GCD (`@gcd`), 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 1 Refuted Conjecture.",
-      "summary_zh": "第六聯邦（下V新最大公因數基底＋X形交疊凝聚樞紐） — 泛消元新最大公因數（`@gcd`）、凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與已反駁猜想×1。"
+      "summary_en": "Finite condensed models and exact elimination: profinite towers, solid/liquid reports, truncated Adams Ext, Serre/AHSS, finite P1 Laurent Cech dimensions, canonical quotients and invariant ledgers. The legacy CondAnalyticStack report is not a constructed analytic stack; no X-commutativity theorem is claimed.",
+      "summary_zh": "凝聚有限模型與精確消元：有限逆系塔、solid/liquid 報告、截斷 Adams Ext、Serre/AHSS、P¹ Laurent Čech 維數、規範商與不變量賬本。舊名 CondAnalyticStack 不是已構造的解析棧，亦不宣稱 X 交換性。"
     },
     {
       "id": "discovery",
@@ -189,8 +189,8 @@
       "cmd-showcase"
     ],
     "observer": true,
-    "summary_en": "Upper-V & Ten-Federation Star-Prism Grand Unification Apex — Ten-federation Double-V, X-Overlap, Lakatosian & Metatheoretic synthesis, complete K_10 (45/45) pairwise cross-federation bridges, constructive universal-algebra/cubical/scheme/topos/semiring/symlib/condensed/discovery/accel/meta edges, F7->F9->F4->F1 automated theorem promotion, Five-Federation Pentagon theorem, and 18-entry Geometry-Logic Atlas.",
-    "summary_zh": "上V與十聯邦星稜柱大一統匯流頂點 — 十聯邦雙V形、X形交疊、Lakatos 猜想演化與元理論匯流、K_10（45/45）全配對跨聯邦橋、構造性泛代數×立方/概形/拓撲斯/半環/對稱/凝聚/發現/硬體/元理論邊、F7→F9→F4→F1 定理自動晉升管線、五聯邦五角大一統定理與 18 項幾何—邏輯精細圖譜。"
+    "summary_en": "Ten-federation observer: 39 active bounded pairwise comparisons, 6 retired implementations removed; reusable structure transports, exact inventory validation, logical translations and 18 atlas entries. No lower federation may import this observer.",
+    "summary_zh": "十聯邦觀察頂點：39 條 active 有界配對核驗、6 條已刪除；可重用結構轉換、精確註冊表驗收、邏輯翻譯與 18 項圖譜。底層聯邦不得反向匯入。"
   },
   "packages": [
     {
@@ -619,8 +619,8 @@
         "topos",
         "scheme"
       ],
-      "summary_en": "X-Overlap Condensed Mathematics Pivot: profinite towers, Milnor lim^1 CondAnima, Solid/p-Liquid modules, Steenrod–Adams Ext_A, Serre, Twisted AHSS CondSpectralSheaf, Huber–Tropical CondAnalyticStack, CondCategory, CanonElimCategory, Persistent Invariant Ledger, and 1 Refuted Conjecture.",
-      "summary_zh": "X形交疊凝聚數學樞紐：有限逆系塔、Milnor lim¹ 凝聚高階同倫棧 CondAnima、固態與 p-液態模 CondSolidModule、Steenrod–Adams Ext_A、Serre、扭曲 AHSS 凝聚譜層 CondSpectralSheaf、Huber–熱帶雙極解析棧 CondAnalyticStack、CondCategory、CanonElimCategory、持久不變量賬本與四項新猜想。"
+      "summary_en": "Finite condensed models and exact elimination: profinite towers, solid/liquid reports, truncated Adams Ext, Serre/AHSS, finite P1 Laurent Cech dimensions, canonical quotients and invariant ledgers. The legacy CondAnalyticStack report is not a constructed analytic stack; no X-commutativity theorem is claimed.",
+      "summary_zh": "凝聚有限模型與精確消元：有限逆系塔、solid/liquid 報告、截斷 Adams Ext、Serre/AHSS、P¹ Laurent Čech 維數、規範商與不變量賬本。舊名 CondAnalyticStack 不是已構造的解析棧，亦不宣稱 X 交換性。"
     },
     {
       "id": "tensor",
@@ -674,7 +674,6 @@
         "tensor",
         "conjecture",
         "accel",
-        "cubical-autonomy",
         "cubical-structures",
         "accel-swar",
         "topos-site",
@@ -683,7 +682,6 @@
         "meta-instances",
         "meta-iit",
         "meta-reflect",
-        "semiring-app",
         "cubical-face-bdd",
         "ualg-core",
         "ualg-site",
@@ -691,8 +689,8 @@
         "ualg-cube",
         "cubical-kernel"
       ],
-      "summary_en": "Upper-V & Ten-Federation Star-Prism Apex V_2: complete K_10 (45/45) cross-federation bridges across all 10 federations, constructive ualg federation edges, F7->F9->F4->F1 automated theorem promotion, logical theory translations, and 18-entry geometry-logic correspondence atlas.",
-      "summary_zh": "上V與十聯邦星稜柱頂點 V_2：十聯邦 K_10（45/45）全配對跨聯邦橋、構造性 ualg 聯邦邊、F7→F9→F4→F1 定理自動晉升管線、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜。"
+      "summary_en": "Ten-federation observer: 39 active bounded pairwise comparisons, 6 retired implementations removed; reusable structure transports, exact inventory validation, logical translations and 18 atlas entries. No lower federation may import this observer.",
+      "summary_zh": "十聯邦觀察頂點：39 條 active 有界配對核驗、6 條已刪除；可重用結構轉換、精確註冊表驗收、邏輯翻譯與 18 項圖譜。底層聯邦不得反向匯入。"
     },
     {
       "id": "cmd-showcase",
@@ -705,8 +703,8 @@
         "symlib",
         "root"
       ],
-      "summary_en": "Executable ten-federation K_10 Star-Prism & F7->F9->F4->F1 theorem-promotion showcase.",
-      "summary_zh": "十聯邦 K_10 星稜柱與 F7→F9→F4→F1 定理自動晉升大一統展示執行入口。"
+      "summary_en": "Single-snapshot active bridge inventory, native certificates and negative controls; no retired bridge execution.",
+      "summary_zh": "單次快照的 active 橋功能枚舉、原生證書與負控制；不執行已刪橋。"
     },
     {
       "id": "semiring-par-host",
@@ -1433,8 +1431,8 @@
         "*"
       ],
       "observer": true,
-      "summary_en": "Ten-federation K_10 (45/45) grand unification, F7->F9->F4->F1 theorem promotion, logical theory translation, and 18-entry geometry-logic correspondence atlas. No federation may depend back on this component.",
-      "summary_zh": "十聯邦 K_10（45/45）大一統、F7→F9→F4→F1 定理自動晉升、邏輯理論轉譯與 18 項幾何—邏輯精細圖譜；下層聯邦不得反向依賴此元件。"
+      "summary_en": "Ten-federation observer: 39 active bounded pairwise comparisons, 6 retired implementations removed; reusable structure transports, exact inventory validation, logical translations and 18 atlas entries. No lower federation may import this observer.",
+      "summary_zh": "十聯邦觀察頂點：39 條 active 有界配對核驗、6 條已刪除；可重用結構轉換、精確註冊表驗收、邏輯翻譯與 18 項圖譜。底層聯邦不得反向匯入。"
     },
     {
       "id": "showcase-app",
@@ -1447,8 +1445,8 @@
         "*"
       ],
       "observer": true,
-      "summary_en": "Ten-federation K_10 Star-Prism & F7->F9->F4->F1 theorem-promotion executable showcase.",
-      "summary_zh": "十聯邦 K_10 星稜柱與 F7→F9→F4→F1 定理晉升大一統展示執行入口。"
+      "summary_en": "Ten-federation observer: 39 active bounded pairwise comparisons, 6 retired implementations removed; reusable structure transports, exact inventory validation, logical translations and 18 atlas entries. No lower federation may import this observer.",
+      "summary_zh": "十聯邦觀察頂點：39 條 active 有界配對核驗、6 條已刪除；可重用結構轉換、精確註冊表驗收、邏輯翻譯與 18 項圖譜。底層聯邦不得反向匯入。"
     },
     {
       "id": "semiring-par-host",
@@ -1626,8 +1624,8 @@
         "condensed-base",
         "symlib-base"
       ],
-      "summary_en": "X-Overlap Condensed Mathematics core: 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 1 Refuted Conjecture.",
-      "summary_zh": "X形交疊凝聚數學核心：凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與已反駁猜想×1。"
+      "summary_en": "Finite condensed models and exact elimination: profinite towers, solid/liquid reports, truncated Adams Ext, Serre/AHSS, finite P1 Laurent Cech dimensions, canonical quotients and invariant ledgers. The legacy CondAnalyticStack report is not a constructed analytic stack; no X-commutativity theorem is claimed.",
+      "summary_zh": "凝聚有限模型與精確消元：有限逆系塔、solid/liquid 報告、截斷 Adams Ext、Serre/AHSS、P¹ Laurent Čech 維數、規範商與不變量賬本。舊名 CondAnalyticStack 不是已構造的解析棧，亦不宣稱 X 交換性。"
     },
     {
       "id": "tensor-core",

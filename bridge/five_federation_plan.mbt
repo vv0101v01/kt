@@ -55,7 +55,8 @@ pub extend FederationDescriptor with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend FederationDescriptor with Eq::{not_equal, equal}
 
 ///|
-/// One verified edge `(lhs, rhs)` of the complete `K_5` cross-federation graph.
+/// Result of one bounded cross-representation comparison. Public record data
+/// is not a sealed proof; registered/active does not imply holds=true.
 #derive(Debug, Eq)
 pub(all) struct FederationPairBridge {
   id : String
@@ -162,7 +163,11 @@ pub fn five_federation_descriptors() -> Array[FederationDescriptor] {
     {
       id: Cubical,
       slug: "cubical",
-      packages: ["root", "algebra", "cmd-main"],
+      packages: [
+        "cubical-face-bdd", "cubical-finite", "algebra-core", "algebra", "cubical-hermitian",
+        "cubical-kernel", "cubical-elaborator", "cubical-homotopy", "cubical-store",
+        "cubical-autonomy", "cubical-structures", "hostfs", "root", "cmd-main",
+      ],
       canonical_normal_form: "η-long dependent NbE / ROBDD root / RREF & Sturm–Rouché",
       categorification_role: "Cubical CwF with Univalence, HITs & Karoubi Hermitian Projectors",
       live_health_ok: f1_ok,
@@ -171,7 +176,7 @@ pub fn five_federation_descriptors() -> Array[FederationDescriptor] {
     {
       id: Symlib,
       slug: "symlib",
-      packages: ["symlib", "cmd-symdemo", "cmd-symbench"],
+      packages: ["symlib-core", "symlib", "cmd-symdemo", "cmd-symbench"],
       canonical_normal_form: "Schreier–Sims BSGS / McKay–Piper colored key / table of marks",
       categorification_role: "Finite PermGroup, Action Groupoids, G-Set Monad & Kan Extensions",
       live_health_ok: f2_ok,
@@ -184,7 +189,7 @@ pub fn five_federation_descriptors() -> Array[FederationDescriptor] {
         "semiring-algebra", "semiring-matrix", "semiring-monoid", "semiring-graph",
         "semiring-spline", "semiring-trop", "semiring-nf", "semiring-cat", "semiring-app",
         "semiring-bp", "semiring-ratelimit", "semiring-io", "semiring-sim", "semiring-par",
-        "semiring-par-host", "semiring-examples", "cmd-semiringreport",
+        "semiring-par-host", "cmd-semiringreport",
       ],
       canonical_normal_form: "Kleene star matrix closure A* / Brzozowski minimal DFA / tropical hull",
       categorification_role: "Idempotent Star-Semiring Categories, Weighted CSR Paths & Tropical Polytopes",
@@ -194,7 +199,7 @@ pub fn five_federation_descriptors() -> Array[FederationDescriptor] {
     {
       id: Topos,
       slug: "topos",
-      packages: ["topos"],
+      packages: ["topos-site", "topos"],
       canonical_normal_form: "Grothendieck J-closed sieves Ω_J / Plus-sheafification / Smith torsion",
       categorification_role: "Elementary & Grothendieck Toposes, Subtopos Nuclei, Gerbes & Nerve Cohomology",
       live_health_ok: f4_ok,
@@ -588,9 +593,9 @@ pub fn verify_k5_federation_bridges() -> Array[FederationPairBridge] {
       id: "K5-03",
       lhs: Cubical,
       rhs: Topos,
-      bridge_theorem: "Cubical λΠΣ / Voevodsky isContr & Face → Kripke–Joyal & Glivenko Sh_{¬¬}",
+      bridge_theorem: "Cubical λΠΣ / Voevodsky isContr & Face → Kripke–Joyal",
       holds: verify_dependent_cubical_topos_bridge(),
-      quantitative_witness: "1 ⊨ ⟦isContr⟧, 2 ⊭ ⟦isContr⟧; Sh_{¬¬}(Sierp) Booleanizes ¬¬LEM",
+      quantitative_witness: "1 ⊨ ⟦isContr⟧, 2 ⊭ ⟦isContr⟧; one-dimensional CCHM site has 3 consistent stages",
     },
     {
       id: "K5-04",
@@ -605,9 +610,9 @@ pub fn verify_k5_federation_bridges() -> Array[FederationPairBridge] {
       id: "K5-06",
       lhs: Symlib,
       rhs: Topos,
-      bridge_theorem: "Grothendieck Galois Equivalence S_3-Set ≃ Sh_at(BS_3) & Order-Free Poset Nerve",
+      bridge_theorem: "Grothendieck Galois Equivalence S_3-Set ≃ Sh_at(BS_3)",
       holds: verify_symlib_galois_topos_bridge(),
-      quantitative_witness: "S_3 on 3²: Γ=0, |Hom(P,Δ2)|=4=2², atoms 3+6=9; reverse S^1 Betti=[1,1,0,0]",
+      quantitative_witness: "S_3 on 3²: Γ=0, |Hom(P,Δ2)|=4=2², atoms 3+6=9",
     },
     {
       id: "K5-07",

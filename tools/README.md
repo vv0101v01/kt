@@ -1,96 +1,72 @@
-# `tools/` — 架構守門人 `arch_check.py`
+# `tools/` — 架構、功能清單與介面治理
 
-> **架構位置**：不屬於任何 MoonBit 套件（`architecture.json` 的 39 個套件不含 `tools`），是**基礎設施腳本**。
-> 角色：把 `architecture.json` 的宣告變成**可執行的架構閘門**；`agent.v2.md` 指定的「第一層驗證」三件套之一。
+這些是 Python 基礎設施腳本，不是 MoonBit package。現行全倉為 10 聯邦＋observer、57 packages、66 components；精確統計以生成架構清單及 `arch_check.py` 實跑為準。
 
----
+## 工具分工
 
-## 1. 檔案
+| 工具 | 用途 | 是否是閘門 |
+|---|---|---|
+| `arch_check.py` | 檔案恰歸一個 component、package import exact-match、聯邦白名單、兩套分層、禁止常駐測試；附規模統計 | 是 |
+| `federation_docs.py` | 驗 45 歷史配對唯一性、active 生產入口存在、retired 實作已移除；生成 registry、SVG、完整層表、功能清單及離線 HTML | `--check` 是只讀漂移閘 |
+| `health_scan.py` | 靜態近似的遞移死碼／重複／空殼候選 | 否；不可僅憑 pub API 在倉內零引用就刪除 |
+| `gen_laws.py` | 從公開 `law_*` 重生 metatheory laws 登記 | CI 生成後要求無差異 |
+| `gen_labels.py` | 從 metatheory 實際輸出重生 Lean 對帳標籤 | 不能代替執行 Lean kernel |
 
-| 檔案 | 行數 | 說明 |
-|---|---:|---|
-| `arch_check.py` | 511 | 純標準庫（無第三方依賴）的架構一致性檢查器：套件／元件分層、檔案歸屬、實體 `moon.pkg` 匯入、原始碼引用圖、統計指標 |
-
-用法：
-
-```bash
-python3 tools/arch_check.py                # 預設：只檢查，success 時印出架構摘要
-python3 tools/arch_check.py --json         # 額外輸出 JSON 指標（files/lines per package/component）
-python3 tools/arch_check.py --list-edges   # 印出元件邊（consumer -> provider：不同名稱數 / 引用次數）
-python3 tools/arch_check.py --check        # 顯式只檢查（等同預設）
-```
-退出碼 `0` = 通過；`1` = 有違規（錯誤會逐條印到 stderr，方便 CI 直接失敗）。
-
----
-
-## 2. 五項檢查
-
-### 2.1 聯邦／大一統頂點分割
-* `federations` 數量必須是 **5、6、7 或 8**（本倉為 8）；
-* 每個 `federation.packages` 內的 package id 必須存在於 `packages`；
-* **不得重複指派**：一個 package 只能屬於一個 federation（或 `unification` 頂點）；
-* 每個 package 都必須被指派（漏了會報 `is not assigned to any federation or unification`）。
-`unification`（`id = Double-V-X`，`observer = true`）被特別標記為 **apex** 角色。
-
-### 2.2 檔案歸屬
-* 掃描全倉所有 `.mbt`（排除 `_build`、`.git`、`.mooncakes`、`.moonagent`、`target`）；
-* `components[].files` 支援 glob（`expand_files`）；
-* 每個 `.mbt` 必須**恰好**屬於一個 component（漏掉或重複都報錯）；
-* component 宣告的檔案若不存在也報錯。
-> 這使得「新檔案沒有登記架構」不可能悄悄發生。
-
-### 2.3 實體 `moon.pkg` 匯入
-* 解析每個 `moon.pkg` 的 `import { "…" }` 區塊（含 `for "wbtest"` 的 test-scoped 匯入）；
-* production 匯入必須與 `architecture.json` 的 `depends_on` **完全一致**（既不能偷偷多匯，也不能宣告了卻沒匯）；
-* test-scoped 匯入也受檢查，但可保留作原始碼名稱解析之用。
-
-### 2.4 原始碼引用圖（guardrail）
-* 先把註解與字串剝掉（`strip_comments_strings`），避免文件裡的提及被當成依賴；
-* 用 `DECL` / `ENUM` / `CTOR` 正則抽出宣告，**先 package-local 解析**，再沿匯入的廣義閉包解析（直接依賴按 layer 升序訪問，讓常見名稱優先解析到基礎層）；
-* 得到的 `component -> component` 邊必須符合 `layer` 遞增與 `allowed` 邊；例外必須明列在 `exceptions`（本倉目前為空）。
-* 腳本自述定位：*「The source graph is a guardrail, not a compiler: it reports the names that caused an edge so a human can decide whether the edge is real. Run after `moon check`; the compiler remains the source of truth.」*
-
-### 2.5 統計指標
-輸出 `totals`（`.mbt` 檔數與行數）＋ 逐 federation／package／component 的 `mbt_files`／`mbt_lines`。
-
-目前的實測輸出：
-
-```text
-architecture ok: 8 federations + unification apex, 39 packages, 48 components,
-                 222 .mbt files, 152883 .mbt lines
-  federation cubical   (11 pkgs): 108 files, 103095 lines
-  federation symlib    ( 3 pkgs):  29 files,   9671 lines
-  federation semiring  (16 pkgs):  43 files,  12577 lines
-  federation topos     ( 1 pkgs):   6 files,   6767 lines
-  federation scheme    ( 1 pkgs):   5 files,   4982 lines
-  federation condensed ( 2 pkgs):   6 files,   4445 lines
-  federation discovery ( 2 pkgs):   4 files,   3060 lines
-  federation accel     ( 1 pkgs):   5 files,   2722 lines
-  apex unification     ( 2 pkgs):  16 files,   5564 lines
-```
-
----
-
-## 3. 與 `agent.v2.md` 的關係
-
-`agent.v2.md` 定義了三層驗證閉環，本腳本屬**第一層（< 3 秒總閘）**：
+## 日常命令
 
 ```bash
 moon check --deny-warn --target wasm-gc
 moon build --target wasm-gc
-python3 tools/arch_check.py          # ← 本檔
+python3 tools/arch_check.py
+
+# 修改來源、catalog 或 architecture 後
+moon info --target wasm-gc
+moon fmt
+python3 tools/gen_laws.py
+python3 tools/federation_docs.py
+python3 tools/federation_docs.py --check
+
+# 健檢報告，不是自動刪除器
+python3 tools/health_scan.py > tools/health_report.md
 ```
 
-三條全綠才可提交。因為它只讀 `architecture.json` 與原始碼文字（不呼叫編譯器），在 CI 上約 **2 秒**完成，遠快於 `moon build`。
+## `arch_check.py`
 
----
+```bash
+python3 tools/arch_check.py --check
+python3 tools/arch_check.py --json
+python3 tools/arch_check.py --list-edges
+```
 
-## 4. 修改流程（新增套件或檔案時）
+- 生產 imports 與 `architecture.json` 的 `packages[].depends_on` 完全一致。
+- 同一 `.mbt` 恰好歸一 component；component 層與 package 層分別檢查。
+- 頂點 observer 可以匯入上游，但任何底層都不能反向匯入 bridge。
+- `*_test.mbt`、`*_wbtest.mbt` 和殘留頂層 `test` 均不容許；臨時局部測試核驗後即刪。
+- 原始碼引用圖是近似守門，不是完整語義分析；編譯器仍是語法／型別真實來源。
+- `--json` 目前先印 JSON 再印文字摘要；消費者不可把整段 stdout 直接當純 JSON。
 
-1. 在 `architecture.json` 的 `packages` 增一筆（`id`、`path`、`moon`、`layer`、`depends_on`、中英摘要）；
-2. 在對應 `federations[].packages`（或 `unification.packages`）加入該 `id`；
-3. 在 `components` 增一筆（`files` 用 glob）或把新檔案納入既有 component 的 glob；
-4. 建好實體 `moon.pkg`（匯入必須**恰好**等於 `depends_on`）；
-5. `python3 tools/arch_check.py` 直到 `architecture ok`。
+## `federation_docs.py`
 
-**不要**在 `exceptions` 裡塞東西來繞過分層 —— `agent.v2.md` 明確要求架構違規應以重構解決，而不是開後門。
+無第三方依賴。來源：
+
+1. `architecture.json`：實體套件／元件分層和依賴；
+2. `bridge/catalog.json`：每一歷史配對的狀態、入口、產物、範圍及刪除理由；
+3. `.moonbit-version`：離線總覽顯示的工具鏈 pin；
+4. 目前來源：行數及 active／retired 定義存在性。
+
+生成物：
+
+- `bridge/registry.mbt`：metadata，**不自動把 active 標為 true**；
+- `docs/FEDERATION_ARCHITECTURE.md`：所有 package 的位置、擁有者、層與直接 import；
+- `docs/package-dependencies.mmd`：provider→consumer 的實體 DAG；
+- `docs/BRIDGE_CATALOG.md`：39 active 的功能與限制、6 retired 的理由；
+- `docs/federation-graph.svg`：語義橋圖，不是 import 或網路圖；
+- `docs/FEDERATION_OVERVIEW.html`：嵌入 SVG/CSS/JS，離線可搜尋的文檔。
+
+先完成 `moon fmt` 及 `gen_laws.py` 再生成層表，避免格式化／定律生成器的行數差異令統計漂移。
+
+`--check` **不寫任何檔案**；漏生成、內容漂移、重複配對、缺欄位、缺 active producer 或退役 producer 再出現均退出非零。它不能證明數學構造；`showcase` 的 runtime validator 和原生定律才負責實際執行。
+
+## 變更紀錄
+
+所有工作的變更／理由／實測／剩餘限制統一記錄到 `agent.v2.md`，不是另外堆積測試 runner 或沒有驗證的「全綠」宣告。

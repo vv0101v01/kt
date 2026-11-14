@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1260 850" role="img" aria-label="Ten federation semantic bridges, active and retired">
+<rect width="1260" height="850" rx="20" fill="#101b29"/>
+<g font-family="system-ui, sans-serif">
+<text x="44" y="56" font-size="14" letter-spacing="3" fill="#83a1ba">KT / FEDERATION INVENTORY</text>
+<text x="44" y="101" font-size="34" font-weight="700" fill="#f4f8fc">10 federations · 39 active bridges</text>
+<text x="44" y="132" font-size="15" fill="#a7bbce">Semantic comparison graph — NOT imports, network links, or universal equivalences.</text>
+<line x1="390.0" y1="177.0" x2="541.6" y2="226.3" stroke="#436b90" stroke-width="1.3"><title>K5-01: Perm ↔ Bool wiring/Equiv 與置換矩陣</title></line>
+<line x1="390.0" y1="177.0" x2="635.4" y2="355.3" stroke="#436b90" stroke-width="1.3"><title>K5-02: CCHM 面序 → Boolean Kleene 閉包；計數半環數極大鏈</title></line>
+<line x1="390.0" y1="177.0" x2="635.4" y2="514.7" stroke="#436b90" stroke-width="1.3"><title>K5-03: DTerm isContr → Kripke–Joyal 公式</title></line>
+<line x1="390.0" y1="177.0" x2="541.6" y2="643.7" stroke="#436b90" stroke-width="1.3"><title>K5-04: Poly/MPoly 轉換、理想商與分裂域對帳</title></line>
+<line x1="541.6" y1="226.3" x2="635.4" y2="355.3" stroke="#436b90" stroke-width="1.3"><title>K5-05: 群作用閉路 → 計數半環 trace → Burnside 軌道</title></line>
+<line x1="541.6" y1="226.3" x2="635.4" y2="514.7" stroke="#436b90" stroke-width="1.3"><title>K5-06: S3 G-set → 原子景預層與軌道分解</title></line>
+<line x1="541.6" y1="226.3" x2="541.6" y2="643.7" stroke="#436b90" stroke-width="1.3"><title>K5-07: 置換作用 → RingHom、有限域點軌道與 Vieta étale</title></line>
+<line x1="635.4" y1="355.3" x2="635.4" y2="514.7" stroke="#436b90" stroke-width="1.3"><title>K5-08: 可達矩陣 → 偏序景 → Ω 的全局真值</title></line>
+<line x1="635.4" y1="355.3" x2="541.6" y2="643.7" stroke="#436b90" stroke-width="1.3"><title>K5-09: 有理 Laurent 賦值 → min-plus 熱帶折點</title></line>
+<line x1="635.4" y1="514.7" x2="541.6" y2="643.7" stroke="#436b90" stroke-width="1.3"><title>K5-10: Zariski 命題景與點函子區分冪零加厚</title></line>
+<line x1="390.0" y1="693.0" x2="541.6" y2="226.3" stroke="#436b90" stroke-width="1.3"><title>K6-12: Z2 軌道的 canon normalizer 與 Burnside 對帳</title></line>
+<line x1="390.0" y1="693.0" x2="635.4" y2="514.7" stroke="#436b90" stroke-width="1.3"><title>K6-14: Hopf Serre 底／纖維 Betti 與神經對帳</title></line>
+<line x1="390.0" y1="693.0" x2="541.6" y2="643.7" stroke="#436b90" stroke-width="1.3"><title>K6-15: 有限 Laurent Čech 矩陣 → P1 O(n) 維數、Serre/RR</title></line>
+<line x1="238.4" y1="643.7" x2="390.0" y2="177.0" stroke="#436b90" stroke-width="1.3"><title>K7-16: 多邊形翻轉圖與 associahedron f-vector 對帳</title></line>
+<line x1="238.4" y1="643.7" x2="541.6" y2="226.3" stroke="#436b90" stroke-width="1.3"><title>K7-17: S3 軸作用的張量秩軌道分層</title></line>
+<line x1="238.4" y1="643.7" x2="635.4" y2="514.7" stroke="#436b90" stroke-width="1.3"><title>K7-19: 同一 metric VR 複形 → Topos 3-skeleton 神經</title></line>
+<line x1="238.4" y1="643.7" x2="541.6" y2="643.7" stroke="#436b90" stroke-width="1.3"><title>K7-20: Radon 仿射平面的射影補點計數</title></line>
+<line x1="144.6" y1="514.7" x2="390.0" y2="177.0" stroke="#436b90" stroke-width="1.3"><title>K8-22: 布林面真值表 → SWAR / ROBDD 同態</title></line>
+<line x1="144.6" y1="514.7" x2="541.6" y2="226.3" stroke="#436b90" stroke-width="1.3"><title>K8-23: S3 張量作用 → SWAR 超行列式不變量與 Burnside</title></line>
+<line x1="144.6" y1="514.7" x2="635.4" y2="355.3" stroke="#436b90" stroke-width="1.3"><title>K8-24: 熱帶 APSP 四條演算法交叉核驗</title></line>
+<line x1="144.6" y1="514.7" x2="635.4" y2="514.7" stroke="#436b90" stroke-width="1.3"><title>K8-25: Sieve64 與列舉式 Heyting/SIP/MAC 對帳</title></line>
+<line x1="144.6" y1="514.7" x2="541.6" y2="643.7" stroke="#436b90" stroke-width="1.3"><title>K8-26: scheme P1 點數 → Segre 仿射錐 → SWAR census</title></line>
+<line x1="144.6" y1="514.7" x2="390.0" y2="693.0" stroke="#436b90" stroke-width="1.3"><title>K8-27: 同一整數矩陣 → CRT / 有理 / BigInt 乘法與 SNF</title></line>
+<line x1="144.6" y1="514.7" x2="238.4" y2="643.7" stroke="#436b90" stroke-width="1.3"><title>K8-28: SWAR bitplanes ↔ 獨立語義蘊涵與最小反例</title></line>
+<line x1="144.6" y1="355.3" x2="390.0" y2="177.0" stroke="#436b90" stroke-width="1.3"><title>K9-29: STLC Term → DTerm；兩套 NbE 比較</title></line>
+<line x1="144.6" y1="355.3" x2="541.6" y2="226.3" stroke="#436b90" stroke-width="1.3"><title>K9-30: 生成元圖等價閉包 ↔ 群軌道 ↔ 線性秩</title></line>
+<line x1="144.6" y1="355.3" x2="635.4" y2="355.3" stroke="#436b90" stroke-width="1.3"><title>K9-31: 一元 definite Horn → Boolean Kleene 最小模型</title></line>
+<line x1="144.6" y1="355.3" x2="635.4" y2="514.7" stroke="#436b90" stroke-width="1.3"><title>K9-32: 單純邊界矩陣 Bareiss rank ↔ 神經上同調</title></line>
+<line x1="144.6" y1="355.3" x2="541.6" y2="643.7" stroke="#436b90" stroke-width="1.3"><title>K9-33: Macaulay 矩陣 rank ↔ Gröbner Hilbert 函數</title></line>
+<line x1="144.6" y1="355.3" x2="390.0" y2="693.0" stroke="#436b90" stroke-width="1.3"><title>K9-34: Möbius 單值化符號 → Smith coinvariants</title></line>
+<line x1="238.4" y1="226.3" x2="390.0" y2="177.0" stroke="#64dcbe" stroke-width="1.3"><title>K10-37: ualg 面格 → 雙軌 CCHM BDD</title></line>
+<line x1="238.4" y1="226.3" x2="541.6" y2="226.3" stroke="#64dcbe" stroke-width="1.3"><title>K10-38: B2 替換作用 → 48 點 G-set 與 marks</title></line>
+<line x1="238.4" y1="226.3" x2="635.4" y2="355.3" stroke="#64dcbe" stroke-width="1.3"><title>K10-39: 平移像＋Boolean Kleene 交替閉包 → 同餘</title></line>
+<line x1="238.4" y1="226.3" x2="635.4" y2="514.7" stroke="#64dcbe" stroke-width="1.3"><title>K10-40: □² 開集 → Sieve64；Heyting/¬¬ 傳輸</title></line>
+<line x1="238.4" y1="226.3" x2="541.6" y2="643.7" stroke="#64dcbe" stroke-width="1.3"><title>K10-41: 立方子複形 → squarefree monomial ideal → Hilbert</title></line>
+<line x1="238.4" y1="226.3" x2="390.0" y2="693.0" stroke="#64dcbe" stroke-width="1.3"><title>K10-42: GL(2,2) 平移作用 → Smith coinvariants</title></line>
+<line x1="238.4" y1="226.3" x2="238.4" y2="643.7" stroke="#64dcbe" stroke-width="1.3"><title>K10-43: 48 面公式的謂詞 → SWAR 蘊涵／反例</title></line>
+<line x1="238.4" y1="226.3" x2="144.6" y2="514.7" stroke="#64dcbe" stroke-width="1.3"><title>K10-44: 同一立方邊界矩陣 → GF2 SWAR RREF 與 Betti</title></line>
+<line x1="238.4" y1="226.3" x2="144.6" y2="355.3" stroke="#64dcbe" stroke-width="1.3"><title>K10-45: 同餘／商核／Malcev → meta 關係代數</title></line>
+<line x1="390.0" y1="693.0" x2="390.0" y2="177.0" stroke="#f1938e" stroke-width="2.4" stroke-dasharray="6 7"><title>K6-11: 無比較映射的 Adams/Brunerie 並置</title></line>
+<line x1="390.0" y1="693.0" x2="635.4" y2="355.3" stroke="#f1938e" stroke-width="2.4" stroke-dasharray="6 7"><title>K6-13: 熱帶折點與 liquid 次可加性並置</title></line>
+<line x1="238.4" y1="643.7" x2="635.4" y2="355.3" stroke="#f1938e" stroke-width="2.4" stroke-dasharray="6 7"><title>K7-18: Viro tie 與張量蘊涵表並置</title></line>
+<line x1="238.4" y1="643.7" x2="390.0" y2="693.0" stroke="#f1938e" stroke-width="2.4" stroke-dasharray="6 7"><title>K7-21: 帳本封裝與 Clifford 中心並置</title></line>
+<line x1="144.6" y1="355.3" x2="238.4" y2="643.7" stroke="#f1938e" stroke-width="2.4" stroke-dasharray="6 7"><title>K9-35: 發現→Horn→Topos→focused proof 名義晉升</title></line>
+<line x1="144.6" y1="355.3" x2="144.6" y2="514.7" stroke="#f1938e" stroke-width="2.4" stroke-dasharray="6 7"><title>K9-36: Meta V5 原生檢查假託為 Accel 橋</title></line>
+<rect x="328.0" y="152.0" width="124" height="50" rx="12" fill="#1f3449" stroke="#7196b4"/>
+<text x="390.0" y="172.0" text-anchor="middle" font-size="11" fill="#8ec9d2">F01</text>
+<text x="390.0" y="191.0" text-anchor="middle" font-size="15" font-weight="600" fill="#f1f7fc">Cubical</text>
+<rect x="479.6" y="201.3" width="124" height="50" rx="12" fill="#1f3449" stroke="#7196b4"/>
+<text x="541.6" y="221.3" text-anchor="middle" font-size="11" fill="#8ec9d2">F02</text>
+<text x="541.6" y="240.3" text-anchor="middle" font-size="15" font-weight="600" fill="#f1f7fc">Symlib</text>
+<rect x="573.4" y="330.3" width="124" height="50" rx="12" fill="#1f3449" stroke="#7196b4"/>
+<text x="635.4" y="350.3" text-anchor="middle" font-size="11" fill="#8ec9d2">F03</text>
+<text x="635.4" y="369.3" text-anchor="middle" font-size="15" font-weight="600" fill="#f1f7fc">Semiring</text>
+<rect x="573.4" y="489.7" width="124" height="50" rx="12" fill="#1f3449" stroke="#7196b4"/>
+<text x="635.4" y="509.7" text-anchor="middle" font-size="11" fill="#8ec9d2">F04</text>
+<text x="635.4" y="528.7" text-anchor="middle" font-size="15" font-weight="600" fill="#f1f7fc">Topos</text>
+<rect x="479.6" y="618.7" width="124" height="50" rx="12" fill="#1f3449" stroke="#7196b4"/>
+<text x="541.6" y="638.7" text-anchor="middle" font-size="11" fill="#8ec9d2">F05</text>
+<text x="541.6" y="657.7" text-anchor="middle" font-size="15" font-weight="600" fill="#f1f7fc">Scheme</text>
+<rect x="328.0" y="668.0" width="124" height="50" rx="12" fill="#1f3449" stroke="#7196b4"/>
+<text x="390.0" y="688.0" text-anchor="middle" font-size="11" fill="#8ec9d2">F06</text>
+<text x="390.0" y="707.0" text-anchor="middle" font-size="15" font-weight="600" fill="#f1f7fc">Condensed</text>
+<rect x="176.4" y="618.7" width="124" height="50" rx="12" fill="#1f3449" stroke="#7196b4"/>
+<text x="238.4" y="638.7" text-anchor="middle" font-size="11" fill="#8ec9d2">F07</text>
+<text x="238.4" y="657.7" text-anchor="middle" font-size="15" font-weight="600" fill="#f1f7fc">Discovery</text>
+<rect x="82.6" y="489.7" width="124" height="50" rx="12" fill="#1f3449" stroke="#7196b4"/>
+<text x="144.6" y="509.7" text-anchor="middle" font-size="11" fill="#8ec9d2">F08</text>
+<text x="144.6" y="528.7" text-anchor="middle" font-size="15" font-weight="600" fill="#f1f7fc">Accel</text>
+<rect x="82.6" y="330.3" width="124" height="50" rx="12" fill="#1f3449" stroke="#7196b4"/>
+<text x="144.6" y="350.3" text-anchor="middle" font-size="11" fill="#8ec9d2">F09</text>
+<text x="144.6" y="369.3" text-anchor="middle" font-size="15" font-weight="600" fill="#f1f7fc">Meta</text>
+<rect x="176.4" y="201.3" width="124" height="50" rx="12" fill="#1f3449" stroke="#7196b4"/>
+<text x="238.4" y="221.3" text-anchor="middle" font-size="11" fill="#8ec9d2">F10</text>
+<text x="238.4" y="240.3" text-anchor="middle" font-size="15" font-weight="600" fill="#f1f7fc">Ualg</text>
+<text x="804" y="205" font-size="20" font-weight="600" fill="#f1f7fc">Coverage, not completeness</text>
+<text x="804" y="244" font-size="40" fill="#64dcbe">39 / 45</text>
+<text x="804" y="274" font-size="15" fill="#a7bbce">active / historical pair slots</text>
+<text x="804" y="320" font-size="15" fill="#f1938e">RETIRED — implementations deleted</text>
+<text x="804" y="348" font-size="14" fill="#dce4ee">K6-11 · Condensed / Cubical</text>
+<text x="804" y="377" font-size="14" fill="#dce4ee">K6-13 · Condensed / Semiring</text>
+<text x="804" y="406" font-size="14" fill="#dce4ee">K7-18 · Discovery / Semiring</text>
+<text x="804" y="435" font-size="14" fill="#dce4ee">K7-21 · Discovery / Condensed</text>
+<text x="804" y="464" font-size="14" fill="#dce4ee">K9-35 · Meta / Discovery</text>
+<text x="804" y="493" font-size="14" fill="#dce4ee">K9-36 · Meta / Accel</text>
+<text x="804" y="563" font-size="14" fill="#64dcbe">Solid green: 9 Ualg connections</text>
+<text x="804" y="589" font-size="14" fill="#8aaac5">Solid blue: other active comparisons</text>
+<text x="804" y="615" font-size="14" fill="#f1938e">Dashed red: retired, never executed</text>
+<rect x="44" y="734" width="1172" height="76" rx="12" fill="#1b2c3e"/>
+<text x="66" y="762" font-size="15" fill="#e2edf8">Physical placement: bridge pkgL8 / compL13 → cmd/showcase pkgL9 / compL14</text>
+<text x="66" y="789" font-size="14" fill="#a7bbce">Every active result is checked for exact ID / endpoints / uniqueness / coverage / witness. No lower layer imports bridge.</text>
+</g></svg>

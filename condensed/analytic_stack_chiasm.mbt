@@ -4,16 +4,17 @@
 // Five Relational Lenses, and the refuted conjecture `[Conj-2]`.
 
 ///|
-/// **Condensed Higher-Order Structure #4 (`凝聚高階結構 ④` — `CondAnalyticStack`)**:
-/// Condensed Huber–Zariski Bipolar Analytic Stack over `Spa(A, A^+)`, uniting:
-///   1. Non-Archimedean tropical bend roots (`@strop.UniPoly`) & `P^1` properness (`@scheme`);
-///   2. Grothendieck site sheafification (`@topos`) on rational Laurent covers `U_+ u U_-`;
-///   3. Archimedean exact rational trace/norm bounds (`@exactalg.Rat`) & solid `Z_p` completion.
+/// Legacy-named report combining separate finite-model checks:
+/// tropical bend roots, P1 properness, atomic BS2, finite Laurent Cech and
+/// rational arithmetic. It does NOT construct a Huber/analytic stack, a
+/// Laurent Grothendieck site or a p-adic completion.
+/// `solid_completion_gap` is a compatibility constant, not measured evidence.
 #derive(Debug, Eq)
 pub(all) struct CondAnalyticStack {
   ring_name : String
   tropical_bend_roots_count : Int32
   p1_proper_and_separated : Bool
+  // Legacy field name: this actually checks atomic BS2, NOT a Laurent site.
   topos_laurent_site_valid : Bool
   laurent_cech_exact : Bool
   archimedean_trace_rat : @exactalg.Rat
@@ -115,7 +116,8 @@ pub extend CondConjectureEntry with Eq::{not_equal, equal}
 /// Build **Condensed Higher-Order Structure #4 (`CondAnalyticStack`)**:
 /// Synthesizes `@strop` (Kapranov tropical bend roots of `min(1 + 2x, 0 + x, 2)` -> `{-1, 2}`),
 /// `@scheme` (`P^1` properness & separatedness), `@topos` (poset site validity for the
-/// 3-object Laurent diamond `{U_+ ∩ U_-, U_+, U_-}`), Čech gluing exactness, and `@exactalg.Rat`.
+/// atomic BS2 toy site), finite P1 Čech dimensions, and `@exactalg.Rat`.
+/// These are separate native checks; this report does not construct an analytic stack.
 pub fn cond_analytic_stack_build() -> CondAnalyticStack {
   // 1. Tropical bend locus: `f(x) = min(2, 0 + x, 1 + 2x)` has corners at x = -1 and x = 2!
   let trop_f = @strop.UniPoly::new([2, 0, 1])
@@ -123,7 +125,7 @@ pub fn cond_analytic_stack_build() -> CondAnalyticStack {
   let expected_roots = [@strop.Rat::of_int(-1), @strop.Rat::of_int(2)]
   let trop_ok = @strop.roots_equal(roots, expected_roots)
 
-  // 2. Properness of `P^1 = Spa/Zariski` gluing of `U_+` and `U_-`
+  // 2. Scheme P1 properness (no identification with an affinoid annulus).
   let p1 = @scheme.scheme_projective_space(1)
   let prop_rep = @scheme.analyze_scheme_properness(p1)
   let p1_ok = prop_rep.is_separated &&
@@ -131,7 +133,7 @@ pub fn cond_analytic_stack_build() -> CondAnalyticStack {
     prop_rep.uniqueness_holds &&
     prop_rep.is_proper
 
-  // 3. Topos site on arrow/poset category via `@sym` & `@topos`
+  // 3. Atomic BS2 site; the legacy report field name is not a Laurent-site claim.
   let s2_grp = @sym.PermGroup::symmetric(2)
   let z2_cat = @sym.cat_group(s2_grp, 2)
   let topos_ok = match @topos.topology_atomic(z2_cat) {
@@ -145,16 +147,14 @@ pub fn cond_analytic_stack_build() -> CondAnalyticStack {
   // 4. Laurent rational localization Čech complex `0 -> k[T]_{deg<=1} -> k[T]_{<=1} x k[T^{-1}]_{<=1} -> k[T, T^{-1}]_{[-1,1]}`
   // Global sections on `P^1` of degree 0 have dim 1 (`c_0`); `d0` maps `(a0 + a1*T, b0 + b1*T^{-1})`
   // to `(b1)*T^{-1} + (b0 - a0)*1 + (-a1)*T` (3x4 matrix of rank 3 => ker dim = 4 - 3 = 1 = H^0(P^1, O), H^1 = 3 - 3 = 0)!
-  let laurent_d0 = @gcd.fp_mat_from_rows(
-    [[0, 0, 0, 1], [6, 0, 1, 0], [0, 6, 0, 0]],
-    7,
-  )
-  let rk_d0 = @gcd.fp_rank(laurent_d0)
-  let h0_dim = laurent_d0.cols - rk_d0
-  let h1_dim = laurent_d0.rows - rk_d0
+  let (h0_dim, h1_dim) = match cond_p1_cech_dimensions(0, 1) {
+    Some(dims) => dims
+    None => (-1, -1)
+  }
   let cech_ok = h0_dim == 1 && h1_dim == 0
 
-  // 5. Compact solid `Z_p` gap == 0 & exact rational projector trace = 1
+  // 5. Exact rational trace = 1. The legacy gap field below is a constant,
+  // not an executed solid Z_p completion or a convergence measurement.
   let tr_rat = @exactalg.rat_add(
     @exactalg.rat_make(1, 2),
     @exactalg.rat_make(1, 2),
@@ -162,7 +162,7 @@ pub fn cond_analytic_stack_build() -> CondAnalyticStack {
   let solid_compact_gap = 0
 
   CondAnalyticStack::{
-    ring_name: "Spa(Q<T, T^{-1}>, Z_p)",
+    ring_name: "Finite P1 Laurent Cech model over F7",
     tropical_bend_roots_count: roots.length(),
     p1_proper_and_separated: p1_ok,
     topos_laurent_site_valid: topos_ok,
@@ -449,4 +449,30 @@ pub fn cond_check_federation_all() -> Bool {
   cond_check_structure_3_and_spectral_homotopy() &&
   cond_check_structure_4_category_2_ledger_and_conjectures() &&
   cond_check_hensel_merkle_laws()
+}
+
+///|
+/// Finite Laurent Čech model of O(twist) on P¹ over F₇.
+/// C⁰ has bases {1,t,...,t^cutoff} and {t^twist,...,t^(twist-cutoff)}.
+/// C¹ spans all exponents between twist-cutoff and cutoff. The differential
+/// is (a,b) -> b-a. For |twist|<=cutoff these truncations contain all H⁰/H¹
+/// representatives. This is NOT an annulus H⁰ or a p-adic analytic theorem.
+/// The finite budget (cutoff<=16) also prevents accidental huge allocations.
+pub fn cond_p1_cech_dimensions(
+  twist : Int32,
+  cutoff : Int32,
+) -> (Int32, Int32)? {
+  if cutoff < 0 || cutoff > 16 || twist < -cutoff || twist > cutoff {
+    return None
+  }
+  let low = twist - cutoff
+  let rows = cutoff - low + 1
+  let cols = 2 * (cutoff + 1)
+  let d = @gcd.fp_mat_make(rows, cols, 7, 0)
+  for i in 0..<(cutoff + 1) {
+    @gcd.fp_mat_set(d, i - low, i, 6)
+    @gcd.fp_mat_set(d, twist - i - low, cutoff + 1 + i, 1)
+  }
+  let rank = @gcd.fp_rank(d)
+  Some((cols - rank, rows - rank))
 }

@@ -80,6 +80,8 @@ pub fn cond_liquid_subadditive_check(Int32, Int32) -> Bool
 
 pub fn cond_mittag_leffler_holds(@vv0101v01/cubical-hermitian/condensed/core.CondChain) -> Bool
 
+pub fn cond_p1_cech_dimensions(Int32, Int32) -> (Int32, Int32)?
+
 pub fn cond_poly_eval_mod(Array[Int32], Int32, Int32) -> Int32
 
 pub fn cond_pro_morphism_valid(@vv0101v01/cubical-hermitian/condensed/core.CondProMorphism) -> Bool

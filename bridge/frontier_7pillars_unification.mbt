@@ -2,8 +2,8 @@
 // bridge/frontier_7pillars_unification.mbt
 // ---------------------------------------------------------------------------
 // Stage-3 Grand Unification Pentad (`F1 × F3 × F4 × F8 × F9`, Layer 8 `bridge`):
-// Proves exact cross-federation mathematical equivalence and commutative
-// coherence across all 7 frontier capabilities and 5 participating federations:
+// Checks the explicitly constructed finite examples below. This report is
+// not a universal equivalence or a proof of every advertised capability:
 //
 //   1. `F9 (meta-core)` ↔ `F1 (cubical-structures)` Multimodal Dependent Type
 //      Theory 2-Functorial Embedding (`M_meta ↪ M_cubical`) + Fitch Lock
@@ -234,8 +234,13 @@ pub fn verify_frontier_7pillars_grand_unification() -> Frontier7PillarsPentadRep
 
 ///|
 /// Showcase certificate for the Stage-3 Seven-Pillar Frontier & Five-Federation Pentad.
-pub fn frontier_7pillars_bridge_certificate() -> BridgeCertificate {
-  let rep = verify_frontier_7pillars_grand_unification()
+pub fn frontier_7pillars_bridge_certificate(
+  precomputed~ : Frontier7PillarsPentadReport? = None,
+) -> BridgeCertificate {
+  let rep = match precomputed {
+    Some(r) => r
+    None => verify_frontier_7pillars_grand_unification()
+  }
   bridge_certificate(
     "bridge/frontier7",
     "Seven-Pillar Frontier Pentad (F1×F3×F4×F8×F9: MTT 2-Cat, Artin/Glue, SWAR Dual-QTT, CwF/Path QIIT, O(d) Memo Bidir & Inductive)",

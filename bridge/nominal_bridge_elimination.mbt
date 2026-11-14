@@ -652,10 +652,15 @@ pub fn replace_k8_23_s3_axis_invariance_swar() -> FederationPairBridge {
 /// Negative control: `V(Det)` is strictly larger than the Segre cone — an
 /// explicit rank-2 tensor with vanishing hyperdeterminant refutes the naive
 /// identification, and `|P²(F_3)| = (q³−1)/(q−1)` is derived, not asserted.
-pub fn replace_k8_26_segre_cone_point_census() -> FederationPairBridge {
+pub fn replace_k8_26_segre_cone_point_census(
+  atlas_precomputed~ : @tensor.F3Tensor222Atlas? = None,
+) -> FederationPairBridge {
   let q = 3
   let total = 6561
-  let atlas = @tensor.f3_tensor222_atlas_build()
+  let atlas = match atlas_precomputed {
+    Some(a) => a
+    None => @tensor.f3_tensor222_atlas_build()
+  }
   let dets = @swar.gf3_sweep_all_6561_hyperdets()
   let p1_pts = @scheme.eval_scheme_functor_of_points(
     @scheme.scheme_projective_space(1),
@@ -750,10 +755,15 @@ pub fn replace_k8_26_segre_cone_point_census() -> FederationPairBridge {
 /// violating sample) and satisfy `P_i ∧ ¬P_j` by direct evaluation.
 /// Negative controls: the naive implication `Det=0 ⇒ rank≤1` is refuted with an
 /// explicit witness, and a single tampered bitplane bit is detected.
-pub fn replace_k8_28_bitplane_implication_soundness() -> FederationPairBridge {
+pub fn replace_k8_28_bitplane_implication_soundness(
+  atlas_precomputed~ : @tensor.F3Tensor222Atlas? = None,
+) -> FederationPairBridge {
   let total = 6561
   let npred = 5
-  let atlas = @tensor.f3_tensor222_atlas_build()
+  let atlas = match atlas_precomputed {
+    Some(a) => a
+    None => @tensor.f3_tensor222_atlas_build()
+  }
   let pred = (s : Int32, p : Int32) => {
     match p {
       0 => atlas.ranks[s] == 0
@@ -1121,7 +1131,13 @@ pub fn replace_k9_33_macaulay_hilbert_bareiss() -> FederationPairBridge {
 
 ///|
 /// All seven second-wave structural replacements, in edge order.
-pub fn verify_nominal_bridge_elimination() -> Array[FederationPairBridge] {
+pub fn verify_nominal_bridge_elimination(
+  precomputed~ : Array[FederationPairBridge]? = None,
+) -> Array[FederationPairBridge] {
+  if precomputed is Some(edges) {
+    let ids = ["K5-02", "K5-05", "K8-23", "K8-26", "K8-28", "K9-30", "K9-33"]
+    return edges.filter(e => ids.contains(e.id))
+  }
   [
     replace_k5_02_face_lattice_chain_semiring(),
     replace_k5_05_burnside_walk_orbits(),

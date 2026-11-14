@@ -1,5 +1,7 @@
 # agent.v2 — 工程治理、即時驗證制度與架構重構總綱
 
+> **現行狀態（2026-11-14，取代下方舊日期的現況數字）**：正式工具鏈 `moonc v0.10.20+65efd5b93`；10 聯邦＋observer、57 套件、66 元件；39 active 配對、6 retired（實作已刪）、50 個原生／atlas／輔助證書。X 交換性及自動晉升管線已移除。最新生成層表／功能枚舉見 `docs/`；本次完整報告見文末 `2026-11-14-federation-audit`。舊章節是歷史截面，不能當成當前完全圖或未執行證明。
+
 本文件為專案 **v2 唯一開發與架構治理規範**（v1 舊文檔已永久封存於 Git 標籤 `v1-final`，不再維護任何雙語附錄或手工符號鏡像表）。所有參與開發與重構的 Agent 必須遵守以下準則，以**穩健、零警告、零技術債堆積**為最高原則。
 
 ---
@@ -125,7 +127,7 @@
    - 核心不變量型別使用 `pub enum`／`pub struct`（對包外隱藏構造子與欄位，強制經由智慧構造子檢驗）；
    - 純資料傳輸報告（Report / Summary / Config）方使用 `pub(all) struct`／`pub(all) enum`。
 3. **零警告 Trait 導出（`moonc v0.10.18+`）**：
-   公開型別若 `derive(Debug, Eq)`，需顯式補齊：
+   公開型別若 `#derive(Debug, Eq)`，需顯式補齊：
    ```moonbit
    pub extend MyType with @moonbitlang/core/debug.Debug::{to_repr}
    pub extend MyType with Eq::{not_equal, equal}
@@ -1071,3 +1073,129 @@ O1 冪等半邊（完整 logical relation；預估 1–2 週）；或回到 O2 �
 - `cmd/showcase` exit 0：10/10 聯邦、K10=40/40 active（45 attempted, 5 suspended）、ualg 9/9、wave1 6/6、wave2 7/7、atlas 18/18、51/51 證書、七支柱 true、中止理由印出。
 - `cmd/main` 139/139、`cmd/metatheory` 631/631、`cmd/ualg` 167/167；`arch_check` 322 .mbt / 202,477 行 / 57 pkgs / 66 components；`gen_laws` 104 laws 新鮮。
 - 推送 `d46962b`（`01d5477..d46962b`）；CI run **43198027200 completed success**。
+
+
+<a id="2026-11-14-federation-audit"></a>
+
+## 2026-11-14 工作報告：正式工具鏈、聯邦分層／功能審計、實益橋提升與無效橋刪除
+
+基線：`2d8f6866b44d01f291ab5ea07bfcc3732afdf652`；本地分支：`audit/federation-bridges-20261114`。本條取代前面舊日期的現況數字，不改寫舊報告當時的結論。**本輪未 commit、未 push、未建立 PR、未執行 GitHub Actions**；先前報告的遠端 success 不可當成本輪的遠端證據。
+
+### 1. 改了甚麼（檔案／功能區段）
+
+| 範圍 | 變更 |
+|---|---|
+| `.moonbit-version`、`.github/workflows/ci.yml`、`docs/MOONBIT_TOOLCHAIN.md` | 安裝並核對官方正式通道 `moonc v0.10.20+65efd5b93`，固定同版；新增介面及生成物漂移閘；保留 async 0.22.5 |
+| `bridge/catalog.json`、生成 `bridge/registry.mbt` | 45 歷史配對的單一 lifecycle／收益／範圍來源，39 active＋6 retired；metadata 不會自動把 `holds` 設 true |
+| `bridge/audit.mbt:70`、`:140` | 精確 `validate_bridge_registry`、15 條耐久 checker laws；子圖篩選與描述子覆蓋助手；不再靠「true 個數」認證完整性 |
+| `condensed/analytic_stack_chiasm.mbt:461`、`bridge/double_v_chiasm.mbt:117` | 新 `cond_p1_cech_dimensions`；K6-15 用實際 Laurent 差分矩陣逐 twist 對帳 scheme，而不是只比 O(0) 的旗標 |
+| `bridge/discovery_k7_bridges.mbt:377`、K7-19 區段 | 新 `metric_vr_to_topos_nerve`；同一 VR 複形轉成 Topos 神經，補尺度變化／填面反例及完整 metric 輸入檢查 |
+| `bridge/f2_f3_f6_triad_bridge.mbt:27` 及整檔 report 區段 | 新 `graph_closure_snf_report`；同一圖的 components、Boolean closure、整數 Laplacian SNF 三路對帳，拿掉無關健康合取 |
+| `bridge/meta_k9_unification.mbt:97`、`ualg_federation_constructions.mbt:977` 起、`cmd/showcase/main.mbt` | 一次組裝 active 快照；子圖、列印、K9/K10、兩波替換共用；K9 先 copy 輸入陣列，避免污染 K7 快取 |
+| `bridge/nominal_bridge_elimination.mbt`、`structural_bridge_replacements.mbt` | 6＋7 真構造保留；可從同一快照選取；K7-17／K8-26／K8-28 共享一個 F3 張量 atlas |
+| `bridge/accel_bridge.mbt`、`frontier_7pillars_unification.mbt`、`certificates.mbt`、`grand_unification.mbt` | 可選預算 report 重用；空證書表 fail-closed；X 證書刪除；WGSL 標示為靜態核對，沒有 GPU 實跑 |
+| `bridge/five_federation_plan.mbt`、`bridge/moon.pkg`、`cmd/showcase/moon.pkg`、`architecture.json` | 描述子套件所有權補全；K5 coverage 改精確驗收；移除 bridge→autonomy／semiring-app 兩個直接 import 及 showcase 的未用 debug import；manifest 同步 |
+| `tools/federation_docs.py`、`docs/` | 標準函式庫生成器產生 registry、完整層表、45 配對功能枚舉、package DAG、SVG、離線可搜尋 HTML；`--check` 只讀、不修補漂移 |
+| 根 README／readme.v2、bridge、cmd、showcase、condensed、tools README、agent.md | 現況與歷史分離；明示兩套 layer、有限範圍、破壞性 API 遷移、可信快取及剩餘重複核驗 |
+
+**實際刪除：**
+
+| ID／包裝 | 刪除原因 |
+|---|---|
+| K6-11 Condensed×Cubical | 沒有 Adams／Brunerie 的比較映射；截斷 Ext 不推出幾何 `2η=0` |
+| K6-13 Condensed×Semiring | 熱帶折點與 liquid 次可加性是獨立檢查 |
+| K7-18 Discovery×Semiring | Viro tie 與張量蘊涵格無結構傳輸 |
+| K7-21 Discovery×Condensed | 雜湊封裝與 Clifford 中心獨立，封存不是數學橋 |
+| K9-35 Meta×Discovery | 發現蘊涵到 Horn／聚焦證明缺可靠性映射；promotion 函式、型別與欄位一併刪除 |
+| K9-36 Meta×Accel | 只呼叫 meta/reflect，沒有 Accel 物件、硬體對照或加速路徑 |
+| X-Overlap | 獨立旗標與巧合 `(1,2,1)` 不能推出交換圖；移除函式、report 與證書 |
+| Malcev/Presheaf/Autonomy 包裝 | 無共享構造；整個 `bridge/malcev_presheaf_autonomy_bridge.mbt` 刪除，底層原生 API 保留 |
+
+基線是 **40 active＋5 suspended**，不是 45 條真 active。本輪把原 5 條 suspended 從程式真正移除，再刪無 Accel 資料路徑的 K9-36，結果 **39 active＋6 retired**。歷史 ID 不改號，不回傳退役失敗占位項。K5/K6/K7/K8/K9/K10 active 分別為 **10/13/17/24/30/39**。
+
+### 2. 為甚麼這樣改
+
+- 橋須有實際共享物件／轉換，或同一數學量的明示範圍獨立對帳；不能把兩個互不相關的 `true` 說成新定理。K6-12、K6-14、K7-16、K7-20 仍保留有限模型／計數回歸用途，但在 catalog 明列尚無一般 transport 的限制。
+- `all([])`、只數 true、重複 ID 抵消漏邊，都會造成假成功。精確 validator 現在拒絕空表、漏項、同長度重複替換、extra、unknown、retired、錯端點、超 scope、false 與空白見證；無向邊反轉端點合法。
+- Package import DAG、component DAG、語義比較圖是三種關係。**57 packages／66 components**，pkgL0 有 7 個基礎；bridge 是 **pkgL8／compL13**，showcase 是 **pkgL9／compL14**。聯邦收縮圖可能有雙向依賴，不應把它叫作 import DAG。
+- 新契約是有意義的 API 變更，不加返回假成功的相容 shim。完整移除清單、report 欄位改動及遷移例子在 `docs/BRIDGE_MIGRATION.md`。
+- 優化的是重複組裝／摘要／列印，不是取消獨立參考路徑。**原生／atlas 套件仍可能重做部分底層核驗**，例如 atlas-12/13 及六柱入口的 Zariski／Kapranov；不宣稱每個函式全程只執行一次。
+
+### 3. 如何驗證（已執行，不是預定）
+
+#### 3.1 正式工具鏈與語法
+
+官方 installer 的 `latest` 非 nightly 通道、`version.json` 與實際 `moon version --all` 相符：
+
+```text
+moon    0.1.20261104 (940aa18 2026-11-04)
+moonc   v0.10.20+65efd5b93 (2026-11-05)
+moonrun 0.1.20261104 (940aa18 2026-11-04)
+```
+
+官方 SHA-256 清單的 **18 檔全部 OK**；固定版 binary archive 與 core archive URL 均回 HTTP 200。查閱 stable methods／trait extend／package DSL 與 release notes；基線已採用 `#derive`、`Int32`、`pub extend`、`moon.pkg`。新程式用 Int64 防距離加總溢位。實作初期的 range 優先序及 `Option[SimplicialNerve]` 缺 Eq 編譯錯誤已修正，沒有用降級 compiler 或放寬警告閘繞過。
+
+#### 3.2 靜態、生成物及公開介面
+
+以下全部退出 0：`moon check --deny-warn --target wasm-gc`（**0 warnings**）、`moon build --target wasm-gc`、`moon info --target wasm-gc`、`moon fmt`、`gen_laws.py`、`gen_labels.py`、`arch_check.py`、`federation_docs.py --check`。
+
+```text
+architecture ok: 10 federations + unification apex, 57 packages, 66 components, 326 .mbt files, 203928 .mbt lines
+federation inventory ok: 39 active, 6 retired; 57 packages; fresh
+total law functions: 104
+```
+
+`gen_laws.py` 的四個檔與基線無差異。`gen_labels.py` 實跑得到 **631 條、533 條互異、226 族**，Lean 對帳標籤檔無差異；**這不是執行 Lean kernel**。
+
+`.mbti` diff 逐項檢視：只有 `bridge/pkg.generated.mbti` 與 `condensed/pkg.generated.mbti` 改變；刪除的函式／report／promotion 欄位確實離開公開 API；新增 registry／metric／graph／Čech 入口及可選重用參數符合 migration 文件，無意外下層 API 改動。
+
+重新執行 `moon info → moon fmt → gen_laws.py → federation_docs.py → --check`，檔案雜湊無變化。注意現有 `gen_laws.py` 與 formatter 有少量換行差異，因此採 **先 fmt、後 gen_laws、最後生成架構統計** 的固定順序；沒有宣稱單獨 `moon fmt` 與定律生成器已完全一致。
+
+#### 3.3 檔尾局部微測試與實際數值
+
+僅在 `bridge/audit.mbt` 檔尾加兩個臨時 block：先 `moon test bridge --target wasm-gc --update`、人工檢視，再**不帶 --update 重跑**：
+
+```text
+Total tests: 2, passed: 2, failed: 0.
+```
+
+**確認後立即刪除兩個 block**；倉內沒有新增常駐 test、測試檔或測試 import。保留下來的是正式純函式 `bridge_registry_laws` 的 15 條不變量／負控制。具體結果：
+
+- Registry：`expected=present=verified=39`、`errors=[]`、`all_holds=true`；K7 快照長 17、K9 長 30，重建 K9 等於全量切片，而且輸入 K7 未被 append 污染；6 retired ID 無一進入 active 結果。
+- P¹ O(n)，n=-4..3：H⁰=`[0,0,0,0,1,2,3,4]`，H¹=`[3,2,1,0,0,0,0,0]`，cutoff4==6；與 scheme 比較、Serre／RR 通過。proper P¹ 的 H¹(O(-2))=1，拒絕「proper⇒acyclic」。邊界 `(0,0)→(1,0)`、`(16,16)→(17,0)`、`(-16,16)→(0,15)`；極小 Int32 twist 回 None。
+- VR(C4,r)，r=0/1/2：H⁰=`[4,1,1]`，H¹=`[0,1,0]`；同一單形集合進入 tensor 與 Topos。r=2 刪去填面後 H¹=3，被負控制辨出。空／過大／ragged／不對稱／異點距離 0／違三角式輸入拒絕；最大 Int32 等距三點仍得到 1 個三角形，不溢位。
+- F2×F3×F6：A4 Cayley `(vertices,components,reach,rank)=(12,1,144,11)`；兩個不連通三角形 `(6,2,18,4)`；SNF certificate 皆 true，後者否證 corank1 泛化。單點 `(1,1,1,0)`、重新標號不變、空／33 點拒絕。
+- K7-17 全 6561 張量 × 6 置換：1485 軌道，rank histogram `[1,40,860,584]`；free orbit code=15，6×1=6。mode-0 flattening 在 code=12 的軌道中 rank1≠2，反例通過；這不把未驗證外部 atlas 當成可信資料。
+
+#### 3.4 四個生產入口的完整重跑
+
+皆為 `--target wasm-gc`，無 `--release`，順序執行；「原生定律」不是聲稱 native 後端已跑。
+
+| 命令 | 基線單次秒數 | 修改後單次秒數 | 修改後結果 |
+|---|---:|---:|---|
+| `moon run cmd/metatheory --target wasm-gc` | 8.900 | 8.939 | 631/631，exit 0 |
+| `moon run cmd/ualg --target wasm-gc` | 6.037 | 6.332 | 167/167，exit 0 |
+| `moon run cmd/main --target wasm-gc` | 208.678 | 213.553 | 139/139，exit 0 |
+| `moon run cmd/showcase --target wasm-gc` | 87.856 | 80.055 | 39 active、50/50 證書、15/15 checker laws，exit 0 |
+
+四份 stdout 沒有 `[FAIL]`。Showcase 同時確認 K9=30、Ualg=9/9、6＋7 替換、18 atlas、斷連圖負控制、F8×F5×F1／前沿有限整合通過，並列出 6 條 `[RETIRED]` 理由。證書由基線 51 減至 50，正是刪除 X 包裝，沒有新增假證書補數。
+
+初版修改後 showcase 另有一次 76.663 秒；完成 report 重用後的上表是 80.055 秒。**這些只是不同次端到端 `moon run`，可能包含不同編譯／啟動與主機負載，不是 controlled benchmark，不報加速百分比。** 上表後只補文件／註解及生成器的退役字面量檢查，沒有再改 MoonBit 演算法；最新來源另過靜態／建置閘。
+
+#### 3.5 文檔／治理負控制
+
+`federation_docs.py --check` 的 **10 類負控制**全部拒絕：重複 ID、重複配對、自連線、未知狀態、缺 active producer、退役函式重現、空 scope、少一歷史配對、生成文檔漂移、K9-36 退役 inline record 重現。所有修改均即時還原；漂移測試證明 `--check` 不會偷偷寫回檔案。
+
+離線 HTML 經 Chromium 實測：45 列、active 篩出39、retired 篩出6、搜尋 K7-19 剩1；套件57列、搜尋 cubical/kernel 剩1；桌面及390px手機視窗無 JS error、無外部資源請求、頁面無水平 overflow（圖表自身可橫向捲動）。首次 browser 啟動缺 `libnspr4.so`；安裝 browser 系統依賴後才重跑通過，沒有把啟動失敗算成驗收成功。所有57個 package 路徑都有 README。
+
+工作區原始證據位於相鄰 `review-evidence/`：正式版本／checksum、baseline／final logs、`final-runs.json`、臨時測試原文及核驗 log、生成器負控制、HTML checks、介面／架構輸出。原始碼交付不攜帶編譯快取或工具鏈二進位。
+
+### 4. 尚未完成／刻意保留的界線
+
+1. **有界核驗不是普世證明。** K6-12/14、K7-16/20 等保留項仍是指定有限比較；擴展成參數化 transport 需另作設計、負控制與驗收。
+2. `FederationPairBridge`、atlas、precomputed report 是公開可建造的可信行程內資料。validator 能驗覆蓋及形狀，不能認證呼叫者偽造的 true。外部證書重放需獨立 checker／封裝型別，未在本輪實作。
+3. `CondAnalyticStack` 是舊名的有限健康 record；atomic BS2 不是 Laurent site，`solid_completion_gap=0` 是相容常數，沒有構造一般解析棧或 p-adic 完備化。文件與來源已明說，沒有靠它支撐已刪的 X 橋。
+4. 新 metric adapter 完整驗形狀且用 Int64；底層既有 `metric_check_axioms` 的逐列驗證／提前索引風險沒有全面重寫。K7-17 也仍依賴可信完整 atlas 與固定 S3 作用，不承諾損壞 cache 的防崩潰外部輸入接口。
+5. 靜態 health scanner：6,271 definitions，**40 個遞移零引用候選**（基線3）、0 空 enum／未引用型別、1 exact／4 near duplicate groups。拿掉 umbrella 呼叫會暴露更多原生 API 為候選；這是啟發式，不證明它們無用途，故沒有按零引用數批量刪除。報告已刷新，沒有聲稱 dead code 清零。
+6. 部分底層核驗仍重複；未做受控 warm/cold、多次交錯順序基準。下一步若量效能，需固定輸入／工具鏈／建置模式、另報重複次數及離散程度，不能由上表直接換算演算法加速。
+7. 未執行 Lean、實體 GPU、native/JS/wasm 後端全覆蓋或 `cmd/semiringreport` 基準；未推送，遠端 CI 未執行。CI 檔已加入 pin／drift gates，但遠端是否通過仍需真正觸發後核對。

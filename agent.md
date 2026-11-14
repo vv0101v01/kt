@@ -12,9 +12,14 @@ no longer exists. [`agent.v2.md`](agent.v2.md) remains the authoritative governa
 (architecture, layering, MoonBit style, hardware-acceleration rules, refactor history). Where the two
 overlap, `agent.v2.md` governs the detail and this file governs the procedure and the map.
 
-**Repository at a glance** — MoonBit package `vv0101v01/cubical-hermitian` v2.0.0,
-`preferred_target = "wasm"`, **10 federations (9 in the dual-V graph + `ualg` in parallel) + 1 unification apex**,
-**57 packages**, **66 components**, **321 `.mbt` files**, **202,287 lines** (verified by `python3 tools/arch_check.py`, 2026-11-12 K₁₀ round).
+**Repository at a glance (2026-11-14 audit)** — MoonBit module `vv0101v01/cubical-hermitian`,
+`preferred_target = "wasm"`; **10 federations + observer apex, 57 packages, 66 components;
+39 active pairwise comparisons, 6 retired implementations, 50 native/atlas/auxiliary certificates**.
+Use [the generated layer map](docs/FEDERATION_ARCHITECTURE.md) and
+[capability catalogue](docs/BRIDGE_CATALOG.md) for current counts and responsibilities.
+The folder inventory in Part II is historical orientation, not a second structural source of truth.
+The unsupported X-commutativity and promotion claims have been removed; see
+[API migration](docs/BRIDGE_MIGRATION.md). Toolchain is pinned in `.moonbit-version`.
 
 ---
 
@@ -58,7 +63,8 @@ python3 tools/arch_check.py
 
 The bar is **0 warnings, 0 errors**. An unused variable, a non-exhaustive branch, a deprecated form, or a
 cross-layer import is a failure, not a note. `arch_check.py` must print
-`architecture ok: 9 federations + unification apex, 52 packages, 61 components, …`.
+`architecture ok: 10 federations + unification apex, 57 packages, 66 components, …`.
+Also run `python3 tools/federation_docs.py --check` after regenerating changed source metrics.
 
 #### Tier B — localized test at the bottom of the file (the whole point of this policy)
 
@@ -120,8 +126,8 @@ git diff '*.mbti'
 internal must leave the generated interfaces untouched. For cross-federation work, finish with an
 end-to-end run — `moon run cmd/main --target wasm-gc` (`139/139` theorems),
 `moon run cmd/metatheory --target wasm-gc` (`631/631` laws), and
-`moon run cmd/showcase --target wasm-gc` (`48/48` historical certificates + `K_10 = 45/45` constructive bridges, incl. 9 `ualg` edges and 6 structural replacements).
-(Local 2026-11-12 re-run after the K₁₀ round and the De Morgan conversion fix; historical merge note in §5 is superseded for these counts.)
+`moon run cmd/showcase --target wasm-gc` (`50/50` native/atlas/auxiliary certificates + `39` active comparisons, `6` retired, `9` ualg edges, `15` registry-checker laws).
+(Local 2026-11-14 wasm-gc audit; historical merge notes in §5 are superseded for current counts.)
 
 ### 1.3 The one-sentence version
 
@@ -174,7 +180,7 @@ recorded. Submit through it:
   radius (which packages, which federations, which `.mbti` surfaces), and the verification plan.
 * **Project-content changes** — anything that alters what the repository *is*: the federation map or
   `architecture.json` components, the theorem registry counts (`139/139`), the metatheory law counts
-  (`631/631`), the certificate ledger (`48/48`), the `K₁₀ = 45/45` bridge counts (historical `K₉ = 36/36` subgraph), `ATLAS-01..18`,
+  (`631/631`), the certificate ledger (`50/50`), the `39` active / `6` retired bridge inventory (historical K9 scope: `30` active), `ATLAS-01..18`,
   the 7-entry resolved conjecture atlas (`CONJ-02..06/09/10`), the `agent.v2.md` rules themselves, and the per-folder `README.md` set mapped in Part II
   of this file.
 * **Boundary changes** — a new `moon.pkg` import edge, a new `supported_targets` restriction, a new
@@ -196,13 +202,13 @@ defect.
 |---|---|---|
 | **`agent.md`** (this file) | Binding policy + the full folder/sub-package map + reading orders + README template | English |
 | [`agent.v2.md`](agent.v2.md) | Governance: architecture rules, 7-way `cubical` split, MoonBit style, WGSL portability, refactor records, **all work reports and proposals** | Chinese |
-| [`readme.v2.md`](readme.v2.md) | Root overview: the 9-federation + apex architecture, package→federation table, quick commands | Chinese |
+| [`readme.v2.md`](readme.v2.md) | Current 10-federation + observer overview, generated architecture links, bounded capabilities and quick commands | Chinese |
 | **`<folder>/README.md`** × 17 | One per top-level folder (`gcd/` .. `webgpu/`, including `meta/`): file-by-file reading of every `.mbt` in it | Chinese |
 | **`<folder>/<sub>/README.md`** × 40 | One per nested sub-package inside `cubical/`(9), `semiring/`(15), `cmd/`(6), `meta/`(4), plus the 6 decoupled light cores (`symlib/core`, `algebra/core`, `condensed/core`, `topos/site`, `conjecture/kernel`, `accel/swar`) | Chinese |
-| `architecture.json` | Machine-readable source of truth: 9 federations + apex, **52 packages, 61 components** | JSON |
+| `architecture.json` | Machine-readable source of truth: 10 federations + observer, **57 packages, 66 components** | JSON |
 | `tools/arch_check.py` | Enforces the above and prints the totals quoted everywhere | Python |
 
-**Total documentation coverage: 100% of all 52 MoonBit packages + infrastructure folders (`17` top-level + `40` nested sub-package `README.md`s, plus root `README.md` / `readme.v2.md` / `agent.v2.md`).**
+**All 57 package paths have a `README.md` (checked 2026-11-14).** Use `docs/FEDERATION_ARCHITECTURE.md` for fresh counts and `docs/BRIDGE_CATALOG.md` for current capabilities; the old folder metrics below are dated historical orientation, not a second live inventory.
 
 **Rule for maintainers:** if you add, remove, split, merge, or rename a package, you update **three**
 places in one commit — `architecture.json`, the affected `README.md`(s), and the corresponding table row
@@ -228,11 +234,11 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 | 8 | [`condensed/`](condensed/README.md) | F6 · L1–L4 (`condensed/core` + `condensed`) | 5 | 3,376 | Profinite towers, constructive Nöbeling unimodular basis, Roos–Milnor `R¹lim`, solid/liquid modules, 64× `@swar` Steenrod–Adams (`h₃=σ`, `η³=4ν`) & analytic stacks |
 | 9 | [`tensor/`](tensor/README.md) | F7 · L2 | 2 | 2,151 | 64-trit `𝔽₃` 6,561-tensor rank atlas `[1, 128, 4032, 2400]`, MRV/MAC exact Gromov–Hausdorff, dominated VR collapse, Radon & Clifford spinors |
 | 10 | [`conjecture/`](conjecture/README.md) | F7 · L3–L5 (`conjecture/kernel` + `conjecture`) | 3 | 1,436 | Half-GCD rational reconstruction, 64-bit `ctz` bitplane implication lattice, Lakatos conjecture-evolution engine & 12 cross-federation conjectures |
-| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 22 | 9,554 | **`K₁₀ = 45/45` constructive all-pairs bridges** (9 `ualg` edges + 13 nominal-bridge replacements in two waves), `F7→F9→F4→F1` promotion, `F8×F5×F1` & `F2×F3×F6` triads, 18-entry geometry–logic atlas, 48/48 historical certificates + K₁₀ certificate |
+| 11 | [`bridge/`](bridge/README.md) | apex · L8 (upper-V apex `V₂`) | 22 | 9,554 | Current: 39 active / 6 retired comparisons, 9 ualg edges, 6+7 replacements, finite triads, 18-entry atlas and 50 certificates; unsupported promotion/X wrappers removed. See generated catalogue. |
 | 12 | [`accel/`](accel/README.md) | F8 · L0–L4 (`accel/swar` + `accel`) | 11 | 3,887 | `L0` 64-bit SWAR primitives (M4RI RREF, 64-trit `GF(3)`, Ozaki-II CRT, Stockham NTT, Cube64 butterfly, Scanbox, HVM2 `INetArena`) + 8/8 portable WGSL shaders |
 | 13 | [`hostfs/`](hostfs/README.md) | F1 · L1 | 2 | 818 | Executable crash-consistency model (`fsync` ordering) + BFT `3f+1` quorum durable replicas |
 | 14 | [`meta/`](meta/README.md) | F9 · L0–L2 (**4 library sub-packages** + `cmd/metatheory`) | 33 | 17,115 | Zero-business-dependency metatheory floor & three-axis engine: Paterson–Wegman DAG MGU, Bareiss, SLG tabling, bidirectional E-graph QIIT, NbE reflection, `V₅ = 65,536` HF64, Vogt/HS realignment & Paley Ramsey |
-| 15 | [`cmd/`](cmd/README.md) | 6 executables · L2–L9 | 12 | 4,076 | `cmd/main` (`139/139`), `cmd/metatheory` (`631/631`), `cmd/showcase` (`48/48` + `K₁₀=45/45`), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
+| 15 | [`cmd/`](cmd/README.md) | 7 executables · L2–L9 | 12 | 4,076 | `cmd/main` (`139/139`), `cmd/metatheory` (`631/631`), `cmd/showcase` (39 active + 50 certificates), `cmd/symdemo`, `cmd/symbench`, `cmd/semiringreport` (`§1–§19`) |
 | 16 | [`tools/`](tools/README.md) | infrastructure (not a MoonBit package) | 0 | 0 | `arch_check.py`: federation partition, file ownership, `moon.pkg` imports, source reference graph, statistics |
 | 17 | [`webgpu/`](webgpu/README.md) | F8 browser side | 0 | 0 | Zero-dependency browser verifier for all 8 registered WGSL compute shaders + CPU-SWAR bitwise cross-check |
 | 18 | [`ualg/`](ualg/README.md) | F10 · L0–L3 (**4 sub-packages** + `cmd/ualg`) | 22 | 7,756 | Constructive universal algebra × presheaf template × De Morgan cubes (congruence lattices/quotients, Mal'cev terms, Rees quotients, nuclei, `¬¬`-sheafification as counted left adjoint; free De Morgan algebras `DM(n)`; cubical double-negation nucleus; Glivenko). Parallel to the dual-V graph; **not wired into `K₉`**; Lean-side counterpart: `lean/KtLaws/Instances/ImportGraph.lean` (O5 logic core, green, unregistered) |
@@ -369,13 +375,13 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 | 14 | [`semiring/trop/`](semiring/trop/README.md) | L2 | 3 | 1,631 | 115 | Tropical roots, 3D ridge gift-wrapping Newton subdivision `O(n log n + n·#Faces)`, Karp tropical eigenpairs, `trop_det` |
 | 15 | [`semiring/app/`](semiring/app/README.md) | L4 | 3 | 655 | 79 | Transitive closure + consensus + portable `wasm-gc` verification suite `verify_semiring_wasm_suite` |
 
-### 6.3 `cmd/` — 6 executables (11 files, 4,013 lines)
+### 6.3 `cmd/` — 7 executables (numeric columns below are historical)
 
 | # | Sub-package | Target | `.mbt` | Lines | README | What it is |
 |---:|---|---|---:|---:|---:|---|
 | 1 | [`cmd/main/`](cmd/main/README.md) | all | 1 | 6 | 57 | Entry point for the `139/139` theorem ledger (`print_report()`) |
 | 2 | [`cmd/metatheory/`](cmd/metatheory/README.md) | all | 1 | 125 | 31 | Ninth Federation entry point recomputing all `631/631` metatheory laws across `104` `law_*` functions |
-| 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 221 | 66 | Ten federations × `K₁₀ = 45/45` × three cross-federation triads/pipelines × `48/48` historical certificates + K₁₀ certificate + 7/7 wave-2 nominal-bridge elimination gate |
+| 3 | [`cmd/showcase/`](cmd/showcase/README.md) | all | 1 | 221 | 66 | Current: 10 federations, 39 active / 6 retired, 50 certificates, 15 checker laws, shared-snapshot replacement waves; no theorem-promotion pipeline |
 | 4 | [`cmd/symdemo/`](cmd/symdemo/README.md) | all | 1 | 309 | 65 | `symlib` demo: "derived vs. direct" two-path agreement + monad laws |
 | 5 | [`cmd/symbench/`](cmd/symbench/README.md) | all | 2 | 594 | 88 | 12-case full-pipeline timing + seven derived-algorithm families (A–G) |
 | 6 | [`cmd/semiringreport/`](cmd/semiringreport/README.md) | **native only** | 5 | 2,813 | 118 | The 19-section measurement report; §19 turns every limitation into a measured number |
@@ -417,7 +423,7 @@ reporting) → `tools/` → `architecture.json`.
 
 **Just need to run something** — `moon run cmd/main --target wasm-gc` (139/139 theorems),
 `moon run cmd/metatheory --target wasm-gc` (631/631 laws),
-`moon run cmd/showcase --target wasm-gc` (48/48 historical certificates + K_10=45/45),
+`moon run cmd/showcase --target wasm-gc` (50/50 certificates, 39 active / 6 retired),
 `moon run cmd/semiringreport --target native` (the measurement report).
 
 ---

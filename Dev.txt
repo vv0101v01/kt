@@ -1041,3 +1041,16 @@ Dev.txt（本節）、agent.md、agent.v2.md、lean/README.md、lean/UNIVERSAL.m
 - 去重：`ualg/cube` 的 `show_ints`／`show_big` 改用 `@core.show_ints`；`cs_mentions_var` 併入 `dterm_free_var_occurs`。
 - 刻意保留：`dopen_arg_external / dopen_arg_decoded_val / dopen_val_term`（對應列舉變體仍被檢查器比對，刪除會觸發 `unused_constructor`，屬公開建構 API）；`ualg/site` 的 `show_ints`（該包須維持零外部依賴）；四組結構相近函式（不同 schema 的平行實作）。
 - 閘門：`moon check --deny-warn`、`moon build`、`gen_laws` 無差異、`arch_check` 通過；metatheory 631/631、ualg 167/167、main 139/139、showcase rc=0。
+
+
+## 2026-11-14：聯邦橋實益審計與刪除（完整報告見 agent.v2.md）
+
+- 基線 `2d8f6866b44d01f291ab5ea07bfcc3732afdf652`；本地 `audit/federation-bridges-20261114`。未 commit／push／PR／遠端 CI。
+- 官方正式 `moonc v0.10.20+65efd5b93`，18 檔 checksum 全過；`.moonbit-version`／CI pin 固定；查閱 stable 語法。
+- 45 歷史配對 → 39 active＋6 retired：真正刪除 K6-11/13、K7-18/21、K9-35/36，另刪 X／Malcev 健康包裝及 promotion 型別／欄位／管線。底層原生 API 保留。
+- 提升：P¹ Laurent Čech 維數、同一 VR→Topos nerve、圖 BFS→Boolean closure→整數 SNF；15 條精確 registry checker laws；單次配對快照、共用 atlas／report，仍保留部分獨立底層重算。
+- 文檔：全57包／66元件分層、所有39 active的產物及限制、6退役理由、實體DAG、語義SVG、離線可搜尋HTML、API遷移；生成器 `--check` 納入 CI。
+- 實跑 wasm-gc：Meta631/631、Ualg167/167、Cubical139/139、showcase39 active／50證書／15 checker laws，全 exit0、無FAIL。局部測試2/2後立即刪除；生成器10類負控制通過。
+- 靜態：deny-warn check／build／info／fmt／arch／gen_laws／gen_labels／docs check皆過；最終326 .mbt／203,928行。介面只改bridge及condensed，破壞性變更已列。
+- 不誇大：80.055秒是單次showcase端到端，不是受控效能改善；public report不是防偽證明；WGSL僅靜態；保留有界比較仍非一般定理。health候選40，不按啟發式批量刪API。
+- 詳細「改了甚麼／理由／精確數值與負控制／未完成」請見 `agent.v2.md#2026-11-14-federation-audit`。

@@ -9,7 +9,7 @@
 | 項目 | 數量 |
 |---|---|
 | 掃描到的函式／方法定義 | 6271 |
-| 完全無引用函式／方法（遞移死碼候選） | 3 |
+| 完全無引用函式／方法（遞移死碼候選） | 40 |
 | 完全無引用型別（`struct`/`enum`/`type`/`trait`） | 0 |
 | 空殼列舉（`enum Foo {}`） | 0 |
 | 完全相同或同包 α 等價函式體的重複組 | 1 |
@@ -22,6 +22,43 @@
 | `cubical/kernel/schema_open_ir.mbt` | 1181 | pub | `dopen_arg_external` |
 | `cubical/kernel/schema_open_ir.mbt` | 1191 | pub | `dopen_arg_decoded_val` |
 | `cubical/kernel/schema_open_ir.mbt` | 1287 | pub | `dopen_val_term` |
+| `semiring/algebra/lattice_instances.mbt` | 378 | pub | `CyclicSet::of_range` |
+| `semiring/algebra/lattice_instances.mbt` | 394 | pub | `CyclicSet::cardinality` |
+| `semiring/algebra/laws.mbt` | 129 | priv | `law_check_star` |
+| `semiring/algebra/laws.mbt` | 207 | pub | `check_star` |
+| `semiring/app/wasm_verify.mbt` | 15 | pub | `verify_semiring_wasm_suite` |
+| `semiring/bp/factor.mbt` | 361 | priv | `combine_and_eliminate_var` |
+| `semiring/bp/factor.mbt` | 420 | pub | `bp_exact_marginal_ve` |
+| `semiring/bp/factor.mbt` | 524 | pub | `bp_exact_all_marginals_ve` |
+| `semiring/cat/free.mbt` | 191 | pub | `DiGraph::hom_setmat` |
+| `semiring/cat/setmat.mbt` | 102 | pub | `smat_plus` |
+| `semiring/graph/dijkstra.mbt` | 148 | pub | `bellman_ford_potentials` |
+| `semiring/graph/dijkstra.mbt` | 179 | pub | `apsp_johnson` |
+| `semiring/matrix/blocking.mbt` | 78 | pub | `mul_blocked_auto` |
+| `semiring/matrix/csr.mbt` | 38 | pub | `Csr::row_range` |
+| `semiring/matrix/csr.mbt` | 166 | pub | `csr_mul` |
+| `semiring/matrix/mat.mbt` | 49 | pub | `Mat::from_flat` |
+| `semiring/matrix/mat.mbt` | 73 | pub | `Mat::transpose` |
+| `semiring/matrix/mat.mbt` | 89 | pub | `Mat::byte_size` |
+| `semiring/matrix/mul.mbt` | 190 | pub | `mul_trop_plain` |
+| `semiring/matrix/mul.mbt` | 281 | pub | `copy_region_out` |
+| `semiring/matrix/mul.mbt` | 306 | pub | `mul_bool_swar` |
+| `semiring/matrix/mul.mbt` | 382 | pub | `mul_gf2_m4ri_swar` |
+| `semiring/matrix/mul_par.mbt` | 64 | pub | `closure_fw_par` |
+| `semiring/nf/dfa.mbt` | 114 | pub | `Dfa::accepts` |
+| `semiring/trop/poly.mbt` | 160 | pub | `UniPoly::argmin_at` |
+| `semiring/trop/tla.mbt` | 118 | pub | `trop_assignment` |
+| `semiring/trop/tla.mbt` | 264 | pub | `trop_eigenvalue_karp` |
+| `semiring/trop/tla.mbt` | 341 | pub | `trop_critical_eigenvector` |
+| `semiring/trop/tla.mbt` | 402 | pub | `verify_trop_eigenpair` |
+| `symlib/core/group.mbt` | 368 | pub | `PermGroup::hyperoctahedral` |
+| `symlib/marks.mbt` | 471 | pub | `burnside_mobius_solve` |
+| `symlib/yoneda.mbt` | 786 | pub | `representable_presheaf` |
+| `symlib/yoneda.mbt` | 817 | pub | `presheaf_from_gset` |
+| `symlib/yoneda.mbt` | 836 | pub | `presheaf_nat_is_natural` |
+| `symlib/yoneda.mbt` | 867 | pub | `gen_yoneda_extend` |
+| `symlib/yoneda.mbt` | 889 | pub | `gen_yoneda_eval` |
+| `symlib/yoneda.mbt` | 912 | pub | `verify_general_yoneda_bijection` |
 
 ## 2. 完全相同或同包 α 等價的函式體
 

@@ -13,7 +13,7 @@
 //   K10-39 Ualg × Semiring  : congruence generation ↔ Boolean Kleene star
 //   K10-40 Ualg × Topos     : cube opens ↔ Sieve64 Heyting/nucleus transport
 //   K10-41 Ualg × Scheme    : cubical subcomplex ↔ Stanley–Reisner/Hilbert
-//   K10-42 Ualg × Condensed : translation spectrum ↔ Roos–Milnor inverse limit
+//   K10-42 Ualg × Condensed : translation spectrum ↔ coker(I−f) coinvariants
 //   K10-43 Ualg × Discovery : cubical homology predicates ↔ SWAR implication lattice
 //   K10-44 Ualg × Accel     : cubical boundary ↔ GF(2) SWAR RREF Betti
 //   K10-45 Ualg × Meta      : congruence/Mal'cev ↔ meta/core relation algebra
@@ -943,7 +943,7 @@ pub fn ten_federation_descriptors(
     id: Ualg,
     slug: "ualg",
     packages: [
-      "ualg-core", "ualg-site", "ualg-demorgan", "ualg-cube", "cmd-ualg",
+      "ualg-core", "ualg-site", "ualg-demorgan", "cmd-ualg", "ualg-cube",
     ],
     canonical_normal_form: "Freese congruence / Mal'cev term / Kalman DNF / Alexandrov ¬¬ sheafification / cubical Betti",
     categorification_role: "Constructive Universal Algebra, Finite Poset Toposes & De Morgan Cubical Complexes",
@@ -959,7 +959,6 @@ pub(all) struct TenFederationUnificationReport {
   ten_federations_verified : Int32
   k10_bridges_verified : Int32
   ualg_bridges_verified : Int32
-  promotion_pipeline : FourFederationPromotionReport
   v5_ackermann_65536_sets_verified : Bool
   rotation_axis_cert_ok : Bool
   legacy_k5_dispatch_ok : Bool
@@ -983,7 +982,7 @@ pub fn verify_k10_ten_federation_bridges(
   for e in verify_k10_ualg_federation_bridges() {
     out.push(e)
   }
-  apply_bridge_audit(out)
+  out
 }
 
 ///|
@@ -992,19 +991,24 @@ pub fn verify_k10_ten_federation_unification(
   accel_precomputed~ : @accel.AccelFederationReport? = None,
   rotation_precomputed~ : RotationAxisBridgeReport? = None,
   k5_preverified_ok~ : Bool? = None,
+  k10_precomputed~ : Array[FederationPairBridge]? = None,
+  federations_precomputed~ : Array[FederationDescriptor]? = None,
 ) -> TenFederationUnificationReport {
-  let atlas = @tensor.f3_tensor222_atlas_build()
-  let feds = ten_federation_descriptors(accel_precomputed~)
+  let feds = match federations_precomputed {
+    Some(fs) => fs
+    None => ten_federation_descriptors(accel_precomputed~)
+  }
   let mut feds_ok = 0
   for f in feds {
     if f.live_health_ok {
       feds_ok = feds_ok + 1
     }
   }
-  let k10 = verify_k10_ten_federation_bridges(
-    k7_precomputed~,
-    atlas_precomputed=Some(atlas),
-  )
+  let k10 = match k10_precomputed {
+    Some(es) => es
+    None => verify_k10_ten_federation_bridges(k7_precomputed~)
+  }
+  let registry = validate_bridge_registry(k10, federation_count=10)
   let mut k10_ok = 0
   let mut ualg_ok = 0
   for e in k10 {
@@ -1015,9 +1019,6 @@ pub fn verify_k10_ten_federation_unification(
       }
     }
   }
-  let promo = promote_discovered_implication_to_focused_theorem(
-    atlas_precomputed=Some(atlas),
-  )
   let (v5_rk, v5_cnts) = @mreflect.v5_ackermann_rank_spectrum()
   let v5_ok = v5_rk == 4 &&
     v5_cnts[0] + v5_cnts[1] + v5_cnts[2] + v5_cnts[3] + v5_cnts[4] == 65536
@@ -1025,9 +1026,8 @@ pub fn verify_k10_ten_federation_unification(
   let k5_disp = verify_legacy_k5_system_dispatch(
     preverified_ok=k5_preverified_ok,
   )
-  let holds = feds_ok == 10 &&
-    k10.length() == 45 &&
-    k10_ok == 40 &&
+  let holds = federation_health_valid(feds, 10) &&
+    registry.all_holds &&
     ualg_ok == 9 &&
     v5_ok &&
     rot_cert.ok &&
@@ -1036,7 +1036,6 @@ pub fn verify_k10_ten_federation_unification(
     ten_federations_verified: feds_ok,
     k10_bridges_verified: k10_ok,
     ualg_bridges_verified: ualg_ok,
-    promotion_pipeline: promo,
     v5_ackermann_65536_sets_verified: v5_ok,
     rotation_axis_cert_ok: rot_cert.ok,
     legacy_k5_dispatch_ok: k5_disp,

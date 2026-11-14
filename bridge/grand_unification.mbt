@@ -138,7 +138,13 @@ pub fn verify_six_pillar_circle_sphere_unification() -> Bool {
 ///|
 fn grand_unification_certificates_from_atlas(
   atlas : Array[GeometryLogicAtlasEntry],
+  k7_precomputed~ : Array[FederationPairBridge]? = None,
+  federations_precomputed~ : Array[FederationDescriptor]? = None,
 ) -> Array[BridgeCertificate] {
+  let k7 = match k7_precomputed {
+    Some(es) => es
+    None => verify_k7_federation_bridges()
+  }
   let certs : Array[BridgeCertificate] = [
     bridge_certificate(
       "bridge/translation",
@@ -149,7 +155,7 @@ fn grand_unification_certificates_from_atlas(
     bridge_certificate(
       "bridge/translation",
       "Zariski Classifying Topos Invariance vs Dual-Number Nilpotents",
-      verify_zariski_topos_invariance_vs_nilpotent_points(),
+      bridge_holds_by_id(k7, "K5-10"),
       detail="B(T_Zar(X)) == B(T_Zar(X_red)) while |X(F_3[ε])|=4 > |X_red(F_3[ε])|=2",
     ),
     bridge_certificate(
@@ -161,7 +167,7 @@ fn grand_unification_certificates_from_atlas(
     bridge_certificate(
       "bridge/translation",
       "Kapranov Tropical Bend Roots ↔ DVR Laurent Properness Valuation",
-      verify_kapranov_tropical_laurent_bridge(),
+      bridge_holds_by_id(k7, "K5-09"),
       detail="trop roots {-1, 2} match Q((t)) valuation jump & P^1 extension",
     ),
     bridge_certificate(
@@ -179,25 +185,25 @@ fn grand_unification_certificates_from_atlas(
     bridge_certificate(
       "bridge/k5",
       "K5-04: Exact Poly ↔ MPoly Ring Isomorphism & Stone–Zariski Face Duality",
-      verify_cubical_algebra_scheme_bridge(),
+      bridge_holds_by_id(k7, "K5-04"),
       detail="dim_Q Q[x,y]/<x²+y²-1,x-y> = 2 = [Q(√2):Q]; Poly ↔ MPoly hom",
     ),
     bridge_certificate(
       "bridge/k5",
-      "K5-06: Grothendieck Galois S_3-Set ≃ Sh_at(BS_3) & Order-Free Poset Nerve",
-      verify_symlib_galois_topos_bridge(),
-      detail="S_3 on 3²: Γ=0, |Hom(P,Δ2)|=4=2², atoms 3+6=9; reverse S^1 Betti=[1,1,0,0]",
+      "K5-06: Grothendieck Galois S_3-Set ≃ Sh_at(BS_3)",
+      bridge_holds_by_id(k7, "K5-06"),
+      detail="S_3 on 3²: Γ=0, |Hom(P,Δ2)|=4=2², atoms 3+6=9",
     ),
     bridge_certificate(
       "bridge/k5",
       "K5-07: S_3 Scheme Automorphisms, Burnside F_p-Orbits & Vieta Étale Torsor",
-      verify_symlib_symmetric_scheme_bridge(),
+      bridge_holds_by_id(k7, "K5-07"),
       detail="H(F_3): 9 pts -> 4 S_3-orbits (fix=3); Vieta étale off V(x_0 - x_1)",
     ),
     bridge_certificate(
       "bridge/k5",
       "K5-08: Boolean Matrix Kleene Star Fix(M*) ↔ Alexandroff Sieves Γ(1, Ω_J)",
-      verify_semiring_kleene_alexandroff_topos_bridge(),
+      bridge_holds_by_id(k7, "K5-08"),
       detail="|Fix(M*)| = |Γ(1, Ω)| = 6 -> |Γ(1, Ω_J)| = 5 under {1,2} ↠ 3",
     ),
     bridge_certificate(
@@ -265,18 +271,6 @@ fn grand_unification_certificates_from_atlas(
       ),
     )
   }
-  let x_rep = verify_x_overlap_chiasmus()
-  let k6_edges = verify_k6_federation_bridges()
-  let (k6_attempted, k6_active, k6_suspended) = bridge_audit_counts(k6_edges)
-  let k6_new_ok = bridge_audit_all_active_hold(k6_edges) && k6_active == 13
-  certs.push(
-    bridge_certificate(
-      "double_v/chiasm",
-      "Double-V Architecture (V₁=@gcd → X=@condensed → V₂=@bridge K₆ active=13/15, suspended=2) & 7-Boundary Breakthrough",
-      x_rep.chiasm_commutes && k6_new_ok,
-      detail="K6_active=\{k6_active}/\{k6_attempted}, suspended=\{k6_suspended}, x_overlap=\{x_rep.chiasm_commutes}, invariants=(1,2,1)",
-    ),
-  )
   let tensor_ok = @tensor.tensor_check_federation_laws()
   certs.push(
     bridge_certificate(
@@ -295,13 +289,16 @@ fn grand_unification_certificates_from_atlas(
       detail="conjectures=\{syn.total_conjectures} (derived=\{syn.derived_and_transferred}, refined=\{syn.refuted_and_refined}), evolve=\{syn.evolution_families_passed}/6",
     ),
   )
-  let sp = verify_seven_federation_star_prism()
+  let sp = verify_seven_federation_star_prism(
+    k7_precomputed=Some(k7),
+    federations_precomputed~,
+  )
   certs.push(
     bridge_certificate(
       "discovery/k7_star_prism",
-      "Seven-Federation Star-Prism Unification & Complete K₇ (21/21) Cross-Federation Bridge Graph",
+      "Seven-federation active registry and resolved-conjecture checks",
       sp.star_prism_commutes,
-      detail="federations=\{sp.seven_federations_verified}/7, K7_bridges=\{sp.k7_bridges_verified}/21, lakatos_refinements=\{sp.lakatos_refinements_verified}",
+      detail="federations=\{sp.seven_federations_verified}/7, K7_bridges=\{sp.k7_bridges_verified}/17 active, lakatos_refinements=\{sp.lakatos_refinements_verified}",
     ),
   )
   certs
@@ -311,9 +308,14 @@ fn grand_unification_certificates_from_atlas(
 /// Collect all `BridgeCertificate` records produced by the Topos, Scheme,
 /// Logical Translation, Fine-Grained Geometry–Logic Atlas, and Six-Pillar
 /// Unification engines!
-pub fn grand_unification_certificates() -> Array[BridgeCertificate] {
+pub fn grand_unification_certificates(
+  k7_precomputed~ : Array[FederationPairBridge]? = None,
+  federations_precomputed~ : Array[FederationDescriptor]? = None,
+) -> Array[BridgeCertificate] {
   grand_unification_certificates_from_atlas(
     build_fine_grained_geometry_logic_atlas(),
+    k7_precomputed~,
+    federations_precomputed~,
   )
 }
 
@@ -336,7 +338,7 @@ pub fn run_grand_unification_system() -> GrandUnificationReport {
       k5_passed = k5_passed + 1
     }
   }
-  let k5_ok = k5_passed == 10 && k5_edges.length() == 10
+  let k5_ok = validate_bridge_registry(k5_edges, federation_count=5).all_holds
   let atlas = build_fine_grained_geometry_logic_atlas()
   let mut atlas_passed = 0
   for e in atlas {

@@ -1,47 +1,15 @@
 ///|
-// Nine-Federation Complete Star-Prism (`K_9 = C(9, 2) = 36/36`) & Four-Federation
-// Automated Theorem-Promotion Pipeline (`F7 Discovery → F9 Meta → F4 Topos → F1 Cubical`).
-//
-// Completes the macro-architectural graph of `kt` by integrating:
-//   - Federation 8 (`accel`: `accel/swar` + `accel`) via 7 pairwise bridges `K8-22..K8-28`;
-//   - Federation 9 (`meta`: `meta-core`, `meta-instances`, `meta-iit`, `meta-reflect`)
-//     via 8 pairwise bridges `K9-29..K9-36`;
-//   - End-to-end automated theorem promotion from 64-bit bitplane empirical implication
-//     discovery (`F7`) through Horn Knuth–Bendix completion, SLG tabling & Sylvester–Bareiss
-//     gluing (`F9`), `Sieve64` bi-Heyting subobject classification (`F4`), into `LJF`
-//     polarized focused proof synthesis (`F1`).
+// Nine-federation active subgraph: 30 comparisons out of 36 historical pairs.
+// K9-35 promotion and K9-36 nominal hardware edge are deleted.
+// The native Meta law engines remain independently available.
 
 ///|
-/// Report for the **Four-Federation Automated Theorem-Promotion Pipeline**
-/// (`F7 Discovery → F9 Meta → F4 Topos → F1 Cubical`).
-#derive(Debug, Eq)
-pub(all) struct FourFederationPromotionReport {
-  f7_bitplane_implications_found : Int32
-  f7_hardware_ctz_counterexample : Int32
-  f9_horn_orientable_and_complete : Bool
-  f9_slg_tabling_cache_hits : Int32
-  f9_bareiss_gluing_h1_zero : Bool
-  f4_sieve64_global_truth_holds : Bool
-  f1_ljf_focused_unique_proof : Bool
-  f1_refuted_converse_blocked : Bool
-  pipeline_holds : Bool
-}
-
-///|
-pub extend FourFederationPromotionReport with @moonbitlang/core/debug.Debug::{
-  to_repr,
-}
-
-///|
-pub extend FourFederationPromotionReport with Eq::{not_equal, equal}
-
-///|
-/// Master report for the **Nine-Federation Complete Star-Prism (`K_9 = 36/36`)**.
+/// Native health plus the exact active nine-federation registry.
+/// No theorem-promotion pipeline or complete-graph claim is implied.
 #derive(Debug, Eq)
 pub(all) struct NineFederationUnificationReport {
   nine_federations_verified : Int32
   k9_bridges_verified : Int32
-  promotion_pipeline : FourFederationPromotionReport
   v5_ackermann_65536_sets_verified : Bool
   rotation_axis_cert_ok : Bool
   legacy_k5_dispatch_ok : Bool
@@ -105,7 +73,7 @@ pub fn nine_federation_descriptors(
     canonical_normal_form: "64-Bit SWAR Bitplanes, Dual-Rail GF(3), M4RI GF(2), Stockham RNS-NTT & Portable WGSL",
     categorification_role: "Register-Level Bit-Parallel & Browser-Portable Hardware Realizability Functor",
     live_health_ok: acc_rep.all_ok,
-    summary: "L0 64-Bit SWAR Substrate (`accel/swar`) + 6-Pillar CPU/WGSL Exactness (`7/7` Browser Shaders)",
+    summary: "L0 64-Bit SWAR Substrate (`accel/swar`) + 6-Pillar CPU/WGSL Exactness (8 static WGSL kernels; no GPU runtime assertion)",
   })
   let meta_ok = check_meta_federation_fast_probe()
   out.push(FederationDescriptor::{
@@ -117,203 +85,26 @@ pub fn nine_federation_descriptors(
     canonical_normal_form: "Int64 Sylvester–Bareiss, Paterson–Wegman DAG MGU, SLG Tabling, E-Graph QIIT & Ackermann V_5",
     categorification_role: "Zero-Dependency Constructive Metatheory, Horn Coherence, QIIT & Lévy–Montague Reflection Floor",
     live_health_ok: meta_ok,
-    summary: "5-Package Trusted Metatheory Floor (`532/532` Laws, `V_5` = 65,536 HF Sets, E-Graph QIIT & Indexed Tabling)",
+    summary: "5-Package Trusted Metatheory Floor (`631/631` Laws, `V_5` = 65,536 HF Sets, E-Graph QIIT & Indexed Tabling)",
   })
   out
 }
 
 ///|
-/// Execute the **Four-Federation Automated Theorem-Promotion Pipeline**:
-///   1. `F7 discovery/kernel`: 64-bit SWAR bitplanes discover `P_0 (rank<=1) => P_1 (Det==0)`
-///      across all `6,561` `F_3^{2x2x2}` tensors and extract hardware-`ctz` counterexample to `P_1 => P_0`;
-///   2. `F9 meta`: promotes survived implications into an oriented Horn rule base, completes critical
-///      pairs via Knuth–Bendix `complete_oriented`, resolves composite diamond goals with SLG tabling,
-///      and certifies zero Čech `H^1` gluing obstruction via `Int64` Sylvester–Bareiss;
-///   3. `F4 topos/site`: lifts the implication to `Sieve64` on a 3-stage epistemic poset site and
-///      certifies `(S_0 =>_64 S_1) == M_top` (global truth section `1 -> Ω_J`);
-///   4. `F1 cubical/structures`: compiles the promoted global implication into `LJF_cub` polarized
-///      focusing (`focused_ljf_cubical_prove`), yielding a unique `1`-derivation canonical proof while
-///      blocking the refuted converse!
-pub fn promote_discovered_implication_to_focused_theorem(
-  atlas_precomputed~ : @tensor.F3Tensor222Atlas? = None,
-) -> FourFederationPromotionReport {
-  let atlas = match atlas_precomputed {
-    Some(a) => a
-    None => @tensor.f3_tensor222_atlas_build()
-  }
-  // Stage 1 (F7 Discovery Kernel): 64-bit SWAR bitplane implication discovery on 6,561 F_3 tensors
-  //   pred 0: rank <= 1,  pred 1: Det == 0,  pred 2: rank2_decomp == 0,  pred 3: rank == 3
-  let lat = @dkernel.implication_lattice_build(atlas.total_tensors, 4, (
-    code,
-    pred,
-  ) => {
-    match pred {
-      0 => atlas.ranks[code] <= 1
-      1 => atlas.hyperdets[code] == 0
-      2 => atlas.rank2_decomp_counts[code] == 0
-      _ => atlas.ranks[code] == 3
-    }
-  })
-  let f7_edges = lat.strict_unidirectional_edges +
-    2 * lat.nontrivial_equiv_pairs
-  let cex_1_to_0 = lat.counterexamples[1][0]
-  let cex_det_scalar = if cex_1_to_0 >= 0 {
-    @tensor.t3_hyperdet222(@tensor.f3_tensor_of_code(cex_1_to_0))
-  } else {
-    1
-  }
-  let f7_ok = lat.implies[0][1] &&
-    !lat.implies[1][0] &&
-    cex_1_to_0 >= 0 &&
-    cex_det_scalar == 0 &&
-    atlas.hyperdets[cex_1_to_0] == 0 &&
-    atlas.ranks[cex_1_to_0] > 1 &&
-    lat.implies[2][3] &&
-    lat.implies[3][2]
-
-  // Stage 2 (F9 Meta): Horn rule synthesis, orientation, Knuth–Bendix completion, SLG tabling & Bareiss H^1 = 0
-  // Encode unary predicate `Pred_k(T)` as `@mcore.ufn(20 + k, [T])`, with `DetZero(Pair(A, B)) :- RankLe1(A), RankLe1(B)`
-  let v0 = @mcore.uvar(0)
-  let v1 = @mcore.uvar(1)
-  let pred_rank_le1 = fn(t : @mcore.UTerm) -> @mcore.UTerm {
-    @mcore.ufn(20, [t])
-  }
-  let pred_det_zero = fn(t : @mcore.UTerm) -> @mcore.UTerm {
-    @mcore.ufn(21, [t])
-  }
-  let horn_rules : Array[@minstances.Rule] = [
-    @minstances.rule("base_rank1_int", 1, pred_rank_le1(@minstances.ty_int()), []),
-    @minstances.rule(
-      "base_rank1_bool",
-      1,
-      pred_rank_le1(@minstances.ty_bool()),
-      [],
-    ),
-    @minstances.rule(
-      "pair_rank1",
-      1,
-      pred_rank_le1(@minstances.ty_pair(v0, v1)),
-      [pred_rank_le1(v0), pred_rank_le1(v1)],
-    ),
-    @minstances.rule(
-      "promoted_det_zero_pair",
-      2,
-      pred_det_zero(@minstances.ty_pair(v0, v1)),
-      [pred_rank_le1(v0), pred_rank_le1(v1)],
-    ),
-  ]
-  let horn_env = @minstances.env(horn_rules)
-  let (completed_env, stuck_pairs) = @minstances.complete_oriented(
-    horn_env, 6, 4,
-  )
-  let f9_orient_ok = @minstances.orientable(completed_env) &&
-    stuck_pairs.length() == 0
-  let ie = @minstances.index_env(completed_env)
-  let sub_p = @minstances.ty_pair(@minstances.ty_int(), @minstances.ty_bool())
-  let diamond_goal = pred_det_zero(
-    @minstances.ty_pair(
-      @minstances.ty_pair(sub_p, sub_p),
-      @minstances.ty_pair(sub_p, sub_p),
-    ),
-  )
-  let (tab_derivs, tab_hits) = @minstances.resolve_indexed_tabled(
-    ie, diamond_goal, 6,
-  )
-  // Contractible 3-cover nerve Δ^2 (`V=3, E=3, T=1`): d^0 rank = 2, d^1 rank = 1 => H^1 = 3 - 1 - 2 = 0!
-  let d0_nerve : Array[Array[Int32]] = [[-1, 1, 0], [-1, 0, 1], [0, -1, 1]]
-  let d1_nerve : Array[Array[Int32]] = [[1, -1, 1]]
-  let (rk_d0, cert0) = @mcore.matrix_rank_bareiss64_with_cert(d0_nerve)
-  let (rk_d1, cert1) = @mcore.matrix_rank_bareiss64_with_cert(d1_nerve)
-  let h1_zero = cert0 && cert1 && 3 - rk_d1 - rk_d0 == 0
-
-  // Stage 3 (F4 Topos/Site): Lift `P_0 => P_1` into `Sieve64` on 3-object poset `0 -> 1 -> 2`
-  let site_cat = @sym.cat_poset(3, [(0, 1), (1, 2)])
-  let sp = @tsite.site_precomp64_build(site_cat)
-  // S_0 generated by bottom morphism `0 -> 2`, S_1 generated by `1 -> 2` (so S_0 ⊆ S_1!)
-  let s_all = @tsite.enumerate_sieves64_on_obj(sp, 2)
-  let mut f4_heyting_ok = s_all.length() == 4
-  for s_prem in s_all {
-    for s_conc in s_all {
-      let imp64 = @tsite.sieve64_heyting_implies(sp, s_prem, s_conc)
-      let is_max = imp64 == @tsite.sieve64_maximal(sp, 2)
-      if is_max != @tsite.sieve64_subset(s_prem, s_conc) {
-        f4_heyting_ok = false
-      }
-    }
-    let dn1 = @tsite.sieve64_double_negation(sp, s_prem)
-    let dn2 = @tsite.sieve64_double_negation(sp, dn1)
-    if dn1 != dn2 {
-      f4_heyting_ok = false
-    }
-  }
-
-  // Stage 4 (F1 Cubical/Structures): Polarized `LJF_cub` focused proof synthesis
-  // Stable negative Horn hypothesis `H_01 : PPosAtom(0) -> PNegAtom(1)` proves
-  // `(PPosAtom(0) ⊗ 1^+) -> PNegAtom(1)` with 1 unique canonical derivation!
-  let hyp_01 = @structures.PArrow(
-    @structures.PPosAtom(0),
-    @structures.PNegAtom(1),
-  )
-  let goal_valid = @structures.PArrow(
-    @structures.PTensor(@structures.PPosAtom(0), @structures.PUnitPos),
-    @structures.PNegAtom(1),
-  )
-  let goal_refuted = @structures.PArrow(
-    @structures.PPosAtom(1),
-    @structures.PNegAtom(0),
-  )
-  let (ljf_ok, ljf_cnt) = @structures.focused_ljf_cubical_prove(
-    [hyp_01],
-    [],
-    [],
-    goal_valid,
-    8,
-  )
-  let (refuted_ok, _ref_cnt) = @structures.focused_ljf_cubical_prove(
-    [hyp_01],
-    [],
-    [],
-    goal_refuted,
-    8,
-  )
-
-  let all_ok = f7_ok &&
-    f9_orient_ok &&
-    tab_derivs.length() == 1 &&
-    tab_hits >= 1 &&
-    h1_zero &&
-    f4_heyting_ok &&
-    ljf_ok &&
-    ljf_cnt == 1 &&
-    !refuted_ok
-  FourFederationPromotionReport::{
-    f7_bitplane_implications_found: f7_edges,
-    f7_hardware_ctz_counterexample: cex_1_to_0,
-    f9_horn_orientable_and_complete: f9_orient_ok,
-    f9_slg_tabling_cache_hits: tab_hits,
-    f9_bareiss_gluing_h1_zero: h1_zero,
-    f4_sieve64_global_truth_holds: f4_heyting_ok,
-    f1_ljf_focused_unique_proof: ljf_ok && ljf_cnt == 1,
-    f1_refuted_converse_blocked: !refuted_ok,
-    pipeline_holds: all_ok,
-  }
-}
-
-///|
-/// Verify all **36 pairwise cross-federation bridges** of the complete graph `K_9`:
-/// `K5-01..K5-10` (10) + `K6-11..K6-15` (5) + `K7-16..K7-21` (6)
-/// + `K8-22..K8-28` (7 Accel bridges) + `K9-29..K9-36` (8 Meta bridges)!
+/// Execute 30 active pairwise comparisons. K8 contributes 7 edges and K9
+/// contributes 6, above the 17 active K7 edges. The shared tensor atlas is built
+/// once for K7-17, K8-26 and K8-28 (the scalar/SWAR comparison stays independent).
 pub fn verify_k9_federation_bridges(
   k7_precomputed~ : Array[FederationPairBridge]? = None,
   atlas_precomputed~ : @tensor.F3Tensor222Atlas? = None,
 ) -> Array[FederationPairBridge] {
-  let base = match k7_precomputed {
-    Some(es) => es.copy()
-    None => verify_k7_federation_bridges()
-  }
   let atlas = match atlas_precomputed {
     Some(a) => a
     None => @tensor.f3_tensor222_atlas_build()
+  }
+  let base = match k7_precomputed {
+    Some(es) => es.copy()
+    None => verify_k7_federation_bridges(atlas_precomputed=Some(atlas))
   }
   // K8-22..K8-28: Federation 8 (`Accel`) ↔ Federations 1..7
   base.push(replace_k8_22_swar_face_bdd())
@@ -332,13 +123,17 @@ pub fn verify_k9_federation_bridges(
     quantitative_witness: "Sieve64_SIP_biHeyting_MAC=\{sieve64_ok}",
   })
 
-  base.push(replace_k8_26_segre_cone_point_census())
+  base.push(
+    replace_k8_26_segre_cone_point_census(atlas_precomputed=Some(atlas)),
+  )
 
   base.push(replace_k8_27_ozaki_crt_zmat_snf())
 
-  base.push(replace_k8_28_bitplane_implication_soundness())
+  base.push(
+    replace_k8_28_bitplane_implication_soundness(atlas_precomputed=Some(atlas)),
+  )
 
-  // K9-29..K9-36: Federation 9 (`Meta`) ↔ Federations 1..8
+  // K9-29..K9-34: six retained Meta comparisons; K9-35/36 are retired.
   base.push(replace_k9_29_stlc_dterm_nbe())
 
   base.push(replace_k9_30_congruence_orbit_rank())
@@ -351,65 +146,41 @@ pub fn verify_k9_federation_bridges(
 
   base.push(replace_k9_34_mobius_glue_rlim_torsion())
 
-  let promo = promote_discovered_implication_to_focused_theorem(
-    atlas_precomputed=Some(atlas),
-  )
-  base.push(FederationPairBridge::{
-    id: "K9-35",
-    lhs: Meta,
-    rhs: Discovery,
-    bridge_theorem: "[E-Derive] / 64-Bit Implication DAG → Knuth–Bendix Oriented Horn Completion & SLG Tabling",
-    holds: promo.pipeline_holds,
-    quantitative_witness: "edges=\{promo.f7_bitplane_implications_found}, cex=\{promo.f7_hardware_ctz_counterexample}, hits=\{promo.f9_slg_tabling_cache_hits}",
-  })
-
-  let (v5_max_rk, v5_counts) = @mreflect.v5_ackermann_rank_spectrum()
-  let k9_36_ok = v5_max_rk == 4 &&
-    v5_counts[4] == 65520 &&
-    @mreflect.sat_v64_membership_chain(5, 4) &&
-    !@mreflect.sat_v64_membership_chain(4, 4)
-  base.push(FederationPairBridge::{
-    id: "K9-36",
-    lhs: Meta,
-    rhs: Accel,
-    bridge_theorem: "Ackermann 64-Bit Register Universe V_5 (65,536 HF Sets) ↔ 64-Bit SWAR Bitboard Realizability",
-    holds: k9_36_ok,
-    quantitative_witness: "|V_5|=65536 (rank4=\{v5_counts[4]}), chain4(V_4,V_5)=(false,true)",
-  })
-
-  apply_bridge_audit(base)
+  base
 }
 
 ///|
-/// Execute the full **Nine-Federation Complete Star-Prism (`K_9 = 36/36`) &
-/// Four-Federation Automated Theorem-Promotion** verification suite.
+/// Validate nine native health probes, the exact active registry and separate
+/// rotation/legacy checks. Precomputed edge coverage is never inferred from a count.
 pub fn verify_k9_meta_discovery_topos_unification(
   k7_precomputed~ : Array[FederationPairBridge]? = None,
   accel_precomputed~ : @accel.AccelFederationReport? = None,
   rotation_precomputed~ : RotationAxisBridgeReport? = None,
   k5_preverified_ok~ : Bool? = None,
+  k9_precomputed~ : Array[FederationPairBridge]? = None,
+  federations_precomputed~ : Array[FederationDescriptor]? = None,
 ) -> NineFederationUnificationReport {
-  let atlas = @tensor.f3_tensor222_atlas_build()
-  let feds = nine_federation_descriptors(accel_precomputed~)
+  let feds = match federations_precomputed {
+    Some(fs) => fs
+    None => nine_federation_descriptors(accel_precomputed~)
+  }
   let mut feds_ok = 0
   for f in feds {
     if f.live_health_ok {
       feds_ok = feds_ok + 1
     }
   }
-  let k9 = verify_k9_federation_bridges(
-    k7_precomputed~,
-    atlas_precomputed=Some(atlas),
-  )
+  let k9 = match k9_precomputed {
+    Some(es) => es
+    None => verify_k9_federation_bridges(k7_precomputed~)
+  }
+  let registry = validate_bridge_registry(k9, federation_count=9)
   let mut k9_ok = 0
   for e in k9 {
     if e.holds {
       k9_ok = k9_ok + 1
     }
   }
-  let promo = promote_discovered_implication_to_focused_theorem(
-    atlas_precomputed=Some(atlas),
-  )
   let (v5_rk, v5_cnts) = @mreflect.v5_ackermann_rank_spectrum()
   let v5_ok = v5_rk == 4 &&
     v5_cnts[0] + v5_cnts[1] + v5_cnts[2] + v5_cnts[3] + v5_cnts[4] == 65536
@@ -417,16 +188,14 @@ pub fn verify_k9_meta_discovery_topos_unification(
   let k5_disp = verify_legacy_k5_system_dispatch(
     preverified_ok=k5_preverified_ok,
   )
-  let holds = feds_ok == 9 &&
-    k9.length() == 36 &&
-    k9_ok == 31 &&
+  let holds = federation_health_valid(feds, 9) &&
+    registry.all_holds &&
     v5_ok &&
     rot_cert.ok &&
     k5_disp
   NineFederationUnificationReport::{
     nine_federations_verified: feds_ok,
     k9_bridges_verified: k9_ok,
-    promotion_pipeline: promo,
     v5_ackermann_65536_sets_verified: v5_ok,
     rotation_axis_cert_ok: rot_cert.ok,
     legacy_k5_dispatch_ok: k5_disp,

@@ -47,6 +47,9 @@ pub fn certificate_of_semiring_law(
 
 ///|
 pub fn certificates_all_ok(certs : Array[BridgeCertificate]) -> Bool {
+  if certs.is_empty() {
+    return false
+  }
   for cert in certs {
     guard cert.ok else { return false }
   }
@@ -66,13 +69,30 @@ pub fn certificate_summary(certs : Array[BridgeCertificate]) -> String {
 
 ///|
 /// 五聯邦原生證書與全部跨聯邦橋、幾何—邏輯精細圖譜、大一統定理之總證書列。
-pub fn bridge_certificates() -> Array[BridgeCertificate] {
+pub fn bridge_certificates(
+  k7_precomputed~ : Array[FederationPairBridge]? = None,
+  federations_precomputed~ : Array[FederationDescriptor]? = None,
+  accel_precomputed~ : @accel.AccelFederationReport? = None,
+  triad_precomputed~ : F8F5F1TriadBridgeReport? = None,
+  frontier_precomputed~ : Frontier7PillarsPentadReport? = None,
+) -> Array[BridgeCertificate] {
   let out = bridge_base_certificates()
-  for c in grand_unification_certificates() {
+  for
+    c in grand_unification_certificates(
+      k7_precomputed~,
+      federations_precomputed~,
+    ) {
     out.push(c)
   }
-  out.push(accel_hardware_certificate())
-  out.push(frontier_7pillars_bridge_certificate())
+  out.push(
+    accel_hardware_certificate(
+      precomputed=accel_precomputed,
+      triad_precomputed~,
+    ),
+  )
+  out.push(
+    frontier_7pillars_bridge_certificate(precomputed=frontier_precomputed),
+  )
   for c in verify_bridge_auxiliary_theorems() {
     out.push(c)
   }

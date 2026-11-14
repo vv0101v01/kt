@@ -300,14 +300,23 @@ pub fn verify_accel_hardware_bridge() -> @accel.AccelFederationReport {
 }
 
 ///|
-pub fn accel_hardware_certificate() -> BridgeCertificate {
-  let rep = @accel.verify_accel_federation()
-  let triad = verify_f8_f5_f1_triad_bridge()
+pub fn accel_hardware_certificate(
+  precomputed~ : @accel.AccelFederationReport? = None,
+  triad_precomputed~ : F8F5F1TriadBridgeReport? = None,
+) -> BridgeCertificate {
+  let rep = match precomputed {
+    Some(r) => r
+    None => @accel.verify_accel_federation()
+  }
+  let triad = match triad_precomputed {
+    Some(r) => r
+    None => verify_f8_f5_f1_triad_bridge()
+  }
   let f3 = @accel.gf3_bitsliced_all_6561_hyperdeterminants()
-  let detail = "M4RI_GF2=\{rep.m4ri_gf2_and_rank_ok}, GF3_bitslice_6561=\{f3.singular_det_zero}+\{f3.det_eq_one}+\{f3.det_eq_two}, Face_SWAR=\{rep.face_swar_bdd_sat_ok}, Ozaki2_DP4A_CRT=\{rep.ozaki2_crt_exact_and_fp64_ok}, Stockham_RNS_NTT=\{rep.stockham_rns_ntt_and_mont30_ok}, Scanbox_Tropical=\{rep.scanbox_morton_tropical_ok}, HVM2_INet=\{rep.hvm2_inet_strong_confluence_ok}, F8_F5_F1_Triad=\{triad.all_holds}, WGSL_portable=\{rep.wgsl_browser_kernels_audited}/7(SSOT=8/8)"
+  let detail = "M4RI_GF2=\{rep.m4ri_gf2_and_rank_ok}, GF3_bitslice_6561=\{f3.singular_det_zero}+\{f3.det_eq_one}+\{f3.det_eq_two}, Face_SWAR=\{rep.face_swar_bdd_sat_ok}, Ozaki2_DP4A_CRT=\{rep.ozaki2_crt_exact_and_fp64_ok}, Stockham_RNS_NTT=\{rep.stockham_rns_ntt_and_mont30_ok}, Scanbox_Tropical=\{rep.scanbox_morton_tropical_ok}, HVM2_INet=\{rep.hvm2_inet_strong_confluence_ok}, F8_F5_F1_Triad=\{triad.all_holds}, WGSL_static_legacy=\{rep.wgsl_browser_kernels_audited}/7, all_8_registered=\{triad.wgsl_all_8_registered_ok}; no GPU execution"
   bridge_certificate(
     "accel/webgpu+cpu",
-    "Frontier CPU SWAR & Browser Free WebGPU (WGSL) 6-Pillar Exactness & Portability Suite",
+    "CPU reference comparisons and WGSL static portability (no GPU execution)",
     rep.all_ok && triad.all_holds,
     detail~,
   )

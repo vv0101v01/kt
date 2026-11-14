@@ -1,0 +1,256 @@
+%% Generated. Provider --> consumer. This is the physical import DAG.
+flowchart BT
+  subgraph L0["Package layer 0"]
+    gcd["gcd"]
+    symlib_core["symlib/core"]
+    cubical_face_bdd["cubical/face_bdd"]
+    meta_core["meta/core"]
+    accel_swar["accel/swar"]
+    ualg_core["ualg/core"]
+    ualg_site["ualg/site"]
+  end
+  subgraph L1["Package layer 1"]
+    algebra_core["algebra/core"]
+    cubical_finite["cubical/finite"]
+    symlib["symlib"]
+    semiring_algebra["semiring/algebra"]
+    semiring_nf["semiring/nf"]
+    semiring_ratelimit["semiring/ratelimit"]
+    semiring_sim["semiring/sim"]
+    semiring_par["semiring/par"]
+    hostfs["hostfs"]
+    meta_instances["meta/instances"]
+    meta_iit["meta/iit"]
+    condensed_core["condensed/core"]
+    ualg_demorgan["ualg/demorgan"]
+  end
+  subgraph L2["Package layer 2"]
+    algebra["algebra"]
+    cubical_kernel["cubical/kernel"]
+    cmd_symdemo["cmd/symdemo"]
+    cmd_symbench["cmd/symbench"]
+    semiring_matrix["semiring/matrix"]
+    semiring_monoid["semiring/monoid"]
+    semiring_trop["semiring/trop"]
+    semiring_bp["semiring/bp"]
+    semiring_io["semiring/io"]
+    tensor["tensor"]
+    meta_reflect["meta/reflect"]
+    topos_site["topos/site"]
+    ualg_cube["ualg/cube"]
+  end
+  subgraph L3["Package layer 3"]
+    cubical_hermitian["cubical/hermitian"]
+    cubical_elaborator["cubical/elaborator"]
+    cubical_homotopy["cubical/homotopy"]
+    cubical_store["cubical/store"]
+    semiring_graph["semiring/graph"]
+    semiring_spline["semiring/spline"]
+    semiring_cat["semiring/cat"]
+    topos["topos"]
+    scheme["scheme"]
+    cmd_metatheory["cmd/metatheory"]
+    discovery_kernel["conjecture/kernel"]
+    cmd_ualg["cmd/ualg"]
+  end
+  subgraph L4["Package layer 4"]
+    semiring_app["semiring/app"]
+    condensed["condensed"]
+    semiring_par_host["semiring/par_host"]
+    accel["accel"]
+  end
+  subgraph L5["Package layer 5"]
+    cubical_autonomy["cubical/autonomy"]
+    conjecture["conjecture"]
+    cmd_semiringreport["cmd/semiringreport"]
+  end
+  subgraph L6["Package layer 6"]
+    cubical_structures["cubical/structures"]
+  end
+  subgraph L7["Package layer 7"]
+    root["."]
+  end
+  subgraph L8["Package layer 8"]
+    cmd_main["cmd/main"]
+    bridge["bridge"]
+  end
+  subgraph L9["Package layer 9"]
+    cmd_showcase["cmd/showcase"]
+  end
+  gcd --> algebra_core
+  accel_swar --> algebra_core
+  gcd --> algebra
+  algebra_core --> algebra
+  cubical_face_bdd --> cubical_finite
+  cubical_face_bdd --> cubical_hermitian
+  cubical_finite --> cubical_hermitian
+  algebra --> cubical_hermitian
+  cubical_face_bdd --> cubical_kernel
+  cubical_finite --> cubical_kernel
+  accel_swar --> cubical_elaborator
+  cubical_kernel --> cubical_elaborator
+  gcd --> cubical_homotopy
+  algebra_core --> cubical_homotopy
+  cubical_face_bdd --> cubical_homotopy
+  cubical_finite --> cubical_homotopy
+  cubical_kernel --> cubical_homotopy
+  gcd --> cubical_store
+  cubical_face_bdd --> cubical_store
+  cubical_kernel --> cubical_store
+  gcd --> cubical_autonomy
+  cubical_face_bdd --> cubical_autonomy
+  cubical_kernel --> cubical_autonomy
+  cubical_elaborator --> cubical_autonomy
+  cubical_homotopy --> cubical_autonomy
+  symlib --> cubical_autonomy
+  topos --> cubical_autonomy
+  accel --> cubical_autonomy
+  gcd --> cubical_structures
+  cubical_face_bdd --> cubical_structures
+  cubical_kernel --> cubical_structures
+  cubical_elaborator --> cubical_structures
+  cubical_homotopy --> cubical_structures
+  cubical_autonomy --> cubical_structures
+  symlib --> cubical_structures
+  topos --> cubical_structures
+  accel --> cubical_structures
+  gcd --> root
+  algebra --> root
+  hostfs --> root
+  condensed --> root
+  cubical_face_bdd --> root
+  cubical_finite --> root
+  cubical_hermitian --> root
+  cubical_kernel --> root
+  cubical_elaborator --> root
+  cubical_homotopy --> root
+  cubical_store --> root
+  cubical_autonomy --> root
+  cubical_structures --> root
+  root --> cmd_main
+  symlib_core --> symlib
+  symlib --> cmd_symdemo
+  symlib --> cmd_symbench
+  semiring_algebra --> semiring_matrix
+  semiring_par --> semiring_matrix
+  accel_swar --> semiring_matrix
+  semiring_algebra --> semiring_monoid
+  semiring_algebra --> semiring_graph
+  semiring_matrix --> semiring_graph
+  semiring_monoid --> semiring_spline
+  semiring_algebra --> semiring_trop
+  semiring_algebra --> semiring_cat
+  semiring_matrix --> semiring_cat
+  semiring_algebra --> semiring_app
+  semiring_matrix --> semiring_app
+  semiring_sim --> semiring_app
+  semiring_trop --> semiring_app
+  semiring_graph --> semiring_app
+  semiring_bp --> semiring_app
+  semiring_nf --> semiring_app
+  semiring_algebra --> semiring_bp
+  semiring_algebra --> semiring_io
+  gcd --> topos
+  algebra_core --> topos
+  symlib --> topos
+  topos_site --> topos
+  gcd --> scheme
+  accel_swar --> scheme
+  algebra --> scheme
+  condensed_core --> condensed
+  gcd --> condensed
+  algebra_core --> condensed
+  symlib --> condensed
+  semiring_trop --> condensed
+  topos --> condensed
+  scheme --> condensed
+  gcd --> tensor
+  accel_swar --> tensor
+  gcd --> conjecture
+  algebra_core --> conjecture
+  symlib --> conjecture
+  semiring_trop --> conjecture
+  scheme --> conjecture
+  condensed --> conjecture
+  tensor --> conjecture
+  discovery_kernel --> conjecture
+  gcd --> bridge
+  root --> bridge
+  algebra --> bridge
+  symlib --> bridge
+  semiring_algebra --> bridge
+  semiring_graph --> bridge
+  semiring_matrix --> bridge
+  semiring_trop --> bridge
+  semiring_cat --> bridge
+  semiring_nf --> bridge
+  topos --> bridge
+  scheme --> bridge
+  condensed --> bridge
+  tensor --> bridge
+  conjecture --> bridge
+  accel --> bridge
+  cubical_structures --> bridge
+  accel_swar --> bridge
+  topos_site --> bridge
+  discovery_kernel --> bridge
+  meta_core --> bridge
+  meta_instances --> bridge
+  meta_iit --> bridge
+  meta_reflect --> bridge
+  cubical_face_bdd --> bridge
+  ualg_core --> bridge
+  ualg_site --> bridge
+  ualg_demorgan --> bridge
+  ualg_cube --> bridge
+  cubical_kernel --> bridge
+  bridge --> cmd_showcase
+  semiring_graph --> cmd_showcase
+  symlib --> cmd_showcase
+  root --> cmd_showcase
+  semiring_par --> semiring_par_host
+  semiring_algebra --> cmd_semiringreport
+  semiring_matrix --> cmd_semiringreport
+  semiring_monoid --> cmd_semiringreport
+  semiring_graph --> cmd_semiringreport
+  semiring_spline --> cmd_semiringreport
+  semiring_ratelimit --> cmd_semiringreport
+  semiring_io --> cmd_semiringreport
+  semiring_sim --> cmd_semiringreport
+  semiring_par --> cmd_semiringreport
+  semiring_par_host --> cmd_semiringreport
+  semiring_trop --> cmd_semiringreport
+  semiring_nf --> cmd_semiringreport
+  semiring_cat --> cmd_semiringreport
+  semiring_app --> cmd_semiringreport
+  semiring_bp --> cmd_semiringreport
+  accel_swar --> accel
+  gcd --> accel
+  cubical_face_bdd --> accel
+  algebra_core --> accel
+  semiring_trop --> accel
+  tensor --> accel
+  meta_core --> meta_instances
+  meta_core --> meta_iit
+  meta_core --> meta_reflect
+  meta_instances --> meta_reflect
+  meta_core --> cmd_metatheory
+  meta_instances --> cmd_metatheory
+  meta_iit --> cmd_metatheory
+  meta_reflect --> cmd_metatheory
+  symlib --> topos_site
+  accel_swar --> topos_site
+  gcd --> discovery_kernel
+  accel_swar --> discovery_kernel
+  tensor --> discovery_kernel
+  gcd --> condensed_core
+  accel_swar --> condensed_core
+  ualg_core --> ualg_demorgan
+  ualg_site --> ualg_demorgan
+  ualg_core --> cmd_ualg
+  ualg_site --> cmd_ualg
+  ualg_demorgan --> cmd_ualg
+  ualg_cube --> cmd_ualg
+  ualg_core --> ualg_cube
+  ualg_site --> ualg_cube
+  ualg_demorgan --> ualg_cube

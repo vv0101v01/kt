@@ -1,7 +1,7 @@
-# `condensed/` — X 形交疊樞紐：凝聚數學、固態／液態模、Steenrod–Adams、持久不變量賬本
+# `condensed/` — 有限模型整合：凝聚數學、固態／液態模、Steenrod–Adams、持久不變量賬本
 
-> **架構位置**：`architecture.json` 中的 `condensed`（**Layer 4**，依賴 `L1 condensed/core` 並透過 `reexport_core.mbt` 100% 重導出，聯同 `gcd`、`algebra-core`、`symlib`、`semiring-trop`、`topos`、`scheme`）—— 它是全倉**唯一同時匯入五個聯邦**的套件，因此正是雙 V 形架構中的 **X 形交疊樞紐（X-pivot）**。
-> 聯邦歸屬：**F6**（第六聯邦：`gcd` + `condensed/core` + `condensed`，共 **3 套件、8 個 `.mbt`、5,059 行**）。
+> **架構位置**：`architecture.json` 中的 `condensed`（**Layer 4**，依賴 `L1 condensed/core` 並透過 `reexport_core.mbt` 100% 重導出，聯同 `gcd`、`algebra-core`、`symlib`、`semiring-trop`、`topos`、`scheme`）—— 跨領域整合不等於已構造交換圖；舊 X-pivot 只是架構比喻。
+> 聯邦歸屬：**F6**（第六聯邦：`gcd` + `condensed/core` + `condensed`，共 **3 套件**；現行檔數／行數見[生成架構清單](../docs/FEDERATION_ARCHITECTURE.md)）。
 > MoonBit 套件名：`vv0101v01/cubical-hermitian/condensed`（純同調／Nöbeling／64× `@swar` Steenrod–Adams 輕核見 [`condensed/core/README.md`](core/README.md)）。
 
 ---
@@ -15,7 +15,7 @@
 | ① | `CondAnima` | 凝聚 Postnikov–Kan 有限同倫棧：逐層 `ℤ`-同倫秩 + 整數 bonding 矩陣；`p`-進 solenoid 的 `lim¹` 幽靈障礙 |
 | ② | `CondSolidModule` | 固態凝聚模 `M^■`：離散 vs 緊緻的固態間隙、Mittag-Leffler ⇒ `Ext^{i>0}=0`、么半張量 `ℤ[S]^■ ⊗^■ ℤ[T]^■ ≅ ℤ[S×T]^■`、`p`-液態範數次可加性 `0 < p ≤ 1` |
 | ③ | `CondSpectralSheaf` | 凝聚譜層：Grothendieck Čech 扭曲黏合障礙 `k¹ − r⁰` ＋ 扭曲 AHSS `d₃ = Sq³ + H·u(-)` |
-| ④ | `CondAnalyticStack` | Huber–Zariski 雙極解析棧 `Spa(A, A⁺)`：非阿基米德熱帶折點 ＋ `ℙ¹` 真性 ＋ 阿基米德精確有理跡／範數界 ＋ 固態 `ℤ_p` 完備化 |
+| ④ | `CondAnalyticStack` | 舊名保留的有限模型健康報告；包含熱帶、P¹ 真性、有限 Laurent Čech 與 atomic BS2 的獨立檢查，**不是**已構造的 analytic stack |
 
 外加兩個**範疇**（`CondCategory`、`CanonElimCategory`）、一份**雜湊鏈持久不變量賬本**（`CondInvariantLedger`）與**一項已否證猜想**（`Conj-2`）。
 
@@ -74,7 +74,7 @@ pub(all) struct CondProfinite {
 | `SsPage` | 雙分次頁 `E_r^{p,q}`；`ss_page_dd_zero` 驗 `d_r ∘ d_r = 0`；`ss_page_next` 算 `E_{r+1} = ker(d_out)/im(d_in)`；`ss_total_by_degree` 給總次數維度 |
 | `serre_hopf_fibration_report` | Hopf 纖維化 `S¹ → S³ → S²`：`E₂^{p,q} = H^p(S²) ⊗ H^q(S¹)`，越化 `d₂ : E₂^{0,1} → E₂^{2,0}`（`×1`），收斂到 `H^*(S³) = [1,0,0,1]`；另有 `Sⁿ → S^{2n+1} → S^{n+1}` 與 Hurewicz `H₂(S²) = ℤ` |
 | `cond_steenrod_adem_pair(i,j)` | `[E-Adem]` 把 `Sq^i Sq^j` 展開為 `mod 2` 容許單項式 |
-| `adams_ext_f2_report` | 截斷 Steenrod 代數 `A_{≤d}` 的**最小自由分解** ⇒ `Ext_A^{s,t}(F₂,F₂)` 表；關鍵值 `Ext^{1,2} = 1`（`h₁ = η`）、`Ext^{2,3} = 0`（`h₀h₁ = 0`）⇒ **代數地認證 `2η = 0`** |
+| `adams_ext_f2_report` | 截斷 Steenrod 代數 `A_{≤d}` 的**最小自由分解** ⇒ `Ext_A^{s,t}(F₂,F₂)` 表；關鍵值 `Ext^{1,2} = 1`（`h₁ = η`）、`Ext^{2,3} = 0`（`h₀h₁ = 0`）；只有截斷 Ext 資料，**不能單憑它認證幾何 `2η = 0`** |
 | `koszul_tor_report(g, N)` | `K_*(F₂[x₁..x_g])`：`d² = 0` + 正同調度正合；古典 `Tor_i = C(g,i)`、雙邊截斷多項式環 `Tor_i = C(2g,i)` |
 
 **高階結構 ③ `CondSpectralSheaf`**
@@ -90,14 +90,14 @@ pub(all) struct CondAnalyticStack {
   ring_name : String
   tropical_bend_roots_count : Int32        // @strop.UniPoly 的熱帶折點數
   p1_proper_and_separated : Bool           // @scheme 的 ℙ¹ 賦值真判定
-  topos_laurent_site_valid : Bool          // @topos：U₊ ∪ U₋ 的 Laurent 有理覆蓋是景
+  topos_laurent_site_valid : Bool          // 舊名：實際只檢查 atomic BS2，不是 Laurent 景
   laurent_cech_exact : Bool                // Čech 正合（h⁰ = 1, h¹ = 0）
   archimedean_trace_rat : @exactalg.Rat    // 阿基米德跡／範數的精確有理界
   solid_completion_gap : Int32             // 固態 ℤ_p 完備化間隙
   bipolar_coherent : Bool
 }
 ```
-它是**唯一同時引用 `@strop`、`@scheme`、`@topos`、`@exactalg`、`@gcd` 的型別**，因此 `CondAnalyticStack` 本身就是 X 形交疊的「物證」。
+這個 record 合併多個獨立檢查，不構成 X 交換性或解析棧構造的證據。2026-11-14 已刪除把這些旗標當作橋定理的包裝。
 
 **範疇 ② `CanonElimCategory`（規範消元範疇）**
 * `CanonObject`：有限載體 + 顯式等價關係 `equiv[x·size + y]` + 規範化子 `canon[x]`（滿足 `[Ax-Canon-Idem]` 冪等與 `[Ax-Canon-Sound]` 完備）；
@@ -109,7 +109,7 @@ pub(all) struct CondAnalyticStack {
 pub(all) struct CondLedgerEntry { seq; kind; values; parents; prev_hash; hash }
 ```
 * `kind`：`0 = 觀測`、`1 = 導出定律`、`2 = 定理`；
-* `cond_ledger_append` 逐筆雜湊鏈（`prev_hash` 串接），`cond_ledger_verify` 從頭重算整條鏈 ⇒ **任何篡改都會被抓出來**；
+* `cond_ledger_append` 逐筆雜湊鏈（`prev_hash` 串接），`cond_ledger_verify` 從頭重算整條鏈 ；這是摘要一致性檢查，不是數學推論可靠性或抗碰撞密碼學保證；
 * `cond_ledger_derive_invariants` 由已驗證條目導出新不變量；`cond_ledger_audit_laws` 稽核全域定律。
 * `conjecture/evolution_lenses.mbt` 的五個認識論透鏡**直接寫入這個賬本**（見 `evaluate_five_epistemic_lenses_into_ledger`）。
 
@@ -201,3 +201,11 @@ moon run cmd/showcase --target wasm-gc    # 印出 47/47 證書與 F2×F3×F6 �
 * `cond_ledger_merkle_root` / `cond_ledger_inclusion_proof` / `cond_ledger_verify_inclusion`：`conjecture` 寫入賬本的定律現在可用 `O(log n)` 路徑個別驗證。
 
 `cond_check_federation_all()` 多了第四個合取項 `cond_check_hensel_merkle_laws()`。
+
+## 9. 2026-11-14：可重用的 P¹ Laurent Čech 維數
+
+`cond_p1_cech_dimensions(twist, cutoff) -> (Int32, Int32)?` 建造 `(a,b) ↦ b-a` 的有限 Laurent 差分矩陣，在 F₇ 上獨立求秩，產出 H⁰/H¹。域為 `0≤cutoff≤16` 且 `|twist|≤cutoff`；其他輸入回傳 `None`。
+
+對 n=-4..3、cutoff=4，結果依次 `(0,3),(0,2),(0,1),(0,0),(1,0),(2,0),(3,0),(4,0)`；cutoff=6 不變。`bridge` 的 K6-15 與 scheme 線叢引擎逐項比較，並驗 Serre/RR、proper≠acyclic。它不是 annulus 的 H⁰，亦不宣稱一般 p-adic 解析棧定理。`cond_analytic_stack_build` 的 Čech 欄位重用這個函式，`ring_name` 已改為真實有限模型標籤。`solid_completion_gap=0` 是舊相容常數，不是實際完成 solid Z_p 完備化的量測或證明。
+
+上文早期檔名／規模及理論敘述保留作閱讀背景；當前實體配置以 `architecture.json` 和生成架構清單為準。
