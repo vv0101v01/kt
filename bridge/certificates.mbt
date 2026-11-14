@@ -75,25 +75,39 @@ pub fn bridge_certificates(
   accel_precomputed~ : @accel.AccelFederationReport? = None,
   triad_precomputed~ : F8F5F1TriadBridgeReport? = None,
   frontier_precomputed~ : Frontier7PillarsPentadReport? = None,
+  on_stage~ : (String) -> Unit = _ => (),
+  on_certificate~ : (BridgeCertificate) -> Unit = _ => (),
 ) -> Array[BridgeCertificate] {
+  on_stage("native/base")
   let out = bridge_base_certificates()
+  for c in out {
+    on_certificate(c)
+  }
   for
     c in grand_unification_certificates(
       k7_precomputed~,
       federations_precomputed~,
+      on_stage~,
+      on_certificate~,
     ) {
     out.push(c)
   }
+  on_stage("hardware/static audit")
   out.push(
     accel_hardware_certificate(
       precomputed=accel_precomputed,
       triad_precomputed~,
     ),
   )
+  on_certificate(out[out.length() - 1])
+  on_stage("frontier/seven pillars")
   out.push(
     frontier_7pillars_bridge_certificate(precomputed=frontier_precomputed),
   )
+  on_certificate(out[out.length() - 1])
+  on_stage("auxiliary/native comparisons")
   for c in verify_bridge_auxiliary_theorems() {
+    on_certificate(c)
     out.push(c)
   }
   out
@@ -158,4 +172,21 @@ fn bridge_base_certificates() -> Array[BridgeCertificate] {
       face_semiring_law_report(),
     ),
   ]
+}
+
+///|
+// This observer wrapper never memoizes a proof outcome. The thunk is evaluated
+// exactly once between the start and result messages; exceptions remain errors.
+fn evaluate_bridge_certificate(
+  source : String,
+  name : String,
+  check : () -> Bool,
+  detail~ : String = "",
+  on_stage~ : (String) -> Unit,
+  on_certificate~ : (BridgeCertificate) -> Unit,
+) -> BridgeCertificate {
+  on_stage(source + ": " + name)
+  let cert = bridge_certificate(source, name, check(), detail~)
+  on_certificate(cert)
+  cert
 }

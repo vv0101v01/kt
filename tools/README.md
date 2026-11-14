@@ -6,6 +6,8 @@
 
 | 工具 | 用途 | 是否是閘門 |
 |---|---|---|
+| `run_pipeline.py` | 正式定理閉包的多行程平衡執行、串流事件及嚴格 coverage reducer；只讀時間 hints，不 cache proof | `--require-full` 為 CI 全量閘 |
+| `check_costs.json` | manifest hash 綁定的單次計時校準；不是驗證結果 | 否，只影響排程 |
 | `arch_check.py` | 檔案恰歸一個 component、package import exact-match、聯邦白名單、兩套分層、禁止常駐測試；附規模統計 | 是 |
 | `federation_docs.py` | 驗 45 歷史配對唯一性、active 生產入口存在、retired 實作已移除；生成 registry、SVG、完整層表、功能清單及離線 HTML | `--check` 是只讀漂移閘 |
 | `health_scan.py` | 靜態近似的遞移死碼／重複／空殼候選 | 否；不可僅憑 pub API 在倉內零引用就刪除 |
@@ -29,6 +31,16 @@ python3 tools/federation_docs.py --check
 # 健檢報告，不是自動刪除器
 python3 tools/health_scan.py > tools/health_report.md
 ```
+
+## 正式運算管線
+
+```bash
+moon build --target wasm-gc
+python3 tools/run_pipeline.py --jobs=2 --plan --jsonl
+python3 tools/run_pipeline.py --jobs=2 --require-full --jsonl
+```
+
+這是 **139 個已出貨 `check_*` 的運算入口**，不新增測試答案或 benchmark loop。1..8 個獨立 `moonrun`、預設 ≤2；預算及局部執行不能冒充全量成功。只保存成本 hints，不保存可重用的 true。所有選項、訊息契約、時間校準及記憶體限制見 [管線設計](../docs/PERFORMANCE_PIPELINE.md)。
 
 ## `arch_check.py`
 

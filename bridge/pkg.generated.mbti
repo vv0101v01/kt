@@ -36,7 +36,7 @@ pub fn bool_tuple_type(Int32) -> @finite.Ty
 
 pub fn bridge_certificate(String, String, Bool, detail? : String) -> BridgeCertificate
 
-pub fn bridge_certificates(k7_precomputed? : Array[FederationPairBridge]?, federations_precomputed? : Array[FederationDescriptor]?, accel_precomputed? : @accel.AccelFederationReport?, triad_precomputed? : F8F5F1TriadBridgeReport?, frontier_precomputed? : Frontier7PillarsPentadReport?) -> Array[BridgeCertificate]
+pub fn bridge_certificates(k7_precomputed? : Array[FederationPairBridge]?, federations_precomputed? : Array[FederationDescriptor]?, accel_precomputed? : @accel.AccelFederationReport?, triad_precomputed? : F8F5F1TriadBridgeReport?, frontier_precomputed? : Frontier7PillarsPentadReport?, on_stage? : (String) -> Unit, on_certificate? : (BridgeCertificate) -> Unit) -> Array[BridgeCertificate]
 
 pub fn bridge_edges_for_federations(Array[FederationPairBridge], Int32) -> Array[FederationPairBridge]
 
@@ -106,7 +106,7 @@ pub fn frontier_7pillars_bridge_certificate(precomputed? : Frontier7PillarsPenta
 
 pub fn glivenko_double_negation_formula(@site.GeoFormula) -> @site.GeoFormula
 
-pub fn grand_unification_certificates(k7_precomputed? : Array[FederationPairBridge]?, federations_precomputed? : Array[FederationDescriptor]?) -> Array[BridgeCertificate]
+pub fn grand_unification_certificates(k7_precomputed? : Array[FederationPairBridge]?, federations_precomputed? : Array[FederationDescriptor]?, on_stage? : (String) -> Unit, on_certificate? : (BridgeCertificate) -> Unit) -> Array[BridgeCertificate]
 
 pub fn graph_closure_snf_report(@vv0101v01/cubical-hermitian/symlib/core.Graph) -> GraphClosureSnfReport?
 

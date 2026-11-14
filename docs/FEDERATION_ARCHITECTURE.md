@@ -8,7 +8,7 @@
 2. **Component DAG**：同一實體 package 可以包含數個邏輯層，不能把 component L4 當成 package L4。
 3. **語義橋圖**：無向邊表示一個有界跨表示核驗，不是 import、網路連線、分散式節點，也不是無條件數學等價。按聯邦收縮 package 圖可出現雙向依賴，不能將其誤稱為聯邦 DAG。
 
-當前：**10 聯邦 + observer 頂點、57 packages、66 components、326 `.mbt` 檔、203,928 行**。
+當前：**10 聯邦 + observer 頂點、57 packages、66 components、327 `.mbt` 檔、204,558 行**。
 歷史 45 配對中 **39 active、6 retired**。這是 K₁₀ 的子圖，不是完全圖。
 
 ![聯邦橋圖](federation-graph.svg)
@@ -106,7 +106,7 @@ L0 有 7 個業務基礎套件；不是只得五個。`hostfs` 及部分 semirin
 | `cubical-structures` / `cubical/structures` | cubical | L6 / 10 | `gcd`, `cubical-face-bdd`, `cubical-kernel`, `cubical-elaborator`, `cubical-homotopy`, `cubical-autonomy`, `symlib`, `topos`, `accel` | 全體 54 項高階立方結構（Swan 常數範圍嚴格相等類型、自由路徑纖維化、65,536 個 4-立方體 Eilenberg–Zilber 分裂、仿射雙向與極性聚焦搜尋、多項式容器米田與結構恆等原則 SIP、覆蓋空間伽羅瓦對應、環面與實射影平面撓率、高階合一動機重構、擬陣邊界修補、內部計算反射）及 26 運算動詞 × 14 範疇組合交互圖譜。 |
 | `root` / `.` | cubical | L7 / 11 | `gcd`, `algebra`, `hostfs`, `condensed`, `cubical-face-bdd`, `cubical-finite`, `cubical-hermitian`, `cubical-kernel`, `cubical-elaborator`, `cubical-homotopy`, `cubical-store`, `cubical-autonomy`, `cubical-structures` | 極薄相容門面（重導出精選跨聯邦 @cub 入口）與可執行定理／定律登記總表。 |
 | `bridge` / `bridge` | unification | L8 / 13 | `gcd`, `root`, `algebra`, `symlib`, `semiring-algebra`, `semiring-graph`, `semiring-matrix`, `semiring-trop`, `semiring-cat`, `semiring-nf`, `topos`, `scheme`, `condensed`, `tensor`, `conjecture`, `accel`, `cubical-structures`, `accel-swar`, `topos-site`, `discovery-kernel`, `meta-core`, `meta-instances`, `meta-iit`, `meta-reflect`, `cubical-face-bdd`, `ualg-core`, `ualg-site`, `ualg-demorgan`, `ualg-cube`, `cubical-kernel` | 十聯邦觀察頂點：39 條 active 有界配對核驗、6 條已刪除；可重用結構轉換、精確註冊表驗收、邏輯翻譯與 18 項圖譜。底層聯邦不得反向匯入。 |
-| `cmd-main` / `cmd/main` | cubical | L8 / 12 | `root` | 印出定理登記表的執行入口。 |
+| `cmd-main` / `cmd/main` | cubical | L8 / 12 | `root` | 串流定理登記表，明示局部／全量覆蓋的執行入口。 |
 | `cmd-showcase` / `cmd/showcase` | unification | L9 / 14 | `bridge`, `semiring-graph`, `symlib`, `root` | 單次快照的 active 橋功能枚舉、原生證書與負控制；不執行已刪橋。 |
 
 ## 66 個邏輯元件按層排列

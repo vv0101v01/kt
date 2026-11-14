@@ -32,6 +32,10 @@ moon run cmd/showcase --target wasm-gc
 
 本輪不加 `--release`，沒有使用全倉 `moon test`。入口內的正式純函式負責定律與正反對照；臨時單包微測試遵從 `agent.md` 的「寫→跑→核對→刪」程序。
 
+## 定理訊息與平衡管線
+
+`main` 預設仍跑齊 139 項，但改為每項完成即輸出。`--list` 不計算，`--checks`／`--max-checks` 明列 partial／deferred；JSONL 提供 started/result/summary。日常多行程入口為 `python3 tools/run_pipeline.py --jobs=2 --require-full --jsonl`，只用時間估計作分派，所有定理仍重新計算。詳細契約見 [main](main/README.md)及[管線設計](../docs/PERFORMANCE_PIPELINE.md)。
+
 ## Showcase 的資料流
 
 `verify_k10_ten_federation_bridges()` 建一份 active 配對結果，精確 registry validator 驗 ID／端點／覆蓋／見證，然後子圖摘要、列印、ualg 邊及 6+7 替換均重用這份快照。原生／atlas 套件仍可能各自重做部分底層核驗，並非整個行程每個函式都只跑一次。

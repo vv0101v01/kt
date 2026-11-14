@@ -43,6 +43,10 @@ let k7_audit = @bridge.validate_bridge_registry(k7, federation_count=7)
 
 **安全邊界**：公開 `FederationPairBridge` 可以由呼叫者建造。validator 證明的是「覆蓋及報告形狀符合契約」，不是重新證明任意傳入的 `Bool`。`*_precomputed` 僅用於可信的同一行程重用；不要把它當不可信外部證書驗證器。
 
+### 證書觀測 API
+
+`bridge_certificates`／`grand_unification_certificates` 接受可選 `on_stage`、`on_certificate`：運算前標示階段、完成後逐筆輸出，同時仍返回原有完整陣列。這是 observer callback，不是結果 memoization；底層獨立檢核與失敗結果均保留。`cmd/showcase` 已接入，見 [管線設計](../docs/PERFORMANCE_PIPELINE.md)。
+
 ## 4. 本輪保留及提升的真構造
 
 ### K6-15：P¹ 線叢上同調

@@ -140,127 +140,175 @@ fn grand_unification_certificates_from_atlas(
   atlas : Array[GeometryLogicAtlasEntry],
   k7_precomputed~ : Array[FederationPairBridge]? = None,
   federations_precomputed~ : Array[FederationDescriptor]? = None,
+  on_stage~ : (String) -> Unit = _ => (),
+  on_certificate~ : (BridgeCertificate) -> Unit = _ => (),
 ) -> Array[BridgeCertificate] {
+  on_stage("grand/K7 snapshot")
   let k7 = match k7_precomputed {
     Some(es) => es
     None => verify_k7_federation_bridges()
   }
   let certs : Array[BridgeCertificate] = [
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/translation",
       "Glivenko ¬¬-Translation ↔ Dense Boolean Subtopos Sh_{¬¬}",
-      verify_glivenko_topos_subtopos_bridge(),
+      () => verify_glivenko_topos_subtopos_bridge(),
       detail="1 ⊭ P∨¬P in Sh(Sierpinski) while ⊨ ¬¬(P∨¬P) & Sh_{¬¬} Boolean",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/translation",
       "Zariski Classifying Topos Invariance vs Dual-Number Nilpotents",
-      bridge_holds_by_id(k7, "K5-10"),
+      () => bridge_holds_by_id(k7, "K5-10"),
       detail="B(T_Zar(X)) == B(T_Zar(X_red)) while |X(F_3[ε])|=4 > |X_red(F_3[ε])|=2",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/translation",
       "Quaternary Normal Forms (ROBDD ↔ Semiring ↔ Frobenius ↔ Gröbner)",
-      verify_quaternary_normal_forms(),
+      () => verify_quaternary_normal_forms(),
       detail="4-pillar canonical decision procedures coincide",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/translation",
       "Kapranov Tropical Bend Roots ↔ DVR Laurent Properness Valuation",
-      bridge_holds_by_id(k7, "K5-09"),
+      () => bridge_holds_by_id(k7, "K5-09"),
       detail="trop roots {-1, 2} match Q((t)) valuation jump & P^1 extension",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/round2",
       "Diaconescu Z/2Z-Torsors ↔ Quadratic Étale G_m Covers ↔ F_3⊂F_9 Frobenius Splitting",
-      verify_quadratic_etale_torsor_galois_bridge(),
+      () => verify_quadratic_etale_torsor_galois_bridge(),
       detail="Möbius torsor (Γ=0) ↔ (Ω^1_{B/A})_x=0 étale on G_m ↔ |Z(F_3)|=1 -> |Z(F_9)|=19",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/round2",
       "Open/Closed Subtopos Excision ↔ Blow-Up Strict-Transform Desingularization",
-      verify_excision_subtopos_blowup_bridge(),
+      () => verify_excision_subtopos_blowup_bridge(),
       detail="J_o∧J_c=J_triv & J_o∨J_c=J_⊥ (LEM=false) ↔ Bl_{(0,0)} resolves A_1 & A_2 cubics",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/k5",
       "K5-04: Exact Poly ↔ MPoly Ring Isomorphism & Stone–Zariski Face Duality",
-      bridge_holds_by_id(k7, "K5-04"),
+      () => bridge_holds_by_id(k7, "K5-04"),
       detail="dim_Q Q[x,y]/<x²+y²-1,x-y> = 2 = [Q(√2):Q]; Poly ↔ MPoly hom",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/k5",
       "K5-06: Grothendieck Galois S_3-Set ≃ Sh_at(BS_3)",
-      bridge_holds_by_id(k7, "K5-06"),
+      () => bridge_holds_by_id(k7, "K5-06"),
       detail="S_3 on 3²: Γ=0, |Hom(P,Δ2)|=4=2², atoms 3+6=9",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/k5",
       "K5-07: S_3 Scheme Automorphisms, Burnside F_p-Orbits & Vieta Étale Torsor",
-      bridge_holds_by_id(k7, "K5-07"),
+      () => bridge_holds_by_id(k7, "K5-07"),
       detail="H(F_3): 9 pts -> 4 S_3-orbits (fix=3); Vieta étale off V(x_0 - x_1)",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/k5",
       "K5-08: Boolean Matrix Kleene Star Fix(M*) ↔ Alexandroff Sieves Γ(1, Ω_J)",
-      bridge_holds_by_id(k7, "K5-08"),
+      () => bridge_holds_by_id(k7, "K5-08"),
       detail="|Fix(M*)| = |Γ(1, Ω)| = 6 -> |Γ(1, Ω_J)| = 5 under {1,2} ↠ 3",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/unification",
       "Five-Federation Pentagon Quadratic Galois–Étale Double-Cover Unification",
-      verify_five_federation_pentagon_unification(),
+      () => verify_five_federation_pentagon_unification(),
       detail="Bool ¬ ↔ Z/2Z G-Set ↔ C_4/C_2 Kleene ↔ Sh(S^1) Möbius ↔ Kummer w²=u (deg=2, Γ=0)",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "bridge/unification",
       "Six-Pillar S^1 / P^1 / P^2 / Galois / Gröbner Motivic Synthesis",
-      verify_six_pillar_circle_sphere_unification(),
+      () => verify_six_pillar_circle_sphere_unification(),
       detail="Cubical π_1(S^1)=Z ↔ Topos H^1(S^1,S_3)=3 ↔ Scheme ω_E=O_E & Gröbner h(P^1)=1⊕L",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "cubical/phase15",
       "Decomposed Optimal ROBDD (28 vars), Indexed LRAT + CHLRATBN & Strength-4 P¹(F₈) / Cubical Yoneda",
-      @cub.check_phase15_bdd_symmetry_orbit_and_decomposed_optimal() &&
-      @cub.check_phase15_cdcl_lrat_elaboration_and_binary_codec() &&
-      @cub.check_phase15_dcube_strength4_phf_and_yoneda_audit(),
+      () => {
+        @cub.check_phase15_bdd_symmetry_orbit_and_decomposed_optimal() &&
+        @cub.check_phase15_cdcl_lrat_elaboration_and_binary_codec() &&
+        @cub.check_phase15_dcube_strength4_phf_and_yoneda_audit()
+      },
       detail="28-var exact ROBDD (4 comps), linear-time LRAT + CHLRATBN v1, t=4 OA(P¹(F₈)) + Yoneda naturality",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "cubical/phase15",
       "Pointed Loop-Suspension Adjunction (ΣA →* B ≃ A →* ΩB) & Freudenthal π₁(S²)=π₁(S³)=1",
-      @cub.check_phase15_suspension_and_loop_suspension_adjunction() &&
-      @cub.equiv_bidirectional_certified(
-        @cub.pi1_susp_circle_equiv_unit_value(0),
-      ) &&
-      @cub.equiv_bidirectional_certified(
-        @cub.pi1_susp2_circle_equiv_unit_value(0),
-      ),
+      () => {
+        @cub.check_phase15_suspension_and_loop_suspension_adjunction() &&
+        @cub.equiv_bidirectional_certified(
+          @cub.pi1_susp_circle_equiv_unit_value(0),
+        ) &&
+        @cub.equiv_bidirectional_certified(
+          @cub.pi1_susp2_circle_equiv_unit_value(0),
+        )
+      },
       detail="Susp(Bool)≃S¹, open 5-var Σ⊣Ω DVEquiv & Freudenthal ‖Ω¹(Susp S¹)‖₀≃‖Ω¹(Susp² S¹)‖₀≃1",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "cubical/phase16",
       "Large-Universe & Open Dybjer–Setzer Simultaneous IR, Container Positivity, DSATUR & Glued S¹/T² Comp",
-      @cub.check_phase16_schema_large_open_positivity() &&
-      @cub.check_phase16_dsatur_and_glued_cubical_comp(),
+      () => {
+        @cub.check_phase16_schema_large_open_positivity() &&
+        @cub.check_phase16_dsatur_and_glued_cubical_comp()
+      },
       detail="Joint Type_1 IR + 2-decoder open IR + anti-circular container iso; DSATUR max-clique + 0~1 glued S¹/T²",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "cubical/phase16",
       "FIPS SHA-256/512, RFC 8032 Ed25519 + CHARTSIG, Crash-Consistent WAL, Exact LLL/Van Hoeij & Q̄⊂ℂ Rouché",
-      @cub.check_phase16_crypto_ed25519_and_wal() &&
-      @exactalg.check_lll_lattice_and_van_hoeij_factor() &&
-      @exactalg.check_complex_algebraic_closure_rouche(),
+      () => {
+        @cub.check_phase16_crypto_ed25519_and_wal() &&
+        @exactalg.check_lll_lattice_and_van_hoeij_factor() &&
+        @exactalg.check_complex_algebraic_closure_rouche()
+      },
       detail="RFC 8032 §7.1 + WAL torn-tail rollback; Swinnerton-Dyer S₃/S₂·S₂ LLL factor + Q̄⊂ℂ Rouché field/Vieta",
+      on_stage~,
+      on_certificate~,
     ),
-    bridge_certificate(
+    evaluate_bridge_certificate(
       "cubical/phase16",
       "Fibration Loop Equiv, Open Hopf–Freudenthal Retraction, Stasheff K₅ 5-Cell, Lazy HOU & 3-Way Repo Merge",
-      @cub.check_phase16_sphere_homotopy_and_k5() &&
-      @cub.check_phase16_hou_stream_and_module_merge(),
+      () => {
+        @cub.check_phase16_sphere_homotopy_and_k5() &&
+        @cub.check_phase16_hou_stream_and_module_merge()
+      },
       detail="Ω¹(E_Hopf) fiber seq + open ∂_Hopf(σ_{S²}(p))≡p + K₅ 5-cell; Huet flex-flex graph/stream + DAG relink + LCA merge",
+      on_stage~,
+      on_certificate~,
     ),
   ]
+  on_stage("atlas/completed witnesses")
   for e in atlas {
     certs.push(
       bridge_certificate(
@@ -270,7 +318,9 @@ fn grand_unification_certificates_from_atlas(
         detail=e.quantitative_summary,
       ),
     )
+    on_certificate(certs[certs.length() - 1])
   }
+  on_stage("discovery/tensor")
   let tensor_ok = @tensor.tensor_check_federation_laws()
   certs.push(
     bridge_certificate(
@@ -280,6 +330,8 @@ fn grand_unification_certificates_from_atlas(
       detail="F_3 ranks=[1,128,4032,2400], Radon Plancherel+inv=true, Cl_d/T^2 gauge=true, [T-NC-Free]&[T-X-Site]=true",
     ),
   )
+  on_certificate(certs[certs.length() - 1])
+  on_stage("discovery/conjectures")
   let syn = @conjecture.synthesize_and_verify_conjecture_engine()
   certs.push(
     bridge_certificate(
@@ -289,6 +341,8 @@ fn grand_unification_certificates_from_atlas(
       detail="conjectures=\{syn.total_conjectures} (derived=\{syn.derived_and_transferred}, refined=\{syn.refuted_and_refined}), evolve=\{syn.evolution_families_passed}/6",
     ),
   )
+  on_certificate(certs[certs.length() - 1])
+  on_stage("discovery/K7 registry")
   let sp = verify_seven_federation_star_prism(
     k7_precomputed=Some(k7),
     federations_precomputed~,
@@ -301,6 +355,7 @@ fn grand_unification_certificates_from_atlas(
       detail="federations=\{sp.seven_federations_verified}/7, K7_bridges=\{sp.k7_bridges_verified}/17 active, lakatos_refinements=\{sp.lakatos_refinements_verified}",
     ),
   )
+  on_certificate(certs[certs.length() - 1])
   certs
 }
 
@@ -311,11 +366,16 @@ fn grand_unification_certificates_from_atlas(
 pub fn grand_unification_certificates(
   k7_precomputed~ : Array[FederationPairBridge]? = None,
   federations_precomputed~ : Array[FederationDescriptor]? = None,
+  on_stage~ : (String) -> Unit = _ => (),
+  on_certificate~ : (BridgeCertificate) -> Unit = _ => (),
 ) -> Array[BridgeCertificate] {
+  on_stage("atlas/build independent witnesses")
   grand_unification_certificates_from_atlas(
     build_fine_grained_geometry_logic_atlas(),
     k7_precomputed~,
     federations_precomputed~,
+    on_stage~,
+    on_certificate~,
   )
 }
 

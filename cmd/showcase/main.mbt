@@ -90,14 +90,17 @@ fn main {
     frontier_precomputed=Some(frontier),
     k7_precomputed=Some(k7),
     federations_precomputed=Some(f7),
+    on_stage=stage => println("[START] certificate stage: \{stage}"),
+    on_certificate=cert => {
+      let status = if cert.ok { "PASS" } else { "FAIL" }
+      println("[\{status}] \{cert.source}: \{cert.name}")
+      if cert.detail != "" {
+        println("        \{cert.detail}")
+      }
+    },
   )
   let mut atlas_passed = 0
   for cert in certs {
-    let status = if cert.ok { "PASS" } else { "FAIL" }
-    println("[\{status}] \{cert.source}: \{cert.name}")
-    if cert.detail != "" {
-      println("        \{cert.detail}")
-    }
     if cert.source == "atlas" && cert.ok {
       atlas_passed = atlas_passed + 1
     }

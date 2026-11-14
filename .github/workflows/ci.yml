@@ -15,8 +15,12 @@ jobs:
     name: MoonBit 驗證閘（check / build / 定律 / 定理 / 架構）
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-python@v5
         with:
@@ -58,8 +62,18 @@ jobs:
       - name: 第十聯邦定律總表（構造性泛代數 × 預層模板 × De Morgan 立方體，167 / 167）
         run: moon run cmd/ualg --target wasm-gc
 
-      - name: Cubical 定理總表（139 / 139）
-        run: moon run cmd/main --target wasm-gc
+      - name: Cubical 全量平衡管線（139 / 139；部分執行不能過閘）
+        run: |
+          set -o pipefail
+          python3 tools/run_pipeline.py --jobs=2 --require-full --jsonl | tee _build/pipeline.jsonl
+
+      - name: 保存管線進度及覆蓋證據
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-pipeline-events
+          path: _build/pipeline.jsonl
+          if-no-files-found: ignore
 
       - name: 聯邦驗收（39 active、6 retired、50 證書、15 checker laws）
         run: moon run cmd/showcase --target wasm-gc

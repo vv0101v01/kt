@@ -1,6 +1,6 @@
 # agent.v2 — 工程治理、即時驗證制度與架構重構總綱
 
-> **現行狀態（2026-11-14，取代下方舊日期的現況數字）**：正式工具鏈 `moonc v0.10.20+65efd5b93`；10 聯邦＋observer、57 套件、66 元件；39 active 配對、6 retired（實作已刪）、50 個原生／atlas／輔助證書。X 交換性及自動晉升管線已移除。最新生成層表／功能枚舉見 `docs/`；本次完整報告見文末 `2026-11-14-federation-audit`。舊章節是歷史截面，不能當成當前完全圖或未執行證明。
+> **現行狀態（2026-11-14，取代下方舊日期的現況數字）**：正式工具鏈 `moonc v0.10.20+65efd5b93`；10 聯邦＋observer、57 套件、66 元件；39 active 配對、6 retired（實作已刪）、50 個原生／atlas／輔助證書。X 交換性及自動晉升管線已移除。最新生成層表／功能枚舉見 `docs/`；橋審計報告見文末 `2026-11-14-federation-audit`；後續 BDD／LLL／訊息管線及實測見 `2026-11-14-performance-pipeline`。舊章節是歷史截面，不能當成當前完全圖或未執行證明。
 
 本文件為專案 **v2 唯一開發與架構治理規範**（v1 舊文檔已永久封存於 Git 標籤 `v1-final`，不再維護任何雙語附錄或手工符號鏡像表）。所有參與開發與重構的 Agent 必須遵守以下準則，以**穩健、零警告、零技術債堆積**為最高原則。
 
@@ -1199,3 +1199,110 @@ Total tests: 2, passed: 2, failed: 0.
 5. 靜態 health scanner：6,271 definitions，**40 個遞移零引用候選**（基線3）、0 空 enum／未引用型別、1 exact／4 near duplicate groups。拿掉 umbrella 呼叫會暴露更多原生 API 為候選；這是啟發式，不證明它們無用途，故沒有按零引用數批量刪除。報告已刷新，沒有聲稱 dead code 清零。
 6. 部分底層核驗仍重複；未做受控 warm/cold、多次交錯順序基準。下一步若量效能，需固定輸入／工具鏈／建置模式、另報重複次數及離散程度，不能由上表直接換算演算法加速。
 7. 未執行 Lean、實體 GPU、native/JS/wasm 後端全覆蓋或 `cmd/semiringreport` 基準；未推送，遠端 CI 未執行。CI 檔已加入 pin／drift gates，但遠端是否通過仍需真正觸發後核對。
+
+
+---
+
+<a id="2026-11-14-performance-pipeline"></a>
+## 2026-11-14：BDD／精確 LLL 重寫、訊息與平衡運算管線
+
+### 1. 改了甚麼（承接 federation audit）
+
+本次效能基線為已完成橋審計的 **`f21ebbcc9be143372066a5630452e8978c0fcf18`**，其 parent 是原始 `2d8f6866b44d01f291ab5ea07bfcc3732afdf652`。因此以下速度差**不是靠刪除先前的六條退役橋**得到的；before／after 都是 139 個定理檢核、39 active 配對及 50 個證書。
+
+- **`cubical/face_bdd/bdd_dag.mbt:1586–1830`**：新增 request-local 配對 restrict memo、generation-mark residual 去重，改寫 `bdd_dag_of_face_optimal_dp`。新增可省略的 `max_cofactor_entries`；預設 0 沿用 unlimited residual 儲存，正預算超限或負值非法均明示 `exact=false`。`descent_drup_dag_laws.mbt` 的正式 14 變數 law 保留雙路精確／全賦值核驗，再加 budget 回退負控制。
+- **`algebra/lll_van_hoeij_rouche.mbt:99–210`**：size reduction 只更新 mu prefix，相鄰 swap 以精確有理公式更新 mu／norm²；β=0 退化路徑仍全面重算。公開 API、整數 U、Lovász 條件及獨立 reducedness checker 不變。
+- **`verify.mbt:318–1101`**：139 個 eager `CheckResult` 改成惰性 `CheckTask` 閉包。原有名稱、表達式、登記次序全部保留。`run_all_checks` 保留收集 API；`print_report` 以同一 runner 逐項輸出。
+- **`check_pipeline.mbt`（214 行）**：完整輸入預驗、單次執行 callback、合作式 task 配額、completed／deferred IDs、`selected_all_passed` 與 `full_verified` 分離。正式 `check_pipeline_laws` 每次都執行 synthetic 正負控制，但不代替任何 domain check。
+- **`cmd/main/main.mbt`（178 行）／`moon.pkg`**：`--list`、`--checks`、`--max-checks`、`--progress`、`--jsonl`、明確退出碼；core env／string／json／bench 僅在入口觀測層。JSON encoder 跳脫名稱，單調時鐘微秒轉毫秒。
+- **`tools/run_pipeline.py`（308 行）／`check_costs.json`**：日常生產運算前端，不是另存答案的測試框架。manifest 綁定的純時間 hints、LPT 貪心分派、1..8 個獨立 moonrun（預設 ≤2）、嚴格事件／覆蓋 reducer、worker timeout／取消。沒有 cached Bool 或跳過慢檢核。`--require-full` 供 CI 拒絕 partial／plan-only。
+- **`bridge/{certificates,grand_unification}.mbt`／`cmd/showcase/main.mbt`**：可選 `on_stage`／`on_certificate`。重型證書在 check thunk 前發進度、完成後即輸出；輕量 native/base／auxiliary 按群組輸出。50 個原生／atlas／輔助證書及所有原來總閘保留。
+- **架構／文檔／CI**：registry component 登記新檔、補 CLI 責任描述；沒有新增業務 import 邊。重寫過期的 `cmd/main/README.md`，更新 root／cmd／bridge／algebra／face_bdd／tools 文檔，新增 `docs/PERFORMANCE_PIPELINE.md` 與機讀 `docs/performance-results.json`。CI pin 不變，Cubical 閘改用 `--jobs=2 --require-full --jsonl` 並上傳事件 artifact；checkout 不持久保存憑證，workflow token 限 contents:read。
+
+### 2. 為甚麼這樣改／保護的不變量
+
+最初單次 instrumented profile 只作定位：main 215.767852 s，check084 BDD 73.164 s（**含兩次** 14 變數 DP）、115 sphere/K₅ 46.691 s、108 bidirectional/pi₁ 29.632 s、114 exact algebra 23.659 s；showcase 78.550145 s，其中 certificates 77.741 s。再拆單次 LLL／Rouché 為 10.833／14.697 s。這些不是後文三輪比較的 baseline 樣本，也不拿來算局部加速比。
+
+- BDD 的 manager node 是 interned／固定 order；同一請求、同一變數可共享 paired restriction，而無需每次重配整個 memo。generation marks 避免 residual 集合反覆線性掃描。**沒有跨 manager／變數序／請求的全域 cache**。
+- LLL 的精確代數恒等式容許增量 GS；完整 `U*basis`、size reduction、Lovász 及獨立重算驗證均留下，不引入浮點，也不略過任何 kernel 檢查。
+- pipeline 的清單／排程只含 thunk 和成本，不含可重用的證明結果。先驗整個請求才開始運算，避免前面已執行、後面才發現重複或非法 ID。
+- 成功的 subset 不是成功的全集；deferred／失敗／缺訊息／崩潰／timeout 不能被空集合真值掩蓋。CI 只有精確覆蓋所有 manifest IDs 才接受。
+- 保留 kernel 的 fresh open map／section／retraction endpoint 及 fresh-dimension body 獨立核驗。未為速度改寫這個高信任邊界；剩餘主要慢項由 bounded worker 隔離及平衡，不以 cached true 繞過。
+
+### 3. 如何驗證（全部已實跑）
+
+#### 3.1 工具鏈、靜態閘與公開 API
+
+固定正式 `moonc v0.10.20+65efd5b93`、moon／moonrun `0.1.20261104 (940aa18)`，不是 nightly。`moon info → moon fmt → gen_laws.py → federation_docs.py → check/build` 通過；deny-warn **0 warnings／0 errors**。保留前次確認的 formatter／gen_laws 順序，不聲稱兩者單獨已完全一致。
+
+```text
+Finished. moon: ran 72 tasks, now up to date
+architecture ok: 10 federations + unification apex, 57 packages, 66 components, 327 .mbt files, 204558 .mbt lines
+federation inventory ok: 39 active, 6 retired; 57 packages; fresh
+total law functions: 104
+```
+
+`.mbti` 人工檢視只有 **3 個預期快照**：face_bdd 增加 optional residual budget；bridge 兩個既有函式增加 optional callbacks；root 新增 3 個 pipeline entry points 及純資料 report。**algebra 及 kernel 公開 API 無變化**；私有 `CheckTask` 未外露。沒有新的測試 import／殘留頂層 test／測試檔。
+
+139 筆原始與閉包表達式另以逐筆抽取對照：名稱／次序／表達式完全相同，normalized-expression SHA-256 `748b83b721d847c88acb650bb2f03846ff079806efb3b328788ce482d459df20`。這不是以自身結果代替數學 oracle，而是證明登記改寫沒有刪改呼叫。
+
+#### 3.2 檔尾局部核驗與負控制
+
+MoonBit 每項均在**所改檔案底部**暫時加入，單包 update→檢視數字／獨立 oracle→不帶 update 重跑 **1/1 passed**，隨即在 finally 刪除。BDD 預算比較最後改為防溢位減法後，再完整重跑一遍同樣通過。
+
+| 位置 | 已核對的值／獨立路徑 |
+|---|---|
+| face_bdd | `(256, 14, 114688, false)`；全 256 個三變數真值表的 paired cache 對公開 restrict、DP 對 factorial 最佳序；14 變數 exact 最小14節點、114688 transitions。exact 及 budget=1 非精確回退各驗全部16384賦值；16／17變數、node cap、負 budget 控制 |
+| algebra | `(32, 630, 434)`；舊版每步完整 GS oracle 對新版 32 個有理 2..5-row bases：reduced basis、整數 U、reductions／swaps 相同；逐元素重建 `U*basis`。空／單row／dependent 負例及 Van Hoeij 正式 law |
+| root pipeline | `(139, 139, [2, -2, 1, -1], false)`；manifest 零定理運算、0配額全數deferred、start/result順序、無效ID／重複／空選取拒絕；partial不能full |
+| bridge observer | `(6, [false, true])`；兩次 check 均在 start 和 result 之間實際執行，false 不被改為 true |
+| cmd/main parser | `[Some(0), Some(139), Some(-1), Some(2147483647), None, None, None]`；malformed／Int32 overflow 拒絕，範圍另由入口驗 |
+
+Python 運算前端也只在被改檔案底部暫加局部核驗後立即刪除：**264 個分派案例**保 coverage／唯一性／決定性；已知 `[8,7,6,5]` 分兩組為 `[13,13]`。**36 個負控制全部拒絕**：非法選取、duplicate JSON key、NaN／Infinity、stale／bool／負／未知成本、缺start／漏／重複／錯標籤訊息、錯摘要、非零退出、硬 timeout。正常完整 stream 被接受。
+
+最後防呆檢視把 compatibility `run_all_checks` 的內部協定失敗改為 **abort**，不返回可能被外部 `all([])` 誤判的空陣列。於 `verify.mbt` 檔尾作 fault injection：令 protocol guard 拒絕時確實非零退出，stack 指向 `verify.mbt:1083` 的 abort 分支（測試 driver 只顯示 Error／stack，不會印 abort 字串；初稿文字比對預期因此修正）；還原後 snapshot **`(139, true)`**、non-update **1/1 passed**，注入及 test 隨即刪除。這個收集 wrapper 不在兩個受測 CLI 的連結路徑；正常重建後 main／showcase **artifact SHA-256 仍與三輪基準逐位元相同**，故不以改版後未測 artifact 冒稱已量測。
+
+另實跑 **22 個 CLI 邊界探針**：12 個 MoonBit 非法請求＋7 個 host 非法請求皆 exit2、在第一個 started 前拒絕；3 個零配額／subset／deferred 正例保持 full_verified=false。沒有把局部成功的 exit0 當成全量通過。
+
+開發失敗如實記錄：首次細分 profiler 錯把 algebra check 放在 root alias，build 報 value not found，改用 algebra import 後才量測；CLI 初稿 `try?` 已被 stable 移除，依 compiler 改成 `try Some(...) catch`，StringView 改 `to_owned`；`CheckTask` 的 missing_priv 警告改為私有。所有失敗後均重跑 deny-warn，沒有降級或放寬閘門。
+
+#### 3.3 四個生產入口與完整覆蓋
+
+- `moon run cmd/metatheory --target wasm-gc`：**631/631**、exit0，9.782646 s（單次含入口建置檢查，不作加速比較）。
+- `moon run cmd/ualg --target wasm-gc`：**167/167**、exit0，6.308961 s（同上）。
+- 預先正常 build 後，`moonrun main-optimized.wasm` 三輪都是 **139/139**、exit0；與 before 的三輪完整 stdout **逐位元相同**（SHA-256 `6c8db7f6ddc5dd41114f2f05c28e58046b8bb1f9751ad562ef651119d2e071eb`）。
+- 同一 optimized artifact 經 **2-worker pipeline 三輪**全部139個唯一結果、passed139、deferred空、worker_errors空、full_verified=true；語義結果集合與 serial／before 相同。
+- `moonrun showcase-optimized.wasm` 三輪均 **39 active／50證書／18 atlas／15 checker laws／6 retired／Ualg9／替換6+7**、exit0、無FAIL；去除新增 `[START]` 行後，六次 before／after 的整份內容相同。
+- 因此正式比較共 **15 個完整運算行程／管線批次全部驗證成功**。沒有減少單一任務內的獨立數學對照。
+
+#### 3.4 三輪受控比較：排除 build，保留啟動／JIT／輸出
+
+Linux x86_64、**2 logical CPU** 沙盒；固定工具鏈／相同已建 debug Wasm；fresh moonrun 行程，沒有丟棄首輪、沒有清除 OS cache。每輪交錯 before／after／雙worker，沒有其他本地重工作並跑；主機本身仍可能有環境波動。n=3 不是大樣本統計或跨機器保證。
+
+| 完整工作負載／模式 | 三次秒數（按該模式輪次） | median s | min–max s |
+|---|---|---:|---|
+| Main before，單行程 | 229.799641 / 244.708431 / 240.238522 | **240.238522** | 229.799641–244.708431 |
+| Main after，單行程 | 129.767426 / 147.563874 / 138.205016 | **138.205016** | 129.767426–147.563874 |
+| Main after，2 workers | 73.799101 / 83.916146 / 76.989333 | **76.989333** | 73.799101–83.916146 |
+| Showcase before，單行程 | 86.150304 / 91.951304 / 92.086328 | **91.951304** | 86.150304–92.086328 |
+| Showcase after，單行程 | 64.658652 / 66.234882 / 68.796984 | **66.234882** | 64.658652–68.796984 |
+
+按 median 比較：
+
+- **Main 單行程：wall time 減少42.47%，1.74×。**
+- **Main 新版雙worker對舊版單行程：wall time 減少67.95%，3.12×。** 這包含演算法及並行收益，不冒充純演算法加速；也不宣稱總CPU work降低同一比例。
+- **Showcase：wall time 減少27.97%，1.39×。**
+- Main 首訊息 median **240.220337 s → 0.034777 s**，after 範圍 0.030643–0.046323 s。指首個輸出，**不是全量完成只需35ms**；真正完成時間見表。
+
+排程 hints 取自先前單次新版串行校準：兩個預測 batch 約69.795／69.795 s；它們不是這三輪的完成時間。成本 hint 只影響排程，不會復用該次139個true。新版本仍有顯著 homotopy 熱點，不能聲稱每個演算法都已變快。
+
+原始環境／artifact SHA-256、全部 stdout、逐輪秒數／首輸出、局部測試原文與實跑 log 在相鄰工作區 `perf-evidence/`；公開機讀摘要在 `docs/performance-results.json`。一次性 benchmark／profiler 不放進 repo；生產運算工具只負責規劃／執行／嚴格彙總。
+
+### 4. 界線與本地實作提交時的交付狀態
+
+1. BDD 的正預算只限制已保存的 cofactor residual IDs，**不限制 manager／restrict cache／短暫配對／全請求 RAM**；預設0也不是記憶體安全的無限輸入契約。n≤16 的 exact DP 上限保留。
+2. LLL 還是矩形、線性獨立 row basis 的契約；β=0 fallback 不等於已解決任意 dependent／ragged／病態 delta 的總正確性或終止性。
+3. 單一慢檢核不可搶占分割；max_checks 是 task 配額，host timeout 是失敗而非可恢復證明 checkpoint。更多 worker 增加記憶體／JIT 成本，2-worker 測量不能外推8-worker線性加速。
+4. 公開 report／callback／precomputed records 是可信行程內資料，不是防偽證明。負控制驗的是實作協定及既有獨立路徑，不能對任意不可信 native program 的輸出建立數學可靠性。
+5. 本次沒有改 kernel conversion、open homotopy 證書邊界，未執行 native／release／JS／實體GPU／Lean kernel。104 個 meta law 函式不變，沒有用樣本取代完整已列檢核。
+6. 此段寫入本地實作提交時，push／GitHub Actions 尚未執行；**遠端回執完成後另在本章追加具體 commit／run URL，不把 pending 當綠燈**。本次使用者已明確授權推送 `vv0101v01/kt`；不做 force push，不把憑證寫入倉庫／報告。

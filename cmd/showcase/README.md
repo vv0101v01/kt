@@ -22,6 +22,12 @@ moon run cmd/showcase --target wasm-gc
 
 X-Overlap、沒有可靠性傳輸的 promotion、Malcev/Presheaf/Autonomy 獨立旗標包裝已刪。不要再把舊的 `45/45` 或 `chiasm_commutes` 當成現行輸出。
 
+## 重型證書的即時出口
+
+`bridge_certificates` 的 `on_stage` 在重型運算前發出 `[START]`，`on_certificate` 在結果可用時即列印 PASS/FAIL 與見證；不必再等 50 個證書全部完成。grand 部分逐項包裝 check thunk，輕量 base／auxiliary 仍按群組計算。回傳的完整陣列仍供原來總閘核對 50 個證書及 18 atlas；callback 不會代替計算，也不 cache proof 結果。
+
+參數皆可省略，其他 API 呼叫者維持原有收集行為。[設計及測量限制](../../docs/PERFORMANCE_PIPELINE.md)明列尚未拆分的 homotopy 慢檢核。
+
 ## 快照與總閘
 
 ```text

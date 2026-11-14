@@ -6,6 +6,12 @@
 
 ---
 
+## 2026-11-14：精確 LLL 增量更新
+
+`qmat_lll_reduce` 不再於每次 size reduction／swap 全面重建 Gram–Schmidt：前者只更新 mu 的一個 prefix；後者使用精確有理相鄰交換公式，退化 β=0 保留完整重算。整數 U、精確 Lovász／size-reduction 判斷與 `qmat_is_lll_reduced` 的獨立 Gram–Schmidt 核驗均保留。公開 API 未變。
+
+已與舊版逐步重算 oracle 對照 32 個有理 basis，630 次 reductions／434 次 swaps，以及 `U*basis`／空與 dependent 負控制；臨時 oracle 隨測試刪除。仍要求矩形、線性獨立 row basis，不承諾任意損壞輸入。測量與邊界見 [管線設計](../docs/PERFORMANCE_PIPELINE.md)及 `agent.v2.md` 最新效能報告。
+
 ## 1. 定位：把「浮點近似」換成「可核驗的等式」
 
 `cubical/hermitian/complex.mbt` 用 `Double` 做複矩陣（快速、但有 `eps`）；本套件是它的**精確對偶**：

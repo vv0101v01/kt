@@ -388,8 +388,8 @@
       "depends_on": [
         "root"
       ],
-      "summary_en": "Executable theorem-registry report.",
-      "summary_zh": "印出定理登記表的執行入口。"
+      "summary_en": "Streaming theorem-registry report with explicit partial/full coverage.",
+      "summary_zh": "串流定理登記表，明示局部／全量覆蓋的執行入口。"
     },
     {
       "id": "symlib",
@@ -1155,13 +1155,14 @@
       "files": [
         "facade.mbt",
         "spec.mbt",
-        "verify.mbt"
+        "verify.mbt",
+        "check_pipeline.mbt"
       ],
       "depends_on": [
         "*"
       ],
-      "summary_en": "Specification/theorem registries and explicit cross-package import boundary.",
-      "summary_zh": "規格／定理登記表與明確的跨套件 import 邊界。"
+      "summary_en": "Specification/theorem registries, lazy check pipeline and explicit cross-package import boundary.",
+      "summary_zh": "規格／定理登記、惰性檢核管線與明確的跨套件 import 邊界。"
     },
     {
       "id": "app",
@@ -1173,8 +1174,8 @@
       "depends_on": [
         "registry"
       ],
-      "summary_en": "Executable entry point.",
-      "summary_zh": "執行入口。"
+      "summary_en": "Streaming theorem CLI with validated selection and coverage summaries.",
+      "summary_zh": "驗證選取／覆蓋範圍、串流輸出定理結果的 CLI。"
     },
     {
       "id": "symlib-core",

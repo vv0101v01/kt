@@ -41,7 +41,7 @@ pub fn bdd_dag_of_face_optimal(Face, Int32, exact_max_vars? : Int32, max_nodes? 
 
 pub fn bdd_dag_of_face_optimal_decomposed(Face, Int32, component_max_vars? : Int32, max_nodes? : Int32) -> BddDecomposedOptimalBuild
 
-pub fn bdd_dag_of_face_optimal_dp(Face, Int32, exact_max_vars? : Int32, max_nodes? : Int32) -> BddOptimalBuild
+pub fn bdd_dag_of_face_optimal_dp(Face, Int32, exact_max_vars? : Int32, max_nodes? : Int32, max_cofactor_entries? : Int32) -> BddOptimalBuild
 
 pub fn bdd_dag_of_face_optimal_pruned(Face, Int32, exact_max_vars? : Int32, max_nodes? : Int32) -> BddPrunedOptimalBuild
 

@@ -3,7 +3,7 @@
 > **套件**：`vv0101v01/cubical-hermitian/cubical/face_bdd` · **Layer 0** · 零依賴（只有 `moonbitlang/core/debug`）
 > **上游**：無（全倉最底層之一，與 `gcd/` 同層）
 > **被依賴**：`cubical-finite`、`cubical-hermitian`、`cubical-kernel`、`cubical-homotopy`、`cubical-store`、`accel`、`root`
-> **5 檔 6,209 行**
+> 精確檔案／行數由 [生成架構清單](../../docs/FEDERATION_ARCHITECTURE.md)維護；下表為功能索引，不作規模真實來源。
 
 ---
 
@@ -22,13 +22,14 @@
 
 ## 2. 檔案清單
 
-| 檔案 | 行數 | 內容 |
-|---|---:|---|
-| `interval.mbt` | 241 | De Morgan 區間 `Dim` 與面公式 `Face` 的語法、語義與基本定律 |
-| `bdd.mbt` | 429 | 樹狀 ROBDD：`Bdd`、`bdd_of_face`、布林運算、語義化簡與替換 |
-| `bdd_dag.mbt` | 2,495 | 可擴展主表示 `BddManager`（intern + apply 記憶化）、restrict/exists/forall、DNF 回寫、`#SAT`、變數序最佳化 |
-| `face_sat_watched.mbt` | 2,832 | Watched-literal DPLL / CDCL，含 DRUP、DRAT、LRAT 證明之產生與檢查 |
-| `bdd_cutwidth.mbt` | 212 | `[T-Frontier-ROBDD]` 有界樹寬前沿變數序 |
+| 檔案 | 內容 |
+|---|---|
+| `interval.mbt` | De Morgan 區間 `Dim` 與面公式 `Face` 的語法、語義與基本定律 |
+| `bdd.mbt` | 樹狀 ROBDD：`Bdd`、`bdd_of_face`、布林運算、語義化簡與替換 |
+| `bdd_dag.mbt` | 可擴展主表示 `BddManager`（intern + apply 記憶化）、restrict/exists/forall、DNF 回寫、`#SAT`、變數序最佳化 |
+| `face_sat_watched.mbt` | Watched-literal DPLL / CDCL，含 DRUP、DRAT、LRAT 證明之產生與檢查 |
+| `demorgan_cchm_swar.mbt` | De Morgan 格及 CCHM 面公式 SWAR 有限判定 |
+| `bdd_cutwidth.mbt` | `[T-Frontier-ROBDD]` 有界樹寬前沿變數序 |
 
 ---
 
@@ -61,7 +62,7 @@ pub(all) enum Face { FTop; FBot; FEq0(Dim); FEq1(Dim); FAnd(Face, Face); FOr(Fac
 
 ---
 
-## 5. `bdd_dag.mbt` — 生產用表示（2,495 行）
+## 5. `bdd_dag.mbt` — 生產用表示
 
 ```moonbit
 pub struct BddManager        // hash-consing：每個 (rank, low, high) 只存一份
@@ -72,15 +73,21 @@ pub(all) struct BddDagNode { rank; low; high }
 * **可逆**：`bdd_tree_of_dag`（DAG → 樹）、`bdd_dag_dnf_face`（→ 面的 DNF 語法）、`bdd_dag_witness`。
 * **判定**：`bdd_dag_face_eq`、`bdd_dag_face_le`、`bdd_dag_sat_face`、`bdd_dag_sat_count`（精確 `#SAT`）、`bdd_dag_eval`。
 * **量化**：`bdd_dag_restrict`、`bdd_dag_exists`、`bdd_dag_forall`。
-* **變數序**：`bdd_var_order_candidates`，以及四種建構策略 `bdd_dag_of_face_best` / `_optimized` / `_optimal` / `_optimal_dp` / `_optimal_pruned` / `_optimal_decomposed`（DP 與剪枝／分解）。
+* **變數序**：`bdd_var_order_candidates`，以及建構策略 `bdd_dag_of_face_best` / `_optimized` / `_optimal` / `_optimal_dp` / `_optimal_pruned` / `_optimal_decomposed`（DP 與剪枝／分解）。
 * **與 DPLL 的仲裁**：`face_eq_within_budget`、`face_sat_decide`、`face_eq_decide`。
 * 自檢：`check_bdd_dag_native_operations()`、`check_bdd_cost_optimizations()`。
+
+### 2026-11-14：精確 DP 的 request-local 工作區
+
+`bdd_dag_of_face_optimal_dp` 改為一次遞迴同時計算 false／true cofactor，按變數／node ID 記憶化，generation marks 去重；不再每個 restrict 重配整個 manager 大小的 memo。cache 不跨 manager／變數序／請求，沒有快取證明 Bool。
+
+新增 `max_cofactor_entries=0` 保持舊有 residual 儲存行為；正值超限、負值非法都明示 `exact=false` 回退。只限制已存 residual IDs，不是 manager／cache／暫存總 RAM 上限；n≤16／max_nodes 既有邊界保留。全 256 個三變數真值表對 factorial 最佳序與公開 restrict；14 變數精確／回退路徑各驗所有 16,384 賦值。實跑數字及限制見 [管線設計](../../docs/PERFORMANCE_PIPELINE.md)。
 
 **核心不變量**（全倉都靠它）：在**同一個 manager** 內，`root₁ == root₂` ⟺ `face₁ ≡ face₂`（面商語義相等）。
 
 ---
 
-## 6. `face_sat_watched.mbt` — CNF 與證明（2,832 行）
+## 6. `face_sat_watched.mbt` — CNF 與證明
 
 流程：`Face` + 原子內的維度式 → **Tseitin 擴展變數**轉 CNF → watched literals + saved phase + 衝突驅動變數活性搜索。
 

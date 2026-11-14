@@ -603,6 +603,12 @@ pub fn check_bdd_optimal_order_dp_extended() -> Bool {
   if !routed.exact || routed.size != dp14.size {
     return false
   }
+  let bounded = bdd_dag_of_face_optimal_dp(f14, 14, max_cofactor_entries=1)
+  if bounded.exact ||
+    !bounded.built.ok ||
+    !phase12_bdd_semantics_ok(f14, bounded.built, 14) {
+    return false
+  }
   let at_cap = bdd_dag_of_face_optimal_dp(FTop, 16)
   if !at_cap.exact {
     return false

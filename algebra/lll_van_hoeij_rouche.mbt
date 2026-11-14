@@ -145,9 +145,13 @@ pub fn qmat_lll_reduce(
           u[k][col] = u[k][col] - q * u[j][col]
         }
         reductions = reductions + 1
-        let (_, mu2, n2) = lll_compute_gram_schmidt(b)
-        mu = mu2
-        norm2 = n2
+        // Subtracting an earlier basis vector leaves every orthogonal vector
+        // and norm unchanged. Only this prefix of mu[k] changes; recomputing
+        // the complete Gram-Schmidt matrix here was the dominant overhead.
+        for l in 0..<j {
+          mu[k][l] = rat_sub(mu[k][l], rat_mul(q_rat, mu[j][l]))
+        }
+        mu[k][j] = rat_sub(mu[k][j], q_rat)
       }
       j = j - 1
     }
@@ -164,9 +168,34 @@ pub fn qmat_lll_reduce(
       u[k] = u[k - 1]
       u[k - 1] = tmp_u
       swaps = swaps + 1
-      let (_, mu2, n2) = lll_compute_gram_schmidt(b)
-      mu = mu2
-      norm2 = n2
+      // Exact adjacent-swap Gram-Schmidt update. There is no floating-point
+      // approximation and no skipped Lovasz or size-reduction check.
+      let nu = mu[k][k - 1]
+      let previous_norm = norm2[k - 1]
+      let current_norm = norm2[k]
+      let beta = rat_add(current_norm, rat_mul(rat_mul(nu, nu), previous_norm))
+      if rat_is_zero(beta) {
+        // Defensive compatibility for degenerate input; the advertised
+        // independent-row domain has beta > 0.
+        let (_, mu2, n2) = lll_compute_gram_schmidt(b)
+        mu = mu2
+        norm2 = n2
+      } else {
+        let new_nu = rat_div(rat_mul(nu, previous_norm), beta)
+        for l in 0..<(k - 1) {
+          let old = mu[k][l]
+          mu[k][l] = mu[k - 1][l]
+          mu[k - 1][l] = old
+        }
+        mu[k][k - 1] = new_nu
+        norm2[k - 1] = beta
+        norm2[k] = rat_div(rat_mul(previous_norm, current_norm), beta)
+        for i in (k + 1)..<r {
+          let old_ik = mu[i][k]
+          mu[i][k] = rat_sub(mu[i][k - 1], rat_mul(nu, old_ik))
+          mu[i][k - 1] = rat_add(old_ik, rat_mul(new_nu, mu[i][k]))
+        }
+      }
       k = if k - 1 > 1 { k - 1 } else { 1 }
     }
   }

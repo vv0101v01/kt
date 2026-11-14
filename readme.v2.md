@@ -35,7 +35,13 @@
 
 API 破壞性變更與替代用法見[遷移說明](docs/BRIDGE_MIGRATION.md)。
 
-## 四、重建與驗收
+## 四、訊息與運算管線
+
+root `check_pipeline.mbt` 把 139 條原有表達式包成可規劃的閉包；CLI → 預驗 → started/result → coverage summary。`tools/run_pipeline.py` 以時間 hints 做 bounded multi-process 平衡，不 cache 証明結果；BDD／精確 LLL 的工作區與增量重寫仍在原有底層 package。`showcase` 加階段／證書 callback；不新增業務 import 邊，不刪 kernel 獨立核驗。
+
+詳見 [PERFORMANCE_PIPELINE](docs/PERFORMANCE_PIPELINE.md)。CI 以 `--require-full` 拒絕任何部分成功冒充全量；測量結果及限制見 `agent.v2.md#2026-11-14-performance-pipeline`。
+
+## 五、重建與驗收
 
 工具鏈固定於 `.moonbit-version`：`0.10.20+65efd5b93`。官方 latest 通道、SHA-256 核對及新語法說明見[工具鏈文件](docs/MOONBIT_TOOLCHAIN.md)。
 

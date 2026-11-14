@@ -274,6 +274,10 @@ pub fn check_phase5_semantic_systems() -> Bool
 
 pub fn check_phase6_infrastructure() -> Bool
 
+pub fn check_pipeline_laws() -> Bool
+
+pub fn check_pipeline_manifest() -> Array[(Int32, String)]
+
 pub fn check_positivity_declarations() -> Bool
 
 pub fn check_projector() -> Bool
@@ -538,6 +542,8 @@ pub fn realign_hs_family_code_2d(@structures.HsCubicalFamily2D, Int32, Array[Int
 
 pub fn run_all_checks() -> Array[CheckResult]
 
+pub fn run_check_pipeline(selected? : Array[Int32]?, max_checks? : Int32, on_start? : (Int32, String) -> Unit, on_result? : (Int32, CheckResult) -> Unit) -> CheckPipelineReport?
+
 pub fn sample_terms() -> Array[@finite.Term]
 
 pub fn sample_vectors() -> Array[Array[@hermitian.Complex]]
@@ -625,6 +631,16 @@ pub fn wiring_wf(@finite.Wiring) -> Bool
 // Errors
 
 // Types and methods
+pub(all) struct CheckPipelineReport {
+  total_checks : Int32
+  requested_checks : Int32
+  completed_ids : Array[Int32]
+  results : Array[CheckResult]
+  deferred_ids : Array[Int32]
+  selected_all_passed : Bool
+  full_verified : Bool
+}
+
 pub(all) struct CheckResult {
   name : String
   ok : Bool

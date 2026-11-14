@@ -1580,6 +1580,60 @@ fn bdd_dp_push_unique(values : Array[Int32], value : Int32) -> Unit {
 }
 
 ///|
+// A request-local restriction workspace. Both cofactors share the traversal,
+// and results stay valid while this manager's fixed order / interned nodes stay
+// unchanged. Never reuse the workspace with another manager or variable.
+fn bdd_dp_restrict_pair(
+  m : BddManager,
+  id : Int32,
+  rank : Int32,
+  memo : Array[(Int32, Int32)],
+) -> (Int32, Int32) {
+  if id < 2 || m.exceeded {
+    return (id, id)
+  }
+  let node = m.nodes[id]
+  if node.rank > rank {
+    return (id, id)
+  }
+  if node.rank == rank {
+    return (node.lo, node.hi)
+  }
+  while memo.length() <= id {
+    memo.push((-1, -1))
+  }
+  if memo[id].0 >= 0 {
+    return memo[id]
+  }
+  let (lo0, lo1) = bdd_dp_restrict_pair(m, node.lo, rank, memo)
+  let (hi0, hi1) = bdd_dp_restrict_pair(m, node.hi, rank, memo)
+  let pair = (
+    bdd_dag_mk(m, node.rank, lo0, hi0),
+    bdd_dag_mk(m, node.rank, lo1, hi1),
+  )
+  memo[id] = pair
+  pair
+}
+
+///|
+// Generation marks avoid a quadratic linear-membership scan in every residual
+// set. Each interned node grows the mark table at most once for this request.
+fn bdd_dp_push_marked(
+  values : Array[Int32],
+  marks : Array[Int32],
+  generation : Int32,
+  id : Int32,
+) -> Unit {
+  while marks.length() <= id {
+    marks.push(0)
+  }
+  if marks[id] != generation {
+    marks[id] = generation
+    values.push(id)
+  }
+}
+
+///|
 /// Build a face's ROBDD under an optimal variable order by dynamic
 /// programming over subsets of variables already placed.  If `S` is
 /// a set of leading variables, the distinct cofactors obtained by
@@ -1597,14 +1651,17 @@ fn bdd_dp_push_unique(values : Array[Int32], value : Int32) -> Unit {
 /// exact for `n <= exact_max_vars` (capped at 16, because the
 /// `2^n` subset table and residual sets must remain finite);
 /// above that it falls back to the sifting optimizer with
-/// `exact=false`.  `tried` counts DP transitions evaluated.
+/// `exact=false`. `max_cofactor_entries=0` keeps the legacy unlimited residual
+/// budget; a positive value bounds stored residual IDs and falls back explicitly
+/// with `exact=false` when exhausted. `tried` counts DP transitions evaluated.
 pub fn bdd_dag_of_face_optimal_dp(
   f : Face,
   n : Int32,
   exact_max_vars~ : Int32 = 16,
   max_nodes~ : Int32 = 0,
+  max_cofactor_entries~ : Int32 = 0,
 ) -> BddOptimalBuild {
-  if n < 0 || n > exact_max_vars || n > 16 {
+  if n < 0 || n > exact_max_vars || n > 16 || max_cofactor_entries < 0 {
     let opt = bdd_dag_of_face_optimized(f, n, max_nodes~)
     return BddOptimalBuild::{
       built: opt.built,
@@ -1631,7 +1688,11 @@ pub fn bdd_dag_of_face_optimal_dp(
   // least variable `v` from a nonempty mask gives a numerically
   // smaller predecessor, and the set for the mask is the union of
   // the two restrictions of every predecessor cofactor at `v`.
+  let restriction_cache : Array[Array[(Int32, Int32)]] = Array::makei(n, _ => [])
+  let marks : Array[Int32] = []
   let cofactor_sets : Array[Array[Int32]] = []
+  let mut residual_entries = 1
+  let mut residual_budget_exceeded = false
   for mask in 0..<subset_count {
     if mask == 0 {
       cofactor_sets.push([root])
@@ -1649,12 +1710,30 @@ pub fn bdd_dag_of_face_optimal_dp(
     let previous = cofactor_sets[mask - (1 << chosen)]
     let roots : Array[Int32] = []
     for i in 0..<previous.length() {
-      bdd_dp_push_unique(roots, bdd_dag_restrict(m, previous[i], chosen, false))
-      bdd_dp_push_unique(roots, bdd_dag_restrict(m, previous[i], chosen, true))
+      let (lo, hi) = bdd_dp_restrict_pair(
+        m,
+        previous[i],
+        m.position[chosen],
+        restriction_cache[chosen],
+      )
+      bdd_dp_push_marked(roots, marks, mask, lo)
+      bdd_dp_push_marked(roots, marks, mask, hi)
+      if m.exceeded ||
+        (
+          max_cofactor_entries > 0 &&
+          roots.length() > max_cofactor_entries - residual_entries
+        ) {
+        residual_budget_exceeded = true
+        break
+      }
     }
+    if residual_budget_exceeded {
+      break
+    }
+    residual_entries = residual_entries + roots.length()
     cofactor_sets.push(roots)
   }
-  if m.exceeded {
+  if m.exceeded || residual_budget_exceeded {
     let opt = bdd_dag_of_face_optimized(f, n, max_nodes~)
     return BddOptimalBuild::{
       built: opt.built,

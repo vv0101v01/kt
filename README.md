@@ -21,6 +21,7 @@
 | 每一層住甚麼、57 包／66 元件、所有直接 import | [完整架構清單](docs/FEDERATION_ARCHITECTURE.md)／[實體 DAG](docs/package-dependencies.mmd) |
 | 每條橋產出甚麼、真正收益、輸入範圍及限制 | [39 active + 6 retired 功能枚舉](docs/BRIDGE_CATALOG.md) |
 | 刪除原因與破壞性 API 遷移 | [遷移說明](docs/BRIDGE_MIGRATION.md) |
+| 輸入→計算→輸出、平衡管線及 BDD／LLL 改寫 | [效能與管線設計](docs/PERFORMANCE_PIPELINE.md) |
 | 最新工具鏈、語法與重建 | [MoonBit 工具鏈](docs/MOONBIT_TOOLCHAIN.md) |
 | 模組入口及重用方式 | [`bridge/README.md`](bridge/README.md) |
 | 工程規則及本次實跑結果 | [`agent.md`](agent.md)／[`agent.v2.md`](agent.v2.md#2026-11-14-federation-audit) |
@@ -44,6 +45,17 @@ Package layer 和 component layer **是兩套座標**。實體 import 圖無環�
 3. **三項可重用產物。** Laurent Čech 矩陣維數、metric VR→Topos 神經轉換、圖 components→Boolean closure→整數 Laplacian SNF 對帳。對應橋核驗同一物件，不只比較無關旗標。
 4. **一份快照，多處使用。** `showcase` 只組裝一次 39 條配對快照；K6/K7/K9/K10 報告、列印及兩波替換清單重用該快照。張量 atlas 在三個 active 消費點共享，列印／總閘重用硬體與前沿報告。原生／圖譜套件仍可能各自重做部分底層核驗，並非全程零重複計算。
 5. **防止文檔再漂移。** `architecture.json` + `bridge/catalog.json` 生成執行註冊表、全局圖及文檔；`tools/federation_docs.py --check` 納入 CI。
+
+## 效能管線更新
+
+BDD 精確 DP 改用 request-local 配對 restrict cache／generation marks；精確 LLL 改用增量 Gram–Schmidt，保留獨立 checker。`cmd/main` 改成閉包登記與串流回報，可選 ID／合作式配額；host 以只含時間的 hints 平衡多個獨立 `moonrun`。**139 個原有檢核沒有刪除，局部通過不等於全量通過，沒有 cache 布林證明結果。**
+
+```bash
+moon build --target wasm-gc
+python3 tools/run_pipeline.py --jobs=2 --require-full --jsonl
+```
+
+`cmd/showcase` 亦逐階段／證書輸出進度，不再等整列重型證書完成才列印。[完整設計／邊界](docs/PERFORMANCE_PIPELINE.md)及[實跑報告](agent.v2.md#2026-11-14-performance-pipeline)分開說明演算法收益、排程收益與未驗後端。
 
 ## 安裝及驗證
 

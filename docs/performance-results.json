@@ -1,0 +1,118 @@
+{
+  "baseline_commit": "f21ebbcc9be143372066a5630452e8978c0fcf18",
+  "compiler_pin": "0.10.20+65efd5b93",
+  "target": "wasm-gc debug/default",
+  "logical_cpus": 2,
+  "method": "Three fresh-process runs per mode; interleaved order. Build excluded; startup/JIT/stdout included. No discarded warmup; OS caches not purged. No concurrent local work except intended jobs=2 workers. Performance is host-specific.",
+  "started_utc": "2026-11-14T14:16:33.179028+00:00",
+  "artifact_sha256": {
+    "main.wasm": "f0cf025cbab9adab6901b889a89af394b4dddbd34c546725c43312362fb75d1b",
+    "showcase.wasm": "fa99eac016f9b12b5c81230db45b52a8abb04e8b0b2b7b39a7619a206f06d20d",
+    "main-optimized.wasm": "0f743b22cf525decf076078ecafa4210ef9db8e2a3076d1bbc6e163c709c8328",
+    "showcase-optimized.wasm": "708785a6af9051ae1fc7b80e05908777f2361a3f0d157a0bd8df56f0208db26c"
+  },
+  "summary": {
+    "main": {
+      "before": {
+        "n": 3,
+        "samples_seconds": [
+          229.799641,
+          244.708431,
+          240.238522
+        ],
+        "median_seconds": 240.238522,
+        "min_seconds": 229.799641,
+        "max_seconds": 244.708431
+      },
+      "after": {
+        "n": 3,
+        "samples_seconds": [
+          129.767426,
+          147.563874,
+          138.205016
+        ],
+        "median_seconds": 138.205016,
+        "min_seconds": 129.767426,
+        "max_seconds": 147.563874,
+        "vs_before_speedup": 1.7382764312982677,
+        "vs_before_reduction_percent": 42.471750637893116
+      },
+      "balanced2": {
+        "n": 3,
+        "samples_seconds": [
+          73.799101,
+          83.916146,
+          76.989333
+        ],
+        "median_seconds": 76.989333,
+        "min_seconds": 73.799101,
+        "max_seconds": 83.916146,
+        "vs_before_speedup": 3.120413083719013,
+        "vs_before_reduction_percent": 67.95296093271837
+      }
+    },
+    "showcase": {
+      "before": {
+        "n": 3,
+        "samples_seconds": [
+          86.150304,
+          91.951304,
+          92.086328
+        ],
+        "median_seconds": 91.951304,
+        "min_seconds": 86.150304,
+        "max_seconds": 92.086328
+      },
+      "after": {
+        "n": 3,
+        "samples_seconds": [
+          64.658652,
+          66.234882,
+          68.796984
+        ],
+        "median_seconds": 66.234882,
+        "min_seconds": 64.658652,
+        "max_seconds": 68.796984,
+        "vs_before_speedup": 1.388261007243887,
+        "vs_before_reduction_percent": 27.967435894111947
+      }
+    }
+  },
+  "all_15_runs_exit_zero_and_coverage_verified": true,
+  "main_all_six_serial_stdout_identical": true,
+  "showcase_identical_except_start_events": true,
+  "main_first_output_seconds": {
+    "before": {
+      "samples": [
+        229.775185,
+        244.67927,
+        240.220337
+      ],
+      "median": 240.220337,
+      "min": 229.775185,
+      "max": 244.67927
+    },
+    "after": {
+      "samples": [
+        0.030643,
+        0.034777,
+        0.046323
+      ],
+      "median": 0.034777,
+      "min": 0.030643,
+      "max": 0.046323
+    },
+    "balanced2": {
+      "samples": [
+        0.090212,
+        0.101566,
+        0.091286
+      ],
+      "median": 0.091286,
+      "min": 0.090212,
+      "max": 0.101566
+    }
+  },
+  "benchmarked_moonbit_source_sha256": "51c91031f44653722bec20d1b98f72137ccb675c5aa73e823b42a043c452e075",
+  "post_benchmark_guard_review": "run_all_checks aborts on internal protocol rejection instead of returning an empty array. Fault injection rejected; both delivered executable SHA-256 values remain byte-identical to benchmarked artifacts."
+}
