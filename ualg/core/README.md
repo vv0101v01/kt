@@ -92,7 +92,7 @@ match v.term {
 
 ```
 Alg（運算表）─┬─ cg / con_lattice ──► 分割（代表元陣列）──► quotient ──► (Alg, 類標號)
-              ├─ free_algebra ──────► Closure ──► closure_to_alg / closure_term
+              ├─ free_algebra ──────► Closure ──► closure_term
               ├─ malcev_* ──────────► MalcevVerdict（項憑證 或 完整的 |R|）
               ├─ automorphisms ─────► 置換清單 ──► fixstab_polarity ──► closed_sets_next_closure
               └─ basic_translations ► 函數 ──► functional_charpoly ──► Array[BigInt]（低次在前）

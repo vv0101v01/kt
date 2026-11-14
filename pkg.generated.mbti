@@ -340,8 +340,6 @@ pub fn classify_finite_map_equivalences(Int32, Array[Int32]) -> @structures.Fini
 
 pub fn coherence_angle_elimination_report() -> @homotopy.CoherenceAngleEliminationReport
 
-pub fn coherence_quotient_summary(Int32, Int32) -> @homotopy.CoherenceQuotientSummary
-
 pub fn compute_hit2_homology(@structures.CubicalHit2Presentation) -> @structures.Hit2HomologySummary
 
 pub fn compute_integral_cellular_homology(@structures.IntegralCellularComplex) -> @structures.IntegralHomologyReport
@@ -666,8 +664,6 @@ pub using @structures {type BoundaryRepairStatus}
 pub using @hermitian {type CMat}
 
 pub using @homotopy {type CoherenceAngleEliminationReport}
-
-pub using @homotopy {type CoherenceQuotientSummary}
 
 pub using @hermitian {type Complex}
 

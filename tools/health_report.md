@@ -8,20 +8,26 @@
 
 | 項目 | 數量 |
 |---|---|
-| 掃描到的函式／方法定義 | 5810 |
-| 完全無引用函式／方法（遞移死碼候選） | 0 |
+| 掃描到的函式／方法定義 | 6271 |
+| 完全無引用函式／方法（遞移死碼候選） | 3 |
 | 完全無引用型別（`struct`/`enum`/`type`/`trait`） | 0 |
 | 空殼列舉（`enum Foo {}`） | 0 |
-| 完全相同或同包 α 等價函式體的重複組 | 0 |
+| 完全相同或同包 α 等價函式體的重複組 | 1 |
 | 結構極相近的重複組 | 4 |
 
 ## 1. 死碼候選（全倉零引用函式／方法／型別／空殼）
 
-（無）
+| 檔案 | 行 | 可見性 | 名稱 |
+|---|---|---|---|
+| `cubical/kernel/schema_open_ir.mbt` | 1181 | pub | `dopen_arg_external` |
+| `cubical/kernel/schema_open_ir.mbt` | 1191 | pub | `dopen_arg_decoded_val` |
+| `cubical/kernel/schema_open_ir.mbt` | 1287 | pub | `dopen_val_term` |
 
 ## 2. 完全相同或同包 α 等價的函式體
 
-（無）
+- 重複組（正規化長度 137）：
+  - `ualg/core/algebra.mbt:43` `show_ints`
+  - `ualg/site/poset.mbt:225` `show_ints`
 
 ## 3. 結構極相近（同一組識別字集合，疑似複製貼上）
 

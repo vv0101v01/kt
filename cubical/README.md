@@ -108,8 +108,8 @@
 | `dterm_transform.mbt` | 445 | `DTerm` 的結構操作：`dterm_shift`、`dterm_substitute`、`dterm_children`、`dterm_map_vars_at`、`dterm_dim_vars`、`d_nat_lit`/`dv_nat_lit` |
 | `dterm_intern.mbt` | 616 | **雜湊 consing**：`dterm_rebuild` 是 `dterm_children` 的**精確逆**；`DTermInternTable` 自底向上 intern，節點以「本地 stamp（以子節點 id 取代後的快取鍵）」為鍵；`dterm_dag_snapshot`／`dterm_dag_import`、`dterm_tree_node_count` vs `dterm_distinct_subterm_count` |
 | `nbe_dep.mbt` | **4,555** | 依賴 NbE 本體：`DValue`／`DNeutral`／`DThunk`（惰性）／`DEnv`／`DDimEnv`；`DSystem`/`DSystemNF`（第一匹配正規形）；`DInfer`/`DTypeVal` 的型別推導；`eval_*`／`infer_*`／`quote_*`／`conv_*` 四大族；`face_eval_env`、`dim_quote`、`fresh_dim`、`memo_dim_line` |
-| `checked_line.mbt` | 286 | **可替換語義型別線**：裸線是 `Dim → DValue`（可能不尊重維度替換）；`DCheckedTypeLine` 存 `DTerm` 本體 + 持久環境，在**一個新維度綁定子**下檢型 ⇒ `checked_line_at`、`checked_line_fn`、`checked_line_quote_body`、`checked_coe_value`、`checked_comp_value`、`dvalue_subst_dims`、`check_semantic_dimension_substitution` |
-| `conv_case_split.mbt` | 785 | **離散（Bool）情境的個案分裂轉換**：`if x then 0 else 0` 與 `0` 對中性 `x` **不可轉換**（語義比較是結構的），但 Bool 是離散型別 ⇒ 在 `x = true/false` 兩支都成立時才判定相等。`conv_terms_case_split`、`conv_difference_variables`、`cs_finite_closed_inhabitants`、`conv_terms_finite_case_split` |
+| `checked_line.mbt` | 286 | **可替換語義型別線**：裸線是 `Dim → DValue`（可能不尊重維度替換）；`DCheckedTypeLine` 存 `DTerm` 本體 + 持久環境，在**一個新維度綁定子**下檢型 ⇒ `checked_line_at`、`checked_line_fn`、`checked_line_quote_body`、`checked_coe_value`、`dvalue_subst_dims`、`check_semantic_dimension_substitution` |
+| `conv_case_split.mbt` | 785 | **離散（Bool）情境的個案分裂轉換**：`if x then 0 else 0` 與 `0` 對中性 `x` **不可轉換**（語義比較是結構的），但 Bool 是離散型別 ⇒ 在 `x = true/false` 兩支都成立時才判定相等。`conv_terms_case_split`、`conv_difference_variables`、`cs_finite_closed_inhabitants`、`conv_terms_finite_case_split_report` |
 
 ### 6.2 Kan 運算
 

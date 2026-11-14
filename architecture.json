@@ -115,8 +115,8 @@
         "accel:accel-swar",
         "symlib:symlib-core"
       ],
-      "summary_en": "Federation 6 (Lower-V GCD Base + X-Overlap Condensed Pivot) — Universal Elimination-GCD (`@gcd`), 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 4 Conjectures.",
-      "summary_zh": "第六聯邦（下V新最大公因數基底＋X形交疊凝聚樞紐） — 泛消元新最大公因數（`@gcd`）、凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與新猜想×4。"
+      "summary_en": "Federation 6 (Lower-V GCD Base + X-Overlap Condensed Pivot) — Universal Elimination-GCD (`@gcd`), 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 1 Refuted Conjecture.",
+      "summary_zh": "第六聯邦（下V新最大公因數基底＋X形交疊凝聚樞紐） — 泛消元新最大公因數（`@gcd`）、凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與已反駁猜想×1。"
     },
     {
       "id": "discovery",
@@ -136,8 +136,8 @@
         "accel:accel-swar",
         "topos:topos-site"
       ],
-      "summary_en": "Federation 7 (Multilinear Tensor Geometry & Lakatosian Conjecture Discovery Loop) — F_3 6,561-tensor Cayley hyperdeterminant & rank atlas, discrete Radon inversion, Clifford Ramond spinors & T^2 gauge moduli, non-crossing sheaves, Vietoris–Rips homology, 6 evolutionary transfer laws, 5 epistemic lenses, and 12 updated conjectures.",
-      "summary_zh": "第七聯邦（多線性張量場論與 Lakatos 猜想演化創造聯邦） — F_3 全體 6,561 張量超行列式與秩圖譜、有限平面離散 Radon 反演、Clifford 拉蒙旋量與 T² 規範模空間、非交叉森林層景、VR 持續同調、6 大演化轉移定律、5 大認識論透鏡與 12 項更新猜想。"
+      "summary_en": "Federation 7 (Multilinear Tensor Geometry & Lakatosian Conjecture Discovery Loop) — F_3 6,561-tensor Cayley hyperdeterminant & rank atlas, discrete Radon inversion, Clifford Ramond spinors & T^2 gauge moduli, non-crossing sheaves, Vietoris–Rips homology, 6 evolutionary transfer laws, 5 epistemic lenses, and 7 resolved conjectures.",
+      "summary_zh": "第七聯邦（多線性張量場論與 Lakatos 猜想演化創造聯邦） — F_3 全體 6,561 張量超行列式與秩圖譜、有限平面離散 Radon 反演、Clifford 拉蒙旋量與 T² 規範模空間、非交叉森林層景、VR 持續同調、6 大演化轉移定律、5 大認識論透鏡與 7 項已決猜想。"
     },
     {
       "id": "accel",
@@ -619,7 +619,7 @@
         "topos",
         "scheme"
       ],
-      "summary_en": "X-Overlap Condensed Mathematics Pivot: profinite towers, Milnor lim^1 CondAnima, Solid/p-Liquid modules, Steenrod–Adams Ext_A, Serre, Twisted AHSS CondSpectralSheaf, Huber–Tropical CondAnalyticStack, CondCategory, CanonElimCategory, Persistent Invariant Ledger, and 4 Conjectures.",
+      "summary_en": "X-Overlap Condensed Mathematics Pivot: profinite towers, Milnor lim^1 CondAnima, Solid/p-Liquid modules, Steenrod–Adams Ext_A, Serre, Twisted AHSS CondSpectralSheaf, Huber–Tropical CondAnalyticStack, CondCategory, CanonElimCategory, Persistent Invariant Ledger, and 1 Refuted Conjecture.",
       "summary_zh": "X形交疊凝聚數學樞紐：有限逆系塔、Milnor lim¹ 凝聚高階同倫棧 CondAnima、固態與 p-液態模 CondSolidModule、Steenrod–Adams Ext_A、Serre、扭曲 AHSS 凝聚譜層 CondSpectralSheaf、Huber–熱帶雙極解析棧 CondAnalyticStack、CondCategory、CanonElimCategory、持久不變量賬本與四項新猜想。"
     },
     {
@@ -644,14 +644,13 @@
         "algebra-core",
         "symlib",
         "semiring-trop",
-        "topos",
         "scheme",
         "condensed",
         "tensor",
         "discovery-kernel"
       ],
-      "summary_en": "Federation 7 Lakatosian Conjecture & Theorem-Creation Engine: [E-Derive]+[P-Transfer] evolutionary discovery across 6 trajectories, 5 epistemic relational lenses with CondInvariantLedger sealing, and 12 updated cross-federation conjectures.",
-      "summary_zh": "第七聯邦 Lakatos 猜想演化與定理創造引擎：6 大軌跡 [E-Derive]+[P-Transfer] 守恆律自動發現、寫入持久賬本之 5 大認識論關係透鏡與 12 項跨聯邦更新猜想。"
+      "summary_en": "Federation 7 Lakatosian Conjecture & Theorem-Creation Engine: [E-Derive]+[P-Transfer] evolutionary discovery across 6 trajectories, 5 epistemic relational lenses with CondInvariantLedger sealing, and 7 resolved cross-federation conjectures.",
+      "summary_zh": "第七聯邦 Lakatos 猜想演化與定理創造引擎：6 大軌跡 [E-Derive]+[P-Transfer] 守恆律自動發現、寫入持久賬本之 5 大認識論關係透鏡與 7 項已決跨聯邦猜想。"
     },
     {
       "id": "bridge",
@@ -1627,8 +1626,8 @@
         "condensed-base",
         "symlib-base"
       ],
-      "summary_en": "X-Overlap Condensed Mathematics core: 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 4 Conjectures.",
-      "summary_zh": "X形交疊凝聚數學核心：凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與新猜想×4。"
+      "summary_en": "X-Overlap Condensed Mathematics core: 4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories (`CondCategory`, `CanonElimCategory`), Steenrod–Adams `Ext_A`, Persistent Invariant Ledger, and 1 Refuted Conjecture.",
+      "summary_zh": "X形交疊凝聚數學核心：凝聚高階結構×4（`CondAnima`、`CondSolidModule`、`CondSpectralSheaf`、`CondAnalyticStack`）、範疇×2（`CondCategory`、`CanonElimCategory`）、Steenrod–Adams `Ext_A`、持久不變量賬本與已反駁猜想×1。"
     },
     {
       "id": "tensor-core",
@@ -1656,18 +1655,16 @@
         "algebra-core",
         "symlib-core",
         "semiring-trop",
-        "topos-core",
         "scheme-core",
         "condensed-core",
         "tensor-core",
         "discovery-kernel",
-        "topos-site",
         "accel-swar",
         "symlib-base",
         "condensed-base"
       ],
-      "summary_en": "Lakatosian Conjecture & Theorem-Creation Engine: [E-Derive]+[P-Transfer] evolutionary discovery across 6 trajectories, 5 epistemic relational lenses, and 12 updated cross-federation conjectures.",
-      "summary_zh": "Lakatos 猜想演化與定理創造引擎：6 大軌跡 [E-Derive]+[P-Transfer] 守恆律自動發現、5 大認識論關係透鏡與 12 項跨聯邦更新猜想。"
+      "summary_en": "Lakatosian Conjecture & Theorem-Creation Engine: [E-Derive]+[P-Transfer] evolutionary discovery across 6 trajectories, 5 epistemic relational lenses, and 7 resolved cross-federation conjectures.",
+      "summary_zh": "Lakatos 猜想演化與定理創造引擎：6 大軌跡 [E-Derive]+[P-Transfer] 守恆律自動發現、5 大認識論關係透鏡與 7 項已決跨聯邦猜想。"
     },
     {
       "id": "accel-core",

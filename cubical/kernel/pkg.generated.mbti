@@ -85,8 +85,6 @@ pub fn check_type_operator_positivity_extraction() -> Bool
 
 pub fn checked_coe_value(DCheckedTypeLine, @face_bdd.Dim, @face_bdd.Dim, DValue, Int32) -> DValue
 
-pub fn checked_comp_value(DCheckedTypeLine, DSystem, DValue, Int32) -> DValue
-
 pub fn checked_constant_type_line(DTerm, DEnv, DEnv, DDimEnv) -> DCheckedTypeLine?
 
 pub fn checked_constant_type_line_closed(DTerm) -> DCheckedTypeLine?
@@ -222,8 +220,6 @@ pub fn conv_telescope_values(Int32, Int32, Array[DTelescopeEntry], Array[DValue]
 pub fn conv_terms_case_split(Array[DTerm], DTerm, DTerm, DTerm) -> Bool
 
 pub fn conv_terms_case_split_report(Array[DTerm], DTerm, DTerm, DTerm) -> CaseSplitReport
-
-pub fn conv_terms_finite_case_split(Array[DTerm], DTerm, DTerm, DTerm, depth_budget? : Int32, max_cases? : Int32) -> Bool
 
 pub fn conv_terms_finite_case_split_report(Array[DTerm], DTerm, DTerm, DTerm, depth_budget? : Int32, max_cases? : Int32) -> CaseSplitReport
 
@@ -522,8 +518,6 @@ pub fn dopen_val_term(DTerm) -> DOpenIRArgVal
 pub fn dpositivity_declaration(DTerm, Int32, strict_args? : Array[Int32], positive_args? : Array[Int32], scope? : Int32) -> DPositivityDeclaration?
 
 pub fn dpositivity_declaration_from_lambda(DTerm, Int32, scope? : Int32) -> DPositivityDeclaration?
-
-pub fn dpositivity_report(Bool, Bool, Bool, Bool, Bool) -> DPositivityReport
 
 pub fn dpositivity_witness(DPositivityDeclaration, DTerm) -> DPositivityWitness
 
@@ -915,8 +909,6 @@ pub fn memo_dim_line((@face_bdd.Dim) -> DValue) -> (@face_bdd.Dim) -> DValue
 
 pub fn memo_family((DValue) -> DValue, DValue, Int32, Int32) -> (DValue) -> DValue
 
-pub fn mk_equiv_term(DTerm, DTerm, DTerm, DTerm, DTerm, DTerm) -> DTerm
-
 pub fn mutual_ctor_index(DMutualFamily, Int32, Int32) -> Int32
 
 pub fn mutual_decl_elaborate(DMutualDecl) -> DMutualFamily?
@@ -1100,8 +1092,6 @@ pub fn simultaneous_ir_compile_decode(DSimultaneousIRSpec, Int32) -> DInductiveS
 pub fn simultaneous_ir_compile_eliminator(DSimultaneousIRSpec, Int32) -> DTerm?
 
 pub fn simultaneous_ir_compile_eliminator_block(DSimultaneousIRSpec) -> Array[DTerm?]
-
-pub fn simultaneous_ir_compile_joint(DSimultaneousIRSpec, Int32) -> DTerm?
 
 pub fn simultaneous_ir_compile_joint_block(DSimultaneousIRSpec) -> Array[DTerm?]
 
@@ -1505,9 +1495,6 @@ pub fn DInductiveSpec::to_repr(Self) -> @debug.Repr
 pub struct DInfer {
   value : DValue
   ty : DValue
-}
-
-pub enum DLevelDecl {
 }
 
 #derive(Eq, @debug.Debug)

@@ -38,23 +38,6 @@ pub extend DPositivityReport with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend DPositivityReport with Eq::{not_equal, equal}
 
 ///|
-pub fn dpositivity_report(
-  occurs : Bool,
-  strictly_positive : Bool,
-  positive_polarity : Bool,
-  negative_polarity : Bool,
-  unknown : Bool,
-) -> DPositivityReport {
-  DPositivityReport::{
-    occurs,
-    strictly_positive,
-    positive_polarity,
-    negative_polarity,
-    unknown,
-  }
-}
-
-///|
 fn positivity_absent() -> DPositivityReport {
   DPositivityReport::{
     occurs: false,

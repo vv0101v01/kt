@@ -3,20 +3,6 @@
 // ---------------------------------------------------------------------------
 
 ///|
-fn show_big(xs : Array[Int64]) -> String {
-  let sb = StringBuilder()
-  sb.write_string("[")
-  for i, x in xs {
-    if i > 0 {
-      sb.write_string(",")
-    }
-    sb.write_string(x.to_string())
-  }
-  sb.write_string("]")
-  sb.to_string()
-}
-
-///|
 /// 把 j 預先算好存進遮罩表（稠密核子：只碰 opens）。
 fn memo_j(opens : Array[Int32], j : (Int32) -> Int32) -> (Int32) -> Int32 {
   let table : Map[Int32, Int32] = Map([])
@@ -357,14 +343,14 @@ pub fn law_cubical_sheafification() -> Array[(String, Bool)] {
   let omega_id = @site.psh_omega(p2, o2, u => u)
   chk(
     out,
-    "[T-Cube-S5] |Ω_¬¬(x)| = 2^{2^{dim x}}：V¹ → \{show_ints(omega1.size)}、V² → \{show_ints(omega2.size)}、V³ → \{show_big(formula3.map(x => x.to_int64()))}（字面算出）",
+    "[T-Cube-S5] |Ω_¬¬(x)| = 2^{2^{dim x}}：V¹ → \{@core.show_ints(omega1.size)}、V² → \{@core.show_ints(omega2.size)}、V³ → \{@core.show_ints(formula3)}（字面算出）",
     omega1.size == formula1 &&
     omega2.size == formula2 &&
     omega3.size == formula3,
   )
   chk(
     out,
-    "[T-Cube-S5] 對照：id-核子的 Ω_id(V²) 大小 = \{show_ints(omega_id.size)} ≠ 2^{2^{dim·}}——維數公式是 ¬¬ 特有的",
+    "[T-Cube-S5] 對照：id-核子的 Ω_id(V²) 大小 = \{@core.show_ints(omega_id.size)} ≠ 2^{2^{dim·}}——維數公式是 ¬¬ 特有的",
     omega_id.size != formula2,
   )
   // ---- 7. a ⊣ i 的計數與 Nat 的頂點公式 -------------------------------------

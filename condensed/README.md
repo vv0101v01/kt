@@ -17,7 +17,7 @@
 | ③ | `CondSpectralSheaf` | 凝聚譜層：Grothendieck Čech 扭曲黏合障礙 `k¹ − r⁰` ＋ 扭曲 AHSS `d₃ = Sq³ + H·u(-)` |
 | ④ | `CondAnalyticStack` | Huber–Zariski 雙極解析棧 `Spa(A, A⁺)`：非阿基米德熱帶折點 ＋ `ℙ¹` 真性 ＋ 阿基米德精確有理跡／範數界 ＋ 固態 `ℤ_p` 完備化 |
 
-外加兩個**範疇**（`CondCategory`、`CanonElimCategory`）、一份**雜湊鏈持久不變量賬本**（`CondInvariantLedger`）與**四項新猜想**（`Conj-1..4`）。
+外加兩個**範疇**（`CondCategory`、`CanonElimCategory`）、一份**雜湊鏈持久不變量賬本**（`CondInvariantLedger`）與**一項已否證猜想**（`Conj-2`）。
 
 ---
 
@@ -27,7 +27,7 @@
 |---|---:|---|
 | `profinite_solid.mbt` | 682 | 高階結構 ①② ＋ 範疇 ①（`CondCategory`）：`CondProfinite`、`CondChain`、`CondAnima`、`CondSolidModule`、`CondProMorphism` |
 | `spectral_homotopy.mbt` | 1050 | 譜序列引擎、Serre 收斂、Steenrod–Adams `Ext_A(F₂,F₂)`、`2η = 0`、Koszul `Tor`、高階結構 ③（`CondSpectralSheaf`） |
-| `analytic_stack_chiasm.mbt` | 715 | 高階結構 ④（`CondAnalyticStack`）、範疇 ②（`CanonElimCategory`）、`CondInvariantLedger`、五透鏡寫入、`Conj-1..4` |
+| `analytic_stack_chiasm.mbt` | 715 | 高階結構 ④（`CondAnalyticStack`）、範疇 ②（`CanonElimCategory`）、`CondInvariantLedger`、五透鏡寫入、`Conj-2` |
 | `quaternion_axis.mbt` | 802 | 共軛四元數、`Q₈/±1` 消元範疇、倒影／逆順向／反序列、瑕積分尾部界、RK4 常微分方程收斂與 Richardson 極限、精確守恆律賬本 |
 
 ---
@@ -113,16 +113,15 @@ pub(all) struct CondLedgerEntry { seq; kind; values; parents; prev_hash; hash }
 * `cond_ledger_derive_invariants` 由已驗證條目導出新不變量；`cond_ledger_audit_laws` 稽核全域定律。
 * `conjecture/evolution_lenses.mbt` 的五個認識論透鏡**直接寫入這個賬本**（見 `evaluate_five_epistemic_lenses_into_ledger`）。
 
-**四項新猜想（`[Conj-1..4]`）**
+**已否證猜想（`[Conj-2]`）**
+
+只保留有裁決的條目；無法定對錯的 `Conj-1`、`Conj-3`、`Conj-4`（僅有界檢查／門檻量測）已移除。
 
 | 編號 | 內容 |
 |---|---|
-| `Conj-1` | 凝聚固態間隙 vs 熱帶虧格的 `p`-進縮放猜想 |
 | `Conj-2` | 「`H₁`-繞數 = 0 就足以在任意 0-連通 HIT 中填充 2-盒」—— 被 `F₂` 非交換反例**否證** |
-| `Conj-3` | Stasheff 結合多面體正規化二項式係數的超對數凹性 |
-| `Conj-4` | 有界頻寬鏈 vs 交叉開關置換的縮放交叉點 |
 
-`cond_evaluate_new_conjectures` 逐條給出 `CondConjectureStatus`（含反例見證），`conjecture/` 再把其中可轉移者提升為 12 條跨聯邦猜想的一部分。
+`cond_evaluate_new_conjectures` 給出 `CondConjectureStatus::RefutedWithWitness`（含反例見證），`conjecture/` 再把它提升為已決猜想圖譜的 `CONJ-02`。
 
 ### 3.4 `quaternion_axis.mbt` — 共軛四元數與凝聚中軸守恆
 

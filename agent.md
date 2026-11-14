@@ -175,7 +175,7 @@ recorded. Submit through it:
 * **Project-content changes** — anything that alters what the repository *is*: the federation map or
   `architecture.json` components, the theorem registry counts (`139/139`), the metatheory law counts
   (`631/631`), the certificate ledger (`48/48`), the `K₁₀ = 45/45` bridge counts (historical `K₉ = 36/36` subgraph), `ATLAS-01..18`,
-  `CONJ-01..12`, the `agent.v2.md` rules themselves, and the per-folder `README.md` set mapped in Part II
+  the 7-entry resolved conjecture atlas (`CONJ-02..06/09/10`), the `agent.v2.md` rules themselves, and the per-folder `README.md` set mapped in Part II
   of this file.
 * **Boundary changes** — a new `moon.pkg` import edge, a new `supported_targets` restriction, a new
   `publish`/`test` mode. These are project content, not implementation detail: `tools/arch_check.py`
@@ -342,7 +342,7 @@ post-merge (`find <folder> -name '*.mbt' | xargs cat | wc -l`):
 | 1 | [`cubical/face_bdd/`](cubical/face_bdd/README.md) | L0 | 6 | 6,705 | 148 | Kalman free De Morgan `I_DM`, free CCHM `Cofib(n)`, `UInt64` SWAR fast path, ROBDD (`O(1)` eq) & CDCL (DRUP/DRAT/LRAT) |
 | 2 | [`cubical/finite/`](cubical/finite/README.md) | L1 | 4 | 1,834 | 141 | The finite universe: η-NbE, wiring, `ua` / `coe` / `PathP` / `Glue` / `J` — **the best entry point in the repository** |
 | 3 | [`cubical/hermitian/`](cubical/hermitian/README.md) | L3 | 9 | 3,201 | 143 | Hermitian projectors and certifiable cubical filling (float → `QuadC` → `AlgC`) + the Karoubi envelope |
-| 4 | [`cubical/kernel/`](cubical/kernel/README.md) | L2 | 20 | 30,968 | 180 | **The trust boundary**: dependent NbE, Kan, DSystem repair, `DLevelDecl`, inductive/HIT/open-IR schemas, ε₀ ordinals |
+| 4 | [`cubical/kernel/`](cubical/kernel/README.md) | L2 | 20 | 30,968 | 180 | **The trust boundary**: dependent NbE, Kan, DSystem repair, inductive/HIT/open-IR schemas, ε₀ ordinals |
 | 5 | [`cubical/elaborator/`](cubical/elaborator/README.md) | L3 | 4 | 5,610 | 145 | Bidirectional elaboration; `O(Δ)` Trail-Stack HOU / higher-order matching / Goldfarb undecidability certificate |
 | 6 | [`cubical/homotopy/`](cubical/homotopy/README.md) | L3 | 14 | 12,264 | 189 | Computational homotopy: `π₁(S¹)≃ℤ`, `π₂(S²)≃ℤ`, `π₄(S³)≅ℤ/2ℤ`, Blakers–Massey, `Kₙ` coherence |
 | 7 | [`cubical/store/`](cubical/store/README.md) | L3 | 9 | 11,193 | 184 | `CHMODBIN` / `CHDAGBIN` / `CHREGBIN`, version negotiation, Ed25519 BFT WAL, SCC-atomic MVCC hot reload |

@@ -44,7 +44,7 @@ fn main {
     "[PASS=\{dv_rep.upper_v_synthesis_apex_ok}] Double-V: V1_gcd=\{dv_rep.lower_v_gcd_apex_ok}, federations=\{dv_rep.six_federations_verified}/6, K6=\{dv_rep.k6_bridges_verified}/13 (15 attempted, 2 suspended), boundaries_7=\{dv_rep.seven_boundaries_breakthrough_ok}",
   )
   println(
-    "[PASS=\{sp_rep.star_prism_commutes}] Star-Prism Discovery: federations=\{sp_rep.seven_federations_verified}/7, K7=\{sp_rep.k7_bridges_verified}/17 (21 attempted, 4 suspended), conjectures=\{sp_rep.conjectures_evaluated}/12, evolve=\{sp_rep.evolution_families_verified}/6, lakatos_refined=\{sp_rep.lakatos_refinements_verified}",
+    "[PASS=\{sp_rep.star_prism_commutes}] Star-Prism Discovery: federations=\{sp_rep.seven_federations_verified}/7, K7=\{sp_rep.k7_bridges_verified}/17 (21 attempted, 4 suspended), conjectures=\{sp_rep.conjectures_evaluated}/7, evolve=\{sp_rep.evolution_families_verified}/6, lakatos_refined=\{sp_rep.lakatos_refinements_verified}",
   )
   let rotation_axis = @bridge.verify_rotation_axis_bridge()
   println(
@@ -63,7 +63,7 @@ fn main {
   )
   let intuitive_lab = @bridge.verify_intuitive_conjecture_lab()
   println(
-    "-- Five Intuition-Driven Conjectures: Counterexample Attacks (survived=\{intuitive_lab.bounded_survivals}, refuted+refined=\{intuitive_lab.refuted_and_refined}) --",
+    "-- Intuition-Driven Conjectures Resolved by Counterexample (refuted+refined=\{intuitive_lab.refuted_and_refined}) --",
   )
   for record in intuitive_lab.records {
     println(
@@ -117,7 +117,7 @@ fn main {
     intuitive_lab.holds &&
     all_certs_ok
   println(
-    "historical seven-federation star-prism unification: federations=\{legacy_fed_passed}/7, K7_bridges=\{k7_passed}/17 (21 attempted, 4 suspended), conjectures=\{sp_rep.conjectures_evaluated}/12, intuition_lab=\{intuitive_lab.records.length()}/5, x_overlap=\{x_rep.chiasm_commutes}, star_prism=\{sp_rep.star_prism_commutes}, atlas=\{atlas_passed}/18, all_ok=\{unif_ok}",
+    "historical seven-federation star-prism unification: federations=\{legacy_fed_passed}/7, K7_bridges=\{k7_passed}/17 (21 attempted, 4 suspended), conjectures=\{sp_rep.conjectures_evaluated}/7, intuition_lab=\{intuitive_lab.records.length()}/4, x_overlap=\{x_rep.chiasm_commutes}, star_prism=\{sp_rep.star_prism_commutes}, atlas=\{atlas_passed}/18, all_ok=\{unif_ok}",
   )
   let cycle = @sgraph.Graph::build(4, [0, 1, 2, 3], [1, 2, 3, 0], [1, 1, 1, 1])
   let report = @bridge.weighted_graph_report(cycle, 32)

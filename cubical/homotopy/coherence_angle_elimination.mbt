@@ -42,27 +42,6 @@ pub extend CoherenceAngleEliminationReport with @moonbitlang/core/debug.Debug::{
 pub extend CoherenceAngleEliminationReport with Eq::{not_equal, equal}
 
 ///|
-/// Parameter-sized quotient summary used to attack the scaling conjecture.
-#derive(Debug, Eq)
-pub(all) struct CoherenceQuotientSummary {
-  local_cells : Int32
-  filler_variants : Int32
-  total_angles : Int32
-  ordered_classes : Int32
-  unordered_classes : Int32
-  conserved_incidence_count : Int32
-  holds : Bool
-}
-
-///|
-pub extend CoherenceQuotientSummary with @moonbitlang/core/debug.Debug::{
-  to_repr,
-}
-
-///|
-pub extend CoherenceQuotientSummary with Eq::{not_equal, equal}
-
-///|
 priv struct CoherencePartitionAudit {
   total : Int32
   ordered_classes : Int32
@@ -193,36 +172,6 @@ fn coherence_partition_audit(
     unordered_classes,
     conserved_incidences,
     ok,
-  }
-}
-
-///|
-/// Run the quotient for arbitrary model parameters.  This is a finite
-/// combinatorial audit, not a claim that arbitrary cell complexes have these
-/// parameters or that a bounded parameter sweep proves a general theorem.
-pub fn coherence_quotient_summary(
-  local_cells : Int32,
-  filler_variants : Int32,
-) -> CoherenceQuotientSummary {
-  let audit = coherence_partition_audit(local_cells, filler_variants)
-  let valid = local_cells >= 2 && filler_variants > 0
-  let expected_ordered = if valid { local_cells * (local_cells - 1) } else { 0 }
-  let expected_unordered = expected_ordered / 2
-  let expected_total = expected_ordered * filler_variants
-  let holds = valid &&
-    audit.ok &&
-    audit.total == expected_total &&
-    audit.ordered_classes == expected_ordered &&
-    audit.unordered_classes == expected_unordered &&
-    audit.conserved_incidences == expected_total
-  CoherenceQuotientSummary::{
-    local_cells,
-    filler_variants,
-    total_angles: audit.total,
-    ordered_classes: audit.ordered_classes,
-    unordered_classes: audit.unordered_classes,
-    conserved_incidence_count: audit.conserved_incidences,
-    holds,
   }
 }
 

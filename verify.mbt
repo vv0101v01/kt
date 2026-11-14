@@ -843,7 +843,7 @@ pub fn run_all_checks() -> Array[CheckResult] {
       ok: @gcd.check_universal_gcd_laws(),
     },
     CheckResult::{
-      name: "第二十一期 凝聚數學聯邦（凝聚高階結構×4、範疇×2、不變量賬本與新猜想×4）：CondAnima（Milnor lim¹ 螺線管分離）、CondSolidModule（固態間隙與 p-液態次可加性）、CondSpectralSheaf（Steenrod–Adams Ext_A 證 2η=0、Serre、扭曲 AHSS 與 Koszul Tor）、CondAnalyticStack（Huber–熱帶—P¹—Topos 雙極棧）、CondCategory、CanonElimCategory 與 [Conj-1..4]",
+      name: "第二十一期 凝聚數學聯邦（凝聚高階結構×4、範疇×2、不變量賬本與已反駁猜想×1）：CondAnima（Milnor lim¹ 螺線管分離）、CondSolidModule（固態間隙與 p-液態次可加性）、CondSpectralSheaf（Steenrod–Adams Ext_A 證 2η=0、Serre、扭曲 AHSS 與 Koszul Tor）、CondAnalyticStack（Huber–熱帶—P¹—Topos 雙極棧）、CondCategory、CanonElimCategory 與 [Conj-1..4]",
       ok: @condensed.cond_check_federation_all(),
     },
     CheckResult::{

@@ -23,20 +23,6 @@ fn chk(out : Array[(String, Bool)], label : String, cond : Bool) -> Unit {
 }
 
 ///|
-fn show_ints(xs : Array[Int32]) -> String {
-  let sb = StringBuilder()
-  sb.write_string("[")
-  for i, x in xs {
-    if i > 0 {
-      sb.write_string(",")
-    }
-    sb.write_string(x.to_string())
-  }
-  sb.write_string("]")
-  sb.to_string()
-}
-
-///|
 fn lcg(s : Int64) -> Int64 {
   (s * 6364136223846793005L + 1442695040888963407L) & 0x7fffffffffffffffL
 }
@@ -162,7 +148,7 @@ pub fn law_double_negation_nucleus_cubical() -> Array[(String, Bool)] {
   }
   chk(
     out,
-    "Glivenko：正則子複形數 \{show_ints(reg_counts)} = 2^{2ⁿ}；S ↦ u_S 雙射、保補（¬u_S = u_{~S}）、交保住、併為 j(u∨v)——Fix(¬¬) ≅ P(頂點) 布林代數",
+    "Glivenko：正則子複形數 \{@core.show_ints(reg_counts)} = 2^{2ⁿ}；S ↦ u_S 雙射、保補（¬u_S = u_{~S}）、交保住、併為 j(u∨v)——Fix(¬¬) ≅ P(頂點) 布林代數",
     gliv,
   )
   // ---- 4. j ⊣ i：層化在 Ω 上的伴隨（面格版） --------------------------------
@@ -228,7 +214,7 @@ pub fn law_double_negation_nucleus_cubical() -> Array[(String, Bool)] {
   }
   chk(
     out,
-    "[T-Bool-cube] DM(n) 布林反射的核 = j 的核（hneg 路徑 = 頂點路徑）；類數 \{show_ints(kernel_counts)} = 2^{2ⁿ}",
+    "[T-Bool-cube] DM(n) 布林反射的核 = j 的核（hneg 路徑 = 頂點路徑）；類數 \{@core.show_ints(kernel_counts)} = 2^{2ⁿ}",
     kernel_ok,
   )
   // ---- 6. ∂σ 與 ↓σ 不可分；j 不保併 ----------------------------------------

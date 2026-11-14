@@ -179,16 +179,6 @@ pub fn checked_coe_value(
 }
 
 ///|
-pub fn checked_comp_value(
-  line : DCheckedTypeLine,
-  branches : DSystem,
-  base : DValue,
-  dlevel : Int32,
-) -> DValue {
-  comp_value(line.line, branches, base, dlevel)
-}
-
-///|
 
 ///|
 /// Pack a raw semantic line only after reifying and rechecking it at

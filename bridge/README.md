@@ -131,7 +131,7 @@ pub(all) struct BridgeCertificate {
 | `K7-20` | `Discovery ↔ Scheme` | 離散 Radon 平面 `𝔸²(𝔽₃)`（9 點 12 線 4 方向）完備化為 `ℙ²(𝔽₃)`：`\|ℙ²(₃)\| = 9 + 4 = 13` |
 | `K7-21` | `Discovery ↔ Condensed` | **[SUSPENDED]** 帳本雜湊鏈與 Clifford 中心獨立 |
 
-`verify_seven_federation_star_prism(k7_precomputed)` 把它們與 X 交疊、雙 V、12 條猜想合成 `SevenFederationStarPrismReport`（`cmd/showcase` 的 `K7=17/17 active（21 attempted, 4 suspended）` 就來自這裡）。
+`verify_seven_federation_star_prism(k7_precomputed)` 把它們與 X 交疊、雙 V、7 條已決猜想合成 `SevenFederationStarPrismReport`（`cmd/showcase` 的 `K7=17/17 active（21 attempted, 4 suspended）` 就來自這裡）。
 
 ---
 

@@ -73,7 +73,7 @@
 
 ### 3.4 `checked_line.mbt` — 可替換的語義型別線
 裸線是宿主函數 `Dim → DValue`，**理論上**可以窺看維度語法而不尊重替換。`DCheckedTypeLine` 改為儲存 `DTerm` 本體 + 持久環境，在**一個新維度綁定子**下檢型；於是在 `i` 求值就等於把 `i` 代入該本體。
-`checked_type_line(_closed)`、`checked_constant_type_line(_closed)`、`checked_ua_line`、`checked_line_at/fn/level/is_constant/endpoints`、`checked_line_quote_body`、`checked_coe_value`、`checked_comp_value`、`checked_line_reify_closed`、`dvalue_subst_dims`、`checked_line_reparam_closed`、`check_semantic_dimension_substitution()`。
+`checked_type_line(_closed)`、`checked_constant_type_line(_closed)`、`checked_ua_line`、`checked_line_at/fn/level/is_constant/endpoints`、`checked_line_quote_body`、`checked_coe_value`、`checked_line_reify_closed`、`dvalue_subst_dims`、`checked_line_reparam_closed`、`check_semantic_dimension_substitution()`。
 
 ### 3.5 `conv_case_split.mbt` — 離散情境的個案分裂
 `if x then 0 else 0` 與 `0` 對中性 `Bool` 變數 `x` **不**可轉換（語義比較是結構的），但 `Bool` 是離散型別 ⇒ 在 `x = true` 與 `x = false` 兩支都相等時才判等。

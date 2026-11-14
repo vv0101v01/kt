@@ -19,7 +19,7 @@
 
 全部通過才算 `LcDerivedAndTransferred`（自動發現 + 樣本外驗證），並把結果**寫進 `@condensed.CondInvariantLedger` 的雜湊鏈賬本**，成為可稽核的持久不變量。
 
-再加上**五個認識論關係透鏡**（`相對`、`對偶`、`對比`、`蘊含`、`比率`），系統化地把已知結論轉成新定理、反例與前提條件；最後彙整成 **12 條跨聯邦猜想圖譜 `CONJ-01..12`**。
+再加上**五個認識論關係透鏡**（`相對`、`對偶`、`對比`、`蘊含`、`比率`），系統化地把已知結論轉成新定理、反例與前提條件；最後彙整成 **7 條已決猜想圖譜（`CONJ-02..06`、`CONJ-09`、`CONJ-10`；沿用歷史編號）**。
 
 ---
 
@@ -68,7 +68,7 @@ pub(all) enum EpistemicLensKind { LkRelative; LkDual; LkContrast; LkImplication;
 | `對偶` | 對偶陳述的互相蘊含（例：`T²` 杯積 vs 楔和） | 判別性定理 |
 | `對比` | 找出「A 成立而 B 不成立」的最小差異 | **反例 + 前提條件** |
 | `蘊含` | 謂詞之間的蘊含格與反例矩陣 | `ImplicationLatticeReport` |
-| `比率` | 縮放律（例：`Conj-4` 的頻寬 vs 交叉開關交叉點） | 縮放猜想 |
+| `比率` | 縮放律（頻寬 vs 交叉開關交叉點的精確比值） | 縮放律 |
 
 **蘊含格的機器化**（`implication_lattice_build`）：
 * 對 `k` 個謂詞在 `num_samples` 個實例上求值；
@@ -93,11 +93,13 @@ pub(all) enum ConjectureLifecycle {
 }
 ```
 
-### 4.2 12 條更新猜想圖譜（`CONJ-01 .. CONJ-12`）
+### 4.2 7 條已決猜想圖譜（`CONJ-02..06`、`CONJ-09`、`CONJ-10`）
 
-`evaluate_updated_conjecture_atlas()` 逐條回傳 `UpdatedConjectureRecord`（編號、陳述、生命週期、見證、跨聯邦來源、賬本雜湊），覆蓋全部 7 個聯邦（`cubical`、`symlib`、`semiring`、`topos`、`scheme`、`condensed`、`discovery`）。其中包含：
+> **收錄準則**：圖譜只保留**已有裁決**的條目——被明確反例否證並改寫成可驗證修正版（`LcRefutedAndRefined`，5 條），或由引擎自動導出並通過樣本外驗證（`LcDerivedAndTransferred`，2 條）。只能「有界驗證」、「量到相變」或「開放前沿」而無法定對錯的舊條目（`CONJ-01/07/08/11/12`）已移除，不再作為題目保留。
 
-* 由 `@condensed` 的 `Conj-1..4` 升級／修正而來的條目（例如「`H₁`-繞數為 0 即可填充 2-盒」被 `F₂` 非交換反例**否證**後改寫為正確的 `π₁` 條件）；
+`evaluate_updated_conjecture_atlas()` 逐條回傳 `UpdatedConjectureRecord`（編號、陳述、生命週期、見證、跨聯邦來源、賬本雜湊），。其中包含：
+
+* 由 `@condensed` 的 `Conj-2` 升級／修正而來的條目（例如「`H₁`-繞數為 0 即可填充 2-盒」被 `F₂` 非交換反例**否證**後改寫為正確的 `π₁` 條件）；
 * 由 `@tensor` 的 `6,561` 張量圖譜與 Cataln 翻轉圖歸納出的組合猜想；
 * 由 `@topos`／`@scheme` 對偶性導出的判別性猜想。
 
@@ -107,7 +109,7 @@ pub(all) enum ConjectureLifecycle {
 pub fn synthesize_and_verify_conjecture_engine() -> ConjectureSynthesisSummary
 pub fn check_conjecture_discovery_federation() -> Bool
 ```
-`ConjectureSynthesisSummary` 彙整：6 條演化實驗、5 個透鏡（含賬本密封狀態）、12 條猜想，以及總計通過數。`cmd/showcase` 會把這份摘要印在「Star-Prism Discovery」段落。
+`ConjectureSynthesisSummary` 彙整：6 條演化實驗、5 個透鏡（含賬本密封狀態）、7 條已決猜想，以及總計通過數。`cmd/showcase` 會把這份摘要印在「Star-Prism Discovery」段落。
 
 ---
 
@@ -146,7 +148,7 @@ for rep in @conjecture.discover_six_evolution_laws() {
 let ledger = @conjecture.evaluate_five_epistemic_lenses_into_ledger(@condensed.cond_ledger_new())
 assert_true(@condensed.cond_ledger_verify(ledger))
 
-// 4) 12 條猜想圖譜 + 總合成
+// 4) 7 條已決猜想圖譜 + 總合成
 let atlas = @conjecture.evaluate_updated_conjecture_atlas()
 let summary = @conjecture.synthesize_and_verify_conjecture_engine()
 ```
@@ -185,6 +187,6 @@ moon run cmd/showcase --target wasm-gc               # Star-Prism & K_9 段落�
 
 三條倖存定律各以一筆 `kind = 1` 條目寫入 `CondInvariantLedger`，再加一筆 `kind = 2` 定理條目；鏈驗證之外，每筆都通過 `@condensed.cond_ledger_verify_inclusion` 的 Merkle 路徑驗證。
 
-入口：`discover_polynomial_transfer_laws() -> PolynomialDiscoverySummary`；`check_conjecture_discovery_federation()` 已要求其 `all_ok`。12 條猜想圖譜 `CONJ-01..12` 與六條線性定律的計數不變。
+入口：`discover_polynomial_transfer_laws() -> PolynomialDiscoverySummary`；`check_conjecture_discovery_federation()` 已要求其 `all_ok`。六條線性定律的計數不變（猜想圖譜其後已精簡為 7 條已決條目，見 §4.2）。
 
 **範圍說明**：這些是有限樣本上的精確整數關係加上樣本外檢驗，屬於「發現並通過轉移」的證據，不是對所有 `n`、`q`、`m` 的證明。

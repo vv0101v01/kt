@@ -82,13 +82,11 @@ pub using @kernel {type DTerm, conv_at, kernel_eval_closed_peano}
 ///|
 pub using @homotopy {
   type CoherenceAngleEliminationReport,
-  type CoherenceQuotientSummary,
   assoc_euler_characteristic,
   assoc_fvector,
   brunerie_new_family,
   check_adjoint_equivalence_and_fibers,
   coherence_angle_elimination_report,
-  coherence_quotient_summary,
   circle_decode_value,
   circle_encode_value,
   equiv_bidirectional_certified,

@@ -35,7 +35,7 @@ pub extend XOverlapChiasmReport with Eq::{not_equal, equal}
 ///     `F_p`-subspace, `Z`-lattice SNF, and Bezout ideal arms converge at `layer = 0`;
 ///   • `Upper-V (V_2 = @bridge)`: Complete `K_6` (`15/15` bridges across `6` federations)
 ///     synthesis apex where all 7 transformed/eliminated capability boundaries, 4 condensed
-///     higher structures, 2 new categories, and 4 conjectures unite!
+///     higher structures, 2 new categories, and 1 refuted conjecture unite!
 #derive(Debug, Eq)
 pub(all) struct DoubleVArchitectureReport {
   lower_v_gcd_apex_ok : Bool
@@ -43,7 +43,7 @@ pub(all) struct DoubleVArchitectureReport {
   k6_bridges_verified : Int32
   x_overlap_ok : Bool
   seven_boundaries_breakthrough_ok : Bool
-  four_conjectures_evaluated : Int32
+  refuted_conjectures_evaluated : Int32
   upper_v_synthesis_apex_ok : Bool
 }
 
@@ -69,7 +69,7 @@ pub fn six_federation_descriptors() -> Array[FederationDescriptor] {
     canonical_normal_form: "RREF/SNF Universal Elimination-GCD, Minimal Steenrod A-Resolution & Idempotent Canon Map",
     categorification_role: "Condensed Profinite Anima/Solid Modules (`CondCategory`), `CanonElimCategory`, Spectral Sheaves & Huber Analytic Stacks",
     live_health_ok: f6_ok,
-    summary: "4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories, Ledger & 4 Conjectures",
+    summary: "4 Condensed Higher Structures (`CondAnima`, `CondSolidModule`, `CondSpectralSheaf`, `CondAnalyticStack`), 2 Categories, Ledger & 1 Refuted Conjecture",
   })
   out
 }
@@ -342,7 +342,7 @@ pub fn verify_x_overlap_chiasmus() -> XOverlapChiasmReport {
 /// Execute the full **Double-V Architecture (`雙V形架構`)** verification from Lower-V
 /// Apex `V_1 = @gcd` (`layer = 0`) through the `X`-Overlap (`@condensed`, `layer = 3`)
 /// to Upper-V Apex `V_2 = @bridge` (`6/6` federations, `15/15` `K_6` bridges, `7/7`
-/// capability boundaries broken through, and `4/4` conjectures evaluated)!
+/// capability boundaries broken through, and `1/1` refuted conjecture evaluated)!
 pub fn verify_double_v_architecture(
   k6_precomputed~ : Array[FederationPairBridge]? = None,
 ) -> DoubleVArchitectureReport {
@@ -379,14 +379,14 @@ pub fn verify_double_v_architecture(
     k6_ok_cnt == 13 &&
     x_rep.chiasm_commutes &&
     seven_ok &&
-    conj_ok_cnt == 4
+    conj_ok_cnt == 1
   DoubleVArchitectureReport::{
     lower_v_gcd_apex_ok: v1_ok,
     six_federations_verified: fed_ok_cnt,
     k6_bridges_verified: k6_ok_cnt,
     x_overlap_ok: x_rep.chiasm_commutes,
     seven_boundaries_breakthrough_ok: seven_ok,
-    four_conjectures_evaluated: conj_ok_cnt,
+    refuted_conjectures_evaluated: conj_ok_cnt,
     upper_v_synthesis_apex_ok: v2_ok,
   }
 }

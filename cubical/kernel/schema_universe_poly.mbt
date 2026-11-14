@@ -799,9 +799,6 @@ pub struct DLevelTermDecl {
 }
 
 ///|
-pub enum DLevelDecl {}
-
-///|
 pub struct DLevelTermInstance {
   ty : DTerm
   body : DTerm

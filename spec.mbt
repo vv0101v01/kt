@@ -629,7 +629,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "一等宇宙多態與同時宣告 schema",
       SpecStructure,
       [
-        "DLevelDecl", "dterm_instantiate_levels", "DTypeOperatorDecl", "extract_positive_functor",
+        "dterm_instantiate_levels", "DTypeOperatorDecl", "extract_positive_functor",
         "DNestedIterDecl", "compile_nested_iter_decl", "DMutualDecl", "mutual_decl_elaborate",
         "DSimultaneousIRSpec", "eval_simultaneous_ir", "check_hit_moving_dimension_lift",
       ],
@@ -1638,7 +1638,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "單模分解 U·A·V=D、Tor_0/Tor_1 鏈複形同調、雙零化子正交補交集（核驗維數模律 dim(U∩V)+dim(U+V)=dim U+dim V）與六路對帳證書",
     ),
     entry(
-      "X形交疊凝聚高階結構×4、範疇×2、不變量賬本與新猜想×4（第二十一期）",
+      "X形交疊凝聚高階結構×4、範疇×2、不變量賬本與已反駁猜想×1（第二十一期）",
       SpecStructure,
       [
         "CondProfinite", "CondChain", "CondAnima", "CondSolidModule", "CondProMorphism",
@@ -1649,7 +1649,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
       ],
       "有限逆系塔滿射轉移矩陣、自由固態模 Z[S]^■、最小 Steenrod A(2) 分解、雙分次譜序列頁、冪等規範化射與雜湊鏈不變量賬本",
       "凝聚範疇 CondCategory、規範消元範疇 CanonElimCategory、凝聚高階同倫棧 CondAnima（Milnor lim¹）、固態／液態模 CondSolidModule、凝聚譜層 CondSpectralSheaf 與 Huber–熱帶雙極棧 CondAnalyticStack",
-      "Mittag-Leffler 秩穩定與餘核撓率增長判定、p∈(0,1] 液態次可加性、Adem 關係與 Ext_A^{2,3}(F_2,F_2)=0（2η=0）、Čech 扭曲阻礙 k¹−r⁰、SNF 守恆律自動推導與四項新猜想核驗",
+      "Mittag-Leffler 秩穩定與餘核撓率增長判定、p∈(0,1] 液態次可加性、Adem 關係與 Ext_A^{2,3}(F_2,F_2)=0（2η=0）、Čech 扭曲阻礙 k¹−r⁰、SNF 守恆律自動推導與一項猜想的反例推翻",
     ),
     entry(
       "任意次數 Liouville 超越分離否證證書、Schanuel 秩見證與 Berkowitz–CRT 無除法特徵多項式（第二十一期）",
@@ -1714,7 +1714,7 @@ pub fn spec_registry() -> Array[SpecEntry] {
       "O(|R₁|²) 完備分類秩 [1,128,4032,2400]（含 F₉/F₃ 伽羅瓦扭曲秩 3 軌道）、仿射修正 Plancherel 恆等式、偶奇維旋量中心分裂、平坦規範叢雙射 H¹(T²,ℤ/ℓ)、[T-NC-Free] 單調自由與 K₄ 反例、同調—上同調雙軌對偶核驗",
     ),
     entry(
-      "Lakatos 證明—反駁—精煉十二猜想圖譜、六大演化轉移發現引擎與五大認識論關係透鏡（第二十二期）",
+      "Lakatos 證明—反駁—精煉已決猜想圖譜、六大演化轉移發現引擎與五大認識論關係透鏡（第二十二期）",
       SpecTheorem,
       [
         "ObservationRowSet", "EvolutionTransferReport", "EpistemicLensKind", "ImplicationLatticeReport",
@@ -1724,9 +1724,9 @@ pub fn spec_registry() -> Array[SpecEntry] {
         "evaluate_updated_conjecture_atlas", "synthesize_and_verify_conjecture_engine",
         "check_conjecture_discovery_federation",
       ],
-      "觀測軌跡 F_p 零空間成對加減飽和整數基、Floyd–Warshall 五謂詞蘊含閉包與最小反例矩陣、五態 Lakatos 猜想生命週期與雜湊鏈入賬紀錄",
+      "觀測軌跡 F_p 零空間成對加減飽和整數基、Floyd–Warshall 五謂詞蘊含閉包與最小反例矩陣、兩態 Lakatos 猜想生命週期與雜湊鏈入賬紀錄",
       "跨尺度演化不變量函子 [E-Derive]+[P-Transfer]、相對／對偶／對比／蘊含／比率五大認識論透鏡與七大聯邦 K₇ 完全圖星稜柱大一統",
-      "6 組演化定律自動發現並剔除小規模海市蜃樓（含三次至四次平面曲線 Hironaka–Serre 虧格轉移）、5 項天真猜想反例推翻與精煉定理配對、共 12 項猜想（CONJ-01..12）全數機器核驗",
+      "6 組演化定律自動發現並剔除小規模海市蜃樓（含三次至四次平面曲線 Hironaka–Serre 虧格轉移）、5 項天真猜想反例推翻與精煉定理配對、共 7 項已決猜想（5 反駁精煉＋2 導出轉移）全數機器核驗",
     ),
     entry(
       "反射三件套（快速判定 / 可重放憑證 / 獨立重放檢查）",

@@ -1029,3 +1029,15 @@ Dev.txt（本節）、agent.md、agent.v2.md、lean/README.md、lean/UNIVERSAL.m
 - `moon check --deny-warn --target wasm-gc`、`moon build --target wasm-gc`、`moon info`、`gen_laws.py`（無差異）、`arch_check.py` 全過。
 - `cmd/metatheory` 631/631、`cmd/ualg` 167/167、`cmd/main` 139/139、`cmd/showcase` exit 0；四者 stdout 與改動前逐位元相同。
 - 未做：未 push、未跑 GitHub Actions；未量測 VR／獨立判定優化的實際耗時（只改了複雜度）；`cmd/*` 未新增展示段落，新定律只透過聯邦檢核入口執行。
+
+## 猜想清理、去重、減債與死碼清除（2026-11-14）
+
+**準則：無裁決者不留。** 猜想只有在「被反例否證並改寫成可驗證修正版」或「由引擎導出並通過樣本外驗證」時才保留；只能有界驗證、量到相變或標為開放前沿而定不出對錯的條目，不再作為題目留在倉內。
+
+- `conjecture/conjecture_atlas.mbt`：12 → 7 條（保留 `CONJ-02..06`、`CONJ-09`、`CONJ-10`，沿用歷史編號）；移除 `CONJ-01/07/08/11/12` 及其計算；`ConjectureLifecycle` 5 態 → 2 態；摘要移除 `verified_bounded / phase_transitions / open_frontiers`；`conjecture` 不再依賴 `topos`（`moon.pkg`、`architecture.json` 同步）。
+- `condensed/analytic_stack_chiasm.mbt`：`Conj-1/3/4` 移除，只留已否證的 `Conj-2`。
+- `bridge/intuitive_conjecture_lab.mbt`：移除有界倖存的 `C-INT-01`，保留 4 條反例後修正。
+- 死碼：`check_face_semiring_bridge`、`coherence_quotient_summary`（連同 `CoherenceQuotientSummary`）、`checked_comp_value`、`conv_terms_finite_case_split`、`mk_equiv_term`、`simultaneous_ir_compile_joint`、`dpositivity_report`、空殼列舉 `DLevelDecl`、`closure_to_alg`、`term_show`。
+- 去重：`ualg/cube` 的 `show_ints`／`show_big` 改用 `@core.show_ints`；`cs_mentions_var` 併入 `dterm_free_var_occurs`。
+- 刻意保留：`dopen_arg_external / dopen_arg_decoded_val / dopen_val_term`（對應列舉變體仍被檢查器比對，刪除會觸發 `unused_constructor`，屬公開建構 API）；`ualg/site` 的 `show_ints`（該包須維持零外部依賴）；四組結構相近函式（不同 schema 的平行實作）。
+- 閘門：`moon check --deny-warn`、`moon build`、`gen_laws` 無差異、`arch_check` 通過；metatheory 631/631、ualg 167/167、main 139/139、showcase rc=0。

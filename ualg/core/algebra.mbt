@@ -136,28 +136,6 @@ pub fn term_eval(a : Alg, t : Term, env : Array[Int32]) -> Int32 {
 }
 
 ///|
-pub fn term_show(a : Alg, t : Term) -> String {
-  match t {
-    TVar(i) => "x\{i}"
-    TApp(k, args) => {
-      let sb = StringBuilder()
-      sb.write_string(a.ops[k].name)
-      if args.length() > 0 {
-        sb.write_string("(")
-        for i, s in args {
-          if i > 0 {
-            sb.write_string(",")
-          }
-          sb.write_string(term_show(a, s))
-        }
-        sb.write_string(")")
-      }
-      sb.to_string()
-    }
-  }
-}
-
-///|
 pub fn term_size(t : Term) -> Int32 {
   match t {
     TVar(_) => 1
@@ -436,35 +414,6 @@ pub fn free_algebra(a : Alg, k : Int32, limit : Int32) -> Closure {
     gens.push(Array::makei(len, idx => digits(idx, a.n, k)[j]))
   }
   close_tuples(a, gens, None, limit)
-}
-
-///|
-/// 把（已算完的）閉包做成表格代數；元素序號即 elems 的序號。
-pub fn closure_to_alg(a : Alg, cl : Closure, name : String) -> Alg {
-  let m = cl.elems.length()
-  let len = if m > 0 { cl.elems[0].length() } else { 0 }
-  let index : Map[String, Int32] = Map([])
-  for i, t in cl.elems {
-    index[tuple_key(t)] = i
-  }
-  let ops : Array[Op] = []
-  for op in a.ops {
-    let r = op.arity
-    let table = Array::makei(ipow(m, r), idx => {
-      let ds = digits(idx, m, r)
-      let t = if r == 0 {
-        Array::make(len, op.table[0])
-      } else {
-        pointwise(a, op, ds.map(d => cl.elems[d]), len)
-      }
-      match index.get(tuple_key(t)) {
-        Some(j) => j
-        None => -1
-      }
-    })
-    ops.push({ name: op.name, arity: r, table, })
-  }
-  { name, n: m, ops, }
 }
 
 ///|

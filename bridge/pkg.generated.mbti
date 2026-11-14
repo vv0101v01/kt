@@ -60,8 +60,6 @@ pub fn certificate_summary(Array[BridgeCertificate]) -> String
 
 pub fn certificates_all_ok(Array[BridgeCertificate]) -> Bool
 
-pub fn check_face_semiring_bridge() -> Bool
-
 pub fn check_free_category_bridge() -> Bool
 
 pub fn check_graph_symmetry_bridges() -> Bool
@@ -317,7 +315,7 @@ pub(all) struct DoubleVArchitectureReport {
   k6_bridges_verified : Int32
   x_overlap_ok : Bool
   seven_boundaries_breakthrough_ok : Bool
-  four_conjectures_evaluated : Int32
+  refuted_conjectures_evaluated : Int32
   upper_v_synthesis_apex_ok : Bool
 }
 pub fn DoubleVArchitectureReport::equal(Self, Self) -> Bool
@@ -499,7 +497,6 @@ pub fn GrandUnificationReport::to_repr(Self) -> @debug.Repr
 #derive(Eq, @debug.Debug)
 pub(all) struct IntuitiveConjectureLabReport {
   records : Array[IntuitiveConjectureRecord]
-  bounded_survivals : Int32
   refuted_and_refined : Int32
   holds : Bool
 }
@@ -509,7 +506,6 @@ pub fn IntuitiveConjectureLabReport::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
 pub(all) enum IntuitiveConjectureOutcome {
-  BoundedSurvival
   RefutedAndRefined
 }
 pub fn IntuitiveConjectureOutcome::equal(Self, Self) -> Bool

@@ -157,18 +157,3 @@ pub fn face_semiring_law_report() -> @semialg.LawReport {
     samples=48,
   )
 }
-
-///|
-pub fn check_face_semiring_bridge() -> Bool {
-  let f = @cub.face_var1(0)
-  let repeated = FaceClass::of_face(@cub.face_or(f, f), 2)
-  let single = FaceClass::of_face(f, 2)
-  let i0 = FaceClass::of_face(@cub.face_var0(0), 2)
-  if repeated != single ||
-    FaceClass::top().meet(single) != single ||
-    i0 != single.complement() ||
-    !single.le(single.join(FaceClass::of_face(@cub.face_var1(1), 2))) {
-    return false
-  }
-  face_semiring_law_report().ok()
-}

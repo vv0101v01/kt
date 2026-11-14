@@ -1131,17 +1131,6 @@ pub fn simultaneous_ir_compile_joint_block(
   result
 }
 
-///|
-pub fn simultaneous_ir_compile_joint(
-  spec : DSimultaneousIRSpec,
-  function_index : Int32,
-) -> DTerm? {
-  if function_index < 0 || function_index >= spec.functions.length() {
-    return None
-  }
-  simultaneous_ir_compile_joint_block(spec)[function_index]
-}
-
 // ---------------------------------------------------------------------------
 // Phase 16: Dybjer–Setzer Open Simultaneous Induction-Recursion
 // ---------------------------------------------------------------------------

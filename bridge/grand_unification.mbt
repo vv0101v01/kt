@@ -290,9 +290,9 @@ fn grand_unification_certificates_from_atlas(
   certs.push(
     bridge_certificate(
       "discovery/conjectures",
-      "Lakatosian 12-Conjecture Atlas (CONJ-01..12), 6 Evolutionary Transfer Laws & 5 Epistemic Lenses",
+      "Resolved Conjecture Atlas (7 entries), 6 Evolutionary Transfer Laws & 5 Epistemic Lenses",
       syn.all_consistent,
-      detail="conjectures=\{syn.total_conjectures} (derived=\{syn.derived_and_transferred}, refined=\{syn.refuted_and_refined}, bounded=\{syn.verified_bounded}, phase=\{syn.phase_transitions}, frontier=\{syn.open_frontiers}), evolve=\{syn.evolution_families_passed}/6",
+      detail="conjectures=\{syn.total_conjectures} (derived=\{syn.derived_and_transferred}, refined=\{syn.refuted_and_refined}), evolve=\{syn.evolution_families_passed}/6",
     ),
   )
   let sp = verify_seven_federation_star_prism()

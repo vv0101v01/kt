@@ -1,5 +1,7 @@
 ///|
-// Five intuition-driven conjectures with explicit counterexample attacks.
+// Four intuition-driven conjectures, each refuted by an explicit counterexample and
+// paired with a refined statement. (The former bounded-survival entry C-INT-01 had no
+// verdict and was removed; identifiers C-INT-02..05 are kept.)
 //
 // This is a standalone Lakatosian lab, separate from the historical 12-entry
 // conjecture atlas and the 48-certificate historical ledger.  A record's `audit_ok`
@@ -11,7 +13,6 @@
 ///|
 #derive(Debug, Eq)
 pub(all) enum IntuitiveConjectureOutcome {
-  BoundedSurvival
   RefutedAndRefined
 }
 
@@ -49,12 +50,11 @@ pub extend IntuitiveConjectureRecord with @moonbitlang/core/debug.Debug::{
 pub extend IntuitiveConjectureRecord with Eq::{not_equal, equal}
 
 ///|
-/// Five records plus outcome counts.  `holds` audits the experiment, not the
+/// The records plus the refutation count.  `holds` audits the experiment, not the
 /// truth of every original statement.
 #derive(Debug, Eq)
 pub(all) struct IntuitiveConjectureLabReport {
   records : Array[IntuitiveConjectureRecord]
-  bounded_survivals : Int32
   refuted_and_refined : Int32
   holds : Bool
 }
@@ -72,52 +72,7 @@ pub fn intuitive_conjecture_outcome_label(
   outcome : IntuitiveConjectureOutcome,
 ) -> String {
   match outcome {
-    BoundedSurvival => "SURVIVED (bounded)"
     RefutedAndRefined => "REFUTED + REFINED"
-  }
-}
-
-///|
-/// C-INT-01: the quotient formulas should scale beyond the original 24/20
-/// point.  The attack independently recomputes every expected cardinality.
-fn conjecture_coherence_scaling() -> IntuitiveConjectureRecord {
-  let mut cases = 0
-  let mut failure_n = -1
-  let mut failure_m = -1
-  for n in 2..<=32 {
-    for m in 1..<=9 {
-      cases = cases + 1
-      let summary = @cub.coherence_quotient_summary(n, m)
-      let ordered = n * (n - 1)
-      let expected_total = ordered * m
-      let failed = !summary.holds ||
-        summary.total_angles != expected_total ||
-        summary.ordered_classes != ordered ||
-        summary.unordered_classes != ordered / 2 ||
-        summary.conserved_incidence_count != expected_total
-      if failed && failure_n < 0 {
-        failure_n = n
-        failure_m = m
-      }
-    }
-  }
-  let audit_ok = cases == 279 && failure_n < 0
-  let counterexample = if failure_n < 0 {
-    "未找到；這只代表指定的 279 個參數點沒有反例"
-  } else {
-    "n=\{failure_n}, m=\{failure_m}"
-  }
-  IntuitiveConjectureRecord::{
-    id: "C-INT-01",
-    title: "相干角兩段商消元的規模守恆",
-    intuition: "每個有序胞腔對的填充代表與逆向配對是局部對稱；若 24/20 的守恆不是巧合，改變胞腔數與填充重數仍應保留同一分割公式。",
-    statement: "對所有 n≥2、m≥1，總角數為 n(n−1)m；兩段商後有 n(n−1)/2 個規範類，且類重數總和仍為 n(n−1)m。",
-    search_scope: "完整窮舉 2≤n≤32、1≤m≤9，共 279 個參數點；逐點重新枚舉所有角並獨立核算基數。",
-    outcome: BoundedSurvival,
-    counterexample,
-    refined_statement: "保留為有界倖存猜想；若要升格為全 n、m 的定理，仍需不依賴本搜索範圍的一般證明。",
-    evidence: "通過 \{cases}/279；total、ordered、unordered 與 conserved incidence 全部一致。",
-    audit_ok,
   }
 }
 
@@ -382,32 +337,26 @@ fn conjecture_hopf_fixed_tolerance() -> IntuitiveConjectureRecord {
 }
 
 ///|
-/// Run all five independent counterexample attacks.  Historical atlas counts
+/// Run all four independent counterexample attacks.  Historical atlas counts
 /// and certificate counts are intentionally unchanged.
 pub fn verify_intuitive_conjecture_lab() -> IntuitiveConjectureLabReport {
   let records = [
-    conjecture_coherence_scaling(),
     conjecture_tamari_bipartite(),
     conjecture_determinant_norm(),
     conjecture_jacobi_strict_refinement(),
     conjecture_hopf_fixed_tolerance(),
   ]
-  let mut bounded_survivals = 0
   let mut refuted_and_refined = 0
   let mut audits_ok = true
   for record in records {
     match record.outcome {
-      BoundedSurvival => bounded_survivals = bounded_survivals + 1
       RefutedAndRefined => refuted_and_refined = refuted_and_refined + 1
     }
     audits_ok = audits_ok && record.audit_ok
   }
   IntuitiveConjectureLabReport::{
     records,
-    bounded_survivals,
     refuted_and_refined,
-    holds: records.length() == 5 &&
-    audits_ok &&
-    bounded_survivals + refuted_and_refined == 5,
+    holds: records.length() == 4 && audits_ok && refuted_and_refined == 4,
   }
 }

@@ -66,8 +66,6 @@ pub fn closed_sets_next_closure(Polarity) -> Array[Array[Bool]]
 
 pub fn closure_term(Closure, Int32) -> Term
 
-pub fn closure_to_alg(Alg, Closure, String) -> Alg
-
 pub fn con_bruteforce(Alg) -> Array[Array[Int32]]
 
 pub fn con_distributive(Array[Array[Int32]]) -> Bool
@@ -219,8 +217,6 @@ pub fn show_ints(Array[Int32]) -> String
 pub fn subalgebra(Alg, Array[Int32]) -> (Alg, Array[Int32])
 
 pub fn term_eval(Alg, Term, Array[Int32]) -> Int32
-
-pub fn term_show(Alg, Term) -> String
 
 pub fn term_size(Term) -> Int32
 

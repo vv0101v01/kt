@@ -4,7 +4,6 @@ import {
   "vv0101v01/cubical-hermitian/algebra/core" @exactalg,
   "vv0101v01/cubical-hermitian/symlib" @sym,
   "vv0101v01/cubical-hermitian/semiring/trop" @strop,
-  "vv0101v01/cubical-hermitian/topos",
   "vv0101v01/cubical-hermitian/scheme",
   "vv0101v01/cubical-hermitian/condensed",
   "vv0101v01/cubical-hermitian/tensor",

@@ -101,7 +101,7 @@ python3 tools/health_scan.py > tools/health_report.md # 合併截面未重跑（
 | **有限對稱與 Burnside 環** | Holt 任意生成元秩子群共軛類格：`S₄(24):11`、**`A₅(60):9`**、**`B₃(48):33`**（含 3-生成元初等阿貝爾子群 `(C₂)³`） | `symlib/marks.mbt` |
 | **立方退化分解與遺傳有限集宇宙** | 全體 `65,536` 個 4-立方體 Eilenberg–Zilber 唯一分層 `[2, 8, 60, 872, 64594]`；Ackermann 位元雙射實算 `V₅ = 65,536`（`rank 4` 佔 `65,520`） | `cubical/structures`、`meta/reflect` |
 | **張量秩與精確度量幾何** | `𝔽₃` 全體 `6,561` 張量秩分佈 `[1, 128, 4032, 2400]`；MRV/MAC 分支定界實算 `2·d_GH(C₅,C₆)=1`、`2·d_GH(C₆,K₅)=2` | `tensor/`、`accel/swar/` |
-| **幾何—邏輯圖譜與猜想實驗室** | `ATLAS-01..18`（正負雙見證） · `CONJ-01..12`（6 演化族） · 5 條直覺猜想與反例修正 | `bridge/`、`conjecture/`、[`bridge/INTUITIVE_CONJECTURES.md`](bridge/INTUITIVE_CONJECTURES.md) |
+| **幾何—邏輯圖譜與猜想實驗室** | `ATLAS-01..18`（正負雙見證） · 7 條已決猜想（`CONJ-02..06/09/10`；6 演化族） · 4 條直覺猜想與反例修正 | `bridge/`、`conjecture/`、[`bridge/INTUITIVE_CONJECTURES.md`](bridge/INTUITIVE_CONJECTURES.md) |
 | **Ramsey 精確夾逼** | **`R(4,4) = 18`**、**`R(3,5) = 14`**（Paley 自補圖 `P₁₇` 下界 ＋ 遞迴上界夾死，免除 `2¹⁵³` 窮舉） | `meta/core/ramsey_ex.mbt` |
 | **WebGPU 瀏覽器硬體著色器** | **`8 / 8` 註冊 WGSL 計算著色器**（`7 / 7` 前沿套件）通過無 `f64`/無遞迴靜態可移植性審計 | `accel/webgpu_wgsl_kernels.mbt`、`webgpu/index.html` |
 | **歸納-歸納的相位差** | `Fin` 的擴張永遠落後 `Nat` 一階（第 1 階段 `Fin = ∅`、第 2 階段才出現） | `meta/iit/schema.mbt` |

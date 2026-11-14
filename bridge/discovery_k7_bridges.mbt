@@ -3,7 +3,7 @@
 // Upgrades the 6-federation (`K_6` = 15/15) platform to 7 autonomous federations
 // (`cubical`, `symlib`, `semiring`, `topos`, `scheme`, `condensed`, `discovery`)
 // with all C(7, 2) = 21 edges of the complete bridge graph `K_7` (`K7-16` .. `K7-21`)
-// and the 12-Conjecture Lakatosian Proof-and-Refutation Synthesis.
+// and the 7-entry Resolved Conjecture Atlas (Lakatosian Proof-and-Refutation Synthesis).
 
 ///|
 /// Report for the **Seven-Federation Star-Prism & Lakatosian Discovery Loop Architecture**.
@@ -40,7 +40,7 @@ pub fn seven_federation_descriptors() -> Array[FederationDescriptor] {
     canonical_normal_form: "Cayley 2x2x2 Hyperdeterminant / F_3 Rank Atlas, Radon Inversion, [E-Derive] Nullspace Basis & Implication DAG",
     categorification_role: "Multilinear Tensor/Spinor-Gauge/Radon Geometry & Lakatosian Conjecture-Discovery-Refinement Functor",
     live_health_ok: f7_ok,
-    summary: "F_3 6561-Tensor Atlas, Discrete Radon, Clifford/Gauge Spinors, VR Homology, 6 Evolution Laws, 5 Lenses & 12 Updated Conjectures",
+    summary: "F_3 6561-Tensor Atlas, Discrete Radon, Clifford/Gauge Spinors, VR Homology, 6 Evolution Laws, 5 Lenses & 7 Resolved Conjectures",
   })
   out
 }
@@ -390,7 +390,7 @@ pub fn verify_seven_federation_star_prism(
   let ok = fed_ok == 7 &&
     k7_ok == 17 &&
     syn.all_consistent &&
-    syn.total_conjectures == 12 &&
+    syn.total_conjectures == 7 &&
     syn.evolution_families_passed == 6
   SevenFederationStarPrismReport::{
     seven_federations_verified: fed_ok,

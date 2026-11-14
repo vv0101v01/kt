@@ -1,7 +1,7 @@
 ///|
 // Federation 6 (`condensed`) — Higher Structure #4 (`CondAnalyticStack`),
 // Category #2 (`CanonElimCategory`), Persistent Invariant-Deriving Ledger,
-// Five Relational Lenses, and New Conjectures Laboratory (`[Conj-1..4]`).
+// Five Relational Lenses, and the refuted conjecture `[Conj-2]`.
 
 ///|
 /// **Condensed Higher-Order Structure #4 (`凝聚高階結構 ④` — `CondAnalyticStack`)**:
@@ -81,15 +81,11 @@ pub using @gcd {
 }
 
 ///|
-/// Epistemic status of a conjecture in the Conjecture Laboratory (`新猜想`).
+/// Verdict of a resolved conjecture.
 #derive(Debug, Eq)
 pub(all) enum CondConjectureStatus {
-  /// Exhaustively verified up to explicit finite bound `n`; open in unbounded generality.
-  VerifiedUpToBound(Int32)
-  /// Refuted by an explicit machine-verified counterexample witness, yielding a sharp negative theorem!
+  /// Refuted by an explicit machine-verified counterexample witness.
   RefutedWithWitness(String)
-  /// Quantitative phase-transition crossover threshold measured directly on finite instances.
-  ThresholdMeasured(Int32, Int32)
 }
 
 ///|
@@ -99,7 +95,7 @@ pub extend CondConjectureStatus with @moonbitlang/core/debug.Debug::{to_repr}
 pub extend CondConjectureStatus with Eq::{not_equal, equal}
 
 ///|
-/// Registered entry in the New Conjectures Laboratory.
+/// A resolved conjecture together with the check that supports its verdict.
 #derive(Debug, Eq)
 pub(all) struct CondConjectureEntry {
   id : String
@@ -294,44 +290,14 @@ pub fn canon_cat_comp(g : CanonMorphism, f : CanonMorphism) -> CanonMorphism? {
 // Persistent Hash-Chained Invariant-Deriving Ledger lives in `@gcd` (`L0`) and is re-exported above.
 
 // ---------------------------------------------------------------------------
-// New Conjectures Laboratory (`新猜想`: `[Conj-1]` .. `[Conj-4]`)
+// Refuted conjecture `[Conj-2]`
 // ---------------------------------------------------------------------------
 
 ///|
-/// Evaluate all 4 New Conjectures (`[Conj-1]` .. `[Conj-4]`) with machine-checked
-/// finite-bound verification, counterexample refutation, and phase-transition measurement.
+/// Evaluate the resolved conjectures of this federation. Only `[Conj-2]` has a verdict;
+/// the historical `[Conj-1]`, `[Conj-3]` (bounded checks) and `[Conj-4]` (a threshold
+/// reading) could be neither proved nor refuted here and were removed.
 pub fn cond_evaluate_new_conjectures() -> Array[CondConjectureEntry] {
-  // [Conj-1]: Condensed Solid-Gap vs Tropical Genus p-adic Scaling Conjecture (`VerifiedUpToBound(4)`)
-  // For a metric graph of genus g in {1, 2, 3} with p-adic cover tower S_n (|S_n| = g * p^n),
-  // solid gap of Z[S]^■ -> F_p^g equals g^2 * (p^n - p), matching tropical Jacobian p-torsion exponent!
-  let mut conj1_ok = true
-  let mut conj1_cases = 0
-  for g in 1..<=3 {
-    for n in 2..<=4 {
-      let sizes : Array[Int32] = []
-      let maps : Array[@gcd.FpMat] = []
-      let mut prev = g * 2
-      sizes.push(prev)
-      for lvl in 2..<=n {
-        let cur = g * cond_int_pow(2, lvl)
-        sizes.push(cur)
-        let m = @gcd.fp_mat_make(prev, cur, 5, 0)
-        for x in 0..<cur {
-          @gcd.fp_mat_set(m, x % prev, x, 1)
-        }
-        maps.push(m)
-        prev = cur
-      }
-      let pr = CondProfinite::{ sizes, maps, p: 5, }
-      let sm = cond_solid_module_build(pr, g, 1, 2)
-      let expected_gap = g * g * (cond_int_pow(2, n) - 2)
-      if !cond_prof_valid(pr) || sm.solid_gap != expected_gap {
-        conj1_ok = false
-      }
-      conj1_cases = conj1_cases + 1
-    }
-  }
-
   // [Conj-2]: "Abelian H_1-winding == 0 suffices to fill 2-boxes in arbitrary 0-connected HITs"
   // REFUTED WITH EXPLICIT WITNESS: commutator `[a, b] = a * b * a^{-1} * b^{-1}` in `pi_1(S^1 v S^1) = F_2`
   // has abelian winding `(1 - 1, 1 - 1) = (0, 0)`, yet reduced free-group word `[+1, +2, -1, -2]` has length 4 != 0!
@@ -351,67 +317,7 @@ pub fn cond_evaluate_new_conjectures() -> Array[CondConjectureEntry] {
   }
   let reduced_comm = @gcd.ugcd_free_group_reduce(comm)
   let conj2_refuted = ab_a == 0 && ab_b == 0 && reduced_comm.length() == 4
-
-  // [Conj-3]: Normalized Binomial Ultra-Log-Concavity of Stasheff Associahedron `K_n`
-  // `f`-vectors for `n = 4..9` (`VerifiedUpToBound(9)`):
-  // Cayley polygon-dissection formula by codimension `c = n - 2 - k` non-crossing diagonals:
-  //   `f_k(K_n) = (1 / (c + 1)) * C(n - 2, c) * C(n + c, c)` for `0 <= k <= n - 2`.
-  let binom_big = (nn : Int32, kk : Int32) => {
-    if kk < 0 || kk > nn {
-      0N
-    } else {
-      let mut num = 1N
-      let mut den = 1N
-      for j in 1..<=kk {
-        num = num * BigInt::from_int(nn - kk + j)
-        den = den * BigInt::from_int(j)
-      }
-      num / den
-    }
-  }
-  let mut conj3_ok = true
-  let mut conj3_cases = 0
-  for n in 4..<=9 {
-    let fvec : Array[BigInt] = []
-    for k in 0..<=(n - 2) {
-      let c = n - 2 - k
-      let fk = binom_big(n - 2, c) *
-        binom_big(n + c, c) /
-        BigInt::from_int(c + 1)
-      fvec.push(fk)
-    }
-    for k in 1..<(n - 2) {
-      // Ultra-log-concavity: (f_k / C(n-2, k))^2 >= (f_{k-1} / C(n-2, k-1)) * (f_{k+1} / C(n-2, k+1))
-      let lhs = fvec[k] *
-        fvec[k] *
-        binom_big(n - 2, k - 1) *
-        binom_big(n - 2, k + 1)
-      let rhs = fvec[k - 1] *
-        fvec[k + 1] *
-        binom_big(n - 2, k) *
-        binom_big(n - 2, k)
-      if lhs < rhs {
-        conj3_ok = false
-      }
-      conj3_cases = conj3_cases + 1
-    }
-  }
-
-  // [Conj-4]: Bounded-Bandwidth Chain vs Crossbar Permutation Scaling Crossover (`ThresholdMeasured(2, 12)`)
-  // Bandwidth `bw = 1` chain has frontier state space `2^1 = 2` (linear ROBDD size `n + 2` even at `n = 26`),
-  // whereas crossbar bipartite matching jumps frontier state space to `2^{n/2}` (exceeding linear bound at `n = 12`, `2^6 = 64 > 2*12`).
-  let linear_at_26 = 26 + 2
-  let crossbar_at_12 = 1 << 6
-  let conj4_ok = linear_at_26 == 28 && crossbar_at_12 > 2 * 12
-
   [
-    CondConjectureEntry::{
-      id: "Conj-1",
-      title: "Condensed Solid-Gap ↔ Tropical Genus p-adic Scaling Conjecture",
-      status: VerifiedUpToBound(4),
-      instances_checked: conj1_cases,
-      consistent_with_status: conj1_ok,
-    },
     CondConjectureEntry::{
       id: "Conj-2",
       title: "Abelian H_1-Winding Sufficiency for Non-Abelian HIT 2-Box Filling (Refuted)",
@@ -421,26 +327,12 @@ pub fn cond_evaluate_new_conjectures() -> Array[CondConjectureEntry] {
       instances_checked: 1,
       consistent_with_status: conj2_refuted,
     },
-    CondConjectureEntry::{
-      id: "Conj-3",
-      title: "Stasheff Associahedron K_n Binomial Ultra-Log-Concavity Conjecture",
-      status: VerifiedUpToBound(9),
-      instances_checked: conj3_cases,
-      consistent_with_status: conj3_ok,
-    },
-    CondConjectureEntry::{
-      id: "Conj-4",
-      title: "ROBDD Frontier Treewidth Linear-to-Exponential Phase Transition",
-      status: ThresholdMeasured(1, 12),
-      instances_checked: 26,
-      consistent_with_status: conj4_ok,
-    },
   ]
 }
 
 ///|
 /// Master check for Higher Structure #4 (`CondAnalyticStack`), Category #2 (`CanonElimCategory`),
-/// Persistent Invariant-Deriving Ledger, and New Conjectures `[Conj-1..4]`.
+/// Persistent Invariant-Deriving Ledger, and the refuted conjecture `[Conj-2]`.
 pub fn cond_check_structure_4_category_2_ledger_and_conjectures() -> Bool {
   // 1. Higher Structure #4: Bipolar Analytic Stack
   let stack = cond_analytic_stack_build()
@@ -537,9 +429,9 @@ pub fn cond_check_structure_4_category_2_ledger_and_conjectures() -> Bool {
     return false
   }
 
-  // 4. All 4 New Conjectures (`[Conj-1..4]`) evaluate consistently
+  // 4. The refuted conjecture `[Conj-2]` evaluates consistently
   let conjs = cond_evaluate_new_conjectures()
-  if conjs.length() != 4 {
+  if conjs.length() != 1 {
     return false
   }
   for c in conjs {
