@@ -189,3 +189,16 @@ assert_true(@condensed.cond_ledger_verify(l2))      // 逐筆重算雜湊鏈
 moon check --deny-warn --target wasm-gc
 moon run cmd/showcase --target wasm-gc    # 印出 47/47 證書與 F2×F3×F6 三元橋中的 condensed 證書
 ```
+
+---
+
+## 8. 迭代 3：解塔、Teichmüller 提升與賬本 Merkle 承諾
+
+新增於 `condensed/core/hensel_merkle.mbt`，經 `reexport_core.mbt` 重導出（詳見 `condensed/core/README.md` §6）：
+
+* `cond_solution_tower_build(coeffs, q, levels)`：多項式在 `ℤ_q` 的根集作為射影極限，區分 Hensel 線與奇異根；
+* `cond_solution_tower_stable`：Mittag-Leffler 穩定像塔，可接 Nöbeling 基底；
+* `cond_teichmuller_lifts(q, levels)`；
+* `cond_ledger_merkle_root` / `cond_ledger_inclusion_proof` / `cond_ledger_verify_inclusion`：`conjecture` 寫入賬本的定律現在可用 `O(log n)` 路徑個別驗證。
+
+`cond_check_federation_all()` 多了第四個合取項 `cond_check_hensel_merkle_laws()`。

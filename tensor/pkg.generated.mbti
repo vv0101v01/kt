@@ -11,6 +11,8 @@ pub fn clifford_ramond_anticommutator_ok(Int32, Int32) -> Bool
 
 pub fn f3_tensor222_atlas_build() -> F3Tensor222Atlas
 
+pub fn f3_tensor222_orbit_report(F3Tensor222Atlas) -> F3OrbitReport
+
 pub fn f3_tensor_code(Tensor3) -> Int32
 
 pub fn f3_tensor_of_code(Int32) -> Tensor3
@@ -23,6 +25,8 @@ pub fn lattice_torus_gauge_moduli_verify(Int32) -> (Int32, Int32, Bool)
 
 pub fn metric_check_axioms(FiniteMetricSpace) -> Bool
 
+pub fn metric_cycle_graph(Int32) -> FiniteMetricSpace
+
 pub fn metric_diameter(FiniteMetricSpace) -> Int32
 
 pub fn metric_gh_twice_bruteforce12(FiniteMetricSpace, FiniteMetricSpace) -> Int32
@@ -32,6 +36,8 @@ pub fn metric_gh_twice_exact(FiniteMetricSpace, FiniteMetricSpace) -> Int32
 pub fn metric_vr_dominated_collapse_report(FiniteMetricSpace, Int32, Int32) -> (Int32, VrHomologyReport)
 
 pub fn metric_vr_homology_report(FiniteMetricSpace, Int32, Int32) -> VrHomologyReport
+
+pub fn metric_vr_persistence_barcode(FiniteMetricSpace, Int32) -> VrPersistenceReport?
 
 pub fn nc_chords_cross(Int32, Int32, Int32, Int32) -> Bool
 
@@ -67,15 +73,31 @@ pub fn t3_get(Tensor3, Int32, Int32, Int32) -> Int32
 
 pub fn t3_hyperdet222(Tensor3) -> Int32
 
+pub fn t3_hyperdet222_via_pencil(Tensor3, Int32) -> Int32
+
+pub fn t3_hyperdet_gl_covariance_ok(Tensor3, @gcd.FpMat, @gcd.FpMat, @gcd.FpMat) -> Bool
+
 pub fn t3_make(Int32, Int32, Int32, Int32) -> Tensor3
+
+pub fn t3_mode_product(Tensor3, Int32, @gcd.FpMat) -> Tensor3?
+
+pub fn t3_multilinear_transform(Tensor3, @gcd.FpMat, @gcd.FpMat, @gcd.FpMat) -> Tensor3?
 
 pub fn t3_of(Int32, Int32, Int32, Int32, (Int32, Int32, Int32) -> Int32) -> Tensor3
 
 pub fn t3_rank1_scaled(Int32, Array[Int32], Array[Int32], Array[Int32], Int32) -> Tensor3
 
+pub fn t3_slice_pencil_quadratic(Tensor3, Int32) -> (Int32, Int32, Int32)
+
 pub fn tensor_check_federation_laws() -> Bool
 
+pub fn tensor_check_orbit_pencil_persistence_laws(F3Tensor222Atlas) -> Bool
+
 pub fn twisted_group_clifford_cocycle_report(Int32, Int32) -> TwistedGroupReport
+
+pub fn vr_barcode_betti_at(VrPersistenceReport, Int32) -> Array[Int32]
+
+pub fn vr_barcode_matches_per_scale_ranks(FiniteMetricSpace) -> Bool
 
 // Errors
 
@@ -89,6 +111,32 @@ pub(all) struct DiscreteRadon {
 pub fn DiscreteRadon::equal(Self, Self) -> Bool
 pub fn DiscreteRadon::not_equal(Self, Self) -> Bool
 pub fn DiscreteRadon::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct F3OrbitClass {
+  size : Int32
+  representative_code : Int32
+  rank : Int32
+  hyperdet : Int32
+}
+pub fn F3OrbitClass::equal(Self, Self) -> Bool
+pub fn F3OrbitClass::not_equal(Self, Self) -> Bool
+pub fn F3OrbitClass::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct F3OrbitReport {
+  group_order : Int32
+  gl_orbits : Array[F3OrbitClass]
+  gl_s3_orbits : Array[F3OrbitClass]
+  burnside_gl_orbit_count : Int32
+  burnside_divides_exactly : Bool
+  invariants_constant_on_orbits : Bool
+  sizes_divide_group_order : Bool
+  sizes_sum_to_total : Bool
+}
+pub fn F3OrbitReport::equal(Self, Self) -> Bool
+pub fn F3OrbitReport::not_equal(Self, Self) -> Bool
+pub fn F3OrbitReport::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
 pub(all) struct F3Tensor222Atlas {
@@ -170,6 +218,20 @@ pub(all) struct VrHomologyReport {
 pub fn VrHomologyReport::equal(Self, Self) -> Bool
 pub fn VrHomologyReport::not_equal(Self, Self) -> Bool
 pub fn VrHomologyReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct VrPersistenceReport {
+  n_points : Int32
+  max_simplex_dim : Int32
+  valid_below_dim : Int32
+  simplex_count : Int32
+  bars : Array[Array[Int32]]
+  zero_length_pairs : Int32
+  cleared_columns : Int32
+}
+pub fn VrPersistenceReport::equal(Self, Self) -> Bool
+pub fn VrPersistenceReport::not_equal(Self, Self) -> Bool
+pub fn VrPersistenceReport::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

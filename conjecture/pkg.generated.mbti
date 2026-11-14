@@ -13,7 +13,13 @@ pub fn check_conjecture_discovery_federation() -> Bool
 
 pub fn check_discovery_kernel_laws() -> Bool
 
+pub fn check_polynomial_discovery_laws() -> Bool
+
 pub fn derive_invariant_relations(@kernel.ObservationRowSet, Int32, Bool) -> Array[Array[Int32]]
+
+pub fn derive_polynomial_invariants(@kernel.ObservationRowSet, Int32, Array[Int32]) -> @kernel.PolyInvariantReport?
+
+pub fn discover_polynomial_transfer_laws() -> PolynomialDiscoverySummary
 
 pub fn discover_six_evolution_laws() -> Array[EvolutionTransferReport]
 
@@ -25,7 +31,13 @@ pub fn half_gcd_rat_recon(Int32, Int32) -> (Int32, Int32)?
 
 pub fn implication_lattice_build(Int32, Int32, (Int32, Int32) -> Bool) -> @kernel.ImplicationLatticeReport
 
+pub fn monomial_basis_build(Array[String], Int32) -> @kernel.MonomialBasis
+
 pub fn normalize_signed_relation(Array[Int32], Int32) -> Array[Int32]
+
+pub fn poly_relation_to_string(Array[String], Array[Int32]) -> String
+
+pub fn polynomial_transfer_experiment(@kernel.ObservationRowSet, @kernel.ObservationRowSet, Int32, Array[Int32]) -> @kernel.PolyTransferReport?
 
 pub fn relation_in_derived_span(Array[Array[Int32]], Array[Int32], Int32) -> Bool
 
@@ -34,6 +46,8 @@ pub fn rowset_holds_exact(@kernel.ObservationRowSet, Array[Int32]) -> Bool
 pub fn rowset_holds_mod(@kernel.ObservationRowSet, Array[Int32], Int32) -> Bool
 
 pub fn synthesize_and_verify_conjecture_engine() -> ConjectureSynthesisSummary
+
+pub fn veronese_lift_rowset(@kernel.ObservationRowSet, Int32) -> @kernel.ObservationRowSet?
 
 // Errors
 
@@ -80,6 +94,34 @@ pub fn EvolutionTransferReport::not_equal(Self, Self) -> Bool
 pub fn EvolutionTransferReport::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
+pub(all) struct PolynomialDiscoverySummary {
+  reports : Array[PolynomialLawReport]
+  ledger : @gcd.CondInvariantLedger
+  merkle_root : UInt64
+  ledger_chain_ok : Bool
+  inclusion_proofs_ok : Bool
+  all_ok : Bool
+}
+pub fn PolynomialDiscoverySummary::equal(Self, Self) -> Bool
+pub fn PolynomialDiscoverySummary::not_equal(Self, Self) -> Bool
+pub fn PolynomialDiscoverySummary::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct PolynomialLawReport {
+  family_id : String
+  degree : Int32
+  law : String
+  train_nullity : Int32
+  mirages_killed : Int32
+  matches_expected : Bool
+  boundary_counterexample : Bool
+  refinement : String
+}
+pub fn PolynomialLawReport::equal(Self, Self) -> Bool
+pub fn PolynomialLawReport::not_equal(Self, Self) -> Bool
+pub fn PolynomialLawReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
 pub(all) struct UpdatedConjectureRecord {
   id : String
   federations_bridged : Array[String]
@@ -97,6 +139,12 @@ pub using @kernel {type EpistemicLensKind}
 
 pub using @kernel {type ImplicationLatticeReport}
 
+pub using @kernel {type MonomialBasis}
+
 pub using @kernel {type ObservationRowSet}
+
+pub using @kernel {type PolyInvariantReport}
+
+pub using @kernel {type PolyTransferReport}
 
 // Traits

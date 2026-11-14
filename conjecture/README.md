@@ -168,3 +168,23 @@ let summary = @conjecture.synthesize_and_verify_conjecture_engine()
 ```bash
 moon run cmd/showcase --target wasm-gc               # Star-Prism & K_9 段落：conjectures=12/12, evolve=6/6, K9=36/36
 ```
+
+---
+
+## 9. 迭代 3：`polynomial_transfer_laws.mbt`（381 行）
+
+原有六條演化定律把參數固定（`p = 3`、`n = 5` …），發現的是數值係數的線性關係。這一輪把**參數本身當成觀測欄**，引擎必須把定律找成參數的多項式：
+
+| 家族 | 發現的定律 | 訓練 → 轉移 | 被消除的幻象維數 | 邊界反例 | 來源 |
+|---|---|---|---:|---|---|
+| `[E-Poly-Radon]` | `c − n·b − a² = 0`（`a = Σf`、`b = Σf²`、`c = Σ(Rf)²`） | `n ∈ {2,3}` → `n = 5` | 1 | `n = 4`（合成數）失效 | `@tensor` Radon |
+| `[E-Poly-Hensel]` | `w − q·u = 0`（`x² ≡ 0 mod q^k` 的根數 `|S_{k+2}| = q·|S_k|`） | `q ∈ {2,3}` → `q = 5` | 3 | `x² − 1`（單根）時 `w = u` | `@condensed` 解塔 |
+| `[E-Barcode]` | `m − 3·d = 0`（`C_m` 圓類的死亡尺度 `d`） | `m ∈ {6,9}` → `m = 12` | 0 | `3 ∤ m` 時失效 | `@tensor` 條碼 |
+
+`[E-Barcode]` 另做 Lakatos 式修補：加入餘數欄 `r = (−m) mod 3` 後，同一引擎在 `m = 6..12` 上找到精煉定律 `m − 3·d + r = 0`（即 `d = ⌈m/3⌉`）。
+
+三條倖存定律各以一筆 `kind = 1` 條目寫入 `CondInvariantLedger`，再加一筆 `kind = 2` 定理條目；鏈驗證之外，每筆都通過 `@condensed.cond_ledger_verify_inclusion` 的 Merkle 路徑驗證。
+
+入口：`discover_polynomial_transfer_laws() -> PolynomialDiscoverySummary`；`check_conjecture_discovery_federation()` 已要求其 `all_ok`。12 條猜想圖譜 `CONJ-01..12` 與六條線性定律的計數不變。
+
+**範圍說明**：這些是有限樣本上的精確整數關係加上樣本外檢驗，屬於「發現並通過轉移」的證據，不是對所有 `n`、`q`、`m` 的證明。

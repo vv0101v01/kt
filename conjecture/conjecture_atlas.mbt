@@ -447,5 +447,6 @@ pub fn synthesize_and_verify_conjecture_engine() -> ConjectureSynthesisSummary {
 ///|
 /// Boolean health probe for Federation 7 (`discovery`: `tensor` + `conjecture`).
 pub fn check_conjecture_discovery_federation() -> Bool {
-  synthesize_and_verify_conjecture_engine().all_consistent
+  synthesize_and_verify_conjecture_engine().all_consistent &&
+  discover_polynomial_transfer_laws().all_ok
 }

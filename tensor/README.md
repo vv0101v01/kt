@@ -163,3 +163,45 @@ assert_true(rep.homology_cohomology_dual)      // betti_homology == betti_cohomo
 moon test tensor --target wasm-gc
 ```
 主檢核：`tensor_check_federation_laws()`。
+
+---
+
+## 9. 迭代 3：`orbit_pencil_persistence.mbt`（763 行）
+
+工具鏈：`moon 0.1.20261104` / `moonc v0.10.20`。新檔只依賴 `gcd`，架構邊不變。
+
+| 標籤 | 內容 | 公開入口 |
+|---|---|---|
+| `[T-GL-Covariance]` | mode-`k` 乘積 `g ·_k T` 與三軸同時作用；`Det((g0,g1,g2)·T) = det(g0)² det(g1)² det(g2)² · Det(T)`，奇異矩陣也成立（右邊為 0）。取代只驗 6 個 shear 的舊判準 | `t3_mode_product`、`t3_multilinear_transform`、`t3_hyperdet_gl_covariance_ok` |
+| `[T-Schlafli-Pencil]` | 超行列式的第二條獨立路徑：切片束 `det(x·T₀ + y·T₁) = ax² + bxy + cy²` 的判別式 `b² − 4ac`。在 `𝔽₃` 全部 6,561 個張量、三個軸向上逐一與 Cayley 12 項式對照 | `t3_slice_pencil_quadratic`、`t3_hyperdet222_via_pencil` |
+| `[T-F3-Orbits]` | `𝔽₃^{2×2×2}` 在 `GL₂(𝔽₃)³`（階 110,592）與 `GL₂(𝔽₃)³ ⋊ S₃` 下的完整軌道分類；union-find 計數再以 Burnside 引理按共軛類（`8³ = 512` 次秩計算）獨立重算 | `f3_tensor222_orbit_report` |
+| `[T-VR-Barcode]` | `𝔽₂` 上 Vietoris–Rips 持續同調條碼：位元壓縮欄 + Chen–Kerber clearing，一次約化得到所有尺度的 Betti 數；`n ≤ 16`，可截斷單形維度 | `metric_vr_persistence_barcode`、`vr_barcode_betti_at`、`vr_barcode_matches_per_scale_ranks`、`metric_cycle_graph` |
+
+### 軌道分類結果（執行時算出，非引用）
+
+| 軌道 | 大小 | 秩 | `Det` |
+|---|---:|---:|---:|
+| 零 | 1 | 0 | 0 |
+| 純張量 | 128 | 1 | 0 |
+| 三個「單軸退化」類（`S₃` 下合併為一個 576） | 192 × 3 | 2 | 0 |
+| GHZ 類 | 3,456 | 2 | 1 |
+| W 類（Segre 切叢） | 1,536 | 3 | 0 |
+| `𝔽₉` 扭類 | 864 | 3 | 2（非平方） |
+
+`GL` 軌道 8 個（Burnside 亦得 8），加 `S₃` 後 6 個；`(秩, Det)` 完全分離這 6 個軌道。
+
+**更正**：`tensor_check_federation_laws` 舊註解把秩 3 的拆分寫成「864 個 `Det = 0` + 1536 個 `Det ≠ 0`」，方向相反。正確為 **1536（W 類，`Det = 0`）+ 864（扭類，`Det ≠ 0`）**；穩定子階 `110592/864 = 128 = |{(a,b,c) ∈ (𝔽₉ˣ)³ : abc = 1}| · 2` 可交叉核對。註解已改，數值現由第 6 節定律釘住。
+
+### 既有程式的優化
+
+`metric_vr_homology_report`：單形改以頂點位元遮罩儲存，團判定用鄰域遮罩，面的列號由 `index_of[mask]` 直接查表。邊界矩陣組裝由「每個面線性掃描 `C_{k-1}`」降為 `O(Σ_k k·|C_k|)`；輸出逐欄位不變（四個 `cmd` 的輸出與改動前逐位元相同）。
+
+### 條碼範例
+
+```moonbit
+let c6 = @tensor.metric_cycle_graph(6)
+let bars = @tensor.metric_vr_persistence_barcode(c6, 5)
+// bars: [0,0,1]×5、[0,0,-1]、[1,1,2]（圓）、[2,2,3]（尺度 2 的八面體 S²）
+```
+
+主檢核：`tensor_check_orbit_pencil_persistence_laws(atlas)`，已接入 `tensor_check_federation_laws()` 第 6 節。

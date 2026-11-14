@@ -34,3 +34,20 @@
 * 上游依賴：`gcd` (`L0`)、`accel/swar` (`L0`)、`tensor` (`L2`)。
 * 下游消費者：`conjecture` (`L5`)、`bridge` (`L8`)（支撐 `F7 → F9 → F4 → F1` 四聯邦自動晉升鏈）。
 * 驗證方式：`moon check --deny-warn --target wasm-gc` 零警告；由 `verify.mbt`、`bridge/meta_k9_unification.mbt` 與 `cmd/showcase` 常駐驗證。
+
+---
+
+## 5. 迭代 3：`polynomial_discovery.mbt`（507 行）
+
+`derive_invariant_relations` 只能發現對觀測欄**線性**的關係。新檔先做 `d` 次 Veronese 提升（每個總次數 `≤ d` 的單項式一欄），再交給同一個零空間引擎，於是可發現 `z − x·y = 0`、`25 − x² − y² = 0` 這類多項式定律。
+
+| 標籤 | 內容 | 公開入口 |
+|---|---|---|
+| `[E-Derive-Poly]` | 分次單項式基底、Veronese 提升（`Int32` 溢位或超過 256 個單項式即回 `None`）、多項式關係發現與字串化 | `monomial_basis_build`、`veronese_lift_rowset`、`derive_polynomial_invariants`、`poly_relation_to_string` |
+| `[P-Inherit]` | `d` 次關係若只是「低次關係 × 變數」就不算新發現；報告逐次數給出 `nullity / inherited / new` | `PolyInvariantReport` |
+| `[P-Multi-Prime]` | 零化度須在多個質數下一致，否則 `primes_agree = false` | 同上 |
+| `[P-Transfer-Poly]` | 樣本外檢驗在**子空間**層級進行（訓練列 + 轉移列疊起來的零空間），不是逐個基底向量過濾——真定律可能以「定律 + 幻象」的形式藏在某個基底向量裡 | `polynomial_transfer_experiment`、`PolyTransferReport` |
+
+另一項優化：`derive_invariant_relations` 的線性獨立判定由「每個候選做兩次完整 `fp_rank`」改為增量階梯基底（`FpEchelon::insert`，每個候選一次約化），接受的關係集合不變。
+
+自檢 `check_polynomial_discovery_laws()`（已併入 `check_discovery_kernel_laws()`）：乘積律、線性律的四個繼承二次關係（`new = 0`）、帶常數項的圓錐、`t ∈ {2,3}` 訓練產生的插值幻象 `(t−2)(t−3) = 0` 被 `t = 5` 消除、以及溢位／欄位不符的拒絕。

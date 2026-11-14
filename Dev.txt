@@ -1007,3 +1007,25 @@ Dev.txt（本節）、agent.md、agent.v2.md、lean/README.md、lean/UNIVERSAL.m
 - GitHub Actions run **43198027200**（head `d46962b`）→ **completed success**（https://github.com/vv0101v01/kt/actions/runs/43198027200）。
 - 推送用暫時 GIT_ASKPASS PAT，输出已 redact，token 檔即刪；`.git/config` 無 token。
 - 誠實結論：K₁₀ 不再宣稱 45/45；目前 40/45 active，5 條中止並公开理由。冇做假、冇硬砌全綠。
+
+## 迭代 3（2026-11-14）：張量層／凝聚層／猜想層能力提升
+
+### 工具鏈
+- 官方 install 腳本取得 moon 0.1.20261104 / moonc v0.10.20（2026-11-05）。倉庫語法已是最新（`#derive` 前置、`Int32`、`pub extend … with`）；新程式碼遇到的唯一棄用是 `StringBuilder::new()` → `StringBuilder()`。
+
+### 新增（4 檔，2,230 行）
+- `tensor/orbit_pencil_persistence.mbt`：mode 乘積與 GL 協變、Schläfli 切片束判別式、F_3^{2x2x2} 軌道分類（union-find + Burnside）、F_2 VR 持續同調條碼。
+- `condensed/core/hensel_merkle.mbt`：解塔與 Hensel 線、Mittag-Leffler 穩定像塔、Teichmüller 提升、賬本 Merkle 根與 O(log n) 包含證明。
+- `conjecture/kernel/polynomial_discovery.mbt`：Veronese 提升多項式不變量發現、繼承／新增分離、多質數一致性、子空間轉移。
+- `conjecture/polynomial_transfer_laws.mbt`：三條以參數為變數的多項式演化定律 + Lakatos 修補 + Merkle 封存。
+
+### 既有程式修改
+- `metric_vr_homology_report`：位元遮罩單形與查表組裝邊界矩陣（輸出不變）。
+- `derive_invariant_relations`：增量階梯基底取代重複 `fp_rank`（輸出不變）。
+- 三個聯邦檢核入口各接入新定律：`tensor_check_federation_laws`、`cond_check_federation_all`、`check_conjecture_discovery_federation`、`check_discovery_kernel_laws`。
+- 更正 `tensor_check_federation_laws` 註解：秩 3 拆分應為 1536（Det=0）+ 864（Det≠0），舊註解寫反。
+
+### 本地驗收
+- `moon check --deny-warn --target wasm-gc`、`moon build --target wasm-gc`、`moon info`、`gen_laws.py`（無差異）、`arch_check.py` 全過。
+- `cmd/metatheory` 631/631、`cmd/ualg` 167/167、`cmd/main` 139/139、`cmd/showcase` exit 0；四者 stdout 與改動前逐位元相同。
+- 未做：未 push、未跑 GitHub Actions；未量測 VR／獨立判定優化的實際耗時（只改了複雜度）；`cmd/*` 未新增展示段落，新定律只透過聯邦檢核入口執行。

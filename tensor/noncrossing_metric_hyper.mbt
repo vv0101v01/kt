@@ -887,29 +887,37 @@ pub fn metric_vr_homology_report(
   p : Int32,
 ) -> VrHomologyReport {
   let n = ms.n
-  let by_dim : Array[Array[Array[Int32]]] = Array::makei(n, _ => [])
-  let total_masks = 1 << n
-  for mask in 1..<total_masks {
-    let verts : Array[Int32] = []
-    for v in 0..<n {
-      if ((mask >> v) & 1) == 1 {
-        verts.push(v)
+  // Bitmask flag-complex enumeration: `adj[v]` is the closed threshold neighbourhood of `v`,
+  // and `mask` is a clique iff every member sees the whole mask. Each simplex is stored as
+  // its vertex bitmask and `index_of[mask]` gives its position inside its dimension, so the
+  // boundary assembly is `O(sum_k k * |C_k|)` instead of a linear scan of `C_{k-1}` per face.
+  let adj : Array[Int32] = Array::makei(n, i => {
+    let mut m = 0
+    for j in 0..<n {
+      if ms.dist[i][j] <= scale_r {
+        m = m | (1 << j)
       }
     }
+    m | (1 << i)
+  })
+  let total_masks = 1 << n
+  let by_dim : Array[Array[Int32]] = Array::makei(n, _ => [])
+  let index_of : Array[Int32] = Array::make(total_masks, -1)
+  for mask in 1..<total_masks {
     let mut clique = true
-    for i in 0..<verts.length() {
-      for j in (i + 1)..<verts.length() {
-        if ms.dist[verts[i]][verts[j]] > scale_r {
-          clique = false
-          break
-        }
-      }
-      if !clique {
+    let mut rest = mask
+    while rest != 0 {
+      let v = rest.ctz()
+      rest = rest & (rest - 1)
+      if (mask & adj[v]) != mask {
+        clique = false
         break
       }
     }
     if clique {
-      by_dim[verts.length() - 1].push(verts)
+      let d = mask.popcnt() - 1
+      index_of[mask] = by_dim[d].length()
+      by_dim[d].push(mask)
     }
   }
 
@@ -917,25 +925,18 @@ pub fn metric_vr_homology_report(
   let bd : Array[@gcd.FpMat] = []
   for k in 1..<n {
     let ck = by_dim[k]
-    let ckm1 = by_dim[k - 1]
-    let m = @gcd.fp_mat_make(ckm1.length(), ck.length(), p, 0)
+    let m = @gcd.fp_mat_make(by_dim[k - 1].length(), ck.length(), p, 0)
     for col in 0..<ck.length() {
       let simp = ck[col]
-      for omit in 0..<simp.length() {
-        let face : Array[Int32] = []
-        for idx in 0..<simp.length() {
-          if idx != omit {
-            face.push(simp[idx])
-          }
-        }
-        // Locate `face` in `ckm1`
-        for row in 0..<ckm1.length() {
-          if ckm1[row] == face {
-            let sign = if omit % 2 == 0 { 1 } else { p - 1 }
-            @gcd.fp_mat_set(m, row, col, sign)
-            break
-          }
-        }
+      let mut rest = simp
+      let mut omit = 0
+      while rest != 0 {
+        let v = rest.ctz()
+        rest = rest & (rest - 1)
+        let row = index_of[simp & (1 << v).lnot()]
+        let sign = if omit % 2 == 0 { 1 } else { p - 1 }
+        @gcd.fp_mat_set(m, row, col, sign)
+        omit = omit + 1
       }
     }
     bd.push(m)
@@ -1073,7 +1074,8 @@ pub fn tensor_check_federation_laws() -> Bool {
   // 1. F_3^{2x2x2} 6,561-tensor classification & SL_2 / S_3 hyperdeterminant invariance
   let atlas = f3_tensor222_atlas_build()
   // Rank counts over F_3^{2x2x2}: rank 0 = 1, rank 1 = 128, rank 2 = 4032 (576 subspace + 3456 F_3-split),
-  // rank 3 = 2400 (864 Segre-tangent Det=0 + 1536 F_9/F_3 Galois-twisted Det!=0)!
+  // rank 3 = 2400 (1536 Segre-tangent W-class Det=0 + 864 F_9/F_3 Galois-twisted Det!=0;
+  // the split is recomputed by `f3_tensor222_orbit_report` and pinned in section 6)!
   if atlas.total_tensors != 6561 ||
     atlas.rank_counts[0] != 1 ||
     atlas.rank_counts[1] != 128 ||
@@ -1282,5 +1284,6 @@ pub fn tensor_check_federation_laws() -> Bool {
       }
     }
   }
-  true
+  // 6. Iteration 3: GL covariance, Schläfli pencil, F_3 orbit classification, VR barcodes
+  tensor_check_orbit_pencil_persistence_laws(atlas)
 }

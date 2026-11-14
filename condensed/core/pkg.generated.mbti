@@ -36,15 +36,25 @@ pub fn cond_chain_locally_constant(CondProfinite, Int32) -> CondChain
 
 pub fn cond_chain_tensor(CondChain, CondChain) -> CondChain
 
+pub fn cond_check_hensel_merkle_laws() -> Bool
+
 pub fn cond_check_structure_3_and_spectral_homotopy() -> Bool
 
 pub fn cond_check_structures_1_2_and_category_1() -> Bool
 
 pub fn cond_int_pow(Int32, Int32) -> Int32
 
+pub fn cond_ledger_inclusion_proof(@gcd.CondInvariantLedger, Int32) -> Array[UInt64]?
+
+pub fn cond_ledger_merkle_root(@gcd.CondInvariantLedger) -> UInt64
+
+pub fn cond_ledger_verify_inclusion(UInt64, Int32, @gcd.CondLedgerEntry, Array[UInt64]) -> Bool
+
 pub fn cond_liquid_subadditive_check(Int32, Int32) -> Bool
 
 pub fn cond_mittag_leffler_holds(CondChain) -> Bool
+
+pub fn cond_poly_eval_mod(Array[Int32], Int32, Int32) -> Int32
 
 pub fn cond_pro_morphism_valid(CondProMorphism) -> Bool
 
@@ -64,9 +74,17 @@ pub fn cond_prof_zq(Int32, Int32, Int32) -> CondProfinite
 
 pub fn cond_solid_module_build(CondProfinite, Int32, Int32, Int32) -> CondSolidModule
 
+pub fn cond_solution_tower_build(Array[Int32], Int32, Int32) -> CondSolutionTower?
+
+pub fn cond_solution_tower_ml_defect(CondSolutionTower) -> Array[Int32]
+
+pub fn cond_solution_tower_stable(CondSolutionTower) -> CompactProfiniteTower?
+
 pub fn cond_spectral_sheaf_build(String, Array[Int32], Bool, @gcd.FpMat, @gcd.FpMat) -> CondSpectralSheaf
 
 pub fn cond_steenrod_adem_pair(Int32, Int32) -> Array[Array[Int32]]
+
+pub fn cond_teichmuller_lifts(Int32, Int32) -> Array[Int32]?
 
 pub fn koszul_tor_report(Int32, Int32) -> KoszulTorReport
 
@@ -193,6 +211,20 @@ pub(all) struct CondSolidModule {
 pub fn CondSolidModule::equal(Self, Self) -> Bool
 pub fn CondSolidModule::not_equal(Self, Self) -> Bool
 pub fn CondSolidModule::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct CondSolutionTower {
+  q : Int32
+  levels : Int32
+  coeffs : Array[Int32]
+  roots : Array[Array[Int32]]
+  stable_image_sizes : Array[Int32]
+  unit_derivative_roots : Int32
+  unit_threads_unique : Bool
+}
+pub fn CondSolutionTower::equal(Self, Self) -> Bool
+pub fn CondSolutionTower::not_equal(Self, Self) -> Bool
+pub fn CondSolutionTower::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
 pub(all) struct CondSpectralSheaf {

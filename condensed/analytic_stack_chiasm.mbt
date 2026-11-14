@@ -555,5 +555,6 @@ pub fn cond_check_structure_4_category_2_ledger_and_conjectures() -> Bool {
 pub fn cond_check_federation_all() -> Bool {
   cond_check_structures_1_2_and_category_1() &&
   cond_check_structure_3_and_spectral_homotopy() &&
-  cond_check_structure_4_category_2_ledger_and_conjectures()
+  cond_check_structure_4_category_2_ledger_and_conjectures() &&
+  cond_check_hensel_merkle_laws()
 }

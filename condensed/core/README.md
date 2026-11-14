@@ -43,3 +43,25 @@ L0 gcd + L0 accel/swar ──► L1 condensed/core ──► L4 condensed (pub u
 ## 5. 驗證方式
 
 `moon check --deny-warn --target wasm-gc` 零警告通過；由 `verify.mbt`、`bridge/f2_f3_f6_triad_bridge.mbt` 與 `cmd/showcase` 持續執行驗證。
+
+---
+
+## 6. 迭代 3：`hensel_merkle.mbt`（579 行）
+
+| 標籤 | 內容 | 公開入口 |
+|---|---|---|
+| `[T-Hensel-Thread]` | 解塔 `S_n = { x mod qⁿ : f(x) ≡ 0 }`：逐層提升根（每層 `O(q·|S_n|)`，不是 `O(qⁿ)`）；導數為單位的根在每一層恰有一個提升 | `cond_solution_tower_build`、`cond_poly_eval_mod` |
+| `[T-ML-Stable-Image]` | 原始解塔的轉移映射一般**不**滿射；穩定像 `Im(S_L → S_n)` 構成合法的 `CompactProfiniteTower`，可直接送入 Nöbeling／固態對偶 | `cond_solution_tower_stable`、`cond_solution_tower_ml_defect` |
+| `[T-Teichmuller]` | `x^{q−1} − 1` 在 `ℤ_q` 的根：恰 `q − 1` 個、乘法封閉、雙射約化到 `𝔽_qˣ`、`ω^q = ω` | `cond_teichmuller_lifts` |
+| `[T-Ledger-Merkle]` | `CondInvariantLedger` 的 Merkle 根（連同條目數一併封存）；單筆條目以 `O(log n)` 個雜湊驗證，不必重走整條鏈 | `cond_ledger_merkle_root`、`cond_ledger_inclusion_proof`、`cond_ledger_verify_inclusion` |
+
+實測見證（`cond_check_hensel_merkle_laws`）：
+
+* `x² − 2`：`ℤ₇` 中兩條 Hensel 線，算到 `7¹⁰`，兩根互為相反數且平方確為 2；`ℤ₅` 中無根。
+* `x²` 於 `ℤ₃`：`|S_n| = 1, 3, 3, 9, 9, 27` 持續增長，但極限只有 `0` 一點；Mittag-Leffler 缺陷 `[0, 2, 2, 6, 0, 0]`。
+* `x² = x`：`ℤ₅` 兩個冪等元；底 `q = 6` 時四個（`ℤ₂ × ℤ₃`），其穩定塔通過 `verify_nobeling_free_solid_duality`。
+* 零多項式、`q^levels > 2³⁰`、`q < 2` 一律回傳 `None`，不會靜默截斷。
+
+**範圍說明**：`stable_image_sizes` 在有限深度 `L` 只是 `ℤ_q` 根數的上界（靠近頂層的幾層尚未穩定，如上例的 `3, 9, 27`）；`unit_derivative_roots` 才是 Hensel 保證的精確下界。Merkle 摘要是 `@swar` 的 64 位元混合雜湊，提供防誤改的證據，不是密碼學承諾。
+
+`condensed/reexport_core.mbt` 已重導出以上全部入口；`cond_check_federation_all()` 已納入 `cond_check_hensel_merkle_laws()`。

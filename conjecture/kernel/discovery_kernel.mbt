@@ -242,25 +242,18 @@ pub fn derive_invariant_relations(
     }
   }
 
+  // Independence is tracked with an incremental echelon basis: one reduction per
+  // candidate instead of two full rank computations over the accepted set.
   let accepted : Array[Array[Int32]] = []
+  let echelon = FpEchelon::{ p, rows: [], pivots: [], }
   for cand in pool {
     let ok = if exact {
       rowset_holds_exact(rs, cand)
     } else {
       rowset_holds_mod(rs, cand, p)
     }
-    if ok {
-      let test_rows = accepted.copy()
-      test_rows.push(cand)
-      let prev_rk = if accepted.length() == 0 {
-        0
-      } else {
-        @gcd.fp_rank(@gcd.fp_mat_from_rows(accepted, p))
-      }
-      let next_rk = @gcd.fp_rank(@gcd.fp_mat_from_rows(test_rows, p))
-      if next_rk > prev_rk {
-        accepted.push(cand)
-      }
+    if ok && echelon.insert(cand) {
+      accepted.push(cand)
     }
   }
   accepted
@@ -414,5 +407,8 @@ pub fn check_discovery_kernel_laws() -> Bool {
       }
     }
   }
-  lat.implies[0][1] && !lat.implies[1][0] && lat.counterexamples[1][0] >= 0
+  lat.implies[0][1] &&
+  !lat.implies[1][0] &&
+  lat.counterexamples[1][0] >= 0 &&
+  check_polynomial_discovery_laws()
 }

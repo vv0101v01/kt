@@ -48,6 +48,8 @@ pub fn cond_chain_tensor(@vv0101v01/cubical-hermitian/condensed/core.CondChain, 
 
 pub fn cond_check_federation_all() -> Bool
 
+pub fn cond_check_hensel_merkle_laws() -> Bool
+
 pub fn cond_check_structure_3_and_spectral_homotopy() -> Bool
 
 pub fn cond_check_structure_4_category_2_ledger_and_conjectures() -> Bool
@@ -64,13 +66,21 @@ pub fn cond_ledger_audit_laws(@gcd.CondInvariantLedger) -> (Int32, Int32)
 
 pub fn cond_ledger_derive_invariants(@gcd.CondInvariantLedger) -> @gcd.CondInvariantLedger
 
+pub fn cond_ledger_inclusion_proof(@gcd.CondInvariantLedger, Int32) -> Array[UInt64]?
+
+pub fn cond_ledger_merkle_root(@gcd.CondInvariantLedger) -> UInt64
+
 pub fn cond_ledger_new() -> @gcd.CondInvariantLedger
 
 pub fn cond_ledger_verify(@gcd.CondInvariantLedger) -> Bool
 
+pub fn cond_ledger_verify_inclusion(UInt64, Int32, @gcd.CondLedgerEntry, Array[UInt64]) -> Bool
+
 pub fn cond_liquid_subadditive_check(Int32, Int32) -> Bool
 
 pub fn cond_mittag_leffler_holds(@vv0101v01/cubical-hermitian/condensed/core.CondChain) -> Bool
+
+pub fn cond_poly_eval_mod(Array[Int32], Int32, Int32) -> Int32
 
 pub fn cond_pro_morphism_valid(@vv0101v01/cubical-hermitian/condensed/core.CondProMorphism) -> Bool
 
@@ -116,9 +126,17 @@ pub fn cond_quaternion_axis_report() -> CondQuaternionAxisReport
 
 pub fn cond_solid_module_build(@vv0101v01/cubical-hermitian/condensed/core.CondProfinite, Int32, Int32, Int32) -> @vv0101v01/cubical-hermitian/condensed/core.CondSolidModule
 
+pub fn cond_solution_tower_build(Array[Int32], Int32, Int32) -> @vv0101v01/cubical-hermitian/condensed/core.CondSolutionTower?
+
+pub fn cond_solution_tower_ml_defect(@vv0101v01/cubical-hermitian/condensed/core.CondSolutionTower) -> Array[Int32]
+
+pub fn cond_solution_tower_stable(@vv0101v01/cubical-hermitian/condensed/core.CondSolutionTower) -> @vv0101v01/cubical-hermitian/condensed/core.CompactProfiniteTower?
+
 pub fn cond_spectral_sheaf_build(String, Array[Int32], Bool, @gcd.FpMat, @gcd.FpMat) -> @vv0101v01/cubical-hermitian/condensed/core.CondSpectralSheaf
 
 pub fn cond_steenrod_adem_pair(Int32, Int32) -> Array[Array[Int32]]
+
+pub fn cond_teichmuller_lifts(Int32, Int32) -> Array[Int32]?
 
 pub fn koszul_tor_report(Int32, Int32) -> @vv0101v01/cubical-hermitian/condensed/core.KoszulTorReport
 
@@ -304,6 +322,8 @@ pub using @vv0101v01/cubical-hermitian/condensed/core {type CondProMorphism}
 pub using @vv0101v01/cubical-hermitian/condensed/core {type CondProfinite}
 
 pub using @vv0101v01/cubical-hermitian/condensed/core {type CondSolidModule}
+
+pub using @vv0101v01/cubical-hermitian/condensed/core {type CondSolutionTower}
 
 pub using @vv0101v01/cubical-hermitian/condensed/core {type CondSpectralSheaf}
 

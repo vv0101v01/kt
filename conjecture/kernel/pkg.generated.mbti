@@ -8,19 +8,31 @@ import {
 // Values
 pub fn check_discovery_kernel_laws() -> Bool
 
+pub fn check_polynomial_discovery_laws() -> Bool
+
 pub fn derive_invariant_relations(ObservationRowSet, Int32, Bool) -> Array[Array[Int32]]
+
+pub fn derive_polynomial_invariants(ObservationRowSet, Int32, Array[Int32]) -> PolyInvariantReport?
 
 pub fn half_gcd_rat_recon(Int32, Int32) -> (Int32, Int32)?
 
 pub fn implication_lattice_build(Int32, Int32, (Int32, Int32) -> Bool) -> ImplicationLatticeReport
 
+pub fn monomial_basis_build(Array[String], Int32) -> MonomialBasis
+
 pub fn normalize_signed_relation(Array[Int32], Int32) -> Array[Int32]
+
+pub fn poly_relation_to_string(Array[String], Array[Int32]) -> String
+
+pub fn polynomial_transfer_experiment(ObservationRowSet, ObservationRowSet, Int32, Array[Int32]) -> PolyTransferReport?
 
 pub fn relation_in_derived_span(Array[Array[Int32]], Array[Int32], Int32) -> Bool
 
 pub fn rowset_holds_exact(ObservationRowSet, Array[Int32]) -> Bool
 
 pub fn rowset_holds_mod(ObservationRowSet, Array[Int32], Int32) -> Bool
+
+pub fn veronese_lift_rowset(ObservationRowSet, Int32) -> ObservationRowSet?
 
 // Errors
 
@@ -51,6 +63,18 @@ pub fn ImplicationLatticeReport::not_equal(Self, Self) -> Bool
 pub fn ImplicationLatticeReport::to_repr(Self) -> @debug.Repr
 
 #derive(Eq, @debug.Debug)
+pub(all) struct MonomialBasis {
+  num_vars : Int32
+  degree : Int32
+  exponents : Array[Array[Int32]]
+  names : Array[String]
+  prefix_counts : Array[Int32]
+}
+pub fn MonomialBasis::equal(Self, Self) -> Bool
+pub fn MonomialBasis::not_equal(Self, Self) -> Bool
+pub fn MonomialBasis::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
 pub(all) struct ObservationRowSet {
   name : String
   columns : Array[String]
@@ -59,6 +83,36 @@ pub(all) struct ObservationRowSet {
 pub fn ObservationRowSet::equal(Self, Self) -> Bool
 pub fn ObservationRowSet::not_equal(Self, Self) -> Bool
 pub fn ObservationRowSet::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct PolyInvariantReport {
+  degree : Int32
+  monomials : Array[String]
+  nullity_by_degree : Array[Int32]
+  inherited_by_degree : Array[Int32]
+  new_by_degree : Array[Int32]
+  relations : Array[Array[Int32]]
+  relations_complete : Bool
+  primes_agree : Bool
+}
+pub fn PolyInvariantReport::equal(Self, Self) -> Bool
+pub fn PolyInvariantReport::not_equal(Self, Self) -> Bool
+pub fn PolyInvariantReport::to_repr(Self) -> @debug.Repr
+
+#derive(Eq, @debug.Debug)
+pub(all) struct PolyTransferReport {
+  degree : Int32
+  monomials : Array[String]
+  train_nullity : Int32
+  surviving_nullity : Int32
+  mirages_killed : Int32
+  surviving : Array[Array[Int32]]
+  surviving_complete : Bool
+  primes_agree : Bool
+}
+pub fn PolyTransferReport::equal(Self, Self) -> Bool
+pub fn PolyTransferReport::not_equal(Self, Self) -> Bool
+pub fn PolyTransferReport::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 
