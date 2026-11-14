@@ -1306,3 +1306,16 @@ Linux x86_64、**2 logical CPU** 沙盒；固定工具鏈／相同已建 debug W
 4. 公開 report／callback／precomputed records 是可信行程內資料，不是防偽證明。負控制驗的是實作協定及既有獨立路徑，不能對任意不可信 native program 的輸出建立數學可靠性。
 5. 本次沒有改 kernel conversion、open homotopy 證書邊界，未執行 native／release／JS／實體GPU／Lean kernel。104 個 meta law 函式不變，沒有用樣本取代完整已列檢核。
 6. 此段寫入本地實作提交時，push／GitHub Actions 尚未執行；**遠端回執完成後另在本章追加具體 commit／run URL，不把 pending 當綠燈**。本次使用者已明確授權推送 `vv0101v01/kt`；不做 force push，不把憑證寫入倉庫／報告。
+
+
+### 5. 遠端推送及 GitHub Actions 回執（2026-11-14 UTC）
+
+上節的「本地實作提交時尚未推送」狀態現由本回執取代：
+
+- **14:58 UTC 非強制 fast-forward 推送**：`main` 由 `2d8f6866b44d01f291ab5ea07bfcc3732afdf652` → **`87e4d6a625a2919cd5b35afe9e794bed2778c4ad`**，包含前項審計 commit `f21ebbcc9be143372066a5630452e8978c0fcf18`。推送前 fetch／ancestor 閘、推送後 REST head 比對均通過；沒有 force push。
+- **實作 CI 已 completed / success**：[GitHub Actions run 43607632185](https://github.com/vv0101v01/kt/actions/runs/43607632185)，event=push、head SHA 與上列實作一致。不是只看到 workflow 檔案或已排隊便宣稱完成。
+- 已下載核對完整 CI logs：正式 pin `v0.10.20+65efd5b93`、deny-warn／build／公開介面／gen_laws／文檔漂移閘通過；**Meta631/631、Ualg167/167、Showcase50/50、registry39/39、checker15/15**；架構為 **327 .mbt／204558行**。
+- 已下載 `theorem-pipeline-events` artifact（ID `14119111666`），獨立核對139個唯一 result、全數true；summary **completed=passed=requested=total=139、deferred=[]、worker_errors=[]、full_verified=true**。遠端時間不是同一台主機，沒有混入前文三輪本地加速比較。
+- 回執原文與下載檔在工作區 `perf-evidence/github-ci-implementation*`；下載 redirect 沒有攜帶 GitHub PAT，來源／證據均查無本次憑證。Git 傳輸第一次誤把 `GIT_CURL_VERBOSE=0` 當停用，實際仍顯示了 **redacted** transport diagnostics；原始憑證未被顯示，後續明確 unset 並只保留 fast-forward 回執。
+
+本小節是實作完成後的 **documentation-only 回執**；提交回執亦會再次觸發同一套 CI，最終交付另核對最新 main 對應的 run，而不把上一個 SHA 的綠燈當作最新狀態。

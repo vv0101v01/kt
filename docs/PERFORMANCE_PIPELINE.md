@@ -107,3 +107,7 @@ python3 tools/run_pipeline.py --jobs=1 --costs=none --require-full \
 - 早期單次 instrumented profile 只用來定位熱點（BDD 084、精確代數 114、homotopy 102/108/110/115），不是加速百分比依據。`check_costs.json` 同樣只是單次排程校準。
 - 有意未改：kernel conversion、開放上下文 section／retraction 的獨立檢核、所有原生負控制與 139 條原始表達式。剩餘 homotopy 熱點及一般輸入的記憶體界限留待後續，不宣稱全倉所有演算法已最佳化。
 - 實測只涵蓋這台 Linux x86_64、2 logical CPU 的沙盒；native／release／JS／實體 GPU／Lean kernel 未在本輪執行，不能由此外推。
+
+## 遠端驗收回執
+
+實作 commit [`87e4d6a`](https://github.com/vv0101v01/kt/commit/87e4d6a625a2919cd5b35afe9e794bed2778c4ad) 已 fast-forward 推送，對應 [CI run 43607632185](https://github.com/vv0101v01/kt/actions/runs/43607632185) **success**。已下載 logs／pipeline artifact 核對 Meta631、Ualg167、Cubical139完整覆蓋、Showcase50、registry39／checker15及架構／生成物閘；不是僅看排隊狀態。此回執對應該實作 SHA；最新提交狀態另見 [CI workflow](https://github.com/vv0101v01/kt/actions/workflows/ci.yml)。
